@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/table.py/gcloud/bigtable/table.py#L56", 
+      "source": "gcloud/bigtable/table.py#L56", 
       "type": "instance"
     }, 
     {
@@ -20,21 +20,21 @@
       "name": "column_family", 
       "params": [
         {
-          "description": " (Optional) The garbage collection settings for this column family.", 
-          "name": "gc_rule", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigtable/table/table/garbagecollectionrule\">gcloud.bigtable.table.Table.GarbageCollectionRule</a>"
-          ]
-        }, 
-        {
           "description": " The ID of the column family. Must be of the form <code>[_a-zA-Z0-9][-_.a-zA-Z0-9]*</code>.", 
           "name": "column_family_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The garbage collection settings for this column family.", 
+          "name": "gc_rule", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/table/table/garbagecollectionrule\">gcloud.bigtable.table.Table.GarbageCollectionRule</a>"
           ]
         }
       ], 
@@ -45,7 +45,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/table.py/gcloud/bigtable/table.py#L78", 
+      "source": "gcloud/bigtable/table.py#L78", 
       "type": "instance"
     }, 
     {
@@ -55,7 +55,7 @@
       "name": "create", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/table.py/gcloud/bigtable/table.py#L136", 
+      "source": "gcloud/bigtable/table.py#L136", 
       "type": "instance"
     }, 
     {
@@ -65,7 +65,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/table.py/gcloud/bigtable/table.py#L180", 
+      "source": "gcloud/bigtable/table.py#L180", 
       "type": "instance"
     }, 
     {
@@ -81,7 +81,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/table.py/gcloud/bigtable/table.py#L188", 
+      "source": "gcloud/bigtable/table.py#L188", 
       "type": "instance"
     }, 
     {
@@ -91,21 +91,21 @@
       "name": "read_row", 
       "params": [
         {
-          "description": " The key of the row to read from.", 
-          "name": "row_key", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bytes"
-          ]
-        }, 
-        {
           "description": " (Optional) The filter to apply to the contents of the row. If unset, returns the entire row.", 
           "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
+          ]
+        }, 
+        {
+          "description": " The key of the row to read from.", 
+          "name": "row_key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bytes"
           ]
         }
       ], 
@@ -116,7 +116,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/table.py/gcloud/bigtable/table.py#L214", 
+      "source": "gcloud/bigtable/table.py#L214", 
       "type": "instance"
     }, 
     {
@@ -135,12 +135,12 @@
           ]
         }, 
         {
-          "description": " (Optional) The beginning of a range of row keys to read from. The range will include <code>start_key</code>. If left empty, will be interpreted as the empty string.", 
-          "name": "start_key", 
+          "description": " (Optional) The filter to apply to the contents of the specified row(s). If unset, reads every column in each row.", 
+          "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "bytes"
+            "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
           ]
         }, 
         {
@@ -153,12 +153,12 @@
           ]
         }, 
         {
-          "description": " (Optional) The filter to apply to the contents of the specified row(s). If unset, reads every column in each row.", 
-          "name": "filter_", 
+          "description": " (Optional) The beginning of a range of row keys to read from. The range will include <code>start_key</code>. If left empty, will be interpreted as the empty string.", 
+          "name": "start_key", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
+            "bytes"
           ]
         }
       ], 
@@ -169,7 +169,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/table.py/gcloud/bigtable/table.py#L245", 
+      "source": "gcloud/bigtable/table.py#L245", 
       "type": "instance"
     }, 
     {
@@ -179,12 +179,12 @@
       "name": "row", 
       "params": [
         {
-          "description": " The key for the row being created.", 
-          "name": "row_key", 
+          "description": " (Optional) Filter to be used for conditional mutations. See .DirectRow for more details.", 
+          "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "bytes"
+            "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
           ]
         }, 
         {
@@ -197,12 +197,12 @@
           ]
         }, 
         {
-          "description": " (Optional) Filter to be used for conditional mutations. See .DirectRow for more details.", 
-          "name": "filter_", 
+          "description": " The key for the row being created.", 
+          "name": "row_key", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
+            "bytes"
           ]
         }
       ], 
@@ -213,7 +213,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/table.py/gcloud/bigtable/table.py#L94", 
+      "source": "gcloud/bigtable/table.py#L94", 
       "type": "instance"
     }, 
     {
@@ -229,10 +229,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/table.py/gcloud/bigtable/table.py#L282", 
+      "source": "gcloud/bigtable/table.py#L282", 
       "type": "instance"
     }
   ], 
   "name": "Table", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigtable/table.py"
 }

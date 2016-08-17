@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/message.py/gcloud/pubsub/message.py#L40", 
+      "source": "gcloud/pubsub/message.py#L40", 
       "type": "instance"
     }, 
     {
@@ -36,10 +36,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/message.py/gcloud/pubsub/message.py#L78", 
+      "source": "gcloud/pubsub/message.py#L78", 
       "type": "instance"
     }
   ], 
   "name": "Message", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/pubsub/message.py"
 }

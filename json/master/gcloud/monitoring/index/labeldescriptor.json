@@ -10,10 +10,10 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/label.py/gcloud/monitoring/label.py#L51", 
+      "source": "gcloud/monitoring/label.py#L51", 
       "type": "instance"
     }
   ], 
   "name": "Labeldescriptor", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/monitoring/__init__.py"
 }

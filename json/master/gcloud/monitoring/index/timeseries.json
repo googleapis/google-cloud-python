@@ -26,10 +26,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/timeseries.py/gcloud/monitoring/timeseries.py#L75", 
+      "source": "gcloud/monitoring/timeseries.py#L75", 
       "type": "instance"
     }
   ], 
   "name": "Timeseries", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/monitoring/__init__.py"
 }

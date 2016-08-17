@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/connection.py/gcloud/connection.py#L75", 
+      "source": "gcloud/connection.py#L75", 
       "type": "instance"
     }, 
     {
@@ -20,17 +20,8 @@
       "name": "api_request", 
       "params": [
         {
-          "description": " The proper MIME type of the data provided. Default is None.", 
-          "name": "content_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The HTTP method name (ie, GET, POST, etc). Required.", 
-          "name": "method", 
+          "description": " The path to the resource (ie, '/b/bucket-name'). Required.", 
+          "name": "path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -47,6 +38,15 @@
           ]
         }, 
         {
+          "description": " Protected argument to be used by library callers. This can allow custom behavior, for example, to defer an HTTP request and complete initialization of the object at a later time.", 
+          "name": "_target_object", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "object or NoneType"
+          ]
+        }, 
+        {
           "description": " If True, this method will try to parse the response as JSON and raise an exception if that cannot be done. Default is True.", 
           "name": "expect_json", 
           "nullable": null, 
@@ -56,30 +56,12 @@
           ]
         }, 
         {
-          "description": " The base URL for the API endpoint. Typically you won't have to provide this. Default is the standard API base URL.", 
-          "name": "api_base_url", 
+          "description": " The HTTP method name (ie, GET, POST, etc). Required.", 
+          "name": "method", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " The path to the resource (ie, '/b/bucket-name'). Required.", 
-          "name": "path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " Protected argument to be used by library callers. This can allow custom behavior, for example, to defer an HTTP request and complete initialization of the object at a later time.", 
-          "name": "_target_object", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "object or NoneType"
           ]
         }, 
         {
@@ -92,8 +74,26 @@
           ]
         }, 
         {
+          "description": " The base URL for the API endpoint. Typically you won't have to provide this. Default is the standard API base URL.", 
+          "name": "api_base_url", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " The data to send as the body of the request. Default is the empty string.", 
           "name": "data", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The proper MIME type of the data provided. Default is None.", 
+          "name": "content_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -108,7 +108,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/connection.py/gcloud/connection.py#L272", 
+      "source": "gcloud/connection.py#L272", 
       "type": "instance"
     }, 
     {
@@ -118,8 +118,26 @@
       "name": "build_api_url", 
       "params": [
         {
+          "description": " The path to the resource (ie, '/b/bucket-name').", 
+          "name": "path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library.", 
           "name": "api_version", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The base URL for the API endpoint. Typically you won't have to provide this.", 
+          "name": "api_base_url", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -134,24 +152,6 @@
           "types": [
             "dict or list"
           ]
-        }, 
-        {
-          "description": " The base URL for the API endpoint. Typically you won't have to provide this.", 
-          "name": "api_base_url", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The path to the resource (ie, '/b/bucket-name').", 
-          "name": "path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
         }
       ], 
       "returns": [
@@ -161,10 +161,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/connection.py/gcloud/connection.py#L155", 
+      "source": "gcloud/connection.py#L155", 
       "type": "instance"
     }
   ], 
   "name": "Connection", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/dns/connection.py"
 }

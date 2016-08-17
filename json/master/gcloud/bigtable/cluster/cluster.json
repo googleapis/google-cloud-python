@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L192", 
+      "source": "gcloud/bigtable/cluster.py#L192", 
       "type": "instance"
     }, 
     {
@@ -26,7 +26,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L243", 
+      "source": "gcloud/bigtable/cluster.py#L243", 
       "type": "instance"
     }, 
     {
@@ -42,7 +42,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L299", 
+      "source": "gcloud/bigtable/cluster.py#L299", 
       "type": "instance"
     }, 
     {
@@ -52,7 +52,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L356", 
+      "source": "gcloud/bigtable/cluster.py#L356", 
       "type": "instance"
     }, 
     {
@@ -62,21 +62,21 @@
       "name": "from_pb", 
       "params": [
         {
-          "description": " A cluster protobuf object.", 
-          "name": "cluster_pb", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "instance_pb2.Cluster"
-          ]
-        }, 
-        {
           "description": " The instance that owns the cluster.", 
           "name": "instance", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigtable/cluster/cluster/instance/instance>\">gcloud.bigtable.cluster.Cluster.instance.Instance></a>"
+          ]
+        }, 
+        {
+          "description": " A cluster protobuf object.", 
+          "name": "cluster_pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "instance_pb2.Cluster"
           ]
         }
       ], 
@@ -87,7 +87,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L209", 
+      "source": "gcloud/bigtable/cluster.py#L209", 
       "type": "instance"
     }, 
     {
@@ -97,7 +97,7 @@
       "name": "reload", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L288", 
+      "source": "gcloud/bigtable/cluster.py#L288", 
       "type": "instance"
     }, 
     {
@@ -113,10 +113,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L327", 
+      "source": "gcloud/bigtable/cluster.py#L327", 
       "type": "instance"
     }
   ], 
   "name": "Cluster", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigtable/cluster.py"
 }

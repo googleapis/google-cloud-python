@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_filters.py/gcloud/bigtable/row_filters.py#L531", 
+      "source": "gcloud/bigtable/row_filters.py#L531", 
       "type": "instance"
     }, 
     {
@@ -26,10 +26,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_filters.py/gcloud/bigtable/row_filters.py#L564", 
+      "source": "gcloud/bigtable/row_filters.py#L564", 
       "type": "instance"
     }
   ], 
   "name": "Cellsrowlimitfilter", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigtable/row_filters.py"
 }

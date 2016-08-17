@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/key.py/gcloud/datastore/key.py#L61", 
+      "source": "gcloud/datastore/key.py#L61", 
       "type": "instance"
     }, 
     {
@@ -36,7 +36,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/key.py/gcloud/datastore/key.py#L207", 
+      "source": "gcloud/datastore/key.py#L207", 
       "type": "instance"
     }, 
     {
@@ -52,10 +52,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/key.py/gcloud/datastore/key.py#L236", 
+      "source": "gcloud/datastore/key.py#L236", 
       "type": "instance"
     }
   ], 
   "name": "Key", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/datastore/key.py"
 }

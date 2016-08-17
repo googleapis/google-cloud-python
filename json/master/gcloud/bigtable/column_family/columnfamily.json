@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py/gcloud/bigtable/column_family.py#L217", 
+      "source": "gcloud/bigtable/column_family.py#L217", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "create", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py/gcloud/bigtable/column_family.py#L261", 
+      "source": "gcloud/bigtable/column_family.py#L261", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py/gcloud/bigtable/column_family.py#L298", 
+      "source": "gcloud/bigtable/column_family.py#L298", 
       "type": "instance"
     }, 
     {
@@ -46,7 +46,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py/gcloud/bigtable/column_family.py#L250", 
+      "source": "gcloud/bigtable/column_family.py#L250", 
       "type": "instance"
     }, 
     {
@@ -56,10 +56,10 @@
       "name": "update", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py/gcloud/bigtable/column_family.py#L277", 
+      "source": "gcloud/bigtable/column_family.py#L277", 
       "type": "instance"
     }
   ], 
   "name": "Columnfamily", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigtable/column_family.py"
 }

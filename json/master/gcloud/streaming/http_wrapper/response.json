@@ -4,5 +4,5 @@
   "id": "gcloud.streaming.http_wrapper.response", 
   "methods": [], 
   "name": "Response", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/streaming/http_wrapper.py"
 }

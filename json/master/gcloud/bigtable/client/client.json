@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/client.py/gcloud/bigtable/client.py#L136", 
+      "source": "gcloud/bigtable/client.py#L136", 
       "type": "instance"
     }, 
     {
@@ -26,7 +26,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/client.py/gcloud/bigtable/client.py#L171", 
+      "source": "gcloud/bigtable/client.py#L171", 
       "type": "instance"
     }, 
     {
@@ -45,21 +45,21 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -70,7 +70,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/client.py/gcloud/client.py#L33", 
+      "source": "gcloud/client.py#L33", 
       "type": "instance"
     }, 
     {
@@ -98,21 +98,21 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -123,7 +123,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/client.py/gcloud/client.py#L63", 
+      "source": "gcloud/client.py#L63", 
       "type": "instance"
     }, 
     {
@@ -133,26 +133,8 @@
       "name": "instance", 
       "params": [
         {
-          "description": " location name, in form projects/<project>/locations/<location>; used to set up the instance's cluster.", 
-          "name": "location", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " (Optional) The display name for the instance in the Cloud Console UI. (Must be between 4 and 30 characters.) If this value is not set in the constructor, will fall back to the instance ID.", 
           "name": "display_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " The ID of the instance.", 
-          "name": "instance_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -167,6 +149,24 @@
           "types": [
             "int"
           ]
+        }, 
+        {
+          "description": " The ID of the instance.", 
+          "name": "instance_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " location name, in form projects/<project>/locations/<location>; used to set up the instance's cluster.", 
+          "name": "location", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
         }
       ], 
       "returns": [
@@ -176,7 +176,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/client.py/gcloud/bigtable/client.py#L384", 
+      "source": "gcloud/bigtable/client.py#L384", 
       "type": "instance"
     }, 
     {
@@ -192,7 +192,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/client.py/gcloud/bigtable/client.py#L324", 
+      "source": "gcloud/bigtable/client.py#L324", 
       "type": "instance"
     }, 
     {
@@ -208,7 +208,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/client.py/gcloud/bigtable/client.py#L412", 
+      "source": "gcloud/bigtable/client.py#L412", 
       "type": "instance"
     }, 
     {
@@ -218,7 +218,7 @@
       "name": "start", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/client.py/gcloud/bigtable/client.py#L332", 
+      "source": "gcloud/bigtable/client.py#L332", 
       "type": "instance"
     }, 
     {
@@ -228,10 +228,10 @@
       "name": "stop", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/client.py/gcloud/bigtable/client.py#L362", 
+      "source": "gcloud/bigtable/client.py#L362", 
       "type": "instance"
     }
   ], 
   "name": "Client", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigtable/client.py"
 }

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py/gcloud/bigtable/row_data.py#L95", 
+      "source": "gcloud/bigtable/row_data.py#L95", 
       "type": "instance"
     }, 
     {
@@ -20,10 +20,10 @@
       "name": "append_value", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py/gcloud/bigtable/row_data.py#L104", 
+      "source": "gcloud/bigtable/row_data.py#L104", 
       "type": "instance"
     }
   ], 
   "name": "Partialcelldata", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigtable/row_data.py"
 }

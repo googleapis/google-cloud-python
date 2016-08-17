@@ -10,10 +10,10 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/http_wrapper.py/gcloud/streaming/http_wrapper.py#L144", 
+      "source": "gcloud/streaming/http_wrapper.py#L144", 
       "type": "instance"
     }
   ], 
   "name": "Request", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/streaming/http_wrapper.py"
 }

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L242", 
+      "source": "gcloud/streaming/transfer.py#L242", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "configure_request", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L334", 
+      "source": "gcloud/streaming/transfer.py#L334", 
       "type": "instance"
     }, 
     {
@@ -39,8 +39,8 @@
           ]
         }, 
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
+          "description": " should an existing file be overwritten", 
+          "name": "overwrite", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -57,8 +57,8 @@
           ]
         }, 
         {
-          "description": " should an existing file be overwritten", 
-          "name": "overwrite", 
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -73,7 +73,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L250", 
+      "source": "gcloud/streaming/transfer.py#L250", 
       "type": "instance"
     }, 
     {
@@ -83,21 +83,21 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " total size of the file to be downloaded", 
+          "name": "total_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
           ]
         }, 
         {
@@ -110,12 +110,12 @@
           ]
         }, 
         {
-          "description": " total size of the file to be downloaded", 
-          "name": "total_size", 
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or None"
+            "dict"
           ]
         }
       ], 
@@ -126,7 +126,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L277", 
+      "source": "gcloud/streaming/transfer.py#L277", 
       "type": "instance"
     }, 
     {
@@ -136,7 +136,7 @@
       "name": "get_range", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L543", 
+      "source": "gcloud/streaming/transfer.py#L543", 
       "type": "instance"
     }, 
     {
@@ -146,7 +146,7 @@
       "name": "initialize_download", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L363", 
+      "source": "gcloud/streaming/transfer.py#L363", 
       "type": "instance"
     }, 
     {
@@ -156,10 +156,10 @@
       "name": "stream_file", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L593", 
+      "source": "gcloud/streaming/transfer.py#L593", 
       "type": "instance"
     }
   ], 
   "name": "Download", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/streaming/transfer.py"
 }

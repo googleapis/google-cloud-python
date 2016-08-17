@@ -4,5 +4,5 @@
   "id": "gcloud.bigtable.column_family", 
   "methods": [], 
   "name": "Column_Family", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigtable/column_family.py"
 }

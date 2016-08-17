@@ -26,7 +26,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/http_wrapper.py/gcloud/streaming/http_wrapper.py#L452", 
+      "source": "gcloud/streaming/http_wrapper.py#L452", 
       "type": "instance"
     }, 
     {
@@ -35,6 +35,33 @@
       "id": "gcloud.streaming.http_wrapper.make_api_request", 
       "name": "make_api_request", 
       "params": [
+        {
+          "description": " the request to send.", 
+          "name": "http_request", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "Request"
+          ]
+        }, 
+        {
+          "description": " Number of retries to attempt on retryable responses (such as 429 or 5XX).", 
+          "name": "retries", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " Function to make HTTP request without retries.", 
+          "name": "wo_retry_func", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "function taking (http, request, redirections, check_response_func)"
+          ]
+        }, 
         {
           "description": " an instance which impelements the Http API.", 
           "name": "http", 
@@ -54,33 +81,6 @@
           ]
         }, 
         {
-          "description": " Function to make HTTP request without retries.", 
-          "name": "wo_retry_func", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "function taking (http, request, redirections, check_response_func)"
-          ]
-        }, 
-        {
-          "description": " the request to send.", 
-          "name": "http_request", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "Request"
-          ]
-        }, 
-        {
-          "description": " Maximum number of seconds to wait when retrying.", 
-          "name": "max_retry_wait", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " Number of redirects to follow.", 
           "name": "redirections", 
           "nullable": null, 
@@ -90,8 +90,8 @@
           ]
         }, 
         {
-          "description": " Number of retries to attempt on retryable responses (such as 429 or 5XX).", 
-          "name": "retries", 
+          "description": " Maximum number of seconds to wait when retrying.", 
+          "name": "max_retry_wait", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -106,7 +106,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/http_wrapper.py/gcloud/streaming/http_wrapper.py#L381", 
+      "source": "gcloud/streaming/http_wrapper.py#L381", 
       "type": "instance"
     }, 
     {
@@ -131,5 +131,5 @@
     }
   ], 
   "name": "Http_Wrapper", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/streaming/http_wrapper.py"
 }

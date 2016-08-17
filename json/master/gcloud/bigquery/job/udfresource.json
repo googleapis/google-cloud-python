@@ -10,10 +10,10 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py/gcloud/bigquery/job.py#L41", 
+      "source": "gcloud/bigquery/job.py#L41", 
       "type": "instance"
     }
   ], 
   "name": "Udfresource", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigquery/job.py"
 }

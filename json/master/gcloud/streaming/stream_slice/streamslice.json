@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/stream_slice.py/gcloud/streaming/stream_slice.py#L29", 
+      "source": "gcloud/streaming/stream_slice.py#L29", 
       "type": "instance"
     }, 
     {
@@ -36,10 +36,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/stream_slice.py/gcloud/streaming/stream_slice.py#L59", 
+      "source": "gcloud/streaming/stream_slice.py#L59", 
       "type": "instance"
     }
   ], 
   "name": "Streamslice", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/streaming/stream_slice.py"
 }

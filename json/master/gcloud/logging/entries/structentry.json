@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/entries.py/gcloud/logging/entries.py#L75", 
+      "source": "gcloud/logging/entries.py#L75", 
       "type": "instance"
     }, 
     {
@@ -29,21 +29,21 @@
           ]
         }, 
         {
-          "description": " A mapping of logger fullnames -> loggers. If not passed, the entry will have a newly-created logger.", 
-          "name": "loggers", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict or None"
-          ]
-        }, 
-        {
           "description": " Client which holds credentials and project configuration.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/logging/client/client\">gcloud.logging.client.Client</a>"
+          ]
+        }, 
+        {
+          "description": " A mapping of logger fullnames -> loggers. If not passed, the entry will have a newly-created logger.", 
+          "name": "loggers", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict or None"
           ]
         }
       ], 
@@ -54,10 +54,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/entries.py/gcloud/logging/entries.py#L85", 
+      "source": "gcloud/logging/entries.py#L85", 
       "type": "instance"
     }
   ], 
   "name": "Structentry", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/logging/entries.py"
 }

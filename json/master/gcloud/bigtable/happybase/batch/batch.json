@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/batch.py/gcloud/bigtable/happybase/batch.py#L76", 
+      "source": "gcloud/bigtable/happybase/batch.py#L76", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/batch.py/gcloud/bigtable/happybase/batch.py#L205", 
+      "source": "gcloud/bigtable/happybase/batch.py#L205", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "put", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/batch.py/gcloud/bigtable/happybase/batch.py#L141", 
+      "source": "gcloud/bigtable/happybase/batch.py#L141", 
       "type": "instance"
     }, 
     {
@@ -40,10 +40,10 @@
       "name": "send", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/batch.py/gcloud/bigtable/happybase/batch.py#L109", 
+      "source": "gcloud/bigtable/happybase/batch.py#L109", 
       "type": "instance"
     }
   ], 
   "name": "Batch", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigtable/happybase/batch.py"
 }

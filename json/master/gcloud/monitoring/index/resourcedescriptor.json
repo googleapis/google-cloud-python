@@ -10,10 +10,10 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/resource.py/gcloud/monitoring/resource.py#L54", 
+      "source": "gcloud/monitoring/resource.py#L54", 
       "type": "instance"
     }
   ], 
   "name": "Resourcedescriptor", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/monitoring/__init__.py"
 }

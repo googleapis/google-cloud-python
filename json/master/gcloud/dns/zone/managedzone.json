@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L46", 
+      "source": "gcloud/dns/zone.py#L46", 
       "type": "instance"
     }, 
     {
@@ -26,7 +26,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L192", 
+      "source": "gcloud/dns/zone.py#L192", 
       "type": "instance"
     }, 
     {
@@ -36,7 +36,7 @@
       "name": "create", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L245", 
+      "source": "gcloud/dns/zone.py#L245", 
       "type": "instance"
     }, 
     {
@@ -46,7 +46,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L300", 
+      "source": "gcloud/dns/zone.py#L300", 
       "type": "instance"
     }, 
     {
@@ -72,7 +72,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L261", 
+      "source": "gcloud/dns/zone.py#L261", 
       "type": "instance"
     }, 
     {
@@ -107,7 +107,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L55", 
+      "source": "gcloud/dns/zone.py#L55", 
       "type": "instance"
     }, 
     {
@@ -151,7 +151,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L357", 
+      "source": "gcloud/dns/zone.py#L357", 
       "type": "instance"
     }, 
     {
@@ -195,7 +195,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L313", 
+      "source": "gcloud/dns/zone.py#L313", 
       "type": "instance"
     }, 
     {
@@ -205,7 +205,7 @@
       "name": "reload", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L284", 
+      "source": "gcloud/dns/zone.py#L284", 
       "type": "instance"
     }, 
     {
@@ -233,21 +233,21 @@
           ]
         }, 
         {
-          "description": " RR type", 
-          "name": "record_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " resource data for the RR", 
           "name": "rrdatas", 
           "nullable": null, 
           "optional": null, 
           "types": [
             " string"
+          ]
+        }, 
+        {
+          "description": " RR type", 
+          "name": "record_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -258,10 +258,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L172", 
+      "source": "gcloud/dns/zone.py#L172", 
       "type": "instance"
     }
   ], 
   "name": "Managedzone", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/dns/zone.py"
 }

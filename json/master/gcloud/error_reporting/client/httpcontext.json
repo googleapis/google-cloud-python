@@ -10,10 +10,10 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/error_reporting/client.py/gcloud/error_reporting/client.py#L51", 
+      "source": "gcloud/error_reporting/client.py#L51", 
       "type": "instance"
     }
   ], 
   "name": "Httpcontext", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/error_reporting/client.py"
 }

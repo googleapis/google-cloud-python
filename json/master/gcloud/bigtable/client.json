@@ -10,7 +10,7 @@
       "name": "DATA_STUB_FACTORY_V2", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/_generated/bigtable_pb2.py/gcloud/bigtable/_generated/bigtable_pb2.py#L1073", 
+      "source": "gcloud/bigtable/_generated/bigtable_pb2.py#L1073", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "INSTANCE_STUB_FACTORY_V2", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/_generated/bigtable_instance_admin_pb2.py/gcloud/bigtable/_generated/bigtable_instance_admin_pb2.py#L1022", 
+      "source": "gcloud/bigtable/_generated/bigtable_instance_admin_pb2.py#L1022", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "OPERATIONS_STUB_FACTORY_V2", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/_generated/operations_grpc_pb2.py/gcloud/bigtable/_generated/operations_grpc_pb2.py#L244", 
+      "source": "gcloud/bigtable/_generated/operations_grpc_pb2.py#L244", 
       "type": "instance"
     }, 
     {
@@ -40,7 +40,7 @@
       "name": "TABLE_STUB_FACTORY_V2", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/_generated/bigtable_table_admin_pb2.py/gcloud/bigtable/_generated/bigtable_table_admin_pb2.py#L757", 
+      "source": "gcloud/bigtable/_generated/bigtable_table_admin_pb2.py#L757", 
       "type": "instance"
     }, 
     {
@@ -185,5 +185,5 @@
     }
   ], 
   "name": "Client", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigtable/client.py"
 }

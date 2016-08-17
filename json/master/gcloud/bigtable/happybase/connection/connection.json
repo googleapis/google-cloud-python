@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/connection.py/gcloud/bigtable/happybase/connection.py#L156", 
+      "source": "gcloud/bigtable/happybase/connection.py#L156", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "close", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/connection.py/gcloud/bigtable/happybase/connection.py#L217", 
+      "source": "gcloud/bigtable/happybase/connection.py#L217", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "create_table", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/connection.py/gcloud/bigtable/happybase/connection.py#L291", 
+      "source": "gcloud/bigtable/happybase/connection.py#L291", 
       "type": "instance"
     }, 
     {
@@ -40,7 +40,7 @@
       "name": "delete_table", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/connection.py/gcloud/bigtable/happybase/connection.py#L360", 
+      "source": "gcloud/bigtable/happybase/connection.py#L360", 
       "type": "instance"
     }, 
     {
@@ -50,7 +50,7 @@
       "name": "open", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/connection.py/gcloud/bigtable/happybase/connection.py#L207", 
+      "source": "gcloud/bigtable/happybase/connection.py#L207", 
       "type": "instance"
     }, 
     {
@@ -85,7 +85,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/connection.py/gcloud/bigtable/happybase/connection.py#L246", 
+      "source": "gcloud/bigtable/happybase/connection.py#L246", 
       "type": "instance"
     }, 
     {
@@ -101,10 +101,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/connection.py/gcloud/bigtable/happybase/connection.py#L262", 
+      "source": "gcloud/bigtable/happybase/connection.py#L262", 
       "type": "instance"
     }
   ], 
   "name": "Connection", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigtable/happybase/connection.py"
 }

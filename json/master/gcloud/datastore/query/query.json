@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py/gcloud/datastore/query.py#L75", 
+      "source": "gcloud/datastore/query.py#L75", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "add_filter", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py/gcloud/datastore/query.py#L189", 
+      "source": "gcloud/datastore/query.py#L189", 
       "type": "instance"
     }, 
     {
@@ -30,30 +30,12 @@
       "name": "fetch", 
       "params": [
         {
-          "description": " An optional cursor passed through to the iterator.", 
-          "name": "start_cursor", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bytes"
-          ]
-        }, 
-        {
           "description": " An optional limit passed through to the iterator.", 
           "name": "limit", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer or None"
-          ]
-        }, 
-        {
-          "description": " An optional offset passed through to the iterator.", 
-          "name": "offset", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
           ]
         }, 
         {
@@ -73,6 +55,24 @@
           "types": [
             "<a data-custom-type=\"gcloud/datastore/client/client\">gcloud.datastore.client.Client</a>"
           ]
+        }, 
+        {
+          "description": " An optional cursor passed through to the iterator.", 
+          "name": "start_cursor", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bytes"
+          ]
+        }, 
+        {
+          "description": " An optional offset passed through to the iterator.", 
+          "name": "offset", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
         }
       ], 
       "returns": [
@@ -82,7 +82,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py/gcloud/datastore/query.py#L315", 
+      "source": "gcloud/datastore/query.py#L315", 
       "type": "instance"
     }, 
     {
@@ -92,7 +92,7 @@
       "name": "key_filter", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py/gcloud/datastore/query.py#L257", 
+      "source": "gcloud/datastore/query.py#L257", 
       "type": "instance"
     }, 
     {
@@ -102,10 +102,10 @@
       "name": "keys_only", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py/gcloud/datastore/query.py#L253", 
+      "source": "gcloud/datastore/query.py#L253", 
       "type": "instance"
     }
   ], 
   "name": "Query", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/datastore/query.py"
 }

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/metric.py/gcloud/monitoring/metric.py#L113", 
+      "source": "gcloud/monitoring/metric.py#L113", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "create", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/metric.py/gcloud/monitoring/metric.py#L129", 
+      "source": "gcloud/monitoring/metric.py#L129", 
       "type": "instance"
     }, 
     {
@@ -30,10 +30,10 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/metric.py/gcloud/monitoring/metric.py#L155", 
+      "source": "gcloud/monitoring/metric.py#L155", 
       "type": "instance"
     }
   ], 
   "name": "Metricdescriptor", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/monitoring/metric.py"
 }

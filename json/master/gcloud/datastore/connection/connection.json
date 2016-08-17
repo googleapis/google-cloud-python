@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py/gcloud/datastore/connection.py#L56", 
+      "source": "gcloud/datastore/connection.py#L56", 
       "type": "instance"
     }, 
     {
@@ -45,7 +45,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py/gcloud/datastore/connection.py#L363", 
+      "source": "gcloud/datastore/connection.py#L363", 
       "type": "instance"
     }, 
     {
@@ -71,7 +71,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py/gcloud/datastore/connection.py#L294", 
+      "source": "gcloud/datastore/connection.py#L294", 
       "type": "instance"
     }, 
     {
@@ -80,6 +80,24 @@
       "id": "gcloud.datastore.connection.Connection.build_api_url", 
       "name": "build_api_url", 
       "params": [
+        {
+          "description": " The project to connect to. This is usually your project name in the cloud console.", 
+          "name": "project", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
+          "name": "api_version", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
         {
           "description": " The API method to call (e.g. 'runQuery', 'lookup').", 
           "name": "method", 
@@ -97,24 +115,6 @@
           "types": [
             "string"
           ]
-        }, 
-        {
-          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
-          "name": "api_version", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The project to connect to. This is usually your project name in the cloud console.", 
-          "name": "project", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
         }
       ], 
       "returns": [
@@ -124,7 +124,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py/gcloud/datastore/connection.py#L127", 
+      "source": "gcloud/datastore/connection.py#L127", 
       "type": "instance"
     }, 
     {
@@ -134,12 +134,12 @@
       "name": "commit", 
       "params": [
         {
-          "description": " The protobuf with the mutations being committed.", 
-          "name": "request", 
+          "description": " The project to which the transaction applies.", 
+          "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/datastore/connection/connection/_generated/datastore_pb2/commitrequest\">gcloud.datastore.connection.Connection._generated.datastore_pb2.CommitRequest</a>"
+            "string"
           ]
         }, 
         {
@@ -152,12 +152,12 @@
           ]
         }, 
         {
-          "description": " The project to which the transaction applies.", 
-          "name": "project", 
+          "description": " The protobuf with the mutations being committed.", 
+          "name": "request", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "<a data-custom-type=\"gcloud/datastore/connection/connection/_generated/datastore_pb2/commitrequest\">gcloud.datastore.connection.Connection._generated.datastore_pb2.CommitRequest</a>"
           ]
         }
       ], 
@@ -168,7 +168,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py/gcloud/datastore/connection.py#L310", 
+      "source": "gcloud/datastore/connection.py#L310", 
       "type": "instance"
     }, 
     {
@@ -178,21 +178,21 @@
       "name": "lookup", 
       "params": [
         {
-          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
-          "name": "eventual", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
-          ]
-        }, 
-        {
           "description": " The project to look up the keys in.", 
           "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
+          "name": "eventual", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
           ]
         }, 
         {
@@ -221,7 +221,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py/gcloud/datastore/connection.py#L157", 
+      "source": "gcloud/datastore/connection.py#L157", 
       "type": "instance"
     }, 
     {
@@ -231,7 +231,7 @@
       "name": "rollback", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py/gcloud/datastore/connection.py#L345", 
+      "source": "gcloud/datastore/connection.py#L345", 
       "type": "instance"
     }, 
     {
@@ -241,8 +241,8 @@
       "name": "run_query", 
       "params": [
         {
-          "description": " The namespace over which to run the query.", 
-          "name": "namespace", 
+          "description": " The project over which to run the query.", 
+          "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -259,30 +259,30 @@
           ]
         }, 
         {
-          "description": " The Protobuf representing the query to run.", 
-          "name": "query_pb", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
-          ]
-        }, 
-        {
-          "description": " The project over which to run the query.", 
-          "name": "project", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
           "name": "transaction_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The namespace over which to run the query.", 
+          "name": "namespace", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The Protobuf representing the query to run.", 
+          "name": "query_pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
           ]
         }
       ], 
@@ -293,10 +293,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py/gcloud/datastore/connection.py#L216", 
+      "source": "gcloud/datastore/connection.py#L216", 
       "type": "instance"
     }
   ], 
   "name": "Connection", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/datastore/connection.py"
 }

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/client.py/gcloud/client.py#L184", 
+      "source": "gcloud/client.py#L184", 
       "type": "instance"
     }, 
     {
@@ -36,7 +36,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/client.py/gcloud/monitoring/client.py#L333", 
+      "source": "gcloud/monitoring/client.py#L333", 
       "type": "instance"
     }, 
     {
@@ -62,7 +62,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/client.py/gcloud/monitoring/client.py#L198", 
+      "source": "gcloud/monitoring/client.py#L198", 
       "type": "instance"
     }, 
     {
@@ -88,7 +88,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/client.py/gcloud/monitoring/client.py#L248", 
+      "source": "gcloud/monitoring/client.py#L248", 
       "type": "instance"
     }, 
     {
@@ -107,21 +107,21 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -132,7 +132,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/client.py/gcloud/client.py#L33", 
+      "source": "gcloud/client.py#L33", 
       "type": "instance"
     }, 
     {
@@ -160,21 +160,21 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -185,7 +185,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/client.py/gcloud/client.py#L63", 
+      "source": "gcloud/client.py#L63", 
       "type": "instance"
     }, 
     {
@@ -194,15 +194,6 @@
       "id": "gcloud.monitoring.client.Client.group", 
       "name": "group", 
       "params": [
-        {
-          "description": " If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters.", 
-          "name": "is_cluster", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
         {
           "description": " A user-assigned name for this group, used only for display purposes.", 
           "name": "display_name", 
@@ -231,6 +222,15 @@
           ]
         }, 
         {
+          "description": " If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters.", 
+          "name": "is_cluster", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
+          ]
+        }, 
+        {
           "description": " The ID of the group.", 
           "name": "group_id", 
           "nullable": null, 
@@ -247,7 +247,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/client.py/gcloud/monitoring/client.py#L287", 
+      "source": "gcloud/monitoring/client.py#L287", 
       "type": "instance"
     }, 
     {
@@ -263,7 +263,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/client.py/gcloud/monitoring/client.py#L353", 
+      "source": "gcloud/monitoring/client.py#L353", 
       "type": "instance"
     }, 
     {
@@ -298,7 +298,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/client.py/gcloud/monitoring/client.py#L217", 
+      "source": "gcloud/monitoring/client.py#L217", 
       "type": "instance"
     }, 
     {
@@ -324,7 +324,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/client.py/gcloud/monitoring/client.py#L266", 
+      "source": "gcloud/monitoring/client.py#L266", 
       "type": "instance"
     }, 
     {
@@ -334,8 +334,26 @@
       "name": "metric_descriptor", 
       "params": [
         {
-          "description": " The value type of the metric. It must be one of", 
-          "name": "value_type", 
+          "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
+          "name": "labels", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " ~gcloud.monitoring.label.LabelDescriptor"
+          ]
+        }, 
+        {
+          "description": " An optional unit in which the metric value is reported.", 
+          "name": "unit", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " An optional detailed description of the metric.", 
+          "name": "description", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -361,24 +379,6 @@
           ]
         }, 
         {
-          "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
-          "name": "labels", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " ~gcloud.monitoring.label.LabelDescriptor"
-          ]
-        }, 
-        {
-          "description": " An optional detailed description of the metric.", 
-          "name": "description", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
           "name": "type_", 
           "nullable": null, 
@@ -388,8 +388,8 @@
           ]
         }, 
         {
-          "description": " An optional unit in which the metric value is reported.", 
-          "name": "unit", 
+          "description": " The value type of the metric. It must be one of", 
+          "name": "value_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -404,7 +404,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/client.py/gcloud/monitoring/client.py#L119", 
+      "source": "gcloud/monitoring/client.py#L119", 
       "type": "instance"
     }, 
     {
@@ -414,17 +414,8 @@
       "name": "query", 
       "params": [
         {
-          "description": " The end time (inclusive) of the time interval for which results should be returned, as a datetime object. The default is the start of the current minute. The start time (exclusive) is determined by combining the values of days, hours, and minutes, and subtracting the resulting duration from the end time. It is also allowed to omit the end time and duration here, in which case", 
-          "name": "end_time", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "datetime.datetime or None"
-          ]
-        }, 
-        {
-          "description": " The number of days in the time interval.", 
-          "name": "days", 
+          "description": " The number of hours in the time interval.", 
+          "name": "hours", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -432,8 +423,8 @@
           ]
         }, 
         {
-          "description": " The number of minutes in the time interval.", 
-          "name": "minutes", 
+          "description": " The number of days in the time interval.", 
+          "name": "days", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -450,8 +441,17 @@
           ]
         }, 
         {
-          "description": " The number of hours in the time interval.", 
-          "name": "hours", 
+          "description": " The end time (inclusive) of the time interval for which results should be returned, as a datetime object. The default is the start of the current minute. The start time (exclusive) is determined by combining the values of days, hours, and minutes, and subtracting the resulting duration from the end time. It is also allowed to omit the end time and duration here, in which case", 
+          "name": "end_time", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "datetime.datetime or None"
+          ]
+        }, 
+        {
+          "description": " The number of minutes in the time interval.", 
+          "name": "minutes", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -466,10 +466,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/client.py/gcloud/monitoring/client.py#L63", 
+      "source": "gcloud/monitoring/client.py#L63", 
       "type": "instance"
     }
   ], 
   "name": "Client", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/monitoring/client.py"
 }

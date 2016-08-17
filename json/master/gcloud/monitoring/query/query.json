@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L122", 
+      "source": "gcloud/monitoring/query.py#L122", 
       "type": "instance"
     }, 
     {
@@ -19,6 +19,15 @@
       "id": "gcloud.monitoring.query.Query.align", 
       "name": "align", 
       "params": [
+        {
+          "description": " The number of hours in the alignment period.", 
+          "name": "hours", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
         {
           "description": " The number of minutes in the alignment period.", 
           "name": "minutes", 
@@ -45,15 +54,6 @@
           "types": [
             "integer"
           ]
-        }, 
-        {
-          "description": " The number of hours in the alignment period.", 
-          "name": "hours", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
         }
       ], 
       "returns": [
@@ -63,7 +63,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L332", 
+      "source": "gcloud/monitoring/query.py#L332", 
       "type": "instance"
     }, 
     {
@@ -98,7 +98,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L533", 
+      "source": "gcloud/monitoring/query.py#L533", 
       "type": "instance"
     }, 
     {
@@ -114,7 +114,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L575", 
+      "source": "gcloud/monitoring/query.py#L575", 
       "type": "instance"
     }, 
     {
@@ -124,7 +124,7 @@
       "name": "iter", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L410", 
+      "source": "gcloud/monitoring/query.py#L410", 
       "type": "instance"
     }, 
     {
@@ -159,7 +159,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L374", 
+      "source": "gcloud/monitoring/query.py#L374", 
       "type": "instance"
     }, 
     {
@@ -185,7 +185,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L195", 
+      "source": "gcloud/monitoring/query.py#L195", 
       "type": "instance"
     }, 
     {
@@ -220,7 +220,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L163", 
+      "source": "gcloud/monitoring/query.py#L163", 
       "type": "instance"
     }, 
     {
@@ -255,7 +255,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L292", 
+      "source": "gcloud/monitoring/query.py#L292", 
       "type": "instance"
     }, 
     {
@@ -281,7 +281,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L212", 
+      "source": "gcloud/monitoring/query.py#L212", 
       "type": "instance"
     }, 
     {
@@ -316,10 +316,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L234", 
+      "source": "gcloud/monitoring/query.py#L234", 
       "type": "instance"
     }
   ], 
   "name": "Query", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/monitoring/query.py"
 }

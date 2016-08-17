@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/batch.py/gcloud/storage/batch.py#L51", 
+      "source": "gcloud/storage/batch.py#L51", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "add_header", 
       "params": [], 
       "returns": [], 
-      "source": "#L388", 
+      "source": "email/message.py#L388", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "as_string", 
       "params": [], 
       "returns": [], 
-      "source": "#L124", 
+      "source": "email/message.py#L124", 
       "type": "instance"
     }, 
     {
@@ -40,7 +40,7 @@
       "name": "attach", 
       "params": [], 
       "returns": [], 
-      "source": "#L17", 
+      "source": "email/mime/nonmultipart.py#L17", 
       "type": "instance"
     }, 
     {
@@ -50,7 +50,7 @@
       "name": "del_param", 
       "params": [], 
       "returns": [], 
-      "source": "#L619", 
+      "source": "email/message.py#L619", 
       "type": "instance"
     }, 
     {
@@ -60,7 +60,7 @@
       "name": "get", 
       "params": [], 
       "returns": [], 
-      "source": "#L354", 
+      "source": "email/message.py#L354", 
       "type": "instance"
     }, 
     {
@@ -70,7 +70,7 @@
       "name": "get_all", 
       "params": [], 
       "returns": [], 
-      "source": "#L370", 
+      "source": "email/message.py#L370", 
       "type": "instance"
     }, 
     {
@@ -80,7 +80,7 @@
       "name": "get_boundary", 
       "params": [], 
       "returns": [], 
-      "source": "#L689", 
+      "source": "email/message.py#L689", 
       "type": "instance"
     }, 
     {
@@ -90,7 +90,7 @@
       "name": "get_charset", 
       "params": [], 
       "returns": [], 
-      "source": "#L273", 
+      "source": "email/message.py#L273", 
       "type": "instance"
     }, 
     {
@@ -100,7 +100,7 @@
       "name": "get_charsets", 
       "params": [], 
       "returns": [], 
-      "source": "#L778", 
+      "source": "email/message.py#L778", 
       "type": "instance"
     }, 
     {
@@ -110,7 +110,7 @@
       "name": "get_content_charset", 
       "params": [], 
       "returns": [], 
-      "source": "#L747", 
+      "source": "email/message.py#L747", 
       "type": "instance"
     }, 
     {
@@ -120,7 +120,7 @@
       "name": "get_content_maintype", 
       "params": [], 
       "returns": [], 
-      "source": "#L456", 
+      "source": "email/message.py#L456", 
       "type": "instance"
     }, 
     {
@@ -130,7 +130,7 @@
       "name": "get_content_subtype", 
       "params": [], 
       "returns": [], 
-      "source": "#L465", 
+      "source": "email/message.py#L465", 
       "type": "instance"
     }, 
     {
@@ -140,7 +140,7 @@
       "name": "get_content_type", 
       "params": [], 
       "returns": [], 
-      "source": "#L432", 
+      "source": "email/message.py#L432", 
       "type": "instance"
     }, 
     {
@@ -150,7 +150,7 @@
       "name": "get_default_type", 
       "params": [], 
       "returns": [], 
-      "source": "#L474", 
+      "source": "email/message.py#L474", 
       "type": "instance"
     }, 
     {
@@ -160,7 +160,7 @@
       "name": "get_filename", 
       "params": [], 
       "returns": [], 
-      "source": "#L673", 
+      "source": "email/message.py#L673", 
       "type": "instance"
     }, 
     {
@@ -170,7 +170,7 @@
       "name": "get_param", 
       "params": [], 
       "returns": [], 
-      "source": "#L535", 
+      "source": "email/message.py#L535", 
       "type": "instance"
     }, 
     {
@@ -180,7 +180,7 @@
       "name": "get_params", 
       "params": [], 
       "returns": [], 
-      "source": "#L513", 
+      "source": "email/message.py#L513", 
       "type": "instance"
     }, 
     {
@@ -190,7 +190,7 @@
       "name": "get_payload", 
       "params": [], 
       "returns": [], 
-      "source": "#L168", 
+      "source": "email/message.py#L168", 
       "type": "instance"
     }, 
     {
@@ -200,7 +200,7 @@
       "name": "get_unixfrom", 
       "params": [], 
       "returns": [], 
-      "source": "#L150", 
+      "source": "email/message.py#L150", 
       "type": "instance"
     }, 
     {
@@ -210,7 +210,7 @@
       "name": "has_key", 
       "params": [], 
       "returns": [], 
-      "source": "#L319", 
+      "source": "email/message.py#L319", 
       "type": "instance"
     }, 
     {
@@ -220,7 +220,7 @@
       "name": "is_multipart", 
       "params": [], 
       "returns": [], 
-      "source": "#L140", 
+      "source": "email/message.py#L140", 
       "type": "instance"
     }, 
     {
@@ -230,7 +230,7 @@
       "name": "items", 
       "params": [], 
       "returns": [], 
-      "source": "#L344", 
+      "source": "email/message.py#L344", 
       "type": "instance"
     }, 
     {
@@ -240,7 +240,7 @@
       "name": "keys", 
       "params": [], 
       "returns": [], 
-      "source": "#L324", 
+      "source": "email/message.py#L324", 
       "type": "instance"
     }, 
     {
@@ -250,7 +250,7 @@
       "name": "replace_header", 
       "params": [], 
       "returns": [], 
-      "source": "#L413", 
+      "source": "email/message.py#L413", 
       "type": "instance"
     }, 
     {
@@ -260,7 +260,7 @@
       "name": "set_boundary", 
       "params": [], 
       "returns": [], 
-      "source": "#L702", 
+      "source": "email/message.py#L702", 
       "type": "instance"
     }, 
     {
@@ -270,7 +270,7 @@
       "name": "set_charset", 
       "params": [], 
       "returns": [], 
-      "source": "#L228", 
+      "source": "email/message.py#L228", 
       "type": "instance"
     }, 
     {
@@ -280,7 +280,7 @@
       "name": "set_default_type", 
       "params": [], 
       "returns": [], 
-      "source": "#L483", 
+      "source": "email/message.py#L483", 
       "type": "instance"
     }, 
     {
@@ -290,7 +290,7 @@
       "name": "set_param", 
       "params": [], 
       "returns": [], 
-      "source": "#L571", 
+      "source": "email/message.py#L571", 
       "type": "instance"
     }, 
     {
@@ -300,7 +300,7 @@
       "name": "set_payload", 
       "params": [], 
       "returns": [], 
-      "source": "#L218", 
+      "source": "email/message.py#L218", 
       "type": "instance"
     }, 
     {
@@ -310,7 +310,7 @@
       "name": "set_type", 
       "params": [], 
       "returns": [], 
-      "source": "#L641", 
+      "source": "email/message.py#L641", 
       "type": "instance"
     }, 
     {
@@ -320,7 +320,7 @@
       "name": "set_unixfrom", 
       "params": [], 
       "returns": [], 
-      "source": "#L147", 
+      "source": "email/message.py#L147", 
       "type": "instance"
     }, 
     {
@@ -330,7 +330,7 @@
       "name": "values", 
       "params": [], 
       "returns": [], 
-      "source": "#L334", 
+      "source": "email/message.py#L334", 
       "type": "instance"
     }, 
     {
@@ -340,10 +340,10 @@
       "name": "walk", 
       "params": [], 
       "returns": [], 
-      "source": "#L20", 
+      "source": "email/iterators.py#L20", 
       "type": "instance"
     }
   ], 
   "name": "Mimeapplicationhttp", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/storage/batch.py"
 }

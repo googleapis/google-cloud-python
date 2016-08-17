@@ -26,7 +26,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/helpers.py/gcloud/datastore/helpers.py#L105", 
+      "source": "gcloud/datastore/helpers.py#L105", 
       "type": "instance"
     }, 
     {
@@ -52,10 +52,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/helpers.py/gcloud/datastore/helpers.py#L238", 
+      "source": "gcloud/datastore/helpers.py#L238", 
       "type": "instance"
     }
   ], 
   "name": "Helpers", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/datastore/helpers.py"
 }

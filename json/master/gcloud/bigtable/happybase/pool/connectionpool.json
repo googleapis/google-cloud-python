@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/pool.py/gcloud/bigtable/happybase/pool.py#L65", 
+      "source": "gcloud/bigtable/happybase/pool.py#L65", 
       "type": "instance"
     }, 
     {
@@ -20,10 +20,10 @@
       "name": "connection", 
       "params": [], 
       "returns": [], 
-      "source": "#L82", 
+      "source": "gcloud/bigtable/happybase/pool.py#L82", 
       "type": "instance"
     }
   ], 
   "name": "Connectionpool", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigtable/happybase/pool.py"
 }

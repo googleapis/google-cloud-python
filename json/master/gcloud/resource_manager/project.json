@@ -4,5 +4,5 @@
   "id": "gcloud.resource_manager.project", 
   "methods": [], 
   "name": "Project", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/resource_manager/project.py"
 }

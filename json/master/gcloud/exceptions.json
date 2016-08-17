@@ -10,30 +10,21 @@
       "name": "make_exception", 
       "params": [
         {
-          "description": " A response object that defines a status code as the status attribute.", 
-          "name": "response", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "httplib2.Response or other HTTP response object"
-          ]
-        }, 
-        {
-          "description": " Optional string giving extra information about the failed request.", 
-          "name": "error_info", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The body of the HTTP error response.", 
           "name": "content", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or dictionary"
+          ]
+        }, 
+        {
+          "description": " A response object that defines a status code as the status attribute.", 
+          "name": "response", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "httplib2.Response or other HTTP response object"
           ]
         }, 
         {
@@ -44,6 +35,15 @@
           "types": [
             "bool"
           ]
+        }, 
+        {
+          "description": " Optional string giving extra information about the failed request.", 
+          "name": "error_info", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
         }
       ], 
       "returns": [
@@ -53,7 +53,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/exceptions.py/gcloud/exceptions.py#L164", 
+      "source": "gcloud/exceptions.py#L164", 
       "type": "instance"
     }, 
     {
@@ -68,5 +68,5 @@
     }
   ], 
   "name": "Exceptions", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/exceptions.py"
 }

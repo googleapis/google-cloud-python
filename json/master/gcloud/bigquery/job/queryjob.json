@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py/gcloud/bigquery/job.py#L954", 
+      "source": "gcloud/bigquery/job.py#L954", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "begin", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py/gcloud/bigquery/job.py#L351", 
+      "source": "gcloud/bigquery/job.py#L351", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "cancel", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py/gcloud/bigquery/job.py#L406", 
+      "source": "gcloud/bigquery/job.py#L406", 
       "type": "instance"
     }, 
     {
@@ -56,7 +56,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py/gcloud/bigquery/job.py#L367", 
+      "source": "gcloud/bigquery/job.py#L367", 
       "type": "instance"
     }, 
     {
@@ -91,7 +91,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py/gcloud/bigquery/job.py#L1088", 
+      "source": "gcloud/bigquery/job.py#L1088", 
       "type": "instance"
     }, 
     {
@@ -101,10 +101,10 @@
       "name": "reload", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py/gcloud/bigquery/job.py#L390", 
+      "source": "gcloud/bigquery/job.py#L390", 
       "type": "instance"
     }
   ], 
   "name": "Queryjob", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/bigquery/job.py"
 }

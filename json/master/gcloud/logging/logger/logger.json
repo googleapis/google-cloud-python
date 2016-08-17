@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py/gcloud/logging/logger.py#L39", 
+      "source": "gcloud/logging/logger.py#L39", 
       "type": "instance"
     }, 
     {
@@ -36,7 +36,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py/gcloud/logging/logger.py#L78", 
+      "source": "gcloud/logging/logger.py#L78", 
       "type": "instance"
     }, 
     {
@@ -46,7 +46,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py/gcloud/logging/logger.py#L257", 
+      "source": "gcloud/logging/logger.py#L257", 
       "type": "instance"
     }, 
     {
@@ -58,6 +58,24 @@
         {
           "description": " One of :data:gcloud.logging.ASCENDING or", 
           "name": "order_by", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of entries. If not passed, the API will return the first page of entries.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " a filter expression. See: <a href=\"https://cloud.google.com/logging/docs/view/advanced_filters\">https://cloud.google.com/logging/docs/view/advanced_filters</a>", 
+          "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -81,24 +99,6 @@
           "types": [
             " strings"
           ]
-        }, 
-        {
-          "description": " opaque marker for the next \"page\" of entries. If not passed, the API will return the first page of entries.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " a filter expression. See: <a href=\"https://cloud.google.com/logging/docs/view/advanced_filters\">https://cloud.google.com/logging/docs/view/advanced_filters</a>", 
-          "name": "filter_", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
         }
       ], 
       "returns": [
@@ -108,7 +108,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py/gcloud/logging/logger.py#L270", 
+      "source": "gcloud/logging/logger.py#L270", 
       "type": "instance"
     }, 
     {
@@ -118,7 +118,7 @@
       "name": "log_proto", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py/gcloud/logging/logger.py#L224", 
+      "source": "gcloud/logging/logger.py#L224", 
       "type": "instance"
     }, 
     {
@@ -128,7 +128,7 @@
       "name": "log_struct", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py/gcloud/logging/logger.py#L191", 
+      "source": "gcloud/logging/logger.py#L191", 
       "type": "instance"
     }, 
     {
@@ -138,10 +138,10 @@
       "name": "log_text", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py/gcloud/logging/logger.py#L158", 
+      "source": "gcloud/logging/logger.py#L158", 
       "type": "instance"
     }
   ], 
   "name": "Logger", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/logging/logger.py"
 }

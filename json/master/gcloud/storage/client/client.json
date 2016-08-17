@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/client.py/gcloud/storage/client.py#L50", 
+      "source": "gcloud/storage/client.py#L50", 
       "type": "instance"
     }, 
     {
@@ -26,7 +26,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/client.py/gcloud/storage/client.py#L132", 
+      "source": "gcloud/storage/client.py#L132", 
       "type": "instance"
     }, 
     {
@@ -52,7 +52,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/client.py/gcloud/storage/client.py#L117", 
+      "source": "gcloud/storage/client.py#L117", 
       "type": "instance"
     }, 
     {
@@ -78,7 +78,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/client.py/gcloud/storage/client.py#L194", 
+      "source": "gcloud/storage/client.py#L194", 
       "type": "instance"
     }, 
     {
@@ -97,21 +97,21 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -122,7 +122,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/client.py/gcloud/client.py#L33", 
+      "source": "gcloud/client.py#L33", 
       "type": "instance"
     }, 
     {
@@ -150,21 +150,21 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -175,7 +175,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/client.py/gcloud/client.py#L63", 
+      "source": "gcloud/client.py#L63", 
       "type": "instance"
     }, 
     {
@@ -201,7 +201,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/client.py/gcloud/storage/client.py#L144", 
+      "source": "gcloud/storage/client.py#L144", 
       "type": "instance"
     }, 
     {
@@ -211,17 +211,8 @@
       "name": "list_buckets", 
       "params": [
         {
-          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
-          "name": "projection", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each bucket returned: 'items/id,nextPageToken'", 
-          "name": "fields", 
+          "description": " Optional. Opaque marker for the next \"page\" of buckets. If not passed, will return the first page of buckets.", 
+          "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -238,8 +229,8 @@
           ]
         }, 
         {
-          "description": " Optional. Opaque marker for the next \"page\" of buckets. If not passed, will return the first page of buckets.", 
-          "name": "page_token", 
+          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each bucket returned: 'items/id,nextPageToken'", 
+          "name": "fields", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -254,6 +245,15 @@
           "types": [
             "integer or NoneType"
           ]
+        }, 
+        {
+          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
+          "name": "projection", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
         }
       ], 
       "returns": [
@@ -263,7 +263,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/client.py/gcloud/storage/client.py#L218", 
+      "source": "gcloud/storage/client.py#L218", 
       "type": "instance"
     }, 
     {
@@ -289,10 +289,10 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/client.py/gcloud/storage/client.py#L170", 
+      "source": "gcloud/storage/client.py#L170", 
       "type": "instance"
     }
   ], 
   "name": "Client", 
-  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+  "source": "gcloud/storage/client.py"
 }
