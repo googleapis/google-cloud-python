@@ -29,12 +29,12 @@
           ]
         }, 
         {
-          "description": " The approach to be used to align individual time series. For example: :data:Aligner.ALIGN_MEAN. See Aligner and the descriptions of the supported aligners_.", 
-          "name": "per_series_aligner", 
+          "description": " The number of hours in the alignment period.", 
+          "name": "hours", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "integer"
           ]
         }, 
         {
@@ -47,12 +47,12 @@
           ]
         }, 
         {
-          "description": " The number of hours in the alignment period.", 
-          "name": "hours", 
+          "description": " The approach to be used to align individual time series. For example: :data:Aligner.ALIGN_MEAN. See Aligner and the descriptions of the supported aligners_.", 
+          "name": "per_series_aligner", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "string"
           ]
         }
       ], 
@@ -73,21 +73,21 @@
       "name": "as_dataframe", 
       "params": [
         {
-          "description": " The label name to use for the dataframe header. This can be the name of a resource label or metric label (e.g., \"instance_name\"), or the string <code>\"resource_type\"</code>.", 
-          "name": "label", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
-          ]
-        }, 
-        {
           "description": " A list or tuple of label names to use for the dataframe header. If more than one label name is provided, the resulting dataframe will have a multi-level column header. Providing values for both <code>label</code> and <code>labels</code> is an error.", 
           "name": "labels", 
           "nullable": null, 
           "optional": null, 
           "types": [
             " strings, or None"
+          ]
+        }, 
+        {
+          "description": " The label name to use for the dataframe header. This can be the name of a resource label or metric label (e.g., \"instance_name\"), or the string <code>\"resource_type\"</code>.", 
+          "name": "label", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
           ]
         }
       ], 
@@ -134,21 +134,21 @@
       "name": "reduce", 
       "params": [
         {
-          "description": " Fields to be preserved by the reduction. For example, specifying just <code>\"resource.zone\"</code> will result in one time series per zone. The default is to aggregate all of the time series into just one.", 
-          "name": "group_by_fields", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "strings"
-          ]
-        }, 
-        {
           "description": " The approach to be used to combine time series. For example:", 
           "name": "cross_series_reducer", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Fields to be preserved by the reduction. For example, specifying just <code>\"resource.zone\"</code> will result in one time series per zone. The default is to aggregate all of the time series into just one.", 
+          "name": "group_by_fields", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "strings"
           ]
         }
       ], 

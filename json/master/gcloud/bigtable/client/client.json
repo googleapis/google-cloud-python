@@ -142,15 +142,6 @@
           ]
         }, 
         {
-          "description": " location name, in form projects/<project>/locations/<location>; used to set up the instance's cluster.", 
-          "name": "location", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " (Optional) The number of nodes in the instance's cluster; used to set up the instance's cluster.", 
           "name": "serve_nodes", 
           "nullable": null, 
@@ -166,6 +157,15 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " location name, in form projects/<project>/locations/<location>; used to set up the instance's cluster.", 
+          "name": "location", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 

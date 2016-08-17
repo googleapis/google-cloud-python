@@ -46,21 +46,21 @@
       "name": "download_as_string", 
       "params": [
         {
-          "description": " Optional 32 byte encryption key for customer-supplied encryption.", 
-          "name": "encryption_key", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str or bytes"
-          ]
-        }, 
-        {
           "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " Optional 32 byte encryption key for customer-supplied encryption.", 
+          "name": "encryption_key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or bytes"
           ]
         }
       ], 
@@ -127,30 +127,12 @@
       "name": "generate_signed_url", 
       "params": [
         {
-          "description": " When the signed URL should expire.", 
-          "name": "expiration", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int, long, datetime.datetime, datetime.timedelta"
-          ]
-        }, 
-        {
           "description": " (Optional) A value that indicates which generation of the resource to fetch.", 
           "name": "generation", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
-          ]
-        }, 
-        {
-          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
-          "name": "credentials", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "oauth2client.client.OAuth2Credentials or"
           ]
         }, 
         {
@@ -172,12 +154,21 @@
           ]
         }, 
         {
-          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
-          "name": "content_type", 
+          "description": " When the signed URL should expire.", 
+          "name": "expiration", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "int, long, datetime.datetime, datetime.timedelta"
+          ]
+        }, 
+        {
+          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
+          "name": "credentials", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "oauth2client.client.OAuth2Credentials or"
           ]
         }, 
         {
@@ -192,6 +183,15 @@
         {
           "description": " (Optional) Content type of responses to requests for the signed URL. Used to over-ride the content type of the underlying blob/object.", 
           "name": "response_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
+          "name": "content_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
