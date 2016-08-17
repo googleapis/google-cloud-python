@@ -36,12 +36,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "tuple"
           ]
         }, 
         {
@@ -54,12 +54,12 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "dict"
           ]
         }
       ], 
@@ -79,6 +79,15 @@
       "id": "gcloud.bigtable.client.Client.from_service_account_p12", 
       "name": "from_service_account_p12", 
       "params": [
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }, 
         {
           "description": " The e-mail attached to the service account.", 
           "name": "client_email", 
@@ -105,15 +114,6 @@
           "types": [
             "string"
           ]
-        }, 
-        {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
         }
       ], 
       "returns": [
@@ -133,12 +133,12 @@
       "name": "instance", 
       "params": [
         {
-          "description": " (Optional) The display name for the instance in the Cloud Console UI. (Must be between 4 and 30 characters.) If this value is not set in the constructor, will fall back to the instance ID.", 
-          "name": "display_name", 
+          "description": " (Optional) The number of nodes in the instance's cluster; used to set up the instance's cluster.", 
+          "name": "serve_nodes", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "int"
           ]
         }, 
         {
@@ -160,12 +160,12 @@
           ]
         }, 
         {
-          "description": " (Optional) The number of nodes in the instance's cluster; used to set up the instance's cluster.", 
-          "name": "serve_nodes", 
+          "description": " (Optional) The display name for the instance in the Cloud Console UI. (Must be between 4 and 30 characters.) If this value is not set in the constructor, will fall back to the instance ID.", 
+          "name": "display_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
+            "str"
           ]
         }
       ], 

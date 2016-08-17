@@ -20,21 +20,21 @@
       "name": "cluster", 
       "params": [
         {
-          "description": " The ID of the cluster.", 
-          "name": "cluster_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " (Optional) The number of nodes in the cluster. Defaults to 3.", 
           "name": "serve_nodes", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " The ID of the cluster.", 
+          "name": "cluster_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 

@@ -10,21 +10,12 @@
       "name": "make_exception", 
       "params": [
         {
-          "description": " A response object that defines a status code as the status attribute.", 
-          "name": "response", 
+          "description": " Flag indicating if <code>content</code> is expected to be JSON.", 
+          "name": "use_json", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "httplib2.Response or other HTTP response object"
-          ]
-        }, 
-        {
-          "description": " Optional string giving extra information about the failed request.", 
-          "name": "error_info", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
+            "bool"
           ]
         }, 
         {
@@ -37,12 +28,21 @@
           ]
         }, 
         {
-          "description": " Flag indicating if <code>content</code> is expected to be JSON.", 
-          "name": "use_json", 
+          "description": " Optional string giving extra information about the failed request.", 
+          "name": "error_info", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "bool"
+            "string"
+          ]
+        }, 
+        {
+          "description": " A response object that defines a status code as the status attribute.", 
+          "name": "response", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "httplib2.Response or other HTTP response object"
           ]
         }
       ], 

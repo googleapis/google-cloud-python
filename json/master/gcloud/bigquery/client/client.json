@@ -90,21 +90,21 @@
       "name": "extract_table_to_storage", 
       "params": [
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " URIs of CloudStorage file(s) into which table data is to be extracted; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
           "name": "destination_uris", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "sequence of string"
+          ]
+        }, 
+        {
+          "description": " Name of the job.", 
+          "name": "job_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }, 
         {
@@ -134,12 +134,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "tuple"
           ]
         }, 
         {
@@ -152,12 +152,12 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "dict"
           ]
         }
       ], 
@@ -177,6 +177,15 @@
       "id": "gcloud.bigquery.client.Client.from_service_account_p12", 
       "name": "from_service_account_p12", 
       "params": [
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }, 
         {
           "description": " The e-mail attached to the service account.", 
           "name": "client_email", 
@@ -202,15 +211,6 @@
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
           ]
         }
       ], 
@@ -257,21 +257,21 @@
       "name": "list_datasets", 
       "params": [
         {
-          "description": " opaque marker for the next \"page\" of datasets. If not passed, the API will return the first page of datasets.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " maximum number of datasets to return, If not passed, defaults to a value set by the API.", 
           "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of datasets. If not passed, the API will return the first page of datasets.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }, 
         {
@@ -301,6 +301,24 @@
       "name": "list_jobs", 
       "params": [
         {
+          "description": " maximum number of jobs to return, If not passed, defaults to a value set by the API.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of jobs. If not passed, the API will return the first page of jobs.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
           "description": " if passed, include only jobs matching the given state. One of * <code>\"done\"</code> * <code>\"pending\"</code> * <code>\"running\"</code>", 
           "name": "state_filter", 
           "nullable": null, 
@@ -316,24 +334,6 @@
           "optional": null, 
           "types": [
             "boolean"
-          ]
-        }, 
-        {
-          "description": " opaque marker for the next \"page\" of jobs. If not passed, the API will return the first page of jobs.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " maximum number of jobs to return, If not passed, defaults to a value set by the API.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
           ]
         }
       ], 
@@ -398,8 +398,8 @@
       "name": "run_async_query", 
       "params": [
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " SQL query to be executed", 
+          "name": "query", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -407,8 +407,8 @@
           ]
         }, 
         {
-          "description": " SQL query to be executed", 
-          "name": "query", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
