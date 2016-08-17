@@ -20,15 +20,6 @@
       "name": "align", 
       "params": [
         {
-          "description": " The approach to be used to align individual time series. For example: :data:Aligner.ALIGN_MEAN. See Aligner and the descriptions of the supported aligners_.", 
-          "name": "per_series_aligner", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The number of minutes in the alignment period.", 
           "name": "minutes", 
           "nullable": null, 
@@ -44,6 +35,15 @@
           "optional": null, 
           "types": [
             "integer"
+          ]
+        }, 
+        {
+          "description": " The approach to be used to align individual time series. For example: :data:Aligner.ALIGN_MEAN. See Aligner and the descriptions of the supported aligners_.", 
+          "name": "per_series_aligner", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {
@@ -134,21 +134,21 @@
       "name": "reduce", 
       "params": [
         {
-          "description": " Fields to be preserved by the reduction. For example, specifying just <code>\"resource.zone\"</code> will result in one time series per zone. The default is to aggregate all of the time series into just one.", 
-          "name": "group_by_fields", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "strings"
-          ]
-        }, 
-        {
           "description": " The approach to be used to combine time series. For example:", 
           "name": "cross_series_reducer", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Fields to be preserved by the reduction. For example, specifying just <code>\"resource.zone\"</code> will result in one time series per zone. The default is to aggregate all of the time series into just one.", 
+          "name": "group_by_fields", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "strings"
           ]
         }
       ], 

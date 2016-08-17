@@ -10,7 +10,7 @@
       "name": "DEFAULT_SERVE_NODES", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

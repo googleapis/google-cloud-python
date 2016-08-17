@@ -14,7 +14,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "from gcloud import datastore\nclient = datastore.Client()\nquery = client.query(kind='Person')\nquery.add_filter('name', '=', 'James')\nquery.add_filter('age', '&gt;', 50)\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.datastore.query.Query.add_filter", 
       "name": "add_filter", 
@@ -24,29 +28,15 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "from gcloud import datastore\nclient = datastore.Client()\nquery = client.query(kind='Person')\nquery.add_filter('name', '=', 'Sally')\nlist(query.fetch())\n[&lt;Entity object&gt;, &lt;Entity object&gt;, ...]\nlist(query.fetch(1))\n[&lt;Entity object&gt;]\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.datastore.query.Query.fetch", 
       "name": "fetch", 
       "params": [
-        {
-          "description": " An optional cursor passed through to the iterator.", 
-          "name": "end_cursor", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bytes"
-          ]
-        }, 
-        {
-          "description": " An optional offset passed through to the iterator.", 
-          "name": "offset", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
         {
           "description": " An optional limit passed through to the iterator.", 
           "name": "limit", 
@@ -63,6 +53,24 @@
           "optional": null, 
           "types": [
             "bytes"
+          ]
+        }, 
+        {
+          "description": " An optional cursor passed through to the iterator.", 
+          "name": "end_cursor", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bytes"
+          ]
+        }, 
+        {
+          "description": " An optional offset passed through to the iterator.", 
+          "name": "offset", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }, 
         {

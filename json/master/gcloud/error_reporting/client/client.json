@@ -14,7 +14,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": " client.report(\"Something went wrong!\")\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.error_reporting.client.Client.report", 
       "name": "report", 
@@ -24,7 +28,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "    try:\n        raise NameError\n    except Exception:\n        client.report_exception()\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.error_reporting.client.Client.report_exception", 
       "name": "report_exception", 

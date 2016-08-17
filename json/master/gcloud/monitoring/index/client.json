@@ -14,7 +14,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "try:\n    group = client.fetch_group('1234')\nexcept gcloud.exceptions.NotFound:\n    print('That group does not exist!')\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.Client.fetch_group", 
       "name": "fetch_group", 
@@ -40,7 +44,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "METRIC = 'compute.googleapis.com/instance/cpu/utilization'\nprint(client.fetch_metric_descriptor(METRIC))\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.Client.fetch_metric_descriptor", 
       "name": "fetch_metric_descriptor", 
@@ -66,7 +74,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "print(client.fetch_resource_descriptor('gce_instance'))\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.Client.fetch_resource_descriptor", 
       "name": "fetch_resource_descriptor", 
@@ -107,21 +119,21 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }
       ], 
@@ -142,6 +154,15 @@
       "name": "from_service_account_p12", 
       "params": [
         {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -151,8 +172,8 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -166,15 +187,6 @@
           "optional": null, 
           "types": [
             "tuple"
-          ]
-        }, 
-        {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }
       ], 
@@ -222,8 +234,8 @@
           ]
         }, 
         {
-          "description": " The ID of the group.", 
-          "name": "group_id", 
+          "description": " The ID of the group's parent, if it has one.", 
+          "name": "parent_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -231,8 +243,8 @@
           ]
         }, 
         {
-          "description": " The ID of the group's parent, if it has one.", 
-          "name": "parent_id", 
+          "description": " The ID of the group.", 
+          "name": "group_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -251,7 +263,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "for group in client.list_groups():\n    print((group.display_name, group.name))\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.Client.list_groups", 
       "name": "list_groups", 
@@ -267,14 +283,18 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "for descriptor in client.list_metric_descriptors():\n    print(descriptor.type)\nfor descriptor in client.list_metric_descriptors(\n        type_prefix='custom.'):\n    print(descriptor.type)\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.Client.list_metric_descriptors", 
       "name": "list_metric_descriptors", 
       "params": [
         {
-          "description": " An optional filter expression describing the metric descriptors to be returned. See the filter documentation_.", 
-          "name": "filter_string", 
+          "description": " An optional prefix constraining the selected metric types. This adds metric.type = starts_with(\"<prefix>\") to the filter.", 
+          "name": "type_prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -282,8 +302,8 @@
           ]
         }, 
         {
-          "description": " An optional prefix constraining the selected metric types. This adds metric.type = starts_with(\"<prefix>\") to the filter.", 
-          "name": "type_prefix", 
+          "description": " An optional filter expression describing the metric descriptors to be returned. See the filter documentation_.", 
+          "name": "filter_string", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -302,7 +322,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "for descriptor in client.list_resource_descriptors():\n    print(descriptor.type)\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.Client.list_resource_descriptors", 
       "name": "list_resource_descriptors", 
@@ -328,41 +352,18 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "descriptor = client.metric_descriptor(\n    'custom.googleapis.com/my_metric',\n    metric_kind=MetricKind.GAUGE,\n    value_type=ValueType.DOUBLE,\n    description='This is a simple example of a custom metric.')\ndescriptor.create()\nlabel = LabelDescriptor('response_code', LabelValueType.INT64,\n                        description='HTTP status code')\ndescriptor = client.metric_descriptor(\n    'custom.googleapis.com/my_app/response_count',\n    metric_kind=MetricKind.CUMULATIVE,\n    value_type=ValueType.INT64,\n    labels=[label],\n    description='Cumulative count of HTTP responses.')\ndescriptor.create()\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.Client.metric_descriptor", 
       "name": "metric_descriptor", 
       "params": [
         {
-          "description": " An optional unit in which the metric value is reported.", 
-          "name": "unit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The value type of the metric. It must be one of", 
-          "name": "value_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The kind of measurement. It must be one of", 
           "name": "metric_kind", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " An optional concise name for the metric.", 
-          "name": "display_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -379,8 +380,26 @@
           ]
         }, 
         {
+          "description": " An optional unit in which the metric value is reported.", 
+          "name": "unit", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
           "name": "type_", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " An optional concise name for the metric.", 
+          "name": "display_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -395,6 +414,15 @@
           "types": [
             " ~gcloud.monitoring.label.LabelDescriptor"
           ]
+        }, 
+        {
+          "description": " The value type of the metric. It must be one of", 
+          "name": "value_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
         }
       ], 
       "returns": [
@@ -408,20 +436,15 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "query = client.query(minutes=5)\nprint(query.as_dataframe())  # Requires pandas.\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.Client.query", 
       "name": "query", 
       "params": [
-        {
-          "description": " The number of days in the time interval.", 
-          "name": "days", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
         {
           "description": " The number of minutes in the time interval.", 
           "name": "minutes", 
@@ -456,6 +479,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The number of days in the time interval.", 
+          "name": "days", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }
       ], 

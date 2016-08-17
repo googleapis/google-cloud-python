@@ -14,7 +14,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "descriptor = client.metric_descriptor(\n    'custom.googleapis.com/my_metric',\n    metric_kind=MetricKind.GAUGE,\n    value_type=ValueType.DOUBLE,\n    description='This is a simple example of a custom metric.')\ndescriptor.create()\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.MetricDescriptor.create", 
       "name": "create", 
@@ -24,7 +28,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "descriptor = client.metric_descriptor(\n    'custom.googleapis.com/my_metric')\ndescriptor.delete()\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.MetricDescriptor.delete", 
       "name": "delete", 

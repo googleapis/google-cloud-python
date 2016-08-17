@@ -10,7 +10,7 @@
       "name": "CREDENTIALS", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "GCD_DATASET", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "GCD_HOST", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -40,7 +40,7 @@
       "name": "PROJECT", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -50,7 +50,7 @@
       "name": "PUBSUB_EMULATOR", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -60,7 +60,7 @@
       "name": "TESTS_PROJECT", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

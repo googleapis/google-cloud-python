@@ -10,7 +10,7 @@
       "name": "GAXPublisherAPI", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "GAXSubscriberAPI", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "GeneratedPublisherAPI", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -40,7 +40,7 @@
       "name": "GeneratedSubscriberAPI", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

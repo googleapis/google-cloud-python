@@ -34,7 +34,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "append_row.commit()\n{\n    u'col-fam-id': {\n        b'col-name1': [\n            (b'cell-val', datetime.datetime(...)),\n            (b'cell-val-newer', datetime.datetime(...)),\n        ],\n        b'col-name2': [\n            (b'altcol-cell-val', datetime.datetime(...)),\n        ],\n    },\n    u'col-fam-id2': {\n        b'col-name3-but-other-fam': [\n            (b'foo', datetime.datetime(...)),\n        ],\n    },\n}\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.bigtable.row.AppendRow.commit", 
       "name": "commit", 

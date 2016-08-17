@@ -10,7 +10,7 @@
       "name": "MAX_MUTATIONS", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

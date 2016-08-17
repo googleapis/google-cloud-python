@@ -10,7 +10,7 @@
       "name": "PUBSUB_EMULATOR", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

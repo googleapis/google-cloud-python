@@ -75,7 +75,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "from gcloud import storage\nfrom gcloud.storage import Blob\nclient = storage.Client(project='my-project')\nbucket = client.get_bucket('my-bucket')\nencryption_key = 'aa426195405adee2c8081bb9e7e74b19'\nblob = Blob('secure-data', bucket)\nwith open('/tmp/my-secure-file', 'wb') as file_obj:\n    blob.download_to_file(file_obj,\n                          encryption_key=encryption_key)\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.storage.blob.Blob.download_to_file", 
       "name": "download_to_file", 
@@ -127,8 +131,8 @@
       "name": "generate_signed_url", 
       "params": [
         {
-          "description": " (Optional) Content type of responses to requests for the signed URL. Used to over-ride the content type of the underlying blob/object.", 
-          "name": "response_type", 
+          "description": " (Optional) A value that indicates which generation of the resource to fetch.", 
+          "name": "generation", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -138,15 +142,6 @@
         {
           "description": " (Optional) Content disposition of responses to requests for the signed URL. For example, to enable the signed URL to initiate a file of blog.png, use the value 'attachment; filename=blob.png'.", 
           "name": "response_disposition", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
-          "name": "content_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -172,15 +167,6 @@
           ]
         }, 
         {
-          "description": " (Optional) A value that indicates which generation of the resource to fetch.", 
-          "name": "generation", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
           "name": "credentials", 
           "nullable": null, 
@@ -190,12 +176,30 @@
           ]
         }, 
         {
+          "description": " (Optional) Content type of responses to requests for the signed URL. Used to over-ride the content type of the underlying blob/object.", 
+          "name": "response_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
           "description": " When the signed URL should expire.", 
           "name": "expiration", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int, long, datetime.datetime, datetime.timedelta"
+          ]
+        }, 
+        {
+          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
+          "name": "content_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -240,7 +244,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "from gcloud import storage\nfrom gcloud.storage import Blob\nclient = storage.Client(project='my-project')\nbucket = client.get_bucket('my-bucket')\nencryption_key = 'aa426195405adee2c8081bb9e7e74b19'\nblob = Blob('secure-data', bucket)\nwith open('my-file', 'rb') as my_file:\n    blob.upload_from_file(my_file,\n                          encryption_key=encryption_key)\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.storage.blob.Blob.upload_from_file", 
       "name": "upload_from_file", 

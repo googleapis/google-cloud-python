@@ -55,21 +55,21 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }
       ], 
@@ -90,6 +90,15 @@
       "name": "from_service_account_p12", 
       "params": [
         {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -99,8 +108,8 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -115,15 +124,6 @@
           "types": [
             "tuple"
           ]
-        }, 
-        {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
         }
       ], 
       "returns": [
@@ -137,7 +137,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "from gcloud import resource_manager\nclient = resource_manager.Client()\nfor project in client.list_projects():\n    print project.project_id\nfrom gcloud import resource_manager\nclient = resource_manager.Client()\nenv_filter = {'labels.environment': 'prod'}\nfor project in client.list_projects(env_filter):\n    print project.project_id\nproject_filter = {  # Return projects with...\n    'name': 'My Project',  # name set to 'My Project'.\n    'id': 'my-project-id',  # id set to 'my-project-id'.\n    'labels.stage': 'prod',  # the label 'stage' set to 'prod'\n    'labels.color': '*'  # a label 'color' set to anything.\n}\nclient.list_projects(project_filter)\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.resource_manager.client.Client.list_projects", 
       "name": "list_projects", 
@@ -187,21 +191,21 @@
           ]
         }, 
         {
-          "description": " The ID for this project.", 
-          "name": "project_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " A list of labels associated with the project.", 
           "name": "labels", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The ID for this project.", 
+          "name": "project_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 

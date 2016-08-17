@@ -36,35 +36,8 @@
       "name": "make_api_request", 
       "params": [
         {
-          "description": " the request to send.", 
-          "name": "http_request", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "Request"
-          ]
-        }, 
-        {
-          "description": " Function to make HTTP request without retries.", 
-          "name": "wo_retry_func", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "function taking (http, request, redirections, check_response_func)"
-          ]
-        }, 
-        {
-          "description": " an instance which impelements the Http API.", 
-          "name": "http", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "httplib2.Http"
-          ]
-        }, 
-        {
-          "description": " Maximum number of seconds to wait when retrying.", 
-          "name": "max_retry_wait", 
+          "description": " Number of redirects to follow.", 
+          "name": "redirections", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -81,6 +54,24 @@
           ]
         }, 
         {
+          "description": " Maximum number of seconds to wait when retrying.", 
+          "name": "max_retry_wait", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " an instance which impelements the Http API.", 
+          "name": "http", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "httplib2.Http"
+          ]
+        }, 
+        {
           "description": " Function to validate the HTTP response.", 
           "name": "check_response_func", 
           "nullable": null, 
@@ -90,12 +81,21 @@
           ]
         }, 
         {
-          "description": " Number of redirects to follow.", 
-          "name": "redirections", 
+          "description": " the request to send.", 
+          "name": "http_request", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "Request"
+          ]
+        }, 
+        {
+          "description": " Function to make HTTP request without retries.", 
+          "name": "wo_retry_func", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "function taking (http, request, redirections, check_response_func)"
           ]
         }
       ], 
@@ -116,7 +116,7 @@
       "name": "RESUME_INCOMPLETE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -126,7 +126,7 @@
       "name": "TOO_MANY_REQUESTS", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

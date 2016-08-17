@@ -50,7 +50,7 @@
       "name": "ADMIN_SCOPE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -60,7 +60,7 @@
       "name": "DATA_API_HOST_V2", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -70,7 +70,7 @@
       "name": "DATA_API_PORT_V2", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -80,7 +80,7 @@
       "name": "DATA_SCOPE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -90,7 +90,7 @@
       "name": "DEFAULT_SERVE_NODES", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -100,7 +100,7 @@
       "name": "DEFAULT_TIMEOUT_SECONDS", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -110,7 +110,7 @@
       "name": "DEFAULT_USER_AGENT", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -120,7 +120,7 @@
       "name": "INSTANCE_ADMIN_HOST_V2", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -130,7 +130,7 @@
       "name": "INSTANCE_ADMIN_PORT_V2", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -140,7 +140,7 @@
       "name": "OPERATIONS_API_HOST_V2", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -150,7 +150,7 @@
       "name": "OPERATIONS_API_PORT_V2", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -160,7 +160,7 @@
       "name": "READ_ONLY_SCOPE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -170,7 +170,7 @@
       "name": "TABLE_ADMIN_HOST_V2", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -180,7 +180,7 @@
       "name": "TABLE_ADMIN_PORT_V2", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

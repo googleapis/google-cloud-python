@@ -10,7 +10,7 @@
       "name": "ASCENDING", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "DESCENDING", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "SCOPE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

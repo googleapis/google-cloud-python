@@ -10,7 +10,7 @@
       "name": "GAXLoggingAPI", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "GAXMetricsAPI", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "GAXSinksAPI", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -40,7 +40,7 @@
       "name": "GeneratedLoggingAPI", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -50,7 +50,7 @@
       "name": "GeneratedMetricsAPI", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -60,7 +60,7 @@
       "name": "GeneratedSinksAPI", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

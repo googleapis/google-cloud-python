@@ -20,21 +20,21 @@
       "name": "blob", 
       "params": [
         {
-          "description": " The size of a chunk of data whenever iterating (1 MB). This must be a multiple of 256 KB per the API specification.", 
-          "name": "chunk_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " The name of the blob to be instantiated.", 
           "name": "blob_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The size of a chunk of data whenever iterating (1 MB). This must be a multiple of 256 KB per the API specification.", 
+          "name": "chunk_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }
       ], 
@@ -49,7 +49,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "from gcloud import storage\nclient = storage.Client()\nbucket = client.get_bucket(bucket_name)\nbucket.configure_website('index.html', '404.html')\nbucket.make_public(recursive=True, future=True)\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.storage.bucket.Bucket.configure_website", 
       "name": "configure_website", 
@@ -65,15 +69,6 @@
       "name": "copy_blob", 
       "params": [
         {
-          "description": " The bucket into which the blob should be copied.", 
-          "name": "destination_bucket", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/bucket/bucket\">gcloud.storage.bucket.Bucket</a>"
-          ]
-        }, 
-        {
           "description": " The blob to be copied.", 
           "name": "blob", 
           "nullable": null, 
@@ -83,12 +78,12 @@
           ]
         }, 
         {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
-          "name": "client", 
+          "description": " The bucket into which the blob should be copied.", 
+          "name": "destination_bucket", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+            "<a data-custom-type=\"gcloud/storage/bucket/bucket\">gcloud.storage.bucket.Bucket</a>"
           ]
         }, 
         {
@@ -98,6 +93,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }
       ], 
@@ -132,7 +136,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "from gcloud.exceptions import NotFound\nfrom gcloud import storage\nclient = storage.Client()\nbucket = client.get_bucket('my-bucket')\nprint bucket.list_blobs()\n[&lt;Blob: my-bucket, my-file.txt&gt;]\nbucket.delete_blob('my-file.txt')\ntry:\n  bucket.delete_blob('doesnt-exist')\nexcept NotFound:\n  pass\nbucket.delete_blobs([blob], on_error=lambda blob: None)\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.storage.bucket.Bucket.delete_blob", 
       "name": "delete_blob", 
@@ -208,7 +216,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "from gcloud import storage\nclient = storage.Client()\nbucket = client.get_bucket('my-bucket')\nprint bucket.get_blob('/path/to/blob.txt')\n&lt;Blob: my-bucket, /path/to/blob.txt&gt;\nprint bucket.get_blob('/does-not-exist.txt')\nNone\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.storage.bucket.Bucket.get_blob", 
       "name": "get_blob", 
@@ -265,6 +277,15 @@
       "name": "list_blobs", 
       "params": [
         {
+          "description": " opaque marker for the next \"page\" of blobs. If not passed, will return the first page of blobs.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
           "name": "projection", 
           "nullable": null, 
@@ -274,8 +295,44 @@
           ]
         }, 
         {
+          "description": " whether object versions should be returned as separate blobs.", 
+          "name": "versions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or NoneType"
+          ]
+        }, 
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
           "description": " optional delimter, used with <code>prefix</code> to emulate hierarchy.", 
           "name": "delimiter", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
+          "description": " maximum number of blobs to return.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or NoneType"
+          ]
+        }, 
+        {
+          "description": " optional prefix used to filter blobs.", 
+          "name": "prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -289,51 +346,6 @@
           "optional": null, 
           "types": [
             "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " optional prefix used to filter blobs.", 
-          "name": "prefix", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
-          "description": " opaque marker for the next \"page\" of blobs. If not passed, will return the first page of blobs.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " whether object versions should be returned as separate blobs.", 
-          "name": "versions", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or NoneType"
-          ]
-        }, 
-        {
-          "description": " maximum number of blobs to return.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or NoneType"
           ]
         }
       ], 
@@ -393,21 +405,21 @@
           ]
         }, 
         {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " The new name for this blob.", 
           "name": "new_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }
       ], 

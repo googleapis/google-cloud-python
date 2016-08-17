@@ -10,7 +10,7 @@
       "name": "RESUMABLE_UPLOAD", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "RESUMABLE_UPLOAD_THRESHOLD", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "RESUME_INCOMPLETE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -40,7 +40,7 @@
       "name": "SIMPLE_UPLOAD", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

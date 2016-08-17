@@ -95,7 +95,7 @@
       "name": "SCOPE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

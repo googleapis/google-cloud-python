@@ -56,7 +56,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "bucket = client.create_bucket('my-bucket')\nprint bucket\n&lt;Bucket: my-bucket&gt;\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.storage.client.Client.create_bucket", 
       "name": "create_bucket", 
@@ -97,21 +101,21 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }
       ], 
@@ -132,6 +136,15 @@
       "name": "from_service_account_p12", 
       "params": [
         {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -141,8 +154,8 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -157,15 +170,6 @@
           "types": [
             "tuple"
           ]
-        }, 
-        {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
         }
       ], 
       "returns": [
@@ -179,7 +183,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "try:\n  bucket = client.get_bucket('my-bucket')\nexcept gcloud.exceptions.NotFound:\n  print 'Sorry, that bucket does not exist!'\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.storage.client.Client.get_bucket", 
       "name": "get_bucket", 
@@ -205,14 +213,18 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "for bucket in client.list_buckets():\n  print bucket\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.storage.client.Client.list_buckets", 
       "name": "list_buckets", 
       "params": [
         {
-          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each bucket returned: 'items/id,nextPageToken'", 
-          "name": "fields", 
+          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
+          "name": "projection", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -229,8 +241,8 @@
           ]
         }, 
         {
-          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
-          "name": "projection", 
+          "description": " Optional. Opaque marker for the next \"page\" of buckets. If not passed, will return the first page of buckets.", 
+          "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -247,8 +259,8 @@
           ]
         }, 
         {
-          "description": " Optional. Opaque marker for the next \"page\" of buckets. If not passed, will return the first page of buckets.", 
-          "name": "page_token", 
+          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each bucket returned: 'items/id,nextPageToken'", 
+          "name": "fields", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -267,7 +279,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "bucket = client.lookup_bucket('doesnt-exist')\nprint bucket\nNone\nbucket = client.lookup_bucket('my-bucket')\nprint bucket\n&lt;Bucket: my-bucket&gt;\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.storage.client.Client.lookup_bucket", 
       "name": "lookup_bucket", 

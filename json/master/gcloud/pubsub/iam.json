@@ -10,7 +10,7 @@
       "name": "EDITOR_ROLE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "OWNER_ROLE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "PUBSUB_ADMIN_ROLE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -40,7 +40,7 @@
       "name": "PUBSUB_EDITOR_ROLE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -50,7 +50,7 @@
       "name": "PUBSUB_PUBLISHER_ROLE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -60,7 +60,7 @@
       "name": "PUBSUB_SUBSCRIBER_ROLE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -70,7 +70,7 @@
       "name": "PUBSUB_SUBSCRIPTIONS_CONSUME", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -80,7 +80,7 @@
       "name": "PUBSUB_SUBSCRIPTIONS_CREATE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -90,7 +90,7 @@
       "name": "PUBSUB_SUBSCRIPTIONS_DELETE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -100,7 +100,7 @@
       "name": "PUBSUB_SUBSCRIPTIONS_GET", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -110,7 +110,7 @@
       "name": "PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -120,7 +120,7 @@
       "name": "PUBSUB_SUBSCRIPTIONS_LIST", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -130,7 +130,7 @@
       "name": "PUBSUB_SUBSCRIPTIONS_SET_IAM_POLICY", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -140,7 +140,7 @@
       "name": "PUBSUB_SUBSCRIPTIONS_UPDATE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -150,7 +150,7 @@
       "name": "PUBSUB_TOPICS_CONSUME", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -160,7 +160,7 @@
       "name": "PUBSUB_TOPICS_CREATE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -170,7 +170,7 @@
       "name": "PUBSUB_TOPICS_DELETE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -180,7 +180,7 @@
       "name": "PUBSUB_TOPICS_GET", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -190,7 +190,7 @@
       "name": "PUBSUB_TOPICS_GET_IAM_POLICY", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -200,7 +200,7 @@
       "name": "PUBSUB_TOPICS_LIST", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -210,7 +210,7 @@
       "name": "PUBSUB_TOPICS_SET_IAM_POLICY", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -220,7 +220,7 @@
       "name": "PUBSUB_VIEWER_ROLE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }, 
     {
@@ -230,7 +230,7 @@
       "name": "VIEWER_ROLE", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

@@ -10,7 +10,7 @@
       "name": "RESUMABLE_UPLOAD", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 

@@ -14,7 +14,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "filter_string = 'resource.type = \"gce_instance\"'\ngroup = client.group(\n    display_name='My group',\n    filter_string=filter_string,\n    parent_id='5678',\n    is_cluster=True)\ngroup.create()\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.Group.create", 
       "name": "create", 
@@ -24,7 +28,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "group = client.group('1234')\ngroup.delete()\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.Group.delete", 
       "name": "delete", 
@@ -114,7 +122,11 @@
       "type": "instance"
     }, 
     {
-      "examples": [], 
+      "examples": [
+        {
+          "code": "for member in group.list_members():\n    print member\nfilter_string = 'resource.type = \"gce_instance\"'\nfor member in group.list_members(filter_string=filter_string):\n    print member\nimport datetime\nt1 = datetime.datetime.utcnow() - datetime.timedelta(hours=4)\nt0 = t1 - datetime.timedelta(hours=1)\nfor member in group.list_members(end_time=t1, start_time=t0):\n    print member\n"
+        }
+      ], 
       "exceptions": [], 
       "id": "gcloud.monitoring.__init__.Group.list_members", 
       "name": "list_members", 

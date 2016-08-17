@@ -10,7 +10,7 @@
       "name": "API_BASE_URL", 
       "params": [], 
       "returns": [], 
-      "source": "", 
+      "source": null, 
       "type": "instance"
     }
   ], 
