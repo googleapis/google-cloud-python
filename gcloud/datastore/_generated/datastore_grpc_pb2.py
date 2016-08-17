@@ -1,10 +1,4 @@
-import grpc
-from grpc.beta import implementations as beta_implementations
-from grpc.beta import interfaces as beta_interfaces
-from grpc.framework.common import cardinality
-from grpc.framework.interfaces.face import utilities as face_utilities
-
-# BEGIN: Manually added imports
+# BEGIN: Imports from datastore_pb2
 from gcloud.datastore._generated.datastore_pb2 import AllocateIdsRequest
 from gcloud.datastore._generated.datastore_pb2 import AllocateIdsResponse
 from gcloud.datastore._generated.datastore_pb2 import BeginTransactionRequest
@@ -13,11 +7,19 @@ from gcloud.datastore._generated.datastore_pb2 import CommitRequest
 from gcloud.datastore._generated.datastore_pb2 import CommitResponse
 from gcloud.datastore._generated.datastore_pb2 import LookupRequest
 from gcloud.datastore._generated.datastore_pb2 import LookupResponse
+from gcloud.datastore._generated.datastore_pb2 import Mutation
+from gcloud.datastore._generated.datastore_pb2 import MutationResult
+from gcloud.datastore._generated.datastore_pb2 import ReadOptions
 from gcloud.datastore._generated.datastore_pb2 import RollbackRequest
 from gcloud.datastore._generated.datastore_pb2 import RollbackResponse
 from gcloud.datastore._generated.datastore_pb2 import RunQueryRequest
 from gcloud.datastore._generated.datastore_pb2 import RunQueryResponse
-#   END: Manually added imports
+#   END: Imports from datastore_pb2
+import grpc
+from grpc.beta import implementations as beta_implementations
+from grpc.beta import interfaces as beta_interfaces
+from grpc.framework.common import cardinality
+from grpc.framework.interfaces.face import utilities as face_utilities
 
 
 class DatastoreStub(object):
