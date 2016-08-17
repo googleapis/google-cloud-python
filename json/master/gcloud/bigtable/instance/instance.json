@@ -20,21 +20,21 @@
       "name": "cluster", 
       "params": [
         {
-          "description": " (Optional) The number of nodes in the cluster. Defaults to 3.", 
-          "name": "serve_nodes", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " The ID of the cluster.", 
           "name": "cluster_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The number of nodes in the cluster. Defaults to 3.", 
+          "name": "serve_nodes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 
@@ -97,21 +97,21 @@
       "name": "from_pb", 
       "params": [
         {
-          "description": " The client that owns the instance.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "Client <gcloud.bigtable.client.Client>"
-          ]
-        }, 
-        {
           "description": " A instance protobuf object.", 
           "name": "instance_pb", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "instance_pb2.Instance"
+          ]
+        }, 
+        {
+          "description": " The client that owns the instance.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "Client <gcloud.bigtable.client.Client>"
           ]
         }
       ], 

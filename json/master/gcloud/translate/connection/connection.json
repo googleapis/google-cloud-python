@@ -20,62 +20,17 @@
       "name": "api_request", 
       "params": [
         {
-          "description": " The data to send as the body of the request. Default is the empty string.", 
-          "name": "data", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library. Default is the latest API version supported by gcloud-python.", 
-          "name": "api_version", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " A dictionary of keys and values (or list of key-value pairs) to insert into the query string of the URL.", 
-          "name": "query_params", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict or list"
-          ]
-        }, 
-        {
-          "description": " Protected argument to be used by library callers. This can allow custom behavior, for example, to defer an HTTP request and complete initialization of the object at a later time.", 
-          "name": "_target_object", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "object or NoneType"
-          ]
-        }, 
-        {
-          "description": " The path to the resource (ie, '/b/bucket-name'). Required.", 
-          "name": "path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The HTTP method name (ie, GET, POST, etc). Required.", 
-          "name": "method", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The base URL for the API endpoint. Typically you won't have to provide this. Default is the standard API base URL.", 
           "name": "api_base_url", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The proper MIME type of the data provided. Default is None.", 
+          "name": "content_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -92,8 +47,53 @@
           ]
         }, 
         {
-          "description": " The proper MIME type of the data provided. Default is None.", 
-          "name": "content_type", 
+          "description": " The data to send as the body of the request. Default is the empty string.", 
+          "name": "data", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Protected argument to be used by library callers. This can allow custom behavior, for example, to defer an HTTP request and complete initialization of the object at a later time.", 
+          "name": "_target_object", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "object or NoneType"
+          ]
+        }, 
+        {
+          "description": " A dictionary of keys and values (or list of key-value pairs) to insert into the query string of the URL.", 
+          "name": "query_params", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict or list"
+          ]
+        }, 
+        {
+          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library. Default is the latest API version supported by gcloud-python.", 
+          "name": "api_version", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The HTTP method name (ie, GET, POST, etc). Required.", 
+          "name": "method", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The path to the resource (ie, '/b/bucket-name'). Required.", 
+          "name": "path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -118,8 +118,8 @@
       "name": "build_api_url", 
       "params": [
         {
-          "description": " The path to the resource (ie, '/b/bucket-name').", 
-          "name": "path", 
+          "description": " The base URL for the API endpoint. Typically you won't have to provide this.", 
+          "name": "api_base_url", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -136,21 +136,21 @@
           ]
         }, 
         {
-          "description": " The base URL for the API endpoint. Typically you won't have to provide this.", 
-          "name": "api_base_url", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " A dictionary of keys and values (or list of key-value pairs) to insert into the query string of the URL.", 
           "name": "query_params", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict or list"
+          ]
+        }, 
+        {
+          "description": " The path to the resource (ie, '/b/bucket-name').", 
+          "name": "path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 

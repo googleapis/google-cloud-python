@@ -20,12 +20,12 @@
       "name": "copy_table", 
       "params": [
         {
-          "description": " tables to be copied.", 
-          "name": "sources", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "sequence of gcloud.bigquery.table.Table"
+            "str"
           ]
         }, 
         {
@@ -38,12 +38,12 @@
           ]
         }, 
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " tables to be copied.", 
+          "name": "sources", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "sequence of gcloud.bigquery.table.Table"
           ]
         }
       ], 
@@ -90,12 +90,12 @@
       "name": "extract_table_to_storage", 
       "params": [
         {
-          "description": " table to be extracted.", 
-          "name": "source", 
+          "description": " URIs of CloudStorage file(s) into which table data is to be extracted; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
+          "name": "destination_uris", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
+            "sequence of string"
           ]
         }, 
         {
@@ -108,12 +108,12 @@
           ]
         }, 
         {
-          "description": " URIs of CloudStorage file(s) into which table data is to be extracted; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
-          "name": "destination_uris", 
+          "description": " table to be extracted.", 
+          "name": "source", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "sequence of string"
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }
       ], 
@@ -134,12 +134,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "dict"
           ]
         }, 
         {
@@ -152,12 +152,12 @@
           ]
         }, 
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "string"
           ]
         }
       ], 
@@ -178,8 +178,17 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -196,21 +205,12 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
           ]
         }
       ], 
@@ -257,15 +257,6 @@
       "name": "list_datasets", 
       "params": [
         {
-          "description": " opaque marker for the next \"page\" of datasets. If not passed, the API will return the first page of datasets.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " maximum number of datasets to return, If not passed, defaults to a value set by the API.", 
           "name": "max_results", 
           "nullable": null, 
@@ -281,6 +272,15 @@
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of datasets. If not passed, the API will return the first page of datasets.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -301,24 +301,6 @@
       "name": "list_jobs", 
       "params": [
         {
-          "description": " opaque marker for the next \"page\" of jobs. If not passed, the API will return the first page of jobs.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " maximum number of jobs to return, If not passed, defaults to a value set by the API.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " if passed, include only jobs matching the given state. One of * <code>\"done\"</code> * <code>\"pending\"</code> * <code>\"running\"</code>", 
           "name": "state_filter", 
           "nullable": null, 
@@ -334,6 +316,24 @@
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " maximum number of jobs to return, If not passed, defaults to a value set by the API.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of jobs. If not passed, the API will return the first page of jobs.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -354,12 +354,12 @@
       "name": "load_table_from_storage", 
       "params": [
         {
-          "description": " URIs of data files to be loaded; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
-          "name": "source_uris", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "sequence of string"
+            "str"
           ]
         }, 
         {
@@ -372,12 +372,12 @@
           ]
         }, 
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " URIs of data files to be loaded; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
+          "name": "source_uris", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "sequence of string"
           ]
         }
       ], 
@@ -398,8 +398,8 @@
       "name": "run_async_query", 
       "params": [
         {
-          "description": " SQL query to be executed", 
-          "name": "query", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -407,8 +407,8 @@
           ]
         }, 
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " SQL query to be executed", 
+          "name": "query", 
           "nullable": null, 
           "optional": null, 
           "types": [

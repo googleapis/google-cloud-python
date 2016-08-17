@@ -10,21 +10,21 @@
       "name": "acceptable_mime_type", 
       "params": [
         {
-          "description": " acceptable MIME types.", 
-          "name": "accept_patterns", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " string"
-          ]
-        }, 
-        {
           "description": " the MIME being checked", 
           "name": "mime_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " acceptable MIME types.", 
+          "name": "accept_patterns", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " string"
           ]
         }
       ], 
@@ -45,8 +45,8 @@
       "name": "calculate_wait_for_retry", 
       "params": [
         {
-          "description": " Retry attempt counter.", 
-          "name": "retry_attempt", 
+          "description": " Upper bound for wait time [seconds].", 
+          "name": "max_wait", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -54,8 +54,8 @@
           ]
         }, 
         {
-          "description": " Upper bound for wait time [seconds].", 
-          "name": "max_wait", 
+          "description": " Retry attempt counter.", 
+          "name": "retry_attempt", 
           "nullable": null, 
           "optional": null, 
           "types": [
