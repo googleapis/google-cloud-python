@@ -15,7 +15,7 @@ generate:
 	[ -d $(GRPCIO_VIRTUALENV) ] || python2.7 -m virtualenv $(GRPCIO_VIRTUALENV)
 	$(GRPCIO_VIRTUALENV)/bin/pip install --upgrade grpcio grpcio-tools
 	# Retrieve git repos that have our *.proto files.
-	[ -d googleapis-pb ] || git clone https://github.com/google/googleapis googleapis-pb --depth=1
+	[ -d googleapis-pb ] || git clone https://github.com/googleapis/googleapis googleapis-pb --depth=1
 	cd googleapis-pb && git pull origin master
 	# Make the directory where our *_pb2.py files will go.
 	mkdir -p $(GENERATED_DIR)
@@ -23,15 +23,15 @@ generate:
 	$(PROTOC_CMD) \
 	    --proto_path=$(GOOGLEAPIS_PROTOS_DIR) \
 	    --python_out=$(GENERATED_DIR) \
-	    $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1beta3/datastore.proto \
-	    $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1beta3/entity.proto \
-	    $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1beta3/query.proto
+	    $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1/datastore.proto \
+	    $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1/entity.proto \
+	    $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1/query.proto
 	# Move the newly generated *_pb2.py files into our library.
-	cp $(GENERATED_DIR)/google/datastore/v1beta3/* $(DATASTORE_DIR)
+	cp $(GENERATED_DIR)/google/datastore/v1/* $(DATASTORE_DIR)
 	# Remove all existing *.proto files before we replace
 	rm -f $(DATASTORE_DIR)/*.proto
 	# Copy over the *.proto files into our library.
-	cp $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1beta3/*.proto $(DATASTORE_DIR)
+	cp $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1/*.proto $(DATASTORE_DIR)
 	# Rename all *.proto files in our library with an
 	# underscore and remove executable bit.
 	cd $(DATASTORE_DIR) && \

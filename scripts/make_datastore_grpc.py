@@ -25,7 +25,7 @@ ROOT_DIR = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..'))
 PROTOS_DIR = os.path.join(ROOT_DIR, 'googleapis-pb')
 PROTO_PATH = os.path.join(PROTOS_DIR, 'google', 'datastore',
-                          'v1beta3', 'datastore.proto')
+                          'v1', 'datastore.proto')
 GRPC_ONLY_FILE = os.path.join(ROOT_DIR, 'gcloud', 'datastore',
                               '_generated', 'datastore_grpc_pb2.py')
 GRPCIO_VIRTUALENV = os.environ.get('GRPCIO_VIRTUALENV', 'protoc')
@@ -39,7 +39,7 @@ def get_pb2_contents_with_grpc():
     """
     temp_dir = tempfile.mkdtemp()
     generated_path = os.path.join(temp_dir, 'google', 'datastore',
-                                  'v1beta3', 'datastore_pb2.py')
+                                  'v1', 'datastore_pb2.py')
     try:
         return_code = subprocess.call([
             '%s/bin/python' % GRPCIO_VIRTUALENV,
@@ -69,7 +69,7 @@ def get_pb2_contents_without_grpc():
     """
     temp_dir = tempfile.mkdtemp()
     generated_path = os.path.join(temp_dir, 'google', 'datastore',
-                                  'v1beta3', 'datastore_pb2.py')
+                                  'v1', 'datastore_pb2.py')
     try:
         return_code = subprocess.call([
             '%s/bin/python' % GRPCIO_VIRTUALENV,

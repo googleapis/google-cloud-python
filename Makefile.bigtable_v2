@@ -16,7 +16,7 @@ generate:
 	[ -d $(GRPCIO_VIRTUALENV) ] || python2.7 -m virtualenv $(GRPCIO_VIRTUALENV)
 	$(GRPCIO_VIRTUALENV)/bin/pip install --upgrade grpcio grpcio-tools
 	# Retrieve git repos that have our *.proto files.
-	[ -d googleapis-pb ] || git clone https://github.com/google/googleapis googleapis-pb --depth=1
+	[ -d googleapis-pb ] || git clone https://github.com/googleapis/googleapis googleapis-pb --depth=1
 	cd googleapis-pb && git pull origin master
 	# Make the directory where our *_pb2.py files will go.
 	mkdir -p $(GENERATED_DIR)

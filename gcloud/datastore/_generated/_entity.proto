@@ -1,4 +1,4 @@
-// Copyright (c) 2015, Google Inc.
+// Copyright 2016 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-package google.datastore.v1beta3;
+package google.datastore.v1;
 
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
@@ -23,7 +23,7 @@ import "google/type/latlng.proto";
 
 option java_multiple_files = true;
 option java_outer_classname = "EntityProto";
-option java_package = "com.google.datastore.v1beta3";
+option java_package = "com.google.datastore.v1";
 
 
 // A partition ID identifies a grouping of entities. The grouping is always

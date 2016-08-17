@@ -13,7 +13,6 @@ class DatastoreStub(object):
   input keys sets the project ID (if not already set) to the project ID from
   the request.
 
-
   """
 
   def __init__(self, channel):
@@ -23,32 +22,32 @@ class DatastoreStub(object):
       channel: A grpc.Channel.
     """
     self.Lookup = channel.unary_unary(
-        '/google.datastore.v1beta3.Datastore/Lookup',
+        '/google.datastore.v1.Datastore/Lookup',
         request_serializer=LookupRequest.SerializeToString,
         response_deserializer=LookupResponse.FromString,
         )
     self.RunQuery = channel.unary_unary(
-        '/google.datastore.v1beta3.Datastore/RunQuery',
+        '/google.datastore.v1.Datastore/RunQuery',
         request_serializer=RunQueryRequest.SerializeToString,
         response_deserializer=RunQueryResponse.FromString,
         )
     self.BeginTransaction = channel.unary_unary(
-        '/google.datastore.v1beta3.Datastore/BeginTransaction',
+        '/google.datastore.v1.Datastore/BeginTransaction',
         request_serializer=BeginTransactionRequest.SerializeToString,
         response_deserializer=BeginTransactionResponse.FromString,
         )
     self.Commit = channel.unary_unary(
-        '/google.datastore.v1beta3.Datastore/Commit',
+        '/google.datastore.v1.Datastore/Commit',
         request_serializer=CommitRequest.SerializeToString,
         response_deserializer=CommitResponse.FromString,
         )
     self.Rollback = channel.unary_unary(
-        '/google.datastore.v1beta3.Datastore/Rollback',
+        '/google.datastore.v1.Datastore/Rollback',
         request_serializer=RollbackRequest.SerializeToString,
         response_deserializer=RollbackResponse.FromString,
         )
     self.AllocateIds = channel.unary_unary(
-        '/google.datastore.v1beta3.Datastore/AllocateIds',
+        '/google.datastore.v1.Datastore/AllocateIds',
         request_serializer=AllocateIdsRequest.SerializeToString,
         response_deserializer=AllocateIdsResponse.FromString,
         )
@@ -61,7 +60,6 @@ class DatastoreServicer(object):
   with both an empty path and an empty or unset partition ID. Normalization of
   input keys sets the project ID (if not already set) to the project ID from
   the request.
-
 
   """
 
@@ -144,7 +142,7 @@ def add_DatastoreServicer_to_server(servicer, server):
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
-      'google.datastore.v1beta3.Datastore', rpc_method_handlers)
+      'google.datastore.v1.Datastore', rpc_method_handlers)
   server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -155,7 +153,6 @@ class BetaDatastoreServicer(object):
   with both an empty path and an empty or unset partition ID. Normalization of
   input keys sets the project ID (if not already set) to the project ID from
   the request.
-
 
   """
   def Lookup(self, request, context):
@@ -194,7 +191,6 @@ class BetaDatastoreStub(object):
   input keys sets the project ID (if not already set) to the project ID from
   the request.
 
-
   """
   def Lookup(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
     """Looks up entities by key.
@@ -232,28 +228,28 @@ class BetaDatastoreStub(object):
 
 def beta_create_Datastore_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
   request_deserializers = {
-    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): AllocateIdsRequest.FromString,
-    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): BeginTransactionRequest.FromString,
-    ('google.datastore.v1beta3.Datastore', 'Commit'): CommitRequest.FromString,
-    ('google.datastore.v1beta3.Datastore', 'Lookup'): LookupRequest.FromString,
-    ('google.datastore.v1beta3.Datastore', 'Rollback'): RollbackRequest.FromString,
-    ('google.datastore.v1beta3.Datastore', 'RunQuery'): RunQueryRequest.FromString,
+    ('google.datastore.v1.Datastore', 'AllocateIds'): AllocateIdsRequest.FromString,
+    ('google.datastore.v1.Datastore', 'BeginTransaction'): BeginTransactionRequest.FromString,
+    ('google.datastore.v1.Datastore', 'Commit'): CommitRequest.FromString,
+    ('google.datastore.v1.Datastore', 'Lookup'): LookupRequest.FromString,
+    ('google.datastore.v1.Datastore', 'Rollback'): RollbackRequest.FromString,
+    ('google.datastore.v1.Datastore', 'RunQuery'): RunQueryRequest.FromString,
   }
   response_serializers = {
-    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): AllocateIdsResponse.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): BeginTransactionResponse.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'Commit'): CommitResponse.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'Lookup'): LookupResponse.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'Rollback'): RollbackResponse.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'RunQuery'): RunQueryResponse.SerializeToString,
+    ('google.datastore.v1.Datastore', 'AllocateIds'): AllocateIdsResponse.SerializeToString,
+    ('google.datastore.v1.Datastore', 'BeginTransaction'): BeginTransactionResponse.SerializeToString,
+    ('google.datastore.v1.Datastore', 'Commit'): CommitResponse.SerializeToString,
+    ('google.datastore.v1.Datastore', 'Lookup'): LookupResponse.SerializeToString,
+    ('google.datastore.v1.Datastore', 'Rollback'): RollbackResponse.SerializeToString,
+    ('google.datastore.v1.Datastore', 'RunQuery'): RunQueryResponse.SerializeToString,
   }
   method_implementations = {
-    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): face_utilities.unary_unary_inline(servicer.AllocateIds),
-    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): face_utilities.unary_unary_inline(servicer.BeginTransaction),
-    ('google.datastore.v1beta3.Datastore', 'Commit'): face_utilities.unary_unary_inline(servicer.Commit),
-    ('google.datastore.v1beta3.Datastore', 'Lookup'): face_utilities.unary_unary_inline(servicer.Lookup),
-    ('google.datastore.v1beta3.Datastore', 'Rollback'): face_utilities.unary_unary_inline(servicer.Rollback),
-    ('google.datastore.v1beta3.Datastore', 'RunQuery'): face_utilities.unary_unary_inline(servicer.RunQuery),
+    ('google.datastore.v1.Datastore', 'AllocateIds'): face_utilities.unary_unary_inline(servicer.AllocateIds),
+    ('google.datastore.v1.Datastore', 'BeginTransaction'): face_utilities.unary_unary_inline(servicer.BeginTransaction),
+    ('google.datastore.v1.Datastore', 'Commit'): face_utilities.unary_unary_inline(servicer.Commit),
+    ('google.datastore.v1.Datastore', 'Lookup'): face_utilities.unary_unary_inline(servicer.Lookup),
+    ('google.datastore.v1.Datastore', 'Rollback'): face_utilities.unary_unary_inline(servicer.Rollback),
+    ('google.datastore.v1.Datastore', 'RunQuery'): face_utilities.unary_unary_inline(servicer.RunQuery),
   }
   server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
   return beta_implementations.server(method_implementations, options=server_options)
@@ -261,20 +257,20 @@ def beta_create_Datastore_server(servicer, pool=None, pool_size=None, default_ti
 
 def beta_create_Datastore_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
   request_serializers = {
-    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): AllocateIdsRequest.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): BeginTransactionRequest.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'Commit'): CommitRequest.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'Lookup'): LookupRequest.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'Rollback'): RollbackRequest.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'RunQuery'): RunQueryRequest.SerializeToString,
+    ('google.datastore.v1.Datastore', 'AllocateIds'): AllocateIdsRequest.SerializeToString,
+    ('google.datastore.v1.Datastore', 'BeginTransaction'): BeginTransactionRequest.SerializeToString,
+    ('google.datastore.v1.Datastore', 'Commit'): CommitRequest.SerializeToString,
+    ('google.datastore.v1.Datastore', 'Lookup'): LookupRequest.SerializeToString,
+    ('google.datastore.v1.Datastore', 'Rollback'): RollbackRequest.SerializeToString,
+    ('google.datastore.v1.Datastore', 'RunQuery'): RunQueryRequest.SerializeToString,
   }
   response_deserializers = {
-    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): AllocateIdsResponse.FromString,
-    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): BeginTransactionResponse.FromString,
-    ('google.datastore.v1beta3.Datastore', 'Commit'): CommitResponse.FromString,
-    ('google.datastore.v1beta3.Datastore', 'Lookup'): LookupResponse.FromString,
-    ('google.datastore.v1beta3.Datastore', 'Rollback'): RollbackResponse.FromString,
-    ('google.datastore.v1beta3.Datastore', 'RunQuery'): RunQueryResponse.FromString,
+    ('google.datastore.v1.Datastore', 'AllocateIds'): AllocateIdsResponse.FromString,
+    ('google.datastore.v1.Datastore', 'BeginTransaction'): BeginTransactionResponse.FromString,
+    ('google.datastore.v1.Datastore', 'Commit'): CommitResponse.FromString,
+    ('google.datastore.v1.Datastore', 'Lookup'): LookupResponse.FromString,
+    ('google.datastore.v1.Datastore', 'Rollback'): RollbackResponse.FromString,
+    ('google.datastore.v1.Datastore', 'RunQuery'): RunQueryResponse.FromString,
   }
   cardinalities = {
     'AllocateIds': cardinality.Cardinality.UNARY_UNARY,
@@ -285,4 +281,4 @@ def beta_create_Datastore_stub(channel, host=None, metadata_transformer=None, po
     'RunQuery': cardinality.Cardinality.UNARY_UNARY,
   }
   stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-  return beta_implementations.dynamic_stub(channel, 'google.datastore.v1beta3.Datastore', cardinalities, options=stub_options)
+  return beta_implementations.dynamic_stub(channel, 'google.datastore.v1.Datastore', cardinalities, options=stub_options)

@@ -74,7 +74,7 @@ writes, strong consistency for reads and ancestor queries, and eventual
 consistency for all other queries.
 
 .. _Cloud Datastore: https://cloud.google.com/datastore/docs
-.. _Datastore API docs: https://cloud.google.com/datastore/docs/apis/v1beta3/
+.. _Datastore API docs: https://cloud.google.com/datastore/docs/
 
 See the ``gcloud-python`` API `datastore documentation`_ to learn how to
 interact with the Cloud Datastore using this Client Library.
