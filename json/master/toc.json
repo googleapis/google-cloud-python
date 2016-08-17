@@ -97,7 +97,7 @@
             {
                 "type": "gcloud/bigtable/table/table",
                 "title": "Table"
-            },
+            }
     ]
   },{
     "title": "Datastore",
