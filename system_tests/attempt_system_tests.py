@@ -40,7 +40,7 @@ MODULES = (  # ordered from most to least stable
     'monitoring',
 )
 if sys.version_info[:2] == (2, 7):
-    MODULES += ('bigtable', 'bigtable-happybase')
+    MODULES += ('bigtable',)
 
 SCRIPTS_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.abspath(os.path.join(SCRIPTS_DIR, '..'))
