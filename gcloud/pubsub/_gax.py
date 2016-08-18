@@ -27,14 +27,6 @@ from gcloud.exceptions import NotFound
 from gcloud._helpers import _to_bytes
 
 
-def _build_paging_options(page_token=None):
-    """Helper for :meth:'_PublisherAPI.list_topics' et aliae."""
-    if page_token is None:
-        page_token = INITIAL_PAGE
-    options = {'page_token': page_token}
-    return CallOptions(**options)
-
-
 class _PublisherAPI(object):
     """Helper mapping publisher-related APIs.
 
@@ -44,7 +36,7 @@ class _PublisherAPI(object):
     def __init__(self, gax_api):
         self._gax_api = gax_api
 
-    def list_topics(self, project, page_size=0, page_token=None):
+    def list_topics(self, project, page_size=0, page_token=INITIAL_PAGE):
         """List topics for the project associated with this API.
 
         See:
@@ -68,7 +60,7 @@ class _PublisherAPI(object):
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        options = _build_paging_options(page_token)
+        options = CallOptions(page_token=page_token)
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_topics(
             path, page_size=page_size, options=options)
@@ -158,7 +150,7 @@ class _PublisherAPI(object):
                     exist
         """
         options = CallOptions(is_bundling=False)
-        message_pbs = [_message_pb_from_dict(message)
+        message_pbs = [_message_pb_from_mapping(message)
                        for message in messages]
         try:
             result = self._gax_api.publish(topic_path, message_pbs,
@@ -170,7 +162,7 @@ class _PublisherAPI(object):
         return result.message_ids
 
     def topic_list_subscriptions(self, topic_path, page_size=0,
-                                 page_token=None):
+                                 page_token=INITIAL_PAGE):
         """API call:  list subscriptions bound to a topic
 
         See:
@@ -195,7 +187,7 @@ class _PublisherAPI(object):
         :raises: :exc:`gcloud.exceptions.NotFound` if the topic does not
                     exist
         """
-        options = _build_paging_options(page_token)
+        options = CallOptions(page_token=page_token)
         try:
             page_iter = self._gax_api.list_topic_subscriptions(
                 topic_path, page_size=page_size, options=options)
@@ -217,7 +209,8 @@ class _SubscriberAPI(object):
     def __init__(self, gax_api):
         self._gax_api = gax_api
 
-    def list_subscriptions(self, project, page_size=0, page_token=None):
+    def list_subscriptions(self, project, page_size=0,
+                           page_token=INITIAL_PAGE):
         """List subscriptions for the project associated with this API.
 
         See:
@@ -241,7 +234,7 @@ class _SubscriberAPI(object):
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        options = _build_paging_options(page_token)
+        options = CallOptions(page_token=page_token)
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_subscriptions(
             path, page_size=page_size, options=options)
@@ -444,8 +437,12 @@ class _SubscriberAPI(object):
             raise
 
 
-def _message_pb_from_dict(message):
-    """Helper for :meth:`_PublisherAPI.topic_publish`."""
+def _message_pb_from_mapping(message):
+    """Helper for :meth:`_PublisherAPI.topic_publish`.
+
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
+    """
     return PubsubMessage(data=_to_bytes(message['data']),
                          attributes=message['attributes'])
 
@@ -453,9 +450,8 @@ def _message_pb_from_dict(message):
 def _subscription_pb_to_mapping(sub_pb):
     """Helper for :meth:`list_subscriptions`, et aliae
 
-    Ideally, would use a function from :mod:`protobuf.json_format`, but
-    the right one isn't public.  See:
-    https://github.com/google/protobuf/issues/1351
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
     """
     mapping = {
         'name': sub_pb.name,
@@ -472,9 +468,8 @@ def _subscription_pb_to_mapping(sub_pb):
 def _message_pb_to_mapping(message_pb):
     """Helper for :meth:`pull`, et aliae
 
-    Ideally, would use a function from :mod:`protobuf.json_format`, but
-    the right one isn't public.  See:
-    https://github.com/google/protobuf/issues/1351
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
     """
     return {
         'messageId': message_pb.message_id,
@@ -486,9 +481,8 @@ def _message_pb_to_mapping(message_pb):
 def _received_message_pb_to_mapping(received_message_pb):
     """Helper for :meth:`pull`, et aliae
 
-    Ideally, would use a function from :mod:`protobuf.json_format`, but
-    the right one isn't public.  See:
-    https://github.com/google/protobuf/issues/1351
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
     """
     return {
         'ackId': received_message_pb.ack_id,

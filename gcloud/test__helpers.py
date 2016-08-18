@@ -737,6 +737,23 @@ class Test__pb_timestamp_to_datetime(unittest.TestCase):
         self.assertEqual(self._callFUT(timestamp), dt_stamp)
 
 
+class Test__pb_timestamp_to_rfc3339(unittest.TestCase):
+
+    def _callFUT(self, timestamp):
+        from gcloud._helpers import _pb_timestamp_to_rfc3339
+        return _pb_timestamp_to_rfc3339(timestamp)
+
+    def test_it(self):
+        from google.protobuf.timestamp_pb2 import Timestamp
+
+        # Epoch is midnight on January 1, 1970 ...
+        # ... so 1 minute and 1 second after is 61 seconds and 1234
+        # microseconds is 1234000 nanoseconds.
+        timestamp = Timestamp(seconds=61, nanos=1234000)
+        self.assertEqual(self._callFUT(timestamp),
+                         '1970-01-01T00:01:01.001234Z')
+
+
 class Test__datetime_to_pb_timestamp(unittest.TestCase):
 
     def _callFUT(self, when):

@@ -50,6 +50,34 @@ class _NamedTemporaryFile(object):
         os.remove(self.name)
 
 
+class _GAXBaseAPI(object):
+
+    _random_gax_error = False
+
+    def __init__(self, **kw):
+        self.__dict__.update(kw)
+
+    def _make_grpc_error(self, status_code):
+        from grpc.framework.interfaces.face.face import AbortionError
+
+        class _DummyException(AbortionError):
+            code = status_code
+
+            def __init__(self):
+                super(_DummyException, self).__init__(
+                    None, None, self.code, None)
+
+        return _DummyException()
+
+    def _make_grpc_not_found(self):
+        from grpc.beta.interfaces import StatusCode
+        return self._make_grpc_error(StatusCode.NOT_FOUND)
+
+    def _make_grpc_failed_precondition(self):
+        from grpc.beta.interfaces import StatusCode
+        return self._make_grpc_error(StatusCode.FAILED_PRECONDITION)
+
+
 class _GAXPageIterator(object):
 
     def __init__(self, items, page_token):
