@@ -17,9 +17,14 @@ import unittest
 from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud.exceptions import NotFound
+from gcloud.exceptions import ServiceUnavailable
 from gcloud import monitoring
 
+from retry import RetryErrors
 from system_test_utils import unique_resource_id
+
+retry_404 = RetryErrors(NotFound)
+retry_503 = RetryErrors(ServiceUnavailable)
 
 
 def setUpModule():
@@ -172,7 +177,8 @@ class TestMonitoring(unittest.TestCase):
         )
 
         descriptor.create()
-        descriptor.delete()
+        retry_404(descriptor.delete)()
+
         with self.assertRaises(NotFound):
             descriptor.delete()
 
@@ -187,7 +193,7 @@ class TestMonitoringGroups(unittest.TestCase):
 
     def tearDown(self):
         for group in self.to_delete:
-            group.delete()
+            retry_404(group.delete)()
 
     def test_create_group(self):
         client = monitoring.Client()
@@ -196,8 +202,10 @@ class TestMonitoringGroups(unittest.TestCase):
             filter_string=self.FILTER,
             is_cluster=self.IS_CLUSTER,
         )
-        group.create()
+
+        retry_503(group.create)()
         self.to_delete.append(group)
+
         self.assertTrue(group.exists())
 
     def test_list_groups(self):
@@ -209,8 +217,10 @@ class TestMonitoringGroups(unittest.TestCase):
         )
         before_groups = client.list_groups()
         before_names = set(group.name for group in before_groups)
-        new_group.create()
+
+        retry_503(new_group.create)()
         self.to_delete.append(new_group)
+
         self.assertTrue(new_group.exists())
         after_groups = client.list_groups()
         after_names = set(group.name for group in after_groups)
@@ -224,8 +234,10 @@ class TestMonitoringGroups(unittest.TestCase):
             filter_string=self.FILTER,
             is_cluster=self.IS_CLUSTER,
         )
-        group.create()
+
+        retry_503(group.create)()
         self.to_delete.append(group)
+
         group.filter = 'resource.type = "aws_ec2_instance"'
         group.display_name = 'locally changed name'
         group.reload()
@@ -242,7 +254,8 @@ class TestMonitoringGroups(unittest.TestCase):
             filter_string=self.FILTER,
             is_cluster=self.IS_CLUSTER,
         )
-        group.create()
+
+        retry_503(group.create)()
         self.to_delete.append(group)
 
         group.filter = NEW_FILTER
@@ -260,7 +273,8 @@ class TestMonitoringGroups(unittest.TestCase):
             filter_string=self.FILTER,
             is_cluster=self.IS_CLUSTER,
         )
-        group.create()
+
+        retry_503(group.create)()
         self.to_delete.append(group)
 
         for member in group.list_members():
@@ -272,22 +286,27 @@ class TestMonitoringGroups(unittest.TestCase):
             display_name='Testing: Root group',
             filter_string=self.FILTER,
         )
-        root_group.create()
+
+        retry_503(root_group.create)()
+        self.to_delete.insert(0, root_group)
 
         middle_group = client.group(
             display_name='Testing: Middle group',
             filter_string=self.FILTER,
             parent_id=root_group.id,
         )
-        middle_group.create()
+
+        retry_503(middle_group.create)()
+        self.to_delete.insert(0, middle_group)
 
         leaf_group = client.group(
             display_name='Testing: Leaf group',
             filter_string=self.FILTER,
             parent_id=middle_group.id,
         )
-        leaf_group.create()
-        self.to_delete.extend([leaf_group, middle_group, root_group])
+
+        retry_503(leaf_group.create)()
+        self.to_delete.insert(0, leaf_group)
 
         # Test for parent.
         actual_parent = middle_group.fetch_parent()
