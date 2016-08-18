@@ -81,12 +81,12 @@
           ]
         }, 
         {
-          "description": " (Optional) ID or list of customization IDs for translation. Sets the <code>cid</code> parameter in the query.", 
-          "name": "customization_ids", 
+          "description": " (Optional) The language of the text to be translated.", 
+          "name": "source_language", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str or list"
+            "str"
           ]
         }, 
         {
@@ -108,12 +108,12 @@
           ]
         }, 
         {
-          "description": " (Optional) The language of the text to be translated.", 
-          "name": "source_language", 
+          "description": " (Optional) ID or list of customization IDs for translation. Sets the <code>cid</code> parameter in the query.", 
+          "name": "customization_ids", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "str or list"
           ]
         }
       ], 

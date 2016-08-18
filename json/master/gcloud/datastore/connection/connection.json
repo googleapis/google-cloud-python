@@ -134,21 +134,21 @@
       "name": "commit", 
       "params": [
         {
-          "description": " The protobuf with the mutations being committed.", 
-          "name": "request", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/connection/connection/_generated/datastore_pb2/commitrequest\">gcloud.datastore.connection.Connection._generated.datastore_pb2.CommitRequest</a>"
-          ]
-        }, 
-        {
           "description": " The transaction ID returned from", 
           "name": "transaction_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or None"
+          ]
+        }, 
+        {
+          "description": " The protobuf with the mutations being committed.", 
+          "name": "request", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/connection/connection/_generated/datastore_pb2/commitrequest\">gcloud.datastore.connection.Connection._generated.datastore_pb2.CommitRequest</a>"
           ]
         }, 
         {
@@ -182,15 +182,6 @@
       "name": "lookup", 
       "params": [
         {
-          "description": " The keys to retrieve from the datastore.", 
-          "name": "key_pbs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            ""
-          ]
-        }, 
-        {
           "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
           "name": "transaction_id", 
           "nullable": null, 
@@ -206,6 +197,15 @@
           "optional": null, 
           "types": [
             "bool"
+          ]
+        }, 
+        {
+          "description": " The keys to retrieve from the datastore.", 
+          "name": "key_pbs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            ""
           ]
         }, 
         {
@@ -245,6 +245,15 @@
       "name": "run_query", 
       "params": [
         {
+          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
+          "name": "eventual", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
           "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
           "name": "transaction_id", 
           "nullable": null, 
@@ -269,15 +278,6 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
-          ]
-        }, 
-        {
-          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
-          "name": "eventual", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
           ]
         }, 
         {

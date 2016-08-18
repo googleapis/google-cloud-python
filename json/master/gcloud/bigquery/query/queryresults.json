@@ -20,6 +20,15 @@
       "name": "fetch_data", 
       "params": [
         {
+          "description": " token representing a cursor into the table's rows.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
           "description": " maximum number of rows to return.", 
           "name": "max_results", 
           "nullable": null, 
@@ -53,15 +62,6 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
-          "description": " token representing a cursor into the table's rows.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
           ]
         }
       ], 
