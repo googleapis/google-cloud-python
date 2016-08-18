@@ -126,8 +126,8 @@
       "name": "read_rows", 
       "params": [
         {
-          "description": " (Optional) The beginning of a range of row keys to read from. The range will include <code>start_key</code>. If left empty, will be interpreted as the empty string.", 
-          "name": "start_key", 
+          "description": " (Optional) The end of a range of row keys to read from. The range will not include <code>end_key</code>. If left empty, will be interpreted as an infinite string.", 
+          "name": "end_key", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -135,8 +135,8 @@
           ]
         }, 
         {
-          "description": " (Optional) The end of a range of row keys to read from. The range will not include <code>end_key</code>. If left empty, will be interpreted as an infinite string.", 
-          "name": "end_key", 
+          "description": " (Optional) The beginning of a range of row keys to read from. The range will include <code>start_key</code>. If left empty, will be interpreted as the empty string.", 
+          "name": "start_key", 
           "nullable": null, 
           "optional": null, 
           "types": [

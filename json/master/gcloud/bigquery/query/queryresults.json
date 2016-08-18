@@ -20,17 +20,8 @@
       "name": "fetch_data", 
       "params": [
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
-          "description": " zero-based index of starting row", 
-          "name": "start_index", 
+          "description": " maximum number of rows to return.", 
+          "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -47,21 +38,30 @@
           ]
         }, 
         {
+          "description": " zero-based index of starting row", 
+          "name": "start_index", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or NoneType"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
           "description": " token representing a cursor into the table's rows.", 
           "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " maximum number of rows to return.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or NoneType"
           ]
         }
       ], 

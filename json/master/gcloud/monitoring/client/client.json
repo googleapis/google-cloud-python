@@ -110,15 +110,6 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
@@ -134,6 +125,15 @@
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -154,17 +154,8 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -181,12 +172,21 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -207,15 +207,6 @@
       "name": "group", 
       "params": [
         {
-          "description": " The ID of the group.", 
-          "name": "group_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
-          ]
-        }, 
-        {
           "description": " The filter string used to determine which monitored resources belong to this group.", 
           "name": "filter_string", 
           "nullable": null, 
@@ -225,8 +216,8 @@
           ]
         }, 
         {
-          "description": " The ID of the group's parent, if it has one.", 
-          "name": "parent_id", 
+          "description": " The ID of the group.", 
+          "name": "group_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -245,6 +236,15 @@
         {
           "description": " A user-assigned name for this group, used only for display purposes.", 
           "name": "display_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }, 
+        {
+          "description": " The ID of the group's parent, if it has one.", 
+          "name": "parent_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -293,8 +293,8 @@
       "name": "list_metric_descriptors", 
       "params": [
         {
-          "description": " An optional prefix constraining the selected metric types. This adds metric.type = starts_with(\"<prefix>\") to the filter.", 
-          "name": "type_prefix", 
+          "description": " An optional filter expression describing the metric descriptors to be returned. See the filter documentation_.", 
+          "name": "filter_string", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -302,8 +302,8 @@
           ]
         }, 
         {
-          "description": " An optional filter expression describing the metric descriptors to be returned. See the filter documentation_.", 
-          "name": "filter_string", 
+          "description": " An optional prefix constraining the selected metric types. This adds metric.type = starts_with(\"<prefix>\") to the filter.", 
+          "name": "type_prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -371,6 +371,15 @@
           ]
         }, 
         {
+          "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
+          "name": "labels", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " ~gcloud.monitoring.label.LabelDescriptor"
+          ]
+        }, 
+        {
           "description": " The value type of the metric. It must be one of", 
           "name": "value_type", 
           "nullable": null, 
@@ -389,24 +398,6 @@
           ]
         }, 
         {
-          "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
-          "name": "labels", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " ~gcloud.monitoring.label.LabelDescriptor"
-          ]
-        }, 
-        {
-          "description": " An optional unit in which the metric value is reported.", 
-          "name": "unit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " An optional concise name for the metric.", 
           "name": "display_name", 
           "nullable": null, 
@@ -418,6 +409,15 @@
         {
           "description": " An optional detailed description of the metric.", 
           "name": "description", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " An optional unit in which the metric value is reported.", 
+          "name": "unit", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -446,30 +446,12 @@
       "name": "query", 
       "params": [
         {
-          "description": " The number of minutes in the time interval.", 
-          "name": "minutes", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " The metric type name. The default value is", 
           "name": "metric_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " The number of days in the time interval.", 
-          "name": "days", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
           ]
         }, 
         {
@@ -482,8 +464,26 @@
           ]
         }, 
         {
+          "description": " The number of minutes in the time interval.", 
+          "name": "minutes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
           "description": " The number of hours in the time interval.", 
           "name": "hours", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " The number of days in the time interval.", 
+          "name": "days", 
           "nullable": null, 
           "optional": null, 
           "types": [

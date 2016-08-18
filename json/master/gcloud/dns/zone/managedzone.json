@@ -117,6 +117,15 @@
       "name": "list_changes", 
       "params": [
         {
+          "description": " maximum number of zones to return, If not passed, defaults to a value set by the API.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current zone.", 
           "name": "client", 
           "nullable": null, 
@@ -132,15 +141,6 @@
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " maximum number of zones to return, If not passed, defaults to a value set by the API.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
           ]
         }
       ], 
@@ -161,6 +161,15 @@
       "name": "list_resource_record_sets", 
       "params": [
         {
+          "description": " maximum number of zones to return, If not passed, defaults to a value set by the API.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current zone.", 
           "name": "client", 
           "nullable": null, 
@@ -176,15 +185,6 @@
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " maximum number of zones to return, If not passed, defaults to a value set by the API.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
           ]
         }
       ], 
@@ -215,12 +215,12 @@
       "name": "resource_record_set", 
       "params": [
         {
-          "description": " Name of the record set.", 
-          "name": "name", 
+          "description": " resource data for the RR", 
+          "name": "rrdatas", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            " string"
           ]
         }, 
         {
@@ -233,21 +233,21 @@
           ]
         }, 
         {
-          "description": " resource data for the RR", 
-          "name": "rrdatas", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " string"
-          ]
-        }, 
-        {
           "description": " TTL for the RR, in seconds", 
           "name": "ttl", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer"
+          ]
+        }, 
+        {
+          "description": " Name of the record set.", 
+          "name": "name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
