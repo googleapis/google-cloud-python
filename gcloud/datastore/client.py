@@ -468,9 +468,9 @@ class Client(_BaseClient, _ClientProjectMixin):
         >>> connection.run_query('project', query.to_protobuf())
         [<list of Entity Protobufs>], cursor, more_results, skipped_results
 
-        :type **kwargs: dict
-        :param **kwargs: Parameters for initializing and instance of
-                         :class:`gcloud.datastore.query.Query`.
+        :type kwargs: dict
+        :param kwargs: Parameters for initializing and instance of
+                       :class:`gcloud.datastore.query.Query`.
 
         :rtype: :class:`gcloud.datastore.query.Query`
         :returns: An instance of :class:`gcloud.datastore.query.Query`
