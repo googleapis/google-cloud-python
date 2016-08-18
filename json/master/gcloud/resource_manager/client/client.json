@@ -90,15 +90,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -108,8 +99,8 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -123,6 +114,15 @@
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -147,21 +147,21 @@
       "name": "list_projects", 
       "params": [
         {
-          "description": " (Optional) Maximum number of projects to return in a single page. If not passed, defaults to a value set by the API.", 
-          "name": "page_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " (Optional) A dictionary of filter options where each key is a property to filter on, and each value is the (case-insensitive) value to check (or the glob <code>*</code> to check for existence of the property). See the example above for more details.", 
           "name": "filter_params", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " (Optional) Maximum number of projects to return in a single page. If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 
@@ -182,21 +182,21 @@
       "name": "new_project", 
       "params": [
         {
-          "description": " The display name of the project.", 
-          "name": "name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " A list of labels associated with the project.", 
           "name": "labels", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The display name of the project.", 
+          "name": "name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {

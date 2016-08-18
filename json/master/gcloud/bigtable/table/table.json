@@ -126,17 +126,8 @@
       "name": "read_rows", 
       "params": [
         {
-          "description": " (Optional) The read will terminate after committing to N rows' worth of results. The default (zero) is to return all results.", 
-          "name": "limit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
-          "description": " (Optional) The end of a range of row keys to read from. The range will not include <code>end_key</code>. If left empty, will be interpreted as an infinite string.", 
-          "name": "end_key", 
+          "description": " (Optional) The beginning of a range of row keys to read from. The range will include <code>start_key</code>. If left empty, will be interpreted as the empty string.", 
+          "name": "start_key", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -144,8 +135,8 @@
           ]
         }, 
         {
-          "description": " (Optional) The beginning of a range of row keys to read from. The range will include <code>start_key</code>. If left empty, will be interpreted as the empty string.", 
-          "name": "start_key", 
+          "description": " (Optional) The end of a range of row keys to read from. The range will not include <code>end_key</code>. If left empty, will be interpreted as an infinite string.", 
+          "name": "end_key", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -159,6 +150,15 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
+          ]
+        }, 
+        {
+          "description": " (Optional) The read will terminate after committing to N rows' worth of results. The default (zero) is to return all results.", 
+          "name": "limit", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 

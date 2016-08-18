@@ -48,8 +48,8 @@
           ]
         }, 
         {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
+          "description": " path/filename to the file being uploaded", 
+          "name": "filename", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -57,8 +57,8 @@
           ]
         }, 
         {
-          "description": " path/filename to the file being uploaded", 
-          "name": "filename", 
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -101,21 +101,21 @@
           ]
         }, 
         {
-          "description": " the target file", 
-          "name": "stream", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "writable file-like object"
-          ]
-        }, 
-        {
           "description": " Size of the file being uploaded", 
           "name": "total_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer or None"
+          ]
+        }, 
+        {
+          "description": " the target file", 
+          "name": "stream", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "writable file-like object"
           ]
         }, 
         {
@@ -145,21 +145,21 @@
       "name": "initialize_upload", 
       "params": [
         {
-          "description": " Http instance for this request.", 
-          "name": "http", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "httplib2.Http (or workalike)"
-          ]
-        }, 
-        {
           "description": " the request to be used", 
           "name": "http_request", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/streaming/http_wrapper/request\">gcloud.streaming.http_wrapper.Request</a>"
+          ]
+        }, 
+        {
+          "description": " Http instance for this request.", 
+          "name": "http", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "httplib2.Http (or workalike)"
           ]
         }
       ], 

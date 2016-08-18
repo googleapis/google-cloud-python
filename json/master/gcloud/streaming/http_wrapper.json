@@ -36,17 +36,8 @@
       "name": "make_api_request", 
       "params": [
         {
-          "description": " Function to validate the HTTP response.", 
-          "name": "check_response_func", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "function taking (response, content, url)."
-          ]
-        }, 
-        {
-          "description": " Number of redirects to follow.", 
-          "name": "redirections", 
+          "description": " Number of retries to attempt on retryable responses (such as 429 or 5XX).", 
+          "name": "retries", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -63,8 +54,26 @@
           ]
         }, 
         {
-          "description": " Number of retries to attempt on retryable responses (such as 429 or 5XX).", 
-          "name": "retries", 
+          "description": " Number of redirects to follow.", 
+          "name": "redirections", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " Function to validate the HTTP response.", 
+          "name": "check_response_func", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "function taking (response, content, url)."
+          ]
+        }, 
+        {
+          "description": " Maximum number of seconds to wait when retrying.", 
+          "name": "max_retry_wait", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -87,15 +96,6 @@
           "optional": null, 
           "types": [
             "function taking (http, request, redirections, check_response_func)"
-          ]
-        }, 
-        {
-          "description": " Maximum number of seconds to wait when retrying.", 
-          "name": "max_retry_wait", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
           ]
         }
       ], 

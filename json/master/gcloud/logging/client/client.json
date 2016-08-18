@@ -64,15 +64,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -82,8 +73,8 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -97,6 +88,15 @@
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -135,21 +135,21 @@
           ]
         }, 
         {
-          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
-          "name": "page_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " a filter expression. See: <a href=\"https://cloud.google.com/logging/docs/view/advanced_filters\">https://cloud.google.com/logging/docs/view/advanced_filters</a>", 
           "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }, 
         {
