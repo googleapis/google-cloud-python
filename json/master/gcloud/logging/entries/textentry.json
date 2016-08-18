@@ -20,21 +20,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " A mapping of logger fullnames -> loggers. If not passed, the entry will have a newly-created logger.", 
-          "name": "loggers", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict or None"
-          ]
-        }, 
-        {
           "description": " text entry resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " A mapping of logger fullnames -> loggers. If not passed, the entry will have a newly-created logger.", 
+          "name": "loggers", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict or None"
           ]
         }, 
         {

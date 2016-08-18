@@ -131,17 +131,17 @@
       "name": "generate_signed_url", 
       "params": [
         {
-          "description": " (Optional) Content disposition of responses to requests for the signed URL. For example, to enable the signed URL to initiate a file of blog.png, use the value 'attachment; filename=blob.png'.", 
-          "name": "response_disposition", 
+          "description": " When the signed URL should expire.", 
+          "name": "expiration", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "int, long, datetime.datetime, datetime.timedelta"
           ]
         }, 
         {
-          "description": " (Optional) A value that indicates which generation of the resource to fetch.", 
-          "name": "generation", 
+          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
+          "name": "content_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -151,24 +151,6 @@
         {
           "description": " (Optional) Content type of responses to requests for the signed URL. Used to over-ride the content type of the underlying blob/object.", 
           "name": "response_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
-          "name": "credentials", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "oauth2client.client.OAuth2Credentials or"
-          ]
-        }, 
-        {
-          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
-          "name": "content_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -194,12 +176,30 @@
           ]
         }, 
         {
-          "description": " When the signed URL should expire.", 
-          "name": "expiration", 
+          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
+          "name": "credentials", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int, long, datetime.datetime, datetime.timedelta"
+            "oauth2client.client.OAuth2Credentials or"
+          ]
+        }, 
+        {
+          "description": " (Optional) A value that indicates which generation of the resource to fetch.", 
+          "name": "generation", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) Content disposition of responses to requests for the signed URL. For example, to enable the signed URL to initiate a file of blog.png, use the value 'attachment; filename=blob.png'.", 
+          "name": "response_disposition", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 

@@ -215,21 +215,21 @@
       "name": "resource_record_set", 
       "params": [
         {
+          "description": " Name of the record set.", 
+          "name": "name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " TTL for the RR, in seconds", 
           "name": "ttl", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer"
-          ]
-        }, 
-        {
-          "description": " RR type", 
-          "name": "record_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }, 
         {
@@ -242,8 +242,8 @@
           ]
         }, 
         {
-          "description": " Name of the record set.", 
-          "name": "name", 
+          "description": " RR type", 
+          "name": "record_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
