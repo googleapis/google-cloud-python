@@ -29,6 +29,8 @@ PROTO_PATH = os.path.join(PROTOS_DIR, 'google', 'datastore',
 GRPC_ONLY_FILE = os.path.join(ROOT_DIR, 'gcloud', 'datastore',
                               '_generated', 'datastore_grpc_pb2.py')
 GRPCIO_VIRTUALENV = os.environ.get('GRPCIO_VIRTUALENV', 'protoc')
+MESSAGE_SNIPPET = ' = _reflection.GeneratedProtocolMessageType('
+IMPORT_TEMPLATE = 'from gcloud.datastore._generated.datastore_pb2 import %s\n'
 
 
 def get_pb2_contents_with_grpc():
@@ -110,10 +112,32 @@ def get_pb2_grpc_only():
     return grpc_only_lines
 
 
+def get_pb2_message_types():
+    """Get message types defined in datastore pb2 file.
+
+    :rtype: list
+    :returns: A list of names that are defined as message types.
+    """
+    non_grpc_contents = get_pb2_contents_without_grpc()
+    result = []
+    for line in non_grpc_contents:
+        if MESSAGE_SNIPPET in line:
+            name, _ = line.split(MESSAGE_SNIPPET)
+            result.append(name)
+
+    return sorted(result)
+
+
 def main():
     """Write gRPC-only lines to custom module."""
     grpc_only_lines = get_pb2_grpc_only()
     with open(GRPC_ONLY_FILE, 'wb') as file_obj:
+        # First add imports for public objects in the original.
+        file_obj.write('# BEGIN: Imports from datastore_pb2\n')
+        for name in get_pb2_message_types():
+            import_line = IMPORT_TEMPLATE % (name,)
+            file_obj.write(import_line)
+        file_obj.write('#   END: Imports from datastore_pb2\n')
         file_obj.write(''.join(grpc_only_lines))
 
 
