@@ -92,12 +92,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "tuple"
           ]
         }, 
         {
@@ -110,12 +110,12 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "dict"
           ]
         }
       ], 
@@ -136,17 +136,8 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -163,12 +154,21 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -223,8 +223,8 @@
       "name": "list_buckets", 
       "params": [
         {
-          "description": " Optional. Filter results to buckets whose names begin with this prefix.", 
-          "name": "prefix", 
+          "description": " Optional. Opaque marker for the next \"page\" of buckets. If not passed, will return the first page of buckets.", 
+          "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -232,8 +232,8 @@
           ]
         }, 
         {
-          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
-          "name": "projection", 
+          "description": " Optional. Filter results to buckets whose names begin with this prefix.", 
+          "name": "prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -250,21 +250,21 @@
           ]
         }, 
         {
-          "description": " Optional. Opaque marker for the next \"page\" of buckets. If not passed, will return the first page of buckets.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
-          ]
-        }, 
-        {
           "description": " Optional. Maximum number of buckets to return.", 
           "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer or NoneType"
+          ]
+        }, 
+        {
+          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
+          "name": "projection", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
           ]
         }
       ], 

@@ -20,6 +20,15 @@
       "name": "from_api_repr", 
       "params": [
         {
+          "description": " text entry resource representation returned from the API", 
+          "name": "resource", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
           "description": " Client which holds credentials and project configuration.", 
           "name": "client", 
           "nullable": null, 
@@ -35,15 +44,6 @@
           "optional": null, 
           "types": [
             "dict or None"
-          ]
-        }, 
-        {
-          "description": " text entry resource representation returned from the API", 
-          "name": "resource", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
           ]
         }
       ], 

@@ -40,7 +40,7 @@
           ]
         }
       ], 
-      "source": "gcloud/monitoring/client.py#L333", 
+      "source": "gcloud/monitoring/client.py#L461", 
       "type": "instance"
     }, 
     {
@@ -70,7 +70,7 @@
           ]
         }
       ], 
-      "source": "gcloud/monitoring/client.py#L198", 
+      "source": "gcloud/monitoring/client.py#L326", 
       "type": "instance"
     }, 
     {
@@ -100,7 +100,7 @@
           ]
         }
       ], 
-      "source": "gcloud/monitoring/client.py#L248", 
+      "source": "gcloud/monitoring/client.py#L376", 
       "type": "instance"
     }, 
     {
@@ -110,12 +110,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "tuple"
           ]
         }, 
         {
@@ -128,12 +128,12 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "dict"
           ]
         }
       ], 
@@ -154,17 +154,8 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -181,12 +172,21 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -207,6 +207,15 @@
       "name": "group", 
       "params": [
         {
+          "description": " A user-assigned name for this group, used only for display purposes.", 
+          "name": "display_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }, 
+        {
           "description": " The ID of the group's parent, if it has one.", 
           "name": "parent_id", 
           "nullable": null, 
@@ -225,12 +234,12 @@
           ]
         }, 
         {
-          "description": " A user-assigned name for this group, used only for display purposes.", 
-          "name": "display_name", 
+          "description": " If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters.", 
+          "name": "is_cluster", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string or None"
+            "boolean"
           ]
         }, 
         {
@@ -241,15 +250,6 @@
           "types": [
             "string or None"
           ]
-        }, 
-        {
-          "description": " If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters.", 
-          "name": "is_cluster", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
         }
       ], 
       "returns": [
@@ -259,7 +259,7 @@
           ]
         }
       ], 
-      "source": "gcloud/monitoring/client.py#L287", 
+      "source": "gcloud/monitoring/client.py#L415", 
       "type": "instance"
     }, 
     {
@@ -279,7 +279,7 @@
           ]
         }
       ], 
-      "source": "gcloud/monitoring/client.py#L353", 
+      "source": "gcloud/monitoring/client.py#L481", 
       "type": "instance"
     }, 
     {
@@ -318,7 +318,7 @@
           ]
         }
       ], 
-      "source": "gcloud/monitoring/client.py#L217", 
+      "source": "gcloud/monitoring/client.py#L345", 
       "type": "instance"
     }, 
     {
@@ -348,7 +348,7 @@
           ]
         }
       ], 
-      "source": "gcloud/monitoring/client.py#L266", 
+      "source": "gcloud/monitoring/client.py#L394", 
       "type": "instance"
     }, 
     {
@@ -361,24 +361,6 @@
       "id": "gcloud.monitoring.client.Client.metric_descriptor", 
       "name": "metric_descriptor", 
       "params": [
-        {
-          "description": " The kind of measurement. It must be one of", 
-          "name": "metric_kind", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " An optional unit in which the metric value is reported.", 
-          "name": "unit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
         {
           "description": " An optional concise name for the metric.", 
           "name": "display_name", 
@@ -398,8 +380,8 @@
           ]
         }, 
         {
-          "description": " The value type of the metric. It must be one of", 
-          "name": "value_type", 
+          "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
+          "name": "type_", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -407,8 +389,17 @@
           ]
         }, 
         {
-          "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
-          "name": "type_", 
+          "description": " An optional unit in which the metric value is reported.", 
+          "name": "unit", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The value type of the metric. It must be one of", 
+          "name": "value_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -423,6 +414,15 @@
           "types": [
             "string"
           ]
+        }, 
+        {
+          "description": " The kind of measurement. It must be one of", 
+          "name": "metric_kind", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
         }
       ], 
       "returns": [
@@ -432,7 +432,7 @@
           ]
         }
       ], 
-      "source": "gcloud/monitoring/client.py#L119", 
+      "source": "gcloud/monitoring/client.py#L127", 
       "type": "instance"
     }, 
     {
@@ -446,12 +446,12 @@
       "name": "query", 
       "params": [
         {
-          "description": " The metric type name. The default value is", 
-          "name": "metric_type", 
+          "description": " The number of hours in the time interval.", 
+          "name": "hours", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "integer"
           ]
         }, 
         {
@@ -464,12 +464,12 @@
           ]
         }, 
         {
-          "description": " The number of minutes in the time interval.", 
-          "name": "minutes", 
+          "description": " The metric type name. The default value is", 
+          "name": "metric_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "string"
           ]
         }, 
         {
@@ -482,8 +482,8 @@
           ]
         }, 
         {
-          "description": " The number of hours in the time interval.", 
-          "name": "hours", 
+          "description": " The number of minutes in the time interval.", 
+          "name": "minutes", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -498,7 +498,7 @@
           ]
         }
       ], 
-      "source": "gcloud/monitoring/client.py#L63", 
+      "source": "gcloud/monitoring/client.py#L71", 
       "type": "instance"
     }
   ], 

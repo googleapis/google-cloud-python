@@ -127,21 +127,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " Client which holds credentials and project configuration for the topic.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
-          ]
-        }, 
-        {
           "description": " topic resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Client which holds credentials and project configuration for the topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
           ]
         }
       ], 
@@ -188,21 +188,21 @@
       "name": "list_subscriptions", 
       "params": [
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current topic.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " opaque marker for the next \"page\" of topics. If not passed, the API will return the first page of topics.", 
           "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -232,15 +232,6 @@
       "name": "publish", 
       "params": [
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current topic.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " key-value pairs to send as message attributes", 
           "name": "attrs", 
           "nullable": null, 
@@ -256,6 +247,15 @@
           "optional": null, 
           "types": [
             "bytes"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
           ]
         }
       ], 
@@ -311,6 +311,15 @@
       "name": "subscription", 
       "params": [
         {
+          "description": " the name of the subscription", 
+          "name": "name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " URL to which messages will be pushed by the back-end. If not set, the application must pull messages.", 
           "name": "push_endpoint", 
           "nullable": null, 
@@ -326,15 +335,6 @@
           "optional": null, 
           "types": [
             "int"
-          ]
-        }, 
-        {
-          "description": " the name of the subscription", 
-          "name": "name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }
       ], 

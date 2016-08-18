@@ -72,6 +72,15 @@
       "name": "translate", 
       "params": [
         {
+          "description": " String or list of strings to translate.", 
+          "name": "values", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or list"
+          ]
+        }, 
+        {
           "description": " (Optional) ID or list of customization IDs for translation. Sets the <code>cid</code> parameter in the query.", 
           "name": "customization_ids", 
           "nullable": null, 
@@ -105,15 +114,6 @@
           "optional": null, 
           "types": [
             "str"
-          ]
-        }, 
-        {
-          "description": " String or list of strings to translate.", 
-          "name": "values", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str or list"
           ]
         }
       ], 
