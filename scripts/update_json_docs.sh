@@ -2,10 +2,16 @@
 
 set -e
 
-function pushDocs () {
 
+function buildDocs () {
+  echo "Building JSON documentation..."
   PYTHONPATH=_testing python scripts/generate_json_docs.py --tag ${1}
+  echo "Done building JSON documentation."
+}
 
+
+function pushDocs () {
+  echo "Deploying JSON documentation..."
   if [[ ! -d "ghpages" ]]; then
       git submodule add -f -b gh-pages https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME} ghpages
   fi
@@ -23,26 +29,39 @@ function pushDocs () {
     echo "Nothing to commit."
   fi
   cd ..
+
+  echo "Done deploying JSON documentation."
 }
 
 function cleanSubmodule () {
-    echo "Cleaning up..."
+    echo "Cleaning up!"
     git submodule deinit -f ghpages
     git reset HEAD .gitmodules
     git reset HEAD ghpages
     rm -rf ghpages
     rm -f .gitmodules
     rm -rf .git/modules/ghpages
+    echo "Done cleaning up!"
 }
 
+# Run this to verifiy that the docs build successfully.
+DOC_VERSION='master'
+if [[ ! -z ${TRAVIS_TAG} ]]; then
+  DOC_VERSION=${TRAVIS_TAG}
+else
+  DOC_VERSION=${TRAVIS_BRANCH}
+fi
+
+buildDocs ${DOC_VERSION}
+
 if [ "${TRAVIS_BRANCH}" == "master" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
-  pushDocs $TRAVIS_BRANCH
+  pushDocs ${DOC_VERSION}
   cleanSubmodule
   echo "Done pushing docsite. See: https://googlecloudplatform.github.io/gcloud-python/"
 fi
 
-if [[ ! -z $TRAVIS_TAG ]]; then
-  pushDocs $TRAVIS_TAG
+if [[ ! -z ${TRAVIS_TAG} ]]; then
+  pushDocs ${DOC_VERSION}
   cleanSubmodule
   echo "Done pushing docsite. See: https://googlecloudplatform.github.io/gcloud-python/"
 fi
