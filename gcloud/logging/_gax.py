@@ -45,7 +45,7 @@ class _LoggingAPI(object):
         self._gax_api = gax_api
 
     def list_entries(self, projects, filter_='', order_by='',
-                     page_size=0, page_token=None):
+                     page_size=0, page_token=INITIAL_PAGE):
         """Return a page of log entry resources.
 
         :type projects: list of strings
@@ -74,7 +74,7 @@ class _LoggingAPI(object):
                   if not None, indicates that more entries can be retrieved
                   with another call (pass that value as ``page_token``).
         """
-        options = _build_paging_options(page_token)
+        options = CallOptions(page_token=page_token)
         page_iter = self._gax_api.list_log_entries(
             projects, filter_, order_by, page_size, options)
         entries = [_log_entry_pb_to_mapping(entry_pb)
@@ -136,7 +136,7 @@ class _SinksAPI(object):
     def __init__(self, gax_api):
         self._gax_api = gax_api
 
-    def list_sinks(self, project, page_size=0, page_token=None):
+    def list_sinks(self, project, page_size=0, page_token=INITIAL_PAGE):
         """List sinks for the project associated with this client.
 
         :type project: string
@@ -156,7 +156,7 @@ class _SinksAPI(object):
                   if not None, indicates that more sinks can be retrieved
                   with another call (pass that value as ``page_token``).
         """
-        options = _build_paging_options(page_token)
+        options = CallOptions(page_token=page_token)
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_sinks(path, page_size, options)
         sinks = [_log_sink_pb_to_mapping(log_sink_pb)
@@ -280,7 +280,7 @@ class _MetricsAPI(object):
     def __init__(self, gax_api):
         self._gax_api = gax_api
 
-    def list_metrics(self, project, page_size=0, page_token=None):
+    def list_metrics(self, project, page_size=0, page_token=INITIAL_PAGE):
         """List metrics for the project associated with this client.
 
         :type project: string
@@ -300,7 +300,7 @@ class _MetricsAPI(object):
                   if not None, indicates that more metrics can be retrieved
                   with another call (pass that value as ``page_token``).
         """
-        options = _build_paging_options(page_token)
+        options = CallOptions(page_token=page_token)
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_log_metrics(path, page_size, options)
         metrics = [_log_metric_pb_to_mapping(log_metric_pb)
@@ -411,14 +411,6 @@ class _MetricsAPI(object):
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
-
-
-def _build_paging_options(page_token=None):
-    """Helper for :meth:'_PublisherAPI.list_topics' et aliae."""
-    if page_token is None:
-        page_token = INITIAL_PAGE
-    options = {'page_token': page_token}
-    return CallOptions(**options)
 
 
 def _mon_resource_pb_to_mapping(resource_pb):
