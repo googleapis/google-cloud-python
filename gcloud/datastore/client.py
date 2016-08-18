@@ -372,7 +372,7 @@ class Client(_BaseClient, _ClientProjectMixin):
         """Delete keys from the Cloud Datastore.
 
         :type keys: list of :class:`gcloud.datastore.key.Key`
-        :param keys: The keys to be deleted from the datastore.
+        :param keys: The keys to be deleted from the Datastore.
         """
         if not keys:
             return

@@ -169,7 +169,7 @@ class QueryResults(object):
 
     @property
     def total_rows(self):
-        """Total number of rows returned by the query
+        """Total number of rows returned by the query.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalRows
@@ -181,7 +181,7 @@ class QueryResults(object):
 
     @property
     def total_bytes_processed(self):
-        """Total number of bytes processed by the query
+        """Total number of bytes processed by the query.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalBytesProcessed

@@ -21,10 +21,10 @@ class StreamSlice(object):
     """Provides a slice-like object for streams.
 
     :type stream:  readable file-like object
-    :param stream:  the stream to be buffered
+    :param stream:  the stream to be buffered.
 
     :type max_bytes: integer
-    :param max_bytes: maximum number of bytes to return in the slice
+    :param max_bytes: maximum number of bytes to return in the slice.
     """
     def __init__(self, stream, max_bytes):
         self._stream = stream

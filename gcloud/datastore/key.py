@@ -219,7 +219,6 @@ class Key(object):
         if not self.is_partial:
             raise ValueError('Only a partial key can be completed.')
 
-        id_or_name_key = None
         if isinstance(id_or_name, six.string_types):
             id_or_name_key = 'name'
         elif isinstance(id_or_name, six.integer_types):

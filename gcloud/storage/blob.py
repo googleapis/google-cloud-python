@@ -929,7 +929,7 @@ class _UrlBuilder(object):
 
 
 def _set_encryption_headers(key, headers):
-    """Builds customer encyrption key headers
+    """Builds customer encryption key headers
 
     :type key: str or bytes
     :param key: 32 byte key to build request key and hash.

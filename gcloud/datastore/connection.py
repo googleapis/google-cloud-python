@@ -359,7 +359,8 @@ class Connection(connection_module.Connection):
     """A connection to the Google Cloud Datastore via the Protobuf API.
 
     This class should understand only the basic types (and protobufs)
-    in method arguments, however should be capable of returning advanced types.
+    in method arguments, however it should be capable of returning advanced
+    types.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
     :param credentials: The OAuth2 Credentials to use for this connection.
@@ -559,7 +560,7 @@ class Connection(connection_module.Connection):
         return response.transaction
 
     def commit(self, project, request, transaction_id):
-        """Commit mutations in context of current transation (if any).
+        """Commit mutations in context of current transaction (if any).
 
         Maps the ``DatastoreService.Commit`` protobuf RPC.
 

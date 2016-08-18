@@ -19,18 +19,18 @@ class SchemaField(object):
     """Describe a single field within a table schema.
 
     :type name: str
-    :param name: the name of the field
+    :param name: the name of the field.
 
     :type field_type: str
     :param field_type: the type of the field (one of 'STRING', 'INTEGER',
-                       'FLOAT', 'BOOLEAN', 'TIMESTAMP' or 'RECORD')
+                       'FLOAT', 'BOOLEAN', 'TIMESTAMP' or 'RECORD').
 
     :type mode: str
     :param mode: the type of the field (one of 'NULLABLE', 'REQUIRED',
-                 or 'REPEATED')
+                 or 'REPEATED').
 
     :type description: str
-    :param description: optional description for the field
+    :param description: optional description for the field.
 
     :type fields: list of :class:`SchemaField`, or None
     :param fields: subfields (requires ``field_type`` of 'RECORD').

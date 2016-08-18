@@ -232,7 +232,7 @@ class Batch(Connection):
             raise make_exception(*exception_args)
 
     def finish(self):
-        """Submit a single `multipart/mixed` request w/ deferred requests.
+        """Submit a single `multipart/mixed` request with deferred requests.
 
         :rtype: list of tuples
         :returns: one ``(headers, payload)`` tuple per deferred request.
@@ -271,7 +271,7 @@ def _generate_faux_mime_message(parser, response, content):
 
     Helper for _unpack_batch_response.
     """
-    # We coerce to bytes to get consitent concat across
+    # We coerce to bytes to get consistent concat across
     # Py2 and Py3. Percent formatting is insufficient since
     # it includes the b in Py3.
     if not isinstance(content, six.binary_type):

@@ -43,7 +43,7 @@ class Changes(object):
         """Factory:  construct a change set given its API representation
 
         :type resource: dict
-        :param resource: change set representation returned from the API
+        :param resource: change set representation returned from the API.
 
         :type zone: :class:`gcloud.dns.zone.ManagedZone`
         :param zone: A zone which holds zero or more change sets.
@@ -59,7 +59,7 @@ class Changes(object):
         """Helper method for :meth:`from_api_repr`, :meth:`create`, etc.
 
         :type resource: dict
-        :param resource: change set representation returned from the API
+        :param resource: change set representation returned from the API.
         """
         resource = resource.copy()
         self._additions = tuple([
@@ -126,7 +126,7 @@ class Changes(object):
 
         :rtype: sequence of
                 :class:`gcloud.dns.resource_record_set.ResourceRecordSet`.
-        :returns: record sets appended via :meth:`add_record_set`
+        :returns: record sets appended via :meth:`add_record_set`.
         """
         return self._additions
 
@@ -136,7 +136,7 @@ class Changes(object):
 
         :rtype: sequence of
                 :class:`gcloud.dns.resource_record_set.ResourceRecordSet`.
-        :returns: record sets appended via :meth:`delete_record_set`
+        :returns: record sets appended via :meth:`delete_record_set`.
         """
         return self._deletions
 
@@ -145,7 +145,7 @@ class Changes(object):
 
         :type record_set:
             :class:`gcloud.dns.resource_record_set.ResourceRecordSet`
-        :param record_set: the record set to append
+        :param record_set: the record set to append.
 
         :raises: ``ValueError`` if ``record_set`` is not of the required type.
         """
@@ -158,7 +158,7 @@ class Changes(object):
 
         :type record_set:
             :class:`gcloud.dns.resource_record_set.ResourceRecordSet`
-        :param record_set: the record set to append
+        :param record_set: the record set to append.
 
         :raises: ``ValueError`` if ``record_set`` is not of the required type.
         """
@@ -202,7 +202,7 @@ class Changes(object):
         }
 
     def create(self, client=None):
-        """API call:  create the change set via a POST request
+        """API call:  create the change set via a POST request.
 
         See:
         https://cloud.google.com/dns/api/v1/changes/create
@@ -221,7 +221,7 @@ class Changes(object):
         self._set_properties(api_response)
 
     def exists(self, client=None):
-        """API call:  test for the existence of the change set via a GET request
+        """API call: test for the existence of the change set via a GET request.
 
         See
         https://cloud.google.com/dns/api/v1/changes/get
@@ -243,7 +243,7 @@ class Changes(object):
             return True
 
     def reload(self, client=None):
-        """API call:  refresh zone properties via a GET request
+        """API call:  refresh zone properties via a GET request.
 
         See
         https://cloud.google.com/dns/api/v1/changes/get

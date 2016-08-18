@@ -435,7 +435,7 @@ class _MetricsAPI(object):
         :param project: ID of the project containing the metric.
 
         :type metric_name: string
-        :param metric_name: the name of the metric
+        :param metric_name: the name of the metric.
         """
         target = '/projects/%s/metrics/%s' % (project, metric_name)
         self._connection.api_request(method='DELETE', path=target)

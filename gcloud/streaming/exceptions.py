@@ -89,16 +89,16 @@ class RetryAfterError(HttpError):
     """The response contained a retry-after header.
 
     :type response: dict
-    :param response: headers from the response which returned the error
+    :param response: headers from the response which returned the error.
 
     :type content: bytes
-    :param content: payload of the response which returned the error
+    :param content: payload of the response which returned the error.
 
     :type url: string
-    :param url: URL of the response which returned the error
+    :param url: URL of the response which returned the error.
 
     :type retry_after: integer
-    :param retry_after: seconds to wait before retrying
+    :param retry_after: seconds to wait before retrying.
     """
     def __init__(self, response, content, url, retry_after):
         super(RetryAfterError, self).__init__(response, content, url)
@@ -109,7 +109,7 @@ class RetryAfterError(HttpError):
         """Factory:  construct an exception from a response.
 
         :type http_response: :class:`gcloud.streaming.http_wrapper.Response`
-        :param http_response: the response which returned the error
+        :param http_response: the response which returned the error.
 
         :rtype: :class:`RetryAfterError`
         :returns: The error created from the response.

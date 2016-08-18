@@ -33,7 +33,7 @@ class UDFResource(object):
     :param udf_type: the type of the resource ('inlineCode' or 'resourceUri')
 
     :type value: str
-    :param value: the inline code or resource URI
+    :param value: the inline code or resource URI.
 
     See
     https://cloud.google.com/bigquery/user-defined-functions#api
@@ -51,7 +51,7 @@ class UDFResource(object):
 def _build_udf_resources(resources):
     """
     :type resources: sequence of :class:`UDFResource`
-    :param resources: fields to be appended
+    :param resources: fields to be appended.
 
     :rtype: mapping
     :returns: a mapping describing userDefinedFunctionResources for the query.
@@ -69,13 +69,13 @@ class UDFResourcesProperty(object):
     Also used by :class:`~gcloud.bigquery.query.Query`.
     """
     def __get__(self, instance, owner):
-        """Descriptor protocal:  accesstor"""
+        """Descriptor protocol:  accessor"""
         if instance is None:
             return self
         return list(instance._udf_resources)
 
     def __set__(self, instance, value):
-        """Descriptor protocal:  mutator"""
+        """Descriptor protocol:  mutator"""
         if not all(isinstance(u, UDFResource) for u in value):
             raise ValueError("udf items must be UDFResource")
         instance._udf_resources = tuple(value)

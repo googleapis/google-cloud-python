@@ -27,7 +27,7 @@ class Subscription(object):
     https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions
 
     :type name: string
-    :param name: the name of the subscription
+    :param name: the name of the subscription.
 
     :type topic: :class:`gcloud.pubsub.topic.Topic` or ``NoneType``
     :param topic: the topic to which the subscription belongs;  if ``None``,
@@ -74,7 +74,7 @@ class Subscription(object):
         """Factory:  construct a topic given its API representation
 
         :type resource: dict
-        :param resource: topic resource representation returned from the API
+        :param resource: topic resource representation returned from the API.
 
         :type client: :class:`gcloud.pubsub.client.Client`
         :param client: Client which holds credentials and project
@@ -449,7 +449,7 @@ class AutoAck(dict):
     Mapping, tracks messages still-to-be-acknowledged.
 
     When used as a context manager, acknowledges all messages still in the
-    mapping on `__exit__`.  When processing the pulled messsages, application
+    mapping on `__exit__`.  When processing the pulled messages, application
     code MUST delete messages from the :class:`AutoAck` mapping which are not
     successfully processed, e.g.:
 
@@ -463,7 +463,7 @@ class AutoAck(dict):
                    del ack[ack_id]
 
     :type subscription: :class:`Subscription`
-    :param subscription: subcription to be pulled.
+    :param subscription: subscription to be pulled.
 
     :type return_immediately: boolean
     :param return_immediately: passed through to :meth:`Subscription.pull`

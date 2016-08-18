@@ -336,10 +336,10 @@ class Dataset(object):
         type is ``view``.
 
         :type access: list of mappings
-        :param access: each mapping represents a single access grant
+        :param access: each mapping represents a single access grant.
 
         :rtype: list of :class:`AccessGrant`
-        :returns: a list of parsed grants
+        :returns: a list of parsed grants.
         :raises: :class:`ValueError` if a grant in ``access`` has more keys
                  than ``role`` and one additional key.
         """
@@ -358,7 +358,7 @@ class Dataset(object):
         """Update properties from resource in body of ``api_response``
 
         :type api_response: httplib2.Response
-        :param api_response: response returned from an API call
+        :param api_response: response returned from an API call.
         """
         self._properties.clear()
         cleaned = api_response.copy()
@@ -408,7 +408,7 @@ class Dataset(object):
         return resource
 
     def create(self, client=None):
-        """API call:  create the dataset via a PUT request
+        """API call:  create the dataset via a PUT request.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/tables/insert
@@ -447,7 +447,7 @@ class Dataset(object):
             return True
 
     def reload(self, client=None):
-        """API call:  refresh dataset properties via a GET request
+        """API call:  refresh dataset properties via a GET request.
 
         See
         https://cloud.google.com/bigquery/docs/reference/v2/datasets/get
@@ -463,7 +463,7 @@ class Dataset(object):
         self._set_properties(api_response)
 
     def patch(self, client=None, **kw):
-        """API call:  update individual dataset properties via a PATCH request
+        """API call:  update individual dataset properties via a PATCH request.
 
         See
         https://cloud.google.com/bigquery/docs/reference/v2/datasets/patch
@@ -501,7 +501,7 @@ class Dataset(object):
         self._set_properties(api_response)
 
     def update(self, client=None):
-        """API call:  update dataset properties via a PUT request
+        """API call:  update dataset properties via a PUT request.
 
         See
         https://cloud.google.com/bigquery/docs/reference/v2/datasets/update
@@ -516,7 +516,7 @@ class Dataset(object):
         self._set_properties(api_response)
 
     def delete(self, client=None):
-        """API call:  delete the dataset via a DELETE request
+        """API call:  delete the dataset via a DELETE request.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/tables/delete

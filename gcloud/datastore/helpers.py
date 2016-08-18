@@ -68,7 +68,7 @@ def _get_meaning(value_pb, is_list=False):
         else:  # We know len(value_pb.array_value.values) > 0.
             # If the meaning is not unique, just return all of them.
             meaning = all_meanings
-    elif value_pb.meaning:  # Simple field (int32)
+    elif value_pb.meaning:  # Simple field (int32).
         meaning = value_pb.meaning
 
     return meaning

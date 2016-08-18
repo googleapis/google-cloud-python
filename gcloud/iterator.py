@@ -125,7 +125,7 @@ class Iterator(object):
         self.next_page_token = None
 
     def get_items_from_response(self, response):
-        """Factory method called while iterating. This should be overriden.
+        """Factory method called while iterating. This should be overridden.
 
         This method should be overridden by a subclass.  It should
         accept the API response of a request for the next page of items,
@@ -161,7 +161,7 @@ class MethodIterator(object):
                       API call; if ``None``, applies no limit.
 
     :type kw: dict
-    :param kw: optional keyword argments to be passed to ``method``.
+    :param kw: optional keyword arguments to be passed to ``method``.
     """
     def __init__(self, method, page_token=None, page_size=None,
                  max_calls=None, **kw):
