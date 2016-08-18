@@ -24,6 +24,8 @@ except ImportError:  # pragma: NO COVER
 else:
     _HAVE_GAX = True
 
+from gcloud._testing import _GAXBaseAPI
+
 
 class _Base(object):
     PROJECT = 'PROJECT'
@@ -735,35 +737,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
 
-class _GaxAPIBase(object):
-
-    _random_gax_error = False
-
-    def __init__(self, **kw):
-        self.__dict__.update(kw)
-
-    def _make_grpc_error(self, status_code):
-        from grpc.framework.interfaces.face.face import AbortionError
-
-        class _DummyException(AbortionError):
-            code = status_code
-
-            def __init__(self):
-                super(_DummyException, self).__init__(
-                    None, None, self.code, None)
-
-        return _DummyException()
-
-    def _make_grpc_not_found(self):
-        from grpc.beta.interfaces import StatusCode
-        return self._make_grpc_error(StatusCode.NOT_FOUND)
-
-    def _make_grpc_failed_precondition(self):
-        from grpc.beta.interfaces import StatusCode
-        return self._make_grpc_error(StatusCode.FAILED_PRECONDITION)
-
-
-class _GAXPublisherAPI(_GaxAPIBase):
+class _GAXPublisherAPI(_GAXBaseAPI):
 
     _create_topic_conflict = False
 
@@ -819,7 +793,7 @@ class _GAXPublisherAPI(_GaxAPIBase):
             raise GaxError('miss', self._make_grpc_not_found())
 
 
-class _GAXSubscriberAPI(_GaxAPIBase):
+class _GAXSubscriberAPI(_GAXBaseAPI):
 
     _create_subscription_conflict = False
     _modify_push_config_ok = False

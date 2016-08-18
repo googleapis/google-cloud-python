@@ -24,6 +24,8 @@ except ImportError:  # pragma: NO COVER
 else:
     _HAVE_GAX = True
 
+from gcloud._testing import _GAXBaseAPI
+
 
 class _Base(object):
     PROJECT = 'PROJECT'
@@ -908,34 +910,6 @@ class Test_value_pb_to_value(_Base, unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self._callFUT(_Value())
-
-
-class _GAXBaseAPI(object):
-
-    _random_gax_error = False
-
-    def __init__(self, **kw):
-        self.__dict__.update(kw)
-
-    def _make_grpc_error(self, status_code):
-        from grpc.framework.interfaces.face.face import AbortionError
-
-        class _DummyException(AbortionError):
-            code = status_code
-
-            def __init__(self):
-                super(_DummyException, self).__init__(
-                    None, None, self.code, None)
-
-        return _DummyException()
-
-    def _make_grpc_not_found(self):
-        from grpc.beta.interfaces import StatusCode
-        return self._make_grpc_error(StatusCode.NOT_FOUND)
-
-    def _make_grpc_failed_precondition(self):
-        from grpc.beta.interfaces import StatusCode
-        return self._make_grpc_error(StatusCode.FAILED_PRECONDITION)
 
 
 class _GAXLoggingAPI(_GAXBaseAPI):
