@@ -32,6 +32,11 @@ class TimeSeries(collections.namedtuple(
         'TimeSeries', 'metric resource metric_kind value_type points')):
     """A single time series of metric values.
 
+    The preferred way to construct a
+    :class:`~gcloud.monitoring.timeseries.TimeSeries` object is
+    using the :meth:`~gcloud.monitoring.client.Client.time_series` factory
+    method of the :class:`~gcloud.monitoring.client.Client` class.
+
     :type metric: :class:`~gcloud.monitoring.metric.Metric`
     :param metric: A metric object.
 
