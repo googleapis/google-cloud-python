@@ -30,8 +30,7 @@ from grpc.beta.interfaces import StatusCode
 from gcloud.exceptions import Conflict
 from gcloud.exceptions import NotFound
 from gcloud._helpers import _datetime_to_pb_timestamp
-from gcloud._helpers import _datetime_to_rfc3339
-from gcloud._helpers import _pb_timestamp_to_datetime
+from gcloud._helpers import _pb_timestamp_to_rfc3339
 
 
 class _LoggingAPI(object):
@@ -414,7 +413,11 @@ class _MetricsAPI(object):
 
 
 def _mon_resource_pb_to_mapping(resource_pb):
-    """Helper for  :func:_log_entry_pb_to_mapping"""
+    """Helper for  :func:_log_entry_pb_to_mapping`.
+
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
+    """
     mapping = {
         'type': resource_pb.type,
     }
@@ -423,14 +426,12 @@ def _mon_resource_pb_to_mapping(resource_pb):
     return mapping
 
 
-def _pb_timestamp_to_rfc3339(timestamp_pb):
-    """Helper for  :func:_log_entry_pb_to_mapping"""
-    timestamp = _pb_timestamp_to_datetime(timestamp_pb)
-    return _datetime_to_rfc3339(timestamp)
-
-
 def _value_pb_to_value(value_pb):
-    """Helper for :func:`_log_entry_pb_to_mapping`."""
+    """Helper for :func:`_log_entry_pb_to_mapping`.
+
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
+    """
     kind = value_pb.WhichOneof('kind')
 
     if kind is None:
@@ -459,7 +460,11 @@ def _value_pb_to_value(value_pb):
 
 
 def _struct_pb_to_mapping(struct_pb):
-    """Helper for :func:`_log_entry_pb_to_mapping`."""
+    """Helper for :func:`_log_entry_pb_to_mapping`.
+
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
+    """
     return dict([(key, _value_pb_to_value(struct_pb.fields[key]))
                  for key in struct_pb.fields])
 
@@ -467,9 +472,8 @@ def _struct_pb_to_mapping(struct_pb):
 def _log_entry_pb_to_mapping(entry_pb):
     """Helper for :meth:`list_entries`, et aliae
 
-    Ideally, would use a function from :mod:`protobuf.json_format`, but
-    the right one isn't public.  See:
-    https://github.com/google/protobuf/issues/1351
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
     """
     mapping = {
         'logName': entry_pb.log_name,
@@ -515,7 +519,11 @@ def _log_entry_pb_to_mapping(entry_pb):
 
 
 def _http_request_mapping_to_pb(info, request):
-    """Helper for _log_entry_mapping_to_pb"""
+    """Helper for _log_entry_mapping_to_pb
+
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
+    """
     optional_request_keys = {
         'requestMethod': 'request_method',
         'requestUrl': 'request_url',
@@ -533,7 +541,11 @@ def _http_request_mapping_to_pb(info, request):
 
 
 def _log_operation_mapping_to_pb(info, operation):
-    """Helper for _log_entry_mapping_to_pb"""
+    """Helper for _log_entry_mapping_to_pb
+
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
+    """
     operation.producer = info['producer']
     operation.id = info['id']
 
@@ -547,9 +559,8 @@ def _log_operation_mapping_to_pb(info, operation):
 def _log_entry_mapping_to_pb(mapping):
     """Helper for :meth:`write_entries`, et aliae
 
-    Ideally, would use a function from :mod:`protobuf.json_format`, but
-    the right one isn't public.  See:
-    https://github.com/google/protobuf/issues/1351
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
     """
     # pylint: disable=too-many-branches
     entry_pb = LogEntry()
@@ -603,9 +614,8 @@ def _log_entry_mapping_to_pb(mapping):
 def _log_sink_pb_to_mapping(sink_pb):
     """Helper for :meth:`list_sinks`, et aliae
 
-    Ideally, would use a function from :mod:`protobuf.json_format`, but
-    the right one isn't public.  See:
-    https://github.com/google/protobuf/issues/1351
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
     """
     return {
         'name': sink_pb.name,
@@ -617,9 +627,8 @@ def _log_sink_pb_to_mapping(sink_pb):
 def _log_metric_pb_to_mapping(metric_pb):
     """Helper for :meth:`list_metrics`, et aliae
 
-    Ideally, would use a function from :mod:`protobuf.json_format`, but
-    the right one isn't public.  See:
-    https://github.com/google/protobuf/issues/1351
+    Performs "impedance matching" between the protobuf attrs and the keys
+    expected in the JSON API.
     """
     return {
         'name': metric_pb.name,

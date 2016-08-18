@@ -452,11 +452,11 @@ def _bytes_to_unicode(value):
         raise ValueError('%r could not be converted to unicode' % (value,))
 
 
-def _pb_timestamp_to_datetime(timestamp):
+def _pb_timestamp_to_datetime(timestamp_pb):
     """Convert a Timestamp protobuf to a datetime object.
 
-    :type timestamp: :class:`google.protobuf.timestamp_pb2.Timestamp`
-    :param timestamp: A Google returned timestamp protobuf.
+    :type timestamp_pb: :class:`google.protobuf.timestamp_pb2.Timestamp`
+    :param timestamp_pb: A Google returned timestamp protobuf.
 
     :rtype: :class:`datetime.datetime`
     :returns: A UTC datetime object converted from a protobuf timestamp.
@@ -464,10 +464,23 @@ def _pb_timestamp_to_datetime(timestamp):
     return (
         _EPOCH +
         datetime.timedelta(
-            seconds=timestamp.seconds,
-            microseconds=(timestamp.nanos / 1000.0),
+            seconds=timestamp_pb.seconds,
+            microseconds=(timestamp_pb.nanos / 1000.0),
         )
     )
+
+
+def _pb_timestamp_to_rfc3339(timestamp_pb):
+    """Convert a Timestamp protobuf to an RFC 3339 string.
+
+    :type timestamp_pb: :class:`google.protobuf.timestamp_pb2.Timestamp`
+    :param timestamp_pb: A Google returned timestamp protobuf.
+
+    :rtype: string
+    :returns: An RFC 3339 formatted timestamp string.
+    """
+    timestamp = _pb_timestamp_to_datetime(timestamp_pb)
+    return _datetime_to_rfc3339(timestamp)
 
 
 def _datetime_to_pb_timestamp(when):
