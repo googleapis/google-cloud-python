@@ -296,7 +296,7 @@ class Client(JSONClient):
             .. note::
 
                The Python type of the value will determine the
-               `class`:ValueType: sent to the API, which must match the value
+               :class:`~ValueType` sent to the API, which must match the value
                type specified in the metric descriptor. For example, a Python
                float will be sent to the API as a :data:`ValueType.DOUBLE`.
 
