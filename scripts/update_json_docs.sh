@@ -5,7 +5,7 @@ set -e
 
 function buildDocs () {
   echo "Building JSON documentation..."
-  PYTHONPATH=_testing python scripts/generate_json_docs.py --tag ${1}
+  python scripts/generate_json_docs.py --tag ${1}
   echo "Done building JSON documentation."
 }
 
