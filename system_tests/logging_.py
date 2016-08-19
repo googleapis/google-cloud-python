@@ -34,9 +34,9 @@ TOPIC_NAME = 'gcloud-python-system-testing%s' % (_RESOURCE_ID,)
 
 
 def _retry_on_unavailable(exc):
-    """Retry only AbortionErrors whose status code is 'UNAVAILABLE'."""
-    from grpc.beta.interfaces import StatusCode
-    return exc.code == StatusCode.UNAVAILABLE
+    """Retry only errors whose status code is 'UNAVAILABLE'."""
+    from grpc import StatusCode
+    return exc.code() == StatusCode.UNAVAILABLE
 
 
 def _has_entries(result):
@@ -73,9 +73,9 @@ class TestLogging(unittest.TestCase):
         return 'system-tests-logger' + unique_resource_id('-')
 
     def _list_entries(self, logger):
-        from grpc.framework.interfaces.face.face import AbortionError
+        from grpc._channel import _Rendezvous
         inner = RetryResult(_has_entries)(logger.list_entries)
-        outer = RetryErrors(AbortionError, _retry_on_unavailable)(inner)
+        outer = RetryErrors(_Rendezvous, _retry_on_unavailable)(inner)
         return outer()
 
     def test_log_text(self):

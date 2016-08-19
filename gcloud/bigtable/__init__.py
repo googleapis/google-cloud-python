@@ -33,6 +33,6 @@ having trouble installing the grpcio package.
 """
 
 try:
-    import grpc.beta.implementations
+    import grpc
 except ImportError as exc:  # pragma: NO COVER
     raise ImportError(_ERR_MSG, exc)

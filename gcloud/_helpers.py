@@ -30,9 +30,13 @@ try:
 except ImportError:
     app_identity = None
 try:
-    from grpc.beta import implementations
+    from google.gax.grpc import exc_to_code as beta_exc_to_code
+    import grpc
+    from grpc._channel import _Rendezvous
 except ImportError:  # pragma: NO COVER
-    implementations = None
+    beta_exc_to_code = None
+    grpc = None
+    _Rendezvous = Exception
 import six
 from six.moves.http_client import HTTPConnection
 from six.moves import configparser
@@ -572,10 +576,10 @@ class MetadataPlugin(object):
         callback(headers, None)
 
 
-def make_stub(credentials, user_agent, stub_factory, host, port):
+def make_stub(credentials, user_agent, stub_class, host, port):
     """Makes a stub for an RPC service.
 
-    Uses / depends on the beta implementation of gRPC.
+    Uses / depends on gRPC.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
     :param credentials: The OAuth2 Credentials to use for creating
@@ -584,9 +588,8 @@ def make_stub(credentials, user_agent, stub_factory, host, port):
     :type user_agent: str
     :param user_agent: (Optional) The user agent to be used with API requests.
 
-    :type stub_factory: callable
-    :param stub_factory: A factory which will create a gRPC stub for
-                         a given service.
+    :type stub_class: type
+    :param stub_class: A gRPC stub type for a given service.
 
     :type host: str
     :param host: The host for the service.
@@ -594,19 +597,35 @@ def make_stub(credentials, user_agent, stub_factory, host, port):
     :type port: int
     :param port: The port for the service.
 
-    :rtype: :class:`grpc.beta._stub._AutoIntermediary`
+    :rtype: object, instance of ``stub_class``
     :returns: The stub object used to make gRPC requests to a given API.
     """
     # Leaving the first argument to ssl_channel_credentials() as None
     # loads root certificates from `grpc/_adapter/credentials/roots.pem`.
-    transport_creds = implementations.ssl_channel_credentials(None, None, None)
+    transport_creds = grpc.ssl_channel_credentials(None, None, None)
     custom_metadata_plugin = MetadataPlugin(credentials, user_agent)
-    auth_creds = implementations.metadata_call_credentials(
+    auth_creds = grpc.metadata_call_credentials(
         custom_metadata_plugin, name='google_creds')
-    channel_creds = implementations.composite_channel_credentials(
+    channel_creds = grpc.composite_channel_credentials(
         transport_creds, auth_creds)
-    channel = implementations.secure_channel(host, port, channel_creds)
-    return stub_factory(channel)
+    target = '%s:%d' % (host, port)
+    channel = grpc.secure_channel(target, channel_creds)
+    return stub_class(channel)
+
+
+def exc_to_code(exc):
+    """Retrieves the status code from a gRPC exception.
+
+    :type exc: :class:`Exception`
+    :param exc: An exception from gRPC beta or stable.
+
+    :rtype: :class:`grpc.StatusCode`
+    :returns: The status code attached to the exception.
+    """
+    if isinstance(exc, _Rendezvous):
+        return exc.code()
+    else:
+        return beta_exc_to_code(exc)
 
 
 try:

@@ -26,15 +26,14 @@ from gcloud.exceptions import make_exception
 from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
 # pylint: disable=ungrouped-imports
 try:
-    from grpc.beta.interfaces import StatusCode
-    from grpc.framework.interfaces.face.face import AbortionError
+    from grpc import StatusCode
+    from grpc._channel import _Rendezvous
     from gcloud.datastore._generated import datastore_grpc_pb2
-    DATASTORE_STUB_FACTORY = datastore_grpc_pb2.beta_create_Datastore_stub
 except ImportError:  # pragma: NO COVER
     _HAVE_GRPC = False
-    DATASTORE_STUB_FACTORY = None
+    datastore_grpc_pb2 = None
     StatusCode = None
-    AbortionError = Exception
+    _Rendezvous = Exception
 else:
     _HAVE_GRPC = True
 # pylint: enable=ungrouped-imports
@@ -237,20 +236,8 @@ class _DatastoreAPIOverGRPC(object):
 
     def __init__(self, connection):
         self._stub = make_stub(connection.credentials, connection.USER_AGENT,
-                               DATASTORE_STUB_FACTORY, DATASTORE_API_HOST,
-                               DATASTORE_API_PORT)
-        self._stub.__enter__()
-
-    def __del__(self):
-        """Destructor for object.
-
-        Ensures that the stub is exited so the shell can close properly.
-        """
-        try:
-            self._stub.__exit__(None, None, None)
-            del self._stub
-        except AttributeError:
-            pass
+                               datastore_grpc_pb2.DatastoreStub,
+                               DATASTORE_API_HOST, DATASTORE_API_PORT)
 
     def lookup(self, project, request_pb):
         """Perform a ``lookup`` request.
@@ -317,9 +304,9 @@ class _DatastoreAPIOverGRPC(object):
         request_pb.project_id = project
         try:
             return self._stub.Commit(request_pb, GRPC_TIMEOUT_SECONDS)
-        except AbortionError as exc:
-            if exc.code == StatusCode.ABORTED:
-                raise Conflict(exc.details)
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.ABORTED:
+                raise Conflict(exc.details())
             raise
 
     def rollback(self, project, request_pb):

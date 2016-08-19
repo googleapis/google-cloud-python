@@ -28,7 +28,11 @@ PROTO_PATH = os.path.join(PROTOS_DIR, 'google', 'datastore',
                           'v1', 'datastore.proto')
 GRPC_ONLY_FILE = os.path.join(ROOT_DIR, 'gcloud', 'datastore',
                               '_generated', 'datastore_grpc_pb2.py')
-GRPCIO_VIRTUALENV = os.environ.get('GRPCIO_VIRTUALENV', 'protoc')
+GRPCIO_VIRTUALENV = os.getenv('GRPCIO_VIRTUALENV')
+if GRPCIO_VIRTUALENV is None:
+    PYTHON_EXECUTABLE = sys.executable
+else:
+    PYTHON_EXECUTABLE = os.path.join(GRPCIO_VIRTUALENV, 'bin', 'python')
 MESSAGE_SNIPPET = ' = _reflection.GeneratedProtocolMessageType('
 IMPORT_TEMPLATE = 'from gcloud.datastore._generated.datastore_pb2 import %s\n'
 
@@ -44,7 +48,7 @@ def get_pb2_contents_with_grpc():
                                   'v1', 'datastore_pb2.py')
     try:
         return_code = subprocess.call([
-            '%s/bin/python' % GRPCIO_VIRTUALENV,
+            PYTHON_EXECUTABLE,
             '-m',
             'grpc.tools.protoc',
             '--proto_path',
@@ -74,7 +78,7 @@ def get_pb2_contents_without_grpc():
                                   'v1', 'datastore_pb2.py')
     try:
         return_code = subprocess.call([
-            '%s/bin/python' % GRPCIO_VIRTUALENV,
+            PYTHON_EXECUTABLE,
             '-m',
             'grpc.tools.protoc',
             '--proto_path',

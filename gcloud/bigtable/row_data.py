@@ -183,8 +183,7 @@ class InvalidChunk(RuntimeError):
 class PartialRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
 
-    :type response_iterator:
-        :class:`grpc.framework.alpha._reexport._CancellableIterator`
+    :type response_iterator: :class:`grpc._channel._Rendezvous`
     :param response_iterator: A streaming iterator returned from a
                               ``ReadRows`` request.
     """

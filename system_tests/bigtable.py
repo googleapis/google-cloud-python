@@ -85,18 +85,17 @@ def _operation_wait(operation, max_attempts=5):
 
 
 def _retry_on_unavailable(exc):
-    """Retry only AbortionErrors whose status code is 'UNAVAILABLE'."""
-    from grpc.beta.interfaces import StatusCode
-    return exc.code == StatusCode.UNAVAILABLE
+    """Retry only errors whose status code is 'UNAVAILABLE'."""
+    from grpc import StatusCode
+    return exc.code() == StatusCode.UNAVAILABLE
 
 
 def setUpModule():
-    from grpc.framework.interfaces.face.face import AbortionError
+    from grpc._channel import _Rendezvous
     _helpers.PROJECT = TESTS_PROJECT
     Config.CLIENT = Client(admin=True)
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
-    Config.CLIENT.start()
-    retry = RetryErrors(AbortionError, error_predicate=_retry_on_unavailable)
+    retry = RetryErrors(_Rendezvous, error_predicate=_retry_on_unavailable)
     instances, failed_locations = retry(Config.CLIENT.list_instances)()
 
     if len(failed_locations) != 0:
@@ -112,7 +111,6 @@ def setUpModule():
 
 def tearDownModule():
     Config.INSTANCE.delete()
-    Config.CLIENT.stop()
 
 
 class TestInstanceAdminAPI(unittest.TestCase):

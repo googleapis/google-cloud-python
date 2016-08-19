@@ -17,14 +17,14 @@
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
-from google.gax.grpc import exc_to_code
 from google.pubsub.v1.pubsub_pb2 import PubsubMessage
 from google.pubsub.v1.pubsub_pb2 import PushConfig
-from grpc.beta.interfaces import StatusCode
+from grpc import StatusCode
 
+from gcloud._helpers import _to_bytes
+from gcloud._helpers import exc_to_code
 from gcloud.exceptions import Conflict
 from gcloud.exceptions import NotFound
-from gcloud._helpers import _to_bytes
 
 
 class _PublisherAPI(object):

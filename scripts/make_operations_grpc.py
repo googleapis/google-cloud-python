@@ -26,10 +26,14 @@ ROOT_DIR = os.path.abspath(
 PROTOS_DIR = os.path.join(ROOT_DIR, 'googleapis-pb')
 PROTO_PATH = os.path.join(PROTOS_DIR, 'google', 'longrunning',
                           'operations.proto')
-GENERATED_SUBDIR = os.environ.get('GENERATED_SUBDIR', '_generated')
+GENERATED_SUBDIR = os.getenv('GENERATED_SUBDIR', '_generated')
 GRPC_ONLY_FILE = os.path.join(ROOT_DIR, 'gcloud', 'bigtable',
                               GENERATED_SUBDIR, 'operations_grpc_pb2.py')
-GRPCIO_VIRTUALENV = os.environ.get('GRPCIO_VIRTUALENV', 'protoc')
+GRPCIO_VIRTUALENV = os.getenv('GRPCIO_VIRTUALENV')
+if GRPCIO_VIRTUALENV is None:
+    PYTHON_EXECUTABLE = sys.executable
+else:
+    PYTHON_EXECUTABLE = os.path.join(GRPCIO_VIRTUALENV, 'bin', 'python')
 
 
 def get_pb2_contents_with_grpc():
@@ -43,7 +47,7 @@ def get_pb2_contents_with_grpc():
                                   'operations_pb2.py')
     try:
         return_code = subprocess.call([
-            '%s/bin/python' % GRPCIO_VIRTUALENV,
+            PYTHON_EXECUTABLE,
             '-m',
             'grpc.tools.protoc',
             '--proto_path',
@@ -73,7 +77,7 @@ def get_pb2_contents_without_grpc():
                                   'operations_pb2.py')
     try:
         return_code = subprocess.call([
-            '%s/bin/python' % GRPCIO_VIRTUALENV,
+            PYTHON_EXECUTABLE,
             '-m',
             'grpc.tools.protoc',
             '--proto_path',

@@ -112,16 +112,13 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         from gcloud.datastore.connection import _DatastoreAPIOverGRPC
         return _DatastoreAPIOverGRPC
 
-    def _makeOne(self, connection=None, stub=None, mock_args=None):
+    def _makeOne(self, stub, connection=None, mock_args=None):
         from gcloud._testing import _Monkey
         from gcloud.datastore import connection as MUT
 
         if connection is None:
             connection = _Connection(None)
             connection.credentials = object()
-
-        if stub is None:
-            stub = _GRPCStub()
 
         if mock_args is None:
             mock_args = []
@@ -141,39 +138,17 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 
         stub = _GRPCStub()
         mock_args = []
-        self.assertEqual(stub.enter_calls, 0)
-        datastore_api = self._makeOne(conn, stub=stub, mock_args=mock_args)
+        datastore_api = self._makeOne(stub, connection=conn,
+                                      mock_args=mock_args)
         self.assertIs(datastore_api._stub, stub)
 
         self.assertEqual(mock_args, [(
             conn.credentials,
             conn.USER_AGENT,
-            MUT.DATASTORE_STUB_FACTORY,
+            MUT.datastore_grpc_pb2.DatastoreStub,
             MUT.DATASTORE_API_HOST,
             MUT.DATASTORE_API_PORT,
         )])
-
-    def test___del__valid_stub(self):
-        datastore_api = self._makeOne()
-
-        stub = datastore_api._stub
-        self.assertEqual(stub.exit_calls, [])
-        self.assertIs(datastore_api._stub, stub)
-        datastore_api.__del__()
-        self.assertEqual(stub.exit_calls, [(None, None, None)])
-        self.assertFalse(hasattr(datastore_api, '_stub'))
-
-    def test___del__invalid_stub(self):
-        datastore_api = self._makeOne()
-
-        stub = datastore_api._stub
-        self.assertEqual(stub.exit_calls, [])
-
-        del datastore_api._stub
-        self.assertFalse(hasattr(datastore_api, '_stub'))
-        datastore_api.__del__()
-        self.assertEqual(stub.exit_calls, [])
-        self.assertFalse(hasattr(datastore_api, '_stub'))
 
     def test_lookup(self):
         from gcloud.datastore import connection as MUT
@@ -253,20 +228,25 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 
     @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
     def test_commit_failure_aborted(self):
-        from grpc.beta.interfaces import StatusCode
-        from grpc.framework.interfaces.face.face import AbortionError
+        from grpc import StatusCode
+        from grpc._channel import _Rendezvous
+        from grpc._channel import _RPCState
         from gcloud.exceptions import Conflict
 
-        exc = AbortionError(None, None, StatusCode.ABORTED, None)
+        details = 'Bad things.'
+        exc_state = _RPCState((), None, None, StatusCode.ABORTED, details)
+        exc = _Rendezvous(exc_state, None, None, None)
         self._commit_failure_helper(exc, Conflict)
 
     @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
     def test_commit_failure_cancelled(self):
-        from grpc.beta.interfaces import StatusCode
-        from grpc.framework.interfaces.face.face import AbortionError
+        from grpc import StatusCode
+        from grpc._channel import _Rendezvous
+        from grpc._channel import _RPCState
 
-        exc = AbortionError(None, None, StatusCode.CANCELLED, None)
-        self._commit_failure_helper(exc, AbortionError)
+        exc_state = _RPCState((), None, None, StatusCode.CANCELLED, None)
+        exc = _Rendezvous(exc_state, None, None, None)
+        self._commit_failure_helper(exc, _Rendezvous)
 
     @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
     def test_commit_failure_non_grpc_err(self):
@@ -1155,16 +1135,7 @@ class _GRPCStub(object):
     def __init__(self, return_val=None, side_effect=Exception):
         self.return_val = return_val
         self.side_effect = side_effect
-        self.enter_calls = 0
-        self.exit_calls = []
         self.method_calls = []
-
-    def __enter__(self):
-        self.enter_calls += 1
-        return self
-
-    def __exit__(self, *args):
-        self.exit_calls.append(args)
 
     def _method(self, request_pb, timeout, name):
         self.method_calls.append((request_pb, timeout, name))

@@ -19,18 +19,18 @@ import json
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
-from google.gax.grpc import exc_to_code
 from google.logging.type.log_severity_pb2 import LogSeverity
 from google.logging.v2.logging_config_pb2 import LogSink
 from google.logging.v2.logging_metrics_pb2 import LogMetric
 from google.logging.v2.log_entry_pb2 import LogEntry
 from google.protobuf.json_format import Parse
-from grpc.beta.interfaces import StatusCode
+from grpc import StatusCode
 
-from gcloud.exceptions import Conflict
-from gcloud.exceptions import NotFound
 from gcloud._helpers import _datetime_to_pb_timestamp
 from gcloud._helpers import _pb_timestamp_to_rfc3339
+from gcloud._helpers import exc_to_code
+from gcloud.exceptions import Conflict
+from gcloud.exceptions import NotFound
 
 
 class _LoggingAPI(object):
