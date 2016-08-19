@@ -26,16 +26,6 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.datastore.connection.DATASTORE_STUB_FACTORY", 
-      "name": "DATASTORE_STUB_FACTORY", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
       "id": "gcloud.datastore.connection.GCD_HOST", 
       "name": "GCD_HOST", 
       "params": [], 
@@ -48,16 +38,6 @@
       "exceptions": [], 
       "id": "gcloud.datastore.connection.GRPC_TIMEOUT_SECONDS", 
       "name": "GRPC_TIMEOUT_SECONDS", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.datastore.connection.StatusCode", 
-      "name": "StatusCode", 
       "params": [], 
       "returns": [], 
       "source": null, 

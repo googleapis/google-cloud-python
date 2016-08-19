@@ -2,48 +2,7 @@
   "description": "\n Client for interacting with the Google Cloud Pub/Sub API.", 
   "examples": [], 
   "id": "gcloud.pubsub.client", 
-  "methods": [
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.pubsub.client.GAXPublisherAPI", 
-      "name": "GAXPublisherAPI", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.pubsub.client.GAXSubscriberAPI", 
-      "name": "GAXSubscriberAPI", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.pubsub.client.GeneratedPublisherAPI", 
-      "name": "GeneratedPublisherAPI", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.pubsub.client.GeneratedSubscriberAPI", 
-      "name": "GeneratedSubscriberAPI", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }
-  ], 
+  "methods": [], 
   "name": "Client", 
   "source": "gcloud/pubsub/client.py"
 }

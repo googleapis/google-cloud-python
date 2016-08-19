@@ -2,68 +2,7 @@
   "description": "\n Client for interacting with the Google Stackdriver Logging API.", 
   "examples": [], 
   "id": "gcloud.logging.client", 
-  "methods": [
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.logging.client.GAXLoggingAPI", 
-      "name": "GAXLoggingAPI", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.logging.client.GAXMetricsAPI", 
-      "name": "GAXMetricsAPI", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.logging.client.GAXSinksAPI", 
-      "name": "GAXSinksAPI", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.logging.client.GeneratedLoggingAPI", 
-      "name": "GeneratedLoggingAPI", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.logging.client.GeneratedMetricsAPI", 
-      "name": "GeneratedMetricsAPI", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.logging.client.GeneratedSinksAPI", 
-      "name": "GeneratedSinksAPI", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }
-  ], 
+  "methods": [], 
   "name": "Client", 
   "source": "gcloud/logging/client.py"
 }

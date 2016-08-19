@@ -129,15 +129,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
@@ -147,8 +138,8 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -162,6 +153,15 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -182,6 +182,24 @@
       "name": "get", 
       "params": [
         {
+          "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
+          "name": "transaction", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
+          ]
+        }, 
+        {
+          "description": " The key to be retrieved from the datastore.", 
+          "name": "key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
+          ]
+        }, 
+        {
           "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it.", 
           "name": "missing", 
           "nullable": null, 
@@ -197,24 +215,6 @@
           "optional": null, 
           "types": [
             "list"
-          ]
-        }, 
-        {
-          "description": " The key to be retrieved from the datastore.", 
-          "name": "key", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
-          ]
-        }, 
-        {
-          "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
-          "name": "transaction", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
           ]
         }
       ], 
@@ -234,6 +234,15 @@
       "id": "gcloud.datastore.client.Client.get_multi", 
       "name": "get_multi", 
       "params": [
+        {
+          "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
+          "name": "transaction", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
+          ]
+        }, 
         {
           "description": " The keys to be retrieved from the datastore.", 
           "name": "keys", 
@@ -259,15 +268,6 @@
           "optional": null, 
           "types": [
             "list"
-          ]
-        }, 
-        {
-          "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
-          "name": "transaction", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
           ]
         }
       ], 

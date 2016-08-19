@@ -20,21 +20,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " record sets representation returned from the API", 
-          "name": "resource", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " A zone which holds one or more record sets.", 
           "name": "zone", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/dns/zone/managedzone\">gcloud.dns.zone.ManagedZone</a>"
+          ]
+        }, 
+        {
+          "description": " record sets representation returned from the API", 
+          "name": "resource", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 

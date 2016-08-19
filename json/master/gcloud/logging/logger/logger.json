@@ -56,8 +56,8 @@
       "name": "list_entries", 
       "params": [
         {
-          "description": " One of :data:gcloud.logging.ASCENDING or", 
-          "name": "order_by", 
+          "description": " a filter expression. See: <a href=\"https://cloud.google.com/logging/docs/view/advanced_filters\">https://cloud.google.com/logging/docs/view/advanced_filters</a>", 
+          "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -74,8 +74,17 @@
           ]
         }, 
         {
-          "description": " a filter expression. See: <a href=\"https://cloud.google.com/logging/docs/view/advanced_filters\">https://cloud.google.com/logging/docs/view/advanced_filters</a>", 
-          "name": "filter_", 
+          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
+          "name": "projects", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " strings"
+          ]
+        }, 
+        {
+          "description": " One of :data:gcloud.logging.ASCENDING or", 
+          "name": "order_by", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -89,15 +98,6 @@
           "optional": null, 
           "types": [
             "int"
-          ]
-        }, 
-        {
-          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
-          "name": "projects", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " strings"
           ]
         }
       ], 
