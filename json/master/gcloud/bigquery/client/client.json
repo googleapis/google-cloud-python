@@ -29,21 +29,21 @@
           ]
         }, 
         {
-          "description": " tables to be copied.", 
-          "name": "sources", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "sequence of gcloud.bigquery.table.Table"
-          ]
-        }, 
-        {
           "description": " Table into which data is to be copied.", 
           "name": "destination", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
+          ]
+        }, 
+        {
+          "description": " tables to be copied.", 
+          "name": "sources", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "sequence of gcloud.bigquery.table.Table"
           ]
         }
       ], 
@@ -90,21 +90,21 @@
       "name": "extract_table_to_storage", 
       "params": [
         {
-          "description": " URIs of CloudStorage file(s) into which table data is to be extracted; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
-          "name": "destination_uris", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "sequence of string"
-          ]
-        }, 
-        {
           "description": " Name of the job.", 
           "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " URIs of CloudStorage file(s) into which table data is to be extracted; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
+          "name": "destination_uris", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "sequence of string"
           ]
         }, 
         {
@@ -143,21 +143,21 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -187,21 +187,21 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {
@@ -257,12 +257,12 @@
       "name": "list_datasets", 
       "params": [
         {
-          "description": " maximum number of datasets to return, If not passed, defaults to a value set by the API.", 
-          "name": "max_results", 
+          "description": " True if results include hidden datasets.", 
+          "name": "include_all", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
+            "boolean"
           ]
         }, 
         {
@@ -275,12 +275,12 @@
           ]
         }, 
         {
-          "description": " True if results include hidden datasets.", 
-          "name": "include_all", 
+          "description": " maximum number of datasets to return, If not passed, defaults to a value set by the API.", 
+          "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
+            "int"
           ]
         }
       ], 
@@ -301,12 +301,12 @@
       "name": "list_jobs", 
       "params": [
         {
-          "description": " maximum number of jobs to return, If not passed, defaults to a value set by the API.", 
-          "name": "max_results", 
+          "description": " if true, include jobs owned by all users in the project.", 
+          "name": "all_users", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
+            "boolean"
           ]
         }, 
         {
@@ -319,12 +319,12 @@
           ]
         }, 
         {
-          "description": " if true, include jobs owned by all users in the project.", 
-          "name": "all_users", 
+          "description": " maximum number of jobs to return, If not passed, defaults to a value set by the API.", 
+          "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
+            "int"
           ]
         }, 
         {
@@ -363,21 +363,21 @@
           ]
         }, 
         {
-          "description": " URIs of data files to be loaded; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
-          "name": "source_uris", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "sequence of string"
-          ]
-        }, 
-        {
           "description": " Table into which data is to be loaded.", 
           "name": "destination", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
+          ]
+        }, 
+        {
+          "description": " URIs of data files to be loaded; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
+          "name": "source_uris", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "sequence of string"
           ]
         }
       ], 
@@ -398,8 +398,8 @@
       "name": "run_async_query", 
       "params": [
         {
-          "description": " SQL query to be executed", 
-          "name": "query", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -407,8 +407,8 @@
           ]
         }, 
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " SQL query to be executed", 
+          "name": "query", 
           "nullable": null, 
           "optional": null, 
           "types": [

@@ -20,21 +20,21 @@
       "name": "blob", 
       "params": [
         {
-          "description": " The name of the blob to be instantiated.", 
-          "name": "blob_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The size of a chunk of data whenever iterating (1 MB). This must be a multiple of 256 KB per the API specification.", 
           "name": "chunk_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer"
+          ]
+        }, 
+        {
+          "description": " The name of the blob to be instantiated.", 
+          "name": "blob_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -69,24 +69,6 @@
       "name": "copy_blob", 
       "params": [
         {
-          "description": " The bucket into which the blob should be copied.", 
-          "name": "destination_bucket", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/bucket/bucket\">gcloud.storage.bucket.Bucket</a>"
-          ]
-        }, 
-        {
-          "description": " (optional) the new name for the copied file.", 
-          "name": "new_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
           "name": "client", 
           "nullable": null, 
@@ -102,6 +84,24 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
+          ]
+        }, 
+        {
+          "description": " (optional) the new name for the copied file.", 
+          "name": "new_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The bucket into which the blob should be copied.", 
+          "name": "destination_bucket", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/bucket/bucket\">gcloud.storage.bucket.Bucket</a>"
           ]
         }
       ], 
@@ -226,21 +226,21 @@
       "name": "get_blob", 
       "params": [
         {
-          "description": " The name of the blob to retrieve.", 
-          "name": "blob_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " The name of the blob to retrieve.", 
+          "name": "blob_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -277,15 +277,6 @@
       "name": "list_blobs", 
       "params": [
         {
-          "description": " opaque marker for the next \"page\" of blobs. If not passed, will return the first page of blobs.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
           "name": "client", 
           "nullable": null, 
@@ -295,17 +286,17 @@
           ]
         }, 
         {
-          "description": " optional delimter, used with <code>prefix</code> to emulate hierarchy.", 
-          "name": "delimiter", 
+          "description": " opaque marker for the next \"page\" of blobs. If not passed, will return the first page of blobs.", 
+          "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string or NoneType"
+            "string"
           ]
         }, 
         {
-          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
-          "name": "projection", 
+          "description": " optional delimter, used with <code>prefix</code> to emulate hierarchy.", 
+          "name": "delimiter", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -322,12 +313,12 @@
           ]
         }, 
         {
-          "description": " maximum number of blobs to return.", 
-          "name": "max_results", 
+          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each blob returned: 'items/contentLanguage,nextPageToken'", 
+          "name": "fields", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or NoneType"
+            "string or NoneType"
           ]
         }, 
         {
@@ -340,12 +331,21 @@
           ]
         }, 
         {
-          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each blob returned: 'items/contentLanguage,nextPageToken'", 
-          "name": "fields", 
+          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
+          "name": "projection", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or NoneType"
+          ]
+        }, 
+        {
+          "description": " maximum number of blobs to return.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or NoneType"
           ]
         }
       ], 
@@ -396,15 +396,6 @@
       "name": "rename_blob", 
       "params": [
         {
-          "description": " The new name for this blob.", 
-          "name": "new_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
           "name": "client", 
           "nullable": null, 
@@ -420,6 +411,15 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
+          ]
+        }, 
+        {
+          "description": " The new name for this blob.", 
+          "name": "new_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 

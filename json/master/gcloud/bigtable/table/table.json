@@ -20,21 +20,21 @@
       "name": "column_family", 
       "params": [
         {
-          "description": " (Optional) The garbage collection settings for this column family.", 
-          "name": "gc_rule", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigtable/table/table/garbagecollectionrule\">gcloud.bigtable.table.Table.GarbageCollectionRule</a>"
-          ]
-        }, 
-        {
           "description": " The ID of the column family. Must be of the form <code>[_a-zA-Z0-9][-_.a-zA-Z0-9]*</code>.", 
           "name": "column_family_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The garbage collection settings for this column family.", 
+          "name": "gc_rule", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/table/table/garbagecollectionrule\">gcloud.bigtable.table.Table.GarbageCollectionRule</a>"
           ]
         }
       ], 
@@ -126,15 +126,6 @@
       "name": "read_rows", 
       "params": [
         {
-          "description": " (Optional) The read will terminate after committing to N rows' worth of results. The default (zero) is to return all results.", 
-          "name": "limit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " (Optional) The filter to apply to the contents of the specified row(s). If unset, reads every column in each row.", 
           "name": "filter_", 
           "nullable": null, 
@@ -144,8 +135,17 @@
           ]
         }, 
         {
-          "description": " (Optional) The end of a range of row keys to read from. The range will not include <code>end_key</code>. If left empty, will be interpreted as an infinite string.", 
-          "name": "end_key", 
+          "description": " (Optional) The read will terminate after committing to N rows' worth of results. The default (zero) is to return all results.", 
+          "name": "limit", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " (Optional) The beginning of a range of row keys to read from. The range will include <code>start_key</code>. If left empty, will be interpreted as the empty string.", 
+          "name": "start_key", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -153,8 +153,8 @@
           ]
         }, 
         {
-          "description": " (Optional) The beginning of a range of row keys to read from. The range will include <code>start_key</code>. If left empty, will be interpreted as the empty string.", 
-          "name": "start_key", 
+          "description": " (Optional) The end of a range of row keys to read from. The range will not include <code>end_key</code>. If left empty, will be interpreted as an infinite string.", 
+          "name": "end_key", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -179,15 +179,6 @@
       "name": "row", 
       "params": [
         {
-          "description": " (Optional) Flag to determine if the row should be used for append mutations.", 
-          "name": "append", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
-          ]
-        }, 
-        {
           "description": " (Optional) Filter to be used for conditional mutations. See .DirectRow for more details.", 
           "name": "filter_", 
           "nullable": null, 
@@ -203,6 +194,15 @@
           "optional": null, 
           "types": [
             "bytes"
+          ]
+        }, 
+        {
+          "description": " (Optional) Flag to determine if the row should be used for append mutations.", 
+          "name": "append", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
           ]
         }
       ], 
