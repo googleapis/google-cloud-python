@@ -40,7 +40,7 @@ class Test__make_data_stub(unittest.TestCase):
         with _Monkey(MUT, make_stub=mock_make_stub):
             result = self._callFUT(client)
 
-        self.assertTrue(result is fake_stub)
+        self.assertIs(result, fake_stub)
         self.assertEqual(make_stub_args, [
             (
                 client.credentials,
@@ -76,7 +76,7 @@ class Test__make_instance_stub(unittest.TestCase):
         with _Monkey(MUT, make_stub=mock_make_stub):
             result = self._callFUT(client)
 
-        self.assertTrue(result is fake_stub)
+        self.assertIs(result, fake_stub)
         self.assertEqual(make_stub_args, [
             (
                 client.credentials,
@@ -112,7 +112,7 @@ class Test__make_operations_stub(unittest.TestCase):
         with _Monkey(MUT, make_stub=mock_make_stub):
             result = self._callFUT(client)
 
-        self.assertTrue(result is fake_stub)
+        self.assertIs(result, fake_stub)
         self.assertEqual(make_stub_args, [
             (
                 client.credentials,
@@ -148,7 +148,7 @@ class Test__make_table_stub(unittest.TestCase):
         with _Monkey(MUT, make_stub=mock_make_stub):
             result = self._callFUT(client)
 
-        self.assertTrue(result is fake_stub)
+        self.assertIs(result, fake_stub)
         self.assertEqual(make_stub_args, [
             (
                 client.credentials,
@@ -215,13 +215,13 @@ class TestClient(unittest.TestCase):
         # Verify the mocks.
         self.assertEqual(mock_make_data_stub.calls, [client])
         if admin:
-            self.assertEqual(mock_make_instance_stub.calls, [client])
-            self.assertEqual(mock_make_operations_stub.calls, [client])
-            self.assertEqual(mock_make_table_stub.calls, [client])
+            self.assertSequenceEqual(mock_make_instance_stub.calls, [client])
+            self.assertSequenceEqual(mock_make_operations_stub.calls, [client])
+            self.assertSequenceEqual(mock_make_table_stub.calls, [client])
         else:
-            self.assertEqual(mock_make_instance_stub.calls, [])
-            self.assertEqual(mock_make_operations_stub.calls, [])
-            self.assertEqual(mock_make_table_stub.calls, [])
+            self.assertSequenceEqual(mock_make_instance_stub.calls, [])
+            self.assertSequenceEqual(mock_make_operations_stub.calls, [])
+            self.assertSequenceEqual(mock_make_table_stub.calls, [])
 
         expected_creds = expected_creds or creds
         self.assertTrue(client._credentials is expected_creds)
@@ -241,9 +241,9 @@ class TestClient(unittest.TestCase):
             self.assertIs(client._table_stub_internal,
                           mock_make_table_stub.result)
         else:
-            self.assertEqual(client._instance_stub_internal, None)
-            self.assertEqual(client._operations_stub_internal, None)
-            self.assertEqual(client._table_stub_internal, None)
+            self.assertIsNone(client._instance_stub_internal)
+            self.assertIsNone(client._operations_stub_internal)
+            self.assertIsNone(client._table_stub_internal)
 
     def test_constructor_default_scopes(self):
         from gcloud.bigtable import client as MUT

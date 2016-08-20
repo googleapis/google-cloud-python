@@ -602,7 +602,7 @@ def make_stub(credentials, user_agent, stub_class, host, port):
     """
     # Leaving the first argument to ssl_channel_credentials() as None
     # loads root certificates from `grpc/_adapter/credentials/roots.pem`.
-    transport_creds = grpc.ssl_channel_credentials(None, None, None)
+    transport_creds = grpc.ssl_channel_credentials()
     custom_metadata_plugin = MetadataPlugin(credentials, user_agent)
     auth_creds = grpc.metadata_call_credentials(
         custom_metadata_plugin, name='google_creds')
