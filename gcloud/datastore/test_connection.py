@@ -151,8 +151,6 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         )])
 
     def test_lookup(self):
-        from gcloud.datastore import connection as MUT
-
         return_val = object()
         stub = _GRPCStub(return_val)
         datastore_api = self._makeOne(stub=stub)
@@ -163,11 +161,9 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertIs(result, return_val)
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(stub.method_calls,
-                         [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'Lookup')])
+                         [(request_pb, 'Lookup')])
 
     def test_run_query(self):
-        from gcloud.datastore import connection as MUT
-
         return_val = object()
         stub = _GRPCStub(return_val)
         datastore_api = self._makeOne(stub=stub)
@@ -178,11 +174,9 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertIs(result, return_val)
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(stub.method_calls,
-                         [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'RunQuery')])
+                         [(request_pb, 'RunQuery')])
 
     def test_begin_transaction(self):
-        from gcloud.datastore import connection as MUT
-
         return_val = object()
         stub = _GRPCStub(return_val)
         datastore_api = self._makeOne(stub=stub)
@@ -194,11 +188,9 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(
             stub.method_calls,
-            [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'BeginTransaction')])
+            [(request_pb, 'BeginTransaction')])
 
     def test_commit_success(self):
-        from gcloud.datastore import connection as MUT
-
         return_val = object()
         stub = _GRPCStub(return_val)
         datastore_api = self._makeOne(stub=stub)
@@ -209,11 +201,9 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertIs(result, return_val)
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(stub.method_calls,
-                         [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'Commit')])
+                         [(request_pb, 'Commit')])
 
     def _commit_failure_helper(self, exc, err_class):
-        from gcloud.datastore import connection as MUT
-
         stub = _GRPCStub(side_effect=exc)
         datastore_api = self._makeOne(stub=stub)
 
@@ -224,7 +214,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(stub.method_calls,
-                         [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'Commit')])
+                         [(request_pb, 'Commit')])
 
     @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
     def test_commit_failure_aborted(self):
@@ -254,8 +244,6 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self._commit_failure_helper(exc, RuntimeError)
 
     def test_rollback(self):
-        from gcloud.datastore import connection as MUT
-
         return_val = object()
         stub = _GRPCStub(return_val)
         datastore_api = self._makeOne(stub=stub)
@@ -266,11 +254,9 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertIs(result, return_val)
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(stub.method_calls,
-                         [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'Rollback')])
+                         [(request_pb, 'Rollback')])
 
     def test_allocate_ids(self):
-        from gcloud.datastore import connection as MUT
-
         return_val = object()
         stub = _GRPCStub(return_val)
         datastore_api = self._makeOne(stub=stub)
@@ -282,7 +268,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(
             stub.method_calls,
-            [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'AllocateIds')])
+            [(request_pb, 'AllocateIds')])
 
 
 class TestConnection(unittest.TestCase):
@@ -1137,31 +1123,31 @@ class _GRPCStub(object):
         self.side_effect = side_effect
         self.method_calls = []
 
-    def _method(self, request_pb, timeout, name):
-        self.method_calls.append((request_pb, timeout, name))
+    def _method(self, request_pb, name):
+        self.method_calls.append((request_pb, name))
         return self.return_val
 
-    def Lookup(self, request_pb, timeout):
-        return self._method(request_pb, timeout, 'Lookup')
+    def Lookup(self, request_pb):
+        return self._method(request_pb, 'Lookup')
 
-    def RunQuery(self, request_pb, timeout):
-        return self._method(request_pb, timeout, 'RunQuery')
+    def RunQuery(self, request_pb):
+        return self._method(request_pb, 'RunQuery')
 
-    def BeginTransaction(self, request_pb, timeout):
-        return self._method(request_pb, timeout, 'BeginTransaction')
+    def BeginTransaction(self, request_pb):
+        return self._method(request_pb, 'BeginTransaction')
 
-    def Commit(self, request_pb, timeout):
-        result = self._method(request_pb, timeout, 'Commit')
+    def Commit(self, request_pb):
+        result = self._method(request_pb, 'Commit')
         if self.side_effect is Exception:
             return result
         else:
             raise self.side_effect
 
-    def Rollback(self, request_pb, timeout):
-        return self._method(request_pb, timeout, 'Rollback')
+    def Rollback(self, request_pb):
+        return self._method(request_pb, 'Rollback')
 
-    def AllocateIds(self, request_pb, timeout):
-        return self._method(request_pb, timeout, 'AllocateIds')
+    def AllocateIds(self, request_pb):
+        return self._method(request_pb, 'AllocateIds')
 
 
 class _RequestPB(object):

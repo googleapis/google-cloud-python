@@ -152,8 +152,7 @@ class Operation(object):
         request_pb = operations_pb2.GetOperationRequest(name=operation_name)
         # We expect a `google.longrunning.operations_pb2.Operation`.
         client = self._cluster._instance._client
-        operation_pb = client._operations_stub.GetOperation(
-            request_pb, client.timeout_seconds)
+        operation_pb = client._operations_stub.GetOperation(request_pb)
 
         if operation_pb.done:
             self._complete = True
@@ -290,7 +289,7 @@ class Cluster(object):
         request_pb = messages_v2_pb2.GetClusterRequest(name=self.name)
         # We expect a `._generated.instance_pb2.Cluster`.
         cluster_pb = self._instance._client._instance_stub.GetCluster(
-            request_pb, self._instance._client.timeout_seconds)
+            request_pb)
 
         # NOTE: _update_from_pb does not check that the project, instance and
         #       cluster ID on the response match the request.
@@ -319,7 +318,7 @@ class Cluster(object):
         request_pb = _prepare_create_request(self)
         # We expect a `google.longrunning.operations_pb2.Operation`.
         operation_pb = self._instance._client._instance_stub.CreateCluster(
-            request_pb, self._instance._client.timeout_seconds)
+            request_pb)
 
         op_id = _process_operation(operation_pb)
         return Operation('create', op_id, cluster=self)
@@ -348,7 +347,7 @@ class Cluster(object):
         )
         # Ignore expected `._generated.instance_pb2.Cluster`.
         operation_pb = self._instance._client._instance_stub.UpdateCluster(
-            request_pb, self._instance._client.timeout_seconds)
+            request_pb)
 
         op_id = _process_operation(operation_pb)
         return Operation('update', op_id, cluster=self)
@@ -380,5 +379,4 @@ class Cluster(object):
         """
         request_pb = messages_v2_pb2.DeleteClusterRequest(name=self.name)
         # We expect a `google.protobuf.empty_pb2.Empty`
-        self._instance._client._instance_stub.DeleteCluster(
-            request_pb, self._instance._client.timeout_seconds)
+        self._instance._client._instance_stub.DeleteCluster(request_pb)

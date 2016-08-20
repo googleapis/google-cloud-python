@@ -23,7 +23,6 @@ class TestTable(unittest.TestCase):
     INSTANCE_NAME = ('projects/' + PROJECT_ID + '/instances/' + INSTANCE_ID)
     TABLE_ID = 'table-id'
     TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
-    TIMEOUT_SECONDS = 1333
     ROW_KEY = b'row-key'
     FAMILY_NAME = u'family'
     QUALIFIER = b'qualifier'
@@ -137,7 +136,7 @@ class TestTable(unittest.TestCase):
         from gcloud._helpers import _to_bytes
         from gcloud.bigtable._testing import _FakeStub
 
-        client = _Client(timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         table = self._makeOne(self.TABLE_ID, instance)
 
@@ -174,7 +173,7 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'CreateTable',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 
@@ -204,7 +203,7 @@ class TestTable(unittest.TestCase):
     def _list_column_families_helper(self):
         from gcloud.bigtable._testing import _FakeStub
 
-        client = _Client(timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         table = self._makeOne(self.TABLE_ID, instance)
 
@@ -231,7 +230,7 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'GetTable',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 
@@ -242,7 +241,7 @@ class TestTable(unittest.TestCase):
         from google.protobuf import empty_pb2
         from gcloud.bigtable._testing import _FakeStub
 
-        client = _Client(timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         table = self._makeOne(self.TABLE_ID, instance)
 
@@ -263,7 +262,7 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'DeleteTable',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 
@@ -272,7 +271,7 @@ class TestTable(unittest.TestCase):
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import table as MUT
 
-        client = _Client(timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         table = self._makeOne(self.TABLE_ID, instance)
 
@@ -302,7 +301,7 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'ReadRows',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
         self.assertEqual(mock_created,
@@ -353,7 +352,7 @@ class TestTable(unittest.TestCase):
         from gcloud.bigtable.row_data import PartialRowsData
         from gcloud.bigtable import table as MUT
 
-        client = _Client(timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         table = self._makeOne(self.TABLE_ID, instance)
 
@@ -387,7 +386,7 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'ReadRows',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
         created_kwargs = {
@@ -401,7 +400,7 @@ class TestTable(unittest.TestCase):
     def test_sample_row_keys(self):
         from gcloud.bigtable._testing import _FakeStub
 
-        client = _Client(timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         table = self._makeOne(self.TABLE_ID, instance)
 
@@ -422,7 +421,7 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'SampleRowKeys',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 
@@ -577,9 +576,6 @@ class _Client(object):
     instance_stub = None
     operations_stub = None
     table_stub = None
-
-    def __init__(self, timeout_seconds=None):
-        self.timeout_seconds = timeout_seconds
 
 
 class _Instance(object):

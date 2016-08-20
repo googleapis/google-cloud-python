@@ -414,11 +414,10 @@ class TestColumnFamily(unittest.TestCase):
         cluster_id = 'cluster-id'
         table_id = 'table-id'
         column_family_id = 'column-family-id'
-        timeout_seconds = 4
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
 
-        client = _Client(timeout_seconds=timeout_seconds)
+        client = _Client()
         table = _Table(table_name, client=client)
         column_family = self._makeOne(
             column_family_id, table, gc_rule=gc_rule)
@@ -451,7 +450,7 @@ class TestColumnFamily(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'ModifyColumnFamilies',
-            (request_pb, timeout_seconds),
+            (request_pb,),
             {},
         )])
 
@@ -473,11 +472,10 @@ class TestColumnFamily(unittest.TestCase):
         cluster_id = 'cluster-id'
         table_id = 'table-id'
         column_family_id = 'column-family-id'
-        timeout_seconds = 28
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
 
-        client = _Client(timeout_seconds=timeout_seconds)
+        client = _Client()
         table = _Table(table_name, client=client)
         column_family = self._makeOne(
             column_family_id, table, gc_rule=gc_rule)
@@ -510,7 +508,7 @@ class TestColumnFamily(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'ModifyColumnFamilies',
-            (request_pb, timeout_seconds),
+            (request_pb,),
             {},
         )])
 
@@ -533,11 +531,10 @@ class TestColumnFamily(unittest.TestCase):
         cluster_id = 'cluster-id'
         table_id = 'table-id'
         column_family_id = 'column-family-id'
-        timeout_seconds = 7
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
 
-        client = _Client(timeout_seconds=timeout_seconds)
+        client = _Client()
         table = _Table(table_name, client=client)
         column_family = self._makeOne(column_family_id, table)
 
@@ -564,7 +561,7 @@ class TestColumnFamily(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'ModifyColumnFamilies',
-            (request_pb, timeout_seconds),
+            (request_pb,),
             {},
         )])
 
@@ -673,9 +670,7 @@ class _Instance(object):
 
 
 class _Client(object):
-
-    def __init__(self, timeout_seconds=None):
-        self.timeout_seconds = timeout_seconds
+    pass
 
 
 class _Table(object):

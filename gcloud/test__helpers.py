@@ -913,8 +913,7 @@ class Test_make_stub(unittest.TestCase):
         self.assertTrue(result is mock_result)
         self.assertEqual(stub_inputs, [CHANNEL])
         self.assertEqual(plugin_args, [(credentials, user_agent)])
-        self.assertEqual(grpc_mod.ssl_channel_credentials_args,
-                         (None, None, None))
+        self.assertEqual(grpc_mod.ssl_channel_credentials_args, ())
         self.assertEqual(grpc_mod.metadata_call_credentials_args,
                          ((metadata_plugin,), {'name': 'google_creds'}))
         self.assertEqual(

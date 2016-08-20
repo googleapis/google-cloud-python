@@ -271,8 +271,7 @@ class ColumnFamily(object):
         # We expect a `.table_v2_pb2.ColumnFamily`. We ignore it since the only
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
-        client._table_stub.ModifyColumnFamilies(request_pb,
-                                                client.timeout_seconds)
+        client._table_stub.ModifyColumnFamilies(request_pb)
 
     def update(self):
         """Update this column family.
@@ -292,8 +291,7 @@ class ColumnFamily(object):
         # We expect a `.table_v2_pb2.ColumnFamily`. We ignore it since the only
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
-        client._table_stub.ModifyColumnFamilies(request_pb,
-                                                client.timeout_seconds)
+        client._table_stub.ModifyColumnFamilies(request_pb)
 
     def delete(self):
         """Delete this column family."""
@@ -304,8 +302,7 @@ class ColumnFamily(object):
             drop=True)
         client = self._table._instance._client
         # We expect a `google.protobuf.empty_pb2.Empty`
-        client._table_stub.ModifyColumnFamilies(request_pb,
-                                                client.timeout_seconds)
+        client._table_stub.ModifyColumnFamilies(request_pb)
 
 
 def _gc_rule_from_pb(gc_rule_pb):

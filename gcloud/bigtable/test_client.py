@@ -165,7 +165,6 @@ class TestClient(unittest.TestCase):
     PROJECT = 'PROJECT'
     INSTANCE_ID = 'instance-id'
     DISPLAY_NAME = 'display-name'
-    TIMEOUT_SECONDS = 80
     USER_AGENT = 'you-sir-age-int'
 
     def _getTargetClass(self):
@@ -191,13 +190,11 @@ class TestClient(unittest.TestCase):
 
     def _constructor_test_helper(self, expected_scopes, creds,
                                  read_only=False, admin=False,
-                                 user_agent=None, timeout_seconds=None,
-                                 expected_creds=None):
+                                 user_agent=None, expected_creds=None):
         from gcloud._testing import _Monkey
         from gcloud.bigtable import client as MUT
 
         user_agent = user_agent or MUT.DEFAULT_USER_AGENT
-        timeout_seconds = timeout_seconds or MUT.DEFAULT_TIMEOUT_SECONDS
 
         mock_make_data_stub = _MakeStubMock()
         mock_make_instance_stub = _MakeStubMock()
@@ -209,8 +206,7 @@ class TestClient(unittest.TestCase):
                      _make_table_stub=mock_make_table_stub):
             client = self._makeOne(project=self.PROJECT, credentials=creds,
                                    read_only=read_only, admin=admin,
-                                   user_agent=user_agent,
-                                   timeout_seconds=timeout_seconds)
+                                   user_agent=user_agent)
 
         # Verify the mocks.
         self.assertEqual(mock_make_data_stub.calls, [client])
@@ -229,7 +225,6 @@ class TestClient(unittest.TestCase):
             self.assertEqual(client._credentials.scopes, expected_scopes)
 
         self.assertEqual(client.project, self.PROJECT)
-        self.assertEqual(client.timeout_seconds, timeout_seconds)
         self.assertEqual(client.user_agent, user_agent)
         # Check gRPC stubs (or mocks of them) are set
         self.assertIs(client._data_stub, mock_make_data_stub.result)
@@ -252,16 +247,14 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         self._constructor_test_helper(expected_scopes, creds)
 
-    def test_constructor_custom_user_agent_and_timeout(self):
+    def test_constructor_custom_user_agent(self):
         from gcloud.bigtable import client as MUT
 
-        CUSTOM_TIMEOUT_SECONDS = 1337
         CUSTOM_USER_AGENT = 'custom-application'
         expected_scopes = [MUT.DATA_SCOPE]
         creds = _Credentials()
         self._constructor_test_helper(expected_scopes, creds,
-                                      user_agent=CUSTOM_USER_AGENT,
-                                      timeout_seconds=CUSTOM_TIMEOUT_SECONDS)
+                                      user_agent=CUSTOM_USER_AGENT)
 
     def test_constructor_with_admin(self):
         from gcloud.bigtable import client as MUT
@@ -312,7 +305,6 @@ class TestClient(unittest.TestCase):
             credentials=credentials,
             read_only=read_only,
             admin=admin,
-            timeout_seconds=self.TIMEOUT_SECONDS,
             user_agent=self.USER_AGENT)
         # Put some fake stubs in place so that we can verify they don't
         # get copied. In the admin=False case, only the data stub will
@@ -335,7 +327,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(new_client._credentials, client._credentials)
         self.assertEqual(new_client.project, client.project)
         self.assertEqual(new_client.user_agent, client.user_agent)
-        self.assertEqual(new_client.timeout_seconds, client.timeout_seconds)
         # Make sure stubs are not preserved.
         self.assertNotEqual(new_client._data_stub, client._data_stub)
         self.assertNotEqual(new_client._instance_stub_internal,
@@ -481,7 +472,6 @@ class TestClient(unittest.TestCase):
             project=self.PROJECT,
             credentials=credentials,
             admin=True,
-            timeout_seconds=self.TIMEOUT_SECONDS,
         )
 
         # Create request_pb
@@ -522,7 +512,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'ListInstances',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 

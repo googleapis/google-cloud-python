@@ -67,9 +67,6 @@ DATA_SCOPE = 'https://www.googleapis.com/auth/bigtable.data'
 READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
 """Scope for reading table data."""
 
-DEFAULT_TIMEOUT_SECONDS = 10
-"""The default timeout to use for API requests."""
-
 DEFAULT_USER_AGENT = 'gcloud-python/{0}'.format(
     get_distribution('gcloud').version)
 """The default user agent for API requests."""
@@ -168,11 +165,6 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     :param user_agent: (Optional) The user agent to be used with API request.
                        Defaults to :const:`DEFAULT_USER_AGENT`.
 
-    :type timeout_seconds: int
-    :param timeout_seconds: Number of seconds for request time-out. If not
-                            passed, defaults to
-                            :const:`DEFAULT_TIMEOUT_SECONDS`.
-
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
     """
@@ -182,8 +174,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     _table_stub_internal = None
 
     def __init__(self, project=None, credentials=None,
-                 read_only=False, admin=False, user_agent=DEFAULT_USER_AGENT,
-                 timeout_seconds=DEFAULT_TIMEOUT_SECONDS):
+                 read_only=False, admin=False, user_agent=DEFAULT_USER_AGENT):
         _ClientProjectMixin.__init__(self, project=project)
         if credentials is None:
             credentials = get_credentials()
@@ -208,7 +199,6 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
             pass
         self._credentials = credentials
         self.user_agent = user_agent
-        self.timeout_seconds = timeout_seconds
 
         # Create gRPC stubs for making requests.
         self._data_stub = _make_data_stub(self)
@@ -234,7 +224,6 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
             READ_ONLY_SCOPE in copied_creds.scopes,
             self._admin,
             self.user_agent,
-            self.timeout_seconds,
         )
 
     @property
@@ -347,8 +336,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         request_pb = bigtable_instance_admin_pb2.ListInstancesRequest(
             parent=self.project_name)
 
-        response = self._instance_stub.ListInstances(
-            request_pb, self.timeout_seconds)
+        response = self._instance_stub.ListInstances(request_pb)
 
         instances = [Instance.from_pb(instance_pb, self)
                      for instance_pb in response.instances]

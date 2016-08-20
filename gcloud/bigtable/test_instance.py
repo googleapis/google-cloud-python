@@ -94,9 +94,8 @@ class TestOperation(unittest.TestCase):
 
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
-        TIMEOUT_SECONDS = 1
 
-        client = _Client(PROJECT, timeout_seconds=TIMEOUT_SECONDS)
+        client = _Client(PROJECT)
         instance = Instance(INSTANCE_ID, client, self.LOCATION_ID)
         operation = self._makeOne(
             self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
@@ -124,7 +123,7 @@ class TestOperation(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'GetOperation',
-            (request_pb, TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 
@@ -153,7 +152,6 @@ class TestInstance(unittest.TestCase):
                (PROJECT, INSTANCE_ID, OP_ID))
     TABLE_ID = 'table_id'
     TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
-    TIMEOUT_SECONDS = 1
 
     def _getTargetClass(self):
         from gcloud.bigtable.instance import Instance
@@ -316,7 +314,7 @@ class TestInstance(unittest.TestCase):
             bigtable_instance_admin_pb2 as messages_v2_pb)
         from gcloud.bigtable._testing import _FakeStub
 
-        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create request_pb
@@ -343,7 +341,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'GetInstance',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 
@@ -356,7 +354,7 @@ class TestInstance(unittest.TestCase):
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import instance as MUT
 
-        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create request_pb. Just a mock since we monkey patch
@@ -396,7 +394,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'CreateInstance',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
         self.assertEqual(prep_create_called, [instance])
@@ -410,7 +408,7 @@ class TestInstance(unittest.TestCase):
 
         SERVE_NODES = 5
 
-        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
                                  serve_nodes=SERVE_NODES)
 
@@ -451,7 +449,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'CreateInstance',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
         self.assertEqual(prep_create_called, [instance])
@@ -462,7 +460,7 @@ class TestInstance(unittest.TestCase):
             instance_pb2 as data_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
-        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
                                  display_name=self.DISPLAY_NAME)
 
@@ -487,7 +485,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'UpdateInstance',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 
@@ -497,7 +495,7 @@ class TestInstance(unittest.TestCase):
             bigtable_instance_admin_pb2 as messages_v2_pb)
         from gcloud.bigtable._testing import _FakeStub
 
-        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create request_pb
@@ -519,7 +517,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'DeleteInstance',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 
@@ -536,7 +534,7 @@ class TestInstance(unittest.TestCase):
         CLUSTER_ID2 = 'cluster-id2'
         SERVE_NODES = 4
 
-        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         CLUSTER_NAME1 = (instance.name + '/clusters/' + CLUSTER_ID1)
@@ -576,7 +574,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'ListClusters',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 
@@ -587,7 +585,7 @@ class TestInstance(unittest.TestCase):
             bigtable_table_admin_pb2 as table_messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
-        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create request_
@@ -617,7 +615,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'ListTables',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 
@@ -851,10 +849,9 @@ class Test__process_operation(unittest.TestCase):
 
 class _Client(object):
 
-    def __init__(self, project, timeout_seconds=None):
+    def __init__(self, project):
         self.project = project
         self.project_name = 'projects/' + self.project
-        self.timeout_seconds = timeout_seconds
 
     def copy(self):
         from copy import deepcopy
@@ -862,5 +859,4 @@ class _Client(object):
 
     def __eq__(self, other):
         return (other.project == self.project and
-                other.project_name == self.project_name and
-                other.timeout_seconds == self.timeout_seconds)
+                other.project_name == self.project_name)

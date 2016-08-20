@@ -43,8 +43,6 @@ DATASTORE_API_HOST = 'datastore.googleapis.com'
 """Datastore API request host."""
 DATASTORE_API_PORT = 443
 """Datastore API request port."""
-GRPC_TIMEOUT_SECONDS = 10
-"""The default timeout to use for API requests via gRPC."""
 
 
 class _DatastoreAPIOverHttp(object):
@@ -253,7 +251,7 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return self._stub.Lookup(request_pb, GRPC_TIMEOUT_SECONDS)
+        return self._stub.Lookup(request_pb)
 
     def run_query(self, project, request_pb):
         """Perform a ``runQuery`` request.
@@ -269,7 +267,7 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return self._stub.RunQuery(request_pb, GRPC_TIMEOUT_SECONDS)
+        return self._stub.RunQuery(request_pb)
 
     def begin_transaction(self, project, request_pb):
         """Perform a ``beginTransaction`` request.
@@ -286,7 +284,7 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return self._stub.BeginTransaction(request_pb, GRPC_TIMEOUT_SECONDS)
+        return self._stub.BeginTransaction(request_pb)
 
     def commit(self, project, request_pb):
         """Perform a ``commit`` request.
@@ -303,7 +301,7 @@ class _DatastoreAPIOverGRPC(object):
         """
         request_pb.project_id = project
         try:
-            return self._stub.Commit(request_pb, GRPC_TIMEOUT_SECONDS)
+            return self._stub.Commit(request_pb)
         except _Rendezvous as exc:
             if exc.code() == StatusCode.ABORTED:
                 raise Conflict(exc.details())
@@ -323,7 +321,7 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return self._stub.Rollback(request_pb, GRPC_TIMEOUT_SECONDS)
+        return self._stub.Rollback(request_pb)
 
     def allocate_ids(self, project, request_pb):
         """Perform an ``allocateIds`` request.
@@ -339,7 +337,7 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return self._stub.AllocateIds(request_pb, GRPC_TIMEOUT_SECONDS)
+        return self._stub.AllocateIds(request_pb)
 
 
 class Connection(connection_module.Connection):
