@@ -92,12 +92,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "string"
           ]
         }, 
         {
@@ -110,12 +110,12 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "tuple"
           ]
         }
       ], 
@@ -136,12 +136,12 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "string"
           ]
         }, 
         {
@@ -163,12 +163,12 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "tuple"
           ]
         }
       ], 
@@ -223,8 +223,8 @@
       "name": "list_buckets", 
       "params": [
         {
-          "description": " Optional. Filter results to buckets whose names begin with this prefix.", 
-          "name": "prefix", 
+          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
+          "name": "projection", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -232,8 +232,8 @@
           ]
         }, 
         {
-          "description": " Optional. Opaque marker for the next \"page\" of buckets. If not passed, will return the first page of buckets.", 
-          "name": "page_token", 
+          "description": " Optional. Filter results to buckets whose names begin with this prefix.", 
+          "name": "prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -250,8 +250,8 @@
           ]
         }, 
         {
-          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each bucket returned: 'items/id,nextPageToken'", 
-          "name": "fields", 
+          "description": " Optional. Opaque marker for the next \"page\" of buckets. If not passed, will return the first page of buckets.", 
+          "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -259,8 +259,8 @@
           ]
         }, 
         {
-          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
-          "name": "projection", 
+          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each bucket returned: 'items/id,nextPageToken'", 
+          "name": "fields", 
           "nullable": null, 
           "optional": null, 
           "types": [

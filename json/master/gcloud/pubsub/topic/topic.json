@@ -46,21 +46,21 @@
       "name": "check_iam_permissions", 
       "params": [
         {
-          "description": " list of permissions to be tested", 
-          "name": "permissions", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " string"
-          ]
-        }, 
-        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current batch.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " list of permissions to be tested", 
+          "name": "permissions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " string"
           ]
         }
       ], 
@@ -197,21 +197,21 @@
           ]
         }, 
         {
-          "description": " opaque marker for the next \"page\" of topics. If not passed, the API will return the first page of topics.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " maximum number of topics to return, If not passed, defaults to a value set by the API.", 
           "name": "page_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of topics. If not passed, the API will return the first page of topics.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -232,21 +232,21 @@
       "name": "publish", 
       "params": [
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current topic.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " the message payload", 
           "name": "message", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "bytes"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -276,21 +276,21 @@
       "name": "set_iam_policy", 
       "params": [
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current batch.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " the new policy, typically fetched via", 
           "name": "policy", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/iam/policy\">gcloud.pubsub.iam.Policy</a>"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current batch.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
           ]
         }
       ], 

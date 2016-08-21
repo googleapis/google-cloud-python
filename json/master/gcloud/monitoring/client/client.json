@@ -110,12 +110,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "string"
           ]
         }, 
         {
@@ -128,12 +128,12 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "tuple"
           ]
         }
       ], 
@@ -154,12 +154,12 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "string"
           ]
         }, 
         {
@@ -181,12 +181,12 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "tuple"
           ]
         }
       ], 
@@ -207,6 +207,15 @@
       "name": "group", 
       "params": [
         {
+          "description": " A user-assigned name for this group, used only for display purposes.", 
+          "name": "display_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }, 
+        {
           "description": " The filter string used to determine which monitored resources belong to this group.", 
           "name": "filter_string", 
           "nullable": null, 
@@ -225,12 +234,12 @@
           ]
         }, 
         {
-          "description": " A user-assigned name for this group, used only for display purposes.", 
-          "name": "display_name", 
+          "description": " If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters.", 
+          "name": "is_cluster", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string or None"
+            "boolean"
           ]
         }, 
         {
@@ -240,15 +249,6 @@
           "optional": null, 
           "types": [
             "string or None"
-          ]
-        }, 
-        {
-          "description": " If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters.", 
-          "name": "is_cluster", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
           ]
         }
       ], 
@@ -362,35 +362,8 @@
       "name": "metric_descriptor", 
       "params": [
         {
-          "description": " An optional unit in which the metric value is reported.", 
-          "name": "unit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " An optional detailed description of the metric.", 
-          "name": "description", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " An optional concise name for the metric.", 
           "name": "display_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The kind of measurement. It must be one of", 
-          "name": "metric_kind", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -416,8 +389,35 @@
           ]
         }, 
         {
+          "description": " An optional detailed description of the metric.", 
+          "name": "description", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
           "name": "type_", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The kind of measurement. It must be one of", 
+          "name": "metric_kind", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " An optional unit in which the metric value is reported.", 
+          "name": "unit", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -455,17 +455,17 @@
           ]
         }, 
         {
-          "description": " The number of hours in the time interval.", 
-          "name": "hours", 
+          "description": " The metric type name. The default value is", 
+          "name": "metric_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "string"
           ]
         }, 
         {
-          "description": " The number of minutes in the time interval.", 
-          "name": "minutes", 
+          "description": " The number of hours in the time interval.", 
+          "name": "hours", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -482,12 +482,12 @@
           ]
         }, 
         {
-          "description": " The metric type name. The default value is", 
-          "name": "metric_type", 
+          "description": " The number of minutes in the time interval.", 
+          "name": "minutes", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "integer"
           ]
         }
       ], 

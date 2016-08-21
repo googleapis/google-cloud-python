@@ -38,6 +38,15 @@
       "name": "fetch", 
       "params": [
         {
+          "description": " An optional cursor passed through to the iterator.", 
+          "name": "end_cursor", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bytes"
+          ]
+        }, 
+        {
           "description": " client used to connect to datastore. If not supplied, uses the query's value.", 
           "name": "client", 
           "nullable": null, 
@@ -48,7 +57,7 @@
         }, 
         {
           "description": " An optional cursor passed through to the iterator.", 
-          "name": "end_cursor", 
+          "name": "start_cursor", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -71,15 +80,6 @@
           "optional": null, 
           "types": [
             "integer"
-          ]
-        }, 
-        {
-          "description": " An optional cursor passed through to the iterator.", 
-          "name": "start_cursor", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bytes"
           ]
         }
       ], 

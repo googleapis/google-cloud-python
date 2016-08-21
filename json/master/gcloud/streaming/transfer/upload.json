@@ -83,21 +83,21 @@
       "name": "from_stream", 
       "params": [
         {
+          "description": " Size of the file being uploaded", 
+          "name": "total_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
+          ]
+        }, 
+        {
           "description": " MIMEtype of the file being uploaded", 
           "name": "mime_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
           ]
         }, 
         {
@@ -119,12 +119,12 @@
           ]
         }, 
         {
-          "description": " Size of the file being uploaded", 
-          "name": "total_size", 
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or None"
+            "dict"
           ]
         }
       ], 
