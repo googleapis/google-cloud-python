@@ -45,6 +45,10 @@ class Document(object):
     stored on the document or referred to in a Google Cloud Storage
     object.
 
+    :type client: :class:`~gcloud.language.client.Client`
+    :param client: A client which holds credentials and project
+                   configuration.
+
     :type content: str
     :param content: (Optional) The document text content (either plain
                     text or HTML).
@@ -82,7 +86,7 @@ class Document(object):
     HTML = 'HTML'
     """HTML document type."""
 
-    def __init__(self, content=None, gcs_url=None, doc_type=PLAIN_TEXT,
+    def __init__(self, client, content=None, gcs_url=None, doc_type=PLAIN_TEXT,
                  language=DEFAULT_LANGUAGE, encoding=Encoding.UTF8):
         if content is not None and gcs_url is not None:
             raise ValueError('A Document cannot contain both local text and '
@@ -90,6 +94,7 @@ class Document(object):
         if content is None and gcs_url is None:
             raise ValueError('A Document must contain either local text or a '
                              'link to text in a Google Cloud Storage object')
+        self.client = client
         self.content = content
         self.gcs_url = gcs_url
         self.doc_type = doc_type

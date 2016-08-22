@@ -26,13 +26,42 @@ class TestClient(unittest.TestCase):
 
     def test_ctor(self):
         from gcloud.language.connection import Connection
+
         project = 'PROJECT'
         creds = _Credentials()
         http = object()
         client = self._makeOne(project=project, credentials=creds, http=http)
-        self.assertTrue(isinstance(client.connection, Connection))
+        self.assertIsInstance(client.connection, Connection)
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
+
+    def test_document_from_text_factory(self):
+        from gcloud.language.document import Document
+
+        creds = _Credentials()
+        client = self._makeOne(project='PROJECT',
+                               credentials=creds, http=object())
+
+        content = '<html>abc</html>'
+        language = 'es'
+        document = client.document_from_text(content, language=language)
+        self.assertIsInstance(document, Document)
+        self.assertIs(document.client, client)
+        self.assertEqual(document.content, content)
+        # Test the default arg.
+        self.assertEqual(document.doc_type, Document.PLAIN_TEXT)
+        # Test the kwargs as well.
+        self.assertEqual(document.language, language)
+
+    def test_document_from_text_factory_failure(self):
+        from gcloud.language.document import Document
+
+        creds = _Credentials()
+        client = self._makeOne(project='PROJECT',
+                               credentials=creds, http=object())
+
+        with self.assertRaises(TypeError):
+            client.document_from_text('abc', doc_type=Document.HTML)
 
 
 class _Credentials(object):

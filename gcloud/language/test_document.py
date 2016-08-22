@@ -27,8 +27,10 @@ class TestDocument(unittest.TestCase):
     def test_constructor_defaults(self):
         import gcloud.language.document as MUT
 
+        client = object()
         content = 'abc'
-        document = self._makeOne(content)
+        document = self._makeOne(client, content)
+        self.assertIs(document.client, client)
         self.assertEqual(document.content, content)
         self.assertIsNone(document.gcs_url)
         self.assertEqual(document.doc_type, MUT.Document.PLAIN_TEXT)
@@ -38,12 +40,14 @@ class TestDocument(unittest.TestCase):
     def test_constructor_explicit(self):
         import gcloud.language.document as MUT
 
+        client = object()
         gcs_url = 'gs://some-bucket/some-obj.html'
         language = 'ja'
-        document = self._makeOne(gcs_url=gcs_url,
+        document = self._makeOne(client, gcs_url=gcs_url,
                                  doc_type=MUT.Document.HTML,
                                  language=language,
                                  encoding=MUT.Encoding.UTF32)
+        self.assertIs(document.client, client)
         self.assertIsNone(document.content)
         self.assertEqual(document.gcs_url, gcs_url)
         self.assertEqual(document.doc_type, MUT.Document.HTML)
@@ -52,9 +56,9 @@ class TestDocument(unittest.TestCase):
 
     def test_constructor_no_text(self):
         with self.assertRaises(ValueError):
-            self._makeOne(content=None, gcs_url=None)
+            self._makeOne(None, content=None, gcs_url=None)
 
     def test_constructor_text_and_gcs(self):
         with self.assertRaises(ValueError):
-            self._makeOne(content='abc',
+            self._makeOne(None, content='abc',
                           gcs_url='gs://some-bucket/some-obj.txt')

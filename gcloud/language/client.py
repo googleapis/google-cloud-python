@@ -17,6 +17,7 @@
 
 from gcloud.client import JSONClient
 from gcloud.language.connection import Connection
+from gcloud.language.document import Document
 
 
 class Client(JSONClient):
@@ -40,3 +41,24 @@ class Client(JSONClient):
     """
 
     _connection_class = Connection
+
+    def document_from_text(self, content, **kwargs):
+        """Create a plain text document bound to this client.
+
+        :type content: str
+        :param content: The document text content (either plain
+                        text or HTML).
+
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments to be passed along to the
+                       :class:`Document` constructor.
+
+        :rtype: :class:`Document`
+        :returns: A plain-text document bound to this client.
+        :raises: :class:`TypeError` if ``doc_type`` is passed as a
+                 keyword argument.
+        """
+        if 'doc_type' in kwargs:
+            raise TypeError('Cannot pass doc_type')
+        return Document(self, content=content,
+                        doc_type=Document.PLAIN_TEXT, **kwargs)
