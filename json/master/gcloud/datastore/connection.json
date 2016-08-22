@@ -32,16 +32,6 @@
       "returns": [], 
       "source": null, 
       "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.datastore.connection.GRPC_TIMEOUT_SECONDS", 
-      "name": "GRPC_TIMEOUT_SECONDS", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
     }
   ], 
   "name": "Connection", 

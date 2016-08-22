@@ -20,21 +20,21 @@
       "name": "cluster", 
       "params": [
         {
-          "description": " The ID of the cluster.", 
-          "name": "cluster_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " (Optional) The number of nodes in the cluster. Defaults to 3.", 
           "name": "serve_nodes", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " The ID of the cluster.", 
+          "name": "cluster_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -45,7 +45,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/instance.py#L421", 
+      "source": "gcloud/bigtable/instance.py#L417", 
       "type": "instance"
     }, 
     {
@@ -77,7 +77,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/instance.py#L339", 
+      "source": "gcloud/bigtable/instance.py#L338", 
       "type": "instance"
     }, 
     {
@@ -87,7 +87,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/instance.py#L389", 
+      "source": "gcloud/bigtable/instance.py#L386", 
       "type": "instance"
     }, 
     {
@@ -97,21 +97,21 @@
       "name": "from_pb", 
       "params": [
         {
-          "description": " A instance protobuf object.", 
-          "name": "instance_pb", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "instance_pb2.Instance"
-          ]
-        }, 
-        {
           "description": " The client that owns the instance.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "Client <gcloud.bigtable.client.Client>"
+          ]
+        }, 
+        {
+          "description": " A instance protobuf object.", 
+          "name": "instance_pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "instance_pb2.Instance"
           ]
         }
       ], 
@@ -138,7 +138,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/instance.py#L436", 
+      "source": "gcloud/bigtable/instance.py#L432", 
       "type": "instance"
     }, 
     {
@@ -154,7 +154,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/instance.py#L466", 
+      "source": "gcloud/bigtable/instance.py#L462", 
       "type": "instance"
     }, 
     {
@@ -190,7 +190,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/instance.py#L455", 
+      "source": "gcloud/bigtable/instance.py#L451", 
       "type": "instance"
     }, 
     {
@@ -200,7 +200,7 @@
       "name": "update", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/instance.py#L367", 
+      "source": "gcloud/bigtable/instance.py#L365", 
       "type": "instance"
     }
   ], 

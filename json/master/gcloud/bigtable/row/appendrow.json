@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/row.py#L670", 
+      "source": "gcloud/bigtable/row.py#L669", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "append_cell_value", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/row.py#L678", 
+      "source": "gcloud/bigtable/row.py#L677", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "clear", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/row.py#L674", 
+      "source": "gcloud/bigtable/row.py#L673", 
       "type": "instance"
     }, 
     {
@@ -50,7 +50,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/row.py#L747", 
+      "source": "gcloud/bigtable/row.py#L746", 
       "type": "instance"
     }, 
     {
@@ -60,7 +60,7 @@
       "name": "increment_cell_value", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/row.py#L710", 
+      "source": "gcloud/bigtable/row.py#L709", 
       "type": "instance"
     }
   ], 

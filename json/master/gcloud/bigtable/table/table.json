@@ -116,7 +116,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/table.py#L214", 
+      "source": "gcloud/bigtable/table.py#L213", 
       "type": "instance"
     }, 
     {
@@ -126,12 +126,12 @@
       "name": "read_rows", 
       "params": [
         {
-          "description": " (Optional) The filter to apply to the contents of the specified row(s). If unset, reads every column in each row.", 
-          "name": "filter_", 
+          "description": " (Optional) The beginning of a range of row keys to read from. The range will include <code>start_key</code>. If left empty, will be interpreted as the empty string.", 
+          "name": "start_key", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
+            "bytes"
           ]
         }, 
         {
@@ -144,12 +144,12 @@
           ]
         }, 
         {
-          "description": " (Optional) The beginning of a range of row keys to read from. The range will include <code>start_key</code>. If left empty, will be interpreted as the empty string.", 
-          "name": "start_key", 
+          "description": " (Optional) The filter to apply to the contents of the specified row(s). If unset, reads every column in each row.", 
+          "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "bytes"
+            "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
           ]
         }, 
         {
@@ -169,7 +169,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/table.py#L245", 
+      "source": "gcloud/bigtable/table.py#L243", 
       "type": "instance"
     }, 
     {
@@ -225,11 +225,11 @@
       "returns": [
         {
           "types": [
-            "grpc.framework.alpha._reexport._CancellableIterator"
+            "grpc._channel._Rendezvous"
           ]
         }
       ], 
-      "source": "gcloud/bigtable/table.py#L282", 
+      "source": "gcloud/bigtable/table.py#L279", 
       "type": "instance"
     }
   ], 

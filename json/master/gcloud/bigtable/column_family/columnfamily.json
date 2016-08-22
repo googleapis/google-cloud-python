@@ -30,7 +30,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/column_family.py#L298", 
+      "source": "gcloud/bigtable/column_family.py#L296", 
       "type": "instance"
     }, 
     {
@@ -56,7 +56,7 @@
       "name": "update", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/column_family.py#L277", 
+      "source": "gcloud/bigtable/column_family.py#L276", 
       "type": "instance"
     }
   ], 

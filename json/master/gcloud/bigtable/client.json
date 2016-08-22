@@ -6,46 +6,6 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.bigtable.client.DATA_STUB_FACTORY_V2", 
-      "name": "DATA_STUB_FACTORY_V2", 
-      "params": [], 
-      "returns": [], 
-      "source": "gcloud/bigtable/_generated/bigtable_pb2.py#L1073", 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.bigtable.client.INSTANCE_STUB_FACTORY_V2", 
-      "name": "INSTANCE_STUB_FACTORY_V2", 
-      "params": [], 
-      "returns": [], 
-      "source": "gcloud/bigtable/_generated/bigtable_instance_admin_pb2.py#L1022", 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.bigtable.client.OPERATIONS_STUB_FACTORY_V2", 
-      "name": "OPERATIONS_STUB_FACTORY_V2", 
-      "params": [], 
-      "returns": [], 
-      "source": "gcloud/bigtable/_generated/operations_grpc_pb2.py#L244", 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.bigtable.client.TABLE_STUB_FACTORY_V2", 
-      "name": "TABLE_STUB_FACTORY_V2", 
-      "params": [], 
-      "returns": [], 
-      "source": "gcloud/bigtable/_generated/bigtable_table_admin_pb2.py#L757", 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
       "id": "gcloud.bigtable.client.ADMIN_SCOPE", 
       "name": "ADMIN_SCOPE", 
       "params": [], 
@@ -56,8 +16,8 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.bigtable.client.DATA_API_HOST_V2", 
-      "name": "DATA_API_HOST_V2", 
+      "id": "gcloud.bigtable.client.DATA_API_HOST", 
+      "name": "DATA_API_HOST", 
       "params": [], 
       "returns": [], 
       "source": null, 
@@ -66,8 +26,8 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.bigtable.client.DATA_API_PORT_V2", 
-      "name": "DATA_API_PORT_V2", 
+      "id": "gcloud.bigtable.client.DATA_API_PORT", 
+      "name": "DATA_API_PORT", 
       "params": [], 
       "returns": [], 
       "source": null, 
@@ -96,16 +56,6 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.bigtable.client.DEFAULT_TIMEOUT_SECONDS", 
-      "name": "DEFAULT_TIMEOUT_SECONDS", 
-      "params": [], 
-      "returns": [], 
-      "source": null, 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
       "id": "gcloud.bigtable.client.DEFAULT_USER_AGENT", 
       "name": "DEFAULT_USER_AGENT", 
       "params": [], 
@@ -116,8 +66,8 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.bigtable.client.INSTANCE_ADMIN_HOST_V2", 
-      "name": "INSTANCE_ADMIN_HOST_V2", 
+      "id": "gcloud.bigtable.client.INSTANCE_ADMIN_HOST", 
+      "name": "INSTANCE_ADMIN_HOST", 
       "params": [], 
       "returns": [], 
       "source": null, 
@@ -126,8 +76,8 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.bigtable.client.INSTANCE_ADMIN_PORT_V2", 
-      "name": "INSTANCE_ADMIN_PORT_V2", 
+      "id": "gcloud.bigtable.client.INSTANCE_ADMIN_PORT", 
+      "name": "INSTANCE_ADMIN_PORT", 
       "params": [], 
       "returns": [], 
       "source": null, 
@@ -136,8 +86,8 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.bigtable.client.OPERATIONS_API_HOST_V2", 
-      "name": "OPERATIONS_API_HOST_V2", 
+      "id": "gcloud.bigtable.client.OPERATIONS_API_HOST", 
+      "name": "OPERATIONS_API_HOST", 
       "params": [], 
       "returns": [], 
       "source": null, 
@@ -146,8 +96,8 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.bigtable.client.OPERATIONS_API_PORT_V2", 
-      "name": "OPERATIONS_API_PORT_V2", 
+      "id": "gcloud.bigtable.client.OPERATIONS_API_PORT", 
+      "name": "OPERATIONS_API_PORT", 
       "params": [], 
       "returns": [], 
       "source": null, 
@@ -166,8 +116,8 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.bigtable.client.TABLE_ADMIN_HOST_V2", 
-      "name": "TABLE_ADMIN_HOST_V2", 
+      "id": "gcloud.bigtable.client.TABLE_ADMIN_HOST", 
+      "name": "TABLE_ADMIN_HOST", 
       "params": [], 
       "returns": [], 
       "source": null, 
@@ -176,8 +126,8 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.bigtable.client.TABLE_ADMIN_PORT_V2", 
-      "name": "TABLE_ADMIN_PORT_V2", 
+      "id": "gcloud.bigtable.client.TABLE_ADMIN_PORT", 
+      "name": "TABLE_ADMIN_PORT", 
       "params": [], 
       "returns": [], 
       "source": null, 

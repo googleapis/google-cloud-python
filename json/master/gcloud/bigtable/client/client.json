@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/client.py#L136", 
+      "source": "gcloud/bigtable/client.py#L176", 
       "type": "instance"
     }, 
     {
@@ -26,7 +26,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/client.py#L171", 
+      "source": "gcloud/bigtable/client.py#L210", 
       "type": "instance"
     }, 
     {
@@ -45,21 +45,21 @@
           ]
         }, 
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -80,24 +80,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
           "name": "private_key_path", 
           "nullable": null, 
@@ -113,6 +95,24 @@
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -142,21 +142,21 @@
           ]
         }, 
         {
-          "description": " (Optional) The display name for the instance in the Cloud Console UI. (Must be between 4 and 30 characters.) If this value is not set in the constructor, will fall back to the instance ID.", 
-          "name": "display_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " location name, in form projects/<project>/locations/<location>; used to set up the instance's cluster.", 
           "name": "location", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " (Optional) The display name for the instance in the Cloud Console UI. (Must be between 4 and 30 characters.) If this value is not set in the constructor, will fall back to the instance ID.", 
+          "name": "display_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }, 
         {
@@ -176,23 +176,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/client.py#L384", 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.bigtable.client.Client.is_started", 
-      "name": "is_started", 
-      "params": [], 
-      "returns": [
-        {
-          "types": [
-            "bool"
-          ]
-        }
-      ], 
-      "source": "gcloud/bigtable/client.py#L324", 
+      "source": "gcloud/bigtable/client.py#L300", 
       "type": "instance"
     }, 
     {
@@ -208,27 +192,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/client.py#L412", 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.bigtable.client.Client.start", 
-      "name": "start", 
-      "params": [], 
-      "returns": [], 
-      "source": "gcloud/bigtable/client.py#L332", 
-      "type": "instance"
-    }, 
-    {
-      "examples": [], 
-      "exceptions": [], 
-      "id": "gcloud.bigtable.client.Client.stop", 
-      "name": "stop", 
-      "params": [], 
-      "returns": [], 
-      "source": "gcloud/bigtable/client.py#L362", 
+      "source": "gcloud/bigtable/client.py#L328", 
       "type": "instance"
     }
   ], 

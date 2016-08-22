@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/row_data.py#L196", 
+      "source": "gcloud/bigtable/row_data.py#L195", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "cancel", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/row_data.py#L252", 
+      "source": "gcloud/bigtable/row_data.py#L251", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "consume_all", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/row_data.py#L307", 
+      "source": "gcloud/bigtable/row_data.py#L306", 
       "type": "instance"
     }, 
     {
@@ -40,7 +40,7 @@
       "name": "consume_next", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/row_data.py#L256", 
+      "source": "gcloud/bigtable/row_data.py#L255", 
       "type": "instance"
     }
   ], 
