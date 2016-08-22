@@ -29,7 +29,7 @@ class Query(object):
     stored in the Cloud Datastore.
 
     :type client: :class:`gcloud.datastore.client.Client`
-    :param client: The client used to connect to datastore.
+    :param client: The client used to connect to Datastore.
 
     :type kind: string
     :param kind: The kind to query.

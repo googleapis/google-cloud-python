@@ -813,43 +813,43 @@ class Table(object):
 
         :type allow_jagged_rows: boolean
         :param allow_jagged_rows: job configuration option;  see
-                                  :meth:`gcloud.bigquery.job.LoadJob`
+                                  :meth:`gcloud.bigquery.job.LoadJob`.
 
         :type allow_quoted_newlines: boolean
         :param allow_quoted_newlines: job configuration option; see
-                                      :meth:`gcloud.bigquery.job.LoadJob`
+                                      :meth:`gcloud.bigquery.job.LoadJob`.
 
         :type create_disposition: str
         :param create_disposition: job configuration option; see
-                                   :meth:`gcloud.bigquery.job.LoadJob`
+                                   :meth:`gcloud.bigquery.job.LoadJob`.
 
         :type encoding: str
         :param encoding: job configuration option; see
-                         :meth:`gcloud.bigquery.job.LoadJob`
+                         :meth:`gcloud.bigquery.job.LoadJob`.
 
         :type field_delimiter: str
         :param field_delimiter: job configuration option; see
-                                :meth:`gcloud.bigquery.job.LoadJob`
+                                :meth:`gcloud.bigquery.job.LoadJob`.
 
         :type ignore_unknown_values: boolean
         :param ignore_unknown_values: job configuration option; see
-                                      :meth:`gcloud.bigquery.job.LoadJob`
+                                      :meth:`gcloud.bigquery.job.LoadJob`.
 
         :type max_bad_records: integer
         :param max_bad_records: job configuration option; see
-                                :meth:`gcloud.bigquery.job.LoadJob`
+                                :meth:`gcloud.bigquery.job.LoadJob`.
 
         :type quote_character: str
         :param quote_character: job configuration option; see
-                                :meth:`gcloud.bigquery.job.LoadJob`
+                                :meth:`gcloud.bigquery.job.LoadJob`.
 
         :type skip_leading_rows: integer
         :param skip_leading_rows: job configuration option; see
-                                  :meth:`gcloud.bigquery.job.LoadJob`
+                                  :meth:`gcloud.bigquery.job.LoadJob`.
 
         :type write_disposition: str
         :param write_disposition: job configuration option; see
-                                  :meth:`gcloud.bigquery.job.LoadJob`
+                                  :meth:`gcloud.bigquery.job.LoadJob`.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -857,7 +857,7 @@ class Table(object):
 
         :rtype: :class:`gcloud.bigquery.jobs.LoadTableFromStorageJob`
         :returns: the job instance used to load the data (e.g., for
-                  querying status)
+                  querying status).
         :raises: :class:`ValueError` if ``size`` is not passed in and can not
                  be determined, or if the ``file_obj`` can be detected to be
                  a file opened in text mode.

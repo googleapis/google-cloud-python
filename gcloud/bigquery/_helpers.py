@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Shared elper functions for BigQuery API classes."""
+"""Shared helper functions for BigQuery API classes."""
 
 from gcloud._helpers import _datetime_from_microseconds
 
@@ -149,13 +149,13 @@ class _TypedProperty(_ConfigurationProperty):
 
 
 class _EnumProperty(_ConfigurationProperty):
-    """Psedo-enumeration class.
+    """Pseudo-enumeration class.
 
     Subclasses must define ``ALLOWED`` as a class-level constant:  it must
     be a sequence of strings.
 
     :type name: string
-    :param name:  name of the property
+    :param name:  name of the property.
     """
     def _validate(self, value):
         """Check that ``value`` is one of the allowed values.

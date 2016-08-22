@@ -72,7 +72,7 @@ class _ExceptionRetryArgs(
     :param http: instance used to perform requests.
 
     :type http_request: :class:`Request`
-    :param http_request: the request whose response was a retriable error
+    :param http_request: the request whose response was a retriable error.
 
     :type exc: :class:`Exception` subclass
     :param exc: the exception being raised.
@@ -387,7 +387,7 @@ def make_api_request(http, http_request,
     """Send an HTTP request via the given http, performing error/retry handling.
 
     :type http: :class:`httplib2.Http`
-    :param http: an instance which impelements the `Http` API.
+    :param http: an instance which implements the `Http` API.
 
     :type http_request: :class:`Request`
     :param http_request: the request to send.
@@ -410,7 +410,7 @@ def make_api_request(http, http_request,
     :param wo_retry_func: Function to make HTTP request without retries.
 
     :rtype: :class:`Response`
-    :returns: an object representing the server's response
+    :returns: an object representing the server's response.
 
     :raises: :exc:`gcloud.streaming.exceptions.RequestError` if no response
              could be parsed.
@@ -442,7 +442,7 @@ def _register_http_factory(factory):
     """Register a custom HTTP factory.
 
     :type factory: callable taking keyword arguments, returning an Http
-                   instance (or an instance implementing the same API);
+                   instance (or an instance implementing the same API).
     :param factory: the new factory (it may return ``None`` to defer to
                     a later factory or the default).
     """

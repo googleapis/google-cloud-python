@@ -88,7 +88,7 @@ class Entity(dict):
     def __eq__(self, other):
         """Compare two entities for equality.
 
-        Entities compare equal if their keys compare equal, and their
+        Entities compare equal if their keys compare equal and their
         properties compare equal.
 
         :rtype: boolean
@@ -105,7 +105,7 @@ class Entity(dict):
     def __ne__(self, other):
         """Compare two entities for inequality.
 
-        Entities compare equal if their keys compare equal, and their
+        Entities compare equal if their keys compare equal and their
         properties compare equal.
 
         :rtype: boolean

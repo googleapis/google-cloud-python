@@ -44,7 +44,7 @@ class Client(JSONClient):
     _connection_class = Connection
 
     def quotas(self):
-        """Return DNS quots for the project associated with this client.
+        """Return DNS quotas for the project associated with this client.
 
         See:
         https://cloud.google.com/dns/api/v1/projects/get
@@ -110,7 +110,7 @@ class Client(JSONClient):
                             defaults to the value of 'dns_name'.
 
         :rtype: :class:`gcloud.dns.zone.ManagedZone`
-        :returns: a new ``ManagedZone`` instance
+        :returns: a new ``ManagedZone`` instance.
         """
         return ManagedZone(name, dns_name, client=self,
                            description=description)

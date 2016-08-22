@@ -26,7 +26,7 @@ class Message(object):
     https://cloud.google.com/pubsub/reference/rest/v1/PubsubMessage
 
     :type data: bytes
-    :param data: the payload of the message
+    :param data: the payload of the message.
 
     :type message_id: string
     :param message_id: An ID assigned to the message by the API.
@@ -44,7 +44,7 @@ class Message(object):
 
     @property
     def attributes(self):
-        """Lazily-constructed attribute dictionary"""
+        """Lazily-constructed attribute dictionary."""
         if self._attributes is None:
             self._attributes = {}
         return self._attributes

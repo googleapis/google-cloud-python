@@ -49,7 +49,7 @@ class Client(BaseClient):
     _connection_class = Connection
 
     def new_project(self, project_id, name=None, labels=None):
-        """Creates a :class:`.Project` bound to the current client.
+        """Create a :class:`.Project` bound to the current client.
 
         Use :meth:`Project.reload() \
         <gcloud.resource_manager.project.Project.reload>` to retrieve

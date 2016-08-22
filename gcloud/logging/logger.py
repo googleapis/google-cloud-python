@@ -213,7 +213,7 @@ class Logger(object):
 
         :type http_request: dict or :class:`NoneType`
         :param http_request: (optional) info about HTTP request associated with
-                             the entry
+                             the entry.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
@@ -246,7 +246,7 @@ class Logger(object):
 
         :type http_request: dict or :class:`NoneType`
         :param http_request: (optional) info about HTTP request associated with
-                             the entry
+                             the entry.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(

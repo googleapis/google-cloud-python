@@ -21,7 +21,7 @@ from gcloud.environment_vars import PUBSUB_EMULATOR
 
 
 class Connection(base_connection.JSONConnection):
-    """A connection to Google Cloud Pubsub via the JSON REST API.
+    """A connection to Google Cloud Pub/Sub via the JSON REST API.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this

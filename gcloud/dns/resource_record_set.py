@@ -24,16 +24,16 @@ class ResourceRecordSet(object):
     https://cloud.google.com/dns/api/v1/resourceRecordSets
 
     :type name: string
-    :param name: the name of the record set
+    :param name: the name of the record set.
 
     :type record_type: string
-    :param record_type: the RR type of the zone
+    :param record_type: the RR type of the zone.
 
     :type ttl: integer
-    :param ttl: TTL (in seconds) for caching the record sets
+    :param ttl: TTL (in seconds) for caching the record sets.
 
     :type rrdatas: list of string
-    :param rrdatas: one or more lines containing the resource data
+    :param rrdatas: one or more lines containing the resource data.
 
     :type zone: :class:`gcloud.dns.zone.ManagedZone`
     :param zone: A zone which holds one or more record sets.

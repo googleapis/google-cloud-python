@@ -28,7 +28,7 @@ from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
 class Batch(object):
     """An abstraction representing a collected group of updates / deletes.
 
-    Used to build up a bulk mutuation.
+    Used to build up a bulk mutation.
 
     For example, the following snippet of code will put the two ``save``
     operations and the ``delete`` operation into the same mutation, and send
