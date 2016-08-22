@@ -414,7 +414,7 @@ class Batch(object):
             client = self.client
 
         kwargs = {
-            'logger_name': self.logger.path,
+            'logger_name': self.logger.full_name,
             'resource': {'type': 'global'},
         }
         if self.logger.labels is not None:
