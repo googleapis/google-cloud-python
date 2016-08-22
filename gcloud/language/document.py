@@ -55,10 +55,11 @@ class Document(object):
 
     :type gcs_url: str
     :param gcs_url: (Optional) The URL of the Google Cloud Storage object
-                    holding the content.
+                    holding the content. Of the form
+                    ``gs://{bucket}/{blob-name}``.
 
     :type doc_type: str
-    :param doc_type: (Optional) The encoding of the document text.
+    :param doc_type: (Optional) The type of text in the document.
                      Defaults to plain text. Can be one of
                      :attr:`~.Document.PLAIN_TEXT` or
                      or :attr:`~.Document.HTML`.

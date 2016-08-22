@@ -134,14 +134,14 @@ to content stored in `Google Cloud Storage`_. We can use the
      >>> document.doc_type == language.Document.PLAIN_TEXT
      True
 
-and the :meth:`~gcloud.language.client.Client.document_from_uri`
+and the :meth:`~gcloud.language.client.Client.document_from_url`
 method. In either case, the document type can be specified with
 the ``doc_type`` argument:
 
   .. code-block:: python
 
      >>> gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
-     >>> document = client.document_from_uri(
+     >>> document = client.document_from_url(
      ...     gcs_url, doc_type=language.Document.HTML)
      >>> document.gcs_url == gcs_url
      True

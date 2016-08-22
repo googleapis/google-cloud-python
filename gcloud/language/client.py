@@ -54,7 +54,7 @@ class Client(JSONClient):
 
         :rtype: :class:`Document`
         :returns: A plain-text document bound to this client.
-        :raises: :class:`TypeError` if ``doc_type`` is passed as a
+        :raises: :class:`~exceptions.TypeError` if ``doc_type`` is passed as a
                  keyword argument.
         """
         if 'doc_type' in kwargs:
@@ -74,10 +74,33 @@ class Client(JSONClient):
 
         :rtype: :class:`Document`
         :returns: An HTML document bound to this client.
-        :raises: :class:`TypeError` if ``doc_type`` is passed as a
+        :raises: :class:`~exceptions.TypeError` if ``doc_type`` is passed as a
                  keyword argument.
         """
         if 'doc_type' in kwargs:
             raise TypeError('Cannot pass doc_type')
         return Document(self, content=content,
                         doc_type=Document.HTML, **kwargs)
+
+    def document_from_url(self, gcs_url,
+                          doc_type=Document.PLAIN_TEXT, **kwargs):
+        """Create a Cloud Storage document bound to this client.
+
+        :type gcs_url: str
+        :param gcs_url: The URL of the Google Cloud Storage object
+                        holding the content. Of the form
+                        ``gs://{bucket}/{blob-name}``.
+
+        :type doc_type: str
+        :param doc_type: (Optional) The type of text in the document.
+                         Defaults to plain text. Can also be specified
+                         as HTML via :attr:`~.Document.HTML`.
+
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments to be passed along to the
+                       :class:`Document` constructor.
+
+        :rtype: :class:`Document`
+        :returns: A plain-text document bound to this client.
+        """
+        return Document(self, gcs_url=gcs_url, doc_type=doc_type, **kwargs)
