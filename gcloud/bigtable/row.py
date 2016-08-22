@@ -396,7 +396,7 @@ class DirectRow(_SetDeleteRow):
         )
         # We expect a `google.protobuf.empty_pb2.Empty`
         client = self._table._instance._client
-        client._data_stub.MutateRow(request_pb, client.timeout_seconds)
+        client._data_stub.MutateRow(request_pb)
         self.clear()
 
     def clear(self):
@@ -513,8 +513,7 @@ class ConditionalRow(_SetDeleteRow):
         )
         # We expect a `.messages_v2_pb2.CheckAndMutateRowResponse`
         client = self._table._instance._client
-        resp = client._data_stub.CheckAndMutateRow(
-            request_pb, client.timeout_seconds)
+        resp = client._data_stub.CheckAndMutateRow(request_pb)
         self.clear()
         return resp.predicate_matched
 
@@ -801,8 +800,7 @@ class AppendRow(Row):
         )
         # We expect a `.data_v2_pb2.Row`
         client = self._table._instance._client
-        row_response = client._data_stub.ReadModifyWriteRow(
-            request_pb, client.timeout_seconds)
+        row_response = client._data_stub.ReadModifyWriteRow(request_pb)
 
         # Reset modifications after commit-ing request.
         self.clear()

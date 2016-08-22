@@ -21,16 +21,6 @@ class _FakeStub(object):
     def __init__(self, *results):
         self.results = results
         self.method_calls = []
-        self._entered = 0
-        self._exited = []
-
-    def __enter__(self):
-        self._entered += 1
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self._exited.append((exc_type, exc_val, exc_tb))
-        return True
 
     def __getattr__(self, name):
         # We need not worry about attributes set in constructor
@@ -41,17 +31,16 @@ class _FakeStub(object):
 class _MethodMock(object):
     """Mock for API method attached to a gRPC stub.
 
-    In the beta implementation, these are of type.
-    :class:`grpc.framework.crust.implementations._UnaryUnaryMultiCallable`
+    These are of type :class:`grpc._channel._UnaryUnaryMultiCallable`.
     """
 
-    def __init__(self, name, factory):
+    def __init__(self, name, stub):
         self._name = name
-        self._factory = factory
+        self._stub = stub
 
     def __call__(self, *args, **kwargs):
         """Sync method meant to mock a gRPC stub request."""
-        self._factory.method_calls.append((self._name, args, kwargs))
-        curr_result, self._factory.results = (self._factory.results[0],
-                                              self._factory.results[1:])
+        self._stub.method_calls.append((self._name, args, kwargs))
+        curr_result, self._stub.results = (self._stub.results[0],
+                                           self._stub.results[1:])
         return curr_result

@@ -181,7 +181,7 @@ class Operation(object):
         request_pb = operations_pb2.GetOperationRequest(name=operation_name)
         # We expect a `google.longrunning.operations_pb2.Operation`.
         operation_pb = self._instance._client._operations_stub.GetOperation(
-            request_pb, self._instance._client.timeout_seconds)
+            request_pb)
 
         if operation_pb.done:
             self._complete = True
@@ -329,8 +329,7 @@ class Instance(object):
         """Reload the metadata for this instance."""
         request_pb = messages_v2_pb2.GetInstanceRequest(name=self.name)
         # We expect `data_v2_pb2.Instance`.
-        instance_pb = self._client._instance_stub.GetInstance(
-            request_pb, self._client.timeout_seconds)
+        instance_pb = self._client._instance_stub.GetInstance(request_pb)
 
         # NOTE: _update_from_pb does not check that the project and
         #       instance ID on the response match the request.
@@ -358,8 +357,7 @@ class Instance(object):
         """
         request_pb = _prepare_create_request(self)
         # We expect a `google.longrunning.operations_pb2.Operation`.
-        operation_pb = self._client._instance_stub.CreateInstance(
-            request_pb, self._client.timeout_seconds)
+        operation_pb = self._client._instance_stub.CreateInstance(request_pb)
 
         op_id, loc_id, op_begin = _process_operation(operation_pb)
         return Operation('create', op_id, op_begin, loc_id, instance=self)
@@ -383,8 +381,7 @@ class Instance(object):
             display_name=self.display_name,
         )
         # Ignore the expected `data_v2_pb2.Instance`.
-        self._client._instance_stub.UpdateInstance(
-            request_pb, self._client.timeout_seconds)
+        self._client._instance_stub.UpdateInstance(request_pb)
 
     def delete(self):
         """Delete this instance.
@@ -415,8 +412,7 @@ class Instance(object):
         """
         request_pb = messages_v2_pb2.DeleteInstanceRequest(name=self.name)
         # We expect a `google.protobuf.empty_pb2.Empty`
-        self._client._instance_stub.DeleteInstance(
-            request_pb, self._client.timeout_seconds)
+        self._client._instance_stub.DeleteInstance(request_pb)
 
     def cluster(self, cluster_id, serve_nodes=3):
         """Factory to create a cluster associated with this client.
@@ -444,7 +440,7 @@ class Instance(object):
         request_pb = messages_v2_pb2.ListClustersRequest(parent=self.name)
         # We expect a `.cluster_messages_v1_pb2.ListClustersResponse`
         list_clusters_response = self._client._instance_stub.ListClusters(
-            request_pb, self._client.timeout_seconds)
+            request_pb)
 
         failed_locations = [
             location for location in list_clusters_response.failed_locations]
@@ -473,8 +469,7 @@ class Instance(object):
         """
         request_pb = table_messages_v2_pb2.ListTablesRequest(parent=self.name)
         # We expect a `table_messages_v2_pb2.ListTablesResponse`
-        table_list_pb = self._client._table_stub.ListTables(
-            request_pb, self._client.timeout_seconds)
+        table_list_pb = self._client._table_stub.ListTables(request_pb)
 
         result = []
         for table_pb in table_list_pb.tables:

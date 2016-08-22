@@ -58,23 +58,19 @@ class _GAXBaseAPI(object):
         self.__dict__.update(kw)
 
     def _make_grpc_error(self, status_code):
-        from grpc.framework.interfaces.face.face import AbortionError
+        from grpc._channel import _Rendezvous
+        from grpc._channel import _RPCState
 
-        class _DummyException(AbortionError):
-            code = status_code
-
-            def __init__(self):
-                super(_DummyException, self).__init__(
-                    None, None, self.code, None)
-
-        return _DummyException()
+        details = 'Some error details.'
+        exc_state = _RPCState((), None, None, status_code, details)
+        return _Rendezvous(exc_state, None, None, None)
 
     def _make_grpc_not_found(self):
-        from grpc.beta.interfaces import StatusCode
+        from grpc import StatusCode
         return self._make_grpc_error(StatusCode.NOT_FOUND)
 
     def _make_grpc_failed_precondition(self):
-        from grpc.beta.interfaces import StatusCode
+        from grpc import StatusCode
         return self._make_grpc_error(StatusCode.FAILED_PRECONDITION)
 
 

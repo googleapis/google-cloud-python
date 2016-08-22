@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import unittest
 
 
@@ -155,17 +156,14 @@ class Test__get_credentials_file_project_id(unittest.TestCase):
         return _file_project_id()
 
     def setUp(self):
-        import os
         self.old_env = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 
     def tearDown(self):
-        import os
         if (not self.old_env and
                 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ):
             del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
     def test_success(self):
-        import os
         from gcloud._testing import _NamedTemporaryFile
 
         with _NamedTemporaryFile() as temp:
@@ -181,13 +179,12 @@ class Test__get_credentials_file_project_id(unittest.TestCase):
 
 
 class Test__get_default_service_project_id(unittest.TestCase):
-    config_path = '.config/gcloud/configurations/'
+    config_path = os.path.join('.config', 'gcloud', 'configurations')
     config_file = 'config_default'
     temp_APPDATA = ''
 
     def setUp(self):
         import tempfile
-        import os
 
         self.temp_config_path = tempfile.mkdtemp()
         self.temp_APPDATA = os.getenv('APPDATA')
@@ -205,14 +202,12 @@ class Test__get_default_service_project_id(unittest.TestCase):
 
     def tearDown(self):
         import shutil
-        import os
         if os.path.exists(self.temp_config_path):
             shutil.rmtree(self.temp_config_path)
         if self.temp_APPDATA:  # pragma: NO COVER Windows
             os.environ['APPDATA'] = self.temp_APPDATA
 
-    def callFUT(self, project_id=None):
-        import os
+    def _callFUT(self, project_id=None):
         from gcloud._helpers import _default_service_project_id
         from gcloud._testing import _Monkey
 
@@ -226,7 +221,7 @@ class Test__get_default_service_project_id(unittest.TestCase):
             return _default_service_project_id()
 
     def test_read_from_cli_info(self):
-        project_id = self.callFUT('test-project-id')
+        project_id = self._callFUT('test-project-id')
         self.assertEqual('test-project-id', project_id)
 
     def test_gae_without_expanduser(self):
@@ -236,7 +231,7 @@ class Test__get_default_service_project_id(unittest.TestCase):
 
         try:
             sys.modules['pwd'] = None  # Blocks pwd from being imported.
-            project_id = self.callFUT('test-project-id')
+            project_id = self._callFUT('test-project-id')
             self.assertEqual(None, project_id)
         finally:
             del sys.modules['pwd']  # Unblocks importing of pwd.
@@ -244,7 +239,7 @@ class Test__get_default_service_project_id(unittest.TestCase):
     def test_info_value_not_present(self):
         import shutil
         shutil.rmtree(self.temp_config_path)
-        project_id = self.callFUT()
+        project_id = self._callFUT()
         self.assertEqual(None, project_id)
 
 
@@ -258,12 +253,12 @@ class Test__compute_engine_id(unittest.TestCase):
         from gcloud._testing import _Monkey
         from gcloud import _helpers
 
-        def _factory(host, timeout):
+        def _connection_factory(host, timeout):
             connection.host = host
             connection.timeout = timeout
             return connection
 
-        return _Monkey(_helpers, HTTPConnection=_factory)
+        return _Monkey(_helpers, HTTPConnection=_connection_factory)
 
     def test_bad_status(self):
         connection = _HTTPConnection(404, None)
@@ -292,7 +287,6 @@ class Test__get_production_project(unittest.TestCase):
         return _get_production_project()
 
     def test_no_value(self):
-        import os
         from gcloud._testing import _Monkey
 
         environ = {}
@@ -301,7 +295,6 @@ class Test__get_production_project(unittest.TestCase):
             self.assertEqual(project, None)
 
     def test_value_set(self):
-        import os
         from gcloud._testing import _Monkey
         from gcloud._helpers import PROJECT
 
@@ -871,7 +864,7 @@ class Test_make_stub(unittest.TestCase):
         COMPOSITE_CREDS = object()
         CHANNEL = object()
 
-        class _ImplementationsModule(object):
+        class _GRPCModule(object):
 
             def __init__(self):
                 self.ssl_channel_credentials_args = None
@@ -895,9 +888,9 @@ class Test_make_stub(unittest.TestCase):
                 self.secure_channel_args = args
                 return CHANNEL
 
-        implementations_mod = _ImplementationsModule()
+        grpc_mod = _GRPCModule()
 
-        def mock_stub_factory(channel):
+        def mock_stub_class(channel):
             stub_inputs.append(channel)
             return mock_result
 
@@ -912,23 +905,54 @@ class Test_make_stub(unittest.TestCase):
         port = 1025
         credentials = object()
         user_agent = 'USER_AGENT'
-        with _Monkey(MUT, implementations=implementations_mod,
+        with _Monkey(MUT, grpc=grpc_mod,
                      MetadataPlugin=mock_plugin):
             result = self._callFUT(credentials, user_agent,
-                                   mock_stub_factory, host, port)
+                                   mock_stub_class, host, port)
 
         self.assertTrue(result is mock_result)
         self.assertEqual(stub_inputs, [CHANNEL])
         self.assertEqual(plugin_args, [(credentials, user_agent)])
-        self.assertEqual(implementations_mod.ssl_channel_credentials_args,
-                         (None, None, None))
-        self.assertEqual(implementations_mod.metadata_call_credentials_args,
+        self.assertEqual(grpc_mod.ssl_channel_credentials_args, ())
+        self.assertEqual(grpc_mod.metadata_call_credentials_args,
                          ((metadata_plugin,), {'name': 'google_creds'}))
         self.assertEqual(
-            implementations_mod.composite_channel_credentials_args,
+            grpc_mod.composite_channel_credentials_args,
             (SSL_CREDS, METADATA_CREDS))
-        self.assertEqual(implementations_mod.secure_channel_args,
-                         (host, port, COMPOSITE_CREDS))
+        target = '%s:%d' % (host, port)
+        self.assertEqual(grpc_mod.secure_channel_args,
+                         (target, COMPOSITE_CREDS))
+
+
+class Test_exc_to_code(unittest.TestCase):
+
+    def _callFUT(self, exc):
+        from gcloud._helpers import exc_to_code
+        return exc_to_code(exc)
+
+    def test_with_stable(self):
+        from grpc._channel import _Rendezvous
+        from grpc._channel import _RPCState
+        from grpc import StatusCode
+
+        status_code = StatusCode.FAILED_PRECONDITION
+        exc_state = _RPCState((), None, None, status_code, None)
+        exc = _Rendezvous(exc_state, None, None, None)
+        result = self._callFUT(exc)
+        self.assertEqual(result, status_code)
+
+    def test_with_beta(self):
+        from grpc import StatusCode
+        from grpc.framework.interfaces.face.face import AbortionError
+
+        status_code = StatusCode.UNIMPLEMENTED
+        exc = AbortionError(None, None, status_code, None)
+        result = self._callFUT(exc)
+        self.assertEqual(result, status_code)
+
+    def test_with_none(self):
+        result = self._callFUT(None)
+        self.assertIsNone(result)
 
 
 class _AppIdentity(object):

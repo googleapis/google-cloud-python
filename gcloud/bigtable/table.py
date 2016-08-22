@@ -175,7 +175,7 @@ class Table(object):
         )
         client = self._instance._client
         # We expect a `._generated.table_pb2.Table`
-        client._table_stub.CreateTable(request_pb, client.timeout_seconds)
+        client._table_stub.CreateTable(request_pb)
 
     def delete(self):
         """Delete this table."""
@@ -183,7 +183,7 @@ class Table(object):
             name=self.name)
         client = self._instance._client
         # We expect a `google.protobuf.empty_pb2.Empty`
-        client._table_stub.DeleteTable(request_pb, client.timeout_seconds)
+        client._table_stub.DeleteTable(request_pb)
 
     def list_column_families(self):
         """List the column families owned by this table.
@@ -200,8 +200,7 @@ class Table(object):
             name=self.name)
         client = self._instance._client
         # We expect a `._generated.table_pb2.Table`
-        table_pb = client._table_stub.GetTable(request_pb,
-                                               client.timeout_seconds)
+        table_pb = client._table_stub.GetTable(request_pb)
 
         result = {}
         for column_family_id, value_pb in table_pb.column_families.items():
@@ -230,8 +229,7 @@ class Table(object):
         request_pb = _create_row_request(self.name, row_key=row_key,
                                          filter_=filter_)
         client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb,
-                                                       client.timeout_seconds)
+        response_iterator = client._data_stub.ReadRows(request_pb)
         rows_data = PartialRowsData(response_iterator)
         rows_data.consume_all()
         if rows_data.state not in (rows_data.NEW_ROW, rows_data.START):
@@ -274,8 +272,7 @@ class Table(object):
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit)
         client = self._instance._client
-        response_iterator = client._data_stub.ReadRows(request_pb,
-                                                       client.timeout_seconds)
+        response_iterator = client._data_stub.ReadRows(request_pb)
         # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
         return PartialRowsData(response_iterator)
 
@@ -305,7 +302,7 @@ class Table(object):
         samples would require space roughly equal to the difference in their
         ``offset_bytes`` fields.
 
-        :rtype: :class:`grpc.framework.alpha._reexport._CancellableIterator`
+        :rtype: :class:`grpc._channel._Rendezvous`
         :returns: A cancel-able iterator. Can be consumed by calling ``next()``
                   or by casting to a :class:`list` and can be cancelled by
                   calling ``cancel()``.
@@ -313,8 +310,7 @@ class Table(object):
         request_pb = data_messages_v2_pb2.SampleRowKeysRequest(
             table_name=self.name)
         client = self._instance._client
-        response_iterator = client._data_stub.SampleRowKeys(
-            request_pb, client.timeout_seconds)
+        response_iterator = client._data_stub.SampleRowKeys(request_pb)
         return response_iterator
 
 

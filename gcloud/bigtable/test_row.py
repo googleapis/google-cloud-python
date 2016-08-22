@@ -302,8 +302,7 @@ class TestDirectRow(unittest.TestCase):
         table_name = 'projects/more-stuff'
         column_family_id = u'column_family_id'
         column = b'column'
-        timeout_seconds = 711
-        client = _Client(timeout_seconds=timeout_seconds)
+        client = _Client()
         table = _Table(table_name, client=client)
         row = self._makeOne(row_key, table)
 
@@ -338,7 +337,7 @@ class TestDirectRow(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'MutateRow',
-            (request_pb, timeout_seconds),
+            (request_pb,),
             {},
         )])
         self.assertEqual(row._pb_mutations, [])
@@ -418,8 +417,7 @@ class TestConditionalRow(unittest.TestCase):
         column_family_id3 = u'column_family_id3'
         column1 = b'column1'
         column2 = b'column2'
-        timeout_seconds = 262
-        client = _Client(timeout_seconds=timeout_seconds)
+        client = _Client()
         table = _Table(table_name, client=client)
         row_filter = RowSampleFilter(0.33)
         row = self._makeOne(row_key, table, filter_=row_filter)
@@ -476,7 +474,7 @@ class TestConditionalRow(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'CheckAndMutateRow',
-            (request_pb, timeout_seconds),
+            (request_pb,),
             {},
         )])
         self.assertEqual(row._true_pb_mutations, [])
@@ -582,8 +580,7 @@ class TestAppendRow(unittest.TestCase):
         table_name = 'projects/more-stuff'
         column_family_id = u'column_family_id'
         column = b'column'
-        timeout_seconds = 87
-        client = _Client(timeout_seconds=timeout_seconds)
+        client = _Client()
         table = _Table(table_name, client=client)
         row = self._makeOne(row_key, table)
 
@@ -624,7 +621,7 @@ class TestAppendRow(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'ReadModifyWriteRow',
-            (request_pb, timeout_seconds),
+            (request_pb,),
             {},
         )])
         self.assertEqual(row_responses, [response_pb])
@@ -897,9 +894,6 @@ def _ReadModifyWriteRulePB(*args, **kw):
 class _Client(object):
 
     data_stub = None
-
-    def __init__(self, timeout_seconds=None):
-        self.timeout_seconds = timeout_seconds
 
 
 class _Instance(object):

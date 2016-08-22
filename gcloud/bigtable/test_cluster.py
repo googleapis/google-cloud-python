@@ -85,9 +85,8 @@ class TestOperation(unittest.TestCase):
         CLUSTER_ID = 'cluster-id'
         OP_TYPE = 'fake-op'
         OP_ID = 789
-        timeout_seconds = 1
 
-        client = _Client(PROJECT, timeout_seconds=timeout_seconds)
+        client = _Client(PROJECT)
         instance = _Instance(INSTANCE_ID, client)
         cluster = Cluster(CLUSTER_ID, instance)
         operation = self._makeOne(OP_TYPE, OP_ID, cluster=cluster)
@@ -114,7 +113,7 @@ class TestOperation(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'GetOperation',
-            (request_pb, timeout_seconds),
+            (request_pb,),
             {},
         )])
 
@@ -138,7 +137,6 @@ class TestCluster(unittest.TestCase):
     CLUSTER_NAME = ('projects/' + PROJECT +
                     '/instances/' + INSTANCE_ID +
                     '/clusters/' + CLUSTER_ID)
-    TIMEOUT_SECONDS = 123
 
     def _getTargetClass(self):
         from gcloud.bigtable.cluster import Cluster
@@ -307,7 +305,7 @@ class TestCluster(unittest.TestCase):
 
         SERVE_NODES = 31
         LOCATION = 'LOCATION'
-        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
         cluster = self._makeOne(self.CLUSTER_ID, instance)
 
@@ -334,7 +332,7 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'GetCluster',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 
@@ -348,7 +346,7 @@ class TestCluster(unittest.TestCase):
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import cluster as MUT
 
-        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
         cluster = self._makeOne(self.CLUSTER_ID, instance)
 
@@ -390,7 +388,7 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'CreateCluster',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
         self.assertEqual(prep_create_called, [cluster])
@@ -404,7 +402,7 @@ class TestCluster(unittest.TestCase):
 
         SERVE_NODES = 81
 
-        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
         cluster = self._makeOne(self.CLUSTER_ID, instance,
                                 serve_nodes=SERVE_NODES)
@@ -439,7 +437,7 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'UpdateCluster',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
         self.assertEqual(process_operation_called, [response_pb])
@@ -448,7 +446,7 @@ class TestCluster(unittest.TestCase):
         from google.protobuf import empty_pb2
         from gcloud.bigtable._testing import _FakeStub
 
-        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
         cluster = self._makeOne(self.CLUSTER_ID, instance)
 
@@ -470,7 +468,7 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'DeleteCluster',
-            (request_pb, self.TIMEOUT_SECONDS),
+            (request_pb,),
             {},
         )])
 
@@ -632,12 +630,10 @@ class _Instance(object):
 
 class _Client(object):
 
-    def __init__(self, project, timeout_seconds=None):
+    def __init__(self, project):
         self.project = project
         self.project_name = 'projects/' + self.project
-        self.timeout_seconds = timeout_seconds
 
     def __eq__(self, other):
         return (other.project == self.project and
-                other.project_name == self.project_name and
-                other.timeout_seconds == self.timeout_seconds)
+                other.project_name == self.project_name)

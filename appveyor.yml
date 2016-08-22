@@ -30,12 +30,10 @@ environment:
     - PYTHON: "C:\\Python34"
       PYTHON_VERSION: "3.4.4"
       PYTHON_ARCH: "32"
-      # Use mocked-up GRPC for now
 
     - PYTHON: "C:\\Python34-x64"
       PYTHON_VERSION: "3.4.4"
       PYTHON_ARCH: "64"
-      # Use mocked-up GRPC for now
 
     # Python 3.5.1 is the latest Python 3.5 with a Windows installer
     # Python 3.5.1 is the overall latest
@@ -43,12 +41,10 @@ environment:
     - PYTHON: "C:\\Python35"
       PYTHON_VERSION: "3.5.1"
       PYTHON_ARCH: "32"
-      # Use mocked-up GRPC for now
 
     - PYTHON: "C:\\Python35-x64"
       PYTHON_VERSION: "3.5.1"
       PYTHON_ARCH: "64"
-      # Use mocked-up GRPC for now
 
 install:
   - ECHO "Filesystem root:"
@@ -85,7 +81,6 @@ build_script:
   - "%CMD_IN_ENV% python setup.py build"
 
 test_script:
-  - "set PYTHONPATH=%GRPC_PATH%"
   - "%CMD_IN_ENV% pip list"
   # Run the project tests
   - "%CMD_IN_ENV% python setup.py nosetests"
