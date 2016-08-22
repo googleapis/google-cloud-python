@@ -46,21 +46,21 @@
       "name": "check_iam_permissions", 
       "params": [
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current batch.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " list of permissions to be tested", 
           "name": "permissions", 
           "nullable": null, 
           "optional": null, 
           "types": [
             " string"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current batch.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
           ]
         }
       ], 
@@ -127,21 +127,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " Client which holds credentials and project configuration for the topic.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
-          ]
-        }, 
-        {
           "description": " topic resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Client which holds credentials and project configuration for the topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
           ]
         }
       ], 
@@ -232,6 +232,15 @@
       "name": "publish", 
       "params": [
         {
+          "description": " key-value pairs to send as message attributes", 
+          "name": "attrs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict (string -> string)"
+          ]
+        }, 
+        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current topic.", 
           "name": "client", 
           "nullable": null, 
@@ -247,15 +256,6 @@
           "optional": null, 
           "types": [
             "bytes"
-          ]
-        }, 
-        {
-          "description": " key-value pairs to send as message attributes", 
-          "name": "attrs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict (string -> string)"
           ]
         }
       ], 
@@ -276,21 +276,21 @@
       "name": "set_iam_policy", 
       "params": [
         {
-          "description": " the new policy, typically fetched via", 
-          "name": "policy", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/iam/policy\">gcloud.pubsub.iam.Policy</a>"
-          ]
-        }, 
-        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current batch.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " the new policy, typically fetched via", 
+          "name": "policy", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/iam/policy\">gcloud.pubsub.iam.Policy</a>"
           ]
         }
       ], 
@@ -311,15 +311,6 @@
       "name": "subscription", 
       "params": [
         {
-          "description": " the deadline (in seconds) by which messages pulled from the back-end must be acknowledged.", 
-          "name": "ack_deadline", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " URL to which messages will be pushed by the back-end. If not set, the application must pull messages.", 
           "name": "push_endpoint", 
           "nullable": null, 
@@ -335,6 +326,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " the deadline (in seconds) by which messages pulled from the back-end must be acknowledged.", 
+          "name": "ack_deadline", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 

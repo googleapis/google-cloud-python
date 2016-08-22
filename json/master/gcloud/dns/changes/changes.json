@@ -85,7 +85,7 @@
           ]
         }, 
         {
-          "description": " change set representation returned from the API", 
+          "description": " change set representation returned from the API.", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 

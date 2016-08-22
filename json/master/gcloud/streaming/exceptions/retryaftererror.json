@@ -20,7 +20,7 @@
       "name": "from_response", 
       "params": [
         {
-          "description": " the response which returned the error", 
+          "description": " the response which returned the error.", 
           "name": "http_response", 
           "nullable": null, 
           "optional": null, 

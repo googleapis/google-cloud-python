@@ -66,21 +66,21 @@
       "name": "fetch_data", 
       "params": [
         {
-          "description": " maximum number of rows to return.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or NoneType"
-          ]
-        }, 
-        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " maximum number of rows to return.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or NoneType"
           ]
         }, 
         {
@@ -154,12 +154,12 @@
           ]
         }, 
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
-          "name": "client", 
+          "description": " skip rows w/ invalid data?", 
+          "name": "skip_invalid_rows", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
+            "boolean or NoneType"
           ]
         }, 
         {
@@ -181,21 +181,21 @@
           ]
         }, 
         {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
           "description": " Unique ids, one per row being inserted. If not passed, no de-duplication occurs.", 
           "name": "row_ids", 
           "nullable": null, 
           "optional": null, 
           "types": [
             " string"
-          ]
-        }, 
-        {
-          "description": " skip rows w/ invalid data?", 
-          "name": "skip_invalid_rows", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or NoneType"
           ]
         }
       ], 
@@ -272,6 +272,15 @@
       "name": "upload_from_file", 
       "params": [
         {
+          "description": " If True, seek to the beginning of the file handle before writing the file to Cloud Storage.", 
+          "name": "rewind", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
+          ]
+        }, 
+        {
           "description": " job configuration option; see", 
           "name": "encoding", 
           "nullable": null, 
@@ -290,24 +299,6 @@
           ]
         }, 
         {
-          "description": " A file handle opened in binary mode for reading.", 
-          "name": "file_obj", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "file"
-          ]
-        }, 
-        {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " one of 'CSV' or 'NEWLINE_DELIMITED_JSON'. job configuration option; see", 
           "name": "source_format", 
           "nullable": null, 
@@ -318,11 +309,11 @@
         }, 
         {
           "description": " job configuration option; see", 
-          "name": "allow_jagged_rows", 
+          "name": "max_bad_records", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
+            "integer"
           ]
         }, 
         {
@@ -344,8 +335,8 @@
           ]
         }, 
         {
-          "description": " job configuration option; see", 
-          "name": "skip_leading_rows", 
+          "description": " Number of upload retries. Defaults to 6.", 
+          "name": "num_retries", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -353,39 +344,12 @@
           ]
         }, 
         {
-          "description": " The number of bytes to read from the file handle. If not provided, we'll try to guess the size using", 
-          "name": "size", 
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
+          "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "max_bad_records", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "write_disposition", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " If True, seek to the beginning of the file handle before writing the file to Cloud Storage.", 
-          "name": "rewind", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -399,6 +363,24 @@
         }, 
         {
           "description": " job configuration option; see", 
+          "name": "allow_jagged_rows", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
+          ]
+        }, 
+        {
+          "description": " The number of bytes to read from the file handle. If not provided, we'll try to guess the size using", 
+          "name": "size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
           "name": "field_delimiter", 
           "nullable": null, 
           "optional": null, 
@@ -407,12 +389,30 @@
           ]
         }, 
         {
-          "description": " Number of upload retries. Defaults to 6.", 
-          "name": "num_retries", 
+          "description": " job configuration option; see", 
+          "name": "write_disposition", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "skip_leading_rows", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer"
+          ]
+        }, 
+        {
+          "description": " A file handle opened in binary mode for reading.", 
+          "name": "file_obj", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "file"
           ]
         }
       ], 

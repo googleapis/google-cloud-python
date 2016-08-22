@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/datastore/connection.py#L388", 
+      "source": "gcloud/datastore/connection.py#L389", 
       "type": "instance"
     }, 
     {
@@ -45,7 +45,7 @@
           ]
         }
       ], 
-      "source": "gcloud/datastore/connection.py#L612", 
+      "source": "gcloud/datastore/connection.py#L613", 
       "type": "instance"
     }, 
     {
@@ -71,7 +71,7 @@
           ]
         }
       ], 
-      "source": "gcloud/datastore/connection.py#L546", 
+      "source": "gcloud/datastore/connection.py#L547", 
       "type": "instance"
     }, 
     {
@@ -80,6 +80,15 @@
       "id": "gcloud.datastore.connection.Connection.build_api_url", 
       "name": "build_api_url", 
       "params": [
+        {
+          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
+          "name": "api_version", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
         {
           "description": " The API method to call (e.g. 'runQuery', 'lookup').", 
           "name": "method", 
@@ -92,15 +101,6 @@
         {
           "description": " The base URL where the API lives. You shouldn't have to provide this.", 
           "name": "base_url", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
-          "name": "api_version", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -124,7 +124,7 @@
           ]
         }
       ], 
-      "source": "gcloud/datastore/connection.py#L403", 
+      "source": "gcloud/datastore/connection.py#L404", 
       "type": "instance"
     }, 
     {
@@ -134,21 +134,21 @@
       "name": "commit", 
       "params": [
         {
-          "description": " The protobuf with the mutations being committed.", 
-          "name": "request", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/connection/connection/_generated/datastore_pb2/commitrequest\">gcloud.datastore.connection.Connection._generated.datastore_pb2.CommitRequest</a>"
-          ]
-        }, 
-        {
           "description": " The transaction ID returned from", 
           "name": "transaction_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or None"
+          ]
+        }, 
+        {
+          "description": " The protobuf with the mutations being committed.", 
+          "name": "request", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/connection/connection/_generated/datastore_pb2/commitrequest\">gcloud.datastore.connection.Connection._generated.datastore_pb2.CommitRequest</a>"
           ]
         }, 
         {
@@ -168,7 +168,7 @@
           ]
         }
       ], 
-      "source": "gcloud/datastore/connection.py#L561", 
+      "source": "gcloud/datastore/connection.py#L562", 
       "type": "instance"
     }, 
     {
@@ -182,12 +182,12 @@
       "name": "lookup", 
       "params": [
         {
-          "description": " The keys to retrieve from the datastore.", 
-          "name": "key_pbs", 
+          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
+          "name": "eventual", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            ""
+            "bool"
           ]
         }, 
         {
@@ -200,12 +200,12 @@
           ]
         }, 
         {
-          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
-          "name": "eventual", 
+          "description": " The keys to retrieve from the datastore.", 
+          "name": "key_pbs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "bool"
+            ""
           ]
         }, 
         {
@@ -225,7 +225,7 @@
           ]
         }
       ], 
-      "source": "gcloud/datastore/connection.py#L433", 
+      "source": "gcloud/datastore/connection.py#L434", 
       "type": "instance"
     }, 
     {
@@ -235,7 +235,7 @@
       "name": "rollback", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/datastore/connection.py#L595", 
+      "source": "gcloud/datastore/connection.py#L596", 
       "type": "instance"
     }, 
     {
@@ -245,8 +245,26 @@
       "name": "run_query", 
       "params": [
         {
+          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
+          "name": "eventual", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
           "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
           "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The namespace over which to run the query.", 
+          "name": "namespace", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -260,24 +278,6 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
-          ]
-        }, 
-        {
-          "description": " The namespace over which to run the query.", 
-          "name": "namespace", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
-          "name": "eventual", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
           ]
         }, 
         {
@@ -297,7 +297,7 @@
           ]
         }
       ], 
-      "source": "gcloud/datastore/connection.py#L491", 
+      "source": "gcloud/datastore/connection.py#L492", 
       "type": "instance"
     }
   ], 
