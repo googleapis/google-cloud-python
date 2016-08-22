@@ -13,3 +13,5 @@
 # limitations under the License.
 
 """Client library for Google Cloud Natural Language API."""
+
+from gcloud.language.client import Client
