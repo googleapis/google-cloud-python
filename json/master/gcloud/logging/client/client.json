@@ -20,15 +20,6 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
@@ -44,6 +35,15 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -64,8 +64,8 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -82,8 +82,8 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -126,15 +126,6 @@
           ]
         }, 
         {
-          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
-          "name": "page_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " a filter expression. See: <a href=\"https://cloud.google.com/logging/docs/view/advanced_filters\">https://cloud.google.com/logging/docs/view/advanced_filters</a>", 
           "name": "filter_", 
           "nullable": null, 
@@ -150,6 +141,15 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }, 
         {
@@ -275,8 +275,8 @@
       "name": "metric", 
       "params": [
         {
-          "description": " the description of the metric to be constructed. If not passed, the instance should already exist, to be refreshed via Metric.reload.", 
-          "name": "description", 
+          "description": " the name of the metric to be constructed.", 
+          "name": "name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -293,8 +293,8 @@
           ]
         }, 
         {
-          "description": " the name of the metric to be constructed.", 
-          "name": "name", 
+          "description": " the description of the metric to be constructed. If not passed, the instance should already exist, to be refreshed via Metric.reload.", 
+          "name": "description", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -319,8 +319,8 @@
       "name": "sink", 
       "params": [
         {
-          "description": " destination URI for the entries exported by the sink. If not passed, the instance should already exist, to be refreshed via", 
-          "name": "destination", 
+          "description": " the name of the sink to be constructed.", 
+          "name": "name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -337,8 +337,8 @@
           ]
         }, 
         {
-          "description": " the name of the sink to be constructed.", 
-          "name": "name", 
+          "description": " destination URI for the entries exported by the sink. If not passed, the instance should already exist, to be refreshed via", 
+          "name": "destination", 
           "nullable": null, 
           "optional": null, 
           "types": [

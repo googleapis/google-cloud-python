@@ -48,21 +48,21 @@
           ]
         }, 
         {
-          "description": " path/filename for the target file", 
-          "name": "filename", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " should an existing file be overwritten", 
           "name": "overwrite", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " path/filename for the target file", 
+          "name": "filename", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -83,15 +83,6 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " total size of the file to be downloaded", 
-          "name": "total_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or None"
-          ]
-        }, 
-        {
           "description": " keyword arguments: passed through to _Transfer.__init__().", 
           "name": "kwds", 
           "nullable": null, 
@@ -101,12 +92,12 @@
           ]
         }, 
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
+          "description": " total size of the file to be downloaded", 
+          "name": "total_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
+            "integer or None"
           ]
         }, 
         {
@@ -116,6 +107,15 @@
           "optional": null, 
           "types": [
             "writable file-like object"
+          ]
+        }, 
+        {
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }
       ], 

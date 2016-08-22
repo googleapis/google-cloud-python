@@ -1,0 +1,179 @@
+{
+  "description": "\n Python logging handlers for Google Cloud Logging.", 
+  "examples": [], 
+  "id": "gcloud.logging.handlers.handlers.cloudlogginghandler", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "gcloud/logging/handlers/handlers.py#L74", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.acquire", 
+      "name": "acquire", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L701", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.addFilter", 
+      "name": "addFilter", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L591", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.close", 
+      "name": "close", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L777", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.createLock", 
+      "name": "createLock", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L692", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.emit", 
+      "name": "emit", 
+      "params": [], 
+      "returns": [], 
+      "source": "gcloud/logging/handlers/handlers.py#L82", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.filter", 
+      "name": "filter", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L605", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.flush", 
+      "name": "flush", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L836", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.format", 
+      "name": "format", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L721", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.get_name", 
+      "name": "get_name", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L676", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.handle", 
+      "name": "handle", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L744", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.handleError", 
+      "name": "handleError", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L794", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.release", 
+      "name": "release", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L708", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.removeFilter", 
+      "name": "removeFilter", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L598", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.setFormatter", 
+      "name": "setFormatter", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L762", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.setLevel", 
+      "name": "setLevel", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L715", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.handlers.CloudLoggingHandler.set_name", 
+      "name": "set_name", 
+      "params": [], 
+      "returns": [], 
+      "source": "logging.py#L679", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Cloudlogginghandler", 
+  "source": "gcloud/logging/handlers/handlers.py"
+}

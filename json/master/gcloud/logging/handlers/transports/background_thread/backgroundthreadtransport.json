@@ -1,0 +1,29 @@
+{
+  "description": "\n Transport for Python logging handler\n Uses a background worker to log to Stackdriver Logging asynchronously.", 
+  "examples": [], 
+  "id": "gcloud.logging.handlers.transports.background_thread.backgroundthreadtransport", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "gcloud/logging/handlers/transports/background_thread.py#L152", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.send", 
+      "name": "send", 
+      "params": [], 
+      "returns": [], 
+      "source": "gcloud/logging/handlers/transports/background_thread.py#L161", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Backgroundthreadtransport", 
+  "source": "gcloud/logging/handlers/transports/background_thread.py"
+}

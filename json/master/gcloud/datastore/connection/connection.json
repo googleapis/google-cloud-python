@@ -134,6 +134,15 @@
       "name": "commit", 
       "params": [
         {
+          "description": " The transaction ID returned from", 
+          "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }, 
+        {
           "description": " The project to which the transaction applies.", 
           "name": "project", 
           "nullable": null, 
@@ -149,15 +158,6 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/datastore/connection/connection/_generated/datastore_pb2/commitrequest\">gcloud.datastore.connection.Connection._generated.datastore_pb2.CommitRequest</a>"
-          ]
-        }, 
-        {
-          "description": " The transaction ID returned from", 
-          "name": "transaction_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
           ]
         }
       ], 
@@ -182,6 +182,15 @@
       "name": "lookup", 
       "params": [
         {
+          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
+          "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " The project to look up the keys in.", 
           "name": "project", 
           "nullable": null, 
@@ -197,15 +206,6 @@
           "optional": null, 
           "types": [
             ""
-          ]
-        }, 
-        {
-          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
-          "name": "transaction_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }, 
         {
@@ -254,15 +254,6 @@
           ]
         }, 
         {
-          "description": " The project over which to run the query.", 
-          "name": "project", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
           "name": "transaction_id", 
           "nullable": null, 
@@ -272,8 +263,8 @@
           ]
         }, 
         {
-          "description": " The namespace over which to run the query.", 
-          "name": "namespace", 
+          "description": " The project over which to run the query.", 
+          "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -287,6 +278,15 @@
           "optional": null, 
           "types": [
             "bool"
+          ]
+        }, 
+        {
+          "description": " The namespace over which to run the query.", 
+          "name": "namespace", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 

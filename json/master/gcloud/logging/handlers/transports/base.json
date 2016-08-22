@@ -1,0 +1,8 @@
+{
+  "description": "\n Module containing base class for logging transport.", 
+  "examples": [], 
+  "id": "gcloud.logging.handlers.transports.base", 
+  "methods": [], 
+  "name": "Base", 
+  "source": "gcloud/logging/handlers/transports/base.py"
+}

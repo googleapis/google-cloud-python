@@ -1,0 +1,8 @@
+{
+  "description": "\n Transport for Python logging handler.\n Logs directly to the the Stackdriver Logging API with a synchronous call.", 
+  "examples": [], 
+  "id": "gcloud.logging.handlers.transports.sync", 
+  "methods": [], 
+  "name": "Sync", 
+  "source": "gcloud/logging/handlers/transports/sync.py"
+}

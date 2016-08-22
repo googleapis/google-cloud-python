@@ -29,8 +29,8 @@
           ]
         }, 
         {
-          "description": " timeout, in milliseconds, to wait for query to complete", 
-          "name": "timeout_ms", 
+          "description": " maximum number of rows to return.", 
+          "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -38,8 +38,8 @@
           ]
         }, 
         {
-          "description": " maximum number of rows to return.", 
-          "name": "max_results", 
+          "description": " zero-based index of starting row", 
+          "name": "start_index", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -56,8 +56,8 @@
           ]
         }, 
         {
-          "description": " zero-based index of starting row", 
-          "name": "start_index", 
+          "description": " timeout, in milliseconds, to wait for query to complete", 
+          "name": "timeout_ms", 
           "nullable": null, 
           "optional": null, 
           "types": [

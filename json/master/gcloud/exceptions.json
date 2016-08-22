@@ -10,15 +10,6 @@
       "name": "make_exception", 
       "params": [
         {
-          "description": " The body of the HTTP error response.", 
-          "name": "content", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or dictionary"
-          ]
-        }, 
-        {
           "description": " Flag indicating if <code>content</code> is expected to be JSON.", 
           "name": "use_json", 
           "nullable": null, 
@@ -43,6 +34,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The body of the HTTP error response.", 
+          "name": "content", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or dictionary"
           ]
         }
       ], 
