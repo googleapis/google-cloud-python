@@ -36,12 +36,12 @@
       "name": "make_api_request", 
       "params": [
         {
-          "description": " an instance which implements the Http API.", 
-          "name": "http", 
+          "description": " Number of retries to attempt on retryable responses (such as 429 or 5XX).", 
+          "name": "retries", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "httplib2.Http"
+            "integer"
           ]
         }, 
         {
@@ -54,12 +54,12 @@
           ]
         }, 
         {
-          "description": " the request to send.", 
-          "name": "http_request", 
+          "description": " Number of redirects to follow.", 
+          "name": "redirections", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "Request"
+            "integer"
           ]
         }, 
         {
@@ -72,15 +72,6 @@
           ]
         }, 
         {
-          "description": " Number of redirects to follow.", 
-          "name": "redirections", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " Maximum number of seconds to wait when retrying.", 
           "name": "max_retry_wait", 
           "nullable": null, 
@@ -90,12 +81,21 @@
           ]
         }, 
         {
-          "description": " Number of retries to attempt on retryable responses (such as 429 or 5XX).", 
-          "name": "retries", 
+          "description": " an instance which implements the Http API.", 
+          "name": "http", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "httplib2.Http"
+          ]
+        }, 
+        {
+          "description": " the request to send.", 
+          "name": "http_request", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "Request"
           ]
         }
       ], 

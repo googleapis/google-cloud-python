@@ -81,15 +81,6 @@
       "name": "build_api_url", 
       "params": [
         {
-          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
-          "name": "api_version", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The API method to call (e.g. 'runQuery', 'lookup').", 
           "name": "method", 
           "nullable": null, 
@@ -99,8 +90,8 @@
           ]
         }, 
         {
-          "description": " The base URL where the API lives. You shouldn't have to provide this.", 
-          "name": "base_url", 
+          "description": " The project to connect to. This is usually your project name in the cloud console.", 
+          "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -108,8 +99,17 @@
           ]
         }, 
         {
-          "description": " The project to connect to. This is usually your project name in the cloud console.", 
-          "name": "project", 
+          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
+          "name": "api_version", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The base URL where the API lives. You shouldn't have to provide this.", 
+          "name": "base_url", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -134,15 +134,6 @@
       "name": "commit", 
       "params": [
         {
-          "description": " The transaction ID returned from", 
-          "name": "transaction_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
-          ]
-        }, 
-        {
           "description": " The protobuf with the mutations being committed.", 
           "name": "request", 
           "nullable": null, 
@@ -158,6 +149,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The transaction ID returned from", 
+          "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
           ]
         }
       ], 
@@ -182,24 +182,6 @@
       "name": "lookup", 
       "params": [
         {
-          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
-          "name": "eventual", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
-          ]
-        }, 
-        {
-          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
-          "name": "transaction_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The keys to retrieve from the datastore.", 
           "name": "key_pbs", 
           "nullable": null, 
@@ -215,6 +197,24 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
+          "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
+          "name": "eventual", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
           ]
         }
       ], 
@@ -245,24 +245,6 @@
       "name": "run_query", 
       "params": [
         {
-          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
-          "name": "eventual", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
-          ]
-        }, 
-        {
-          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
-          "name": "transaction_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The namespace over which to run the query.", 
           "name": "namespace", 
           "nullable": null, 
@@ -287,6 +269,24 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
+          "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
+          "name": "eventual", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
           ]
         }
       ], 
