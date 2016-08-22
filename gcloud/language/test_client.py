@@ -121,6 +121,23 @@ class TestClient(unittest.TestCase):
         self.assertEqual(document.doc_type, Document.HTML)
         self.assertEqual(document.encoding, encoding)
 
+    def test_document_from_blob_factory(self):
+        from gcloud.language.document import Document
+
+        creds = _Credentials()
+        client = self._makeOne(project='PROJECT',
+                               credentials=creds, http=object())
+
+        bucket_name = 'my-text-bucket'
+        blob_name = 'sentiment-me.txt'
+        gcs_url = 'gs://%s/%s' % (bucket_name, blob_name)
+        document = client.document_from_blob(bucket_name, blob_name)
+        self.assertIsInstance(document, Document)
+        self.assertIs(document.client, client)
+        self.assertIsNone(document.content)
+        self.assertEqual(document.gcs_url, gcs_url)
+        self.assertEqual(document.doc_type, Document.PLAIN_TEXT)
+
 
 class _Credentials(object):
 

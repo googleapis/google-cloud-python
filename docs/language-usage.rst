@@ -127,8 +127,8 @@ to content stored in `Google Cloud Storage`_. We can use the
 
   .. code-block:: python
 
-     >>> document = client.document_from_blob(bucket='my-text-bucket',
-     ...                                      blob='sentiment-me.txt')
+     >>> document = client.document_from_blob('my-text-bucket',
+     ...                                      'sentiment-me.txt')
      >>> document.gcs_url
      'gs://my-text-bucket/sentiment-me.txt'
      >>> document.doc_type == language.Document.PLAIN_TEXT

@@ -101,6 +101,35 @@ class Client(JSONClient):
                        :class:`Document` constructor.
 
         :rtype: :class:`Document`
-        :returns: A plain-text document bound to this client.
+        :returns: A document bound to this client.
         """
         return Document(self, gcs_url=gcs_url, doc_type=doc_type, **kwargs)
+
+    def document_from_blob(self, bucket_name, blob_name,
+                           doc_type=Document.PLAIN_TEXT, **kwargs):
+        """Create a Cloud Storage document bound to this client.
+
+        :type bucket_name: str
+        :param bucket_name: The name of the bucket that contains the
+                            document text.
+
+        :type blob_name: str
+        :param blob_name: The name of the blob (within the bucket) that
+                          contains document text.
+
+        :type doc_type: str
+        :param doc_type: (Optional) The type of text in the document.
+                         Defaults to plain text. Can also be specified
+                         as HTML via :attr:`~.Document.HTML`.
+
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments to be passed along to the
+                       :class:`Document` constructor.
+
+        :rtype: :class:`Document`
+        :returns: A document bound to this client.
+        """
+        # NOTE: We assume that the bucket and blob name don't
+        #       need to be URL-encoded.
+        gcs_url = 'gs://%s/%s' % (bucket_name, blob_name)
+        return self.document_from_url(gcs_url, doc_type=doc_type, **kwargs)
