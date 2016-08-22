@@ -69,12 +69,12 @@
       "name": "copy_blob", 
       "params": [
         {
-          "description": " The bucket into which the blob should be copied.", 
-          "name": "destination_bucket", 
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/storage/bucket/bucket\">gcloud.storage.bucket.Bucket</a>"
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -96,12 +96,12 @@
           ]
         }, 
         {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
-          "name": "client", 
+          "description": " The bucket into which the blob should be copied.", 
+          "name": "destination_bucket", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+            "<a data-custom-type=\"gcloud/storage/bucket/bucket\">gcloud.storage.bucket.Bucket</a>"
           ]
         }
       ], 
@@ -277,39 +277,12 @@
       "name": "list_blobs", 
       "params": [
         {
-          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each blob returned: 'items/contentLanguage,nextPageToken'", 
-          "name": "fields", 
+          "description": " optional prefix used to filter blobs.", 
+          "name": "prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " whether object versions should be returned as separate blobs.", 
-          "name": "versions", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or NoneType"
-          ]
-        }, 
-        {
-          "description": " optional delimter, used with <code>prefix</code> to emulate hierarchy.", 
-          "name": "delimiter", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " opaque marker for the next \"page\" of blobs. If not passed, will return the first page of blobs.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }, 
         {
@@ -322,12 +295,39 @@
           ]
         }, 
         {
+          "description": " optional delimter, used with <code>prefix</code> to emulate hierarchy.", 
+          "name": "delimiter", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
           "description": " maximum number of blobs to return.", 
           "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer or NoneType"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of blobs. If not passed, will return the first page of blobs.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " whether object versions should be returned as separate blobs.", 
+          "name": "versions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or NoneType"
           ]
         }, 
         {
@@ -340,8 +340,8 @@
           ]
         }, 
         {
-          "description": " optional prefix used to filter blobs.", 
-          "name": "prefix", 
+          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each blob returned: 'items/contentLanguage,nextPageToken'", 
+          "name": "fields", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -396,6 +396,15 @@
       "name": "rename_blob", 
       "params": [
         {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
           "description": " The new name for this blob.", 
           "name": "new_name", 
           "nullable": null, 
@@ -411,15 +420,6 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
-          ]
-        }, 
-        {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }
       ], 

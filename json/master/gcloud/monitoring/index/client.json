@@ -154,8 +154,8 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -172,8 +172,8 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -234,21 +234,21 @@
           ]
         }, 
         {
-          "description": " The ID of the group's parent, if it has one.", 
-          "name": "parent_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
-          ]
-        }, 
-        {
           "description": " If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters.", 
           "name": "is_cluster", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " The ID of the group's parent, if it has one.", 
+          "name": "parent_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
           ]
         }
       ], 
@@ -293,8 +293,8 @@
       "name": "list_metric_descriptors", 
       "params": [
         {
-          "description": " An optional prefix constraining the selected metric types. This adds metric.type = starts_with(\"<prefix>\") to the filter.", 
-          "name": "type_prefix", 
+          "description": " An optional filter expression describing the metric descriptors to be returned. See the filter documentation_.", 
+          "name": "filter_string", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -302,8 +302,8 @@
           ]
         }, 
         {
-          "description": " An optional filter expression describing the metric descriptors to be returned. See the filter documentation_.", 
-          "name": "filter_string", 
+          "description": " An optional prefix constraining the selected metric types. This adds metric.type = starts_with(\"<prefix>\") to the filter.", 
+          "name": "type_prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -362,44 +362,8 @@
       "name": "metric_descriptor", 
       "params": [
         {
-          "description": " The kind of measurement. It must be one of", 
-          "name": "metric_kind", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " An optional detailed description of the metric.", 
-          "name": "description", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
           "name": "type_", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " An optional unit in which the metric value is reported.", 
-          "name": "unit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " An optional concise name for the metric.", 
-          "name": "display_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -416,12 +380,48 @@
           ]
         }, 
         {
+          "description": " An optional detailed description of the metric.", 
+          "name": "description", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " An optional concise name for the metric.", 
+          "name": "display_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The kind of measurement. It must be one of", 
+          "name": "metric_kind", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
           "name": "labels", 
           "nullable": null, 
           "optional": null, 
           "types": [
             " ~gcloud.monitoring.label.LabelDescriptor"
+          ]
+        }, 
+        {
+          "description": " An optional unit in which the metric value is reported.", 
+          "name": "unit", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -445,6 +445,15 @@
       "id": "gcloud.monitoring.__init__.Client.query", 
       "name": "query", 
       "params": [
+        {
+          "description": " The number of minutes in the time interval.", 
+          "name": "minutes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
         {
           "description": " The metric type name. The default value is", 
           "name": "metric_type", 
@@ -475,15 +484,6 @@
         {
           "description": " The number of days in the time interval.", 
           "name": "days", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " The number of minutes in the time interval.", 
-          "name": "minutes", 
           "nullable": null, 
           "optional": null, 
           "types": [
