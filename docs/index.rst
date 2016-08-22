@@ -74,6 +74,7 @@
   bigtable-row
   bigtable-row-filters
   bigtable-row-data
+  operation-api
 
 .. toctree::
   :maxdepth: 0

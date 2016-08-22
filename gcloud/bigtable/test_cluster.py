@@ -16,119 +16,6 @@
 import unittest
 
 
-class TestOperation(unittest.TestCase):
-
-    def _getTargetClass(self):
-        from gcloud.bigtable.cluster import Operation
-        return Operation
-
-    def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
-
-    def _constructor_test_helper(self, cluster=None):
-        op_type = 'fake-op'
-        op_id = 8915
-        operation = self._makeOne(op_type, op_id, cluster=cluster)
-
-        self.assertEqual(operation.op_type, op_type)
-        self.assertEqual(operation.op_id, op_id)
-        self.assertEqual(operation._cluster, cluster)
-        self.assertFalse(operation._complete)
-
-    def test_constructor_defaults(self):
-        self._constructor_test_helper()
-
-    def test_constructor_explicit_cluster(self):
-        cluster = object()
-        self._constructor_test_helper(cluster=cluster)
-
-    def test___eq__(self):
-        op_type = 'fake-op'
-        op_id = 8915
-        cluster = object()
-        operation1 = self._makeOne(op_type, op_id, cluster=cluster)
-        operation2 = self._makeOne(op_type, op_id, cluster=cluster)
-        self.assertEqual(operation1, operation2)
-
-    def test___eq__type_differ(self):
-        operation1 = self._makeOne('foo', 123, None)
-        operation2 = object()
-        self.assertNotEqual(operation1, operation2)
-
-    def test___ne__same_value(self):
-        op_type = 'fake-op'
-        op_id = 8915
-        cluster = object()
-        operation1 = self._makeOne(op_type, op_id, cluster=cluster)
-        operation2 = self._makeOne(op_type, op_id, cluster=cluster)
-        comparison_val = (operation1 != operation2)
-        self.assertFalse(comparison_val)
-
-    def test___ne__(self):
-        operation1 = self._makeOne('foo', 123, None)
-        operation2 = self._makeOne('bar', 456, None)
-        self.assertNotEqual(operation1, operation2)
-
-    def test_finished_without_operation(self):
-        operation = self._makeOne(None, None, None)
-        operation._complete = True
-        with self.assertRaises(ValueError):
-            operation.finished()
-
-    def _finished_helper(self, done):
-        from google.longrunning import operations_pb2
-        from gcloud.bigtable._testing import _FakeStub
-        from gcloud.bigtable.cluster import Cluster
-
-        PROJECT = 'PROJECT'
-        INSTANCE_ID = 'instance-id'
-        CLUSTER_ID = 'cluster-id'
-        OP_TYPE = 'fake-op'
-        OP_ID = 789
-
-        client = _Client(PROJECT)
-        instance = _Instance(INSTANCE_ID, client)
-        cluster = Cluster(CLUSTER_ID, instance)
-        operation = self._makeOne(OP_TYPE, OP_ID, cluster=cluster)
-
-        # Create request_pb
-        op_name = ('operations/projects/' + PROJECT +
-                   '/instances/' + INSTANCE_ID +
-                   '/clusters/' + CLUSTER_ID +
-                   '/operations/%d' % (OP_ID,))
-        request_pb = operations_pb2.GetOperationRequest(name=op_name)
-
-        # Create response_pb
-        response_pb = operations_pb2.Operation(done=done)
-
-        # Patch the stub used by the API method.
-        client._operations_stub = stub = _FakeStub(response_pb)
-
-        # Create expected_result.
-        expected_result = done
-
-        # Perform the method and check the result.
-        result = operation.finished()
-
-        self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'GetOperation',
-            (request_pb,),
-            {},
-        )])
-
-        if done:
-            self.assertTrue(operation._complete)
-        else:
-            self.assertFalse(operation._complete)
-
-    def test_finished(self):
-        self._finished_helper(done=True)
-
-    def test_finished_not_done(self):
-        self._finished_helper(done=False)
-
-
 class TestCluster(unittest.TestCase):
 
     PROJECT = 'project'
@@ -342,17 +229,16 @@ class TestCluster(unittest.TestCase):
 
     def test_create(self):
         from google.longrunning import operations_pb2
-        from gcloud._testing import _Monkey
+        from gcloud.operation import Operation
+        from gcloud.bigtable._generated import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
-        from gcloud.bigtable import cluster as MUT
 
+        SERVE_NODES = 4
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster = self._makeOne(self.CLUSTER_ID, instance)
-
-        # Create request_pb. Just a mock since we monkey patch
-        # _prepare_create_request
-        request_pb = object()
+        cluster = self._makeOne(
+            self.CLUSTER_ID, instance, serve_nodes=SERVE_NODES)
 
         # Create response_pb
         OP_ID = 5678
@@ -364,41 +250,31 @@ class TestCluster(unittest.TestCase):
         # Patch the stub used by the API method.
         client._instance_stub = stub = _FakeStub(response_pb)
 
-        # Create expected_result.
-        expected_result = MUT.Operation('create', OP_ID, cluster=cluster)
-
-        # Create the mocks.
-        prep_create_called = []
-
-        def mock_prep_create_req(cluster):
-            prep_create_called.append(cluster)
-            return request_pb
-
-        process_operation_called = []
-
-        def mock_process_operation(operation_pb):
-            process_operation_called.append(operation_pb)
-            return OP_ID
-
         # Perform the method and check the result.
-        with _Monkey(MUT, _prepare_create_request=mock_prep_create_req,
-                     _process_operation=mock_process_operation):
-            result = cluster.create()
+        result = cluster.create()
 
-        self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'CreateCluster',
-            (request_pb,),
-            {},
-        )])
-        self.assertEqual(prep_create_called, [cluster])
-        self.assertEqual(process_operation_called, [response_pb])
+        self.assertTrue(isinstance(result, Operation))
+        self.assertEqual(result.name, OP_NAME)
+        self.assertTrue(result.target is cluster)
+        self.assertTrue(result.client is client)
+
+        self.assertEqual(len(stub.method_calls), 1)
+        api_name, args, kwargs = stub.method_calls[0]
+        self.assertEqual(api_name, 'CreateCluster')
+        request_pb, = args
+        self.assertTrue(
+            isinstance(request_pb, messages_v2_pb2.CreateClusterRequest))
+        self.assertEqual(request_pb.parent, instance.name)
+        self.assertEqual(request_pb.cluster_id, self.CLUSTER_ID)
+        self.assertEqual(request_pb.cluster.serve_nodes, SERVE_NODES)
+        self.assertEqual(kwargs, {})
 
     def test_update(self):
         from google.longrunning import operations_pb2
-        from gcloud._testing import _Monkey
+        from gcloud.operation import Operation
+        from gcloud.bigtable._generated import (
+            instance_pb2 as data_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
-        from gcloud.bigtable import cluster as MUT
 
         SERVE_NODES = 81
 
@@ -414,33 +290,31 @@ class TestCluster(unittest.TestCase):
         )
 
         # Create response_pb
-        response_pb = operations_pb2.Operation()
+        OP_ID = 5678
+        OP_NAME = (
+            'operations/projects/%s/instances/%s/clusters/%s/operations/%d' %
+            (self.PROJECT, self.INSTANCE_ID, self.CLUSTER_ID, OP_ID))
+        response_pb = operations_pb2.Operation(name=OP_NAME)
 
         # Patch the stub used by the API method.
         client._instance_stub = stub = _FakeStub(response_pb)
 
-        # Create expected_result.
-        OP_ID = 5678
-        expected_result = MUT.Operation('update', OP_ID, cluster=cluster)
+        result = cluster.update()
 
-        # Create mocks
-        process_operation_called = []
+        self.assertTrue(isinstance(result, Operation))
+        self.assertEqual(result.name, OP_NAME)
+        self.assertTrue(result.target is cluster)
+        self.assertTrue(result.client is client)
 
-        def mock_process_operation(operation_pb):
-            process_operation_called.append(operation_pb)
-            return OP_ID
-
-        # Perform the method and check the result.
-        with _Monkey(MUT, _process_operation=mock_process_operation):
-            result = cluster.update()
-
-        self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'UpdateCluster',
-            (request_pb,),
-            {},
-        )])
-        self.assertEqual(process_operation_called, [response_pb])
+        self.assertEqual(len(stub.method_calls), 1)
+        api_name, args, kwargs = stub.method_calls[0]
+        self.assertEqual(api_name, 'UpdateCluster')
+        request_pb, = args
+        self.assertTrue(
+            isinstance(request_pb, data_v2_pb2.Cluster))
+        self.assertEqual(request_pb.name, self.CLUSTER_NAME)
+        self.assertEqual(request_pb.serve_nodes, SERVE_NODES)
+        self.assertEqual(kwargs, {})
 
     def test_delete(self):
         from google.protobuf import empty_pb2
@@ -497,98 +371,6 @@ class Test__prepare_create_request(unittest.TestCase):
         self.assertEqual(request_pb.cluster_id, CLUSTER_ID)
         self.assertEqual(request_pb.parent, instance.name)
         self.assertEqual(request_pb.cluster.serve_nodes, SERVE_NODES)
-
-
-class Test__parse_pb_any_to_native(unittest.TestCase):
-
-    def _callFUT(self, any_val, expected_type=None):
-        from gcloud.bigtable.cluster import _parse_pb_any_to_native
-        return _parse_pb_any_to_native(any_val, expected_type=expected_type)
-
-    def test_with_known_type_url(self):
-        from google.protobuf import any_pb2
-        from gcloud._testing import _Monkey
-        from gcloud.bigtable import cluster as MUT
-
-        cell = _CellPB(
-            timestamp_micros=0,
-            value=b'foobar',
-        )
-
-        type_url = 'type.googleapis.com/' + cell.DESCRIPTOR.full_name
-        fake_type_url_map = {type_url: cell.__class__}
-
-        any_val = any_pb2.Any(
-            type_url=type_url,
-            value=cell.SerializeToString(),
-        )
-        with _Monkey(MUT, _TYPE_URL_MAP=fake_type_url_map):
-            result = self._callFUT(any_val)
-
-        self.assertEqual(result, cell)
-
-    def test_unknown_type_url(self):
-        from google.protobuf import any_pb2
-        from gcloud._testing import _Monkey
-        from gcloud.bigtable import cluster as MUT
-
-        fake_type_url_map = {}
-        any_val = any_pb2.Any()
-        with _Monkey(MUT, _TYPE_URL_MAP=fake_type_url_map):
-            with self.assertRaises(KeyError):
-                self._callFUT(any_val)
-
-    def test_disagreeing_type_url(self):
-        from google.protobuf import any_pb2
-        from gcloud._testing import _Monkey
-        from gcloud.bigtable import cluster as MUT
-
-        type_url1 = 'foo'
-        type_url2 = 'bar'
-        fake_type_url_map = {type_url1: None}
-        any_val = any_pb2.Any(type_url=type_url2)
-        with _Monkey(MUT, _TYPE_URL_MAP=fake_type_url_map):
-            with self.assertRaises(ValueError):
-                self._callFUT(any_val, expected_type=type_url1)
-
-
-class Test__process_operation(unittest.TestCase):
-
-    def _callFUT(self, operation_pb):
-        from gcloud.bigtable.cluster import _process_operation
-        return _process_operation(operation_pb)
-
-    def test_it(self):
-        from google.longrunning import operations_pb2
-
-        PROJECT = 'project'
-        INSTANCE_ID = 'instance-id'
-        CLUSTER_ID = 'cluster-id'
-        EXPECTED_OPERATION_ID = 234
-        OPERATION_NAME = (
-            'operations/projects/%s/instances/%s/clusters/%s/operations/%d' %
-            (PROJECT, INSTANCE_ID, CLUSTER_ID, EXPECTED_OPERATION_ID))
-
-        operation_pb = operations_pb2.Operation(name=OPERATION_NAME)
-
-        # Exectute method with mocks in place.
-        operation_id = self._callFUT(operation_pb)
-
-        # Check outputs.
-        self.assertEqual(operation_id, EXPECTED_OPERATION_ID)
-
-    def test_op_name_parsing_failure(self):
-        from google.longrunning import operations_pb2
-
-        operation_pb = operations_pb2.Operation(name='invalid')
-        with self.assertRaises(ValueError):
-            self._callFUT(operation_pb)
-
-
-def _CellPB(*args, **kw):
-    from gcloud.bigtable._generated import (
-        data_pb2 as data_v2_pb2)
-    return data_v2_pb2.Cell(*args, **kw)
 
 
 def _ClusterPB(*args, **kw):

@@ -17,24 +17,16 @@
 
 import re
 
-from google.longrunning import operations_pb2
-
 from gcloud.bigtable._generated import (
     instance_pb2 as data_v2_pb2)
 from gcloud.bigtable._generated import (
     bigtable_instance_admin_pb2 as messages_v2_pb2)
+from gcloud.operation import Operation
 
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                               r'instances/(?P<instance>[^/]+)/clusters/'
                               r'(?P<cluster_id>[a-z][-a-z0-9]*)$')
-_OPERATION_NAME_RE = re.compile(r'^operations/'
-                                r'projects/([^/]+)/'
-                                r'instances/([^/]+)/'
-                                r'clusters/([a-z][-a-z0-9]*)/'
-                                r'operations/(?P<operation_id>\d+)$')
-_TYPE_URL_MAP = {
-}
 
 DEFAULT_SERVE_NODES = 3
 """Default number of nodes to use when creating a cluster."""
@@ -56,109 +48,6 @@ def _prepare_create_request(cluster):
             serve_nodes=cluster.serve_nodes,
         ),
     )
-
-
-def _parse_pb_any_to_native(any_val, expected_type=None):
-    """Convert a serialized "google.protobuf.Any" value to actual type.
-
-    :type any_val: :class:`google.protobuf.any_pb2.Any`
-    :param any_val: A serialized protobuf value container.
-
-    :type expected_type: str
-    :param expected_type: (Optional) The type URL we expect ``any_val``
-                          to have.
-
-    :rtype: object
-    :returns: The de-serialized object.
-    :raises: :class:`ValueError <exceptions.ValueError>` if the
-             ``expected_type`` does not match the ``type_url`` on the input.
-    """
-    if expected_type is not None and expected_type != any_val.type_url:
-        raise ValueError('Expected type: %s, Received: %s' % (
-            expected_type, any_val.type_url))
-    container_class = _TYPE_URL_MAP[any_val.type_url]
-    return container_class.FromString(any_val.value)
-
-
-def _process_operation(operation_pb):
-    """Processes a create protobuf response.
-
-    :type operation_pb: :class:`google.longrunning.operations_pb2.Operation`
-    :param operation_pb: The long-running operation response from a
-                         Create/Update/Undelete cluster request.
-
-    :rtype: tuple
-    :returns: integer ID of the operation (``operation_id``).
-    :raises: :class:`ValueError <exceptions.ValueError>` if the operation name
-             doesn't match the :data:`_OPERATION_NAME_RE` regex.
-    """
-    match = _OPERATION_NAME_RE.match(operation_pb.name)
-    if match is None:
-        raise ValueError('Operation name was not in the expected '
-                         'format after a cluster modification.',
-                         operation_pb.name)
-    operation_id = int(match.group('operation_id'))
-
-    return operation_id
-
-
-class Operation(object):
-    """Representation of a Google API Long-Running Operation.
-
-    In particular, these will be the result of operations on
-    clusters using the Cloud Bigtable API.
-
-    :type op_type: str
-    :param op_type: The type of operation being performed. Expect
-                    ``create``, ``update`` or ``undelete``.
-
-    :type op_id: int
-    :param op_id: The ID of the operation.
-
-    :type cluster: :class:`Cluster`
-    :param cluster: The cluster that created the operation.
-    """
-
-    def __init__(self, op_type, op_id, cluster=None):
-        self.op_type = op_type
-        self.op_id = op_id
-        self._cluster = cluster
-        self._complete = False
-
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
-        return (other.op_type == self.op_type and
-                other.op_id == self.op_id and
-                other._cluster == self._cluster and
-                other._complete == self._complete)
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
-    def finished(self):
-        """Check if the operation has finished.
-
-        :rtype: bool
-        :returns: A boolean indicating if the current operation has completed.
-        :raises: :class:`ValueError <exceptions.ValueError>` if the operation
-                 has already completed.
-        """
-        if self._complete:
-            raise ValueError('The operation has completed.')
-
-        operation_name = ('operations/' + self._cluster.name +
-                          '/operations/%d' % (self.op_id,))
-        request_pb = operations_pb2.GetOperationRequest(name=operation_name)
-        # We expect a `google.longrunning.operations_pb2.Operation`.
-        client = self._cluster._instance._client
-        operation_pb = client._operations_stub.GetOperation(request_pb)
-
-        if operation_pb.done:
-            self._complete = True
-            return True
-        else:
-            return False
 
 
 class Cluster(object):
@@ -317,11 +206,12 @@ class Cluster(object):
         """
         request_pb = _prepare_create_request(self)
         # We expect a `google.longrunning.operations_pb2.Operation`.
-        operation_pb = self._instance._client._instance_stub.CreateCluster(
-            request_pb)
+        client = self._instance._client
+        operation_pb = client._instance_stub.CreateCluster(request_pb)
 
-        op_id = _process_operation(operation_pb)
-        return Operation('create', op_id, cluster=self)
+        operation = Operation.from_pb(operation_pb, client)
+        operation.target = self
+        return operation
 
     def update(self):
         """Update this cluster.
@@ -346,11 +236,12 @@ class Cluster(object):
             serve_nodes=self.serve_nodes,
         )
         # Ignore expected `._generated.instance_pb2.Cluster`.
-        operation_pb = self._instance._client._instance_stub.UpdateCluster(
-            request_pb)
+        client = self._instance._client
+        operation_pb = client._instance_stub.UpdateCluster(request_pb)
 
-        op_id = _process_operation(operation_pb)
-        return Operation('update', op_id, cluster=self)
+        operation = Operation.from_pb(operation_pb, client)
+        operation.target = self
+        return operation
 
     def delete(self):
         """Delete this cluster.
