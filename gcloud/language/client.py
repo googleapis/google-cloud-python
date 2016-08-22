@@ -46,8 +46,7 @@ class Client(JSONClient):
         """Create a plain text document bound to this client.
 
         :type content: str
-        :param content: The document text content (either plain
-                        text or HTML).
+        :param content: The document plain text content.
 
         :type kwargs: dict
         :param kwargs: Remaining keyword arguments to be passed along to the
@@ -62,3 +61,23 @@ class Client(JSONClient):
             raise TypeError('Cannot pass doc_type')
         return Document(self, content=content,
                         doc_type=Document.PLAIN_TEXT, **kwargs)
+
+    def document_from_html(self, content, **kwargs):
+        """Create an HTML document bound to this client.
+
+        :type content: str
+        :param content: The document HTML text content.
+
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments to be passed along to the
+                       :class:`Document` constructor.
+
+        :rtype: :class:`Document`
+        :returns: An HTML document bound to this client.
+        :raises: :class:`TypeError` if ``doc_type`` is passed as a
+                 keyword argument.
+        """
+        if 'doc_type' in kwargs:
+            raise TypeError('Cannot pass doc_type')
+        return Document(self, content=content,
+                        doc_type=Document.HTML, **kwargs)

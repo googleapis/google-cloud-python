@@ -42,7 +42,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project='PROJECT',
                                credentials=creds, http=object())
 
-        content = '<html>abc</html>'
+        content = 'abc'
         language = 'es'
         document = client.document_from_text(content, language=language)
         self.assertIsInstance(document, Document)
@@ -54,14 +54,38 @@ class TestClient(unittest.TestCase):
         self.assertEqual(document.language, language)
 
     def test_document_from_text_factory_failure(self):
+        creds = _Credentials()
+        client = self._makeOne(project='PROJECT',
+                               credentials=creds, http=object())
+
+        with self.assertRaises(TypeError):
+            client.document_from_text('abc', doc_type='foo')
+
+    def test_document_from_html_factory(self):
         from gcloud.language.document import Document
 
         creds = _Credentials()
         client = self._makeOne(project='PROJECT',
                                credentials=creds, http=object())
 
+        content = '<html>abc</html>'
+        language = 'ja'
+        document = client.document_from_html(content, language=language)
+        self.assertIsInstance(document, Document)
+        self.assertIs(document.client, client)
+        self.assertEqual(document.content, content)
+        # Test the default arg.
+        self.assertEqual(document.doc_type, Document.HTML)
+        # Test the kwargs as well.
+        self.assertEqual(document.language, language)
+
+    def test_document_from_html_factory_failure(self):
+        creds = _Credentials()
+        client = self._makeOne(project='PROJECT',
+                               credentials=creds, http=object())
+
         with self.assertRaises(TypeError):
-            client.document_from_text('abc', doc_type=Document.HTML)
+            client.document_from_html('abc', doc_type='foo')
 
 
 class _Credentials(object):
