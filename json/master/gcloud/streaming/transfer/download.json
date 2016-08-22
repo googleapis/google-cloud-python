@@ -30,8 +30,8 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " should an existing file be overwritten", 
-          "name": "overwrite", 
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -48,21 +48,21 @@
           ]
         }, 
         {
+          "description": " should an existing file be overwritten", 
+          "name": "overwrite", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
+          ]
+        }, 
+        {
           "description": " keyword arguments: passed through to _Transfer.__init__().", 
           "name": "kwds", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
-          ]
-        }, 
-        {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
           ]
         }
       ], 
@@ -83,15 +83,6 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " total size of the file to be downloaded", 
-          "name": "total_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or None"
-          ]
-        }, 
-        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
@@ -107,6 +98,15 @@
           "optional": null, 
           "types": [
             "writable file-like object"
+          ]
+        }, 
+        {
+          "description": " total size of the file to be downloaded", 
+          "name": "total_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
           ]
         }, 
         {

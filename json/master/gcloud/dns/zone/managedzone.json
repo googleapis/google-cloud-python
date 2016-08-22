@@ -117,21 +117,21 @@
       "name": "list_changes", 
       "params": [
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current zone.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/dns/client/client or nonetype\">gcloud.dns.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " maximum number of zones to return, If not passed, defaults to a value set by the API.", 
           "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current zone.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/dns/client/client or nonetype\">gcloud.dns.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -161,21 +161,21 @@
       "name": "list_resource_record_sets", 
       "params": [
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current zone.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/dns/client/client or nonetype\">gcloud.dns.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " maximum number of zones to return, If not passed, defaults to a value set by the API.", 
           "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current zone.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/dns/client/client or nonetype\">gcloud.dns.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -215,17 +215,8 @@
       "name": "resource_record_set", 
       "params": [
         {
-          "description": " TTL for the RR, in seconds", 
-          "name": "ttl", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " Name of the record set.", 
-          "name": "name", 
+          "description": " RR type", 
+          "name": "record_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -242,8 +233,17 @@
           ]
         }, 
         {
-          "description": " RR type", 
-          "name": "record_type", 
+          "description": " TTL for the RR, in seconds", 
+          "name": "ttl", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " Name of the record set.", 
+          "name": "name", 
           "nullable": null, 
           "optional": null, 
           "types": [

@@ -36,21 +36,21 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {
@@ -80,15 +80,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -98,8 +89,8 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -113,6 +104,15 @@
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -133,12 +133,12 @@
       "name": "instance", 
       "params": [
         {
-          "description": " (Optional) The display name for the instance in the Cloud Console UI. (Must be between 4 and 30 characters.) If this value is not set in the constructor, will fall back to the instance ID.", 
-          "name": "display_name", 
+          "description": " location name, in form projects/<project>/locations/<location>; used to set up the instance's cluster.", 
+          "name": "location", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "string"
           ]
         }, 
         {
@@ -151,21 +151,21 @@
           ]
         }, 
         {
-          "description": " location name, in form projects/<project>/locations/<location>; used to set up the instance's cluster.", 
-          "name": "location", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " (Optional) The number of nodes in the instance's cluster; used to set up the instance's cluster.", 
           "name": "serve_nodes", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " (Optional) The display name for the instance in the Cloud Console UI. (Must be between 4 and 30 characters.) If this value is not set in the constructor, will fall back to the instance ID.", 
+          "name": "display_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 

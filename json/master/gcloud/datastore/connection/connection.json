@@ -81,15 +81,6 @@
       "name": "build_api_url", 
       "params": [
         {
-          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
-          "name": "api_version", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The API method to call (e.g. 'runQuery', 'lookup').", 
           "name": "method", 
           "nullable": null, 
@@ -101,6 +92,15 @@
         {
           "description": " The base URL where the API lives. You shouldn't have to provide this.", 
           "name": "base_url", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
+          "name": "api_version", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -191,21 +191,21 @@
           ]
         }, 
         {
-          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
-          "name": "eventual", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
-          ]
-        }, 
-        {
           "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
           "name": "transaction_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
+          "name": "eventual", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
           ]
         }, 
         {
@@ -254,6 +254,15 @@
           ]
         }, 
         {
+          "description": " The Protobuf representing the query to run.", 
+          "name": "query_pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
+          ]
+        }, 
+        {
           "description": " The namespace over which to run the query.", 
           "name": "namespace", 
           "nullable": null, 
@@ -269,15 +278,6 @@
           "optional": null, 
           "types": [
             "bool"
-          ]
-        }, 
-        {
-          "description": " The Protobuf representing the query to run.", 
-          "name": "query_pb", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
           ]
         }, 
         {

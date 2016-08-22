@@ -40,20 +40,20 @@
         }, 
         {
           "description": " passed through to Subscription.pull", 
-          "name": "max_messages", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
-          "description": " passed through to Subscription.pull", 
           "name": "return_immediately", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " passed through to Subscription.pull", 
+          "name": "max_messages", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 
@@ -254,21 +254,21 @@
           ]
         }, 
         {
-          "description": " the maximum number of messages to return.", 
-          "name": "max_messages", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " if True, the back-end returns even if no messages are available; if False, the API call blocks until one or more messages are available.", 
           "name": "return_immediately", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " the maximum number of messages to return.", 
+          "name": "max_messages", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 
