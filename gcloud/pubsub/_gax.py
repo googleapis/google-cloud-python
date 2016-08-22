@@ -36,7 +36,7 @@ class _PublisherAPI(object):
     def __init__(self, gax_api):
         self._gax_api = gax_api
 
-    def list_topics(self, project, page_size=0, page_token=INITIAL_PAGE):
+    def list_topics(self, project, page_size=0, page_token=None):
         """List topics for the project associated with this API.
 
         See:
@@ -60,6 +60,8 @@ class _PublisherAPI(object):
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
+        if page_token is None:
+            page_token = INITIAL_PAGE
         options = CallOptions(page_token=page_token)
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_topics(
@@ -162,7 +164,7 @@ class _PublisherAPI(object):
         return result.message_ids
 
     def topic_list_subscriptions(self, topic_path, page_size=0,
-                                 page_token=INITIAL_PAGE):
+                                 page_token=None):
         """API call:  list subscriptions bound to a topic
 
         See:
@@ -187,6 +189,8 @@ class _PublisherAPI(object):
         :raises: :exc:`gcloud.exceptions.NotFound` if the topic does not
                     exist
         """
+        if page_token is None:
+            page_token = INITIAL_PAGE
         options = CallOptions(page_token=page_token)
         try:
             page_iter = self._gax_api.list_topic_subscriptions(
@@ -209,8 +213,7 @@ class _SubscriberAPI(object):
     def __init__(self, gax_api):
         self._gax_api = gax_api
 
-    def list_subscriptions(self, project, page_size=0,
-                           page_token=INITIAL_PAGE):
+    def list_subscriptions(self, project, page_size=0, page_token=None):
         """List subscriptions for the project associated with this API.
 
         See:
@@ -234,6 +237,8 @@ class _SubscriberAPI(object):
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
+        if page_token is None:
+            page_token = INITIAL_PAGE
         options = CallOptions(page_token=page_token)
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_subscriptions(
