@@ -46,7 +46,6 @@ class EntityType(object):
     """Other entity type (i.e. known but not classified)."""
 
 
-
 class Entity(object):
     """A Google Cloud Natural Language API entity.
 
@@ -82,3 +81,21 @@ class Entity(object):
         self.metadata = metadata
         self.salience = salience
         self.mentions = mentions
+
+    @classmethod
+    def from_api_repr(cls, payload):
+        """Convert an Entity from the JSON API into an :class:`Entity`.
+
+        :param payload: dict
+        :type payload: The value from the backend.
+
+        :rtype: :class:`Entity`
+        :returns: The entity parsed from the API representation.
+        """
+        name = payload['name']
+        entity_type = payload['type']
+        metadata = payload['metadata']
+        salience = payload['salience']
+        mentions = [value['text']['content']
+                    for value in payload['mentions']]
+        return cls(name, entity_type, metadata, salience, mentions)

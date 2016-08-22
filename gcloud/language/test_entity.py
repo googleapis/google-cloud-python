@@ -37,3 +37,30 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(entity.metadata, metadata)
         self.assertEqual(entity.salience, salience)
         self.assertEqual(entity.mentions, mentions)
+
+    def test_from_api_repr(self):
+        klass = self._getTargetClass()
+        name = 'Italy'
+        entity_type = 'LOCATION'
+        salience = 0.223
+        metadata = {'wikipedia_url': 'http://en.wikipedia.org/wiki/Italy'}
+        mention1 = 'Italy'
+        mention2 = 'To Italy'
+        mention3 = 'From Italy'
+        payload = {
+            'name': name,
+            'type': entity_type,
+            'salience': salience,
+            'metadata': metadata,
+            'mentions': [
+                {'text': {'content': mention1}},
+                {'text': {'content': mention2}},
+                {'text': {'content': mention3}},
+            ],
+        }
+        entity = klass.from_api_repr(payload)
+        self.assertEqual(entity.name, name)
+        self.assertEqual(entity.entity_type, entity_type)
+        self.assertEqual(entity.salience, salience)
+        self.assertEqual(entity.metadata, metadata)
+        self.assertEqual(entity.mentions, [mention1, mention2, mention3])
