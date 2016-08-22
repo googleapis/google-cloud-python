@@ -5,7 +5,7 @@ Client
 ------
 
 :class:`Client <gcloud.dns.client.Client>` objects provide a means to
-configure your DNS applications.  Eash instance holds both a ``project``
+configure your DNS applications.  Each instance holds both a ``project``
 and an authenticated connection to the DNS service.
 
 For an overview of authentication in ``gcloud-python``, see :doc:`gcloud-auth`.
