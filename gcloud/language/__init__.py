@@ -15,3 +15,4 @@
 """Client library for Google Cloud Natural Language API."""
 
 from gcloud.language.client import Client
+from gcloud.language.document import Document
