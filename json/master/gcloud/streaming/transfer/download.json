@@ -30,15 +30,6 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " should an existing file be overwritten", 
-          "name": "overwrite", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
           "description": " path/filename for the target file", 
           "name": "filename", 
           "nullable": null, 
@@ -48,8 +39,8 @@
           ]
         }, 
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
+          "description": " should an existing file be overwritten", 
+          "name": "overwrite", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -63,6 +54,15 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }
       ], 
@@ -83,15 +83,6 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " total size of the file to be downloaded", 
-          "name": "total_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or None"
-          ]
-        }, 
-        {
           "description": " the target file", 
           "name": "stream", 
           "nullable": null, 
@@ -101,12 +92,12 @@
           ]
         }, 
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
+          "description": " total size of the file to be downloaded", 
+          "name": "total_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
+            "integer or None"
           ]
         }, 
         {
@@ -116,6 +107,15 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }
       ], 

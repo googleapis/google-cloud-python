@@ -16,6 +16,173 @@
     {
       "examples": [], 
       "exceptions": [], 
+      "id": "gcloud.language.client.Client.document_from_blob", 
+      "name": "document_from_blob", 
+      "params": [
+        {
+          "description": " The name of the bucket that contains the document text.", 
+          "name": "bucket_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to be passed along to the", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " The name of the blob (within the bucket) that contains document text.", 
+          "name": "blob_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The type of text in the document. Defaults to plain text. Can also be specified as HTML via :attr:~.Document.HTML.", 
+          "name": "doc_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Document"
+          ]
+        }
+      ], 
+      "source": "gcloud/language/client.py#L108", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.language.client.Client.document_from_html", 
+      "name": "document_from_html", 
+      "params": [
+        {
+          "description": " The document HTML text content.", 
+          "name": "content", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to be passed along to the", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Document"
+          ]
+        }
+      ], 
+      "source": "gcloud/language/client.py#L65", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.language.client.Client.document_from_text", 
+      "name": "document_from_text", 
+      "params": [
+        {
+          "description": " The document plain text content.", 
+          "name": "content", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to be passed along to the", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Document"
+          ]
+        }
+      ], 
+      "source": "gcloud/language/client.py#L45", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.language.client.Client.document_from_url", 
+      "name": "document_from_url", 
+      "params": [
+        {
+          "description": " (Optional) The type of text in the document. Defaults to plain text. Can also be specified as HTML via :attr:~.Document.HTML.", 
+          "name": "doc_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " The URL of the Google Cloud Storage object holding the content. Of the form <code>gs://{bucket}/{blob-name}</code>.", 
+          "name": "gcs_url", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to be passed along to the", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Document"
+          ]
+        }
+      ], 
+      "source": "gcloud/language/client.py#L85", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
       "id": "gcloud.language.client.Client.from_service_account_json", 
       "name": "from_service_account_json", 
       "params": [
@@ -64,6 +231,15 @@
       "name": "from_service_account_p12", 
       "params": [
         {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
@@ -73,8 +249,8 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -88,15 +264,6 @@
           "optional": null, 
           "types": [
             "dict"
-          ]
-        }, 
-        {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }
       ], 

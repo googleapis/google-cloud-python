@@ -1,0 +1,19 @@
+{
+  "description": "\n Definition for Google Cloud Natural Language API documents.\n A document is used to hold text to be analyzed and annotated.", 
+  "examples": [], 
+  "id": "gcloud.language.document", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.language.document.DEFAULT_LANGUAGE", 
+      "name": "DEFAULT_LANGUAGE", 
+      "params": [], 
+      "returns": [], 
+      "source": null, 
+      "type": "instance"
+    }
+  ], 
+  "name": "Document", 
+  "source": "gcloud/language/document.py"
+}

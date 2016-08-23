@@ -20,15 +20,6 @@
       "name": "copy_table", 
       "params": [
         {
-          "description": " Table into which data is to be copied.", 
-          "name": "destination", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
-          ]
-        }, 
-        {
           "description": " tables to be copied.", 
           "name": "sources", 
           "nullable": null, 
@@ -44,6 +35,15 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " Table into which data is to be copied.", 
+          "name": "destination", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }
       ], 
@@ -90,15 +90,6 @@
       "name": "extract_table_to_storage", 
       "params": [
         {
-          "description": " table to be extracted.", 
-          "name": "source", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
-          ]
-        }, 
-        {
           "description": " URIs of CloudStorage file(s) into which table data is to be extracted; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
           "name": "destination_uris", 
           "nullable": null, 
@@ -114,6 +105,15 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " table to be extracted.", 
+          "name": "source", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }
       ], 
@@ -178,6 +178,15 @@
       "name": "from_service_account_p12", 
       "params": [
         {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
@@ -187,8 +196,8 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -202,15 +211,6 @@
           "optional": null, 
           "types": [
             "dict"
-          ]
-        }, 
-        {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }
       ], 
@@ -354,12 +354,12 @@
       "name": "load_table_from_storage", 
       "params": [
         {
-          "description": " Table into which data is to be loaded.", 
-          "name": "destination", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
+            "str"
           ]
         }, 
         {
@@ -372,12 +372,12 @@
           ]
         }, 
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " Table into which data is to be loaded.", 
+          "name": "destination", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }
       ], 
@@ -398,8 +398,8 @@
       "name": "run_async_query", 
       "params": [
         {
-          "description": " SQL query to be executed", 
-          "name": "query", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -407,8 +407,8 @@
           ]
         }, 
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " SQL query to be executed", 
+          "name": "query", 
           "nullable": null, 
           "optional": null, 
           "types": [
