@@ -465,6 +465,15 @@
                 "title": "Util"
             }
     ]
-  }
+}, {
+    "title": "Vision",
+    "type": "gcloud/vision",
+    "nav": [
+        {
+            "type": "gcloud/vision/connection/connection",
+            "title": "Connection"
+        }
+    ]
+}
  ]
 }

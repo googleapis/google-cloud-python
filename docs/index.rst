@@ -147,6 +147,7 @@
   :caption: Vision
 
   vision-usage
+  vision-client
 
 .. toctree::
   :maxdepth: 0

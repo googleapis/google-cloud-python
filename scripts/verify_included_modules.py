@@ -53,6 +53,7 @@ IGNORED_MODULES = frozenset([
     'gcloud.streaming.transfer',
     'gcloud.streaming.util',
     'gcloud.translate.__init__',
+    'gcloud.vision.__init__',
 ])
 
 
