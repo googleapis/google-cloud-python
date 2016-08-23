@@ -1,6 +1,8 @@
 {
   "description": "<div class=\"section\"><h2><code>gcloud-python</code></h2><p>GCloud API access in idiomatic Python.</p></div>",
-  "examples": ["import gcloud"],
+  "examples": [
+    "import gcloud"
+  ],
   "id": "gcloud.__init__",
   "methods": [],
   "name": "__Init__",
