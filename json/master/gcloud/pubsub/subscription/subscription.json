@@ -74,21 +74,21 @@
       "name": "check_iam_permissions", 
       "params": [
         {
-          "description": " list of permissions to be tested", 
-          "name": "permissions", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " string"
-          ]
-        }, 
-        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current subscription's topic.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " list of permissions to be tested", 
+          "name": "permissions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " string"
           ]
         }
       ], 
@@ -299,21 +299,21 @@
       "name": "set_iam_policy", 
       "params": [
         {
-          "description": " the new policy, typically fetched via", 
-          "name": "policy", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/iam/policy\">gcloud.pubsub.iam.Policy</a>"
-          ]
-        }, 
-        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current subscription's topic.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " the new policy, typically fetched via", 
+          "name": "policy", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/iam/policy\">gcloud.pubsub.iam.Policy</a>"
           ]
         }
       ], 

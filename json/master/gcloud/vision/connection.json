@@ -1,0 +1,8 @@
+{
+  "description": "\n Create / interact with gcloud Vision connections.", 
+  "examples": [], 
+  "id": "gcloud.vision.connection", 
+  "methods": [], 
+  "name": "Connection", 
+  "source": "gcloud/vision/connection.py"
+}

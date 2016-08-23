@@ -1,0 +1,8 @@
+{
+  "description": "\n Google Cloud Vision API package.", 
+  "examples": [], 
+  "id": "gcloud.vision.__init__", 
+  "methods": [], 
+  "name": "__Init__", 
+  "source": "gcloud/vision/__init__.py"
+}

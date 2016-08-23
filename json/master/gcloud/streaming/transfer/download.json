@@ -30,15 +30,6 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
           "description": " should an existing file be overwritten", 
           "name": "overwrite", 
           "nullable": null, 
@@ -54,6 +45,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }, 
         {
@@ -83,21 +83,21 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " the target file", 
-          "name": "stream", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "writable file-like object"
-          ]
-        }, 
-        {
           "description": " total size of the file to be downloaded", 
           "name": "total_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer or None"
+          ]
+        }, 
+        {
+          "description": " the target file", 
+          "name": "stream", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "writable file-like object"
           ]
         }, 
         {

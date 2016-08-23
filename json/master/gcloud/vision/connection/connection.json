@@ -1,12 +1,12 @@
 {
-  "description": "\n Basic connection for Google Cloud Natural Language API.", 
+  "description": "\n Create / interact with gcloud Vision connections.", 
   "examples": [], 
-  "id": "gcloud.language.connection.connection", 
+  "id": "gcloud.vision.connection.connection", 
   "methods": [
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.language.connection.Connection.__init__", 
+      "id": "gcloud.vision.connection.Connection.__init__", 
       "name": "__init__", 
       "params": [], 
       "returns": [], 
@@ -16,7 +16,7 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.language.connection.Connection.api_request", 
+      "id": "gcloud.vision.connection.Connection.api_request", 
       "name": "api_request", 
       "params": [
         {
@@ -114,7 +114,7 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.language.connection.Connection.build_api_url", 
+      "id": "gcloud.vision.connection.Connection.build_api_url", 
       "name": "build_api_url", 
       "params": [
         {
@@ -166,5 +166,5 @@
     }
   ], 
   "name": "Connection", 
-  "source": "gcloud/language/connection.py"
+  "source": "gcloud/vision/connection.py"
 }
