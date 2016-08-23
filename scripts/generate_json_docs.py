@@ -631,6 +631,7 @@ def main():
             'storage': [],
             'streaming': [],
             'translate': [],
+            'vision': [],
         }
     }
 
