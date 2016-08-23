@@ -66,21 +66,25 @@ class Operation(object):
     :type client: object: must provide ``_operations_stub`` accessor.
     :param client: The client used to poll for the status of the operation.
 
-    :type metadata: dict
-    :param metadata: Metadata about the operation
+    :type pb_metadata: object
+    :param pb_metadata: Instance of protobuf metadata class
+
+    :type kw: dict
+    :param kw: caller-assigned metadata about the operation
     """
 
     target = None
     """Instance assocated with the operations:  callers may set."""
 
-    def __init__(self, name, client, metadata=None):
+    def __init__(self, name, client, pb_metadata=None, **kw):
         self.name = name
         self.client = client
-        self.metadata = metadata or {}
+        self.pb_metadata = pb_metadata
+        self.metadata = kw.copy()
         self._complete = False
 
     @classmethod
-    def from_pb(cls, op_pb, client):
+    def from_pb(cls, op_pb, client, **kw):
         """Factory:  construct an instance from a protobuf.
 
         :type op_pb: :class:`google.longrunning.operations_pb2.Operation`
@@ -89,16 +93,19 @@ class Operation(object):
         :type client: object: must provide ``_operations_stub`` accessor.
         :param client: The client used to poll for the status of the operation.
 
+        :type kw: dict
+        :param kw: caller-assigned metadata about the operation
+
         :rtype: :class:`Operation`
         :returns: new instance, with attributes based on the protobuf.
         """
-        metadata = None
+        pb_metadata = None
         if op_pb.metadata.type_url:
             type_url = op_pb.metadata.type_url
             md_klass = _TYPE_URL_MAP.get(type_url)
             if md_klass:
-                metadata = md_klass.FromString(op_pb.metadata.value)
-        return cls(op_pb.name, client, metadata)
+                pb_metadata = md_klass.FromString(op_pb.metadata.value)
+        return cls(op_pb.name, client, pb_metadata, **kw)
 
     @property
     def complete(self):

@@ -99,26 +99,28 @@ class OperationTests(unittest.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_ctor_wo_metadata(self):
+    def test_ctor_defaults(self):
         client = _Client()
         operation = self._makeOne(
             self.OPERATION_NAME, client)
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertTrue(operation.client is client)
         self.assertTrue(operation.target is None)
+        self.assertTrue(operation.pb_metadata is None)
         self.assertEqual(operation.metadata, {})
 
-    def test_ctor_w_metadata(self):
+    def test_ctor_explicit(self):
         client = _Client()
-        metadata = {'foo': 'bar'}
+        pb_metadata = object()
         operation = self._makeOne(
-            self.OPERATION_NAME, client, metadata)
+            self.OPERATION_NAME, client, pb_metadata, foo='bar')
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertTrue(operation.client is client)
         self.assertTrue(operation.target is None)
-        self.assertEqual(operation.metadata, metadata)
+        self.assertTrue(operation.pb_metadata is pb_metadata)
+        self.assertEqual(operation.metadata, {'foo': 'bar'})
 
-    def test_from_pb_wo_metadata(self):
+    def test_from_pb_wo_metadata_or_kw(self):
         from google.longrunning import operations_pb2
         client = _Client()
         operation_pb = operations_pb2.Operation(name=self.OPERATION_NAME)
@@ -128,6 +130,7 @@ class OperationTests(unittest.TestCase):
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertTrue(operation.client is client)
+        self.assertTrue(operation.pb_metadata is None)
         self.assertEqual(operation.metadata, {})
 
     def test_from_pb_w_unknown_metadata(self):
@@ -147,9 +150,10 @@ class OperationTests(unittest.TestCase):
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertTrue(operation.client is client)
+        self.assertTrue(operation.pb_metadata is None)
         self.assertEqual(operation.metadata, {})
 
-    def test_from_pb_w_metadata(self):
+    def test_from_pb_w_metadata_and_kwargs(self):
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
         from google.protobuf.struct_pb2 import Struct, Value
@@ -166,13 +170,15 @@ class OperationTests(unittest.TestCase):
         klass = self._getTargetClass()
 
         with _Monkey(MUT, _TYPE_URL_MAP=type_url_map):
-            operation = klass.from_pb(operation_pb, client)
+            operation = klass.from_pb(operation_pb, client, baz='qux')
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertTrue(operation.client is client)
-        self.assertTrue(isinstance(operation.metadata, Struct))
-        self.assertEqual(list(operation.metadata.fields), ['foo'])
-        self.assertEqual(operation.metadata.fields['foo'].string_value, 'Bar')
+        pb_metadata = operation.pb_metadata
+        self.assertTrue(isinstance(pb_metadata, Struct))
+        self.assertEqual(list(pb_metadata.fields), ['foo'])
+        self.assertEqual(pb_metadata.fields['foo'].string_value, 'Bar')
+        self.assertEqual(operation.metadata, {'baz': 'qux'})
 
     def test_complete_property(self):
         client = _Client()
