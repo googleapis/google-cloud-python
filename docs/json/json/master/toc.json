@@ -256,50 +256,6 @@
                 "type": "gcloud/exceptions",
                 "title": "Exceptions"
             }
-        ],
-        "credentials": [
-            {
-                "type": "gcloud/credentials",
-                "title": "Credentials"
-            }
-        ],
-        "datastore": [
-            {
-                "type": "gcloud/datastore/batch/batch",
-                "title": "Batch"
-            },
-            {
-                "type": "gcloud/datastore/client/client",
-                "title": "Client"
-            },
-            {
-                "type": "gcloud/datastore/connection/connection",
-                "title": "Connection"
-            },
-            {
-                "type": "gcloud/datastore/entity/entity",
-                "title": "Entity"
-            },
-            {
-                "type": "gcloud/datastore/helpers",
-                "title": "Helpers"
-            },
-            {
-                "type": "gcloud/datastore/key/key",
-                "title": "Key"
-            },
-            {
-                "type": "gcloud/datastore/query/iterator",
-                "title": "Iterator"
-            },
-            {
-                "type": "gcloud/datastore/query/query",
-                "title": "Query"
-            },
-            {
-                "type": "gcloud/datastore/transaction/transaction",
-                "title": "Transaction"
-            }
         ]
   },
   {
