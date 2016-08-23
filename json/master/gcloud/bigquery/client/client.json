@@ -20,21 +20,21 @@
       "name": "copy_table", 
       "params": [
         {
-          "description": " Table into which data is to be copied.", 
-          "name": "destination", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
-          ]
-        }, 
-        {
           "description": " tables to be copied.", 
           "name": "sources", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "sequence of gcloud.bigquery.table.Table"
+          ]
+        }, 
+        {
+          "description": " Table into which data is to be copied.", 
+          "name": "destination", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }, 
         {
@@ -90,12 +90,12 @@
       "name": "extract_table_to_storage", 
       "params": [
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " table to be extracted.", 
+          "name": "source", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }, 
         {
@@ -108,12 +108,12 @@
           ]
         }, 
         {
-          "description": " table to be extracted.", 
-          "name": "source", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
+            "str"
           ]
         }
       ], 
@@ -257,15 +257,6 @@
       "name": "list_datasets", 
       "params": [
         {
-          "description": " True if results include hidden datasets.", 
-          "name": "include_all", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
           "description": " maximum number of datasets to return, If not passed, defaults to a value set by the API.", 
           "name": "max_results", 
           "nullable": null, 
@@ -281,6 +272,15 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " True if results include hidden datasets.", 
+          "name": "include_all", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }
       ], 
@@ -310,15 +310,6 @@
           ]
         }, 
         {
-          "description": " if true, include jobs owned by all users in the project.", 
-          "name": "all_users", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
           "description": " maximum number of jobs to return, If not passed, defaults to a value set by the API.", 
           "name": "max_results", 
           "nullable": null, 
@@ -334,6 +325,15 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " if true, include jobs owned by all users in the project.", 
+          "name": "all_users", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }
       ], 
@@ -354,21 +354,21 @@
       "name": "load_table_from_storage", 
       "params": [
         {
-          "description": " Table into which data is to be loaded.", 
-          "name": "destination", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
-          ]
-        }, 
-        {
           "description": " URIs of data files to be loaded; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
           "name": "source_uris", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "sequence of string"
+          ]
+        }, 
+        {
+          "description": " Table into which data is to be loaded.", 
+          "name": "destination", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }, 
         {

@@ -187,21 +187,21 @@
       "name": "topic", 
       "params": [
         {
-          "description": " To be passed to <code>Topic</code> constructor.", 
-          "name": "timestamp_messages", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
           "description": " the name of the topic to be constructed.", 
           "name": "name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " To be passed to <code>Topic</code> constructor.", 
+          "name": "timestamp_messages", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }
       ], 

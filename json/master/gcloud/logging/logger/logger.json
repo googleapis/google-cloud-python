@@ -56,6 +56,15 @@
       "name": "list_entries", 
       "params": [
         {
+          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
+          "name": "projects", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " strings"
+          ]
+        }, 
+        {
           "description": " One of :data:gcloud.logging.ASCENDING or", 
           "name": "order_by", 
           "nullable": null, 
@@ -65,12 +74,12 @@
           ]
         }, 
         {
-          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
-          "name": "projects", 
+          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            " strings"
+            "int"
           ]
         }, 
         {
@@ -89,15 +98,6 @@
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
-          "name": "page_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
           ]
         }
       ], 

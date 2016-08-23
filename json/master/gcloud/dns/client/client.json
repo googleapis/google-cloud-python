@@ -168,8 +168,8 @@
       "name": "zone", 
       "params": [
         {
-          "description": " DNS name of the zone. If not passed, then calls to zone.create will fail.", 
-          "name": "dns_name", 
+          "description": " the description for the zone. If not passed, defaults to the value of 'dns_name'.", 
+          "name": "description", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -186,8 +186,8 @@
           ]
         }, 
         {
-          "description": " the description for the zone. If not passed, defaults to the value of 'dns_name'.", 
-          "name": "description", 
+          "description": " DNS name of the zone. If not passed, then calls to zone.create will fail.", 
+          "name": "dns_name", 
           "nullable": null, 
           "optional": null, 
           "types": [

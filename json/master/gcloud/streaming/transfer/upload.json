@@ -30,21 +30,12 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " path/filename to the file being uploaded", 
-          "name": "filename", 
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
+            "boolean or None"
           ]
         }, 
         {
@@ -57,12 +48,21 @@
           ]
         }, 
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean or None"
+            "string"
+          ]
+        }, 
+        {
+          "description": " path/filename to the file being uploaded", 
+          "name": "filename", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -92,15 +92,6 @@
           ]
         }, 
         {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
@@ -126,6 +117,15 @@
           "types": [
             "dict"
           ]
+        }, 
+        {
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
         }
       ], 
       "returns": [
@@ -145,21 +145,21 @@
       "name": "initialize_upload", 
       "params": [
         {
-          "description": " the request to be used", 
-          "name": "http_request", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/streaming/http_wrapper/request\">gcloud.streaming.http_wrapper.Request</a>"
-          ]
-        }, 
-        {
           "description": " Http instance for this request.", 
           "name": "http", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "httplib2.Http (or workalike)"
+          ]
+        }, 
+        {
+          "description": " the request to be used", 
+          "name": "http_request", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/streaming/http_wrapper/request\">gcloud.streaming.http_wrapper.Request</a>"
           ]
         }
       ], 

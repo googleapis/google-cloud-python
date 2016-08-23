@@ -20,21 +20,21 @@
       "name": "allocate_ids", 
       "params": [
         {
-          "description": " Partial key to use as base for allocated IDs.", 
-          "name": "incomplete_key", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
-          ]
-        }, 
-        {
           "description": " The number of IDs to allocate.", 
           "name": "num_ids", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " Partial key to use as base for allocated IDs.", 
+          "name": "incomplete_key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
           ]
         }
       ], 
@@ -182,12 +182,12 @@
       "name": "get", 
       "params": [
         {
-          "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
-          "name": "transaction", 
+          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it.", 
+          "name": "deferred", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
+            "list"
           ]
         }, 
         {
@@ -200,17 +200,17 @@
           ]
         }, 
         {
-          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it.", 
-          "name": "missing", 
+          "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
+          "name": "transaction", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "list"
+            "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
           ]
         }, 
         {
-          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it.", 
-          "name": "deferred", 
+          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it.", 
+          "name": "missing", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -235,6 +235,15 @@
       "name": "get_multi", 
       "params": [
         {
+          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it. If the list is not empty, an error will occur.", 
+          "name": "deferred", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
+          ]
+        }, 
+        {
           "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
           "name": "transaction", 
           "nullable": null, 
@@ -255,15 +264,6 @@
         {
           "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it. If the list is not empty, an error will occur.", 
           "name": "missing", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "list"
-          ]
-        }, 
-        {
-          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it. If the list is not empty, an error will occur.", 
-          "name": "deferred", 
           "nullable": null, 
           "optional": null, 
           "types": [
