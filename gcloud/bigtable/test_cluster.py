@@ -257,6 +257,8 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(result.name, OP_NAME)
         self.assertTrue(result.target is cluster)
         self.assertTrue(result.client is client)
+        self.assertTrue(result.pb_metadata is None)
+        self.assertEqual(result.metadata, {'request_type': 'CreateCluster'})
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]
@@ -270,11 +272,20 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(kwargs, {})
 
     def test_update(self):
+        import datetime
         from google.longrunning import operations_pb2
         from gcloud.operation import Operation
+        from google.protobuf.any_pb2 import Any
+        from gcloud._helpers import _datetime_to_pb_timestamp
         from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
+        from gcloud.bigtable.cluster import _UPDATE_CLUSTER_METADATA_URL
+
+        NOW = datetime.datetime.utcnow()
+        NOW_PB = _datetime_to_pb_timestamp(NOW)
 
         SERVE_NODES = 81
 
@@ -294,7 +305,14 @@ class TestCluster(unittest.TestCase):
         OP_NAME = (
             'operations/projects/%s/instances/%s/clusters/%s/operations/%d' %
             (self.PROJECT, self.INSTANCE_ID, self.CLUSTER_ID, OP_ID))
-        response_pb = operations_pb2.Operation(name=OP_NAME)
+        metadata = messages_v2_pb2.UpdateClusterMetadata(request_time=NOW_PB)
+        response_pb = operations_pb2.Operation(
+            name=OP_NAME,
+            metadata=Any(
+                type_url=_UPDATE_CLUSTER_METADATA_URL,
+                value=metadata.SerializeToString()
+            )
+        )
 
         # Patch the stub used by the API method.
         client._instance_stub = stub = _FakeStub(response_pb)
@@ -305,6 +323,10 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(result.name, OP_NAME)
         self.assertTrue(result.target is cluster)
         self.assertTrue(result.client is client)
+        self.assertIsInstance(result.pb_metadata,
+                              messages_v2_pb2.UpdateClusterMetadata)
+        self.assertEqual(result.pb_metadata.request_time, NOW_PB)
+        self.assertEqual(result.metadata, {'request_type': 'UpdateCluster'})
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]

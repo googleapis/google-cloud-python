@@ -226,19 +226,32 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, DISPLAY_NAME)
 
     def test_create(self):
+        import datetime
         from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
         from gcloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from gcloud._helpers import _datetime_to_pb_timestamp
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.operation import Operation
         from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from gcloud.bigtable.instance import _CREATE_INSTANCE_METADATA_URL
 
+        NOW = datetime.datetime.utcnow()
+        NOW_PB = _datetime_to_pb_timestamp(NOW)
         client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
                                  display_name=self.DISPLAY_NAME)
 
         # Create response_pb
-        response_pb = operations_pb2.Operation(name=self.OP_NAME)
+        metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
+        response_pb = operations_pb2.Operation(
+            name=self.OP_NAME,
+            metadata=Any(
+                type_url=_CREATE_INSTANCE_METADATA_URL,
+                value=metadata.SerializeToString(),
+                )
+            )
 
         # Patch the stub used by the API method.
         client._instance_stub = stub = _FakeStub(response_pb)
@@ -250,6 +263,10 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(result.name, self.OP_NAME)
         self.assertTrue(result.target is instance)
         self.assertTrue(result.client is client)
+        self.assertIsInstance(result.pb_metadata,
+                              messages_v2_pb2.CreateInstanceMetadata)
+        self.assertEqual(result.pb_metadata.request_time, NOW_PB)
+        self.assertEqual(result.metadata, {'request_type': 'CreateInstance'})
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]

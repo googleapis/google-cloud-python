@@ -238,6 +238,7 @@ class Instance(object):
 
         operation = Operation.from_pb(operation_pb, self._client)
         operation.target = self
+        operation.metadata['request_type'] = 'CreateInstance'
         return operation
 
     def update(self):

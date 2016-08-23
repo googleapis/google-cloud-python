@@ -219,6 +219,7 @@ class Cluster(object):
 
         operation = Operation.from_pb(operation_pb, client)
         operation.target = self
+        operation.metadata['request_type'] = 'CreateCluster'
         return operation
 
     def update(self):
@@ -243,12 +244,13 @@ class Cluster(object):
             name=self.name,
             serve_nodes=self.serve_nodes,
         )
-        # Ignore expected `._generated.instance_pb2.Cluster`.
+        # We expect a `google.longrunning.operations_pb2.Operation`.
         client = self._instance._client
         operation_pb = client._instance_stub.UpdateCluster(request_pb)
 
         operation = Operation.from_pb(operation_pb, client)
         operation.target = self
+        operation.metadata['request_type'] = 'UpdateCluster'
         return operation
 
     def delete(self):
