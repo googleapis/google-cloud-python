@@ -625,6 +625,7 @@ def main():
             'iterator': [],
             'logging': [],
             'monitoring': [],
+            'operation': [],
             'pubsub': [],
             'resource_manager': [],
             'storage': [],
