@@ -171,25 +171,29 @@ metadata and other properties.
      >>> entities = document.analyze_entities()
      >>> for entity in entities:
      ...     print('=' * 20)
-     ...     print('    name: %s' % (entity.name,))
-     ...     print('    type: %s' % (entity.entity_type,))
-     ...     print('metadata: %s' % (entity.metadata,))
-     ...     print('salience: %s' % (entity.salience,))
+     ...     print('         name: %s' % (entity.name,))
+     ...     print('         type: %s' % (entity.entity_type,))
+     ...     print('wikipedia_url: %s' % (entity.wikipedia_url,))
+     ...     print('     metadata: %s' % (entity.metadata,))
+     ...     print('     salience: %s' % (entity.salience,))
      ====================
-         name: Michelangelo Caravaggio
-         type: PERSON
-     metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/Caravaggio'}
-     salience: 0.7615959
+              name: Michelangelo Caravaggio
+              type: PERSON
+     wikipedia_url: http://en.wikipedia.org/wiki/Caravaggio
+          metadata: {}
+          salience: 0.7615959
      ====================
-         name: Italian
-         type: LOCATION
-     metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/Italy'}
-     salience: 0.19960518
+              name: Italian
+              type: LOCATION
+     wikipedia_url: http://en.wikipedia.org/wiki/Italy
+          metadata: {}
+          salience: 0.19960518
      ====================
-         name: The Calling of Saint Matthew
-         type: EVENT
-     metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/The_Calling_of_St_Matthew_(Caravaggio)'}
-     salience: 0.038798928
+              name: The Calling of Saint Matthew
+              type: EVENT
+     wikipedia_url: http://en.wikipedia.org/wiki/The_Calling_of_St_Matthew_(Caravaggio)
+          metadata: {}
+          salience: 0.038798928
 
 Analyze Sentiment
 -----------------
@@ -266,14 +270,16 @@ the response is :data:`None`.
      >>> # Entities present if include_entities=True
      >>> for entity in annotations.entities:
      ...     print('=' * 20)
-     ...     print('    name: %s' % (entity.name,))
-     ...     print('    type: %s' % (entity.entity_type,))
-     ...     print('metadata: %s' % (entity.metadata,))
-     ...     print('salience: %s' % (entity.salience,))
+     ...     print('         name: %s' % (entity.name,))
+     ...     print('         type: %s' % (entity.entity_type,))
+     ...     print('wikipedia_url: %s' % (entity.wikipedia_url,))
+     ...     print('     metadata: %s' % (entity.metadata,))
+     ...     print('     salience: %s' % (entity.salience,))
      ====================
-         name: Moon
-         type: LOCATION
-     metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/Natural_satellite'}
-     salience: 0.11793101
+              name: Moon
+              type: LOCATION
+     wikipedia_url: http://en.wikipedia.org/wiki/Natural_satellite
+          metadata: {}
+          salience: 0.11793101
 
 .. _Features: https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/annotateText#Features

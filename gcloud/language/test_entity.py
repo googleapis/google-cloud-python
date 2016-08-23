@@ -27,14 +27,18 @@ class TestEntity(unittest.TestCase):
     def test_constructor_defaults(self):
         name = 'Italian'
         entity_type = 'LOCATION'
-        metadata = {'wikipedia_url': 'http://en.wikipedia.org/wiki/Italy'}
+        wiki_url = 'http://en.wikipedia.org/wiki/Italy'
+        metadata = {'wikipedia_url': wiki_url}
+        base_metadata = {'foo': 'bar'}
+        metadata.update(base_metadata)
         salience = 0.19960518
         mentions = ['Italian']
         entity = self._makeOne(name, entity_type, metadata,
                                salience, mentions)
         self.assertEqual(entity.name, name)
         self.assertEqual(entity.entity_type, entity_type)
-        self.assertEqual(entity.metadata, metadata)
+        self.assertEqual(entity.wikipedia_url, wiki_url)
+        self.assertEqual(entity.metadata, base_metadata)
         self.assertEqual(entity.salience, salience)
         self.assertEqual(entity.mentions, mentions)
 
@@ -43,7 +47,7 @@ class TestEntity(unittest.TestCase):
         name = 'Italy'
         entity_type = 'LOCATION'
         salience = 0.223
-        metadata = {'wikipedia_url': 'http://en.wikipedia.org/wiki/Italy'}
+        wiki_url = 'http://en.wikipedia.org/wiki/Italy'
         mention1 = 'Italy'
         mention2 = 'To Italy'
         mention3 = 'From Italy'
@@ -51,7 +55,7 @@ class TestEntity(unittest.TestCase):
             'name': name,
             'type': entity_type,
             'salience': salience,
-            'metadata': metadata,
+            'metadata': {'wikipedia_url': wiki_url},
             'mentions': [
                 {'text': {'content': mention1}},
                 {'text': {'content': mention2}},
@@ -62,5 +66,6 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(entity.name, name)
         self.assertEqual(entity.entity_type, entity_type)
         self.assertEqual(entity.salience, salience)
-        self.assertEqual(entity.metadata, metadata)
+        self.assertEqual(entity.wikipedia_url, wiki_url)
+        self.assertEqual(entity.metadata, {})
         self.assertEqual(entity.mentions, [mention1, mention2, mention3])

@@ -53,6 +53,10 @@ class Entity(object):
     an organization, or location. The API associates information, such as
     salience and mentions, with entities.
 
+    The only supported metadata (as of August 2016) is ``wikipedia_url``,
+    so this value will be removed from the passed in ``metadata``
+    and put in its own property.
+
     See:
     https://cloud.google.com/natural-language/reference/rest/v1beta1/Entity
 
@@ -78,6 +82,7 @@ class Entity(object):
     def __init__(self, name, entity_type, metadata, salience, mentions):
         self.name = name
         self.entity_type = entity_type
+        self.wikipedia_url = metadata.pop('wikipedia_url', None)
         self.metadata = metadata
         self.salience = salience
         self.mentions = mentions

@@ -46,17 +46,17 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(entity1.entity_type, EntityType.PERSON)
         self.assertTrue(0.7 < entity1.salience < 0.8)
         self.assertEqual(entity1.mentions, [entity1.name])
-        self.assertEqual(entity1.metadata, {
-            'wikipedia_url': 'http://en.wikipedia.org/wiki/Caravaggio',
-        })
+        self.assertEqual(entity1.wikipedia_url,
+                         'http://en.wikipedia.org/wiki/Caravaggio')
+        self.assertEqual(entity1.metadata, {})
         # Verify entity 2.
         self.assertEqual(entity2.name, 'Italian')
         self.assertEqual(entity2.entity_type, EntityType.LOCATION)
         self.assertTrue(0.15 < entity2.salience < 0.25)
         self.assertEqual(entity2.mentions, [entity2.name])
-        self.assertEqual(entity2.metadata, {
-            'wikipedia_url': 'http://en.wikipedia.org/wiki/Italy',
-        })
+        self.assertEqual(entity2.wikipedia_url,
+                         'http://en.wikipedia.org/wiki/Italy')
+        self.assertEqual(entity2.metadata, {})
         # Verify entity 3.
         self.assertEqual(entity3.name, 'The Calling of Saint Matthew')
         self.assertEqual(entity3.entity_type, EntityType.EVENT)
@@ -64,4 +64,5 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(entity3.mentions, [entity3.name])
         wiki_url = ('http://en.wikipedia.org/wiki/'
                     'The_Calling_of_St_Matthew_(Caravaggio)')
-        self.assertEqual(entity3.metadata, {'wikipedia_url': wiki_url})
+        self.assertEqual(entity3.wikipedia_url, wiki_url)
+        self.assertEqual(entity3.metadata, {})

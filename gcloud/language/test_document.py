@@ -102,12 +102,7 @@ class TestDocument(unittest.TestCase):
         name1 = 'R-O-C-K'
         name2 = 'USA'
         content = name1 + ' in the ' + name2
-        metadata1 = {
-            'wikipedia_url': 'http://en.wikipedia.org/wiki/Rock_music',
-        }
-        metadata2 = {
-            'wikipedia_url': 'http://en.wikipedia.org/wiki/United_States',
-        }
+        wiki2 = 'http://en.wikipedia.org/wiki/United_States'
         salience1 = 0.91391456
         salience2 = 0.086085409
         response = {
@@ -115,7 +110,7 @@ class TestDocument(unittest.TestCase):
                 {
                     'name': name1,
                     'type': EntityType.OTHER,
-                    'metadata': metadata1,
+                    'metadata': {},
                     'salience': salience1,
                     'mentions': [
                         {
@@ -129,7 +124,7 @@ class TestDocument(unittest.TestCase):
                 {
                     'name': name2,
                     'type': EntityType.LOCATION,
-                    'metadata': metadata2,
+                    'metadata': {'wikipedia_url': wiki2},
                     'salience': salience2,
                     'mentions': [
                         {
@@ -153,14 +148,16 @@ class TestDocument(unittest.TestCase):
         self.assertIsInstance(entity1, Entity)
         self.assertEqual(entity1.name, name1)
         self.assertEqual(entity1.entity_type, EntityType.OTHER)
-        self.assertEqual(entity1.metadata, metadata1)
+        self.assertEqual(entity1.wikipedia_url, None)
+        self.assertEqual(entity1.metadata, {})
         self.assertEqual(entity1.salience, salience1)
         self.assertEqual(entity1.mentions, [name1])
         entity2 = entities[1]
         self.assertIsInstance(entity2, Entity)
         self.assertEqual(entity2.name, name2)
         self.assertEqual(entity2.entity_type, EntityType.LOCATION)
-        self.assertEqual(entity2.metadata, metadata2)
+        self.assertEqual(entity2.wikipedia_url, wiki2)
+        self.assertEqual(entity2.metadata, {})
         self.assertEqual(entity2.salience, salience2)
         self.assertEqual(entity2.mentions, [name2])
 
