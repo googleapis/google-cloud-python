@@ -30,12 +30,12 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
+          "description": " path/filename to the file being uploaded", 
+          "name": "filename", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "string"
           ]
         }, 
         {
@@ -48,21 +48,21 @@
           ]
         }, 
         {
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "boolean or None"
-          ]
-        }, 
-        {
-          "description": " path/filename to the file being uploaded", 
-          "name": "filename", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }
       ], 
@@ -83,12 +83,12 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
+          "description": " Size of the file being uploaded", 
+          "name": "total_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "integer or None"
           ]
         }, 
         {
@@ -101,15 +101,6 @@
           ]
         }, 
         {
-          "description": " the target file", 
-          "name": "stream", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "writable file-like object"
-          ]
-        }, 
-        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
@@ -119,12 +110,21 @@
           ]
         }, 
         {
-          "description": " Size of the file being uploaded", 
-          "name": "total_size", 
+          "description": " the target file", 
+          "name": "stream", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or None"
+            "writable file-like object"
+          ]
+        }, 
+        {
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -145,21 +145,21 @@
       "name": "initialize_upload", 
       "params": [
         {
-          "description": " Http instance for this request.", 
-          "name": "http", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "httplib2.Http (or workalike)"
-          ]
-        }, 
-        {
           "description": " the request to be used", 
           "name": "http_request", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/streaming/http_wrapper/request\">gcloud.streaming.http_wrapper.Request</a>"
+          ]
+        }, 
+        {
+          "description": " Http instance for this request.", 
+          "name": "http", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "httplib2.Http (or workalike)"
           ]
         }
       ], 

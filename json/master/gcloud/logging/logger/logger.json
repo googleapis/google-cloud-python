@@ -56,12 +56,21 @@
       "name": "list_entries", 
       "params": [
         {
-          "description": " opaque marker for the next \"page\" of entries. If not passed, the API will return the first page of entries.", 
-          "name": "page_token", 
+          "description": " One of :data:gcloud.logging.ASCENDING or", 
+          "name": "order_by", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
+          "name": "projects", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " strings"
           ]
         }, 
         {
@@ -74,8 +83,8 @@
           ]
         }, 
         {
-          "description": " One of :data:gcloud.logging.ASCENDING or", 
-          "name": "order_by", 
+          "description": " opaque marker for the next \"page\" of entries. If not passed, the API will return the first page of entries.", 
+          "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -89,15 +98,6 @@
           "optional": null, 
           "types": [
             "int"
-          ]
-        }, 
-        {
-          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
-          "name": "projects", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " strings"
           ]
         }
       ], 
