@@ -87,21 +87,21 @@
           ]
         }, 
         {
-          "description": " The blob to be copied.", 
-          "name": "blob", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
-          ]
-        }, 
-        {
           "description": " (optional) the new name for the copied file.", 
           "name": "new_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The blob to be copied.", 
+          "name": "blob", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
           ]
         }
       ], 
@@ -277,33 +277,6 @@
       "name": "list_blobs", 
       "params": [
         {
-          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each blob returned: 'items/contentLanguage,nextPageToken'", 
-          "name": "fields", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " whether object versions should be returned as separate blobs.", 
-          "name": "versions", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or NoneType"
-          ]
-        }, 
-        {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " maximum number of blobs to return.", 
           "name": "max_results", 
           "nullable": null, 
@@ -328,6 +301,33 @@
           "optional": null, 
           "types": [
             "string or NoneType"
+          ]
+        }, 
+        {
+          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each blob returned: 'items/contentLanguage,nextPageToken'", 
+          "name": "fields", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
+          "description": " whether object versions should be returned as separate blobs.", 
+          "name": "versions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or NoneType"
+          ]
+        }, 
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -405,21 +405,21 @@
           ]
         }, 
         {
-          "description": " The blob to be renamed.", 
-          "name": "blob", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
-          ]
-        }, 
-        {
           "description": " The new name for this blob.", 
           "name": "new_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The blob to be renamed.", 
+          "name": "blob", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
           ]
         }
       ], 

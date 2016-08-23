@@ -215,21 +215,21 @@
       "name": "resource_record_set", 
       "params": [
         {
-          "description": " RR type", 
-          "name": "record_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " resource data for the RR", 
           "name": "rrdatas", 
           "nullable": null, 
           "optional": null, 
           "types": [
             " string"
+          ]
+        }, 
+        {
+          "description": " RR type", 
+          "name": "record_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {

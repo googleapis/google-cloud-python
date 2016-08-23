@@ -39,8 +39,8 @@
           ]
         }, 
         {
-          "description": " path/filename to the file being uploaded", 
-          "name": "filename", 
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -48,8 +48,8 @@
           ]
         }, 
         {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
+          "description": " path/filename to the file being uploaded", 
+          "name": "filename", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -92,15 +92,6 @@
           ]
         }, 
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or None"
-          ]
-        }, 
-        {
           "description": " Size of the file being uploaded", 
           "name": "total_size", 
           "nullable": null, 
@@ -116,6 +107,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or None"
           ]
         }, 
         {

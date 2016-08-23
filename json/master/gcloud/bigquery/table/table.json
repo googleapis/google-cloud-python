@@ -145,6 +145,15 @@
       "name": "insert_data", 
       "params": [
         {
+          "description": " ignore columns beyond schema?", 
+          "name": "ignore_unknown_values", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or NoneType"
+          ]
+        }, 
+        {
           "description": " Unique ids, one per row being inserted. If not passed, no de-duplication occurs.", 
           "name": "row_ids", 
           "nullable": null, 
@@ -163,24 +172,6 @@
           ]
         }, 
         {
-          "description": " ignore columns beyond schema?", 
-          "name": "ignore_unknown_values", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or NoneType"
-          ]
-        }, 
-        {
-          "description": " skip rows w/ invalid data?", 
-          "name": "skip_invalid_rows", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or NoneType"
-          ]
-        }, 
-        {
           "description": " Row data to be inserted. Each tuple should contain data for each schema field on the current table and in the same order as the schema fields.", 
           "name": "rows", 
           "nullable": null, 
@@ -196,6 +187,15 @@
           "optional": null, 
           "types": [
             "str or NoneType"
+          ]
+        }, 
+        {
+          "description": " skip rows w/ invalid data?", 
+          "name": "skip_invalid_rows", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or NoneType"
           ]
         }
       ], 
@@ -273,43 +273,7 @@
       "params": [
         {
           "description": " job configuration option; see", 
-          "name": "skip_leading_rows", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "max_bad_records", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
           "name": "ignore_unknown_values", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
-          "description": " If True, seek to the beginning of the file handle before writing the file to Cloud Storage.", 
-          "name": "rewind", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -327,15 +291,6 @@
         }, 
         {
           "description": " job configuration option; see", 
-          "name": "allow_quoted_newlines", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
           "name": "create_disposition", 
           "nullable": null, 
           "optional": null, 
@@ -345,16 +300,7 @@
         }, 
         {
           "description": " job configuration option; see", 
-          "name": "encoding", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "allow_jagged_rows", 
+          "name": "allow_quoted_newlines", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -362,12 +308,39 @@
           ]
         }, 
         {
-          "description": " Number of upload retries. Defaults to 6.", 
-          "name": "num_retries", 
+          "description": " The number of bytes to read from the file handle. If not provided, we'll try to guess the size using", 
+          "name": "size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "skip_leading_rows", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "max_bad_records", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -389,15 +362,6 @@
           ]
         }, 
         {
-          "description": " The number of bytes to read from the file handle. If not provided, we'll try to guess the size using", 
-          "name": "size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " one of 'CSV' or 'NEWLINE_DELIMITED_JSON'. job configuration option; see", 
           "name": "source_format", 
           "nullable": null, 
@@ -407,12 +371,48 @@
           ]
         }, 
         {
+          "description": " If True, seek to the beginning of the file handle before writing the file to Cloud Storage.", 
+          "name": "rewind", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
+          ]
+        }, 
+        {
           "description": " job configuration option; see", 
           "name": "field_delimiter", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "encoding", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " Number of upload retries. Defaults to 6.", 
+          "name": "num_retries", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "allow_jagged_rows", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }
       ], 

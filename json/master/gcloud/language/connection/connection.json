@@ -20,24 +20,6 @@
       "name": "api_request", 
       "params": [
         {
-          "description": " The data to send as the body of the request. Default is the empty string.", 
-          "name": "data", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " A dictionary of keys and values (or list of key-value pairs) to insert into the query string of the URL.", 
-          "name": "query_params", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict or list"
-          ]
-        }, 
-        {
           "description": " The HTTP method name (ie, GET, POST, etc). Required.", 
           "name": "method", 
           "nullable": null, 
@@ -56,8 +38,8 @@
           ]
         }, 
         {
-          "description": " The base URL for the API endpoint. Typically you won't have to provide this. Default is the standard API base URL.", 
-          "name": "api_base_url", 
+          "description": " The data to send as the body of the request. Default is the empty string.", 
+          "name": "data", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -65,12 +47,12 @@
           ]
         }, 
         {
-          "description": " Protected argument to be used by library callers. This can allow custom behavior, for example, to defer an HTTP request and complete initialization of the object at a later time.", 
-          "name": "_target_object", 
+          "description": " A dictionary of keys and values (or list of key-value pairs) to insert into the query string of the URL.", 
+          "name": "query_params", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "object or NoneType"
+            "dict or list"
           ]
         }, 
         {
@@ -98,6 +80,24 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The base URL for the API endpoint. Typically you won't have to provide this. Default is the standard API base URL.", 
+          "name": "api_base_url", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Protected argument to be used by library callers. This can allow custom behavior, for example, to defer an HTTP request and complete initialization of the object at a later time.", 
+          "name": "_target_object", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "object or NoneType"
           ]
         }
       ], 
@@ -136,8 +136,8 @@
           ]
         }, 
         {
-          "description": " The path to the resource (ie, '/b/bucket-name').", 
-          "name": "path", 
+          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library.", 
+          "name": "api_version", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -145,8 +145,8 @@
           ]
         }, 
         {
-          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library.", 
-          "name": "api_version", 
+          "description": " The path to the resource (ie, '/b/bucket-name').", 
+          "name": "path", 
           "nullable": null, 
           "optional": null, 
           "types": [

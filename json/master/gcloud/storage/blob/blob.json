@@ -131,6 +131,24 @@
       "name": "generate_signed_url", 
       "params": [
         {
+          "description": " The HTTP verb that will be used when requesting the URL.", 
+          "name": "method", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
+          "name": "credentials", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "oauth2client.client.OAuth2Credentials or"
+          ]
+        }, 
+        {
           "description": " When the signed URL should expire.", 
           "name": "expiration", 
           "nullable": null, 
@@ -155,24 +173,6 @@
           "optional": null, 
           "types": [
             "str"
-          ]
-        }, 
-        {
-          "description": " The HTTP verb that will be used when requesting the URL.", 
-          "name": "method", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
-          "name": "credentials", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "oauth2client.client.OAuth2Credentials or"
           ]
         }, 
         {
