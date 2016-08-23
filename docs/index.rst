@@ -6,6 +6,7 @@
   gcloud-api
   gcloud-config
   gcloud-auth
+  operation-api
 
 .. toctree::
   :maxdepth: 0
@@ -74,7 +75,6 @@
   bigtable-row
   bigtable-row-filters
   bigtable-row-data
-  operation-api
 
 .. toctree::
   :maxdepth: 0
