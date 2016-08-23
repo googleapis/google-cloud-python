@@ -1,0 +1,8 @@
+{
+  "description": "\n Basic connection for Google Cloud Natural Language API.", 
+  "examples": [], 
+  "id": "gcloud.language.connection", 
+  "methods": [], 
+  "name": "Connection", 
+  "source": "gcloud/language/connection.py"
+}

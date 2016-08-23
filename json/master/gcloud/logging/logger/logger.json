@@ -65,15 +65,6 @@
           ]
         }, 
         {
-          "description": " One of :data:gcloud.logging.ASCENDING or", 
-          "name": "order_by", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
           "name": "page_size", 
           "nullable": null, 
@@ -94,6 +85,15 @@
         {
           "description": " opaque marker for the next \"page\" of entries. If not passed, the API will return the first page of entries.", 
           "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " One of :data:gcloud.logging.ASCENDING or", 
+          "name": "order_by", 
           "nullable": null, 
           "optional": null, 
           "types": [

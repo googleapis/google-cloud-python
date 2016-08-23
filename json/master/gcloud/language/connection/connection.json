@@ -1,12 +1,12 @@
 {
-  "description": "\n Create / interact with gcloud dns connections.", 
+  "description": "\n Basic connection for Google Cloud Natural Language API.", 
   "examples": [], 
-  "id": "gcloud.dns.connection.connection", 
+  "id": "gcloud.language.connection.connection", 
   "methods": [
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.dns.connection.Connection.__init__", 
+      "id": "gcloud.language.connection.Connection.__init__", 
       "name": "__init__", 
       "params": [], 
       "returns": [], 
@@ -16,7 +16,7 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.dns.connection.Connection.api_request", 
+      "id": "gcloud.language.connection.Connection.api_request", 
       "name": "api_request", 
       "params": [
         {
@@ -114,7 +114,7 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.dns.connection.Connection.build_api_url", 
+      "id": "gcloud.language.connection.Connection.build_api_url", 
       "name": "build_api_url", 
       "params": [
         {
@@ -166,5 +166,5 @@
     }
   ], 
   "name": "Connection", 
-  "source": "gcloud/dns/connection.py"
+  "source": "gcloud/language/connection.py"
 }

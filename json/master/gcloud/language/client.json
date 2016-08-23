@@ -1,0 +1,8 @@
+{
+  "description": "\n Basic client for Google Cloud Natural Language API.", 
+  "examples": [], 
+  "id": "gcloud.language.client", 
+  "methods": [], 
+  "name": "Client", 
+  "source": "gcloud/language/client.py"
+}

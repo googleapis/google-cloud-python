@@ -20,51 +20,6 @@
       "name": "api_request", 
       "params": [
         {
-          "description": " Protected argument to be used by library callers. This can allow custom behavior, for example, to defer an HTTP request and complete initialization of the object at a later time.", 
-          "name": "_target_object", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "object or NoneType"
-          ]
-        }, 
-        {
-          "description": " The base URL for the API endpoint. Typically you won't have to provide this. Default is the standard API base URL.", 
-          "name": "api_base_url", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The proper MIME type of the data provided. Default is None.", 
-          "name": "content_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The path to the resource (ie, '/b/bucket-name'). Required.", 
-          "name": "path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " If True, this method will try to parse the response as JSON and raise an exception if that cannot be done. Default is True.", 
-          "name": "expect_json", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
-          ]
-        }, 
-        {
           "description": " The data to send as the body of the request. Default is the empty string.", 
           "name": "data", 
           "nullable": null, 
@@ -99,6 +54,51 @@
           "types": [
             "string"
           ]
+        }, 
+        {
+          "description": " The base URL for the API endpoint. Typically you won't have to provide this. Default is the standard API base URL.", 
+          "name": "api_base_url", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Protected argument to be used by library callers. This can allow custom behavior, for example, to defer an HTTP request and complete initialization of the object at a later time.", 
+          "name": "_target_object", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "object or NoneType"
+          ]
+        }, 
+        {
+          "description": " The proper MIME type of the data provided. Default is None.", 
+          "name": "content_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " If True, this method will try to parse the response as JSON and raise an exception if that cannot be done. Default is True.", 
+          "name": "expect_json", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
+          "description": " The path to the resource (ie, '/b/bucket-name'). Required.", 
+          "name": "path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
         }
       ], 
       "returns": [
@@ -127,6 +127,15 @@
           ]
         }, 
         {
+          "description": " A dictionary of keys and values (or list of key-value pairs) to insert into the query string of the URL.", 
+          "name": "query_params", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict or list"
+          ]
+        }, 
+        {
           "description": " The path to the resource.", 
           "name": "path", 
           "nullable": null, 
@@ -142,15 +151,6 @@
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " A dictionary of keys and values (or list of key-value pairs) to insert into the query string of the URL.", 
-          "name": "query_params", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict or list"
           ]
         }
       ], 

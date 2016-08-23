@@ -1,22 +1,22 @@
 {
-  "description": "\n Base classes for client used to interact with Google Cloud APIs.", 
+  "description": "\n Basic client for Google Cloud Natural Language API.", 
   "examples": [], 
-  "id": "gcloud.client.client", 
+  "id": "gcloud.language.client.client", 
   "methods": [
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.client.Client.__init__", 
+      "id": "gcloud.language.client.Client.__init__", 
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/client.py#L120", 
+      "source": "gcloud/client.py#L184", 
       "type": "instance"
     }, 
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.client.Client.from_service_account_json", 
+      "id": "gcloud.language.client.Client.from_service_account_json", 
       "name": "from_service_account_json", 
       "params": [
         {
@@ -60,7 +60,7 @@
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.client.Client.from_service_account_p12", 
+      "id": "gcloud.language.client.Client.from_service_account_p12", 
       "name": "from_service_account_p12", 
       "params": [
         {
@@ -112,5 +112,5 @@
     }
   ], 
   "name": "Client", 
-  "source": "gcloud/client.py"
+  "source": "gcloud/language/client.py"
 }
