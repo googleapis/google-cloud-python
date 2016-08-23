@@ -17,6 +17,7 @@
 
 from gcloud.client import JSONClient
 from gcloud.language.connection import Connection
+from gcloud.language.document import Document
 
 
 class Client(JSONClient):
@@ -40,3 +41,95 @@ class Client(JSONClient):
     """
 
     _connection_class = Connection
+
+    def document_from_text(self, content, **kwargs):
+        """Create a plain text document bound to this client.
+
+        :type content: str
+        :param content: The document plain text content.
+
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments to be passed along to the
+                       :class:`Document` constructor.
+
+        :rtype: :class:`Document`
+        :returns: A plain-text document bound to this client.
+        :raises: :class:`~exceptions.TypeError` if ``doc_type`` is passed as a
+                 keyword argument.
+        """
+        if 'doc_type' in kwargs:
+            raise TypeError('Cannot pass doc_type')
+        return Document(self, content=content,
+                        doc_type=Document.PLAIN_TEXT, **kwargs)
+
+    def document_from_html(self, content, **kwargs):
+        """Create an HTML document bound to this client.
+
+        :type content: str
+        :param content: The document HTML text content.
+
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments to be passed along to the
+                       :class:`Document` constructor.
+
+        :rtype: :class:`Document`
+        :returns: An HTML document bound to this client.
+        :raises: :class:`~exceptions.TypeError` if ``doc_type`` is passed as a
+                 keyword argument.
+        """
+        if 'doc_type' in kwargs:
+            raise TypeError('Cannot pass doc_type')
+        return Document(self, content=content,
+                        doc_type=Document.HTML, **kwargs)
+
+    def document_from_url(self, gcs_url,
+                          doc_type=Document.PLAIN_TEXT, **kwargs):
+        """Create a Cloud Storage document bound to this client.
+
+        :type gcs_url: str
+        :param gcs_url: The URL of the Google Cloud Storage object
+                        holding the content. Of the form
+                        ``gs://{bucket}/{blob-name}``.
+
+        :type doc_type: str
+        :param doc_type: (Optional) The type of text in the document.
+                         Defaults to plain text. Can also be specified
+                         as HTML via :attr:`~.Document.HTML`.
+
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments to be passed along to the
+                       :class:`Document` constructor.
+
+        :rtype: :class:`Document`
+        :returns: A document bound to this client.
+        """
+        return Document(self, gcs_url=gcs_url, doc_type=doc_type, **kwargs)
+
+    def document_from_blob(self, bucket_name, blob_name,
+                           doc_type=Document.PLAIN_TEXT, **kwargs):
+        """Create a Cloud Storage document bound to this client.
+
+        :type bucket_name: str
+        :param bucket_name: The name of the bucket that contains the
+                            document text.
+
+        :type blob_name: str
+        :param blob_name: The name of the blob (within the bucket) that
+                          contains document text.
+
+        :type doc_type: str
+        :param doc_type: (Optional) The type of text in the document.
+                         Defaults to plain text. Can also be specified
+                         as HTML via :attr:`~.Document.HTML`.
+
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments to be passed along to the
+                       :class:`Document` constructor.
+
+        :rtype: :class:`Document`
+        :returns: A document bound to this client.
+        """
+        # NOTE: We assume that the bucket and blob name don't
+        #       need to be URL-encoded.
+        gcs_url = 'gs://%s/%s' % (bucket_name, blob_name)
+        return self.document_from_url(gcs_url, doc_type=doc_type, **kwargs)

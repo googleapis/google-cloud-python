@@ -26,13 +26,117 @@ class TestClient(unittest.TestCase):
 
     def test_ctor(self):
         from gcloud.language.connection import Connection
+
         project = 'PROJECT'
         creds = _Credentials()
         http = object()
         client = self._makeOne(project=project, credentials=creds, http=http)
-        self.assertTrue(isinstance(client.connection, Connection))
+        self.assertIsInstance(client.connection, Connection)
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
+
+    def test_document_from_text_factory(self):
+        from gcloud.language.document import Document
+
+        creds = _Credentials()
+        client = self._makeOne(project='PROJECT',
+                               credentials=creds, http=object())
+
+        content = 'abc'
+        language = 'es'
+        document = client.document_from_text(content, language=language)
+        self.assertIsInstance(document, Document)
+        self.assertIs(document.client, client)
+        self.assertEqual(document.content, content)
+        # Test the default arg.
+        self.assertEqual(document.doc_type, Document.PLAIN_TEXT)
+        # Test the kwargs as well.
+        self.assertEqual(document.language, language)
+
+    def test_document_from_text_factory_failure(self):
+        creds = _Credentials()
+        client = self._makeOne(project='PROJECT',
+                               credentials=creds, http=object())
+
+        with self.assertRaises(TypeError):
+            client.document_from_text('abc', doc_type='foo')
+
+    def test_document_from_html_factory(self):
+        from gcloud.language.document import Document
+
+        creds = _Credentials()
+        client = self._makeOne(project='PROJECT',
+                               credentials=creds, http=object())
+
+        content = '<html>abc</html>'
+        language = 'ja'
+        document = client.document_from_html(content, language=language)
+        self.assertIsInstance(document, Document)
+        self.assertIs(document.client, client)
+        self.assertEqual(document.content, content)
+        # Test the default arg.
+        self.assertEqual(document.doc_type, Document.HTML)
+        # Test the kwargs as well.
+        self.assertEqual(document.language, language)
+
+    def test_document_from_html_factory_failure(self):
+        creds = _Credentials()
+        client = self._makeOne(project='PROJECT',
+                               credentials=creds, http=object())
+
+        with self.assertRaises(TypeError):
+            client.document_from_html('abc', doc_type='foo')
+
+    def test_document_from_url_factory(self):
+        from gcloud.language.document import Document
+
+        creds = _Credentials()
+        client = self._makeOne(project='PROJECT',
+                               credentials=creds, http=object())
+
+        gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
+        document = client.document_from_url(gcs_url)
+        self.assertIsInstance(document, Document)
+        self.assertIs(document.client, client)
+        self.assertIsNone(document.content)
+        self.assertEqual(document.gcs_url, gcs_url)
+        self.assertEqual(document.doc_type, Document.PLAIN_TEXT)
+
+    def test_document_from_url_factory_explicit(self):
+        from gcloud.language.document import Document
+        from gcloud.language.document import Encoding
+
+        creds = _Credentials()
+        client = self._makeOne(project='PROJECT',
+                               credentials=creds, http=object())
+
+        encoding = Encoding.UTF32
+        gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
+        document = client.document_from_url(gcs_url, doc_type=Document.HTML,
+                                            encoding=encoding)
+        self.assertIsInstance(document, Document)
+        self.assertIs(document.client, client)
+        self.assertIsNone(document.content)
+        self.assertEqual(document.gcs_url, gcs_url)
+        self.assertEqual(document.doc_type, Document.HTML)
+        self.assertEqual(document.encoding, encoding)
+
+    def test_document_from_blob_factory(self):
+        from gcloud.language.document import Document
+
+        creds = _Credentials()
+        client = self._makeOne(project='PROJECT',
+                               credentials=creds, http=object())
+
+        bucket_name = 'my-text-bucket'
+        blob_name = 'sentiment-me.txt'
+        gcs_url = 'gs://%s/%s' % (bucket_name, blob_name)
+        document = client.document_from_blob(bucket_name, blob_name)
+        self.assertIsInstance(document, Document)
+        self.assertIs(document.client, client)
+        self.assertIsNone(document.content)
+        self.assertEqual(document.gcs_url, gcs_url)
+        self.assertEqual(document.doc_type, Document.PLAIN_TEXT)
 
 
 class _Credentials(object):
