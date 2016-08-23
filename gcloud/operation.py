@@ -35,13 +35,7 @@ def _compute_type_url(klass, prefix=_GOOGLE_APIS_PREFIX):
     :rtype: str
     :returns: the URL, prefixed as appropriate
     """
-    descriptor = getattr(klass, 'DESCRIPTOR', None)
-
-    if descriptor is not None:
-        name = descriptor.full_name
-    else:
-        name = '%s.%s' % (klass.__module__, klass.__name__)
-
+    name = klass.DESCRIPTOR.full_name
     return '%s/%s' % (prefix, name)
 
 

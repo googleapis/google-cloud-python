@@ -23,7 +23,7 @@ class Test__compute_type_url(unittest.TestCase):
             return _compute_type_url(klass)
         return _compute_type_url(klass, prefix)
 
-    def test_wo_prefix_w_descriptor(self):
+    def test_wo_prefix(self):
         from google.protobuf.struct_pb2 import Struct
         from gcloud.operation import _GOOGLE_APIS_PREFIX
 
@@ -33,15 +33,15 @@ class Test__compute_type_url(unittest.TestCase):
             type_url,
             '%s/%s' % (_GOOGLE_APIS_PREFIX, Struct.DESCRIPTOR.full_name))
 
-    def test_w_prefix_wo_descriptor(self):
-        klass = self.__class__
+    def test_w_prefix(self):
+        from google.protobuf.struct_pb2 import Struct
         PREFIX = 'test.gcloud-python.com'
 
-        type_url = self._callFUT(klass, PREFIX)
+        type_url = self._callFUT(Struct, PREFIX)
 
         self.assertEqual(
             type_url,
-            '%s/%s.%s' % (PREFIX, klass.__module__, klass.__name__))
+            '%s/%s' % (PREFIX, Struct.DESCRIPTOR.full_name))
 
 
 class Test__register_type_url(unittest.TestCase):
