@@ -179,17 +179,17 @@ metadata and other properties.
          name: Michelangelo Caravaggio
          type: PERSON
      metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/Caravaggio'}
-     salience: 0.75942981
+     salience: 0.7615959
      ====================
          name: Italian
          type: LOCATION
      metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/Italy'}
-     salience: 0.20193423
+     salience: 0.19960518
      ====================
          name: The Calling of Saint Matthew
-         type: WORK_OF_ART
-     metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/index.html?curid=2838808'}
-     salience: 0.03863598
+         type: EVENT
+     metadata: {'wikipedia_url': 'http://en.wikipedia.org/wiki/The_Calling_of_St_Matthew_(Caravaggio)'}
+     salience: 0.038798928
 
 Analyze Sentiment
 -----------------

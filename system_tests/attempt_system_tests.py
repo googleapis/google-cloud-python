@@ -35,6 +35,7 @@ MODULES = (  # ordered from most to least stable
     'storage',
     'bigquery',
     'pubsub',
+    'language',
     'logging',
     'translate',
     'monitoring',

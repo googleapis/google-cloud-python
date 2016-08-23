@@ -19,6 +19,7 @@ import unittest
 import bigquery
 import bigtable
 import datastore
+import language
 import logging_
 import monitoring
 import pubsub
@@ -33,6 +34,7 @@ TEST_MODULES = {
     'pubsub': pubsub,
     'bigquery': bigquery,
     'bigtable': bigtable,
+    'language': language,
     'logging': logging_,
     'monitoring': monitoring,
     'translate': translate,
