@@ -183,15 +183,15 @@ class OperationTests(unittest.TestCase):
         with self.assertRaises(AttributeError):
             operation.complete = False
 
-    def test_finished_already_complete(self):
+    def test_poll_already_complete(self):
         client = _Client()
         operation = self._makeOne(self.OPERATION_NAME, client)
         operation._complete = True
 
         with self.assertRaises(ValueError):
-            operation.finished()
+            operation.poll()
 
-    def test_finished_false(self):
+    def test_poll_false(self):
         from google.longrunning.operations_pb2 import GetOperationRequest
         response_pb = _GetOperationResponse(False)
         client = _Client()
@@ -199,13 +199,13 @@ class OperationTests(unittest.TestCase):
         stub._get_operation_response = response_pb
         operation = self._makeOne(self.OPERATION_NAME, client)
 
-        self.assertFalse(operation.finished())
+        self.assertFalse(operation.poll())
 
         request_pb = stub._get_operation_requested
         self.assertTrue(isinstance(request_pb, GetOperationRequest))
         self.assertEqual(request_pb.name, self.OPERATION_NAME)
 
-    def test_finished_true(self):
+    def test_poll_true(self):
         from google.longrunning.operations_pb2 import GetOperationRequest
         response_pb = _GetOperationResponse(True)
         client = _Client()
@@ -213,7 +213,7 @@ class OperationTests(unittest.TestCase):
         stub._get_operation_response = response_pb
         operation = self._makeOne(self.OPERATION_NAME, client)
 
-        self.assertTrue(operation.finished())
+        self.assertTrue(operation.poll())
 
         request_pb = stub._get_operation_requested
         self.assertTrue(isinstance(request_pb, GetOperationRequest))

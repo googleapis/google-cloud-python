@@ -115,7 +115,7 @@ class Operation(object):
         """
         return self._complete
 
-    def finished(self):
+    def poll(self):
         """Check if the operation has finished.
 
         :rtype: bool
