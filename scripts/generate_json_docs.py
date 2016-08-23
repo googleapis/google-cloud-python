@@ -623,13 +623,14 @@ def main():
             'error_reporting': [],
             'exceptions': [],
             'iterator': [],
+            'language': [],
             'logging': [],
             'monitoring': [],
             'pubsub': [],
             'resource_manager': [],
             'storage': [],
             'streaming': [],
-            'translate': []
+            'translate': [],
         }
     }
 

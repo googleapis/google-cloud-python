@@ -37,6 +37,7 @@ IGNORED_MODULES = frozenset([
     'gcloud.dns.__init__',
     'gcloud.error_reporting.__init__',
     'gcloud.iterator',
+    'gcloud.language.__init__',
     'gcloud.logging.__init__',
     'gcloud.logging.handlers.__init__',
     'gcloud.logging.handlers.transports.__init__',

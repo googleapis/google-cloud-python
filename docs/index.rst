@@ -154,6 +154,7 @@
   :caption: Natural Language
 
   language-usage
+  Client <language-client>
 
 .. toctree::
   :maxdepth: 0
