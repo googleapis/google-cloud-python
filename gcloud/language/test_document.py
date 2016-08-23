@@ -62,3 +62,127 @@ class TestDocument(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._makeOne(None, content='abc',
                           gcs_url='gs://some-bucket/some-obj.txt')
+
+    def test__to_dict_with_content(self):
+        klass = self._getTargetClass()
+        content = 'Hello World'
+        document = self._makeOne(None, content=content)
+        info = document._to_dict()
+        self.assertEqual(info, {
+            'content': content,
+            'language': document.language,
+            'type': klass.PLAIN_TEXT,
+        })
+
+    def test__to_dict_with_gcs(self):
+        klass = self._getTargetClass()
+        gcs_url = 'gs://some-bucket/some-obj.html'
+        document = self._makeOne(None, gcs_url=gcs_url)
+        info = document._to_dict()
+        self.assertEqual(info, {
+            'gcsContentUri': gcs_url,
+            'language': document.language,
+            'type': klass.PLAIN_TEXT,
+        })
+
+    def test__to_dict_with_no_content(self):
+        klass = self._getTargetClass()
+        document = self._makeOne(None, content='')
+        document.content = None  # Manually unset the content.
+        info = document._to_dict()
+        self.assertEqual(info, {
+            'language': document.language,
+            'type': klass.PLAIN_TEXT,
+        })
+
+    def test_analyze_entities(self):
+        from gcloud.language.entity import Entity
+        from gcloud.language.entity import EntityType
+
+        name1 = 'R-O-C-K'
+        name2 = 'USA'
+        content = name1 + ' in the ' + name2
+        metadata1 = {
+            'wikipedia_url': 'http://en.wikipedia.org/wiki/Rock_music',
+        }
+        metadata2 = {
+            'wikipedia_url': 'http://en.wikipedia.org/wiki/United_States',
+        }
+        salience1 = 0.91391456
+        salience2 = 0.086085409
+        response = {
+            'entities': [
+                {
+                    'name': name1,
+                    'type': EntityType.OTHER,
+                    'metadata': metadata1,
+                    'salience': salience1,
+                    'mentions': [
+                        {
+                            'text': {
+                                'content': name1,
+                                'beginOffset': -1
+                            }
+                        }
+                    ]
+                },
+                {
+                    'name': name2,
+                    'type': EntityType.LOCATION,
+                    'metadata': metadata2,
+                    'salience': salience2,
+                    'mentions': [
+                        {
+                            'text': {
+                                'content': name2,
+                                'beginOffset': -1,
+                            },
+                        },
+                    ],
+                },
+            ],
+            'language': 'en',
+        }
+        connection = _Connection(response)
+        client = _Client(connection=connection)
+        document = self._makeOne(client, content)
+
+        entities = document.analyze_entities()
+        self.assertEqual(len(entities), 2)
+        entity1 = entities[0]
+        self.assertIsInstance(entity1, Entity)
+        self.assertEqual(entity1.name, name1)
+        self.assertEqual(entity1.entity_type, EntityType.OTHER)
+        self.assertEqual(entity1.metadata, metadata1)
+        self.assertEqual(entity1.salience, salience1)
+        self.assertEqual(entity1.mentions, [name1])
+        entity2 = entities[1]
+        self.assertIsInstance(entity2, Entity)
+        self.assertEqual(entity2.name, name2)
+        self.assertEqual(entity2.entity_type, EntityType.LOCATION)
+        self.assertEqual(entity2.metadata, metadata2)
+        self.assertEqual(entity2.salience, salience2)
+        self.assertEqual(entity2.mentions, [name2])
+
+        # Verify the request.
+        self.assertEqual(len(connection._requested), 1)
+        req = connection._requested[0]
+        self.assertEqual(req['path'], 'analyzeEntities')
+        self.assertEqual(req['method'], 'POST')
+
+
+class _Connection(object):
+
+    def __init__(self, response):
+        self._response = response
+        self._requested = []
+
+    def api_request(self, **kwargs):
+        self._requested.append(kwargs)
+        return self._response
+
+
+class _Client(object):
+
+    def __init__(self, connection=None):
+        self.connection = connection

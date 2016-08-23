@@ -17,6 +17,8 @@
 A document is used to hold text to be analyzed and annotated.
 """
 
+from gcloud.language.entity import Entity
+
 
 DEFAULT_LANGUAGE = 'en'
 """Default document language, English."""
@@ -101,3 +103,44 @@ class Document(object):
         self.doc_type = doc_type
         self.language = language
         self.encoding = encoding
+
+    def _to_dict(self):
+        """Helper to convert the current document into a dictionary.
+
+        To be used when constructing requests.
+
+        :rtype: dict
+        :returns: The Document value as a JSON dictionary.
+        """
+        info = {
+            'type': self.doc_type,
+            'language': self.language,
+        }
+        if self.content is not None:
+            info['content'] = self.content
+        elif self.gcs_url is not None:
+            info['gcsContentUri'] = self.gcs_url
+        return info
+
+    def analyze_entities(self):
+        """Analyze the entities in the current document.
+
+        Finds named entities (currently finds proper names as of August 2016)
+        in the text, entity types, salience, mentions for each entity, and
+        other properties.
+
+        See:
+        https://cloud.google.com/natural-language/reference/\
+        rest/v1beta1/documents/analyzeEntities
+
+        :rtype: list
+        :returns: A list of :class:`Entity` returned from the API.
+        """
+        data = {
+            'document': self._to_dict(),
+            'encodingType': self.encoding,
+        }
+        api_response = self.client.connection.api_request(
+            method='POST', path='analyzeEntities', data=data)
+        return [Entity.from_api_repr(entity)
+                for entity in api_response['entities']]
