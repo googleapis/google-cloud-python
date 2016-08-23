@@ -50,9 +50,9 @@ class Client(JSONClient):
 
         :type kwargs: dict
         :param kwargs: Remaining keyword arguments to be passed along to the
-                       :class:`Document` constructor.
+                       :class:`.Document` constructor.
 
-        :rtype: :class:`Document`
+        :rtype: :class:`.Document`
         :returns: A plain-text document bound to this client.
         :raises: :class:`~exceptions.TypeError` if ``doc_type`` is passed as a
                  keyword argument.
@@ -70,9 +70,9 @@ class Client(JSONClient):
 
         :type kwargs: dict
         :param kwargs: Remaining keyword arguments to be passed along to the
-                       :class:`Document` constructor.
+                       :class:`.Document` constructor.
 
-        :rtype: :class:`Document`
+        :rtype: :class:`.Document`
         :returns: An HTML document bound to this client.
         :raises: :class:`~exceptions.TypeError` if ``doc_type`` is passed as a
                  keyword argument.
@@ -98,9 +98,9 @@ class Client(JSONClient):
 
         :type kwargs: dict
         :param kwargs: Remaining keyword arguments to be passed along to the
-                       :class:`Document` constructor.
+                       :class:`.Document` constructor.
 
-        :rtype: :class:`Document`
+        :rtype: :class:`.Document`
         :returns: A document bound to this client.
         """
         return Document(self, gcs_url=gcs_url, doc_type=doc_type, **kwargs)
@@ -124,9 +124,9 @@ class Client(JSONClient):
 
         :type kwargs: dict
         :param kwargs: Remaining keyword arguments to be passed along to the
-                       :class:`Document` constructor.
+                       :class:`.Document` constructor.
 
-        :rtype: :class:`Document`
+        :rtype: :class:`.Document`
         :returns: A document bound to this client.
         """
         # NOTE: We assume that the bucket and blob name don't

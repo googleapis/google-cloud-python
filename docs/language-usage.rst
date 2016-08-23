@@ -37,13 +37,13 @@ create an instance of :class:`~gcloud.language.client.Client`.
      >>> from gcloud import language
      >>> client = language.Client()
 
-By default the ``language`` is ``'en'`` and the ``encoding`` is
+By default the ``language`` is ``'en-US'`` and the ``encoding`` is
 UTF-8. To over-ride these values:
 
   .. code-block:: python
 
      >>> client = language.Client(language='es',
-     ...                          encoding=encoding=language.Encoding.UTF16)
+     ...                          encoding=language.Encoding.UTF16)
 
 The encoding can be one of
 :attr:`Encoding.UTF8 <gcloud.language.document.Encoding.UTF8>`,
@@ -85,7 +85,7 @@ the client
   .. code-block:: python
 
      >>> document.language
-     'en'
+     'en-US'
      >>> document.language == client.language
      True
 

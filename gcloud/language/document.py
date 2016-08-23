@@ -20,7 +20,7 @@ A document is used to hold text to be analyzed and annotated.
 from gcloud.language.entity import Entity
 
 
-DEFAULT_LANGUAGE = 'en'
+DEFAULT_LANGUAGE = 'en-US'
 """Default document language, English."""
 
 
@@ -129,12 +129,14 @@ class Document(object):
         in the text, entity types, salience, mentions for each entity, and
         other properties.
 
-        See:
-        https://cloud.google.com/natural-language/reference/\
-        rest/v1beta1/documents/analyzeEntities
+        .. _analyzeEntities: https://cloud.google.com/natural-language/\
+                             reference/rest/v1beta1/documents/analyzeEntities
+
+        See `analyzeEntities`_.
 
         :rtype: list
-        :returns: A list of :class:`Entity` returned from the API.
+        :returns: A list of :class:`~.language.entity.Entity` returned from
+                  the API.
         """
         data = {
             'document': self._to_dict(),

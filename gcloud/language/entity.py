@@ -57,16 +57,18 @@ class Entity(object):
     so this value will be removed from the passed in ``metadata``
     and put in its own property.
 
-    See:
-    https://cloud.google.com/natural-language/reference/rest/v1beta1/Entity
+    .. _Entity message: https://cloud.google.com/natural-language/\
+                        reference/rest/v1beta1/Entity
+    .. _EntityType enum: https://cloud.google.com/natural-language/\
+                         reference/rest/v1beta1/Entity#Type
+
+    See `Entity message`_.
 
     :type name: str
     :param name: The name / phrase identified as the entity.
 
     :type entity_type: str
-    :param entity_type: The type of the entity. See
-                        https://cloud.google.com/natural-language/\
-                        reference/rest/v1beta1/Entity#Type
+    :param entity_type: The type of the entity. See `EntityType enum`_.
 
     :type metadata: dict
     :param metadata: The metadata associated with the entity.
