@@ -17,6 +17,7 @@
 
 from __future__ import print_function
 
+import argparse
 import os
 import sys
 import warnings
@@ -27,7 +28,6 @@ from sphinx.ext.intersphinx import fetch_inventory
 BASE_DIR = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..'))
 DOCS_DIR = os.path.join(BASE_DIR, 'docs')
-OBJECT_INVENTORY_RELPATH = os.path.join('_build', 'html', 'objects.inv')
 IGNORED_PREFIXES = ('test_', '_')
 IGNORED_MODULES = frozenset([
     'gcloud.__init__',
@@ -118,11 +118,18 @@ def get_public_modules(path, base_package=None):
     return result
 
 
-def main():
-    """Main script to verify modules included."""
+def main(build_root='_build'):
+    """Main script to verify modules included.
+
+    :type build_root: str
+    :param build_root: The root of the directory where docs are built into.
+                       Defaults to ``_build``.
+    """
+    object_inventory_relpath = os.path.join(build_root, 'html', 'objects.inv')
+
     mock_uri = ''
     inventory = fetch_inventory(SphinxApp, mock_uri,
-                                OBJECT_INVENTORY_RELPATH)
+                                object_inventory_relpath)
     sphinx_mods = set(inventory['py:module'].keys())
 
     library_dir = os.path.join(BASE_DIR, 'gcloud')
@@ -149,5 +156,20 @@ def main():
         sys.exit(1)
 
 
+def get_parser():
+    """Get simple ``argparse`` parser to determine package.
+
+    :rtype: :class:`argparse.ArgumentParser`
+    :returns: The parser for this script.
+    """
+    parser = argparse.ArgumentParser(
+        description='Run check that all GCloud modules are included in docs.')
+    parser.add_argument('--build-root', dest='build_root',
+                        help='The root directory where docs are located.')
+    return parser
+
+
 if __name__ == '__main__':
-    main()
+    parser = get_parser()
+    args = parser.parse_args()
+    main(build_root=args.build_root)
