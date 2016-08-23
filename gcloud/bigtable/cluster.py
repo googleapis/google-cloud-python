@@ -22,6 +22,8 @@ from gcloud.bigtable._generated import (
 from gcloud.bigtable._generated import (
     bigtable_instance_admin_pb2 as messages_v2_pb2)
 from gcloud.operation import Operation
+from gcloud.operation import _compute_type_url
+from gcloud.operation import _register_type_url
 
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
@@ -30,6 +32,12 @@ _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
 
 DEFAULT_SERVE_NODES = 3
 """Default number of nodes to use when creating a cluster."""
+
+
+_UPDATE_CLUSTER_METADATA_URL = _compute_type_url(
+    messages_v2_pb2.UpdateClusterMetadata)
+_register_type_url(
+    _UPDATE_CLUSTER_METADATA_URL, messages_v2_pb2.UpdateClusterMetadata)
 
 
 def _prepare_create_request(cluster):

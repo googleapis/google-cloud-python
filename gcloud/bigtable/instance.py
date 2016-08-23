@@ -17,7 +17,6 @@
 
 import re
 
-from gcloud.operation import Operation
 from gcloud.bigtable._generated import (
     instance_pb2 as data_v2_pb2)
 from gcloud.bigtable._generated import (
@@ -27,11 +26,20 @@ from gcloud.bigtable._generated import (
 from gcloud.bigtable.cluster import Cluster
 from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from gcloud.bigtable.table import Table
+from gcloud.operation import Operation
+from gcloud.operation import _compute_type_url
+from gcloud.operation import _register_type_url
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
+
+
+_CREATE_INSTANCE_METADATA_URL = _compute_type_url(
+    messages_v2_pb2.CreateInstanceMetadata)
+_register_type_url(
+    _CREATE_INSTANCE_METADATA_URL, messages_v2_pb2.CreateInstanceMetadata)
 
 
 def _prepare_create_request(instance):
