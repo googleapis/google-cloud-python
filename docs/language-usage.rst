@@ -23,8 +23,7 @@ Client
 
 :class:`~gcloud.language.client.Client` objects provide a
 means to configure your application. Each instance holds
-both a ``project`` and an authenticated connection to the
-Natural Language service.
+an authenticated connection to the Natural Language service.
 
 For an overview of authentication in ``gcloud-python``, see
 :doc:`gcloud-auth`.

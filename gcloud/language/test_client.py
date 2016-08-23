@@ -27,10 +27,9 @@ class TestClient(unittest.TestCase):
     def test_ctor(self):
         from gcloud.language.connection import Connection
 
-        project = 'PROJECT'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=project, credentials=creds, http=http)
+        client = self._makeOne(credentials=creds, http=http)
         self.assertIsInstance(client.connection, Connection)
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
@@ -39,8 +38,7 @@ class TestClient(unittest.TestCase):
         from gcloud.language.document import Document
 
         creds = _Credentials()
-        client = self._makeOne(project='PROJECT',
-                               credentials=creds, http=object())
+        client = self._makeOne(credentials=creds, http=object())
 
         content = 'abc'
         language = 'es'
@@ -55,8 +53,7 @@ class TestClient(unittest.TestCase):
 
     def test_document_from_text_factory_failure(self):
         creds = _Credentials()
-        client = self._makeOne(project='PROJECT',
-                               credentials=creds, http=object())
+        client = self._makeOne(credentials=creds, http=object())
 
         with self.assertRaises(TypeError):
             client.document_from_text('abc', doc_type='foo')
@@ -65,8 +62,7 @@ class TestClient(unittest.TestCase):
         from gcloud.language.document import Document
 
         creds = _Credentials()
-        client = self._makeOne(project='PROJECT',
-                               credentials=creds, http=object())
+        client = self._makeOne(credentials=creds, http=object())
 
         content = '<html>abc</html>'
         language = 'ja'
@@ -81,8 +77,7 @@ class TestClient(unittest.TestCase):
 
     def test_document_from_html_factory_failure(self):
         creds = _Credentials()
-        client = self._makeOne(project='PROJECT',
-                               credentials=creds, http=object())
+        client = self._makeOne(credentials=creds, http=object())
 
         with self.assertRaises(TypeError):
             client.document_from_html('abc', doc_type='foo')
@@ -91,8 +86,7 @@ class TestClient(unittest.TestCase):
         from gcloud.language.document import Document
 
         creds = _Credentials()
-        client = self._makeOne(project='PROJECT',
-                               credentials=creds, http=object())
+        client = self._makeOne(credentials=creds, http=object())
 
         gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
         document = client.document_from_url(gcs_url)
@@ -107,8 +101,7 @@ class TestClient(unittest.TestCase):
         from gcloud.language.document import Encoding
 
         creds = _Credentials()
-        client = self._makeOne(project='PROJECT',
-                               credentials=creds, http=object())
+        client = self._makeOne(credentials=creds, http=object())
 
         encoding = Encoding.UTF32
         gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
@@ -125,8 +118,7 @@ class TestClient(unittest.TestCase):
         from gcloud.language.document import Document
 
         creds = _Credentials()
-        client = self._makeOne(project='PROJECT',
-                               credentials=creds, http=object())
+        client = self._makeOne(credentials=creds, http=object())
 
         bucket_name = 'my-text-bucket'
         blob_name = 'sentiment-me.txt'

@@ -48,7 +48,7 @@ class Document(object):
     object.
 
     :type client: :class:`~gcloud.language.client.Client`
-    :param client: A client which holds credentials and project
+    :param client: A client which holds credentials and other
                    configuration.
 
     :type content: str

@@ -15,18 +15,13 @@
 """Basic client for Google Cloud Natural Language API."""
 
 
-from gcloud.client import JSONClient
+from gcloud import client as client_module
 from gcloud.language.connection import Connection
 from gcloud.language.document import Document
 
 
-class Client(JSONClient):
+class Client(client_module.Client):
     """Client to bundle configuration needed for API requests.
-
-    :type project: str
-    :param project: the project which the client acts on behalf of. If not
-                    passed, falls back to the default inferred from the
-                    environment.
 
     :type credentials: :class:`~oauth2client.client.OAuth2Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for the
