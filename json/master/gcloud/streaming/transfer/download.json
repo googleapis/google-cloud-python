@@ -30,24 +30,6 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " should an existing file be overwritten", 
           "name": "overwrite", 
           "nullable": null, 
@@ -63,6 +45,24 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
+          ]
+        }, 
+        {
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -92,6 +92,15 @@
           ]
         }, 
         {
+          "description": " the target file", 
+          "name": "stream", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "writable file-like object"
+          ]
+        }, 
+        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
@@ -107,15 +116,6 @@
           "optional": null, 
           "types": [
             "dict"
-          ]
-        }, 
-        {
-          "description": " the target file", 
-          "name": "stream", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "writable file-like object"
           ]
         }
       ], 
