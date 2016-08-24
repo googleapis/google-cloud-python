@@ -28,6 +28,7 @@ from gcloud.storage._helpers import _base64_md5hash
 
 from system_test_utils import unique_resource_id
 from retry import RetryErrors
+from retry import RetryResult
 
 
 retry_429 = RetryErrors(exceptions.TooManyRequests)
@@ -225,8 +226,16 @@ class TestStorageListFiles(TestStorageFiles):
             blob.delete()
 
     def test_list_files(self):
-        all_blobs = list(self.bucket.list_blobs())
-        self.assertEqual(len(all_blobs), len(self.FILENAMES))
+        def _all_in_list(blobs):
+            return len(blobs) == len(self.FILENAMES)
+
+        def _all_blobs():
+            return list(self.bucket.list_blobs())
+
+        retry = RetryResult(_all_in_list)
+        all_blobs = retry(_all_blobs)()
+        self.assertEqual(sorted(blob.name for blob in all_blobs),
+                         sorted(self.FILENAMES))
 
     def test_paginate_files(self):
         truncation_size = 1
