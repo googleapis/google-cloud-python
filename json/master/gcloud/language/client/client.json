@@ -29,8 +29,8 @@
           ]
         }, 
         {
-          "description": " The name of the bucket that contains the document text.", 
-          "name": "bucket_name", 
+          "description": " The name of the blob (within the bucket) that contains document text.", 
+          "name": "blob_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -38,8 +38,8 @@
           ]
         }, 
         {
-          "description": " The name of the blob (within the bucket) that contains document text.", 
-          "name": "blob_name", 
+          "description": " The name of the bucket that contains the document text.", 
+          "name": "bucket_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -73,21 +73,21 @@
       "name": "document_from_html", 
       "params": [
         {
-          "description": " The document HTML text content.", 
-          "name": "content", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to be passed along to the", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The document HTML text content.", 
+          "name": "content", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -108,21 +108,21 @@
       "name": "document_from_text", 
       "params": [
         {
-          "description": " The document plain text content.", 
-          "name": "content", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to be passed along to the", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The document plain text content.", 
+          "name": "content", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -231,21 +231,21 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {

@@ -64,21 +64,21 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {
@@ -117,17 +117,26 @@
       "name": "list_entries", 
       "params": [
         {
-          "description": " One of :data:gcloud.logging.ASCENDING or", 
-          "name": "order_by", 
+          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
+          "name": "projects", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            " strings"
           ]
         }, 
         {
-          "description": " opaque marker for the next \"page\" of entries. If not passed, the API will return the first page of entries.", 
-          "name": "page_token", 
+          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " One of :data:gcloud.logging.ASCENDING or", 
+          "name": "order_by", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -144,21 +153,12 @@
           ]
         }, 
         {
-          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
-          "name": "page_size", 
+          "description": " opaque marker for the next \"page\" of entries. If not passed, the API will return the first page of entries.", 
+          "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
-          ]
-        }, 
-        {
-          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
-          "name": "projects", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " strings"
+            "str"
           ]
         }
       ], 
@@ -179,21 +179,21 @@
       "name": "list_metrics", 
       "params": [
         {
-          "description": " opaque marker for the next \"page\" of metrics. If not passed, the API will return the first page of metrics.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " maximum number of metrics to return, If not passed, defaults to a value set by the API.", 
           "name": "page_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of metrics. If not passed, the API will return the first page of metrics.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -214,21 +214,21 @@
       "name": "list_sinks", 
       "params": [
         {
-          "description": " opaque marker for the next \"page\" of sinks. If not passed, the API will return the first page of sinks.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " maximum number of sinks to return, If not passed, defaults to a value set by the API.", 
           "name": "page_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of sinks. If not passed, the API will return the first page of sinks.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
