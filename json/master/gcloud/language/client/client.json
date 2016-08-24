@@ -20,17 +20,8 @@
       "name": "document_from_blob", 
       "params": [
         {
-          "description": " Remaining keyword arguments to be passed along to the", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
-          "description": " The name of the blob (within the bucket) that contains document text.", 
-          "name": "blob_name", 
+          "description": " (Optional) The type of text in the document. Defaults to plain text. Can also be specified as HTML via :attr:~.Document.HTML.", 
+          "name": "doc_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -47,12 +38,21 @@
           ]
         }, 
         {
-          "description": " (Optional) The type of text in the document. Defaults to plain text. Can also be specified as HTML via :attr:~.Document.HTML.", 
-          "name": "doc_type", 
+          "description": " The name of the blob (within the bucket) that contains document text.", 
+          "name": "blob_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to be passed along to the", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -73,21 +73,21 @@
       "name": "document_from_html", 
       "params": [
         {
-          "description": " Remaining keyword arguments to be passed along to the", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " The document HTML text content.", 
           "name": "content", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to be passed along to the", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -108,21 +108,21 @@
       "name": "document_from_text", 
       "params": [
         {
-          "description": " Remaining keyword arguments to be passed along to the", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " The document plain text content.", 
           "name": "content", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to be passed along to the", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -143,15 +143,6 @@
       "name": "document_from_url", 
       "params": [
         {
-          "description": " Remaining keyword arguments to be passed along to the", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " The URL of the Google Cloud Storage object holding the content. Of the form <code>gs://{bucket}/{blob-name}</code>.", 
           "name": "gcs_url", 
           "nullable": null, 
@@ -167,6 +158,15 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to be passed along to the", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -187,12 +187,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "string"
           ]
         }, 
         {
@@ -205,12 +205,12 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "dict"
           ]
         }
       ], 
@@ -231,17 +231,8 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -258,12 +249,21 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 

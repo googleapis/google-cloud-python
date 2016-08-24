@@ -30,24 +30,6 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " should an existing file be overwritten", 
-          "name": "overwrite", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
-          "description": " path/filename for the target file", 
-          "name": "filename", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
@@ -63,6 +45,24 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " should an existing file be overwritten", 
+          "name": "overwrite", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
+          ]
+        }, 
+        {
+          "description": " path/filename for the target file", 
+          "name": "filename", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -83,12 +83,12 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " the target file", 
-          "name": "stream", 
+          "description": " total size of the file to be downloaded", 
+          "name": "total_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "writable file-like object"
+            "integer or None"
           ]
         }, 
         {
@@ -110,12 +110,12 @@
           ]
         }, 
         {
-          "description": " total size of the file to be downloaded", 
-          "name": "total_size", 
+          "description": " the target file", 
+          "name": "stream", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or None"
+            "writable file-like object"
           ]
         }
       ], 
