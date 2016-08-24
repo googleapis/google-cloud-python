@@ -157,6 +157,7 @@
   language-usage
   Client <language-client>
   language-document
+  language-responses
 
 .. toctree::
   :maxdepth: 0
