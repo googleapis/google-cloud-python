@@ -63,25 +63,25 @@ class Config(object):
     INSTANCE = None
 
 
-def _operation_wait(operation, max_attempts=5):
+def _wait_until_complete(operation, max_attempts=5):
     """Wait until an operation has completed.
 
     :type operation: :class:`gcloud.bigtable.instance.Operation`
-    :param operation: Operation that has not finished.
+    :param operation: Operation that has not complete.
 
     :type max_attempts: int
     :param max_attempts: (Optional) The maximum number of times to check if
-                         the operation has finished. Defaults to 5.
+                         the operation has complete. Defaults to 5.
 
     :rtype: bool
-    :returns: Boolean indicating if the operation finished.
+    :returns: Boolean indicating if the operation is complete.
     """
 
-    def _operation_finished(result):
+    def _operation_complete(result):
         return result
 
-    retry = RetryResult(_operation_finished, max_tries=max_attempts)
-    return retry(operation.finished)()
+    retry = RetryResult(_operation_complete, max_tries=max_attempts)
+    return retry(operation.poll)()
 
 
 def _retry_on_unavailable(exc):
@@ -105,7 +105,7 @@ def setUpModule():
 
     # After listing, create the test instance.
     created_op = Config.INSTANCE.create()
-    if not _operation_wait(created_op):
+    if not _wait_until_complete(created_op):
         raise RuntimeError('Instance creation exceed 5 seconds.')
 
 
@@ -150,7 +150,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.instances_to_delete.append(instance)
 
         # We want to make sure the operation completes.
-        self.assertTrue(_operation_wait(operation))
+        self.assertTrue(_wait_until_complete(operation))
 
         # Create a new instance instance and make sure it is the same.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)

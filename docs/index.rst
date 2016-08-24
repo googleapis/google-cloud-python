@@ -6,6 +6,7 @@
   gcloud-api
   gcloud-config
   gcloud-auth
+  operation-api
 
 .. toctree::
   :maxdepth: 0

@@ -626,6 +626,7 @@ def main():
             'language': [],
             'logging': [],
             'monitoring': [],
+            'operation': [],
             'pubsub': [],
             'resource_manager': [],
             'storage': [],
