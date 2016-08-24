@@ -30,3 +30,15 @@ class TestSentiment(unittest.TestCase):
         sentiment = self._makeOne(polarity, magnitude)
         self.assertEqual(sentiment.polarity, polarity)
         self.assertEqual(sentiment.magnitude, magnitude)
+
+    def test_from_api_repr(self):
+        klass = self._getTargetClass()
+        polarity = -1
+        magnitude = 5.55
+        payload = {
+            'polarity': polarity,
+            'magnitude': magnitude,
+        }
+        sentiment = klass.from_api_repr(payload)
+        self.assertEqual(sentiment.polarity, polarity)
+        self.assertEqual(sentiment.magnitude, magnitude)

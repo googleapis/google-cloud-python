@@ -167,6 +167,34 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(req['path'], 'analyzeEntities')
         self.assertEqual(req['method'], 'POST')
 
+    def test_analyze_sentiment(self):
+        from gcloud.language.sentiment import Sentiment
+
+        content = 'All the pretty horses.'
+        polarity = 1
+        magnitude = 0.6
+        response = {
+            'documentSentiment': {
+                'polarity': polarity,
+                'magnitude': magnitude,
+            },
+            'language': 'en',
+        }
+        connection = _Connection(response)
+        client = _Client(connection=connection)
+        document = self._makeOne(client, content)
+
+        sentiment = document.analyze_sentiment()
+        self.assertIsInstance(sentiment, Sentiment)
+        self.assertEqual(sentiment.polarity, polarity)
+        self.assertEqual(sentiment.magnitude, magnitude)
+
+        # Verify the request.
+        self.assertEqual(len(connection._requested), 1)
+        req = connection._requested[0]
+        self.assertEqual(req['path'], 'analyzeSentiment')
+        self.assertEqual(req['method'], 'POST')
+
 
 class _Connection(object):
 

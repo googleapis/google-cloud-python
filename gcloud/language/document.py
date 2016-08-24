@@ -18,6 +18,7 @@ A document is used to hold text to be analyzed and annotated.
 """
 
 from gcloud.language.entity import Entity
+from gcloud.language.sentiment import Sentiment
 
 
 DEFAULT_LANGUAGE = 'en-US'
@@ -146,3 +147,19 @@ class Document(object):
             method='POST', path='analyzeEntities', data=data)
         return [Entity.from_api_repr(entity)
                 for entity in api_response['entities']]
+
+    def analyze_sentiment(self):
+        """Analyze the sentiment in the current document.
+
+        .. _analyzeSentiment: https://cloud.google.com/natural-language/\
+                              reference/rest/v1beta1/documents/analyzeSentiment
+
+        See `analyzeSentiment`_.
+
+        :rtype: :class:`.Sentiment`
+        :returns: The sentiment of the current document.
+        """
+        data = {'document': self._to_dict()}
+        api_response = self.client.connection.api_request(
+            method='POST', path='analyzeSentiment', data=data)
+        return Sentiment.from_api_repr(api_response['documentSentiment'])

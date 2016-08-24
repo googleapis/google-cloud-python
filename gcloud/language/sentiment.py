@@ -42,3 +42,17 @@ class Sentiment(object):
     def __init__(self, polarity, magnitude):
         self.polarity = polarity
         self.magnitude = magnitude
+
+    @classmethod
+    def from_api_repr(cls, payload):
+        """Convert an Sentiment from the JSON API into a :class:`Sentiment`.
+
+        :param payload: dict
+        :type payload: The value from the backend.
+
+        :rtype: :class:`Sentiment`
+        :returns: The sentiment parsed from the API representation.
+        """
+        polarity = payload['polarity']
+        magnitude = payload['magnitude']
+        return cls(polarity, magnitude)
