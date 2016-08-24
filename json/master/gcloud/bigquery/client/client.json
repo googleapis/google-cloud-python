@@ -90,21 +90,21 @@
       "name": "extract_table_to_storage", 
       "params": [
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " URIs of CloudStorage file(s) into which table data is to be extracted; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
           "name": "destination_uris", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "sequence of string"
+          ]
+        }, 
+        {
+          "description": " Name of the job.", 
+          "name": "job_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }, 
         {
@@ -134,21 +134,21 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }, 
         {
@@ -178,15 +178,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -202,6 +193,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }, 
         {
@@ -257,6 +257,15 @@
       "name": "list_datasets", 
       "params": [
         {
+          "description": " maximum number of datasets to return, If not passed, defaults to a value set by the API.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
           "description": " True if results include hidden datasets.", 
           "name": "include_all", 
           "nullable": null, 
@@ -272,15 +281,6 @@
           "optional": null, 
           "types": [
             "str"
-          ]
-        }, 
-        {
-          "description": " maximum number of datasets to return, If not passed, defaults to a value set by the API.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
           ]
         }
       ], 
@@ -301,21 +301,12 @@
       "name": "list_jobs", 
       "params": [
         {
-          "description": " opaque marker for the next \"page\" of jobs. If not passed, the API will return the first page of jobs.", 
-          "name": "page_token", 
+          "description": " if passed, include only jobs matching the given state. One of * <code>\"done\"</code> * <code>\"pending\"</code> * <code>\"running\"</code>", 
+          "name": "state_filter", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
-          ]
-        }, 
-        {
-          "description": " maximum number of jobs to return, If not passed, defaults to a value set by the API.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
           ]
         }, 
         {
@@ -328,8 +319,17 @@
           ]
         }, 
         {
-          "description": " if passed, include only jobs matching the given state. One of * <code>\"done\"</code> * <code>\"pending\"</code> * <code>\"running\"</code>", 
-          "name": "state_filter", 
+          "description": " maximum number of jobs to return, If not passed, defaults to a value set by the API.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of jobs. If not passed, the API will return the first page of jobs.", 
+          "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [

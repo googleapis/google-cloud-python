@@ -10,7 +10,23 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/language/document.py#L90", 
+      "source": "gcloud/language/document.py#L92", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.language.document.Document.analyze_entities", 
+      "name": "analyze_entities", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "list"
+          ]
+        }
+      ], 
+      "source": "gcloud/language/document.py#L125", 
       "type": "instance"
     }
   ], 

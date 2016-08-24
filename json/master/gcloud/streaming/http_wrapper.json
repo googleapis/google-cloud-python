@@ -36,12 +36,12 @@
       "name": "make_api_request", 
       "params": [
         {
-          "description": " the request to send.", 
-          "name": "http_request", 
+          "description": " Maximum number of seconds to wait when retrying.", 
+          "name": "max_retry_wait", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "Request"
+            "integer"
           ]
         }, 
         {
@@ -63,8 +63,8 @@
           ]
         }, 
         {
-          "description": " Maximum number of seconds to wait when retrying.", 
-          "name": "max_retry_wait", 
+          "description": " Number of redirects to follow.", 
+          "name": "redirections", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -72,12 +72,12 @@
           ]
         }, 
         {
-          "description": " Number of redirects to follow.", 
-          "name": "redirections", 
+          "description": " the request to send.", 
+          "name": "http_request", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "Request"
           ]
         }, 
         {

@@ -82,21 +82,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " Client which holds credentials and project configuration for the zone.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/dns/client/client\">gcloud.dns.client.Client</a>"
-          ]
-        }, 
-        {
           "description": " zone resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Client which holds credentials and project configuration for the zone.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/dns/client/client\">gcloud.dns.client.Client</a>"
           ]
         }
       ], 
@@ -117,6 +117,15 @@
       "name": "list_changes", 
       "params": [
         {
+          "description": " maximum number of zones to return, If not passed, defaults to a value set by the API.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current zone.", 
           "name": "client", 
           "nullable": null, 
@@ -132,15 +141,6 @@
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " maximum number of zones to return, If not passed, defaults to a value set by the API.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
           ]
         }
       ], 
@@ -161,6 +161,15 @@
       "name": "list_resource_record_sets", 
       "params": [
         {
+          "description": " maximum number of zones to return, If not passed, defaults to a value set by the API.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current zone.", 
           "name": "client", 
           "nullable": null, 
@@ -176,15 +185,6 @@
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " maximum number of zones to return, If not passed, defaults to a value set by the API.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
           ]
         }
       ], 
@@ -233,21 +233,21 @@
           ]
         }, 
         {
-          "description": " RR type", 
-          "name": "record_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " resource data for the RR", 
           "name": "rrdatas", 
           "nullable": null, 
           "optional": null, 
           "types": [
             " string"
+          ]
+        }, 
+        {
+          "description": " RR type", 
+          "name": "record_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 

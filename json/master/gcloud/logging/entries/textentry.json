@@ -20,21 +20,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " Client which holds credentials and project configuration.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/logging/client/client\">gcloud.logging.client.Client</a>"
-          ]
-        }, 
-        {
           "description": " text entry resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Client which holds credentials and project configuration.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/logging/client/client\">gcloud.logging.client.Client</a>"
           ]
         }, 
         {

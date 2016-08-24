@@ -46,21 +46,21 @@
       "name": "download_as_string", 
       "params": [
         {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " Optional 32 byte encryption key for customer-supplied encryption.", 
           "name": "encryption_key", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str or bytes"
+          ]
+        }, 
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }
       ], 
@@ -140,8 +140,8 @@
           ]
         }, 
         {
-          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
-          "name": "content_type", 
+          "description": " (Optional) A value that indicates which generation of the resource to fetch.", 
+          "name": "generation", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -167,8 +167,26 @@
           ]
         }, 
         {
-          "description": " (Optional) A value that indicates which generation of the resource to fetch.", 
-          "name": "generation", 
+          "description": " The HTTP verb that will be used when requesting the URL.", 
+          "name": "method", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
+          "name": "credentials", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "oauth2client.client.OAuth2Credentials or"
+          ]
+        }, 
+        {
+          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
+          "name": "content_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -182,24 +200,6 @@
           "optional": null, 
           "types": [
             "int, long, datetime.datetime, datetime.timedelta"
-          ]
-        }, 
-        {
-          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
-          "name": "credentials", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "oauth2client.client.OAuth2Credentials or"
-          ]
-        }, 
-        {
-          "description": " The HTTP verb that will be used when requesting the URL.", 
-          "name": "method", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
           ]
         }
       ], 

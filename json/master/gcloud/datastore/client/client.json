@@ -85,21 +85,21 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }, 
         {
@@ -129,15 +129,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -153,6 +144,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }, 
         {
@@ -182,6 +182,15 @@
       "name": "get", 
       "params": [
         {
+          "description": " The key to be retrieved from the datastore.", 
+          "name": "key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
+          ]
+        }, 
+        {
           "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it.", 
           "name": "missing", 
           "nullable": null, 
@@ -197,15 +206,6 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
-          ]
-        }, 
-        {
-          "description": " The key to be retrieved from the datastore.", 
-          "name": "key", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
           ]
         }, 
         {
@@ -244,21 +244,21 @@
           ]
         }, 
         {
-          "description": " The keys to be retrieved from the datastore.", 
-          "name": "keys", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " gcloud.datastore.key.Key"
-          ]
-        }, 
-        {
           "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
           "name": "transaction", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
+          ]
+        }, 
+        {
+          "description": " The keys to be retrieved from the datastore.", 
+          "name": "keys", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " gcloud.datastore.key.Key"
           ]
         }, 
         {
