@@ -1,0 +1,8 @@
+{
+  "description": "\n Wrap long-running operations returned from Google Cloud APIs.", 
+  "examples": [], 
+  "id": "gcloud.operation", 
+  "methods": [], 
+  "name": "Operation", 
+  "source": "gcloud/operation.py"
+}

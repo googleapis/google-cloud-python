@@ -83,15 +83,6 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " total size of the file to be downloaded", 
-          "name": "total_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or None"
-          ]
-        }, 
-        {
           "description": " the target file", 
           "name": "stream", 
           "nullable": null, 
@@ -116,6 +107,15 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " total size of the file to be downloaded", 
+          "name": "total_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
           ]
         }
       ], 

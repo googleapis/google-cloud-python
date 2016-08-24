@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/instance.py#L232", 
+      "source": "gcloud/bigtable/instance.py#L109", 
       "type": "instance"
     }, 
     {
@@ -20,21 +20,21 @@
       "name": "cluster", 
       "params": [
         {
-          "description": " (Optional) The number of nodes in the cluster. Defaults to 3.", 
-          "name": "serve_nodes", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " The ID of the cluster.", 
           "name": "cluster_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The number of nodes in the cluster. Defaults to 3.", 
+          "name": "serve_nodes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 
@@ -45,7 +45,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/instance.py#L417", 
+      "source": "gcloud/bigtable/instance.py#L296", 
       "type": "instance"
     }, 
     {
@@ -61,7 +61,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/instance.py#L282", 
+      "source": "gcloud/bigtable/instance.py#L159", 
       "type": "instance"
     }, 
     {
@@ -77,7 +77,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/instance.py#L338", 
+      "source": "gcloud/bigtable/instance.py#L215", 
       "type": "instance"
     }, 
     {
@@ -87,7 +87,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/instance.py#L386", 
+      "source": "gcloud/bigtable/instance.py#L265", 
       "type": "instance"
     }, 
     {
@@ -97,21 +97,21 @@
       "name": "from_pb", 
       "params": [
         {
-          "description": " The client that owns the instance.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "Client <gcloud.bigtable.client.Client>"
-          ]
-        }, 
-        {
           "description": " A instance protobuf object.", 
           "name": "instance_pb", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "instance_pb2.Instance"
+          ]
+        }, 
+        {
+          "description": " The client that owns the instance.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "Client <gcloud.bigtable.client.Client>"
           ]
         }
       ], 
@@ -122,7 +122,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/instance.py#L251", 
+      "source": "gcloud/bigtable/instance.py#L128", 
       "type": "instance"
     }, 
     {
@@ -138,7 +138,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/instance.py#L432", 
+      "source": "gcloud/bigtable/instance.py#L311", 
       "type": "instance"
     }, 
     {
@@ -154,7 +154,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/instance.py#L462", 
+      "source": "gcloud/bigtable/instance.py#L341", 
       "type": "instance"
     }, 
     {
@@ -164,7 +164,7 @@
       "name": "reload", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/instance.py#L328", 
+      "source": "gcloud/bigtable/instance.py#L205", 
       "type": "instance"
     }, 
     {
@@ -190,7 +190,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/instance.py#L451", 
+      "source": "gcloud/bigtable/instance.py#L330", 
       "type": "instance"
     }, 
     {
@@ -200,7 +200,7 @@
       "name": "update", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/instance.py#L365", 
+      "source": "gcloud/bigtable/instance.py#L244", 
       "type": "instance"
     }
   ], 

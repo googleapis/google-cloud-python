@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/cluster.py#L191", 
+      "source": "gcloud/bigtable/cluster.py#L88", 
       "type": "instance"
     }, 
     {
@@ -26,7 +26,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/cluster.py#L242", 
+      "source": "gcloud/bigtable/cluster.py#L139", 
       "type": "instance"
     }, 
     {
@@ -42,7 +42,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/cluster.py#L298", 
+      "source": "gcloud/bigtable/cluster.py#L195", 
       "type": "instance"
     }, 
     {
@@ -52,7 +52,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/cluster.py#L355", 
+      "source": "gcloud/bigtable/cluster.py#L256", 
       "type": "instance"
     }, 
     {
@@ -62,21 +62,21 @@
       "name": "from_pb", 
       "params": [
         {
-          "description": " The instance that owns the cluster.", 
-          "name": "instance", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigtable/cluster/cluster/instance/instance>\">gcloud.bigtable.cluster.Cluster.instance.Instance></a>"
-          ]
-        }, 
-        {
           "description": " A cluster protobuf object.", 
           "name": "cluster_pb", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "instance_pb2.Cluster"
+          ]
+        }, 
+        {
+          "description": " The instance that owns the cluster.", 
+          "name": "instance", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/cluster/cluster/instance/instance>\">gcloud.bigtable.cluster.Cluster.instance.Instance></a>"
           ]
         }
       ], 
@@ -87,7 +87,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/cluster.py#L208", 
+      "source": "gcloud/bigtable/cluster.py#L105", 
       "type": "instance"
     }, 
     {
@@ -97,7 +97,7 @@
       "name": "reload", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/bigtable/cluster.py#L287", 
+      "source": "gcloud/bigtable/cluster.py#L184", 
       "type": "instance"
     }, 
     {
@@ -113,7 +113,7 @@
           ]
         }
       ], 
-      "source": "gcloud/bigtable/cluster.py#L326", 
+      "source": "gcloud/bigtable/cluster.py#L225", 
       "type": "instance"
     }
   ], 
