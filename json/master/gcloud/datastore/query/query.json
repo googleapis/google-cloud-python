@@ -38,24 +38,6 @@
       "name": "fetch", 
       "params": [
         {
-          "description": " An optional cursor passed through to the iterator.", 
-          "name": "end_cursor", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bytes"
-          ]
-        }, 
-        {
-          "description": " An optional offset passed through to the iterator.", 
-          "name": "offset", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " An optional limit passed through to the iterator.", 
           "name": "limit", 
           "nullable": null, 
@@ -66,7 +48,7 @@
         }, 
         {
           "description": " An optional cursor passed through to the iterator.", 
-          "name": "start_cursor", 
+          "name": "end_cursor", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -80,6 +62,24 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/datastore/client/client\">gcloud.datastore.client.Client</a>"
+          ]
+        }, 
+        {
+          "description": " An optional cursor passed through to the iterator.", 
+          "name": "start_cursor", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bytes"
+          ]
+        }, 
+        {
+          "description": " An optional offset passed through to the iterator.", 
+          "name": "offset", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }
       ], 

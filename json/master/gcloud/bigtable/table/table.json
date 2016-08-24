@@ -91,21 +91,21 @@
       "name": "read_row", 
       "params": [
         {
-          "description": " The key of the row to read from.", 
-          "name": "row_key", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bytes"
-          ]
-        }, 
-        {
           "description": " (Optional) The filter to apply to the contents of the row. If unset, returns the entire row.", 
           "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
+          ]
+        }, 
+        {
+          "description": " The key of the row to read from.", 
+          "name": "row_key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bytes"
           ]
         }
       ], 
@@ -179,6 +179,15 @@
       "name": "row", 
       "params": [
         {
+          "description": " (Optional) Filter to be used for conditional mutations. See .DirectRow for more details.", 
+          "name": "filter_", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
+          ]
+        }, 
+        {
           "description": " (Optional) Flag to determine if the row should be used for append mutations.", 
           "name": "append", 
           "nullable": null, 
@@ -194,15 +203,6 @@
           "optional": null, 
           "types": [
             "bytes"
-          ]
-        }, 
-        {
-          "description": " (Optional) Filter to be used for conditional mutations. See .DirectRow for more details.", 
-          "name": "filter_", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
           ]
         }
       ], 
