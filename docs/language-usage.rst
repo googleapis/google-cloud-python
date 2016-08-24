@@ -122,20 +122,7 @@ The document type (``doc_type``) value can be one of
 
 In addition to supplying the text / HTML content, a document can refer
 to content stored in `Google Cloud Storage`_. We can use the
-:meth:`~gcloud.language.client.Client.document_from_blob` method:
-
-  .. code-block:: python
-
-     >>> document = client.document_from_blob('my-text-bucket',
-     ...                                      'sentiment-me.txt')
-     >>> document.gcs_url
-     'gs://my-text-bucket/sentiment-me.txt'
-     >>> document.doc_type == language.Document.PLAIN_TEXT
-     True
-
-and the :meth:`~gcloud.language.client.Client.document_from_url`
-method. In either case, the document type can be specified with
-the ``doc_type`` argument:
+:meth:`~gcloud.language.client.Client.document_from_url` method:
 
   .. code-block:: python
 
@@ -144,8 +131,15 @@ the ``doc_type`` argument:
      ...     gcs_url, doc_type=language.Document.HTML)
      >>> document.gcs_url == gcs_url
      True
-     >>> document.doc_type == language.Document.HTML
+     >>> document.doc_type == language.Document.PLAIN_TEXT
      True
+
+The document type can be specified with the ``doc_type`` argument:
+
+  .. code-block:: python
+
+     >>> document = client.document_from_url(
+     ...     gcs_url, doc_type=language.Document.HTML)
 
 .. _analyzeEntities: https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/analyzeEntities
 .. _analyzeSentiment: https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/analyzeSentiment
