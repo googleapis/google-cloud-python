@@ -89,6 +89,6 @@ git config --global user.name "travis-ci"
 git commit -m "Update docs after merge to master."
 # NOTE: This may fail if two docs updates (on merges to master)
 #       happen in close proximity.
-git push \
+git push -q \
     "https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME}" \
     HEAD:gh-pages

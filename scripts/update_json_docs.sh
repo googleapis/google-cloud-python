@@ -13,7 +13,7 @@ function buildDocs () {
 function pushDocs () {
   echo "Deploying JSON documentation..."
   if [[ ! -d "ghpages" ]]; then
-      git submodule add -f -b gh-pages https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME} ghpages
+      git submodule add -q -f -b gh-pages https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME} ghpages
   fi
   mkdir -p ghpages/json/${1}
   cp -R docs/_build/json_build/* ghpages/
@@ -24,7 +24,7 @@ function pushDocs () {
     git config user.email "travis@travis-ci.org"
     git commit -m "Updating docs for ${1}"
     git status
-    git push https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME} HEAD:gh-pages
+    git push -q https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME} HEAD:gh-pages
   else
     echo "Nothing to commit."
   fi
@@ -35,7 +35,7 @@ function pushDocs () {
 
 function cleanSubmodule () {
     echo "Cleaning up!"
-    git submodule deinit -f ghpages
+    git submodule deinit -q -f ghpages
     git reset HEAD .gitmodules
     git reset HEAD ghpages
     rm -rf ghpages
