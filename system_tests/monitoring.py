@@ -16,6 +16,7 @@ import unittest
 
 from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
+from gcloud.exceptions import InternalServerError
 from gcloud.exceptions import NotFound
 from gcloud.exceptions import ServiceUnavailable
 from gcloud import monitoring
@@ -24,6 +25,8 @@ from retry import RetryErrors
 from system_test_utils import unique_resource_id
 
 retry_404 = RetryErrors(NotFound)
+retry_404_500 = RetryErrors((NotFound, InternalServerError))
+retry_500 = RetryErrors(InternalServerError)
 retry_503 = RetryErrors(ServiceUnavailable)
 
 
@@ -176,8 +179,8 @@ class TestMonitoring(unittest.TestCase):
             description=DESCRIPTION,
         )
 
-        descriptor.create()
-        retry_404(descriptor.delete)()
+        retry_500(descriptor.create())
+        retry_404_500(descriptor.delete)()
 
         with self.assertRaises(NotFound):
             descriptor.delete()
