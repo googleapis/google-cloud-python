@@ -20,15 +20,6 @@
       "name": "from_pb", 
       "params": [
         {
-          "description": " caller-assigned metadata about the operation", 
-          "name": "kw", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " Protobuf to be parsed.", 
           "name": "op_pb", 
           "nullable": null, 
@@ -44,6 +35,15 @@
           "optional": null, 
           "types": [
             "object must provide _operations_stub accessor."
+          ]
+        }, 
+        {
+          "description": " caller-assigned metadata about the operation", 
+          "name": "kw", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 

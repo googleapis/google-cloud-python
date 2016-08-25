@@ -38,15 +38,6 @@
       "name": "fetch", 
       "params": [
         {
-          "description": " An optional limit passed through to the iterator.", 
-          "name": "limit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or None"
-          ]
-        }, 
-        {
           "description": " client used to connect to datastore. If not supplied, uses the query's value.", 
           "name": "client", 
           "nullable": null, 
@@ -65,12 +56,12 @@
           ]
         }, 
         {
-          "description": " An optional cursor passed through to the iterator.", 
-          "name": "start_cursor", 
+          "description": " An optional limit passed through to the iterator.", 
+          "name": "limit", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "bytes"
+            "integer or None"
           ]
         }, 
         {
@@ -80,6 +71,15 @@
           "optional": null, 
           "types": [
             "integer"
+          ]
+        }, 
+        {
+          "description": " An optional cursor passed through to the iterator.", 
+          "name": "start_cursor", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bytes"
           ]
         }
       ], 

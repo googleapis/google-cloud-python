@@ -30,15 +30,6 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " path/filename to the file being uploaded", 
           "name": "filename", 
           "nullable": null, 
@@ -54,6 +45,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }, 
         {
@@ -83,6 +83,15 @@
       "name": "from_stream", 
       "params": [
         {
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " keyword arguments: passed through to _Transfer.__init__().", 
           "name": "kwds", 
           "nullable": null, 
@@ -101,12 +110,12 @@
           ]
         }, 
         {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
+          "description": " the target file", 
+          "name": "stream", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "writable file-like object"
           ]
         }, 
         {
@@ -116,15 +125,6 @@
           "optional": null, 
           "types": [
             "integer or None"
-          ]
-        }, 
-        {
-          "description": " the target file", 
-          "name": "stream", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "writable file-like object"
           ]
         }
       ], 

@@ -36,12 +36,12 @@
       "name": "make_api_request", 
       "params": [
         {
-          "description": " the request to send.", 
-          "name": "http_request", 
+          "description": " Function to make HTTP request without retries.", 
+          "name": "wo_retry_func", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "Request"
+            "function taking (http, request, redirections, check_response_func)"
           ]
         }, 
         {
@@ -63,12 +63,12 @@
           ]
         }, 
         {
-          "description": " Number of redirects to follow.", 
-          "name": "redirections", 
+          "description": " the request to send.", 
+          "name": "http_request", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "Request"
           ]
         }, 
         {
@@ -81,17 +81,17 @@
           ]
         }, 
         {
-          "description": " Function to make HTTP request without retries.", 
-          "name": "wo_retry_func", 
+          "description": " Maximum number of seconds to wait when retrying.", 
+          "name": "max_retry_wait", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "function taking (http, request, redirections, check_response_func)"
+            "integer"
           ]
         }, 
         {
-          "description": " Maximum number of seconds to wait when retrying.", 
-          "name": "max_retry_wait", 
+          "description": " Number of redirects to follow.", 
+          "name": "redirections", 
           "nullable": null, 
           "optional": null, 
           "types": [

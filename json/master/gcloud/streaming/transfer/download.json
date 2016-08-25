@@ -30,15 +30,6 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " path/filename for the target file", 
           "name": "filename", 
           "nullable": null, 
@@ -54,6 +45,15 @@
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }, 
         {
@@ -101,21 +101,21 @@
           ]
         }, 
         {
-          "description": " total size of the file to be downloaded", 
-          "name": "total_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or None"
-          ]
-        }, 
-        {
           "description": " the target file", 
           "name": "stream", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "writable file-like object"
+          ]
+        }, 
+        {
+          "description": " total size of the file to be downloaded", 
+          "name": "total_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
           ]
         }
       ], 

@@ -36,21 +36,21 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }, 
         {
@@ -80,15 +80,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
@@ -98,8 +89,17 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -107,12 +107,12 @@
           ]
         }, 
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "string"
           ]
         }
       ], 
@@ -132,6 +132,15 @@
       "id": "gcloud.bigtable.client.Client.instance", 
       "name": "instance", 
       "params": [
+        {
+          "description": " (Optional) The number of nodes in the instance's cluster; used to set up the instance's cluster.", 
+          "name": "serve_nodes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
         {
           "description": " (Optional) The display name for the instance in the Cloud Console UI. (Must be between 4 and 30 characters.) If this value is not set in the constructor, will fall back to the instance ID.", 
           "name": "display_name", 
@@ -157,15 +166,6 @@
           "optional": null, 
           "types": [
             "str"
-          ]
-        }, 
-        {
-          "description": " (Optional) The number of nodes in the instance's cluster; used to set up the instance's cluster.", 
-          "name": "serve_nodes", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
           ]
         }
       ], 

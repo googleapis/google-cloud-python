@@ -72,24 +72,6 @@
       "name": "translate", 
       "params": [
         {
-          "description": " (Optional) ID or list of customization IDs for translation. Sets the <code>cid</code> parameter in the query.", 
-          "name": "customization_ids", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str or list"
-          ]
-        }, 
-        {
-          "description": " String or list of strings to translate.", 
-          "name": "values", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str or list"
-          ]
-        }, 
-        {
           "description": " The language to translate results into. This is required by the API and defaults to the target language of the current instance.", 
           "name": "target_language", 
           "nullable": null, 
@@ -105,6 +87,24 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) ID or list of customization IDs for translation. Sets the <code>cid</code> parameter in the query.", 
+          "name": "customization_ids", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or list"
+          ]
+        }, 
+        {
+          "description": " String or list of strings to translate.", 
+          "name": "values", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or list"
           ]
         }, 
         {
