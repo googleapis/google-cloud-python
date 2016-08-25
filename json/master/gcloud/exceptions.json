@@ -10,15 +10,6 @@
       "name": "make_exception", 
       "params": [
         {
-          "description": " Optional string giving extra information about the failed request.", 
-          "name": "error_info", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " A response object that defines a status code as the status attribute.", 
           "name": "response", 
           "nullable": null, 
@@ -28,21 +19,30 @@
           ]
         }, 
         {
-          "description": " Flag indicating if <code>content</code> is expected to be JSON.", 
-          "name": "use_json", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
-          ]
-        }, 
-        {
           "description": " The body of the HTTP error response.", 
           "name": "content", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or dictionary"
+          ]
+        }, 
+        {
+          "description": " Optional string giving extra information about the failed request.", 
+          "name": "error_info", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Flag indicating if <code>content</code> is expected to be JSON.", 
+          "name": "use_json", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
           ]
         }
       ], 

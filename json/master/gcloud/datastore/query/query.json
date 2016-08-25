@@ -47,21 +47,12 @@
           ]
         }, 
         {
-          "description": " An optional offset passed through to the iterator.", 
-          "name": "offset", 
+          "description": " client used to connect to datastore. If not supplied, uses the query's value.", 
+          "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " An optional limit passed through to the iterator.", 
-          "name": "limit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or None"
+            "<a data-custom-type=\"gcloud/datastore/client/client\">gcloud.datastore.client.Client</a>"
           ]
         }, 
         {
@@ -74,12 +65,21 @@
           ]
         }, 
         {
-          "description": " client used to connect to datastore. If not supplied, uses the query's value.", 
-          "name": "client", 
+          "description": " An optional limit passed through to the iterator.", 
+          "name": "limit", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/datastore/client/client\">gcloud.datastore.client.Client</a>"
+            "integer or None"
+          ]
+        }, 
+        {
+          "description": " An optional offset passed through to the iterator.", 
+          "name": "offset", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }
       ], 
