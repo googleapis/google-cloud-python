@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/language/entity.py#L84", 
+      "source": "gcloud/language/entity.py#L82", 
       "type": "instance"
     }, 
     {
@@ -36,7 +36,7 @@
           ]
         }
       ], 
-      "source": "gcloud/language/entity.py#L92", 
+      "source": "gcloud/language/entity.py#L90", 
       "type": "instance"
     }
   ], 

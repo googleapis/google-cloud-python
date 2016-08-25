@@ -20,21 +20,21 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }, 
         {
@@ -117,12 +117,12 @@
       "name": "list_entries", 
       "params": [
         {
-          "description": " opaque marker for the next \"page\" of entries. If not passed, the API will return the first page of entries.", 
-          "name": "page_token", 
+          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "int"
           ]
         }, 
         {
@@ -144,12 +144,12 @@
           ]
         }, 
         {
-          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
-          "name": "page_size", 
+          "description": " opaque marker for the next \"page\" of entries. If not passed, the API will return the first page of entries.", 
+          "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
+            "str"
           ]
         }, 
         {

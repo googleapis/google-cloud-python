@@ -179,21 +179,21 @@
       "name": "row", 
       "params": [
         {
-          "description": " (Optional) Filter to be used for conditional mutations. See .DirectRow for more details.", 
-          "name": "filter_", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
-          ]
-        }, 
-        {
           "description": " (Optional) Flag to determine if the row should be used for append mutations.", 
           "name": "append", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "bool"
+          ]
+        }, 
+        {
+          "description": " (Optional) Filter to be used for conditional mutations. See .DirectRow for more details.", 
+          "name": "filter_", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
           ]
         }, 
         {
