@@ -44,7 +44,6 @@ generate:
 	# Copy over the *.proto files into our library.
 	cp $(GOOGLEAPIS_PROTOS_DIR)/google/bigtable/v2/*.proto $(BIGTABLE_DIR)
 	cp $(GOOGLEAPIS_PROTOS_DIR)/google/bigtable/admin/v2/*.proto $(BIGTABLE_DIR)
-	cp $(GOOGLEAPIS_PROTOS_DIR)/google/longrunning/operations.proto $(BIGTABLE_DIR)
 	# Rename all *.proto files in our library with an
 	# underscore and remove executable bit.
 	cd $(BIGTABLE_DIR) && \
@@ -52,12 +51,6 @@ generate:
 	        chmod -x $$filename ; \
 	        mv $$filename _$$filename ; \
 	    done
-	# Separate the gRPC parts of the operations service from the
-	# non-gRPC parts so that the protos from `googleapis-common-protos`
-	# can be used without gRPC.
-	GRPCIO_VIRTUALENV="$(GRPCIO_VIRTUALENV)" \
-	GENERATED_SUBDIR=$(GENERATED_SUBDIR) \
-		python scripts/make_operations_grpc.py
 	# Rewrite the imports in the generated *_pb2.py files.
 	python scripts/rewrite_imports.py $(BIGTABLE_DIR)/*pb2.py
 

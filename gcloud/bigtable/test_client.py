@@ -117,7 +117,7 @@ class Test__make_operations_stub(unittest.TestCase):
             (
                 client.credentials,
                 client.user_agent,
-                MUT.operations_grpc_pb2.OperationsStub,
+                MUT.operations_pb2.OperationsStub,
                 MUT.OPERATIONS_API_HOST,
                 MUT.OPERATIONS_API_PORT,
             ),
