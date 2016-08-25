@@ -28,9 +28,6 @@ from system_test_utils import EmulatorCreds
 from system_test_utils import unique_resource_id
 
 
-DEFAULT_TOPIC_NAME = 'subscribe-me' + unique_resource_id('-')
-
-
 class Config(object):
     """Run-time configuration to be modified at set-up.
 
@@ -94,7 +91,8 @@ class TestPubsub(unittest.TestCase):
         self.assertEqual(len(created), len(topics_to_create))
 
     def test_create_subscription_defaults(self):
-        topic = Config.CLIENT.topic(DEFAULT_TOPIC_NAME)
+        TOPIC_NAME = 'create-sub-def' + unique_resource_id('-')
+        topic = Config.CLIENT.topic(TOPIC_NAME)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
@@ -108,7 +106,8 @@ class TestPubsub(unittest.TestCase):
         self.assertTrue(subscription.topic is topic)
 
     def test_create_subscription_w_ack_deadline(self):
-        topic = Config.CLIENT.topic(DEFAULT_TOPIC_NAME)
+        TOPIC_NAME = 'create-sub-ack' + unique_resource_id('-')
+        topic = Config.CLIENT.topic(TOPIC_NAME)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
@@ -123,7 +122,8 @@ class TestPubsub(unittest.TestCase):
         self.assertTrue(subscription.topic is topic)
 
     def test_list_subscriptions(self):
-        topic = Config.CLIENT.topic(DEFAULT_TOPIC_NAME)
+        TOPIC_NAME = 'list-sub' + unique_resource_id('-')
+        topic = Config.CLIENT.topic(TOPIC_NAME)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
@@ -152,7 +152,8 @@ class TestPubsub(unittest.TestCase):
 
     def test_message_pull_mode_e2e(self):
         import operator
-        topic = Config.CLIENT.topic(DEFAULT_TOPIC_NAME,
+        TOPIC_NAME = 'message-e2e' + unique_resource_id('-')
+        topic = Config.CLIENT.topic(TOPIC_NAME,
                                     timestamp_messages=True)
         self.assertFalse(topic.exists())
         topic.create()
