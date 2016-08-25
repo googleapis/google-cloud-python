@@ -30,9 +30,6 @@ An IAM member is one of the following:
 
 .. note::
   All of these are convenience wrappers around strings.
-
-.. note::
-  All of these are convenience wrappers around strings.
   See the list of member string formats `here <https://cloud.google.com/iam/docs/managing-policies>`_.
 
 Roles
@@ -152,9 +149,6 @@ which can be granted on the specified resource
 
 >>> resource.get_roles()
 [<Role: 'roles/owner'>, <Role: 'roles/editor'>, <Role: 'roles/reader'>]
-
-
-
 
 IAM for Contributors
 ==========================
