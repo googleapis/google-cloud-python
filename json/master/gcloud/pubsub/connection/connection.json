@@ -20,21 +20,12 @@
       "name": "api_request", 
       "params": [
         {
-          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library. Default is the latest API version supported by gcloud-python.", 
-          "name": "api_version", 
+          "description": " A dictionary of keys and values (or list of key-value pairs) to insert into the query string of the URL.", 
+          "name": "query_params", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The path to the resource (ie, '/b/bucket-name'). Required.", 
-          "name": "path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
+            "dict or list"
           ]
         }, 
         {
@@ -47,8 +38,8 @@
           ]
         }, 
         {
-          "description": " The base URL for the API endpoint. Typically you won't have to provide this. Default is the standard API base URL.", 
-          "name": "api_base_url", 
+          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library. Default is the latest API version supported by gcloud-python.", 
+          "name": "api_version", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -65,12 +56,30 @@
           ]
         }, 
         {
-          "description": " A dictionary of keys and values (or list of key-value pairs) to insert into the query string of the URL.", 
-          "name": "query_params", 
+          "description": " Protected argument to be used by library callers. This can allow custom behavior, for example, to defer an HTTP request and complete initialization of the object at a later time.", 
+          "name": "_target_object", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict or list"
+            "object or NoneType"
+          ]
+        }, 
+        {
+          "description": " The base URL for the API endpoint. Typically you won't have to provide this. Default is the standard API base URL.", 
+          "name": "api_base_url", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The path to the resource (ie, '/b/bucket-name'). Required.", 
+          "name": "path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {
@@ -80,15 +89,6 @@
           "optional": null, 
           "types": [
             "bool"
-          ]
-        }, 
-        {
-          "description": " Protected argument to be used by library callers. This can allow custom behavior, for example, to defer an HTTP request and complete initialization of the object at a later time.", 
-          "name": "_target_object", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "object or NoneType"
           ]
         }, 
         {
@@ -118,15 +118,6 @@
       "name": "build_api_url", 
       "params": [
         {
-          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library.", 
-          "name": "api_version", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The path to the resource.", 
           "name": "path", 
           "nullable": null, 
@@ -142,6 +133,15 @@
           "optional": null, 
           "types": [
             "dict or list"
+          ]
+        }, 
+        {
+          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library.", 
+          "name": "api_version", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {

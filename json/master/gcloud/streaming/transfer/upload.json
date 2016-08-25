@@ -30,6 +30,15 @@
       "name": "from_file", 
       "params": [
         {
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
           "description": " path/filename to the file being uploaded", 
           "name": "filename", 
           "nullable": null, 
@@ -45,15 +54,6 @@
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
           ]
         }, 
         {
@@ -83,12 +83,12 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " Size of the file being uploaded", 
-          "name": "total_size", 
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or None"
+            "dict"
           ]
         }, 
         {
@@ -98,6 +98,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Size of the file being uploaded", 
+          "name": "total_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
           ]
         }, 
         {
@@ -116,15 +125,6 @@
           "optional": null, 
           "types": [
             "writable file-like object"
-          ]
-        }, 
-        {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
           ]
         }
       ], 
