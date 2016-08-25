@@ -28,12 +28,12 @@ In the hierarchy of API concepts
 
 
 from pkg_resources import get_distribution
+from google.longrunning import operations_pb2
 
 from gcloud._helpers import make_stub
 from gcloud.bigtable._generated import bigtable_instance_admin_pb2
 from gcloud.bigtable._generated import bigtable_pb2
 from gcloud.bigtable._generated import bigtable_table_admin_pb2
-from gcloud.bigtable._generated import operations_grpc_pb2
 from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from gcloud.bigtable.instance import Instance
 from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
@@ -109,11 +109,11 @@ def _make_operations_stub(client):
     :type client: :class:`Client`
     :param client: The client that will hold the stub.
 
-    :rtype: :class:`._generated.operations_grpc_pb2.OperationsStub`
+    :rtype: :class:`google.longrunning.operations_pb2.OperationsStub`
     :returns: A gRPC stub object.
     """
     return make_stub(client.credentials, client.user_agent,
-                     operations_grpc_pb2.OperationsStub,
+                     operations_pb2.OperationsStub,
                      OPERATIONS_API_HOST, OPERATIONS_API_PORT)
 
 
@@ -273,7 +273,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def _operations_stub(self):
         """Getter for the gRPC stub used for the Operations API.
 
-        :rtype: :class:`._generated.operations_grpc_pb2.OperationsStub`
+        :rtype: :class:`google.longrunning.operations_pb2.OperationsStub`
         :returns: A gRPC stub object.
         :raises: :class:`ValueError <exceptions.ValueError>` if the current
                  client is not an admin client or if it has not been
