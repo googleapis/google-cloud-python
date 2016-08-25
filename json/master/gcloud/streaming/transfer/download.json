@@ -30,17 +30,8 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " path/filename for the target file", 
-          "name": "filename", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " should an existing file be overwritten", 
-          "name": "overwrite", 
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -57,12 +48,21 @@
           ]
         }, 
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
+          "description": " should an existing file be overwritten", 
+          "name": "overwrite", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " path/filename for the target file", 
+          "name": "filename", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -83,21 +83,21 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }, 
         {

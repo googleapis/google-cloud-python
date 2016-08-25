@@ -20,21 +20,21 @@
       "name": "fetch_data", 
       "params": [
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " zero-based index of starting row", 
           "name": "start_index", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer or NoneType"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
           ]
         }, 
         {
