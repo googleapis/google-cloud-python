@@ -16,3 +16,4 @@
 
 from gcloud.language.client import Client
 from gcloud.language.document import Document
+from gcloud.language.document import Encoding
