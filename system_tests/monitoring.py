@@ -179,7 +179,7 @@ class TestMonitoring(unittest.TestCase):
             description=DESCRIPTION,
         )
 
-        retry_500(descriptor.create())
+        retry_500(descriptor.create)()
         retry_404_500(descriptor.delete)()
 
         with self.assertRaises(NotFound):
