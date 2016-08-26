@@ -33,7 +33,6 @@ TS2 = '2016-04-06T22:05:02.042Z'
 
 
 class TestTimeSeries(unittest.TestCase):
-
     def _getTargetClass(self):
         from google.cloud.monitoring.timeseries import TimeSeries
         return TimeSeries
@@ -147,9 +146,40 @@ class TestTimeSeries(unittest.TestCase):
         self.assertIsNotNone(series._labels)
         self.assertEqual(series.labels, labels)
 
+    def test_to_dict(self):
+        import datetime
+        from google.cloud._helpers import _datetime_to_rfc3339
+
+        from google.cloud.monitoring.metric import Metric
+        from google.cloud.monitoring.resource import Resource
+        from google.cloud.monitoring.timeseries import Point
+
+        VALUE = 42
+        end_time = datetime.datetime.now()
+        end_time_str = _datetime_to_rfc3339(end_time, ignore_zone=False)
+
+        METRIC = Metric(type=METRIC_TYPE, labels=METRIC_LABELS)
+        RESOURCE = Resource(type=RESOURCE_TYPE, labels=RESOURCE_LABELS)
+        POINT = Point(start_time=None, end_time=end_time_str, value=VALUE)
+
+        info = {
+            'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS},
+            'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS},
+            'points': [{
+                'interval': {
+                    'endTime': end_time_str},
+                'value': {'int64Value': str(VALUE)},
+            }]
+        }
+
+        series = self._makeOne(metric=METRIC, resource=RESOURCE,
+                               metric_kind=None, value_type=None,
+                               points=[POINT])
+        series_dict = series._to_dict()
+        self.assertEqual(info, series_dict)
+
 
 class TestPoint(unittest.TestCase):
-
     def _getTargetClass(self):
         from google.cloud.monitoring.timeseries import Point
         return Point
@@ -196,3 +226,40 @@ class TestPoint(unittest.TestCase):
         self.assertIsNone(point.start_time)
         self.assertEqual(point.end_time, TS1)
         self.assertEqual(point.value, VALUE)
+
+    def test_to_dict_int64(self):
+        import datetime
+        from google.cloud._helpers import _datetime_to_rfc3339
+        VALUE = 42
+        end_time = datetime.datetime.now()
+        end_time_str = _datetime_to_rfc3339(end_time, ignore_zone=False)
+        point = self._makeOne(end_time=end_time_str, start_time=None,
+                              value=VALUE)
+        info = {
+            'interval': {'endTime': end_time_str},
+            'value': {'int64Value': str(VALUE)},
+        }
+
+        point_dict = point._to_dict()
+        self.assertEqual(info, point_dict)
+
+    def test_to_dict_float_with_start_time(self):
+        import datetime
+        from google.cloud._helpers import _datetime_to_rfc3339
+        VALUE = 1.6180339
+        start_time = datetime.datetime.now()
+        start_time_str = _datetime_to_rfc3339(start_time, ignore_zone=False)
+        end_time = datetime.datetime.now()
+        end_time_str = _datetime_to_rfc3339(end_time, ignore_zone=False)
+
+        point = self._makeOne(end_time=end_time_str, start_time=start_time_str,
+                              value=VALUE)
+        info = {
+            'interval': {
+                'startTime': start_time_str,
+                'endTime': end_time_str},
+            'value': {'doubleValue': VALUE},
+        }
+
+        point_dict = point._to_dict()
+        self.assertEqual(info, point_dict)

@@ -30,7 +30,7 @@ of the API:
 - Querying of time series.
 - Querying of metric descriptors and monitored resource descriptors.
 - Creation and deletion of metric descriptors for custom metrics.
-- (Writing of custom metric data will be coming soon.)
+- Writing of custom metric data.
 
 .. _Stackdriver Monitoring API: https://cloud.google.com/monitoring/api/v3/
 
@@ -300,8 +300,7 @@ type of ``gce_instance`` or ``aws_ec2_instance``. In some limited circumstances,
 only a single process writes to the custom metric, you may choose to use the ``global`` monitored
 resource type.
 
-See `Monitored resource types`_ for a list of all monitored resource types available in
-Stackdriver Monitoring.
+See `Monitored resource types`_ for more information about parcitular monitored resource types.
 
 >>> from gcloud import monitoring
 >>> # Create a Resource object for the desired monitored resource type.
@@ -314,8 +313,6 @@ Stackdriver Monitoring.
 ...      'status': 'successful'
 ... })
 
-Please refer to the `Metrics`_ documentation for more information.
-
 With a ``Metric`` and ``Resource`` in hand, the :class:`~gcloud.monitoring.client.Client`
 can be used to write :class:`~gcloud.monitoring.timeseries.Point` values.
 
@@ -323,7 +320,7 @@ When writing points, the Python type of the value must match the *value type* of
 descriptor associated with the metric. For example, a Python float will map to ``ValueType.DOUBLE``.
 
 Stackdriver Monitoring supports several *metric kinds*: ``GAUGE``, ``CUMULATIVE``, and ``DELTA``.
-However, ``DELTA`` custom metrics are not supported.
+However, ``DELTA`` is not supported for custom metrics.
 
 ``GAUGE`` metrics represent only a single point in time, so only the ``end_time`` should be
 specified::

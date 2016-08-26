@@ -530,6 +530,16 @@ class TestMetric(unittest.TestCase):
         self.assertEqual(metric.type, TYPE)
         self.assertEqual(metric.labels, {})
 
+    def test_to_dict(self):
+        TYPE = 'custom.googleapis.com/my_metric'
+        LABELS = {}
+        metric = self._makeOne(TYPE, LABELS)
+        expected_dict = {
+            'type': TYPE,
+            'labels': LABELS
+        }
+        self.assertEquals(metric._to_dict(), expected_dict)
+
 
 class _Connection(object):
 

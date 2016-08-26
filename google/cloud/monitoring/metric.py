@@ -348,3 +348,16 @@ class Metric(collections.namedtuple('Metric', 'type labels')):
             type=info['type'],
             labels=info.get('labels', {}),
         )
+
+    def _to_dict(self):
+        """Build a dictionary ready to be serialized to the JSON format.
+
+        :rtype: dict
+        :returns: A dict representation of the object that can be written to
+                  the API.
+        """
+        info = {
+            'type': self.type,
+            'labels': self.labels,
+        }
+        return info

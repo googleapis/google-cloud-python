@@ -30,6 +30,7 @@ and monitored resource descriptors.
 
 import datetime
 
+from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud.client import JSONClient
 from google.cloud.monitoring.connection import Connection
 from google.cloud.monitoring.group import Group
@@ -312,7 +313,7 @@ class Client(JSONClient):
         :type start_time: :class:`~datetime.datetime`
         :param start_time:
             The start time for the point to be included in the time series.
-            Assumed to be UTC if no time zone information is present
+            Assumed to be UTC if no time zone information is present.
             Defaults to None. If the start time is unspecified,
             the API interprets the start time to be the same as the end time.
 
@@ -321,6 +322,11 @@ class Client(JSONClient):
         """
         if end_time is None:
             end_time = _UTCNOW()
+
+        end_time = _datetime_to_rfc3339(end_time, ignore_zone=False)
+        if start_time:
+            start_time = _datetime_to_rfc3339(start_time, ignore_zone=False)
+
         point = Point(value=value, start_time=start_time, end_time=end_time)
         return TimeSeries(metric=metric, resource=resource, metric_kind=None,
                           value_type=None, points=[point])
@@ -495,3 +501,85 @@ class Client(JSONClient):
         :returns: A list of group instances.
         """
         return Group._list(self)
+
+    def write_time_series(self, timeseries_list):
+        """Write a list of time series objects to the API.
+
+        The recommended approach to creating time series objects is using
+        the :meth:`~google.cloud.monitoring.client.Client.time_series` factory
+        method.
+
+        Example::
+
+            >>> client.write_time_series([ts1, ts2])
+
+        If you only need to write a single time series object, consider using
+        the :meth:`~google.cloud.monitoring.client.Client.write_point` method
+        instead.
+
+        :type timeseries_list:
+            list of :class:`~google.cloud.monitoring.timeseries.TimeSeries`
+        :param timeseries_list:
+            A list of time series object to be written
+            to the API. Each time series must contain exactly one point.
+        """
+        path = '/projects/{project}/timeSeries/'.format(
+            project=self.project)
+        timeseries_dict = [timeseries._to_dict()
+                           for timeseries in timeseries_list]
+        self.connection.api_request(method='POST', path=path,
+                                    data={'timeSeries': timeseries_dict})
+
+    def write_point(self, metric, resource, value,
+                    end_time=None,
+                    start_time=None):
+        """Write a single point for a metric to the API.
+
+        This is a convenience method to write a single time series object to
+        the API. To write multiple time series objects to the API as a batch
+        operation, use the
+        :meth:`~google.cloud.monitoring.client.Client.time_series`
+        factory method to create time series objects and the
+        :meth:`~google.cloud.monitoring.client.Client.write_time_series`
+        method to write the objects.
+
+        Example::
+
+            >>> client.write_point(metric, resource, 3.14)
+
+        :type metric: :class:`~gcloud.monitoring.metric.Metric`
+        :param metric: A :class:`~gcloud.monitoring.metric.Metric` object.
+
+        :type resource: :class:`~gcloud.monitoring.resource.Resource`
+        :param resource: A :class:`~gcloud.monitoring.resource.Resource`
+                         object.
+
+        :type value: bool, int, string, or float
+        :param value:
+            The value of the data point to create for the
+            :class:`~google.cloud.monitoring.timeseries.TimeSeries`.
+
+            .. note::
+
+               The Python type of the value will determine the
+               :class:`~ValueType` sent to the API, which must match the value
+               type specified in the metric descriptor. For example, a Python
+               float will be sent to the API as a :data:`ValueType.DOUBLE`.
+
+        :type end_time: :class:`~datetime.datetime`
+        :param end_time:
+            The end time for the point to be included in the time series.
+            Assumed to be UTC if no time zone information is present.
+            Defaults to the current time, as obtained by calling
+            :meth:`datetime.datetime.utcnow`.
+
+        :type start_time: :class:`~datetime.datetime`
+        :param start_time:
+            The start time for the point to be included in the time series.
+            Assumed to be UTC if no time zone information is present.
+            Defaults to None. If the start time is unspecified,
+            the API interprets the start time to be the same as the end time.
+        """
+        timeseries = self.time_series(
+            metric, resource, value, end_time, start_time)
+        self.write_time_series([timeseries])

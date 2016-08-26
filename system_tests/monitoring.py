@@ -14,15 +14,17 @@
 
 import unittest
 
+from google.cloud.exceptions import BadRequest
 from google.cloud.exceptions import InternalServerError
 from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import ServiceUnavailable
 from google.cloud import monitoring
 
 from retry import RetryErrors
+from retry import RetryResult
 from system_test_utils import unique_resource_id
 
-retry_404 = RetryErrors(NotFound)
+retry_404 = RetryErrors(NotFound, max_tries=5)
 retry_404_500 = RetryErrors((NotFound, InternalServerError))
 retry_500 = RetryErrors(InternalServerError)
 retry_503 = RetryErrors(ServiceUnavailable)
@@ -159,7 +161,7 @@ class TestMonitoring(unittest.TestCase):
             pass    # Not necessarily reached.
 
     def test_create_and_delete_metric_descriptor(self):
-        METRIC_TYPE = ('custom.googleapis.com/tmp/systest' +
+        METRIC_TYPE = ('custom.googleapis.com/tmp/system_test_example' +
                        unique_resource_id())
         METRIC_KIND = monitoring.MetricKind.GAUGE
         VALUE_TYPE = monitoring.ValueType.DOUBLE
@@ -175,6 +177,48 @@ class TestMonitoring(unittest.TestCase):
 
         retry_500(descriptor.create)()
         retry_404_500(descriptor.delete)()
+
+    def test_write_point(self):
+        METRIC_TYPE = ('custom.googleapis.com/tmp/system_test_example' +
+                       unique_resource_id())
+        METRIC_KIND = monitoring.MetricKind.GAUGE
+        VALUE_TYPE = monitoring.ValueType.DOUBLE
+        DESCRIPTION = 'System test example -- DELETE ME!'
+        VALUE = 3.14
+
+        client = monitoring.Client()
+        descriptor = client.metric_descriptor(
+            METRIC_TYPE,
+            metric_kind=METRIC_KIND,
+            value_type=VALUE_TYPE,
+            description=DESCRIPTION,
+        )
+
+        descriptor.create()
+        retry_404(descriptor._fetch)(client, METRIC_TYPE)
+
+        metric = client.metric(METRIC_TYPE, {})
+        resource = client.resource('global', {})
+
+        client.write_point(metric, resource, VALUE)
+
+        def _query_timeseries_with_retries():
+            def _has_timeseries(result):
+                return len(list(result)) > 0
+            retry_result = RetryResult(_has_timeseries, max_tries=7)(
+                client.query)
+            return RetryErrors(BadRequest)(retry_result)
+
+        query = _query_timeseries_with_retries()(METRIC_TYPE, minutes=5)
+        timeseries_list = list(query)
+        self.assertEqual(len(timeseries_list), 1)
+        timeseries = timeseries_list[0]
+        self.assertEqual(timeseries.metric, metric)
+        # resource labels will not be equal.
+        self.assertEqual(timeseries.resource.type, resource.type)
+        self.assertEqual(timeseries.points[0].value, VALUE)
+
+        retry_404(descriptor.delete)()
 
         with self.assertRaises(NotFound):
             descriptor.delete()

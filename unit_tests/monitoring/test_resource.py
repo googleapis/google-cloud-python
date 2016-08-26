@@ -316,6 +316,19 @@ class TestResource(unittest.TestCase):
         self.assertEqual(resource.type, TYPE)
         self.assertEqual(resource.labels, {})
 
+    def test_to_dict(self):
+        TYPE = 'gce_instance'
+        LABELS = {
+            'instance_id': '1234567890123456789',
+            'zone': 'us-central1-a',
+        }
+        resource = self._makeOne(TYPE, LABELS)
+        expected_dict = {
+            'type': TYPE,
+            'labels': LABELS
+        }
+        self.assertEquals(resource._to_dict(), expected_dict)
+
 
 class _Connection(object):
 

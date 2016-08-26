@@ -186,6 +186,7 @@ class TestClient(unittest.TestCase):
         import datetime
         from unit_tests._testing import _Monkey
         import google.cloud.monitoring.client
+        from google.cloud._helpers import _datetime_to_rfc3339
         METRIC_TYPE = 'custom.googleapis.com/my_metric'
         METRIC_LABELS = {
             'status': 'successful'
@@ -199,6 +200,7 @@ class TestClient(unittest.TestCase):
 
         VALUE = 42
         TIME1 = datetime.datetime.utcnow()
+        TIME1_STR = _datetime_to_rfc3339(TIME1, ignore_zone=False)
 
         client = self._makeOne(project=PROJECT, credentials=_Credentials())
         client.connection = _Connection()   # For safety's sake.
@@ -213,19 +215,21 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(timeseries.points), 1)
         self.assertEqual(timeseries.points[0].value, VALUE)
         self.assertIsNone(timeseries.points[0].start_time)
-        self.assertEqual(timeseries.points[0].end_time, TIME1)
+        self.assertEqual(timeseries.points[0].end_time, TIME1_STR)
 
         TIME2 = datetime.datetime.utcnow()
+        TIME2_STR = _datetime_to_rfc3339(TIME2, ignore_zone=False)
         # Construct a time series assuming a gauge metric using the current
         # time
         with _Monkey(google.cloud.monitoring.client, _UTCNOW=lambda: TIME2):
             timeseries_no_end = client.time_series(metric, resource, VALUE)
 
-        self.assertEqual(timeseries_no_end.points[0].end_time, TIME2)
+        self.assertEqual(timeseries_no_end.points[0].end_time, TIME2_STR)
         self.assertIsNone(timeseries_no_end.points[0].start_time)
 
     def test_timeseries_factory_cumulative(self):
         import datetime
+        from google.cloud._helpers import _datetime_to_rfc3339
         MY_CUMULATIVE_METRIC = 'custom.googleapis.com/my_cumulative_metric'
         METRIC_LABELS = {
             'status': 'successful'
@@ -261,14 +265,18 @@ class TestClient(unittest.TestCase):
                                                     start_time=RESET_TIME,
                                                     end_time=TIME2)
 
+        RESET_TIME_STR = _datetime_to_rfc3339(RESET_TIME, ignore_zone=False)
+        TIME1_STR = _datetime_to_rfc3339(TIME1, ignore_zone=False)
+        TIME2_STR = _datetime_to_rfc3339(TIME2, ignore_zone=False)
+
         self.assertEqual(cumulative_timeseries.points[0].start_time,
-                         RESET_TIME)
-        self.assertEqual(cumulative_timeseries.points[0].end_time, TIME1)
+                         RESET_TIME_STR)
+        self.assertEqual(cumulative_timeseries.points[0].end_time, TIME1_STR)
         self.assertEqual(cumulative_timeseries.points[0].value, VALUE)
         self.assertEqual(cumulative_timeseries2.points[0].start_time,
-                         RESET_TIME)
+                         RESET_TIME_STR)
         self.assertEqual(cumulative_timeseries2.points[0].end_time,
-                         TIME2)
+                         TIME2_STR)
         self.assertEqual(cumulative_timeseries2.points[0].value, VALUE2)
 
     def test_fetch_metric_descriptor(self):
@@ -541,9 +549,80 @@ class TestClient(unittest.TestCase):
                             'query_params': {}}
         self.assertEqual(request, expected_request)
 
+    def test_write_time_series(self):
+        PATH = '/projects/{project}/timeSeries/'.format(project=PROJECT)
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+
+        RESOURCE_TYPE = 'gce_instance'
+        RESOURCE_LABELS = {
+            'instance_id': '1234567890123456789',
+            'zone': 'us-central1-f'
+        }
+
+        METRIC_TYPE = 'custom.googleapis.com/my_metric'
+        METRIC_LABELS = {
+            'status': 'successful'
+        }
+        METRIC_TYPE2 = 'custom.googleapis.com/count_404s'
+        METRIC_LABELS2 = {
+            'request_ip': '127.0.0.1'
+        }
+
+        connection = client.connection = _Connection({})
+
+        METRIC = client.metric(METRIC_TYPE, METRIC_LABELS)
+        METRIC2 = client.metric(METRIC_TYPE2, METRIC_LABELS2)
+        RESOURCE = client.resource(RESOURCE_TYPE, RESOURCE_LABELS)
+
+        TIMESERIES1 = client.time_series(METRIC, RESOURCE, 3)
+        TIMESERIES2 = client.time_series(METRIC2, RESOURCE, 3.14)
+
+        expected_data = {
+            'timeSeries': [
+                TIMESERIES1._to_dict(),
+                TIMESERIES2._to_dict()
+            ]
+        }
+        expected_request = {'method': 'POST', 'path': PATH,
+                            'data': expected_data}
+
+        client.write_time_series([TIMESERIES1, TIMESERIES2])
+        request, = connection._requested
+        self.assertEqual(request, expected_request)
+
+    def test_write_point(self):
+        import datetime
+        PATH = '/projects/{project}/timeSeries/'.format(project=PROJECT)
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+
+        RESOURCE_TYPE = 'gce_instance'
+        RESOURCE_LABELS = {
+            'instance_id': '1234567890123456789',
+            'zone': 'us-central1-f'
+        }
+
+        METRIC_TYPE = 'custom.googleapis.com/my_metric'
+        METRIC_LABELS = {
+            'status': 'successful'
+        }
+
+        connection = client.connection = _Connection({})
+
+        METRIC = client.metric(METRIC_TYPE, METRIC_LABELS)
+        RESOURCE = client.resource(RESOURCE_TYPE, RESOURCE_LABELS)
+        VALUE = 3.14
+        TIMESTAMP = datetime.datetime.now()
+        TIMESERIES = client.time_series(METRIC, RESOURCE, VALUE, TIMESTAMP)
+
+        expected_request = {'method': 'POST', 'path': PATH,
+                            'data': {'timeSeries': [TIMESERIES._to_dict()]}}
+
+        client.write_point(METRIC, RESOURCE, VALUE, TIMESTAMP)
+        request, = connection._requested
+        self.assertEqual(request, expected_request)
+
 
 class _Credentials(object):
-
     _scopes = None
 
     @staticmethod
