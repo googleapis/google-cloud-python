@@ -132,6 +132,15 @@
       "name": "list_members", 
       "params": [
         {
+          "description": " The end time (inclusive) of the time interval for which results should be returned, as a datetime object. If <code>start_time</code> is specified, then this must also be specified.", 
+          "name": "end_time", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "datetime.datetime or None"
+          ]
+        }, 
+        {
           "description": " The start time (exclusive) of the time interval for which results should be returned, as a datetime object.", 
           "name": "start_time", 
           "nullable": null, 
@@ -147,15 +156,6 @@
           "optional": null, 
           "types": [
             "string or None"
-          ]
-        }, 
-        {
-          "description": " The end time (inclusive) of the time interval for which results should be returned, as a datetime object. If <code>start_time</code> is specified, then this must also be specified.", 
-          "name": "end_time", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "datetime.datetime or None"
           ]
         }
       ], 
