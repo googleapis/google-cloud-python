@@ -115,3 +115,10 @@ class TestLanguage(unittest.TestCase):
         document = Config.CLIENT.document_from_url(gcs_url)
         entities = document.analyze_entities()
         self._check_analyze_entities_result(entities)
+
+    def test_analyze_sentiment(self):
+        positive_msg = 'Jogging is fun'
+        document = Config.CLIENT.document_from_text(positive_msg)
+        sentiment = document.analyze_sentiment()
+        self.assertEqual(sentiment.polarity, 1)
+        self.assertTrue(0.5 < sentiment.magnitude < 1.5)
