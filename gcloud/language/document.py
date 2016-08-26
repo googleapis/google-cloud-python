@@ -17,12 +17,34 @@
 A document is used to hold text to be analyzed and annotated.
 """
 
+import collections
+
 from gcloud.language.entity import Entity
 from gcloud.language.sentiment import Sentiment
 
 
 DEFAULT_LANGUAGE = 'en-US'
 """Default document language, English."""
+
+
+Annotations = collections.namedtuple(
+    'Annotations',
+    'sentences tokens sentiment entities')
+"""Annotations for a document.
+
+:type sentences: list
+:param sentences: List of :class:`.Sentence` in a document.
+
+:type tokens: list
+:param tokens: List of :class:`.Token` from a document.
+
+:type sentiment: :class:`Sentiment`
+:param sentiment: The sentiment of a document.
+
+:type entities: list
+:param entities: List of :class:`~.language.entity.Entity`
+                 found in a document.
+"""
 
 
 class Encoding(object):
