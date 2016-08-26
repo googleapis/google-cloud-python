@@ -50,9 +50,41 @@ class TestToken(unittest.TestCase):
         part_of_speech = PartOfSpeech.DETERMINER
         edge_index = 3
         edge_label = 'PREDET'
-        lemma = 'All'
+        lemma = text_content
         token = self._makeOne(text_content, text_begin, part_of_speech,
                               edge_index, edge_label, lemma)
+        self.assertEqual(token.text_content, text_content)
+        self.assertEqual(token.text_begin, text_begin)
+        self.assertEqual(token.part_of_speech, part_of_speech)
+        self.assertEqual(token.edge_index, edge_index)
+        self.assertEqual(token.edge_label, edge_label)
+        self.assertEqual(token.lemma, lemma)
+
+    def test_from_api_repr(self):
+        from gcloud.language.token import PartOfSpeech
+
+        klass = self._getTargetClass()
+        text_content = 'pretty'
+        text_begin = -1
+        part_of_speech = PartOfSpeech.ADJECTIVE
+        edge_index = 3
+        edge_label = 'AMOD'
+        lemma = text_content
+        payload = {
+            'text': {
+                'content': text_content,
+                'beginOffset': text_begin,
+            },
+            'partOfSpeech': {
+                'tag': part_of_speech,
+            },
+            'dependencyEdge': {
+                'headTokenIndex': edge_index,
+                'label': edge_label,
+            },
+            'lemma': lemma,
+        }
+        token = klass.from_api_repr(payload)
         self.assertEqual(token.text_content, text_content)
         self.assertEqual(token.text_begin, text_begin)
         self.assertEqual(token.part_of_speech, part_of_speech)

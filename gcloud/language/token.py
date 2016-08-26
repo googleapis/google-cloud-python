@@ -145,3 +145,24 @@ class Token(object):
         self.edge_index = edge_index
         self.edge_label = edge_label
         self.lemma = lemma
+
+    @classmethod
+    def from_api_repr(cls, payload):
+        """Convert a token from the JSON API into a :class:`Sentiment`.
+
+        :param payload: dict
+        :type payload: The value from the backend.
+
+        :rtype: :class:`Token`
+        :returns: The token parsed from the API representation.
+        """
+        text_span = payload['text']
+        text_content = text_span['content']
+        text_begin = text_span['beginOffset']
+        part_of_speech = payload['partOfSpeech']['tag']
+        edge = payload['dependencyEdge']
+        edge_index = edge['headTokenIndex']
+        edge_label = edge['label']
+        lemma = payload['lemma']
+        return cls(text_content, text_begin, part_of_speech,
+                   edge_index, edge_label, lemma)

@@ -28,7 +28,6 @@ class Sentiment(object):
 
     See `Sentiment message`_ and `Sentiment basics`_.
 
-
     :type polarity: float
     :param polarity: Polarity of the sentiment in the ``[-1.0, 1.0]`` range.
                      Larger numbers represent more positive sentiments.
@@ -45,7 +44,7 @@ class Sentiment(object):
 
     @classmethod
     def from_api_repr(cls, payload):
-        """Convert an Sentiment from the JSON API into a :class:`Sentiment`.
+        """Convert a Sentiment from the JSON API into a :class:`Sentiment`.
 
         :param payload: dict
         :type payload: The value from the backend.
