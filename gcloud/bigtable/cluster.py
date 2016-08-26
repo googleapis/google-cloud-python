@@ -67,7 +67,6 @@ class Cluster(object):
     * :meth:`create` itself
     * :meth:`update` itself
     * :meth:`delete` itself
-    * :meth:`undelete` itself
 
     .. note::
 
@@ -266,11 +265,6 @@ class Cluster(object):
         Soon afterward:
 
         * All tables within the cluster will become unavailable.
-
-        Prior to the cluster's ``delete_time``:
-
-        * The cluster can be recovered with a call to ``UndeleteCluster``.
-        * All other attempts to modify or delete the cluster will be rejected.
 
         At the cluster's ``delete_time``:
 

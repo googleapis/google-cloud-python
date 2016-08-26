@@ -76,7 +76,6 @@ class Instance(object):
     * :meth:`create` itself
     * :meth:`update` itself
     * :meth:`delete` itself
-    * :meth:`undelete` itself
 
     .. note::
 
@@ -277,11 +276,6 @@ class Instance(object):
         Soon afterward:
 
         * All tables within the instance will become unavailable.
-
-        Prior to the instance's ``delete_time``:
-
-        * The instance can be recovered with a call to ``UndeleteInstance``.
-        * All other attempts to modify or delete the instance will be rejected.
 
         At the instance's ``delete_time``:
 
