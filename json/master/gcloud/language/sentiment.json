@@ -1,0 +1,8 @@
+{
+  "description": "\n Definition for Google Cloud Natural Language API sentiment.\n Sentiment is the response to an <code>analyzeSentiment</code> request.", 
+  "examples": [], 
+  "id": "gcloud.language.sentiment", 
+  "methods": [], 
+  "name": "Sentiment", 
+  "source": "gcloud/language/sentiment.py"
+}

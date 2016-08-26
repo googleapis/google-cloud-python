@@ -141,21 +141,21 @@
           ]
         }, 
         {
-          "description": " The start time (exclusive) of the time interval for which results should be returned, as a datetime object.", 
-          "name": "start_time", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "datetime.datetime or None"
-          ]
-        }, 
-        {
           "description": " An optional list filter describing the members to be returned. The filter may reference the type, labels, and metadata of monitored resources that comprise the group. See the filter documentation_.", 
           "name": "filter_string", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or None"
+          ]
+        }, 
+        {
+          "description": " The start time (exclusive) of the time interval for which results should be returned, as a datetime object.", 
+          "name": "start_time", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "datetime.datetime or None"
           ]
         }
       ], 

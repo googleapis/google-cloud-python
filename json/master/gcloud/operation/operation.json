@@ -20,15 +20,6 @@
       "name": "from_pb", 
       "params": [
         {
-          "description": " caller-assigned metadata about the operation", 
-          "name": "kw", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " The client used to poll for the status of the operation.", 
           "name": "client", 
           "nullable": null, 
@@ -44,6 +35,15 @@
           "optional": null, 
           "types": [
             "google.longrunning.operations_pb2.Operation"
+          ]
+        }, 
+        {
+          "description": " caller-assigned metadata about the operation", 
+          "name": "kw", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/language/document.py#L92", 
+      "source": "gcloud/language/document.py#L93", 
       "type": "instance"
     }, 
     {
@@ -26,7 +26,23 @@
           ]
         }
       ], 
-      "source": "gcloud/language/document.py#L125", 
+      "source": "gcloud/language/document.py#L126", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.language.document.Document.analyze_sentiment", 
+      "name": "analyze_sentiment", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/language/document/document/sentiment\">gcloud.language.document.Document.Sentiment</a>"
+          ]
+        }
+      ], 
+      "source": "gcloud/language/document.py#L151", 
       "type": "instance"
     }
   ], 
