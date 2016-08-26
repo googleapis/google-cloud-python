@@ -91,3 +91,34 @@ class TestToken(unittest.TestCase):
         self.assertEqual(token.edge_index, edge_index)
         self.assertEqual(token.edge_label, edge_label)
         self.assertEqual(token.lemma, lemma)
+
+
+class TestSentence(unittest.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.language.token import Sentence
+        return Sentence
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_constructor(self):
+        content = "All the king's horses."
+        begin = 11
+        sentence = self._makeOne(content, begin)
+        self.assertEqual(sentence.content, content)
+        self.assertEqual(sentence.begin, begin)
+
+    def test_from_api_repr(self):
+        klass = self._getTargetClass()
+        content = 'All the pretty horses.'
+        begin = -1
+        payload = {
+            'text': {
+                'content': content,
+                'beginOffset': begin,
+            },
+        }
+        sentence = klass.from_api_repr(payload)
+        self.assertEqual(sentence.content, content)
+        self.assertEqual(sentence.begin, begin)

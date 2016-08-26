@@ -166,3 +166,38 @@ class Token(object):
         lemma = payload['lemma']
         return cls(text_content, text_begin, part_of_speech,
                    edge_index, edge_label, lemma)
+
+
+class Sentence(object):
+    """A Google Cloud Natural Language API sentence object.
+
+    .. _Sentence message: https://cloud.google.com/natural-language/reference\
+                          /rest/v1beta1/documents/annotateText#Sentence
+
+    See `Sentence message`_.
+
+    :type content: str
+    :param content: The text that the sentence is composed of.
+
+    :type begin: int
+    :param begin: The beginning offset of the sentence in the original
+                  document according to the encoding type specified
+                  in the API request.
+    """
+
+    def __init__(self, content, begin):
+        self.content = content
+        self.begin = begin
+
+    @classmethod
+    def from_api_repr(cls, payload):
+        """Convert a sentence from the JSON API into a :class:`Sentiment`.
+
+        :param payload: dict
+        :type payload: The value from the backend.
+
+        :rtype: :class:`Sentence`
+        :returns: The sentence parsed from the API representation.
+        """
+        text_span = payload['text']
+        return cls(text_span['content'], text_span['beginOffset'])
