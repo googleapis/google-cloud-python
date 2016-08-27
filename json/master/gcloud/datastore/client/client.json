@@ -20,21 +20,21 @@
       "name": "allocate_ids", 
       "params": [
         {
-          "description": " Partial key to use as base for allocated IDs.", 
-          "name": "incomplete_key", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
-          ]
-        }, 
-        {
           "description": " The number of IDs to allocate.", 
           "name": "num_ids", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " Partial key to use as base for allocated IDs.", 
+          "name": "incomplete_key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
           ]
         }
       ], 
@@ -85,15 +85,6 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
@@ -109,6 +100,15 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }
       ], 
@@ -129,12 +129,12 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "string"
           ]
         }, 
         {
@@ -156,12 +156,12 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "tuple"
           ]
         }
       ], 
@@ -181,15 +181,6 @@
       "id": "gcloud.datastore.client.Client.get", 
       "name": "get", 
       "params": [
-        {
-          "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
-          "name": "transaction", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
-          ]
-        }, 
         {
           "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it.", 
           "name": "deferred", 
@@ -216,6 +207,15 @@
           "types": [
             "list"
           ]
+        }, 
+        {
+          "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
+          "name": "transaction", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
+          ]
         }
       ], 
       "returns": [
@@ -235,24 +235,6 @@
       "name": "get_multi", 
       "params": [
         {
-          "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
-          "name": "transaction", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
-          ]
-        }, 
-        {
-          "description": " The keys to be retrieved from the datastore.", 
-          "name": "keys", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " gcloud.datastore.key.Key"
-          ]
-        }, 
-        {
           "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it. If the list is not empty, an error will occur.", 
           "name": "deferred", 
           "nullable": null, 
@@ -262,12 +244,30 @@
           ]
         }, 
         {
+          "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
+          "name": "transaction", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
+          ]
+        }, 
+        {
           "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it. If the list is not empty, an error will occur.", 
           "name": "missing", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "list"
+          ]
+        }, 
+        {
+          "description": " The keys to be retrieved from the datastore.", 
+          "name": "keys", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " gcloud.datastore.key.Key"
           ]
         }
       ], 

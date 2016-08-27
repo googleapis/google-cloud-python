@@ -20,21 +20,21 @@
       "name": "blob", 
       "params": [
         {
-          "description": " The size of a chunk of data whenever iterating (1 MB). This must be a multiple of 256 KB per the API specification.", 
-          "name": "chunk_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " The name of the blob to be instantiated.", 
           "name": "blob_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The size of a chunk of data whenever iterating (1 MB). This must be a multiple of 256 KB per the API specification.", 
+          "name": "chunk_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }
       ], 
@@ -78,6 +78,15 @@
           ]
         }, 
         {
+          "description": " The blob to be copied.", 
+          "name": "blob", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
+          ]
+        }, 
+        {
           "description": " (optional) the new name for the copied file.", 
           "name": "new_name", 
           "nullable": null, 
@@ -93,15 +102,6 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/storage/bucket/bucket\">gcloud.storage.bucket.Bucket</a>"
-          ]
-        }, 
-        {
-          "description": " The blob to be copied.", 
-          "name": "blob", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
           ]
         }
       ], 
@@ -277,17 +277,17 @@
       "name": "list_blobs", 
       "params": [
         {
-          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each blob returned: 'items/contentLanguage,nextPageToken'", 
-          "name": "fields", 
+          "description": " whether object versions should be returned as separate blobs.", 
+          "name": "versions", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string or NoneType"
+            "boolean or NoneType"
           ]
         }, 
         {
-          "description": " optional prefix used to filter blobs.", 
-          "name": "prefix", 
+          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
+          "name": "projection", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -313,15 +313,6 @@
           ]
         }, 
         {
-          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
-          "name": "projection", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
-          ]
-        }, 
-        {
           "description": " maximum number of blobs to return.", 
           "name": "max_results", 
           "nullable": null, 
@@ -340,12 +331,21 @@
           ]
         }, 
         {
-          "description": " whether object versions should be returned as separate blobs.", 
-          "name": "versions", 
+          "description": " optional prefix used to filter blobs.", 
+          "name": "prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean or NoneType"
+            "string or NoneType"
+          ]
+        }, 
+        {
+          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each blob returned: 'items/contentLanguage,nextPageToken'", 
+          "name": "fields", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
           ]
         }
       ], 
@@ -405,21 +405,21 @@
           ]
         }, 
         {
-          "description": " The new name for this blob.", 
-          "name": "new_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The blob to be renamed.", 
           "name": "blob", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
+          ]
+        }, 
+        {
+          "description": " The new name for this blob.", 
+          "name": "new_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
