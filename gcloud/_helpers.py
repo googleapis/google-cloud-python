@@ -570,8 +570,8 @@ class MetadataPlugin(object):
         """
         access_token = self._credentials.get_access_token().access_token
         headers = [
-            ('Authorization', 'Bearer ' + access_token),
-            ('User-agent', self._user_agent),
+            ('authorization', 'Bearer ' + access_token),
+            ('user-agent', self._user_agent),
         ]
         callback(headers, None)
 
