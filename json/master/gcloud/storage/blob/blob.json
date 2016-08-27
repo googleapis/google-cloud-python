@@ -46,21 +46,21 @@
       "name": "download_as_string", 
       "params": [
         {
-          "description": " Optional 32 byte encryption key for customer-supplied encryption.", 
-          "name": "encryption_key", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str or bytes"
-          ]
-        }, 
-        {
           "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " Optional 32 byte encryption key for customer-supplied encryption.", 
+          "name": "encryption_key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or bytes"
           ]
         }
       ], 
@@ -140,17 +140,8 @@
           ]
         }, 
         {
-          "description": " (Optional) The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
-          "description": " The HTTP verb that will be used when requesting the URL.", 
-          "name": "method", 
+          "description": " (Optional) Content type of responses to requests for the signed URL. Used to over-ride the content type of the underlying blob/object.", 
+          "name": "response_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -164,24 +155,6 @@
           "optional": null, 
           "types": [
             "str"
-          ]
-        }, 
-        {
-          "description": " (Optional) Content type of responses to requests for the signed URL. Used to over-ride the content type of the underlying blob/object.", 
-          "name": "response_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " When the signed URL should expire.", 
-          "name": "expiration", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int, long, datetime.datetime, datetime.timedelta"
           ]
         }, 
         {
@@ -200,6 +173,33 @@
           "optional": null, 
           "types": [
             "oauth2client.client.OAuth2Credentials or"
+          ]
+        }, 
+        {
+          "description": " The HTTP verb that will be used when requesting the URL.", 
+          "name": "method", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " When the signed URL should expire.", 
+          "name": "expiration", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int, long, datetime.datetime, datetime.timedelta"
           ]
         }
       ], 

@@ -36,8 +36,26 @@
       "name": "make_api_request", 
       "params": [
         {
-          "description": " Number of retries to attempt on retryable responses (such as 429 or 5XX).", 
-          "name": "retries", 
+          "description": " the request to send.", 
+          "name": "http_request", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "Request"
+          ]
+        }, 
+        {
+          "description": " Number of redirects to follow.", 
+          "name": "redirections", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " Maximum number of seconds to wait when retrying.", 
+          "name": "max_retry_wait", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -63,15 +81,6 @@
           ]
         }, 
         {
-          "description": " Maximum number of seconds to wait when retrying.", 
-          "name": "max_retry_wait", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " Function to validate the HTTP response.", 
           "name": "check_response_func", 
           "nullable": null, 
@@ -81,17 +90,8 @@
           ]
         }, 
         {
-          "description": " the request to send.", 
-          "name": "http_request", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "Request"
-          ]
-        }, 
-        {
-          "description": " Number of redirects to follow.", 
-          "name": "redirections", 
+          "description": " Number of retries to attempt on retryable responses (such as 429 or 5XX).", 
+          "name": "retries", 
           "nullable": null, 
           "optional": null, 
           "types": [
