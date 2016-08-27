@@ -838,8 +838,8 @@ class TestMetadataPlugin(unittest.TestCase):
         transformer = self._makeOne(credentials, user_agent)
         result = transformer(None, callback)
         cb_headers = [
-            ('Authorization', 'Bearer ' + access_token_expected),
-            ('User-agent', user_agent),
+            ('authorization', 'Bearer ' + access_token_expected),
+            ('user-agent', user_agent),
         ]
         self.assertEqual(result, None)
         self.assertEqual(callback_args, [(cb_headers, None)])
