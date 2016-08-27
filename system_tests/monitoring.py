@@ -165,7 +165,7 @@ class TestMonitoring(unittest.TestCase):
             pass    # Not necessarily reached.
 
     def test_create_and_delete_metric_descriptor(self):
-        METRIC_TYPE = ('custom.googleapis.com/tmp/system_test_example' +
+        METRIC_TYPE = ('custom.googleapis.com/tmp/systest' +
                        unique_resource_id())
         METRIC_KIND = monitoring.MetricKind.GAUGE
         VALUE_TYPE = monitoring.ValueType.DOUBLE
