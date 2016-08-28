@@ -15,6 +15,9 @@
 import os
 import unittest
 
+from google.gax.errors import GaxError
+from grpc import StatusCode
+from grpc._channel import _Rendezvous
 import httplib2
 
 from gcloud import _helpers
@@ -24,8 +27,16 @@ from gcloud import pubsub
 
 from retry import RetryInstanceState
 from retry import RetryResult
+from retry import RetryErrors
 from system_test_utils import EmulatorCreds
 from system_test_utils import unique_resource_id
+
+
+def _unavailable(exc):
+    return _helpers.exc_to_code(exc) == StatusCode.UNAVAILABLE
+
+
+retry_unavailable = RetryErrors((GaxError, _Rendezvous), _unavailable)
 
 
 class Config(object):
@@ -124,7 +135,7 @@ class TestPubsub(unittest.TestCase):
     def test_list_subscriptions(self):
         TOPIC_NAME = 'list-sub' + unique_resource_id('-')
         topic = Config.CLIENT.topic(TOPIC_NAME)
-        self.assertFalse(topic.exists())
+        self.assertFalse(retry_unavailable(topic.exists)())
         topic.create()
         self.to_delete.append(topic)
         empty, _ = topic.list_subscriptions()
