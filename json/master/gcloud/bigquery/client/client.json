@@ -20,21 +20,21 @@
       "name": "copy_table", 
       "params": [
         {
-          "description": " Table into which data is to be copied.", 
-          "name": "destination", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
-          ]
-        }, 
-        {
           "description": " tables to be copied.", 
           "name": "sources", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "sequence of gcloud.bigquery.table.Table"
+          ]
+        }, 
+        {
+          "description": " Table into which data is to be copied.", 
+          "name": "destination", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }, 
         {
@@ -134,15 +134,6 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
@@ -158,6 +149,15 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }
       ], 
@@ -177,15 +177,6 @@
       "id": "gcloud.bigquery.client.Client.from_service_account_p12", 
       "name": "from_service_account_p12", 
       "params": [
-        {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
         {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
           "name": "private_key_path", 
@@ -211,6 +202,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }
       ], 
@@ -257,15 +257,6 @@
       "name": "list_datasets", 
       "params": [
         {
-          "description": " True if results include hidden datasets.", 
-          "name": "include_all", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
           "description": " maximum number of datasets to return, If not passed, defaults to a value set by the API.", 
           "name": "max_results", 
           "nullable": null, 
@@ -281,6 +272,15 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " True if results include hidden datasets.", 
+          "name": "include_all", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }
       ], 
@@ -301,6 +301,15 @@
       "name": "list_jobs", 
       "params": [
         {
+          "description": " if true, include jobs owned by all users in the project.", 
+          "name": "all_users", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
+          ]
+        }, 
+        {
           "description": " maximum number of jobs to return, If not passed, defaults to a value set by the API.", 
           "name": "max_results", 
           "nullable": null, 
@@ -316,15 +325,6 @@
           "optional": null, 
           "types": [
             "str"
-          ]
-        }, 
-        {
-          "description": " if true, include jobs owned by all users in the project.", 
-          "name": "all_users", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
           ]
         }, 
         {
@@ -354,21 +354,21 @@
       "name": "load_table_from_storage", 
       "params": [
         {
-          "description": " Table into which data is to be loaded.", 
-          "name": "destination", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
-          ]
-        }, 
-        {
           "description": " URIs of data files to be loaded; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
           "name": "source_uris", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "sequence of string"
+          ]
+        }, 
+        {
+          "description": " Table into which data is to be loaded.", 
+          "name": "destination", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }, 
         {

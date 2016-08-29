@@ -1,0 +1,29 @@
+{
+  "description": "\n Feature represenging various types of annotating.", 
+  "examples": [], 
+  "id": "gcloud.vision.feature.feature", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.vision.feature.Feature.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "gcloud/vision/feature.py#L46", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.vision.feature.Feature.as_dict", 
+      "name": "as_dict", 
+      "params": [], 
+      "returns": [], 
+      "source": "gcloud/vision/feature.py#L53", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Feature", 
+  "source": "gcloud/vision/feature.py"
+}

@@ -1,0 +1,8 @@
+{
+  "description": "\n Client for interacting with the Google Cloud Vision API.", 
+  "examples": [], 
+  "id": "gcloud.vision.client", 
+  "methods": [], 
+  "name": "Client", 
+  "source": "gcloud/vision/client.py"
+}

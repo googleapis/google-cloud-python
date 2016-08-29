@@ -97,21 +97,21 @@
       "name": "from_pb", 
       "params": [
         {
-          "description": " The client that owns the instance.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "Client <gcloud.bigtable.client.Client>"
-          ]
-        }, 
-        {
           "description": " A instance protobuf object.", 
           "name": "instance_pb", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "instance_pb2.Instance"
+          ]
+        }, 
+        {
+          "description": " The client that owns the instance.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "Client <gcloud.bigtable.client.Client>"
           ]
         }
       ], 
