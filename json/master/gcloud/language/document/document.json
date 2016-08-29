@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/language/document.py#L93", 
+      "source": "gcloud/language/document.py#L117", 
       "type": "instance"
     }, 
     {
@@ -26,7 +26,7 @@
           ]
         }
       ], 
-      "source": "gcloud/language/document.py#L126", 
+      "source": "gcloud/language/document.py#L150", 
       "type": "instance"
     }, 
     {
@@ -42,7 +42,51 @@
           ]
         }
       ], 
-      "source": "gcloud/language/document.py#L151", 
+      "source": "gcloud/language/document.py#L175", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.language.document.Document.annotate_text", 
+      "name": "annotate_text", 
+      "params": [
+        {
+          "description": " (Optional) Flag to enable entity extraction from the current document.", 
+          "name": "include_entities", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
+          "description": " (Optional) Flag to enable sentiment analysis of the current document.", 
+          "name": "include_sentiment", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
+          "description": " (Optional) Flag to enable syntax analysis of the current document.", 
+          "name": "include_syntax", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Annotations"
+          ]
+        }
+      ], 
+      "source": "gcloud/language/document.py#L191", 
       "type": "instance"
     }
   ], 

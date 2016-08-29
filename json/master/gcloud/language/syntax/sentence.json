@@ -1,22 +1,22 @@
 {
-  "description": "\n Definition for Google Cloud Natural Language API sentiment.\n Sentiment is the response to an <code>analyzeSentiment</code> request.", 
+  "description": "\n Google Cloud Natural Language API helpers for tokenized text.\n The <code>annotateText</code> method, when used with the \"syntax\" feature, breaks a document down into tokens and sentences.", 
   "examples": [], 
-  "id": "gcloud.language.sentiment.sentiment", 
+  "id": "gcloud.language.syntax.sentence", 
   "methods": [
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.language.sentiment.Sentiment.__init__", 
+      "id": "gcloud.language.syntax.Sentence.__init__", 
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/language/sentiment.py#L41", 
+      "source": "gcloud/language/syntax.py#L188", 
       "type": "instance"
     }, 
     {
       "examples": [], 
       "exceptions": [], 
-      "id": "gcloud.language.sentiment.Sentiment.from_api_repr", 
+      "id": "gcloud.language.syntax.Sentence.from_api_repr", 
       "name": "from_api_repr", 
       "params": [
         {
@@ -32,14 +32,14 @@
       "returns": [
         {
           "types": [
-            "Sentiment"
+            "Sentence"
           ]
         }
       ], 
-      "source": "gcloud/language/sentiment.py#L45", 
+      "source": "gcloud/language/syntax.py#L192", 
       "type": "instance"
     }
   ], 
-  "name": "Sentiment", 
-  "source": "gcloud/language/sentiment.py"
+  "name": "Sentence", 
+  "source": "gcloud/language/syntax.py"
 }

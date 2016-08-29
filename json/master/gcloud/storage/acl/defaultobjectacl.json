@@ -175,21 +175,21 @@
       "name": "get_entity", 
       "params": [
         {
-          "description": " This value will be returned if the entity doesn't exist.", 
-          "name": "default", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "anything"
-          ]
-        }, 
-        {
           "description": " The entity to get lookup in the ACL.", 
           "name": "entity", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "_ACLEntity or string"
+          ]
+        }, 
+        {
+          "description": " This value will be returned if the entity doesn't exist.", 
+          "name": "default", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "anything"
           ]
         }
       ], 

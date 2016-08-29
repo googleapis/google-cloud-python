@@ -1,0 +1,29 @@
+{
+  "description": "\n Google Cloud Natural Language API helpers for tokenized text.\n The <code>annotateText</code> method, when used with the \"syntax\" feature, breaks a document down into tokens and sentences.", 
+  "examples": [], 
+  "id": "gcloud.language.syntax.partofspeech", 
+  "methods": [
+    {
+      "examples": [
+        {
+          "code": "PartOfSpeech.OTHER\n'X'\nPartOfSpeech.reverse('X')\n'OTHER'\n"
+        }
+      ], 
+      "exceptions": [], 
+      "id": "gcloud.language.syntax.PartOfSpeech.reverse", 
+      "name": "reverse", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "source": "gcloud/language/syntax.py#L84", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Partofspeech", 
+  "source": "gcloud/language/syntax.py"
+}

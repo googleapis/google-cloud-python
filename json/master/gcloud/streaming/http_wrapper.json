@@ -36,12 +36,12 @@
       "name": "make_api_request", 
       "params": [
         {
-          "description": " Function to validate the HTTP response.", 
-          "name": "check_response_func", 
+          "description": " an instance which implements the Http API.", 
+          "name": "http", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "function taking (response, content, url)."
+            "httplib2.Http"
           ]
         }, 
         {
@@ -54,8 +54,8 @@
           ]
         }, 
         {
-          "description": " Number of redirects to follow.", 
-          "name": "redirections", 
+          "description": " Maximum number of seconds to wait when retrying.", 
+          "name": "max_retry_wait", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -63,12 +63,12 @@
           ]
         }, 
         {
-          "description": " Maximum number of seconds to wait when retrying.", 
-          "name": "max_retry_wait", 
+          "description": " the request to send.", 
+          "name": "http_request", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "Request"
           ]
         }, 
         {
@@ -81,21 +81,21 @@
           ]
         }, 
         {
-          "description": " an instance which implements the Http API.", 
-          "name": "http", 
+          "description": " Function to validate the HTTP response.", 
+          "name": "check_response_func", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "httplib2.Http"
+            "function taking (response, content, url)."
           ]
         }, 
         {
-          "description": " the request to send.", 
-          "name": "http_request", 
+          "description": " Number of redirects to follow.", 
+          "name": "redirections", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "Request"
+            "integer"
           ]
         }
       ], 

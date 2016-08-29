@@ -20,21 +20,21 @@
       "name": "document_from_html", 
       "params": [
         {
-          "description": " The document HTML text content.", 
-          "name": "content", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to be passed along to the", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The document HTML text content.", 
+          "name": "content", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -55,21 +55,21 @@
       "name": "document_from_text", 
       "params": [
         {
-          "description": " The document plain text content.", 
-          "name": "content", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to be passed along to the", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The document plain text content.", 
+          "name": "content", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -90,12 +90,12 @@
       "name": "document_from_url", 
       "params": [
         {
-          "description": " (Optional) The type of text in the document. Defaults to plain text. Can also be specified as HTML via :attr:~.Document.HTML.", 
-          "name": "doc_type", 
+          "description": " Remaining keyword arguments to be passed along to the", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "dict"
           ]
         }, 
         {
@@ -108,12 +108,12 @@
           ]
         }, 
         {
-          "description": " Remaining keyword arguments to be passed along to the", 
-          "name": "kwargs", 
+          "description": " (Optional) The type of text in the document. Defaults to plain text. Can also be specified as HTML via :attr:~.Document.HTML.", 
+          "name": "doc_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "str"
           ]
         }
       ], 
@@ -134,12 +134,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "tuple"
           ]
         }, 
         {
@@ -152,12 +152,12 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "string"
           ]
         }
       ], 
@@ -178,12 +178,12 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "tuple"
           ]
         }, 
         {
@@ -196,8 +196,8 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -205,12 +205,12 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "string"
           ]
         }
       ], 

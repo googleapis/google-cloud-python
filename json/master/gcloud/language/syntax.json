@@ -1,0 +1,8 @@
+{
+  "description": "\n Google Cloud Natural Language API helpers for tokenized text.\n The <code>annotateText</code> method, when used with the \"syntax\" feature, breaks a document down into tokens and sentences.", 
+  "examples": [], 
+  "id": "gcloud.language.syntax", 
+  "methods": [], 
+  "name": "Syntax", 
+  "source": "gcloud/language/syntax.py"
+}

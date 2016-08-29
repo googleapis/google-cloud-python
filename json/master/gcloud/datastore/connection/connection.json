@@ -20,21 +20,21 @@
       "name": "allocate_ids", 
       "params": [
         {
-          "description": " The keys for which the backend should allocate IDs.", 
-          "name": "key_pbs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            ""
-          ]
-        }, 
-        {
           "description": " The project to which the transaction belongs.", 
           "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The keys for which the backend should allocate IDs.", 
+          "name": "key_pbs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            ""
           ]
         }
       ], 
@@ -81,15 +81,6 @@
       "name": "build_api_url", 
       "params": [
         {
-          "description": " The API method to call (e.g. 'runQuery', 'lookup').", 
-          "name": "method", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The base URL where the API lives. You shouldn't have to provide this.", 
           "name": "base_url", 
           "nullable": null, 
@@ -101,6 +92,15 @@
         {
           "description": " The project to connect to. This is usually your project name in the cloud console.", 
           "name": "project", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The API method to call (e.g. 'runQuery', 'lookup').", 
+          "name": "method", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -182,12 +182,12 @@
       "name": "lookup", 
       "params": [
         {
-          "description": " The keys to retrieve from the datastore.", 
-          "name": "key_pbs", 
+          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
+          "name": "eventual", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            ""
+            "bool"
           ]
         }, 
         {
@@ -209,12 +209,12 @@
           ]
         }, 
         {
-          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
-          "name": "eventual", 
+          "description": " The keys to retrieve from the datastore.", 
+          "name": "key_pbs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "bool"
+            ""
           ]
         }
       ], 
@@ -245,15 +245,6 @@
       "name": "run_query", 
       "params": [
         {
-          "description": " The Protobuf representing the query to run.", 
-          "name": "query_pb", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
-          ]
-        }, 
-        {
           "description": " The namespace over which to run the query.", 
           "name": "namespace", 
           "nullable": null, 
@@ -278,6 +269,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The Protobuf representing the query to run.", 
+          "name": "query_pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
           ]
         }, 
         {

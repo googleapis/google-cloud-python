@@ -20,21 +20,21 @@
       "name": "blob", 
       "params": [
         {
-          "description": " The name of the blob to be instantiated.", 
-          "name": "blob_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The size of a chunk of data whenever iterating (1 MB). This must be a multiple of 256 KB per the API specification.", 
           "name": "chunk_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer"
+          ]
+        }, 
+        {
+          "description": " The name of the blob to be instantiated.", 
+          "name": "blob_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -226,21 +226,21 @@
       "name": "get_blob", 
       "params": [
         {
-          "description": " The name of the blob to retrieve.", 
-          "name": "blob_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " The name of the blob to retrieve.", 
+          "name": "blob_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -277,24 +277,6 @@
       "name": "list_blobs", 
       "params": [
         {
-          "description": " maximum number of blobs to return.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or NoneType"
-          ]
-        }, 
-        {
-          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
-          "name": "projection", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
-          ]
-        }, 
-        {
           "description": " optional prefix used to filter blobs.", 
           "name": "prefix", 
           "nullable": null, 
@@ -304,26 +286,17 @@
           ]
         }, 
         {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
           "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each blob returned: 'items/contentLanguage,nextPageToken'", 
           "name": "fields", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " whether object versions should be returned as separate blobs.", 
-          "name": "versions", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or NoneType"
-          ]
-        }, 
-        {
-          "description": " optional delimter, used with <code>prefix</code> to emulate hierarchy.", 
-          "name": "delimiter", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -340,12 +313,39 @@
           ]
         }, 
         {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
-          "name": "client", 
+          "description": " maximum number of blobs to return.", 
+          "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+            "integer or NoneType"
+          ]
+        }, 
+        {
+          "description": " optional delimter, used with <code>prefix</code> to emulate hierarchy.", 
+          "name": "delimiter", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
+          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
+          "name": "projection", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
+          "description": " whether object versions should be returned as separate blobs.", 
+          "name": "versions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or NoneType"
           ]
         }
       ], 
