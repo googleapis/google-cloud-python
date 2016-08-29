@@ -151,7 +151,7 @@ class Client(JSONClient):
 
           >>> try:
           >>>   bucket = client.get_bucket('my-bucket')
-          >>> except gcloud.exceptions.NotFound:
+          >>> except google.cloud.exceptions.NotFound:
           >>>   print 'Sorry, that bucket does not exist!'
 
         This implements "storage.buckets.get".

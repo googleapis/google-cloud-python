@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""GCloud API access in idiomatic Python."""
+"""Google Cloud API access in idiomatic Python."""
 
 from pkg_resources import get_distribution
 
-__version__ = get_distribution('gcloud').version
+__version__ = get_distribution('google-cloud').version

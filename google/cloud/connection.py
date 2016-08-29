@@ -63,7 +63,8 @@ class Connection(object):
     :param http: An optional HTTP object to make requests.
     """
 
-    USER_AGENT = "google-cloud-python/{0}".format(get_distribution('gcloud').version)
+    USER_AGENT = "google-cloud-python/{0}".format(
+        get_distribution('google-cloud').version)
     """The user agent for google-cloud-python requests."""
 
     SCOPE = None

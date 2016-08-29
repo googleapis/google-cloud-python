@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Connections to gcloud datastore API servers."""
+"""Connections to Google Cloud Datastore API servers."""
 
 import os
 

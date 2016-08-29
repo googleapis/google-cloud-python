@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with gcloud datastore keys."""
+"""Create / interact with Google Cloud Datastore keys."""
 
 import copy
 import six

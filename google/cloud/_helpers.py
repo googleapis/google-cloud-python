@@ -11,9 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Thread-local resource stack.
 
-This module is not part of the public API surface of `gcloud`.
+"""Shared helpers for Google Cloud packages.
+
+This module is not part of the public API surface.
 """
 
 import calendar

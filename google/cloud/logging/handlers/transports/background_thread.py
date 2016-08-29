@@ -97,7 +97,7 @@ class _Worker(object):
             self._entries_condition.acquire()
             self._thread = threading.Thread(
                 target=self._run,
-                name='gcloud.logging.handlers.transport.Worker')
+                name='google.cloud.logging.handlers.transport.Worker')
             self._thread.setDaemon(True)
             self._thread.start()
         finally:

@@ -218,7 +218,7 @@ class TestClient(unittest.TestCase):
         TIME2 = datetime.datetime.utcnow()
         # Construct a time series assuming a gauge metric using the current
         # time
-        with _Monkey(gcloud.monitoring.client, _UTCNOW=lambda: TIME2):
+        with _Monkey(google.cloud.monitoring.client, _UTCNOW=lambda: TIME2):
             timeseries_no_end = client.time_series(metric, resource, VALUE)
 
         self.assertEqual(timeseries_no_end.points[0].end_time, TIME2)

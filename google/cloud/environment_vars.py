@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Comprehensive list of environment variables used in gcloud.
+"""Comprehensive list of environment variables used in google-cloud.
 
 These enable many types of implicit behavior in both production
 and tests.

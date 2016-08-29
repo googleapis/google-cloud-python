@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with gcloud dns connections."""
+"""Create / interact with Google Cloud DNS connections."""
 
 from google.cloud import connection as base_connection
 

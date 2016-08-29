@@ -465,7 +465,7 @@ class Client(JSONClient):
 
             >>> try:
             >>>     group = client.fetch_group('1234')
-            >>> except gcloud.exceptions.NotFound:
+            >>> except google.cloud.exceptions.NotFound:
             >>>     print('That group does not exist!')
 
         :type group_id: string

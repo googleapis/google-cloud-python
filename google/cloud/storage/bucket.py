@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with gcloud storage buckets."""
+"""Create / interact with Google Cloud Storage buckets."""
 
 import copy
 

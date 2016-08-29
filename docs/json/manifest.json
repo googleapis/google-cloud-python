@@ -10,7 +10,7 @@
   },
   "markdown": "python",
   "package": {
-    "href": "https://pypi.python.org/pypi/gcloud",
+    "href": "https://pypi.python.org/pypi/google-cloud",
     "title": "PyPI"
   },
   "titleDelimiter": ".",

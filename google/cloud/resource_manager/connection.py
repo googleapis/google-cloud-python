@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with gcloud.resource_manager connections."""
+"""Create / interact with Google Cloud Resource Manager connections."""
 
 
 from google.cloud import connection as base_connection

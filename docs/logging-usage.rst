@@ -397,7 +397,7 @@ Logging client.
     >>> import logging
     >>> import google.cloud.logging # Don't conflict with standard logging
     >>> from google.cloud.logging.handlers import CloudLoggingHandler
-    >>> client = gcloud.logging.Client()
+    >>> client = google.cloud.logging.Client()
     >>> handler = CloudLoggingHandler(client)
     >>> cloud_logger = logging.getLogger('cloudLogger')
     >>> cloud_logger.setLevel(logging.INFO) # defaults to WARN
@@ -429,7 +429,7 @@ this automatically:
     >>> import logging
     >>> import google.cloud.logging # Don't conflict with standard logging
     >>> from google.cloud.logging.handlers import CloudLoggingHandler, setup_logging
-    >>> client = gcloud.logging.Client()
+    >>> client = google.cloud.logging.Client()
     >>> handler = CloudLoggingHandler(client)
     >>> logging.getLogger().setLevel(logging.INFO) # defaults to WARN
     >>> setup_logging(handler)

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Custom exceptions for :mod:`gcloud` package.
+"""Custom exceptions for :mod:`google.cloud` package.
 
 See: https://cloud.google.com/storage/docs/json_api/v1/status-codes
 """
@@ -25,7 +25,7 @@ _HTTP_CODE_TO_EXCEPTION = {}  # populated at end of module
 
 
 class GoogleCloudError(Exception):
-    """Base error class for gcloud errors (abstract).
+    """Base error class for Google Cloud errors (abstract).
 
     Each subclass represents a single type of HTTP error response.
     """

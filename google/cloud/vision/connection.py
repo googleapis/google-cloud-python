@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-"""Create / interact with gcloud Vision connections."""
+"""Create / interact with Google Cloud Vision connections."""
 
 
 from google.cloud import connection as base_connection

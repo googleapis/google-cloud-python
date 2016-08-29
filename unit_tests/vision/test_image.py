@@ -42,7 +42,7 @@ class TestVisionImage(unittest.TestCase):
         self.assertEqual(None, image.source)
         self.assertEqual(_AS_DICT, image.as_dict())
 
-    def test_image_source_type_gcloud_storage(self):
+    def test_image_source_type_google_cloud_storage(self):
         image = self._makeOne(self._IMAGE_SOURCE, self._CLIENT_MOCK)
 
         _AS_DICT = {

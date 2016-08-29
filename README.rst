@@ -11,7 +11,7 @@ Google Cloud Python Client
 -  `API Documentation`_
 
 .. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/#/docs/master/gcloud
+.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/#/docs/master/google-cloud
 
 This client supports the following Google Cloud Platform services:
 
@@ -41,7 +41,7 @@ Quick Start
 
 ::
 
-    $ pip install --upgrade gcloud
+    $ pip install --upgrade google-cloud
 
 Example Applications
 --------------------
@@ -58,8 +58,8 @@ Authentication
 
 With ``google-cloud-python`` we try to make authentication as painless as possible.
 Check out the `Authentication section`_ in our documentation to learn more.
-You may also find the `authentication document`_ shared by all the ``gcloud-*``
-libraries to be helpful.
+You may also find the `authentication document`_ shared by all the
+``google-cloud-*`` libraries to be helpful.
 
 .. _Authentication section: http://google-cloud-python.readthedocs.org/en/latest/gcloud-auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
@@ -328,7 +328,7 @@ Apache 2.0 - See `LICENSE`_ for more information.
    :target: https://travis-ci.org/GoogleCloudPlatform/google-cloud-python
 .. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/google-cloud-python/badge.png?branch=master
    :target: https://coveralls.io/r/GoogleCloudPlatform/google-cloud-python?branch=master
-.. |pypi| image:: https://img.shields.io/pypi/v/gcloud.svg
-   :target: https://pypi.python.org/pypi/gcloud
-.. |versions| image:: https://img.shields.io/pypi/pyversions/gcloud.svg
-   :target: https://pypi.python.org/pypi/gcloud
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud.svg
+   :target: https://pypi.python.org/pypi/google-cloud
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud.svg
+   :target: https://pypi.python.org/pypi/google-cloud

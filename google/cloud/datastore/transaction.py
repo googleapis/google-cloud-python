@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with gcloud datastore transactions."""
+"""Create / interact with Google Cloud Datastore transactions."""
 
 from google.cloud.datastore.batch import Batch
 

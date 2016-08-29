@@ -46,7 +46,7 @@ def get_parser():
     :returns: The parser for this script.
     """
     parser = argparse.ArgumentParser(
-        description='Run GCloud system tests against local emulator.')
+        description='Run google-cloud system tests against local emulator.')
     parser.add_argument('--package', dest='package',
                         choices=('datastore', 'pubsub'),
                         default='datastore', help='Package to be tested.')

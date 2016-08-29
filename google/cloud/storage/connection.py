@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with gcloud storage connections."""
+"""Create / interact with Google Cloud Storage connections."""
 
 from google.cloud import connection as base_connection
 

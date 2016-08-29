@@ -223,13 +223,13 @@ Running System Tests
    $ gcloud beta emulators datastore env-init
    export DATASTORE_LOCAL_HOST=localhost:8417
    export DATASTORE_HOST=http://localhost:8417
-   export DATASTORE_DATASET=gcloud-settings-app-id
-   export DATASTORE_PROJECT_ID=gcloud-settings-app-id
+   export DATASTORE_DATASET=google-cloud-settings-app-id
+   export DATASTORE_PROJECT_ID=google-cloud-settings-app-id
 
   using these environment variables run the emulator::
 
    $ DATASTORE_HOST=http://localhost:8471 \
-   >   DATASTORE_DATASET=gcloud-settings-app-id \
+   >   DATASTORE_DATASET=google-cloud-settings-app-id \
    >   GOOGLE_CLOUD_NO_PRINT=true \
    >   python system_tests/run_system_test.py \
    >   --package=datastore --ignore-requirements
@@ -326,7 +326,7 @@ instead of
 ``https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
-.. _description on PyPI: https://pypi.python.org/pypi/gcloud
+.. _description on PyPI: https://pypi.python.org/pypi/google-cloud
 
 Travis Configuration and Build Optimizations
 --------------------------------------------

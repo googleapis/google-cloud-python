@@ -22,7 +22,9 @@ Overview
 
         $ gcloud auth login
 
-    Previously, `gcloud auth login` was used for both use cases. If your gcloud installation does not support the new command, please update it:
+    Previously, ``gcloud auth login`` was used for both use cases. If
+    your ``gcloud`` installation does not support the new command,
+    please update it:
 
     .. code-block:: bash
 

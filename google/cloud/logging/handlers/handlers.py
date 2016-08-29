@@ -20,7 +20,7 @@ from google.cloud.logging.handlers.transports import BackgroundThreadTransport
 
 
 EXCLUDE_LOGGER_DEFAULTS = (
-    'gcloud',
+    'google.cloud',
     'oauth2client'
 )
 
@@ -38,8 +38,8 @@ class CloudLoggingHandler(logging.StreamHandler):
     an API call.
 
     :type client: :class:`google.cloud.logging.client`
-    :param client: the authenticated gcloud logging client for this handler
-                   to use
+    :param client: the authenticated Google Cloud Logging client for this
+                   handler to use
 
     :type name: str
     :param name: the name of the custom log in Stackdriver Logging. Defaults
@@ -60,7 +60,7 @@ class CloudLoggingHandler(logging.StreamHandler):
         import google.cloud.logging
         from google.cloud.logging.handlers import CloudLoggingHandler
 
-        client = gcloud.logging.Client()
+        client = google.cloud.logging.Client()
         handler = CloudLoggingHandler(client)
 
         cloud_logger = logging.getLogger('cloudLogger')
@@ -115,9 +115,9 @@ def setup_logging(handler, excluded_loggers=EXCLUDE_LOGGER_DEFAULTS):
         import google.cloud.logging
         from google.cloud.logging.handlers import CloudLoggingHandler
 
-        client = gcloud.logging.Client()
+        client = google.cloud.logging.Client()
         handler = CloudLoggingHandler(client)
-        gcloud.logging.setup_logging(handler)
+        google.cloud.logging.setup_logging(handler)
         logging.getLogger().setLevel(logging.DEBUG)
 
         logging.error('bad news')  # API call

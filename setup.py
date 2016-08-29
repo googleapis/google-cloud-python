@@ -32,7 +32,7 @@ if sys.version_info[:2] == (2, 7) and 'READTHEDOCS' not in os.environ:
     REQUIREMENTS.extend(GRPC_EXTRAS)
 
 setup(
-    name='gcloud',
+    name='google-cloud',
     version='0.18.0',
     description='API Client library for Google Cloud',
     author='Google Cloud Platform',

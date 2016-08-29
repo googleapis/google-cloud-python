@@ -68,7 +68,7 @@ READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
 """Scope for reading table data."""
 
 DEFAULT_USER_AGENT = 'google-cloud-python/{0}'.format(
-    get_distribution('gcloud').version)
+    get_distribution('google-cloud').version)
 """The default user agent for API requests."""
 
 

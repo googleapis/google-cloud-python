@@ -16,7 +16,7 @@
 
 
 class Transport(object):
-    """Base class for ``gcloud`` logging handler transports.
+    """Base class for Google Cloud Logging handler transports.
 
     Subclasses of :class:`Transport` must have constructors that accept a
     client and name object, and must override :meth:`send`.

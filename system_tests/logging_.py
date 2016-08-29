@@ -57,7 +57,7 @@ class Config(object):
 
 def setUpModule():
     _helpers.PROJECT = TESTS_PROJECT
-    Config.CLIENT = gcloud.logging.Client()
+    Config.CLIENT = google.cloud.logging.Client()
 
 
 class TestLogging(unittest.TestCase):
@@ -188,7 +188,7 @@ class TestLogging(unittest.TestCase):
         logger = Config.CLIENT.logger(handler.name)
         self.to_delete.append(logger)
 
-        gcloud.logging.handlers.handlers.setup_logging(handler)
+        google.cloud.logging.handlers.handlers.setup_logging(handler)
         logging.warn(LOG_MESSAGE)
 
         entries, _ = self._list_entries(logger)
