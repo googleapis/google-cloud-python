@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Feature represenging various types of annotating."""
+
 
 class FeatureTypes(object):
     """Feature Types to indication which annotations to perform.
@@ -31,7 +33,8 @@ class Feature(object):
     """Feature object specifying the annotation type and maximum results.
 
     :type feature_type: str
-    :param feature_type: String representation of feature type.
+    :param feature_type: String representation of
+                         :class:`gcloud.vision.feature.FeatureType`.
 
     :type max_results: int
     :param max_results: Number of results to return for the specified
@@ -41,7 +44,10 @@ class Feature(object):
     https://cloud.google.com/vision/reference/rest/v1/images/annotate#Feature
     """
     def __init__(self, feature_type, max_results=1):
-        self._feature_type = getattr(FeatureTypes, feature_type)
+        try:
+            self._feature_type = getattr(FeatureTypes, feature_type)
+        except AttributeError:
+            raise AttributeError('Feature type passed in cannot be found.')
         self._max_results = int(max_results)
 
     def as_dict(self):

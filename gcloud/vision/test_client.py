@@ -12,15 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+
 import base64
-import json
+import unittest
+
+from gcloud._helpers import _to_bytes
 
 
 class TestClient(unittest.TestCase):
     PROJECT = 'PROJECT'
     IMAGE_SOURCE = 'gs://some/image.jpg'
-    IMAGE_CONTENT = '/9j/4QNURXhpZgAASUkq'
+    IMAGE_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
     B64_IMAGE_CONTENT = base64.b64encode(IMAGE_CONTENT)
 
     def _getTargetClass(self):
@@ -38,7 +40,7 @@ class TestClient(unittest.TestCase):
 
     def test_face_annotation(self):
 
-        from gcloud.vision.fixtures import FACE_DETECTION_RESPONSE as RETURNED
+        from gcloud.vision._fixtures import FACE_DETECTION_RESPONSE as RETURNED
 
         REQUEST = {
             "requests": [
@@ -66,13 +68,15 @@ class TestClient(unittest.TestCase):
 
         response = client.annotate(self.IMAGE_CONTENT, features)
 
-        self.assertEqual(json.dumps(REQUEST),
+        self.assertEqual(REQUEST,
                          client.connection._requested[0]['data'])
 
         self.assertTrue('faceAnnotations' in response)
 
 
 class TestVisionRequest(unittest.TestCase):
+    _IMAGE_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
+
     def _getTargetClass(self):
         from gcloud.vision.client import VisionRequest
         return VisionRequest
@@ -81,49 +85,23 @@ class TestVisionRequest(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_make_vision_request(self):
-        IMAGE_CONTENT = '/9j/4QNURXhpZgAASUkq'
         from gcloud.vision.feature import Feature, FeatureTypes
         feature = Feature(feature_type=FeatureTypes.FACE_DETECTION,
                           max_results=3)
-        vision_request = self._makeOne(IMAGE_CONTENT, feature)
+        vision_request = self._makeOne(self._IMAGE_CONTENT, feature)
 
-        self.assertEqual(IMAGE_CONTENT, vision_request.image)
+        self.assertEqual(self._IMAGE_CONTENT, vision_request.image)
         self.assertEqual(FeatureTypes.FACE_DETECTION,
                          vision_request.features[0].feature_type)
 
-        vision_request = self._makeOne(IMAGE_CONTENT, [feature])
+        vision_request = self._makeOne(self._IMAGE_CONTENT, [feature])
 
-        self.assertEqual(IMAGE_CONTENT, vision_request.image)
+        self.assertEqual(self._IMAGE_CONTENT, vision_request.image)
         self.assertEqual(FeatureTypes.FACE_DETECTION,
                          vision_request.features[0].feature_type)
 
         with self.assertRaises(TypeError):
-            self._makeOne(IMAGE_CONTENT, 'nonsensefeature')
-
-
-class VisionJSONEncoder(unittest.TestCase):
-        def _getTargetClass(self):
-            from gcloud.vision.client import VisionJSONEncoder
-            return VisionJSONEncoder
-
-        def _makeOne(self, *args, **kw):
-            return self._getTargetClass()(*args, **kw)
-
-        def test_vision_json_encoder(self):
-            class CustomJSON(object):
-                def as_dict(self):
-                    return {'custom': 'encoder'}
-            custom_json_class = CustomJSON()
-
-            encoder = self._makeOne()
-            self.assertEqual({'custom': 'encoder'},
-                             encoder.default(custom_json_class))
-
-            class StandardJSON(object):
-                pass
-
-            standard_json_class = StandardJSON()
-            self.assertEqual({}, encoder.default(standard_json_class))
+            self._makeOne(self._IMAGE_CONTENT, 'nonsensefeature')
 
 
 class _Credentials(object):

@@ -14,25 +14,35 @@
 
 import unittest
 
-from gcloud.vision.feature import Feature
-from gcloud.vision.feature import FeatureTypes
-
 
 class TestFeature(unittest.TestCase):
+    def _getTargetClass(self):
+        from gcloud.vision.feature import Feature
+        return Feature
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
 
     def test_construct_feature(self):
-        feature = Feature(FeatureTypes.LABEL_DETECTION)
+        from gcloud.vision.feature import FeatureTypes
+        feature = self._makeOne(FeatureTypes.LABEL_DETECTION)
         self.assertEqual(1, feature.max_results)
         self.assertEqual('LABEL_DETECTION', feature.feature_type)
 
-        feature = Feature(FeatureTypes.FACE_DETECTION, 3)
+        feature = self._makeOne(FeatureTypes.FACE_DETECTION, 3)
         self.assertEqual(3, feature.max_results)
         self.assertEqual('FACE_DETECTION', feature.feature_type)
 
     def test_feature_as_dict(self):
-        feature = Feature(FeatureTypes.FACE_DETECTION, max_results=5)
+        from gcloud.vision.feature import FeatureTypes
+        feature = self._makeOne(FeatureTypes.FACE_DETECTION, max_results=5)
         EXPECTED = {
             'type': 'FACE_DETECTION',
             'maxResults': 5
         }
         self.assertEqual(EXPECTED, feature.as_dict())
+
+    def test_bad_feature_type(self):
+        with self.assertRaises(AttributeError):
+            self._makeOne('something_not_feature_type',
+                          max_results=5)

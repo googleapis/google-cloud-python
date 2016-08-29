@@ -14,8 +14,6 @@
 
 """Client for interacting with the Google Cloud Vision API."""
 
-import json
-from json import JSONEncoder
 
 from gcloud.client import JSONClient
 from gcloud.vision.connection import Connection
@@ -23,38 +21,41 @@ from gcloud.vision.feature import Feature
 from gcloud.vision.image import Image
 
 
-class VisionJSONEncoder(JSONEncoder):
-    def default(self, o):
-        if 'as_dict' in dir(o):
-            return o.as_dict()
-        else:
-            return o.__dict__
-
-
 class VisionRequest(object):
-    def __init__(self, image, feature):
+    """Request container with image and features information to annotate.
+
+    :type features: list of :class:`gcoud.vision.feature.Feature`.
+    :param features: The features that dictate which annotations to run.
+
+    :type image: bytes
+    :param image: Either Google Cloud Storage URI or raw byte stream of image.
+    """
+    def __init__(self, image, features):
         self._features = []
         self._image = image
 
-        if isinstance(feature, list):
-            self._features.extend(feature)
-        elif isinstance(feature, Feature):
-            self._features.append(feature)
+        if isinstance(features, list):
+            self._features.extend(features)
+        elif isinstance(features, Feature):
+            self._features.append(features)
         else:
             raise TypeError('Feature or list of Feature classes are required.')
 
     def as_dict(self):
+        """Dictionary representation of Image."""
         return {
-            'image': self.image,
-            'features': self.features
+            'image': self.image.as_dict(),
+            'features': [feature.as_dict() for feature in self.features]
         }
 
     @property
     def features(self):
+        """List of Feature objects."""
         return self._features
 
     @property
     def image(self):
+        """Image object containing image content."""
         return self._image
 
 
@@ -81,27 +82,28 @@ class Client(JSONClient):
 
     _connection_class = Connection
 
-    def annotate(self, image, features=[]):
+    def annotate(self, image, features):
         """Annotate an image to discover it's attributes.
 
         :type image: str
         :param image: A string which can be a URL, a Google Cloud Storage path,
                       or a byte stream of the image.
 
-        :type features:  list
+        :type features:  list of :class:`gcloud.vision.feature.Feature`
         :param features: The type of detection that the Vision API should
                          use to determine image attributes. Pricing is
                          based on the number of Feature Types.
 
                          See: https://cloud.google.com/vision/docs/pricing
+        :rtype: dict
+        :returns: List of annotations.
         """
-        data = {'requests': []}
-
         img = Image(image, self)
-        data['requests'].append(VisionRequest(img, features))
+        request = VisionRequest(img, features)
 
-        data = json.dumps(data, cls=VisionJSONEncoder)
+        data = {'requests': [request.as_dict()]}
         response = self.connection.api_request(method='POST',
                                                path='/images:annotate',
                                                data=data)
+
         return response['responses'][0]
