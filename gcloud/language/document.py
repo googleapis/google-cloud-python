@@ -17,12 +17,36 @@
 A document is used to hold text to be analyzed and annotated.
 """
 
+import collections
+
 from gcloud.language.entity import Entity
 from gcloud.language.sentiment import Sentiment
+from gcloud.language.syntax import Sentence
+from gcloud.language.syntax import Token
 
 
 DEFAULT_LANGUAGE = 'en-US'
 """Default document language, English."""
+
+
+Annotations = collections.namedtuple(
+    'Annotations',
+    'sentences tokens sentiment entities')
+"""Annotations for a document.
+
+:type sentences: list
+:param sentences: List of :class:`.Sentence` in a document.
+
+:type tokens: list
+:param tokens: List of :class:`.Token` from a document.
+
+:type sentiment: :class:`Sentiment`
+:param sentiment: The sentiment of a document.
+
+:type entities: list
+:param entities: List of :class:`~.language.entity.Entity`
+                 found in a document.
+"""
 
 
 class Encoding(object):
@@ -163,3 +187,75 @@ class Document(object):
         api_response = self.client.connection.api_request(
             method='POST', path='analyzeSentiment', data=data)
         return Sentiment.from_api_repr(api_response['documentSentiment'])
+
+    def annotate_text(self, include_syntax=True, include_entities=True,
+                      include_sentiment=True):
+        """Advanced natural language API: document syntax and other features.
+
+        Includes the full functionality of :meth:`analyze_entities` and
+        :meth:`analyze_sentiment`, enabled by the flags
+        ``include_entities`` and ``include_sentiment`` respectively.
+
+        In addition ``include_syntax`` adds a new feature that analyzes
+        the document for semantic and syntacticinformation.
+
+        .. note::
+
+            This API is intended for users who are familiar with machine
+            learning and need in-depth text features to build upon.
+
+        .. _annotateText: https://cloud.google.com/natural-language/\
+                          reference/rest/v1beta1/documents/annotateText
+
+        See `annotateText`_.
+
+        :type include_syntax: bool
+        :param include_syntax: (Optional) Flag to enable syntax analysis
+                               of the current document.
+
+        :type include_entities: bool
+        :param include_entities: (Optional) Flag to enable entity extraction
+                                 from the current document.
+
+        :type include_sentiment: bool
+        :param include_sentiment: (Optional) Flag to enable sentiment
+                                  analysis of the current document.
+
+        :rtype: :class:`Annotations`
+        :returns: A tuple of each of the four values returned from the API:
+                  sentences, tokens, sentiment and entities.
+        """
+        features = {}
+        if include_syntax:
+            features['extractSyntax'] = True
+        if include_entities:
+            features['extractEntities'] = True
+        if include_sentiment:
+            features['extractDocumentSentiment'] = True
+
+        data = {
+            'document': self._to_dict(),
+            'features': features,
+            'encodingType': self.encoding,
+        }
+        api_response = self.client.connection.api_request(
+            method='POST', path='annotateText', data=data)
+
+        sentences = [Sentence.from_api_repr(sentence)
+                     for sentence in api_response['sentences']]
+        tokens = [Token.from_api_repr(token)
+                  for token in api_response['tokens']]
+        sentiment_info = api_response.get('documentSentiment')
+        if sentiment_info is None:
+            sentiment = None
+        else:
+            sentiment = Sentiment.from_api_repr(sentiment_info)
+        entities = [Entity.from_api_repr(entity)
+                    for entity in api_response['entities']]
+        annotations = Annotations(
+            sentences=sentences,
+            tokens=tokens,
+            sentiment=sentiment,
+            entities=entities,
+        )
+        return annotations
