@@ -20,6 +20,15 @@
       "name": "from_pb", 
       "params": [
         {
+          "description": " The client used to poll for the status of the operation.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "object must provide _operations_stub accessor."
+          ]
+        }, 
+        {
           "description": " Protobuf to be parsed.", 
           "name": "op_pb", 
           "nullable": null, 
@@ -35,15 +44,6 @@
           "optional": null, 
           "types": [
             "dict"
-          ]
-        }, 
-        {
-          "description": " The client used to poll for the status of the operation.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "object must provide _operations_stub accessor."
           ]
         }
       ], 
