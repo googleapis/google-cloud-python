@@ -54,6 +54,7 @@ IGNORED_MODULES = frozenset([
     'gcloud.streaming.util',
     'gcloud.translate.__init__',
     'gcloud.vision.__init__',
+    'gcloud.vision.fixtures',
 ])
 
 
