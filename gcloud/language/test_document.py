@@ -40,7 +40,7 @@ def _make_token_json(name, part_of_speech, head, edge_label):
 
 
 def _get_token_and_sentences(include_syntax):
-    from gcloud.language.token import PartOfSpeech
+    from gcloud.language.syntax import PartOfSpeech
 
     if include_syntax:
         token_info = [
@@ -279,7 +279,7 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(req['method'], 'POST')
 
     def _verify_sentences(self, include_syntax, annotations):
-        from gcloud.language.token import Sentence
+        from gcloud.language.syntax import Sentence
 
         if include_syntax:
             self.assertEqual(len(annotations.sentences), 1)
@@ -291,7 +291,7 @@ class TestDocument(unittest.TestCase):
             self.assertEqual(annotations.sentences, [])
 
     def _verify_tokens(self, annotations, token_info):
-        from gcloud.language.token import Token
+        from gcloud.language.syntax import Token
 
         self.assertEqual(len(annotations.tokens), len(token_info))
         for token, info in zip(annotations.tokens, token_info):

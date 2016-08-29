@@ -21,8 +21,8 @@ import collections
 
 from gcloud.language.entity import Entity
 from gcloud.language.sentiment import Sentiment
-from gcloud.language.token import Sentence
-from gcloud.language.token import Token
+from gcloud.language.syntax import Sentence
+from gcloud.language.syntax import Token
 
 
 DEFAULT_LANGUAGE = 'en-US'

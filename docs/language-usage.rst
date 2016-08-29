@@ -216,7 +216,7 @@ machine learning and need in-depth text features to build upon.
 The method returns a named tuple with four entries:
 
 * ``sentences``: A :class:`list` of sentences in the text
-* ``tokens``: A :class:`list` of :class:`~gcloud.language.token.Token`
+* ``tokens``: A :class:`list` of :class:`~gcloud.language.syntax.Token`
   object (e.g. words, punctuation)
 * ``sentiment``: The :class:`~gcloud.language.sentiment.Sentiment` of
   the text (as returned by

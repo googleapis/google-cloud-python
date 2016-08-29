@@ -15,9 +15,9 @@ Sentiment
   :members:
   :show-inheritance:
 
-Tokens
+Syntax
 ~~~~~~
 
-.. automodule:: gcloud.language.token
+.. automodule:: gcloud.language.syntax
   :members:
   :show-inheritance:
