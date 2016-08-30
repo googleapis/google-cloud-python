@@ -21,7 +21,7 @@ import atexit
 import copy
 import threading
 
-from google.cloud.logging import Client
+from google.cloud.logging.client import Client
 from google.cloud.logging.handlers.transports.base import Transport
 
 

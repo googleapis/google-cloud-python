@@ -97,7 +97,7 @@ class Test_LoggingAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['data'], SENT)
 
     def test_list_entries_w_paging(self):
-        from google.cloud.logging import DESCENDING
+        from google.cloud.logging.client import DESCENDING
         PROJECT1 = 'PROJECT1'
         PROJECT2 = 'PROJECT2'
         TIMESTAMP = self._make_timestamp()

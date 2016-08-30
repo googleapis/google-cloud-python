@@ -14,10 +14,9 @@
 
 """Google Stackdriver Logging API wrapper."""
 
-from google.cloud.logging.client import Client
-from google.cloud.logging.connection import Connection
-
-
-SCOPE = Connection.SCOPE
-ASCENDING = 'timestamp asc'
-DESCENDING = 'timestamp desc'
+try:
+    import pkg_resources
+    pkg_resources.declare_namespace(__name__)
+except ImportError:
+    import pkgutil
+    __path__ = pkgutil.extend_path(__path__, __name__)

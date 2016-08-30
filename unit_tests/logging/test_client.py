@@ -234,7 +234,7 @@ class TestClient(unittest.TestCase):
             ([self.PROJECT], None, None, None, None))
 
     def test_list_entries_explicit(self):
-        from google.cloud.logging import DESCENDING
+        from google.cloud.logging.client import DESCENDING
         from google.cloud.logging.entries import ProtobufEntry
         from google.cloud.logging.entries import StructEntry
         from google.cloud.logging.logger import Logger

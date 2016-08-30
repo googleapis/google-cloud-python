@@ -14,4 +14,9 @@
 
 """Client library for Stackdriver Error Reporting"""
 
-from google.cloud.error_reporting.client import Client
+try:
+    import pkg_resources
+    pkg_resources.declare_namespace(__name__)
+except ImportError:
+    import pkgutil
+    __path__ = pkgutil.extend_path(__path__, __name__)

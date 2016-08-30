@@ -21,12 +21,9 @@ The main concepts with this API are:
 - :class:`google.cloud.bigquery.table.Table` represents a single "relation".
 """
 
-from google.cloud.bigquery.client import Client
-from google.cloud.bigquery.connection import Connection
-from google.cloud.bigquery.dataset import AccessGrant
-from google.cloud.bigquery.dataset import Dataset
-from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.table import Table
-
-
-SCOPE = Connection.SCOPE
+try:
+    import pkg_resources
+    pkg_resources.declare_namespace(__name__)
+except ImportError:
+    import pkgutil
+    __path__ = pkgutil.extend_path(__path__, __name__)

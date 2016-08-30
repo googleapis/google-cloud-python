@@ -50,13 +50,9 @@ The main concepts with this API are:
   when race conditions may occur.
 """
 
-from google.cloud.datastore.batch import Batch
-from google.cloud.datastore.connection import Connection
-from google.cloud.datastore.client import Client
-from google.cloud.datastore.entity import Entity
-from google.cloud.datastore.key import Key
-from google.cloud.datastore.query import Query
-from google.cloud.datastore.transaction import Transaction
-
-
-SCOPE = Connection.SCOPE
+try:
+    import pkg_resources
+    pkg_resources.declare_namespace(__name__)
+except ImportError:
+    import pkgutil
+    __path__ = pkgutil.extend_path(__path__, __name__)

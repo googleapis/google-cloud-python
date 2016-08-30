@@ -49,6 +49,10 @@ from google.cloud.logging.sink import Sink
 
 _DISABLE_GAX = os.getenv('GOOGLE_CLOUD_DISABLE_GAX', False)
 _USE_GAX = _HAVE_GAX and not _DISABLE_GAX
+ASCENDING = 'timestamp asc'
+"""Query string to order by ascending timestamps."""
+DESCENDING = 'timestamp desc'
+"""Query string to order by decending timestamps."""
 
 
 class Client(JSONClient):
@@ -172,8 +176,8 @@ class Client(JSONClient):
                         https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: str
-        :param order_by: One of :data:`google.cloud.logging.ASCENDING` or
-                         :data:`google.cloud.logging.DESCENDING`.
+        :param order_by: One of :data:`~google.cloud.logging.client.ASCENDING`
+                         or :data:`~google.cloud.logging.client.DESCENDING`.
 
         :type page_size: int
         :param page_size: maximum number of entries to return, If not passed,

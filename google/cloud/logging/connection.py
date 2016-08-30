@@ -77,8 +77,8 @@ class _LoggingAPI(object):
                         https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: str
-        :param order_by: One of :data:`google.cloud.logging.ASCENDING` or
-                         :data:`google.cloud.logging.DESCENDING`.
+        :param order_by: One of :data:`~google.cloud.logging.client.ASCENDING`
+                         or :data:`~google.cloud.logging.client.DESCENDING`.
 
         :type page_size: int
         :param page_size: maximum number of entries to return, If not passed,
