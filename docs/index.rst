@@ -151,6 +151,7 @@
   vision-client
   vision-image
   vision-feature
+  vision-face
 
 .. toctree::
   :maxdepth: 0

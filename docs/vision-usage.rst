@@ -38,30 +38,29 @@ Annotate a single image
 
 .. code-block:: python
 
+    >>> import io
     >>> from google.cloud import vision
     >>> client = vision.Client()
-    >>> image = client.image('./image.png')
+    >>> with io.open('./image.png', 'rb') as image_file:
+    >>>     image = client.image(image_file.read())
     >>> faces = image.detect_faces(limit=10)
+    >>> faces[0].landmarks.left_eye.position.x
+    ... 1004.8003
 
 Annotate multiple images
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
-     >>> first_image = client.image('./image.jpg')
+     >>> import io
+     >>> from gcloud import vision
+     >>> client = vision.Client()
+     >>> with io.open('./image.png', 'rb') as image_file:
+     >>>     first_image = client.image(image_file.read())
      >>> second_image = client.image('gs://my-storage-bucket/image2.jpg')
      >>> with client.batch():
      ...     labels = first_image.detect_labels()
      ...     faces = second_image.detect_faces(limit=10)
-
-or
-
-.. code-block:: python
-
-     >>> images = []
-     >>> images.append(client.image('./image.jpg'))
-     >>> images.append(client.image('gs://my-storage-bucket/image2.jpg'))
-     >>> faces = client.detect_faces_multi(images, limit=10)
 
 No results returned
 ~~~~~~~~~~~~~~~~~~~
@@ -86,9 +85,13 @@ You can call the detection method manually.
 .. code-block:: python
 
     >>> from google.cloud import vision
+    >>> from gcloud.vision.image import Feature
+    >>> from gcloud.vision.image import FeatureTypes
     >>> client = vision.Client()
     >>> image = client.image('gs://my-test-bucket/image.jpg')
-    >>> faces = image.detect(type=vision.FACE_DETECTION, limit=10)
+    >>> features = [Feature(FeatureTypes.FACE_DETECTION, 5),
+                   Feature(FeatureTypes.LOGO_DETECTION, 3)]
+    >>> annotations = image.detect(features)
 
 Face Detection
 ~~~~~~~~~~~~~~
@@ -102,11 +105,11 @@ see: https://cloud.google.com/vision/reference/rest/v1/images/annotate#type_1
 
     >>> from google.cloud import vision
     >>> client = vision.Client()
-    >>> image = client.image('./image.jpg')
+    >>> image = client.image('gs://my-test-bucket/image.jpg')
     >>> faces = image.detect_faces(limit=10)
-    >>> faces[0].landmarks[0].type
+    >>> faces[0].landmarks.left_eye.landmark_type
     'LEFT_EYE'
-    >>> faces[0].landmarks[0].position.x
+    >>> faces[0].landmarks.left_eye.position.x
     1301.2404
     >>> faces[0].detection_confidence
     0.9863683

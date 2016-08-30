@@ -98,8 +98,7 @@ class Client(JSONClient):
         :rtype: dict
         :returns: List of annotations.
         """
-        img = Image(image, self)
-        request = VisionRequest(img, features)
+        request = VisionRequest(image, features)
 
         data = {'requests': [request.as_dict()]}
         response = self.connection.api_request(method='POST',
@@ -107,3 +106,14 @@ class Client(JSONClient):
                                                data=data)
 
         return response['responses'][0]
+
+    def image(self, image_source):
+        """Get instance of Image using current client.
+
+        :type image_source: str or bytes
+        :param image_source: Byte stream of an image or a GCS URI.
+
+        :rtype: :class:`gcloud.vision.image.Image`
+        :returns: Image instance with the current client attached.
+        """
+        return Image(client=self, image_source=image_source)

@@ -12,5 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Google Cloud Vision API package."""
-from gcloud.vision.client import Client
+"""Likelihood constants returned from Vision API."""
+
+
+class Likelihood(object):
+    """A representation of likelihood to give stable results across upgrades.
+
+    See:
+    https://cloud.google.com/vision/reference/rest/v1/images/annotate#likelihood
+    """
+    UNKNOWN = 'UNKNOWN'
+    VERY_UNLIKELY = 'VERY_UNLIKELY'
+    UNLIKELY = 'UNLIKELY'
+    POSSIBLE = 'POSSIBLE'
+    LIKELY = 'LIKELY'
+    VERY_LIKELY = 'VERY_LIKELY'
