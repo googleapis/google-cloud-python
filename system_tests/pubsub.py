@@ -20,10 +20,12 @@ from grpc import StatusCode
 from grpc._channel import _Rendezvous
 import httplib2
 
+# pylint: disable=ungrouped-imports
 from google.cloud import _helpers
 from google.cloud.environment_vars import PUBSUB_EMULATOR
 from google.cloud.environment_vars import TESTS_PROJECT
 from google.cloud import pubsub
+# pylint: enable=ungrouped-imports
 
 from retry import RetryInstanceState
 from retry import RetryResult

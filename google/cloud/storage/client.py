@@ -250,7 +250,8 @@ class Client(JSONClient):
                        and the language of each bucket returned:
                        'items/id,nextPageToken'
 
-        :rtype: iterable of :class:`google.cloud.storage.bucket.Bucket` objects.
+        :rtype: iterable of :class:`google.cloud.storage.bucket.Bucket`
+                objects.
         :returns: All buckets belonging to this project.
         """
         extra_params = {'project': self.project}
@@ -271,7 +272,9 @@ class Client(JSONClient):
         # Page token must be handled specially since the base `Iterator`
         # class has it as a reserved property.
         if page_token is not None:
+            # pylint: disable=attribute-defined-outside-init
             result.next_page_token = page_token
+            # pylint: enable=attribute-defined-outside-init
         return result
 
 

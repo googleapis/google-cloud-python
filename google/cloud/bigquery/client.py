@@ -68,8 +68,8 @@ class Client(JSONClient):
                            datasets.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`google.cloud.bigquery.dataset.Dataset`, plus a
-                  "next page token" string:  if the token is not None,
+        :returns: list of :class:`~google.cloud.bigquery.dataset.Dataset`,
+                  plus a "next page token" string:  if the token is not None,
                   indicates that more datasets can be retrieved with another
                   call (pass that value as ``page_token``).
         """

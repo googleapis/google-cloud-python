@@ -102,12 +102,12 @@ def _get_signed_query_params(credentials, expiration, string_to_sign):
               signed payload.
     """
     if not hasattr(credentials, 'sign_blob'):
+        auth_uri = ('http://gcloud-python.readthedocs.io/en/latest/'
+                    'gcloud-auth.html#setting-up-a-service-account')
         raise AttributeError('you need a private key to sign credentials.'
                              'the credentials you are currently using %s '
-                             'just contains a token. see https://googlecloud'
-                             'platform.github.io/google-cloud-python/stable/gcloud-'
-                             'auth.html#setting-up-a-service-account for more '
-                             'details.' % type(credentials))
+                             'just contains a token. see %s for more '
+                             'details.' % (type(credentials), auth_uri))
 
     _, signature_bytes = credentials.sign_blob(string_to_sign)
     signature = base64.b64encode(signature_bytes)

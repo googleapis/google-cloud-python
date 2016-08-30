@@ -144,8 +144,8 @@ def get_files_for_linting(allow_limited=True):
     this value is not dependable.
 
     To allow faster local ``tox`` runs, the environment variables
-    ``GOOGLE_CLOUD_REMOTE_FOR_LINT`` and ``GOOGLE_CLOUD_BRANCH_FOR_LINT`` can be set to
-    specify a remote branch to diff against.
+    ``GOOGLE_CLOUD_REMOTE_FOR_LINT`` and ``GOOGLE_CLOUD_BRANCH_FOR_LINT`` can
+    be set to specify a remote branch to diff against.
 
     :type allow_limited: bool
     :param allow_limited: Boolean indicating if a reduced set of files can

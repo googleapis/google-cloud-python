@@ -334,7 +334,7 @@ class Download(_Transfer):
     def configure_request(self, http_request, url_builder):
         """Update http_request/url_builder with download-appropriate values.
 
-        :type http_request: :class:`google.cloud.streaming.http_wrapper.Request`
+        :type http_request: :class:`~.streaming.http_wrapper.Request`
         :param http_request: the request to be updated
 
         :type url_builder: instance with settable 'query_params' attribute.
@@ -366,7 +366,7 @@ class Download(_Transfer):
         If the instance has :attr:`auto_transfer` enabled, begins the
         download immediately.
 
-        :type http_request: :class:`google.cloud.streaming.http_wrapper.Request`
+        :type http_request: :class:`~.streaming.http_wrapper.Request`
         :param http_request: the request to use to initialize this download.
 
         :type http: :class:`httplib2.Http` (or workalike)
@@ -810,7 +810,7 @@ class Upload(_Transfer):
                              attributes
         :param upload_config: Configuration for the upload endpoint.
 
-        :type http_request: :class:`google.cloud.streaming.http_wrapper.Request`
+        :type http_request: :class:`~.streaming.http_wrapper.Request`
         :param http_request: The associated http request.
         """
         if upload_config.resumable_path is None:
@@ -834,7 +834,7 @@ class Upload(_Transfer):
                              attributes
         :param upload_config: transfer policy object to be queried
 
-        :type http_request: :class:`google.cloud.streaming.http_wrapper.Request`
+        :type http_request: :class:`~.streaming.http_wrapper.Request`
         :param http_request: the request to be updated
 
         :type url_builder: instance with settable 'relative_path' and
@@ -994,7 +994,7 @@ class Upload(_Transfer):
     def initialize_upload(self, http_request, http):
         """Initialize this upload from the given http_request.
 
-        :type http_request: :class:`google.cloud.streaming.http_wrapper.Request`
+        :type http_request: :class:`~.streaming.http_wrapper.Request`
         :param http_request: the request to be used
 
         :type http: :class:`httplib2.Http` (or workalike)
@@ -1118,7 +1118,7 @@ class Upload(_Transfer):
 
         :rtype: :class:`google.cloud.streaming.http_wrapper.Response`
         :returns: the response
-        :raises: :exc:`google.cloud.streaming.exceptions.HttpError` if the status
+        :raises: :exc:`~.streaming.exceptions.HttpError` if the status
                  code from the response indicates an error.
         """
         response = make_api_request(

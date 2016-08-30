@@ -14,6 +14,8 @@
 
 # Vendored-in from google-apitools 0.4.11
 
+"""Base ``google.cloud.streaming`` namespace package."""
+
 try:
     import pkg_resources
     pkg_resources.declare_namespace(__name__)

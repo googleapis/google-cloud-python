@@ -126,7 +126,8 @@ class Bucket(_PropertyMixin):
     def exists(self, client=None):
         """Determines whether or not this bucket exists.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
@@ -158,7 +159,8 @@ class Bucket(_PropertyMixin):
 
         This implements "storage.buckets.insert".
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         """
@@ -218,7 +220,8 @@ class Bucket(_PropertyMixin):
         :type blob_name: string
         :param blob_name: The name of the blob to retrieve.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
@@ -273,7 +276,8 @@ class Bucket(_PropertyMixin):
                        and the language of each blob returned:
                        'items/contentLanguage,nextPageToken'
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
@@ -304,7 +308,9 @@ class Bucket(_PropertyMixin):
         # Page token must be handled specially since the base `Iterator`
         # class has it as a reserved property.
         if page_token is not None:
+            # pylint: disable=attribute-defined-outside-init
             result.next_page_token = page_token
+            # pylint: enable=attribute-defined-outside-init
         return result
 
     def delete(self, force=False, client=None):
@@ -316,7 +322,8 @@ class Bucket(_PropertyMixin):
 
         If the bucket doesn't exist, this will raise
         :class:`google.cloud.exceptions.NotFound`.  If the bucket is not empty
-        (and ``force=False``), will raise :class:`google.cloud.exceptions.Conflict`.
+        (and ``force=False``), will raise
+        :class:`google.cloud.exceptions.Conflict`.
 
         If ``force=True`` and the bucket contains more than 256 objects / blobs
         this will cowardly refuse to delete the objects (or the bucket). This
@@ -326,7 +333,8 @@ class Bucket(_PropertyMixin):
         :type force: boolean
         :param force: If True, empties the bucket's objects then deletes it.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
@@ -380,7 +388,8 @@ class Bucket(_PropertyMixin):
         :type blob_name: string
         :param blob_name: A blob name to delete.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
@@ -411,7 +420,8 @@ class Bucket(_PropertyMixin):
                          :class:`google.cloud.exceptions.NotFound`;
                          otherwise, the exception is propagated.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
@@ -444,7 +454,8 @@ class Bucket(_PropertyMixin):
         :type new_name: string
         :param new_name: (optional) the new name for the copied file.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
@@ -479,7 +490,8 @@ class Bucket(_PropertyMixin):
         :type new_name: string
         :param new_name: The new name for this blob.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
@@ -785,7 +797,8 @@ class Bucket(_PropertyMixin):
         :param future: If True, this will make all objects created in the
                        future public as well.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         """

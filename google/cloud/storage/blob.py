@@ -207,7 +207,8 @@ class Blob(_PropertyMixin):
                               for the signed URL. Used to over-ride the content
                               type of the underlying blob/object.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
@@ -242,7 +243,8 @@ class Blob(_PropertyMixin):
     def exists(self, client=None):
         """Determines whether or not this blob exists.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
@@ -269,7 +271,8 @@ class Blob(_PropertyMixin):
     def delete(self, client=None):
         """Deletes a blob from Cloud Storage.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
@@ -316,7 +319,8 @@ class Blob(_PropertyMixin):
         :param encryption_key: Optional 32 byte encryption key for
                                customer-supplied encryption.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
@@ -358,7 +362,8 @@ class Blob(_PropertyMixin):
         :param encryption_key: Optional 32 byte encryption key for
                                customer-supplied encryption.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
@@ -378,7 +383,8 @@ class Blob(_PropertyMixin):
         :param encryption_key: Optional 32 byte encryption key for
                                customer-supplied encryption.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
@@ -465,13 +471,14 @@ class Blob(_PropertyMixin):
         :type num_retries: integer
         :param num_retries: Number of upload retries. Defaults to 6.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
         :raises: :class:`ValueError` if size is not passed in and can not be
-                 determined; :class:`google.cloud.exceptions.GoogleCloudError` if the
-                 upload response returns an error status.
+                 determined; :class:`google.cloud.exceptions.GoogleCloudError`
+                 if the upload response returns an error status.
         """
         client = self._require_client(client)
         # Use the private ``_connection`` rather than the public
@@ -584,7 +591,8 @@ class Blob(_PropertyMixin):
         :param encryption_key: Optional 32 byte encryption key for
                                customer-supplied encryption.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
         """
@@ -623,7 +631,8 @@ class Blob(_PropertyMixin):
         :param encryption_key: Optional 32 byte encryption key for
                                customer-supplied encryption.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
         """
@@ -638,7 +647,8 @@ class Blob(_PropertyMixin):
     def make_public(self, client=None):
         """Make this blob public giving all users read access.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
         """

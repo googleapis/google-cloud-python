@@ -39,9 +39,9 @@ class TestClient(unittest.TestCase):
         self.assertTrue('annotate' in dir(client))
 
     def test_face_annotation(self):
+        from google.cloud.vision._fixtures import FACE_DETECTION_RESPONSE
 
-        from google.cloud.vision._fixtures import FACE_DETECTION_RESPONSE as RETURNED
-
+        RETURNED = FACE_DETECTION_RESPONSE
         REQUEST = {
             "requests": [
                 {

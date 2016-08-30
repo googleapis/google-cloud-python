@@ -382,7 +382,8 @@ class ACL(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current ACL.
 
@@ -396,7 +397,8 @@ class ACL(object):
     def reload(self, client=None):
         """Reload the ACL data from Cloud Storage.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         """
@@ -422,7 +424,8 @@ class ACL(object):
                            of the keys in :attr:`PREDEFINED_JSON_ACLS`
                            If passed, `acl` must be None.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         """
@@ -450,7 +453,8 @@ class ACL(object):
         :param acl: The ACL object to save.  If left blank, this will save
                     current entries.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         """
@@ -473,7 +477,8 @@ class ACL(object):
                            aliased to the corresponding JSON name).
                            If passed, `acl` must be None.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         """
@@ -492,7 +497,8 @@ class ACL(object):
         have access to a bucket that you created even after you clear
         ACL rules with this method.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         """

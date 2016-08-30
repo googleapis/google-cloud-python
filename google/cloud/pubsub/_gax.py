@@ -21,10 +21,12 @@ from google.pubsub.v1.pubsub_pb2 import PubsubMessage
 from google.pubsub.v1.pubsub_pb2 import PushConfig
 from grpc import StatusCode
 
+# pylint: disable=ungrouped-imports
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import exc_to_code
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
+# pylint: enable=ungrouped-imports
 
 
 class _PublisherAPI(object):

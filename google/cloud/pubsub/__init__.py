@@ -16,10 +16,10 @@
 
 The main concepts with this API are:
 
-- :class:`google.cloud.pubsub.topic.Topic` represents an endpoint to which messages
-  can be published using the Cloud Storage Pubsub API.
+- :class:`~google.cloud.pubsub.topic.Topic` represents an endpoint to which
+  messages can be published using the Cloud Storage Pubsub API.
 
-- :class:`google.cloud.pubsub.subscription.Subscription` represents a named
+- :class:`~google.cloud.pubsub.subscription.Subscription` represents a named
   subscription (either pull or push) to a topic.
 """
 

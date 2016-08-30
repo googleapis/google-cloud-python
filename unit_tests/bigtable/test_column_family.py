@@ -19,7 +19,8 @@ import unittest
 class Test__timedelta_to_duration_pb(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from google.cloud.bigtable.column_family import _timedelta_to_duration_pb
+        from google.cloud.bigtable.column_family import (
+            _timedelta_to_duration_pb)
         return _timedelta_to_duration_pb(*args, **kwargs)
 
     def test_it(self):
@@ -64,7 +65,8 @@ class Test__timedelta_to_duration_pb(unittest.TestCase):
 class Test__duration_pb_to_timedelta(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from google.cloud.bigtable.column_family import _duration_pb_to_timedelta
+        from google.cloud.bigtable.column_family import (
+            _duration_pb_to_timedelta)
         return _duration_pb_to_timedelta(*args, **kwargs)
 
     def test_it(self):

@@ -16,9 +16,10 @@
 
 The main concepts with this API are:
 
-- :class:`google.cloud.bigquery.dataset.Dataset` represents an collection of tables.
+- :class:`~google.cloud.bigquery.dataset.Dataset` represents a
+  collection of tables.
 
-- :class:`google.cloud.bigquery.table.Table` represents a single "relation".
+- :class:`~google.cloud.bigquery.table.Table` represents a single "relation".
 """
 
 try:

@@ -87,7 +87,8 @@ class Metric(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current metric.
 
@@ -104,7 +105,8 @@ class Metric(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/create
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current metric.
         """
@@ -118,7 +120,8 @@ class Metric(object):
         See
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/get
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current metric.
 
@@ -140,7 +143,8 @@ class Metric(object):
         See
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/get
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current metric.
         """
@@ -155,7 +159,8 @@ class Metric(object):
         See
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/update
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current metric.
         """
@@ -169,7 +174,8 @@ class Metric(object):
         See
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/delete
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current metric.
         """

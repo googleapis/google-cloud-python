@@ -34,8 +34,9 @@ class TimeSeries(collections.namedtuple(
 
     The preferred way to construct a
     :class:`~google.cloud.monitoring.timeseries.TimeSeries` object is
-    using the :meth:`~google.cloud.monitoring.client.Client.time_series` factory
-    method of the :class:`~google.cloud.monitoring.client.Client` class.
+    using the :meth:`~google.cloud.monitoring.client.Client.time_series`
+    factory method of the :class:`~google.cloud.monitoring.client.Client`
+    class.
 
     :type metric: :class:`~google.cloud.monitoring.metric.Metric`
     :param metric: A metric object.

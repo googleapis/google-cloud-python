@@ -433,7 +433,8 @@ class TestDatastoreTransaction(TestDatastore):
         self.assertEqual(retrieved_entity, entity)
 
     def test_transaction_via_explicit_begin_get_commit(self):
-        # See https://github.com/GoogleCloudPlatform/google-cloud-python/issues/1859
+        # See
+        # github.com/GoogleCloudPlatform/google-cloud-python/issues/1859
         # Note that this example lacks the threading which provokes the race
         # condition in that issue:  we are basically just exercising the
         # "explict" path for using transactions.

@@ -211,7 +211,8 @@ class TestFamilyNameRegexFilter(unittest.TestCase):
 class TestColumnQualifierRegexFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.bigtable.row_filters import ColumnQualifierRegexFilter
+        from google.cloud.bigtable.row_filters import (
+            ColumnQualifierRegexFilter)
         return ColumnQualifierRegexFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -660,7 +661,8 @@ class TestCellsColumnLimitFilter(unittest.TestCase):
 class TestStripValueTransformerFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
         return StripValueTransformerFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -750,7 +752,8 @@ class TestRowFilterChain(unittest.TestCase):
 
     def test_to_pb(self):
         from google.cloud.bigtable.row_filters import RowSampleFilter
-        from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter1_pb = row_filter1.to_pb()
@@ -771,7 +774,8 @@ class TestRowFilterChain(unittest.TestCase):
     def test_to_pb_nested(self):
         from google.cloud.bigtable.row_filters import CellsRowLimitFilter
         from google.cloud.bigtable.row_filters import RowSampleFilter
-        from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter2 = RowSampleFilter(0.25)
@@ -804,7 +808,8 @@ class TestRowFilterUnion(unittest.TestCase):
 
     def test_to_pb(self):
         from google.cloud.bigtable.row_filters import RowSampleFilter
-        from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter1_pb = row_filter1.to_pb()
@@ -825,7 +830,8 @@ class TestRowFilterUnion(unittest.TestCase):
     def test_to_pb_nested(self):
         from google.cloud.bigtable.row_filters import CellsRowLimitFilter
         from google.cloud.bigtable.row_filters import RowSampleFilter
-        from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter2 = RowSampleFilter(0.25)
@@ -892,7 +898,8 @@ class TestConditionalRowFilter(unittest.TestCase):
     def test_to_pb(self):
         from google.cloud.bigtable.row_filters import CellsRowOffsetFilter
         from google.cloud.bigtable.row_filters import RowSampleFilter
-        from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter1_pb = row_filter1.to_pb()
@@ -918,7 +925,8 @@ class TestConditionalRowFilter(unittest.TestCase):
 
     def test_to_pb_true_only(self):
         from google.cloud.bigtable.row_filters import RowSampleFilter
-        from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter1_pb = row_filter1.to_pb()
@@ -939,7 +947,8 @@ class TestConditionalRowFilter(unittest.TestCase):
 
     def test_to_pb_false_only(self):
         from google.cloud.bigtable.row_filters import RowSampleFilter
-        from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter1_pb = row_filter1.to_pb()

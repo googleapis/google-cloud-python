@@ -16,11 +16,12 @@
 
 The main concepts with this API are:
 
-- :class:`google.cloud.DNS.zone.ManagedZone` represents an collection of tables.
-- :class:`google.cloud.DNS.resource_record_set.ResourceRecordSet` represents a
-  single resource definition within a zone.
-- :class:`google.cloud.DNS.changes.Changes` represents a set of changes (adding/
-  deleting resource record sets) to a zone.
+- :class:`~google.cloud.DNS.zone.ManagedZone` represents an collection of
+  tables.
+- :class:`~google.cloud.DNS.resource_record_set.ResourceRecordSet` represents
+  a single resource definition within a zone.
+- :class:`~google.cloud.DNS.changes.Changes` represents a set of changes
+  (adding/deleting resource record sets) to a zone.
 """
 
 try:

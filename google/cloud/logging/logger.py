@@ -64,7 +64,8 @@ class Logger(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
 
@@ -78,7 +79,8 @@ class Logger(object):
     def batch(self, client=None):
         """Return a batch to use as a context manager.
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
 
@@ -165,7 +167,8 @@ class Logger(object):
         :type text: text
         :param text: the log message.
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
 
@@ -198,7 +201,8 @@ class Logger(object):
         :type info: dict
         :param info: the log entry information
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
 
@@ -231,7 +235,8 @@ class Logger(object):
         :type message: Protobuf message
         :param message: the message to be logged
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
 
@@ -260,7 +265,8 @@ class Logger(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs/delete
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
         """
@@ -406,7 +412,8 @@ class Batch(object):
     def commit(self, client=None):
         """Send saved log entries as a single API call.
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current batch.
         """

@@ -91,7 +91,8 @@ class Sink(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
 
@@ -108,7 +109,8 @@ class Sink(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/create
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
         """
@@ -122,7 +124,8 @@ class Sink(object):
         See
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/get
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
 
@@ -144,7 +147,8 @@ class Sink(object):
         See
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/get
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
         """
@@ -159,7 +163,8 @@ class Sink(object):
         See
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/update
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
         """
@@ -173,7 +178,8 @@ class Sink(object):
         See
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/delete
 
-        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.logging.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
         """

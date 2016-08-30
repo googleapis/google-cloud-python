@@ -154,7 +154,7 @@ class Client(JSONClient):
                            topics.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`google.cloud.pubsub.subscription.Subscription`,
+        :returns: list of :class:`~.pubsub.subscription.Subscription`,
                   plus a "next page token" string:  if not None, indicates that
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).

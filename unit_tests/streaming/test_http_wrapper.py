@@ -254,7 +254,8 @@ class Test__reset_http_connections(unittest.TestCase):
 class Test___make_api_request_no_retry(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from google.cloud.streaming.http_wrapper import _make_api_request_no_retry
+        from google.cloud.streaming.http_wrapper import (
+            _make_api_request_no_retry)
         return _make_api_request_no_retry(*args, **kw)
 
     def _verify_requested(self, http, request,

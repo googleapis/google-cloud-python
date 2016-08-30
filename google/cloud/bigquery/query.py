@@ -77,7 +77,8 @@ class QueryResults(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -301,7 +302,8 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -331,7 +333,8 @@ class QueryResults(object):
         :param timeout_ms: timeout, in milliseconds, to wait for query to
                            complete
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 

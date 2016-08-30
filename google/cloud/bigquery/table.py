@@ -368,7 +368,8 @@ class Table(object):
     def list_partitions(self, client=None):
         """List the partitions in a table.
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -406,7 +407,8 @@ class Table(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -477,7 +479,8 @@ class Table(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/tables/insert
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -494,7 +497,8 @@ class Table(object):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/tables/get
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -517,7 +521,8 @@ class Table(object):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/tables/get
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -540,7 +545,8 @@ class Table(object):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/tables/patch
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -606,7 +612,8 @@ class Table(object):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/tables/update
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -621,7 +628,8 @@ class Table(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/tables/delete
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -648,7 +656,8 @@ class Table(object):
         :type page_token: str or ``NoneType``
         :param page_token: token representing a cursor into the table's rows.
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -714,7 +723,8 @@ class Table(object):
                                 schema of the template table. See:
                                 https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -851,7 +861,8 @@ class Table(object):
         :param write_disposition: job configuration option; see
                                   :meth:`google.cloud.bigquery.job.LoadJob`.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current dataset.
 

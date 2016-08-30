@@ -195,7 +195,7 @@ class Test__get_nix_config_path(unittest.TestCase):
         user_root = 'a'
         config_file = 'b'
         with _Monkey(MUT, _USER_ROOT=user_root,
-                     _GOOGLE_CLOUD_CONFIG_FILE=config_file):
+                     _GCLOUD_CONFIG_FILE=config_file):
             result = self._callFUT()
 
         expected = os.path.join(user_root, '.config', config_file)
@@ -216,7 +216,7 @@ class Test__get_windows_config_path(unittest.TestCase):
         environ = {'APPDATA': appdata_dir}
         config_file = 'b'
         with _Monkey(os, getenv=environ.get):
-            with _Monkey(MUT, _GOOGLE_CLOUD_CONFIG_FILE=config_file):
+            with _Monkey(MUT, _GCLOUD_CONFIG_FILE=config_file):
                 result = self._callFUT()
 
         expected = os.path.join(appdata_dir, config_file)
@@ -239,8 +239,8 @@ class Test__default_service_project_id(unittest.TestCase):
         project_id = 'test-project-id'
         with _NamedTemporaryFile() as temp:
             config_value = self.CONFIG_TEMPLATE % (
-                MUT._GOOGLE_CLOUD_CONFIG_SECTION,
-                MUT._GOOGLE_CLOUD_CONFIG_KEY, project_id)
+                MUT._GCLOUD_CONFIG_SECTION,
+                MUT._GCLOUD_CONFIG_KEY, project_id)
             with open(temp.name, 'w') as config_file:
                 config_file.write(config_value)
 
@@ -262,8 +262,8 @@ class Test__default_service_project_id(unittest.TestCase):
         project_id = 'test-project-id'
         with _NamedTemporaryFile() as temp:
             config_value = self.CONFIG_TEMPLATE % (
-                MUT._GOOGLE_CLOUD_CONFIG_SECTION,
-                MUT._GOOGLE_CLOUD_CONFIG_KEY, project_id)
+                MUT._GCLOUD_CONFIG_SECTION,
+                MUT._GCLOUD_CONFIG_KEY, project_id)
             with open(temp.name, 'w') as config_file:
                 config_file.write(config_value)
 

@@ -50,7 +50,8 @@ class _PropertyMixin(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
 
@@ -64,7 +65,8 @@ class _PropertyMixin(object):
     def reload(self, client=None):
         """Reload properties from Cloud Storage.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
         """
@@ -110,7 +112,8 @@ class _PropertyMixin(object):
 
         Updates the ``_properties`` with the response from the backend.
 
-        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
         """

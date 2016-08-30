@@ -530,7 +530,10 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(api._set_iam_policy, (self.TOPIC_PATH, {}))
 
     def test_check_iam_permissions_w_bound_client(self):
-        from google.cloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.cloud.pubsub.iam import OWNER_ROLE
+        from google.cloud.pubsub.iam import EDITOR_ROLE
+        from google.cloud.pubsub.iam import VIEWER_ROLE
+
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         client = _Client(project=self.PROJECT)
         api = client.iam_policy_api = _FauxIAMPolicy()
@@ -544,7 +547,10 @@ class TestTopic(unittest.TestCase):
                          (self.TOPIC_PATH, ROLES))
 
     def test_check_iam_permissions_w_alternate_client(self):
-        from google.cloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.cloud.pubsub.iam import OWNER_ROLE
+        from google.cloud.pubsub.iam import EDITOR_ROLE
+        from google.cloud.pubsub.iam import VIEWER_ROLE
+
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)

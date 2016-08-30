@@ -409,7 +409,8 @@ class TestClient(unittest.TestCase):
     def test_instance_factory_defaults(self):
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
         from google.cloud.bigtable.instance import Instance
-        from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
+        from google.cloud.bigtable.instance import (
+            _EXISTING_INSTANCE_LOCATION_ID)
 
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'

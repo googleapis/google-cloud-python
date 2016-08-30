@@ -58,9 +58,8 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 class TestWorker(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.logging.handlers.transports.background_thread import (
-            _Worker)
-        return _Worker
+        from google.cloud.logging.handlers.transports import background_thread
+        return background_thread._Worker
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)

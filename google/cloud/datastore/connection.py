@@ -77,8 +77,8 @@ class _DatastoreAPIOverHttp(object):
 
         :rtype: string
         :returns: The string response content from the API call.
-        :raises: :class:`google.cloud.exceptions.GoogleCloudError` if the response
-                 code is not 200 OK.
+        :raises: :class:`google.cloud.exceptions.GoogleCloudError` if the
+                 response code is not 200 OK.
         """
         headers = {
             'Content-Type': 'application/x-protobuf',
@@ -423,9 +423,9 @@ class Connection(connection_module.Connection):
         Maps the ``DatastoreService.Lookup`` protobuf RPC.
 
         This uses mostly protobufs
-        (:class:`google.cloud.datastore._generated.entity_pb2.Key` as input and
-        :class:`google.cloud.datastore._generated.entity_pb2.Entity` as output). It
-        is used under the hood in
+        (:class:`google.cloud.datastore._generated.entity_pb2.Key` as input
+        and :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+        as output). It is used under the hood in
         :meth:`Client.get() <.datastore.client.Client.get>`:
 
         >>> from google.cloud import datastore
@@ -459,8 +459,8 @@ class Connection(connection_module.Connection):
         :rtype: tuple
         :returns: A triple of (``results``, ``missing``, ``deferred``) where
                   both ``results`` and ``missing`` are lists of
-                  :class:`google.cloud.datastore._generated.entity_pb2.Entity` and
-                  ``deferred`` is a list of
+                  :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+                  and ``deferred`` is a list of
                   :class:`google.cloud.datastore._generated.entity_pb2.Key`.
         """
         lookup_request = _datastore_pb2.LookupRequest()
@@ -493,7 +493,7 @@ class Connection(connection_module.Connection):
         :type project: string
         :param project: The project over which to run the query.
 
-        :type query_pb: :class:`google.cloud.datastore._generated.query_pb2.Query`
+        :type query_pb: :class:`.datastore._generated.query_pb2.Query`
         :param query_pb: The Protobuf representing the query to run.
 
         :type namespace: string
@@ -607,7 +607,7 @@ class Connection(connection_module.Connection):
                        :class:`google.cloud.datastore._generated.entity_pb2.Key`
         :param key_pbs: The keys for which the backend should allocate IDs.
 
-        :rtype: list of :class:`google.cloud.datastore._generated.entity_pb2.Key`
+        :rtype: list of :class:`.datastore._generated.entity_pb2.Key`
         :returns: An equal number of keys,  with IDs filled in by the backend.
         """
         request = _datastore_pb2.AllocateIdsRequest()
@@ -641,7 +641,7 @@ def _add_keys_to_request(request_field_pb, key_pbs):
     :type request_field_pb: `RepeatedCompositeFieldContainer`
     :param request_field_pb: A repeated proto field that contains keys.
 
-    :type key_pbs: list of :class:`google.cloud.datastore._generated.entity_pb2.Key`
+    :type key_pbs: list of :class:`.datastore._generated.entity_pb2.Key`
     :param key_pbs: The keys to add to a request.
     """
     for key_pb in key_pbs:

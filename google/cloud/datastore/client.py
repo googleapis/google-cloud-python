@@ -16,7 +16,8 @@
 import os
 
 from google.cloud._helpers import _LocalStack
-from google.cloud._helpers import _determine_default_project as _base_default_project
+from google.cloud._helpers import (
+    _determine_default_project as _base_default_project)
 from google.cloud.client import _ClientProjectMixin
 from google.cloud.client import Client as _BaseClient
 from google.cloud.datastore import helpers
@@ -77,7 +78,7 @@ def _extended_lookup(connection, project, key_pbs,
     :type project: string
     :param project: The project to make the request for.
 
-    :type key_pbs: list of :class:`google.cloud.datastore._generated.entity_pb2.Key`
+    :type key_pbs: list of :class:`.datastore._generated.entity_pb2.Key`
     :param key_pbs: The keys to retrieve from the datastore.
 
     :type missing: list
@@ -99,7 +100,7 @@ def _extended_lookup(connection, project, key_pbs,
                            the given transaction.  Incompatible with
                            ``eventual==True``.
 
-    :rtype: list of :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+    :rtype: list of :class:`.datastore._generated.entity_pb2.Entity`
     :returns: The requested entities.
     :raises: :class:`ValueError` if missing / deferred are not null or
              empty list.
@@ -214,9 +215,9 @@ class Client(_BaseClient, _ClientProjectMixin):
     def current_transaction(self):
         """Currently-active transaction.
 
-        :rtype: :class:`google.cloud.datastore.transaction.Transaction`, or an object
-                implementing its API, or ``NoneType`` (if no transaction is
-                active).
+        :rtype: :class:`google.cloud.datastore.transaction.Transaction`, or an
+                object implementing its API, or ``NoneType`` (if no transaction
+                is active).
         :returns: The transaction at the top of the batch stack.
         """
         transaction = self.current_batch
@@ -244,7 +245,7 @@ class Client(_BaseClient, _ClientProjectMixin):
         :param deferred: (Optional) If a list is passed, the keys returned
                          by the backend as "deferred" will be copied into it.
 
-        :type transaction: :class:`google.cloud.datastore.transaction.Transaction`
+        :type transaction: :class:`~.datastore.transaction.Transaction`
         :param transaction: (Optional) Transaction to use for read consistency.
                             If not passed, uses current transaction, if set.
 
@@ -272,7 +273,7 @@ class Client(_BaseClient, _ClientProjectMixin):
                          by the backend as "deferred" will be copied into it.
                          If the list is not empty, an error will occur.
 
-        :type transaction: :class:`google.cloud.datastore.transaction.Transaction`
+        :type transaction: :class:`~.datastore.transaction.Transaction`
         :param transaction: (Optional) Transaction to use for read consistency.
                             If not passed, uses current transaction, if set.
 
@@ -452,7 +453,7 @@ class Client(_BaseClient, _ClientProjectMixin):
         >>> query.add_filter('property', '=', 'val')
 
         Using the query iterator's
-        :meth:`next_page() <google.cloud.datastore.query.Iterator.next_page>` method:
+        :meth:`~google.cloud.datastore.query.Iterator.next_page` method:
 
         >>> query_iter = query.fetch()
         >>> entities, more_results, cursor = query_iter.next_page()

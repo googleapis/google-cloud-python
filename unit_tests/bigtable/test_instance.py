@@ -109,7 +109,8 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, None)
 
     def test_from_pb_success(self):
-        from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
+        from google.cloud.bigtable.instance import (
+            _EXISTING_INSTANCE_LOCATION_ID)
         from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
 
@@ -235,7 +236,8 @@ class TestInstance(unittest.TestCase):
         from unit_tests.bigtable._testing import _FakeStub
         from google.cloud.operation import Operation
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
-        from google.cloud.bigtable.instance import _CREATE_INSTANCE_METADATA_URL
+        from google.cloud.bigtable.instance import (
+            _CREATE_INSTANCE_METADATA_URL)
 
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)

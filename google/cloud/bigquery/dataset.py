@@ -317,7 +317,8 @@ class Dataset(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -413,7 +414,8 @@ class Dataset(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/tables/insert
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -429,7 +431,8 @@ class Dataset(object):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/datasets/get
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -452,7 +455,8 @@ class Dataset(object):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/datasets/get
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -468,7 +472,8 @@ class Dataset(object):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/datasets/patch
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -506,7 +511,8 @@ class Dataset(object):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/datasets/update
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -521,7 +527,8 @@ class Dataset(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/tables/delete
 
-        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
+                      ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """

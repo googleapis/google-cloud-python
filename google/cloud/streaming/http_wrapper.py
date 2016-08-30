@@ -272,10 +272,10 @@ def _check_response(response):
     :type response: :class:`Response`
     :param response: the response to validate
 
-    :raises: :exc:`google.cloud.streaming.exceptions.RequestError` if response is
-             None, :exc:`google.cloud.streaming.exceptions.BadStatusCodeError` if
+    :raises: :exc:`google.cloud.streaming.exceptions.RequestError` if response
+             is None, :exc:`~.streaming.exceptions.BadStatusCodeError` if
              response status code indicates an error, or
-             :exc:`google.cloud.streaming.exceptions.RetryAfterError` if response
+             :exc:`~.streaming.exceptions.RetryAfterError` if response
              indicates a retry interval.
     """
     if response is None:
@@ -326,8 +326,8 @@ def _make_api_request_no_retry(http, http_request, redirections=_REDIRECTIONS):
     :rtype: :class:`Response`
     :returns: an object representing the server's response
 
-    :raises: :exc:`google.cloud.streaming.exceptions.RequestError` if no response
-             could be parsed.
+    :raises: :exc:`google.cloud.streaming.exceptions.RequestError` if no
+             response could be parsed.
     """
     connection_type = None
     # Handle overrides for connection types.  This is used if the caller
@@ -374,8 +374,8 @@ def make_api_request(http, http_request, retries=7,
     :rtype: :class:`Response`
     :returns: an object representing the server's response.
 
-    :raises: :exc:`google.cloud.streaming.exceptions.RequestError` if no response
-             could be parsed.
+    :raises: :exc:`google.cloud.streaming.exceptions.RequestError` if no
+             response could be parsed.
     """
     retry = 0
     while True:

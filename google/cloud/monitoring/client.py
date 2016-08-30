@@ -133,7 +133,8 @@ class Client(JSONClient):
         Metric descriptors specify the schema for a particular metric type.
 
         This factory method is used most often in conjunction with the metric
-        descriptor :meth:`~google.cloud.monitoring.metric.MetricDescriptor.create`
+        descriptor
+        :meth:`~google.cloud.monitoring.metric.MetricDescriptor.create`
         method to define custom metrics::
 
             >>> descriptor = client.metric_descriptor(
@@ -176,7 +177,8 @@ class Client(JSONClient):
             or :data:`ValueType.DISTRIBUTION`.
             See :class:`ValueType`.
 
-        :type labels: list of :class:`~google.cloud.monitoring.label.LabelDescriptor`
+        :type labels:
+            list of :class:`~google.cloud.monitoring.label.LabelDescriptor`
         :param labels:
             A sequence of zero or more label descriptors specifying the labels
             used to identify a specific instance of this metric.
@@ -267,8 +269,8 @@ class Client(JSONClient):
 
         .. note::
 
-           While :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects
-           returned by the API typically have multiple data points,
+           While :class:`~google.cloud.monitoring.timeseries.TimeSeries`
+           objects returned by the API typically have multiple data points,
            :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects
            sent to the API must have at most one point.
 
@@ -282,7 +284,7 @@ class Client(JSONClient):
         https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TimeSeries
 
         :type metric: :class:`~google.cloud.monitoring.metric.Metric`
-        :param metric: A :class:`~google.cloud.monitoring.metric.Metric` object.
+        :param metric: A :class:`~google.cloud.monitoring.metric.Metric`.
 
         :type resource: :class:`~google.cloud.monitoring.resource.Resource`
         :param resource: A :class:`~google.cloud.monitoring.resource.Resource`
@@ -337,8 +339,8 @@ class Client(JSONClient):
         :rtype: :class:`~google.cloud.monitoring.metric.MetricDescriptor`
         :returns: The metric descriptor instance.
 
-        :raises: :class:`google.cloud.exceptions.NotFound` if the metric descriptor
-            is not found.
+        :raises: :class:`google.cloud.exceptions.NotFound` if the metric
+                 descriptor is not found.
         """
         return MetricDescriptor._fetch(self, metric_type)
 
@@ -364,7 +366,8 @@ class Client(JSONClient):
             metric types. This adds ``metric.type = starts_with("<prefix>")``
             to the filter.
 
-        :rtype: list of :class:`~google.cloud.monitoring.metric.MetricDescriptor`
+        :rtype:
+            list of :class:`~google.cloud.monitoring.metric.MetricDescriptor`
         :returns: A list of metric descriptor instances.
 
         .. _filter documentation:
@@ -386,8 +389,8 @@ class Client(JSONClient):
         :rtype: :class:`~google.cloud.monitoring.resource.ResourceDescriptor`
         :returns: The resource descriptor instance.
 
-        :raises: :class:`google.cloud.exceptions.NotFound` if the resource descriptor
-            is not found.
+        :raises: :class:`google.cloud.exceptions.NotFound` if the resource
+                 descriptor is not found.
         """
         return ResourceDescriptor._fetch(self, resource_type)
 
@@ -404,7 +407,8 @@ class Client(JSONClient):
             An optional filter expression describing the resource descriptors
             to be returned. See the `filter documentation`_.
 
-        :rtype: list of :class:`~google.cloud.monitoring.resource.ResourceDescriptor`
+        :rtype: list of
+                :class:`~google.cloud.monitoring.resource.ResourceDescriptor`
         :returns: A list of resource descriptor instances.
 
         .. _filter documentation:
@@ -474,7 +478,8 @@ class Client(JSONClient):
         :rtype: :class:`~google.cloud.monitoring.group.Group`
         :returns: The group instance.
 
-        :raises: :class:`google.cloud.exceptions.NotFound` if the group is not found.
+        :raises: :class:`google.cloud.exceptions.NotFound` if the group
+                 is not found.
         """
         return Group._fetch(self, group_id)
 

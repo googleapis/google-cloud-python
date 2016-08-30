@@ -45,7 +45,8 @@ class ResourceDescriptor(object):
     :param description:
         A detailed description that might be used in documentation.
 
-    :type labels: list of :class:`~google.cloud.monitoring.label.LabelDescriptor`
+    :type labels:
+        list of :class:`~google.cloud.monitoring.label.LabelDescriptor`
     :param labels:
         A sequence of label descriptors specifying the labels used
         to identify a specific instance of this monitored resource.
@@ -71,8 +72,8 @@ class ResourceDescriptor(object):
         :rtype: :class:`ResourceDescriptor`
         :returns: The resource descriptor instance.
 
-        :raises: :class:`google.cloud.exceptions.NotFound` if the resource descriptor
-            is not found.
+        :raises: :class:`google.cloud.exceptions.NotFound` if the resource
+                 descriptor is not found.
         """
         path = ('/projects/{project}/monitoredResourceDescriptors/{type}'
                 .format(project=client.project,

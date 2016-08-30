@@ -24,11 +24,13 @@ from google.protobuf import struct_pb2
 from google.type import latlng_pb2
 import six
 
+# pylint: disable=ungrouped-imports
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud.datastore._generated import entity_pb2 as _entity_pb2
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
+# pylint: enable=ungrouped-imports
 
 __all__ = ('entity_from_protobuf', 'key_from_protobuf')
 
@@ -77,7 +79,7 @@ def _get_meaning(value_pb, is_list=False):
 def _new_value_pb(entity_pb, name):
     """Add (by name) a new ``Value`` protobuf to an entity protobuf.
 
-    :type entity_pb: :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+    :type entity_pb: :class:`.datastore._generated.entity_pb2.Entity`
     :param entity_pb: An entity protobuf to add a new property to.
 
     :type name: string
@@ -92,7 +94,7 @@ def _new_value_pb(entity_pb, name):
 def _property_tuples(entity_pb):
     """Iterator of name, ``Value`` tuples from entity properties.
 
-    :type entity_pb: :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+    :type entity_pb: :class:`.datastore._generated.entity_pb2.Entity`
     :param entity_pb: An entity protobuf to add a new property to.
 
     :rtype: :class:`generator`
