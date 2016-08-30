@@ -39,8 +39,8 @@
           ]
         }, 
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
+          "description": " should an existing file be overwritten", 
+          "name": "overwrite", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -57,8 +57,8 @@
           ]
         }, 
         {
-          "description": " should an existing file be overwritten", 
-          "name": "overwrite", 
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -92,12 +92,12 @@
           ]
         }, 
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
+          "description": " total size of the file to be downloaded", 
+          "name": "total_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
+            "integer or None"
           ]
         }, 
         {
@@ -110,12 +110,12 @@
           ]
         }, 
         {
-          "description": " total size of the file to be downloaded", 
-          "name": "total_size", 
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or None"
+            "boolean"
           ]
         }
       ], 

@@ -90,12 +90,12 @@
           ]
         }, 
         {
-          "description": " (Optional) The language of the text to be translated.", 
-          "name": "source_language", 
+          "description": " String or list of strings to translate.", 
+          "name": "values", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "str or list"
           ]
         }, 
         {
@@ -108,12 +108,12 @@
           ]
         }, 
         {
-          "description": " String or list of strings to translate.", 
-          "name": "values", 
+          "description": " (Optional) The language of the text to be translated.", 
+          "name": "source_language", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str or list"
+            "str"
           ]
         }
       ], 

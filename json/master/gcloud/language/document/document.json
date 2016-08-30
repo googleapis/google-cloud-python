@@ -61,8 +61,8 @@
           ]
         }, 
         {
-          "description": " (Optional) Flag to enable sentiment analysis of the current document.", 
-          "name": "include_sentiment", 
+          "description": " (Optional) Flag to enable syntax analysis of the current document.", 
+          "name": "include_syntax", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -70,8 +70,8 @@
           ]
         }, 
         {
-          "description": " (Optional) Flag to enable syntax analysis of the current document.", 
-          "name": "include_syntax", 
+          "description": " (Optional) Flag to enable sentiment analysis of the current document.", 
+          "name": "include_sentiment", 
           "nullable": null, 
           "optional": null, 
           "types": [

@@ -30,15 +30,6 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " path/filename to the file being uploaded", 
-          "name": "filename", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " MIMEtype of the file being uploaded", 
           "name": "mime_type", 
           "nullable": null, 
@@ -48,12 +39,12 @@
           ]
         }, 
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
+          "description": " path/filename to the file being uploaded", 
+          "name": "filename", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean or None"
+            "string"
           ]
         }, 
         {
@@ -63,6 +54,15 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or None"
           ]
         }
       ], 
@@ -83,15 +83,6 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " the target file", 
-          "name": "stream", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "writable file-like object"
-          ]
-        }, 
-        {
           "description": " MIMEtype of the file being uploaded", 
           "name": "mime_type", 
           "nullable": null, 
@@ -101,12 +92,21 @@
           ]
         }, 
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
+          "description": " the target file", 
+          "name": "stream", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean or None"
+            "writable file-like object"
+          ]
+        }, 
+        {
+          "description": " Size of the file being uploaded", 
+          "name": "total_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
           ]
         }, 
         {
@@ -119,12 +119,12 @@
           ]
         }, 
         {
-          "description": " Size of the file being uploaded", 
-          "name": "total_size", 
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or None"
+            "boolean or None"
           ]
         }
       ], 
