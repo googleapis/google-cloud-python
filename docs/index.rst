@@ -150,6 +150,7 @@
   vision-usage
   vision-client
   vision-image
+  vision-entity
   vision-feature
   vision-face
 

@@ -16,7 +16,11 @@
 
 
 class BoundsBase(object):
-    """Base class for handling bounds with vertices."""
+    """Base class for handling bounds with vertices.
+
+    :type vertices: list of :class:`~google.cloud.vision.geometry.Vertex`
+    :param vertices: List of vertcies describing points on an image.
+    """
     def __init__(self, vertices):
         self._vertices = vertices
 
@@ -40,10 +44,18 @@ class BoundsBase(object):
     def vertices(self):
         """List of vertices.
 
-        :rtype: list
+        :rtype: list of :class:`~google.cloud.vision.geometry.Vertex`
         :returns: List of populated vertices.
         """
         return self._vertices
+
+
+class Bounds(BoundsBase):
+    """A polygon boundry of the detected feature."""
+
+
+class FDBounds(BoundsBase):
+    """The bounding polygon of just the skin portion of the face."""
 
 
 class Position(object):
@@ -51,6 +63,15 @@ class Position(object):
 
     See:
     https://cloud.google.com/vision/reference/rest/v1/images/annotate#Position
+
+    :type x_coordinate: float
+    :param x_coordinate: X position coordinate.
+
+    :type y_coordinate: float
+    :param y_coordinate: Y position coordinate.
+
+    :type z_coordinate: float
+    :param z_coordinate: Z position coordinate.
     """
     def __init__(self, x_coordinate, y_coordinate, z_coordinate):
         self._x_coordinate = x_coordinate
@@ -102,6 +123,12 @@ class Vertex(object):
 
     See:
     https://cloud.google.com/vision/reference/rest/v1/images/annotate#Vertex
+
+    :type x_coordinate: float
+    :param x_coordinate: X position coordinate.
+
+    :type y_coordinate: float
+    :param y_coordinate: Y position coordinate.
     """
     def __init__(self, x_coordinate, y_coordinate):
         self._x_coordinate = x_coordinate

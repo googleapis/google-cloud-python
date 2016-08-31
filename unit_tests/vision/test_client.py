@@ -40,7 +40,7 @@ class TestClient(unittest.TestCase):
 
     def test_face_annotation(self):
         from google.cloud.vision.feature import Feature, FeatureTypes
-        from google.cloud.vision._fixtures import FACE_DETECTION_RESPONSE
+        from unit_tests.vision._fixtures import FACE_DETECTION_RESPONSE
 
         RETURNED = FACE_DETECTION_RESPONSE
         REQUEST = {
@@ -82,7 +82,7 @@ class TestClient(unittest.TestCase):
 
     def test_face_detection_from_source(self):
         from google.cloud.vision.face import Face
-        from google.cloud.vision._fixtures import FACE_DETECTION_RESPONSE
+        from unit_tests.vision._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
@@ -99,7 +99,7 @@ class TestClient(unittest.TestCase):
 
     def test_face_detection_from_content(self):
         from google.cloud.vision.face import Face
-        from google.cloud.vision._fixtures import FACE_DETECTION_RESPONSE
+        from unit_tests.vision._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
@@ -109,6 +109,40 @@ class TestClient(unittest.TestCase):
         faces = image.detect_faces(limit=5)
         self.assertEqual(5, len(faces))
         self.assertTrue(isinstance(faces[0], Face))
+        image_request = client.connection._requested[0]['data']['requests'][0]
+        self.assertEqual(self.B64_IMAGE_CONTENT,
+                         image_request['image']['content'])
+        self.assertEqual(5, image_request['features'][0]['maxResults'])
+
+    def test_logo_detection_from_source(self):
+        from google.cloud.vision.entity import EntityAnnotation
+        from unit_tests.vision._fixtures import LOGO_DETECTION_RESPONSE
+        RETURNED = LOGO_DETECTION_RESPONSE
+        credentials = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client.connection = _Connection(RETURNED)
+
+        image = client.image(source_uri=_IMAGE_SOURCE)
+        logos = image.detect_logos(limit=3)
+        self.assertEqual(2, len(logos))
+        self.assertTrue(isinstance(logos[0], EntityAnnotation))
+        image_request = client.connection._requested[0]['data']['requests'][0]
+        self.assertEqual(_IMAGE_SOURCE,
+                         image_request['image']['source']['gcs_image_uri'])
+        self.assertEqual(3, image_request['features'][0]['maxResults'])
+
+    def test_logo_detection_from_content(self):
+        from google.cloud.vision.entity import EntityAnnotation
+        from unit_tests.vision._fixtures import LOGO_DETECTION_RESPONSE
+        RETURNED = LOGO_DETECTION_RESPONSE
+        credentials = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client.connection = _Connection(RETURNED)
+
+        image = client.image(content=_IMAGE_CONTENT)
+        logos = image.detect_logos(limit=5)
+        self.assertEqual(2, len(logos))
+        self.assertTrue(isinstance(logos[0], EntityAnnotation))
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(self.B64_IMAGE_CONTENT,
                          image_request['image']['content'])
