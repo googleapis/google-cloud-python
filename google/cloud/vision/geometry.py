@@ -52,10 +52,10 @@ class Position(object):
     See:
     https://cloud.google.com/vision/reference/rest/v1/images/annotate#Position
     """
-    def __init__(self, x, y, z):
-        self._x = x
-        self._y = y
-        self._z = z
+    def __init__(self, x_coordinate, y_coordinate, z_coordinate):
+        self._x_coordinate = x_coordinate
+        self._y_coordinate = y_coordinate
+        self._z_coordinate = z_coordinate
 
     @classmethod
     def from_api_repr(cls, response_position):
@@ -64,37 +64,37 @@ class Position(object):
         :rtype: :class:`gcloud.vision.geometry.Position`
         :returns: `Position` constructed with 3D points from API response.
         """
-        x = response_position['x']
-        y = response_position['y']
-        z = response_position['z']
-        return cls(x, y, z)
+        x_coordinate = response_position['x']
+        y_coordinate = response_position['y']
+        z_coordinate = response_position['z']
+        return cls(x_coordinate, y_coordinate, z_coordinate)
 
     @property
-    def x(self):
+    def x_coordinate(self):
         """X position coordinate.
 
         :rtype: float
         :returns: X position coordinate.
         """
-        return self._x
+        return self._x_coordinate
 
     @property
-    def y(self):
+    def y_coordinate(self):
         """Y position coordinate.
 
         :rtype: float
         :returns: Y position coordinate.
         """
-        return self._y
+        return self._y_coordinate
 
     @property
-    def z(self):
+    def z_coordinate(self):
         """Z position coordinate.
 
         :rtype: float
         :returns: Z position coordinate.
         """
-        return self._z
+        return self._z_coordinate
 
 
 class Vertex(object):
@@ -103,24 +103,24 @@ class Vertex(object):
     See:
     https://cloud.google.com/vision/reference/rest/v1/images/annotate#Vertex
     """
-    def __init__(self, x, y):
-        self._x = x
-        self._y = y
+    def __init__(self, x_coordinate, y_coordinate):
+        self._x_coordinate = x_coordinate
+        self._y_coordinate = y_coordinate
 
     @property
-    def x(self):
+    def x_coordinate(self):
         """X position coordinate.
 
         :rtype: float
         :returns: X position coordinate.
         """
-        return self._x
+        return self._x_coordinate
 
     @property
-    def y(self):
+    def y_coordinate(self):
         """Y position coordinate.
 
         :rtype: float
         :returns: Y position coordinate.
         """
-        return self._y
+        return self._y_coordinate

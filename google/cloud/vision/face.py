@@ -140,12 +140,10 @@ class Emotions(object):
 class Face(object):
     """Representation of a face found by the Vision API"""
 
-    def __init__(self, angles, blurred_likelihood, bounds,
-                 detection_confidence, emotions, fd_bounds,
-                 headwear_likelihood, landmarks, landmarking_confidence,
-                 under_exposed_likelihood):
+    def __init__(self, angles, bounds, detection_confidence, emotions,
+                 fd_bounds, headwear_likelihood, image_properties, landmarks,
+                 landmarking_confidence):
         self._angles = angles
-        self._blurred_likelihood = blurred_likelihood
         self._bounds = bounds
         self._detection_confidence = detection_confidence
         self._emotions = emotions
@@ -153,7 +151,7 @@ class Face(object):
         self._headwear_likelihood = headwear_likelihood
         self._landmarks = landmarks
         self._landmarking_confidence = landmarking_confidence
-        self._under_exposed_likelihood = under_exposed_likelihood
+        self._image_properties = image_properties
 
     @classmethod
     def from_api_repr(cls, response):
@@ -166,21 +164,19 @@ class Face(object):
         :returns: A instance of `Face` with data parsed from `response`.
         """
         angles = Angles.from_api_repr(response)
-        blurred_likelihood = getattr(Likelihood, response['blurredLikelihood'])
         bounds = Bounds.from_api_repr(response['boundingPoly'])
         detection_confidence = response['detectionConfidence']
         emotions = Emotions.from_api_repr(response)
         fd_bounds = FDBounds.from_api_repr(response['fdBoundingPoly'])
         headwear_likelihood = getattr(Likelihood,
                                       response['headwearLikelihood'])
+        image_properties = FaceImageProperties.from_api_repr(response)
         landmarks = Landmarks(response['landmarks'])
         landmarking_confidence = response['landmarkingConfidence']
-        under_exposed_likelihood = getattr(Likelihood,
-                                           response['underExposedLikelihood'])
 
-        return cls(angles, blurred_likelihood, bounds, detection_confidence,
-                   emotions, fd_bounds, headwear_likelihood, landmarks,
-                   landmarking_confidence, under_exposed_likelihood)
+        return cls(angles, bounds, detection_confidence, emotions, fd_bounds,
+                   headwear_likelihood, image_properties, landmarks,
+                   landmarking_confidence)
 
     @property
     def angles(self):
@@ -191,16 +187,6 @@ class Face(object):
         """
 
         return self._angles
-
-    @property
-    def blurred_likelihood(self):
-        """Likelihood of the image being blurred.
-
-        :rtype: str
-        :returns: String representing the likelihood based on
-                  :class:`gcloud.vision.face.Likelihood`
-        """
-        return self._blurred_likelihood
 
     @property
     def bounds(self):
@@ -250,6 +236,15 @@ class Face(object):
         return self._headwear_likelihood
 
     @property
+    def image_properties(self):
+        """Image properties from imaged used in face detection.
+
+        :rtype: :class:`gcloud.vision.face.FaceImageProperties`
+        :returns: ``FaceImageProperties`` object with image properties.
+        """
+        return self._image_properties
+
+    @property
     def landmarks(self):
         """Accessor to the facial landmarks detected in a face.
 
@@ -268,15 +263,46 @@ class Face(object):
         """
         return self._landmarking_confidence
 
+
+class FaceImageProperties(object):
+    """A representation of the image properties from face detection."""
+    def __init__(self, blurred_likelihood, underexposed_likelihood):
+        self._blurred_likelihood = blurred_likelihood
+        self._underexposed_likelihood = underexposed_likelihood
+
+    @classmethod
+    def from_api_repr(cls, response):
+        """Factory: construct image properties from image.
+
+        :rtype: :class:`gcloud.vision.face.FaceImageProperties`
+        :returns: Instance populated with image property data.
+        """
+        blurred_likelihood = getattr(Likelihood,
+                                     response['blurredLikelihood'])
+        underexposed_likelihood = getattr(Likelihood,
+                                          response['underExposedLikelihood'])
+
+        return cls(blurred_likelihood, underexposed_likelihood)
+
     @property
-    def under_exposed_likelihood(self):
-        """Likelihood that the image used for detection was under exposed.
+    def blurred_likelihood(self):
+        """Likelihood of the image being blurred.
 
         :rtype: str
-        :returns: String representing the likelihood based on
-                  :class:`gcloud.vision.face.Likelihood`
+        :returns: String representation derived from
+                  :class:`gcloud.vision.face.Position`.
         """
-        return self._under_exposed_likelihood
+        return self._blurred_likelihood
+
+    @property
+    def underexposed_likelihood(self):
+        """Likelihood that the image used for detection was underexposed.
+
+        :rtype: str
+        :returns: String representation derived from
+                  :class:`gcloud.vision.face.Position`.
+        """
+        return self._underexposed_likelihood
 
 
 class FaceLandmarkTypes(object):
@@ -348,7 +374,7 @@ class Landmark(object):
 
     @property
     def position(self):
-        """Landmark position.
+        """Landmark position on face.
 
         :rtype: :class:`gcloud.vision.face.Position`
         :returns: Instance of `Position` with landmark coordinates.
@@ -357,7 +383,7 @@ class Landmark(object):
 
     @property
     def landmark_type(self):
-        """Landmark type.
+        """Landmark type of facial feature.
 
         :rtype: str
         :returns: String representation of facial landmark type.

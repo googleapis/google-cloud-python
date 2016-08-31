@@ -31,9 +31,12 @@ class TestFace(unittest.TestCase):
         self.assertEqual(0.54453093, self.face.landmarking_confidence)
         self.assertEqual(0.9863683, self.face.detection_confidence)
         self.assertTrue(hasattr(self.face.landmarks, 'left_eye'))
-        self.assertEqual(1004.8003, self.face.landmarks.left_eye.position.x)
-        self.assertEqual(482.69385, self.face.landmarks.left_eye.position.y)
-        self.assertEqual(0.0016593217, self.face.landmarks.left_eye.position.z)
+        self.assertEqual(1004.8003,
+                         self.face.landmarks.left_eye.position.x_coordinate)
+        self.assertEqual(482.69385,
+                         self.face.landmarks.left_eye.position.y_coordinate)
+        self.assertEqual(0.0016593217,
+                         self.face.landmarks.left_eye.position.z_coordinate)
         self.assertEqual('LEFT_EYE',
                          self.face.landmarks.left_eye.landmark_type)
 
@@ -56,18 +59,18 @@ class TestFace(unittest.TestCase):
     def test_face_headware_and_blur_and_underexposed(self):
         from google.cloud.vision.face import Likelihood
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.blurred_likelihood)
+                         self.face.image_properties.blurred_likelihood)
         self.assertEqual(Likelihood.VERY_UNLIKELY,
                          self.face.headwear_likelihood)
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.under_exposed_likelihood)
+                         self.face.image_properties.underexposed_likelihood)
 
     def test_face_bounds(self):
         self.assertEqual(4, len(self.face.bounds.vertices))
-        self.assertEqual(748, self.face.bounds.vertices[0].x)
-        self.assertEqual(58, self.face.bounds.vertices[0].y)
+        self.assertEqual(748, self.face.bounds.vertices[0].x_coordinate)
+        self.assertEqual(58, self.face.bounds.vertices[0].y_coordinate)
 
     def test_facial_skin_bounds(self):
         self.assertEqual(4, len(self.face.fd_bounds.vertices))
-        self.assertEqual(845, self.face.fd_bounds.vertices[0].x)
-        self.assertEqual(310, self.face.fd_bounds.vertices[0].y)
+        self.assertEqual(845, self.face.fd_bounds.vertices[0].x_coordinate)
+        self.assertEqual(310, self.face.fd_bounds.vertices[0].y_coordinate)
