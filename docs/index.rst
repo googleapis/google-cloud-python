@@ -175,7 +175,7 @@
 Getting started
 ---------------
 
-The ``gcloud`` library is ``pip`` install-able:
+The ``gcloud-python`` library is ``pip`` install-able:
 
 .. code-block:: console
 
