@@ -1515,7 +1515,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
         from gcloud._helpers import _to_bytes
-        from gcloud.streaming.test_transfer import _email_chunk_parser
 
         requested, PATH, BODY = self._upload_from_file_helper()
         parse_chunk = _email_chunk_parser()
@@ -1856,3 +1855,15 @@ class _Connection(_Responder):
         qs = urlencode(query_params or {})
         scheme, netloc, _, _, _ = urlsplit(api_base_url)
         return urlunsplit((scheme, netloc, path, qs, ''))
+
+
+def _email_chunk_parser():
+    import six
+    if six.PY3:  # pragma: NO COVER  Python3
+        from email.parser import BytesParser
+        parser = BytesParser()
+        return parser.parsebytes
+    else:
+        from email.parser import Parser
+        parser = Parser()
+        return parser.parsestr

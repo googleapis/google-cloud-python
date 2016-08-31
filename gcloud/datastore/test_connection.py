@@ -1091,18 +1091,6 @@ class Http(object):
         return self._response, self._content
 
 
-class _PathElementProto(object):
-
-    def __init__(self, _id):
-        self.id = _id
-
-
-class _KeyProto(object):
-
-    def __init__(self, id_):
-        self.path = [_PathElementProto(id_)]
-
-
 class _Connection(object):
 
     USER_AGENT = 'you-sir-age-int'

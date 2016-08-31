@@ -553,10 +553,6 @@ class TestClient(unittest.TestCase):
 
     def test_put_multi_no_batch_w_partial_key(self):
         from gcloud.datastore.helpers import _property_tuples
-        from gcloud.datastore.test_batch import _Entity
-        from gcloud.datastore.test_batch import _Key
-        from gcloud.datastore.test_batch import _KeyPB
-        from gcloud.datastore.test_batch import _mutated_pb
 
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(self.PROJECT)
@@ -587,9 +583,6 @@ class TestClient(unittest.TestCase):
 
     def test_put_multi_existing_batch_w_completed_key(self):
         from gcloud.datastore.helpers import _property_tuples
-        from gcloud.datastore.test_batch import _Entity
-        from gcloud.datastore.test_batch import _Key
-        from gcloud.datastore.test_batch import _mutated_pb
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -633,9 +626,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(client.connection._commit_cw), 0)
 
     def test_delete_multi_no_batch(self):
-        from gcloud.datastore.test_batch import _Key
-        from gcloud.datastore.test_batch import _mutated_pb
-
         key = _Key(self.PROJECT)
 
         creds = object()
@@ -654,9 +644,6 @@ class TestClient(unittest.TestCase):
         self.assertTrue(transaction_id is None)
 
     def test_delete_multi_w_existing_batch(self):
-        from gcloud.datastore.test_batch import _Key
-        from gcloud.datastore.test_batch import _mutated_pb
-
         creds = object()
         client = self._makeOne(credentials=creds)
         key = _Key(self.PROJECT)
@@ -670,9 +657,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(client.connection._commit_cw), 0)
 
     def test_delete_multi_w_existing_transaction(self):
-        from gcloud.datastore.test_batch import _Key
-        from gcloud.datastore.test_batch import _mutated_pb
-
         creds = object()
         client = self._makeOne(credentials=creds)
         key = _Key(self.PROJECT)
@@ -686,8 +670,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(client.connection._commit_cw), 0)
 
     def test_allocate_ids_w_partial_key(self):
-        from gcloud.datastore.test_batch import _Key
-
         NUM_IDS = 2
 
         INCOMPLETE_KEY = _Key(self.PROJECT)
@@ -702,8 +684,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual([key._id for key in result], list(range(NUM_IDS)))
 
     def test_allocate_ids_with_completed_key(self):
-        from gcloud.datastore.test_batch import _Key
-
         creds = object()
         client = self._makeOne(credentials=creds)
 
@@ -969,10 +949,9 @@ class _MockConnection(object):
         return self._index_updates, response
 
     def allocate_ids(self, project, key_pbs):
-        from gcloud.datastore.test_connection import _KeyProto
         self._alloc_cw.append((project, key_pbs))
         num_pbs = len(key_pbs)
-        return [_KeyProto(i) for i in list(range(num_pbs))]
+        return [_KeyPB(i) for i in list(range(num_pbs))]
 
 
 class _NoCommitBatch(object):
@@ -1004,3 +983,73 @@ class _NoCommitTransaction(object):
 
     def __exit__(self, *args):
         self._client._pop_batch()
+
+
+class _Entity(dict):
+    key = None
+    exclude_from_indexes = ()
+    _meanings = {}
+
+
+class _Key(object):
+    _MARKER = object()
+    _kind = 'KIND'
+    _key = 'KEY'
+    _path = None
+    _id = 1234
+    _stored = None
+
+    def __init__(self, project):
+        self.project = project
+
+    @property
+    def is_partial(self):
+        return self._id is None
+
+    def to_protobuf(self):
+        from gcloud.datastore._generated import entity_pb2
+        key = self._key = entity_pb2.Key()
+        # Don't assign it, because it will just get ripped out
+        # key.partition_id.project_id = self.project
+
+        element = key.path.add()
+        element.kind = self._kind
+        if self._id is not None:
+            element.id = self._id
+
+        return key
+
+    def completed_key(self, new_id):
+        assert self.is_partial
+        new_key = self.__class__(self.project)
+        new_key._id = new_id
+        return new_key
+
+
+class _PathElementPB(object):
+
+    def __init__(self, id_):
+        self.id = id_
+
+
+class _KeyPB(object):
+
+    def __init__(self, id_):
+        self.path = [_PathElementPB(id_)]
+
+
+def _assert_num_mutations(test_case, mutation_pb_list, num_mutations):
+    test_case.assertEqual(len(mutation_pb_list), num_mutations)
+
+
+def _mutated_pb(test_case, mutation_pb_list, mutation_type):
+    # Make sure there is only one mutation.
+    _assert_num_mutations(test_case, mutation_pb_list, 1)
+
+    # We grab the only mutation.
+    mutated_pb = mutation_pb_list[0]
+    # Then check if it is the correct type.
+    test_case.assertEqual(mutated_pb.WhichOneof('operation'),
+                          mutation_type)
+
+    return getattr(mutated_pb, mutation_type)

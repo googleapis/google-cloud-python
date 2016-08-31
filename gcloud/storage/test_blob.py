@@ -532,7 +532,6 @@ class Test_Blob(unittest.TestCase):
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
 
-        from gcloud.streaming.test_transfer import _Stream
         file_obj = _Stream(DATA)
 
         # Mock stream closes at end of data, like a socket might
@@ -1492,3 +1491,24 @@ class _Client(object):
     @property
     def connection(self):
         return self._connection
+
+
+class _Stream(object):
+    _closed = False
+
+    def __init__(self, to_read=b''):
+        import io
+        self._written = []
+        self._to_read = io.BytesIO(to_read)
+
+    def seek(self, offset, whence=0):
+        self._to_read.seek(offset, whence)
+
+    def read(self, size):
+        return self._to_read.read(size)
+
+    def tell(self):
+        return self._to_read.tell()
+
+    def close(self):
+        self._closed = True

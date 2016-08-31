@@ -41,7 +41,6 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(len(xact._partial_key_entities), 0)
 
     def test_current(self):
-        from gcloud.datastore.test_client import _NoCommitBatch
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
@@ -221,3 +220,18 @@ class _Client(object):
     @property
     def current_batch(self):
         return self._batches and self._batches[0] or None
+
+
+class _NoCommitBatch(object):
+
+    def __init__(self, client):
+        from gcloud.datastore.batch import Batch
+        self._client = client
+        self._batch = Batch(client)
+
+    def __enter__(self):
+        self._client._push_batch(self._batch)
+        return self._batch
+
+    def __exit__(self, *args):
+        self._client._pop_batch()

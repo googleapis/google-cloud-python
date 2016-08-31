@@ -58,7 +58,7 @@ class Test_LoggingAPI(unittest.TestCase):
     def _make_timestamp():
         from datetime import datetime
         from gcloud._helpers import UTC
-        from gcloud.logging.test_entries import _datetime_to_rfc3339_w_nanos
+
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         return _datetime_to_rfc3339_w_nanos(NOW)
 
@@ -631,3 +631,9 @@ class _Connection(object):
         except IndexError:
             raise NotFound('miss')
         return response
+
+
+def _datetime_to_rfc3339_w_nanos(value):
+    from gcloud._helpers import _RFC3339_NO_FRACTION
+    no_fraction = value.strftime(_RFC3339_NO_FRACTION)
+    return '%s.%09dZ' % (no_fraction, value.microsecond * 1000)
