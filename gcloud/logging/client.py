@@ -23,9 +23,9 @@ try:
         LoggingServiceV2Api as GeneratedLoggingAPI)
     from google.cloud.logging.v2.metrics_service_v2_api import (
         MetricsServiceV2Api as GeneratedMetricsAPI)
-    from gcloud.logging._gax import _LoggingAPI as GAXLoggingAPI
-    from gcloud.logging._gax import _MetricsAPI as GAXMetricsAPI
-    from gcloud.logging._gax import _SinksAPI as GAXSinksAPI
+    from gcloud.logging._gax import LoggingAPI as GAXLoggingAPI
+    from gcloud.logging._gax import MetricsAPI as GAXMetricsAPI
+    from gcloud.logging._gax import SinksAPI as GAXSinksAPI
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False
     GeneratedLoggingAPI = GAXLoggingAPI = None
@@ -36,9 +36,9 @@ else:
 
 from gcloud.client import JSONClient
 from gcloud.logging.connection import Connection
-from gcloud.logging.connection import _LoggingAPI as JSONLoggingAPI
-from gcloud.logging.connection import _MetricsAPI as JSONMetricsAPI
-from gcloud.logging.connection import _SinksAPI as JSONSinksAPI
+from gcloud.logging.connection import LoggingAPI as JSONLoggingAPI
+from gcloud.logging.connection import MetricsAPI as JSONMetricsAPI
+from gcloud.logging.connection import SinksAPI as JSONSinksAPI
 from gcloud.logging.entries import ProtobufEntry
 from gcloud.logging.entries import StructEntry
 from gcloud.logging.entries import TextEntry

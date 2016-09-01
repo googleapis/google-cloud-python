@@ -28,14 +28,14 @@ import httplib2
 import six
 from six.moves.urllib.parse import quote
 
-from gcloud._helpers import _rfc3339_to_datetime
-from gcloud._helpers import _to_bytes
-from gcloud._helpers import _bytes_to_unicode
+from gcloud._helpers import rfc3339_to_datetime
+from gcloud._helpers import to_bytes
+from gcloud._helpers import bytes_to_unicode
 from gcloud.credentials import generate_signed_url
 from gcloud.exceptions import NotFound
 from gcloud.exceptions import make_exception
-from gcloud.storage._helpers import _PropertyMixin
-from gcloud.storage._helpers import _scalar_property
+from gcloud.storage._helpers import PropertyMixin
+from gcloud.storage._helpers import scalar_property
 from gcloud.storage.acl import ObjectACL
 from gcloud.streaming.http_wrapper import Request
 from gcloud.streaming.http_wrapper import make_api_request
@@ -47,7 +47,7 @@ from gcloud.streaming.transfer import Upload
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
 
 
-class Blob(_PropertyMixin):
+class Blob(PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``.
 
     :type name: string
@@ -645,7 +645,7 @@ class Blob(_PropertyMixin):
         self.acl.all().grant_read()
         self.acl.save(client=client)
 
-    cache_control = _scalar_property('cacheControl')
+    cache_control = scalar_property('cacheControl')
     """HTTP 'Cache-Control' header for this object.
 
     See: https://tools.ietf.org/html/rfc7234#section-5.2 and
@@ -656,7 +656,7 @@ class Blob(_PropertyMixin):
     :rtype: string or ``NoneType``
     """
 
-    content_disposition = _scalar_property('contentDisposition')
+    content_disposition = scalar_property('contentDisposition')
     """HTTP 'Content-Disposition' header for this object.
 
     See: https://tools.ietf.org/html/rfc6266 and
@@ -667,7 +667,7 @@ class Blob(_PropertyMixin):
     :rtype: string or ``NoneType``
     """
 
-    content_encoding = _scalar_property('contentEncoding')
+    content_encoding = scalar_property('contentEncoding')
     """HTTP 'Content-Encoding' header for this object.
 
     See: https://tools.ietf.org/html/rfc7231#section-3.1.2.2 and
@@ -678,7 +678,7 @@ class Blob(_PropertyMixin):
     :rtype: string or ``NoneType``
     """
 
-    content_language = _scalar_property('contentLanguage')
+    content_language = scalar_property('contentLanguage')
     """HTTP 'Content-Language' header for this object.
 
     See: http://tools.ietf.org/html/bcp47 and
@@ -689,7 +689,7 @@ class Blob(_PropertyMixin):
     :rtype: string or ``NoneType``
     """
 
-    content_type = _scalar_property('contentType')
+    content_type = scalar_property('contentType')
     """HTTP 'Content-Type' header for this object.
 
     See: https://tools.ietf.org/html/rfc2616#section-14.17 and
@@ -700,7 +700,7 @@ class Blob(_PropertyMixin):
     :rtype: string or ``NoneType``
     """
 
-    crc32c = _scalar_property('crc32c')
+    crc32c = scalar_property('crc32c')
     """CRC32C checksum for this object.
 
     See: http://tools.ietf.org/html/rfc4960#appendix-B and
@@ -764,7 +764,7 @@ class Blob(_PropertyMixin):
         """
         return self._properties.get('id')
 
-    md5_hash = _scalar_property('md5Hash')
+    md5_hash = scalar_property('md5Hash')
     """MD5 hash for this object.
 
     See: http://tools.ietf.org/html/rfc4960#appendix-B and
@@ -889,7 +889,7 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get('timeDeleted')
         if value is not None:
-            return _rfc3339_to_datetime(value)
+            return rfc3339_to_datetime(value)
 
     @property
     def updated(self):
@@ -903,7 +903,7 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get('updated')
         if value is not None:
-            return _rfc3339_to_datetime(value)
+            return rfc3339_to_datetime(value)
 
 
 class _UploadConfig(object):
@@ -937,10 +937,10 @@ def _set_encryption_headers(key, headers):
     :type headers: dict
     :param headers: dict of HTTP headers being sent in request.
     """
-    key = _to_bytes(key)
+    key = to_bytes(key)
     sha256_key = hashlib.sha256(key).digest()
     key_hash = base64.b64encode(sha256_key).rstrip()
     encoded_key = base64.b64encode(key).rstrip()
     headers['X-Goog-Encryption-Algorithm'] = 'AES256'
-    headers['X-Goog-Encryption-Key'] = _bytes_to_unicode(encoded_key)
-    headers['X-Goog-Encryption-Key-Sha256'] = _bytes_to_unicode(key_hash)
+    headers['X-Goog-Encryption-Key'] = bytes_to_unicode(encoded_key)
+    headers['X-Goog-Encryption-Key-Sha256'] = bytes_to_unicode(key_hash)

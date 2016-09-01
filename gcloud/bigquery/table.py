@@ -20,16 +20,16 @@ import os
 
 import six
 
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud._helpers import _microseconds_from_datetime
-from gcloud._helpers import _millis_from_datetime
+from gcloud._helpers import datetime_from_microseconds
+from gcloud._helpers import microseconds_from_datetime
+from gcloud._helpers import millis_from_datetime
 from gcloud.exceptions import NotFound
 from gcloud.streaming.http_wrapper import Request
 from gcloud.streaming.http_wrapper import make_api_request
 from gcloud.streaming.transfer import RESUMABLE_UPLOAD
 from gcloud.streaming.transfer import Upload
 from gcloud.bigquery.schema import SchemaField
-from gcloud.bigquery._helpers import _rows_from_json
+from gcloud.bigquery._helpers import rows_from_json
 
 
 _MARKER = object()
@@ -120,7 +120,7 @@ class Table(object):
         creation_time = self._properties.get('creationTime')
         if creation_time is not None:
             # creation_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * creation_time)
+            return datetime_from_microseconds(1000.0 * creation_time)
 
     @property
     def etag(self):
@@ -141,7 +141,7 @@ class Table(object):
         modified_time = self._properties.get('lastModifiedTime')
         if modified_time is not None:
             # modified_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * modified_time)
+            return datetime_from_microseconds(1000.0 * modified_time)
 
     @property
     def num_bytes(self):
@@ -279,7 +279,7 @@ class Table(object):
         expiration_time = self._properties.get('expirationTime')
         if expiration_time is not None:
             # expiration_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * expiration_time)
+            return datetime_from_microseconds(1000.0 * expiration_time)
 
     @expires.setter
     def expires(self, value):
@@ -290,7 +290,7 @@ class Table(object):
         """
         if not isinstance(value, datetime.datetime) and value is not None:
             raise ValueError("Pass a datetime, or None")
-        self._properties['expirationTime'] = _millis_from_datetime(value)
+        self._properties['expirationTime'] = millis_from_datetime(value)
 
     @property
     def friendly_name(self):
@@ -426,7 +426,7 @@ class Table(object):
         self._properties.clear()
         cleaned = api_response.copy()
         schema = cleaned.pop('schema', {'fields': ()})
-        self.schema = _parse_schema_resource(schema)
+        self.schema = parse_schema_resource(schema)
         if 'creationTime' in cleaned:
             cleaned['creationTime'] = float(cleaned['creationTime'])
         if 'lastModifiedTime' in cleaned:
@@ -447,7 +447,7 @@ class Table(object):
             resource['description'] = self.description
 
         if self.expires is not None:
-            value = _millis_from_datetime(self.expires)
+            value = millis_from_datetime(self.expires)
             resource['expirationTime'] = value
 
         if self.friendly_name is not None:
@@ -464,7 +464,7 @@ class Table(object):
             view['query'] = self.view_query
         elif self._schema:
             resource['schema'] = {
-                'fields': _build_schema_resource(self._schema)
+                'fields': build_schema_resource(self._schema)
             }
         else:
             raise ValueError("Set either 'view_query' or 'schema'.")
@@ -572,7 +572,7 @@ class Table(object):
             if (not isinstance(expires, datetime.datetime) and
                     expires is not None):
                 raise ValueError("Pass a datetime, or None")
-            partial['expirationTime'] = _millis_from_datetime(expires)
+            partial['expirationTime'] = millis_from_datetime(expires)
 
         if description is not _MARKER:
             partial['description'] = description
@@ -594,7 +594,7 @@ class Table(object):
                 partial['schema'] = None
             else:
                 partial['schema'] = {
-                    'fields': _build_schema_resource(schema)}
+                    'fields': build_schema_resource(schema)}
 
         api_response = client.connection.api_request(
             method='PATCH', path=self.path, data=partial)
@@ -676,7 +676,7 @@ class Table(object):
         if total_rows is not None:
             total_rows = int(total_rows)
         page_token = response.get('pageToken')
-        rows_data = _rows_from_json(response.get('rows', ()), self._schema)
+        rows_data = rows_from_json(response.get('rows', ()), self._schema)
 
         return rows_data, total_rows, page_token
 
@@ -736,7 +736,7 @@ class Table(object):
                     # BigQuery stores TIMESTAMP data internally as a
                     # UNIX timestamp with microsecond precision.
                     # Specifies the number of seconds since the epoch.
-                    value = _microseconds_from_datetime(value) * 1e-6
+                    value = microseconds_from_datetime(value) * 1e-6
                 row_info[field.name] = value
 
             info = {'json': row_info}
@@ -896,7 +896,7 @@ class Table(object):
                 'load': {
                     'sourceFormat': source_format,
                     'schema': {
-                        'fields': _build_schema_resource(self._schema),
+                        'fields': build_schema_resource(self._schema),
                     },
                     'destinationTable': {
                         'projectId': self._dataset.project,
@@ -995,7 +995,7 @@ def _configure_job_metadata(metadata,  # pylint: disable=too-many-arguments
         load_config['writeDisposition'] = write_disposition
 
 
-def _parse_schema_resource(info):
+def parse_schema_resource(info):
     """Parse a resource fragment into a schema field.
 
     :type info: mapping
@@ -1014,13 +1014,13 @@ def _parse_schema_resource(info):
         field_type = r_field['type']
         mode = r_field.get('mode', 'NULLABLE')
         description = r_field.get('description')
-        sub_fields = _parse_schema_resource(r_field)
+        sub_fields = parse_schema_resource(r_field)
         schema.append(
             SchemaField(name, field_type, mode, description, sub_fields))
     return schema
 
 
-def _build_schema_resource(fields):
+def build_schema_resource(fields):
     """Generate a resource fragment for a schema.
 
     :type fields: sequence of :class:`SchemaField`
@@ -1037,7 +1037,7 @@ def _build_schema_resource(fields):
         if field.description is not None:
             info['description'] = field.description
         if field.fields is not None:
-            info['fields'] = _build_schema_resource(field.fields)
+            info['fields'] = build_schema_resource(field.fields)
         infos.append(info)
     return infos
 

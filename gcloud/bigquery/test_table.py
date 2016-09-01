@@ -242,7 +242,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_props_set_by_server(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud._helpers import _millis
+        from gcloud._helpers import millis
 
         CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=UTC)
         MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=UTC)
@@ -253,9 +253,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
         table = self._makeOne(self.TABLE_NAME, dataset)
-        table._properties['creationTime'] = _millis(CREATED)
+        table._properties['creationTime'] = millis(CREATED)
         table._properties['etag'] = 'ETAG'
-        table._properties['lastModifiedTime'] = _millis(MODIFIED)
+        table._properties['lastModifiedTime'] = millis(MODIFIED)
         table._properties['numBytes'] = 12345
         table._properties['numRows'] = 66
         table._properties['selfLink'] = URL
@@ -629,7 +629,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_create_w_alternate_client(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud._helpers import _millis
+        from gcloud._helpers import millis
         from gcloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
@@ -641,7 +641,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         RESOURCE['friendlyName'] = TITLE
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
                                           tzinfo=UTC)
-        RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
+        RESOURCE['expirationTime'] = millis(self.EXP_TIME)
         RESOURCE['view'] = {}
         RESOURCE['view']['query'] = QUERY
         RESOURCE['type'] = 'VIEW'
@@ -826,7 +826,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_patch_w_alternate_client(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud._helpers import _millis
+        from gcloud._helpers import millis
         from gcloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
@@ -839,7 +839,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         RESOURCE['location'] = LOCATION
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
                                           tzinfo=UTC)
-        RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
+        RESOURCE['expirationTime'] = millis(self.EXP_TIME)
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
@@ -860,7 +860,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         SENT = {
             'view': {'query': QUERY},
             'location': LOCATION,
-            'expirationTime': _millis(self.EXP_TIME),
+            'expirationTime': millis(self.EXP_TIME),
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'NULLABLE'}]},
@@ -935,7 +935,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_update_w_alternate_client(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud._helpers import _millis
+        from gcloud._helpers import millis
 
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
@@ -947,7 +947,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         RESOURCE['location'] = LOCATION
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
                                           tzinfo=UTC)
-        RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
+        RESOURCE['expirationTime'] = millis(self.EXP_TIME)
         RESOURCE['view'] = {'query': QUERY}
         RESOURCE['type'] = 'VIEW'
         conn1 = _Connection()
@@ -973,7 +973,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 {'projectId': self.PROJECT,
                  'datasetId': self.DS_NAME,
                  'tableId': self.TABLE_NAME},
-            'expirationTime': _millis(self.EXP_TIME),
+            'expirationTime': millis(self.EXP_TIME),
             'location': 'EU',
             'view': {'query': QUERY},
         }
@@ -1251,7 +1251,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_insert_data_w_bound_client(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud._helpers import _microseconds_from_datetime
+        from gcloud._helpers import microseconds_from_datetime
         from gcloud.bigquery.table import SchemaField
 
         WHEN_TS = 1437767599.006
@@ -1277,7 +1277,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         def _row_data(row):
             joined = None
             if row[2] is not None:
-                joined = _microseconds_from_datetime(row[2]) * 1e-6
+                joined = microseconds_from_datetime(row[2]) * 1e-6
             return {'full_name': row[0],
                     'age': row[1],
                     'joined': joined}
@@ -1514,7 +1514,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         import json
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from gcloud._helpers import _to_bytes
+        from gcloud._helpers import to_bytes
         from gcloud.streaming.test_transfer import _email_chunk_parser
 
         requested, PATH, BODY = self._upload_from_file_helper()
@@ -1537,7 +1537,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertTrue(boundary.startswith('boundary="=='))
         self.assertTrue(boundary.endswith('=="'))
 
-        divider = b'--' + _to_bytes(boundary[len('boundary="'):-1])
+        divider = b'--' + to_bytes(boundary[len('boundary="'):-1])
         chunks = req['body'].split(divider)[1:-1]  # discard prolog / epilog
         self.assertEqual(len(chunks), 2)
 
@@ -1654,11 +1654,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
     # pylint: enable=too-many-statements
 
 
-class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
+class Testparse_schema_resource(unittest.TestCase, _SchemaBase):
 
     def _callFUT(self, resource):
-        from gcloud.bigquery.table import _parse_schema_resource
-        return _parse_schema_resource(resource)
+        from gcloud.bigquery.table import parse_schema_resource
+        return parse_schema_resource(resource)
 
     def _makeResource(self):
         return {
@@ -1668,12 +1668,12 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
             ]},
         }
 
-    def test__parse_schema_resource_defaults(self):
+    def test_parse_schema_resource_defaults(self):
         RESOURCE = self._makeResource()
         schema = self._callFUT(RESOURCE['schema'])
         self._verifySchema(schema, RESOURCE)
 
-    def test__parse_schema_resource_subfields(self):
+    def test_parse_schema_resource_subfields(self):
         RESOURCE = self._makeResource()
         RESOURCE['schema']['fields'].append(
             {'name': 'phone',
@@ -1688,7 +1688,7 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
         schema = self._callFUT(RESOURCE['schema'])
         self._verifySchema(schema, RESOURCE)
 
-    def test__parse_schema_resource_fields_without_mode(self):
+    def test_parse_schema_resource_fields_without_mode(self):
         RESOURCE = self._makeResource()
         RESOURCE['schema']['fields'].append(
             {'name': 'phone',
@@ -1698,11 +1698,11 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
         self._verifySchema(schema, RESOURCE)
 
 
-class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
+class Testbuild_schema_resource(unittest.TestCase, _SchemaBase):
 
     def _callFUT(self, resource):
-        from gcloud.bigquery.table import _build_schema_resource
-        return _build_schema_resource(resource)
+        from gcloud.bigquery.table import build_schema_resource
+        return build_schema_resource(resource)
 
     def test_defaults(self):
         from gcloud.bigquery.table import SchemaField

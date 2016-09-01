@@ -21,7 +21,7 @@ import base64
 from hashlib import md5
 
 
-class _PropertyMixin(object):
+class PropertyMixin(object):
     """Abstract mixin for cloud storage classes with associated propertties.
 
     Non-abstract subclasses should implement:
@@ -125,8 +125,8 @@ class _PropertyMixin(object):
         self._set_properties(api_response)
 
 
-def _scalar_property(fieldname):
-    """Create a property descriptor around the :class:`_PropertyMixin` helpers.
+def scalar_property(fieldname):
+    """Create a property descriptor around the :class:`PropertyMixin` helpers.
     """
     def _getter(self):
         """Scalar property getter."""
@@ -160,7 +160,7 @@ def _write_buffer_to_hash(buffer_object, hash_obj, digest_block_size=8192):
         block = buffer_object.read(digest_block_size)
 
 
-def _base64_md5hash(buffer_object):
+def base64_md5hash(buffer_object):
     """Get MD5 hash of bytes (as base64).
 
     :type buffer_object: bytes buffer

@@ -409,7 +409,7 @@ class TestClient(unittest.TestCase):
     def test_instance_factory_defaults(self):
         from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
         from gcloud.bigtable.instance import Instance
-        from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
+        from gcloud.bigtable.instance import EXISTING_INSTANCE_LOCATION_ID
 
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
@@ -424,7 +424,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
         self.assertEqual(instance._cluster_location_id,
-                         _EXISTING_INSTANCE_LOCATION_ID)
+                         EXISTING_INSTANCE_LOCATION_ID)
         self.assertEqual(instance._cluster_serve_nodes, DEFAULT_SERVE_NODES)
         self.assertTrue(instance._client is client)
 

@@ -15,13 +15,13 @@
 import unittest
 
 
-class Test__compute_type_url(unittest.TestCase):
+class Test_compute_type_url(unittest.TestCase):
 
     def _callFUT(self, klass, prefix=None):
-        from gcloud.operation import _compute_type_url
+        from gcloud.operation import compute_type_url
         if prefix is None:
-            return _compute_type_url(klass)
-        return _compute_type_url(klass, prefix)
+            return compute_type_url(klass)
+        return compute_type_url(klass, prefix)
 
     def test_wo_prefix(self):
         from google.protobuf.struct_pb2 import Struct
@@ -44,11 +44,11 @@ class Test__compute_type_url(unittest.TestCase):
             '%s/%s' % (PREFIX, Struct.DESCRIPTOR.full_name))
 
 
-class Test__register_type_url(unittest.TestCase):
+class Test_register_type_url(unittest.TestCase):
 
     def _callFUT(self, type_url, klass):
-        from gcloud.operation import _register_type_url
-        _register_type_url(type_url, klass)
+        from gcloud.operation import register_type_url
+        register_type_url(type_url, klass)
 
     def test_simple(self):
         from gcloud import operation as MUT

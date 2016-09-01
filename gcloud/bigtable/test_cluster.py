@@ -276,7 +276,7 @@ class TestCluster(unittest.TestCase):
         from google.longrunning import operations_pb2
         from gcloud.operation import Operation
         from google.protobuf.any_pb2 import Any
-        from gcloud._helpers import _datetime_to_pb_timestamp
+        from gcloud._helpers import datetime_to_pb_timestamp
         from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
         from gcloud.bigtable._generated import (
@@ -285,7 +285,7 @@ class TestCluster(unittest.TestCase):
         from gcloud.bigtable.cluster import _UPDATE_CLUSTER_METADATA_URL
 
         NOW = datetime.datetime.utcnow()
-        NOW_PB = _datetime_to_pb_timestamp(NOW)
+        NOW_PB = datetime_to_pb_timestamp(NOW)
 
         SERVE_NODES = 81
 

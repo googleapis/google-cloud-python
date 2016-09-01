@@ -42,11 +42,11 @@ class _Base(object):
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
-class Test_PublisherAPI(_Base, unittest.TestCase):
+class TestPublisherAPI(_Base, unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.pubsub._gax import _PublisherAPI
-        return _PublisherAPI
+        from gcloud.pubsub._gax import PublisherAPI
+        return PublisherAPI
 
     def test_ctor(self):
         gax_api = _GAXPublisherAPI()
@@ -344,13 +344,13 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
-class Test_SubscriberAPI(_Base, unittest.TestCase):
+class TestSubscriberAPI(_Base, unittest.TestCase):
 
     PUSH_ENDPOINT = 'https://api.example.com/push'
 
     def _getTargetClass(self):
-        from gcloud.pubsub._gax import _SubscriberAPI
-        return _SubscriberAPI
+        from gcloud.pubsub._gax import SubscriberAPI
+        return SubscriberAPI
 
     def test_ctor(self):
         gax_api = _GAXSubscriberAPI()

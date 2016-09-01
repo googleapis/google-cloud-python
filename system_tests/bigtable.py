@@ -18,8 +18,8 @@ import operator
 import unittest
 
 from gcloud import _helpers
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud._helpers import _microseconds_from_datetime
+from gcloud._helpers import datetime_from_microseconds
+from gcloud._helpers import microseconds_from_datetime
 from gcloud._helpers import UTC
 from gcloud.bigtable.client import Client
 from gcloud.bigtable.column_family import MaxVersionsGCRule
@@ -305,10 +305,10 @@ class TestDataAPI(unittest.TestCase):
 
     def _write_to_row(self, row1=None, row2=None, row3=None, row4=None):
         timestamp1 = datetime.datetime.utcnow().replace(tzinfo=UTC)
-        timestamp1_micros = _microseconds_from_datetime(timestamp1)
+        timestamp1_micros = microseconds_from_datetime(timestamp1)
         # Truncate to millisecond granularity.
         timestamp1_micros -= (timestamp1_micros % 1000)
-        timestamp1 = _datetime_from_microseconds(timestamp1_micros)
+        timestamp1 = datetime_from_microseconds(timestamp1_micros)
         # 1000 microseconds is a millisecond
         timestamp2 = timestamp1 + datetime.timedelta(microseconds=1000)
         timestamp3 = timestamp1 + datetime.timedelta(microseconds=2000)

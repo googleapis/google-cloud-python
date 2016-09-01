@@ -25,7 +25,7 @@ import os
 import six
 from six.moves import http_client
 
-from gcloud._helpers import _to_bytes
+from gcloud._helpers import to_bytes
 from gcloud.streaming.buffered_stream import BufferedStream
 from gcloud.streaming.exceptions import CommunicationError
 from gcloud.streaming.exceptions import HttpError
@@ -909,7 +909,7 @@ class Upload(_Transfer):
         http_request.headers['content-type'] = (
             'multipart/related; boundary="%s"' % multipart_boundary)
 
-        boundary_bytes = _to_bytes(multipart_boundary)
+        boundary_bytes = to_bytes(multipart_boundary)
         body_components = http_request.body.split(boundary_bytes)
         headers, _, _ = body_components[-2].partition(b'\n\n')
         body_components[-2] = b'\n\n'.join([headers, b'<media body>\n\n--'])

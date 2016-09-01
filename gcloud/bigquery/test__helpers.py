@@ -50,11 +50,11 @@ class Test_ConfigurationProperty(unittest.TestCase):
         self.assertEqual(wrapper._configuration._attr, None)
 
 
-class Test_TypedProperty(unittest.TestCase):
+class TestTypedProperty(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigquery._helpers import _TypedProperty
-        return _TypedProperty
+        from gcloud.bigquery._helpers import TypedProperty
+        return TypedProperty
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -83,11 +83,11 @@ class Test_TypedProperty(unittest.TestCase):
         self.assertEqual(wrapper._configuration._attr, None)
 
 
-class Test_EnumProperty(unittest.TestCase):
+class TestEnumProperty(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigquery._helpers import _EnumProperty
-        return _EnumProperty
+        from gcloud.bigquery._helpers import EnumProperty
+        return EnumProperty
 
     def test_it(self):
 

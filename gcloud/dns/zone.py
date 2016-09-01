@@ -15,7 +15,7 @@
 """Define API ManagedZones."""
 import six
 
-from gcloud._helpers import _rfc3339_to_datetime
+from gcloud._helpers import rfc3339_to_datetime
 from gcloud.exceptions import NotFound
 from gcloud.dns.changes import Changes
 from gcloud.dns.resource_record_set import ResourceRecordSet
@@ -221,7 +221,7 @@ class ManagedZone(object):
         cleaned = api_response.copy()
         self.dns_name = cleaned.pop('dnsName', None)
         if 'creationTime' in cleaned:
-            cleaned['creationTime'] = _rfc3339_to_datetime(
+            cleaned['creationTime'] = rfc3339_to_datetime(
                 cleaned['creationTime'])
         self._properties.update(cleaned)
 

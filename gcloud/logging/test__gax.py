@@ -37,12 +37,12 @@ class _Base(object):
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
-class Test_LoggingAPI(_Base, unittest.TestCase):
+class TestLoggingAPI(_Base, unittest.TestCase):
     LOG_NAME = 'log_name'
 
     def _getTargetClass(self):
-        from gcloud.logging._gax import _LoggingAPI
-        return _LoggingAPI
+        from gcloud.logging._gax import LoggingAPI
+        return LoggingAPI
 
     def test_ctor(self):
         gax_api = _GAXLoggingAPI()
@@ -117,8 +117,8 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from google.logging.type.log_severity_pb2 import WARNING
         from gcloud._testing import _GAXPageIterator
         from gcloud._helpers import UTC
-        from gcloud._helpers import _datetime_to_rfc3339
-        from gcloud._helpers import _datetime_to_pb_timestamp
+        from gcloud._helpers import datetime_to_rfc3339
+        from gcloud._helpers import datetime_to_pb_timestamp
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         SIZE = 23
         TOKEN = 'TOKEN'
@@ -140,7 +140,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         }
         ENTRY = _LogEntryPB(self.LOG_NAME, proto_payload=PAYLOAD, **EXTRAS)
         ENTRY.resource.labels['foo'] = 'bar'
-        ENTRY.timestamp = _datetime_to_pb_timestamp(NOW)
+        ENTRY.timestamp = datetime_to_pb_timestamp(NOW)
         response = _GAXPageIterator([ENTRY], NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         api = self._makeOne(gax_api)
@@ -158,7 +158,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(entry['severity'], SEVERITY)
         self.assertEqual(entry['labels'], LABELS)
         self.assertEqual(entry['insertId'], IID)
-        self.assertEqual(entry['timestamp'], _datetime_to_rfc3339(NOW))
+        self.assertEqual(entry['timestamp'], datetime_to_rfc3339(NOW))
         EXPECTED_REQUEST = {
             'requestMethod': request.request_method,
             'requestUrl': request.request_url,
@@ -224,7 +224,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from datetime import datetime
         from google.logging.type.log_severity_pb2 import WARNING
         from google.logging.v2.log_entry_pb2 import LogEntry
-        from gcloud._helpers import _pb_timestamp_to_datetime
+        from gcloud._helpers import pb_timestamp_to_datetime
         from gcloud._helpers import UTC
 
         NOW = datetime.utcnow().replace(tzinfo=UTC)
@@ -290,7 +290,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(entry.severity, WARNING)
         self.assertEqual(entry.labels, LABELS)
         self.assertEqual(entry.insert_id, IID)
-        stamp = _pb_timestamp_to_datetime(entry.timestamp)
+        stamp = pb_timestamp_to_datetime(entry.timestamp)
         self.assertEqual(stamp, NOW)
 
         request = entry.http_request
@@ -324,7 +324,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from google.logging.v2.log_entry_pb2 import LogEntry
         from google.protobuf.any_pb2 import Any
         from google.protobuf.struct_pb2 import Struct
-        from gcloud._helpers import _datetime_to_rfc3339
+        from gcloud._helpers import datetime_to_rfc3339
         from gcloud._helpers import UTC
 
         TEXT = 'TEXT'
@@ -333,7 +333,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         JSON = {'payload': 'PAYLOAD', 'type': 'json'}
         PROTO = {
             '@type': TIMESTAMP_TYPE_URL,
-            'value': _datetime_to_rfc3339(NOW),
+            'value': datetime_to_rfc3339(NOW),
         }
         PRODUCER = 'PRODUCER'
         OPID = 'OPID'
@@ -440,14 +440,14 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
-class Test_SinksAPI(_Base, unittest.TestCase):
+class TestSinksAPI(_Base, unittest.TestCase):
     SINK_NAME = 'sink_name'
     SINK_PATH = 'projects/%s/sinks/%s' % (_Base.PROJECT, SINK_NAME)
     DESTINATION_URI = 'faux.googleapis.com/destination'
 
     def _getTargetClass(self):
-        from gcloud.logging._gax import _SinksAPI
-        return _SinksAPI
+        from gcloud.logging._gax import SinksAPI
+        return SinksAPI
 
     def test_ctor(self):
         gax_api = _GAXSinksAPI()
@@ -644,14 +644,14 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
-class Test_MetricsAPI(_Base, unittest.TestCase):
+class TestMetricsAPI(_Base, unittest.TestCase):
     METRIC_NAME = 'metric_name'
     METRIC_PATH = 'projects/%s/metrics/%s' % (_Base.PROJECT, METRIC_NAME)
     DESCRIPTION = 'Description'
 
     def _getTargetClass(self):
-        from gcloud.logging._gax import _MetricsAPI
-        return _MetricsAPI
+        from gcloud.logging._gax import MetricsAPI
+        return MetricsAPI
 
     def test_ctor(self):
         gax_api = _GAXMetricsAPI()
@@ -1085,9 +1085,9 @@ class _LogEntryPB(object):
     def _make_timestamp():
         from datetime import datetime
         from gcloud._helpers import UTC
-        from gcloud._helpers import _datetime_to_pb_timestamp
+        from gcloud._helpers import datetime_to_pb_timestamp
         NOW = datetime.utcnow().replace(tzinfo=UTC)
-        return _datetime_to_pb_timestamp(NOW)
+        return datetime_to_pb_timestamp(NOW)
 
 
 class _LogSinkPB(object):

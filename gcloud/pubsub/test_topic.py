@@ -160,7 +160,7 @@ class TestTopic(unittest.TestCase):
 
         topic = self._makeOne(self.TOPIC_NAME, client=client1,
                               timestamp_messages=True)
-        with _Monkey(MUT, _NOW=_utcnow):
+        with _Monkey(MUT, NOW=_utcnow):
             msgid = topic.publish(PAYLOAD, client=client2)
 
         self.assertEqual(msgid, MSGID)

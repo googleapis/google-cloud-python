@@ -16,7 +16,7 @@
 
 import six
 
-from gcloud._helpers import _rfc3339_to_datetime
+from gcloud._helpers import rfc3339_to_datetime
 from gcloud.exceptions import NotFound
 from gcloud.dns.resource_record_set import ResourceRecordSet
 
@@ -118,7 +118,7 @@ class Changes(object):
         """
         stamp = self._properties.get('startTime')
         if stamp is not None:
-            return _rfc3339_to_datetime(stamp)
+            return rfc3339_to_datetime(stamp)
 
     @property
     def additions(self):

@@ -15,11 +15,11 @@
 import unittest
 
 
-class Test_ClientFactoryMixin(unittest.TestCase):
+class TestClientFactoryMixin(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.client import _ClientFactoryMixin
-        return _ClientFactoryMixin
+        from gcloud.client import ClientFactoryMixin
+        return ClientFactoryMixin
 
     def test_virtual(self):
         klass = self._getTargetClass()
@@ -142,7 +142,7 @@ class TestJSONClient(unittest.TestCase):
         FUNC_CALLS = []
 
         def mock_determine_proj(project):
-            FUNC_CALLS.append((project, '_determine_default_project'))
+            FUNC_CALLS.append((project, 'determine_default_project'))
             return PROJECT
 
         def mock_get_credentials():
@@ -150,7 +150,7 @@ class TestJSONClient(unittest.TestCase):
             return CREDENTIALS
 
         with _Monkey(client, get_credentials=mock_get_credentials,
-                     _determine_default_project=mock_determine_proj):
+                     determine_default_project=mock_determine_proj):
             client_obj = self._makeOne()
 
         self.assertEqual(client_obj.project, PROJECT)
@@ -158,7 +158,7 @@ class TestJSONClient(unittest.TestCase):
         self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
         self.assertEqual(
             FUNC_CALLS,
-            [(None, '_determine_default_project'), 'get_credentials'])
+            [(None, 'determine_default_project'), 'get_credentials'])
 
     def test_ctor_missing_project(self):
         from gcloud._testing import _Monkey
@@ -167,13 +167,13 @@ class TestJSONClient(unittest.TestCase):
         FUNC_CALLS = []
 
         def mock_determine_proj(project):
-            FUNC_CALLS.append((project, '_determine_default_project'))
+            FUNC_CALLS.append((project, 'determine_default_project'))
             return None
 
-        with _Monkey(client, _determine_default_project=mock_determine_proj):
+        with _Monkey(client, determine_default_project=mock_determine_proj):
             self.assertRaises(EnvironmentError, self._makeOne)
 
-        self.assertEqual(FUNC_CALLS, [(None, '_determine_default_project')])
+        self.assertEqual(FUNC_CALLS, [(None, 'determine_default_project')])
 
     def test_ctor_w_invalid_project(self):
         CREDENTIALS = object()

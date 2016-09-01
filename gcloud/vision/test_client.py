@@ -16,13 +16,13 @@
 import base64
 import unittest
 
-from gcloud._helpers import _to_bytes
+from gcloud._helpers import to_bytes
 
 
 class TestClient(unittest.TestCase):
     PROJECT = 'PROJECT'
     IMAGE_SOURCE = 'gs://some/image.jpg'
-    IMAGE_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
+    IMAGE_CONTENT = to_bytes('/9j/4QNURXhpZgAASUkq')
     B64_IMAGE_CONTENT = base64.b64encode(IMAGE_CONTENT)
 
     def _getTargetClass(self):
@@ -74,7 +74,7 @@ class TestClient(unittest.TestCase):
 
 
 class TestVisionRequest(unittest.TestCase):
-    _IMAGE_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
+    _IMAGE_CONTENT = to_bytes('/9j/4QNURXhpZgAASUkq')
 
     def _getTargetClass(self):
         from gcloud.vision.client import VisionRequest

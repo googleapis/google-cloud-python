@@ -25,8 +25,8 @@ import itertools
 
 import six
 
-from gcloud._helpers import _datetime_to_rfc3339
-from gcloud.monitoring._dataframe import _build_dataframe
+from gcloud._helpers import datetime_to_rfc3339
+from gcloud.monitoring._dataframe import build_dataframe
 from gcloud.monitoring.timeseries import TimeSeries
 
 _UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.
@@ -499,11 +499,11 @@ class Query(object):
         """
         yield 'filter', self.filter
 
-        yield 'interval.endTime', _datetime_to_rfc3339(
+        yield 'interval.endTime', datetime_to_rfc3339(
             self._end_time, ignore_zone=False)
 
         if self._start_time is not None:
-            yield 'interval.startTime', _datetime_to_rfc3339(
+            yield 'interval.startTime', datetime_to_rfc3339(
                 self._start_time, ignore_zone=False)
 
         if self._per_series_aligner is not None:
@@ -570,7 +570,7 @@ class Query(object):
         :rtype: :class:`pandas.DataFrame`
         :returns: A dataframe where each column represents one time series.
         """
-        return _build_dataframe(self, label, labels)  # pragma: NO COVER
+        return build_dataframe(self, label, labels)  # pragma: NO COVER
 
     def copy(self):
         """Copy the query object.

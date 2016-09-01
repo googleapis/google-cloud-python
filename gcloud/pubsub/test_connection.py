@@ -114,11 +114,11 @@ class TestConnection(_Base):
                          URI)
 
 
-class Test_PublisherAPI(_Base):
+class TestPublisherAPI(_Base):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.connection import _PublisherAPI
-        return _PublisherAPI
+        from gcloud.pubsub.connection import PublisherAPI
+        return PublisherAPI
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -375,11 +375,11 @@ class Test_PublisherAPI(_Base):
         self.assertEqual(connection._called_with['query_params'], {})
 
 
-class Test_SubscriberAPI(_Base):
+class TestSubscriberAPI(_Base):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.connection import _SubscriberAPI
-        return _SubscriberAPI
+        from gcloud.pubsub.connection import SubscriberAPI
+        return SubscriberAPI
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -628,11 +628,11 @@ class Test_SubscriberAPI(_Base):
         self.assertEqual(connection._called_with['data'], BODY)
 
 
-class Test_IAMPolicyAPI(_Base):
+class TestIAMPolicyAPI(_Base):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.connection import _IAMPolicyAPI
-        return _IAMPolicyAPI
+        from gcloud.pubsub.connection import IAMPolicyAPI
+        return IAMPolicyAPI
 
     def test_ctor(self):
         connection = _Connection()

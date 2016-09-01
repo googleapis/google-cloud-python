@@ -51,7 +51,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(client.current_batch is batch1)
         client._push_batch(batch2)
         self.assertTrue(client.current_batch is batch2)
-        # list(_LocalStack) returns in reverse order.
+        # list(LocalStack) returns in reverse order.
         self.assertEqual(list(client._batch_stack), [batch2, batch1])
         self.assertTrue(client._pop_batch() is batch2)
         self.assertEqual(list(client._batch_stack), [batch1])

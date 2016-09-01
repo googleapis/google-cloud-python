@@ -15,7 +15,7 @@
 """Client for interacting with the Google Cloud Storage API."""
 
 
-from gcloud._helpers import _LocalStack
+from gcloud._helpers import LocalStack
 from gcloud.client import JSONClient
 from gcloud.exceptions import NotFound
 from gcloud.iterator import Iterator
@@ -51,7 +51,7 @@ class Client(JSONClient):
         self._connection = None
         super(Client, self).__init__(project=project, credentials=credentials,
                                      http=http)
-        self._batch_stack = _LocalStack()
+        self._batch_stack = LocalStack()
 
     @property
     def connection(self):

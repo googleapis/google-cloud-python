@@ -483,7 +483,7 @@ class TestGroup(unittest.TestCase):
 
     def test_list_members_w_all_arguments(self):
         import datetime
-        from gcloud._helpers import _datetime_to_rfc3339
+        from gcloud._helpers import datetime_to_rfc3339
 
         self._setUpResources()
 
@@ -506,8 +506,8 @@ class TestGroup(unittest.TestCase):
         expected_request = {
             'method': 'GET', 'path': '/%s/members' % self.GROUP_NAME,
             'query_params': {
-                'interval.startTime': _datetime_to_rfc3339(T0),
-                'interval.endTime': _datetime_to_rfc3339(T1),
+                'interval.startTime': datetime_to_rfc3339(T0),
+                'interval.endTime': datetime_to_rfc3339(T1),
                 'filter': MEMBER_FILTER,
             },
         }

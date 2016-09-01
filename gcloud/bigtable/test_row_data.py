@@ -637,18 +637,18 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
 def _flatten_cells(prd):
     # Match results format from JSON testcases.
     # Doesn't handle error cases.
-    from gcloud._helpers import _bytes_to_unicode
-    from gcloud._helpers import _microseconds_from_datetime
+    from gcloud._helpers import bytes_to_unicode
+    from gcloud._helpers import microseconds_from_datetime
     for row_key, row in prd.rows.items():
         for family_name, family in row.cells.items():
             for qualifier, column in family.items():
                 for cell in column:
                     yield {
-                        u'rk': _bytes_to_unicode(row_key),
+                        u'rk': bytes_to_unicode(row_key),
                         u'fm': family_name,
-                        u'qual': _bytes_to_unicode(qualifier),
-                        u'ts': _microseconds_from_datetime(cell.timestamp),
-                        u'value': _bytes_to_unicode(cell.value),
+                        u'qual': bytes_to_unicode(qualifier),
+                        u'ts': microseconds_from_datetime(cell.timestamp),
+                        u'value': bytes_to_unicode(cell.value),
                         u'label': u' '.join(cell.labels),
                         u'error': False,
                     }

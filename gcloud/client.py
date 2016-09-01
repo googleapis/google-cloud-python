@@ -17,12 +17,12 @@
 from oauth2client.service_account import ServiceAccountCredentials
 import six
 
-from gcloud._helpers import _determine_default_project
+from gcloud._helpers import determine_default_project
 from gcloud.connection import Connection
 from gcloud.credentials import get_credentials
 
 
-class _ClientFactoryMixin(object):
+class ClientFactoryMixin(object):
     """Mixin to allow factories that create credentials.
 
     .. note::
@@ -96,7 +96,7 @@ class _ClientFactoryMixin(object):
         return cls(*args, **kwargs)
 
 
-class Client(_ClientFactoryMixin):
+class Client(ClientFactoryMixin):
     """Client to bundle configuration needed for API requests.
 
     Assumes that the associated ``_connection_class`` only accepts
@@ -124,7 +124,7 @@ class Client(_ClientFactoryMixin):
             credentials=credentials, http=http)
 
 
-class _ClientProjectMixin(object):
+class ClientProjectMixin(object):
     """Mixin to allow setting the project on the client.
 
     :type project: string
@@ -151,10 +151,10 @@ class _ClientProjectMixin(object):
     @staticmethod
     def _determine_default(project):
         """Helper:  use default project detection."""
-        return _determine_default_project(project)
+        return determine_default_project(project)
 
 
-class JSONClient(Client, _ClientProjectMixin):
+class JSONClient(Client, ClientProjectMixin):
     """Client to for Google JSON-based API.
 
     Assumes such APIs use the ``project`` and the client needs to store this
@@ -182,5 +182,5 @@ class JSONClient(Client, _ClientProjectMixin):
     """
 
     def __init__(self, project=None, credentials=None, http=None):
-        _ClientProjectMixin.__init__(self, project=project)
+        ClientProjectMixin.__init__(self, project=project)
         Client.__init__(self, credentials=credentials, http=http)

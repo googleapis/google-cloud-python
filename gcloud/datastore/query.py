@@ -16,7 +16,7 @@
 
 import base64
 
-from gcloud._helpers import _ensure_tuple_or_list
+from gcloud._helpers import ensure_tuple_or_list
 from gcloud.datastore._generated import query_pb2 as _query_pb2
 from gcloud.datastore import helpers
 from gcloud.datastore.key import Key
@@ -92,9 +92,9 @@ class Query(object):
         # Verify filters passed in.
         for property_name, operator, value in filters:
             self.add_filter(property_name, operator, value)
-        self._projection = _ensure_tuple_or_list('projection', projection)
-        self._order = _ensure_tuple_or_list('order', order)
-        self._distinct_on = _ensure_tuple_or_list('distinct_on', distinct_on)
+        self._projection = ensure_tuple_or_list('projection', projection)
+        self._order = ensure_tuple_or_list('order', order)
+        self._distinct_on = ensure_tuple_or_list('distinct_on', distinct_on)
 
     @property
     def project(self):
@@ -518,7 +518,7 @@ def _pb_from_query(query):
             key_pb = value.to_protobuf()
             property_filter.value.key_value.CopyFrom(key_pb)
         else:
-            helpers._set_protobuf_value(property_filter.value, value)
+            helpers.set_protobuf_value(property_filter.value, value)
 
     if not composite_filter.filters:
         pb.ClearField('filter')

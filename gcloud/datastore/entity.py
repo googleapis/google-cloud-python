@@ -15,7 +15,7 @@
 """Class for representing a single entity in the Cloud Datastore."""
 
 
-from gcloud._helpers import _ensure_tuple_or_list
+from gcloud._helpers import ensure_tuple_or_list
 
 
 class Entity(dict):
@@ -79,7 +79,7 @@ class Entity(dict):
     def __init__(self, key=None, exclude_from_indexes=()):
         super(Entity, self).__init__()
         self.key = key
-        self._exclude_from_indexes = set(_ensure_tuple_or_list(
+        self._exclude_from_indexes = set(ensure_tuple_or_list(
             'exclude_from_indexes', exclude_from_indexes))
         # NOTE: This will be populated when parsing a protobuf in
         #       gcloud.datastore.helpers.entity_from_protobuf.

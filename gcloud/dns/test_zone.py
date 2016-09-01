@@ -510,7 +510,7 @@ class TestManagedZone(unittest.TestCase):
                          {'maxResults': 3, 'pageToken': TOKEN})
 
     def test_list_changes_defaults(self):
-        from gcloud._helpers import _datetime_to_rfc3339
+        from gcloud._helpers import datetime_to_rfc3339
         from gcloud.dns.changes import Changes
         from gcloud.dns.resource_record_set import ResourceRecordSet
         self._setUpConstants()
@@ -532,7 +532,7 @@ class TestManagedZone(unittest.TestCase):
                 'kind': 'dns#change',
                 'id': CHANGES_NAME,
                 'status': 'pending',
-                'startTime': _datetime_to_rfc3339(self.WHEN),
+                'startTime': datetime_to_rfc3339(self.WHEN),
                 'additions': [
                     {'kind': 'dns#resourceRecordSet',
                      'name': NAME_1,
@@ -586,7 +586,7 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_changes_explicit(self):
-        from gcloud._helpers import _datetime_to_rfc3339
+        from gcloud._helpers import datetime_to_rfc3339
         from gcloud.dns.changes import Changes
         from gcloud.dns.resource_record_set import ResourceRecordSet
         self._setUpConstants()
@@ -607,7 +607,7 @@ class TestManagedZone(unittest.TestCase):
                 'kind': 'dns#change',
                 'id': CHANGES_NAME,
                 'status': 'pending',
-                'startTime': _datetime_to_rfc3339(self.WHEN),
+                'startTime': datetime_to_rfc3339(self.WHEN),
                 'additions': [
                     {'kind': 'dns#resourceRecordSet',
                      'name': NAME_1,

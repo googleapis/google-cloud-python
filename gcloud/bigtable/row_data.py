@@ -18,8 +18,8 @@
 import copy
 import six
 
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud._helpers import _to_bytes
+from gcloud._helpers import datetime_from_microseconds
+from gcloud._helpers import to_bytes
 
 
 class Cell(object):
@@ -50,7 +50,7 @@ class Cell(object):
         :rtype: :class:`Cell`
         :returns: The cell corresponding to the protobuf.
         """
-        timestamp = _datetime_from_microseconds(cell_pb.timestamp_micros)
+        timestamp = datetime_from_microseconds(cell_pb.timestamp_micros)
         if cell_pb.labels:
             return cls(cell_pb.value, timestamp, labels=cell_pb.labels)
         else:
@@ -145,8 +145,8 @@ class PartialRowData(object):
         result = {}
         for column_family_id, columns in six.iteritems(self._cells):
             for column_qual, cells in six.iteritems(columns):
-                key = (_to_bytes(column_family_id) + b':' +
-                       _to_bytes(column_qual))
+                key = (to_bytes(column_family_id) + b':' +
+                       to_bytes(column_qual))
                 result[key] = cells
         return result
 

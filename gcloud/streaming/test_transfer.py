@@ -1029,7 +1029,7 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(request.loggable_body, '<media body>')
 
     def test_configure_request_w_simple_w_body(self):
-        from gcloud._helpers import _to_bytes
+        from gcloud._helpers import to_bytes
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         CONTENT = b'CONTENT'
         BODY = b'BODY'
@@ -1052,7 +1052,7 @@ class Test_Upload(unittest.TestCase):
         self.assertTrue(boundary.startswith('boundary="=='))
         self.assertTrue(boundary.endswith('=="'))
 
-        divider = b'--' + _to_bytes(boundary[len('boundary="'):-1])
+        divider = b'--' + to_bytes(boundary[len('boundary="'):-1])
         chunks = request.body.split(divider)[1:-1]  # discard prolog / epilog
         self.assertEqual(len(chunks), 2)
 

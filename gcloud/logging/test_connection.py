@@ -34,7 +34,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(conn.credentials._scopes, klass.SCOPE)
 
 
-class Test_LoggingAPI(unittest.TestCase):
+class TestLoggingAPI(unittest.TestCase):
 
     PROJECT = 'project'
     LIST_ENTRIES_PATH = 'entries:list'
@@ -43,8 +43,8 @@ class Test_LoggingAPI(unittest.TestCase):
     FILTER = 'logName:syslog AND severity>=ERROR'
 
     def _getTargetClass(self):
-        from gcloud.logging.connection import _LoggingAPI
-        return _LoggingAPI
+        from gcloud.logging.connection import LoggingAPI
+        return LoggingAPI
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -58,9 +58,9 @@ class Test_LoggingAPI(unittest.TestCase):
     def _make_timestamp():
         from datetime import datetime
         from gcloud._helpers import UTC
-        from gcloud.logging.test_entries import _datetime_to_rfc3339_w_nanos
+        from gcloud.logging.test_entries import datetime_to_rfc3339_w_nanos
         NOW = datetime.utcnow().replace(tzinfo=UTC)
-        return _datetime_to_rfc3339_w_nanos(NOW)
+        return datetime_to_rfc3339_w_nanos(NOW)
 
     def test_list_entries_no_paging(self):
         TIMESTAMP = self._make_timestamp()
@@ -217,7 +217,7 @@ class Test_LoggingAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['path'], path)
 
 
-class Test_SinksAPI(unittest.TestCase):
+class TestSinksAPI(unittest.TestCase):
 
     PROJECT = 'project'
     FILTER = 'logName:syslog AND severity>=ERROR'
@@ -227,8 +227,8 @@ class Test_SinksAPI(unittest.TestCase):
     DESTINATION_URI = 'faux.googleapis.com/destination'
 
     def _getTargetClass(self):
-        from gcloud.logging.connection import _SinksAPI
-        return _SinksAPI
+        from gcloud.logging.connection import SinksAPI
+        return SinksAPI
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -412,7 +412,7 @@ class Test_SinksAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['path'], path)
 
 
-class Test_MetricsAPI(unittest.TestCase):
+class TestMetricsAPI(unittest.TestCase):
 
     PROJECT = 'project'
     FILTER = 'logName:syslog AND severity>=ERROR'
@@ -422,8 +422,8 @@ class Test_MetricsAPI(unittest.TestCase):
     DESCRIPTION = 'DESCRIPTION'
 
     def _getTargetClass(self):
-        from gcloud.logging.connection import _MetricsAPI
-        return _MetricsAPI
+        from gcloud.logging.connection import MetricsAPI
+        return MetricsAPI
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)

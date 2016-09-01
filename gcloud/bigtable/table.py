@@ -14,14 +14,14 @@
 
 """User friendly container for Google Cloud Bigtable Table."""
 
-from gcloud._helpers import _to_bytes
+from gcloud._helpers import to_bytes
 from gcloud.bigtable._generated import (
     bigtable_pb2 as data_messages_v2_pb2)
 from gcloud.bigtable._generated import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
 from gcloud.bigtable._generated import (
     table_pb2 as table_v2_pb2)
-from gcloud.bigtable.column_family import _gc_rule_from_pb
+from gcloud.bigtable.column_family import gc_rule_from_pb
 from gcloud.bigtable.column_family import ColumnFamily
 from gcloud.bigtable.row import AppendRow
 from gcloud.bigtable.row import ConditionalRow
@@ -204,7 +204,7 @@ class Table(object):
 
         result = {}
         for column_family_id, value_pb in table_pb.column_families.items():
-            gc_rule = _gc_rule_from_pb(value_pb.gc_rule)
+            gc_rule = gc_rule_from_pb(value_pb.gc_rule)
             column_family = self.column_family(column_family_id,
                                                gc_rule=gc_rule)
             result[column_family_id] = column_family
@@ -356,9 +356,9 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     range_kwargs = {}
     if start_key is not None or end_key is not None:
         if start_key is not None:
-            range_kwargs['start_key_closed'] = _to_bytes(start_key)
+            range_kwargs['start_key_closed'] = to_bytes(start_key)
         if end_key is not None:
-            range_kwargs['end_key_open'] = _to_bytes(end_key)
+            range_kwargs['end_key_open'] = to_bytes(end_key)
     if filter_ is not None:
         request_kwargs['filter'] = filter_.to_pb()
     if limit is not None:
@@ -367,7 +367,7 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     message = data_messages_v2_pb2.ReadRowsRequest(**request_kwargs)
 
     if row_key is not None:
-        message.rows.row_keys.append(_to_bytes(row_key))
+        message.rows.row_keys.append(to_bytes(row_key))
 
     if range_kwargs:
         message.rows.row_ranges.add(**range_kwargs)

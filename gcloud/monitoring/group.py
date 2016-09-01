@@ -21,8 +21,8 @@
 
 import re
 
-from gcloud._helpers import _datetime_to_rfc3339
-from gcloud._helpers import _name_from_project_path
+from gcloud._helpers import datetime_to_rfc3339
+from gcloud._helpers import name_from_project_path
 from gcloud.exceptions import NotFound
 from gcloud.monitoring.resource import Resource
 
@@ -51,7 +51,7 @@ def _group_id_from_name(path, project=None):
              the project from the ``path`` does not agree with the
              ``project`` passed in.
     """
-    return _name_from_project_path(path, project, _GROUP_TEMPLATE)
+    return name_from_project_path(path, project, _GROUP_TEMPLATE)
 
 
 def _group_name_from_id(project, group_id):
@@ -336,11 +336,11 @@ class Group(object):
             params['filter'] = filter_string
 
         if end_time is not None:
-            params['interval.endTime'] = _datetime_to_rfc3339(
+            params['interval.endTime'] = datetime_to_rfc3339(
                 end_time, ignore_zone=False)
 
         if start_time is not None:
-            params['interval.startTime'] = _datetime_to_rfc3339(
+            params['interval.startTime'] = datetime_to_rfc3339(
                 start_time, ignore_zone=False)
 
         while True:

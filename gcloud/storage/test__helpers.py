@@ -15,11 +15,11 @@
 import unittest
 
 
-class Test_PropertyMixin(unittest.TestCase):
+class TestPropertyMixin(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage._helpers import _PropertyMixin
-        return _PropertyMixin
+        from gcloud.storage._helpers import PropertyMixin
+        return PropertyMixin
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -94,11 +94,11 @@ class Test_PropertyMixin(unittest.TestCase):
         self.assertEqual(derived._changes, set())
 
 
-class Test__scalar_property(unittest.TestCase):
+class Test_scalar_property(unittest.TestCase):
 
     def _callFUT(self, fieldName):
-        from gcloud.storage._helpers import _scalar_property
-        return _scalar_property(fieldName)
+        from gcloud.storage._helpers import scalar_property
+        return scalar_property(fieldName)
 
     def test_getter(self):
 
@@ -122,11 +122,11 @@ class Test__scalar_property(unittest.TestCase):
         self.assertEqual(test._patched, ('solfege', 'Latido'))
 
 
-class Test__base64_md5hash(unittest.TestCase):
+class Test_base64_md5hash(unittest.TestCase):
 
     def _callFUT(self, bytes_to_sign):
-        from gcloud.storage._helpers import _base64_md5hash
-        return _base64_md5hash(bytes_to_sign)
+        from gcloud.storage._helpers import base64_md5hash
+        return base64_md5hash(bytes_to_sign)
 
     def test_it(self):
         from io import BytesIO

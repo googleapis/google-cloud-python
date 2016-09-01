@@ -30,7 +30,7 @@ class TestClient(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_publisher_api_wo_gax(self):
-        from gcloud.pubsub.connection import _PublisherAPI
+        from gcloud.pubsub.connection import PublisherAPI
         from gcloud.pubsub import client as MUT
         from gcloud._testing import _Monkey
         creds = _Credentials()
@@ -40,7 +40,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=False):
             api = client.publisher_api
 
-        self.assertIsInstance(api, _PublisherAPI)
+        self.assertIsInstance(api, PublisherAPI)
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.publisher_api
@@ -78,7 +78,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_subscriber_api_wo_gax(self):
-        from gcloud.pubsub.connection import _SubscriberAPI
+        from gcloud.pubsub.connection import SubscriberAPI
         from gcloud.pubsub import client as MUT
         from gcloud._testing import _Monkey
         creds = _Credentials()
@@ -88,7 +88,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=False):
             api = client.subscriber_api
 
-        self.assertIsInstance(api, _SubscriberAPI)
+        self.assertIsInstance(api, SubscriberAPI)
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.subscriber_api
@@ -126,12 +126,12 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_iam_policy_api(self):
-        from gcloud.pubsub.connection import _IAMPolicyAPI
+        from gcloud.pubsub.connection import IAMPolicyAPI
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = object()
         api = client.iam_policy_api
-        self.assertIsInstance(api, _IAMPolicyAPI)
+        self.assertIsInstance(api, IAMPolicyAPI)
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.iam_policy_api
