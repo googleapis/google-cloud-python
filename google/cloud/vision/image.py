@@ -87,7 +87,7 @@ class Image(object):
         :param limit: The number of faces to try and detect.
 
         :rtype: list
-        :returns: List of  of :class:`gcloud.vision.face.Face`.
+        :returns: List of :class:`gcloud.vision.face.Face`.
         """
         faces = []
         face_detection_feature = Feature(FeatureTypes.FACE_DETECTION, limit)

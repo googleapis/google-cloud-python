@@ -1,8 +1,8 @@
 Vision Face
-============
+===========
 
 Face
-~~~~~
+~~~~
 
 .. automodule:: gcloud.vision.face
   :members:
