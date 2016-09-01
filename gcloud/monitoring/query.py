@@ -637,10 +637,10 @@ def _build_label_filter(category, *args, **kwargs):
             continue
 
         suffix = None
-        if key.endswith('_prefix') or key.endswith('_suffix') or \
-            key.endswith('_greater') or key.endswith('_greaterequal') or \
-                key.endswith('_less') or key.endswith('_lessequal'):
-                    key, suffix = key.rsplit('_', 1)
+        ends = ['_prefix', '_suffix', '_greater', '_greaterequal',
+                '_less', '_lessequal']
+        if key.endswith(tuple(ends)):
+            key, suffix = key.rsplit('_', 1)
 
         if category == 'resource' and key == 'resource_type':
             key = 'resource.type'
