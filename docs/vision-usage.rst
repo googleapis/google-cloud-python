@@ -44,7 +44,7 @@ Annotate a single image
     >>> with io.open('./image.png', 'rb') as image_file:
     >>>     image = client.image(image_file.read())
     >>> faces = image.detect_faces(limit=10)
-    >>> faces[0].landmarks.left_eye.position.x
+    >>> faces[0].landmarks.left_eye.position.x_coordinate
     ... 1004.8003
 
 Annotate multiple images
@@ -109,7 +109,7 @@ see: https://cloud.google.com/vision/reference/rest/v1/images/annotate#type_1
     >>> faces = image.detect_faces(limit=10)
     >>> faces[0].landmarks.left_eye.landmark_type
     'LEFT_EYE'
-    >>> faces[0].landmarks.left_eye.position.x
+    >>> faces[0].landmarks.left_eye.position.x_coordinate
     1301.2404
     >>> faces[0].detection_confidence
     0.9863683
@@ -158,9 +158,9 @@ locations if available.
     -33.857123
     >>> landmarks[0].locations[0].longitude
     151.213921
-    >>> landmarks[0].bounding_poly.vertices[0].x
+    >>> landmarks[0].bounding_poly.vertices[0].x_coordinate
     78
-    >>> landmarks[0].bounding_poly.vertices[0].y
+    >>> landmarks[0].bounding_poly.vertices[0].y_coordinate
     162
 
 Logo Detection
@@ -178,9 +178,9 @@ Google Vision can also attempt to detect company and brand logos in images.
     'Google'
     >>> logos[0].score
     0.9795432
-    >>> logos[0].bounding_poly.vertices[0].x
+    >>> logos[0].bounding_poly.vertices[0].x_coordinate
     78
-    >>> logos[0].bounding_poly.vertices[0].y
+    >>> logos[0].bounding_poly.vertices[0].y_coordinate
     62
 
 Safe Search Detection
