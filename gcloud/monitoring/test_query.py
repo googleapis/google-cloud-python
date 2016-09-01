@@ -557,6 +557,28 @@ class Test__build_label_filter(unittest.TestCase):
         )
         self.assertEqual(actual, expected)
 
+    def test_metric_label_response_code_greater_less(self):
+        actual = self._callFUT(
+            'metric',
+            response_code_greater=500,
+            response_code_less=600)
+        expected = (
+            'metric.label.response_code < 600'
+            ' AND metric.label.response_code > 500'
+        )
+        self.assertEqual(actual, expected)
+
+    def test_metric_label_response_code_greater_less_equal(self):
+        actual = self._callFUT(
+            'metric',
+            response_code_greaterequal=500,
+            response_code_lessequal=600)
+        expected = (
+            'metric.label.response_code <= 600'
+            ' AND metric.label.response_code >= 500'
+        )
+        self.assertEqual(actual, expected)
+
     def test_resource_labels(self):
         actual = self._callFUT(
             'resource',
