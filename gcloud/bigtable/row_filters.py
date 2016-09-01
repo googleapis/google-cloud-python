@@ -15,8 +15,8 @@
 """Filters for Google Cloud Bigtable Row classes."""
 
 
-from gcloud._helpers import _microseconds_from_datetime
-from gcloud._helpers import _to_bytes
+from gcloud._helpers import microseconds_from_datetime
+from gcloud._helpers import to_bytes
 from gcloud.bigtable._generated import (
     data_pb2 as data_v2_pb2)
 
@@ -120,7 +120,7 @@ class _RegexFilter(RowFilter):
     """
 
     def __init__(self, regex):
-        self.regex = _to_bytes(regex)
+        self.regex = to_bytes(regex)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -273,10 +273,10 @@ class TimestampRange(object):
         timestamp_range_kwargs = {}
         if self.start is not None:
             timestamp_range_kwargs['start_timestamp_micros'] = (
-                _microseconds_from_datetime(self.start))
+                microseconds_from_datetime(self.start))
         if self.end is not None:
             timestamp_range_kwargs['end_timestamp_micros'] = (
-                _microseconds_from_datetime(self.end))
+                microseconds_from_datetime(self.end))
         return data_v2_pb2.TimestampRange(**timestamp_range_kwargs)
 
 
@@ -389,13 +389,13 @@ class ColumnRangeFilter(RowFilter):
                 key = 'start_qualifier_closed'
             else:
                 key = 'start_qualifier_open'
-            column_range_kwargs[key] = _to_bytes(self.start_column)
+            column_range_kwargs[key] = to_bytes(self.start_column)
         if self.end_column is not None:
             if self.inclusive_end:
                 key = 'end_qualifier_closed'
             else:
                 key = 'end_qualifier_open'
-            column_range_kwargs[key] = _to_bytes(self.end_column)
+            column_range_kwargs[key] = to_bytes(self.end_column)
 
         column_range = data_v2_pb2.ColumnRange(**column_range_kwargs)
         return data_v2_pb2.RowFilter(column_range_filter=column_range)
@@ -506,13 +506,13 @@ class ValueRangeFilter(RowFilter):
                 key = 'start_value_closed'
             else:
                 key = 'start_value_open'
-            value_range_kwargs[key] = _to_bytes(self.start_value)
+            value_range_kwargs[key] = to_bytes(self.start_value)
         if self.end_value is not None:
             if self.inclusive_end:
                 key = 'end_value_closed'
             else:
                 key = 'end_value_open'
-            value_range_kwargs[key] = _to_bytes(self.end_value)
+            value_range_kwargs[key] = to_bytes(self.end_value)
 
         value_range = data_v2_pb2.ValueRange(**value_range_kwargs)
         return data_v2_pb2.RowFilter(value_range_filter=value_range)

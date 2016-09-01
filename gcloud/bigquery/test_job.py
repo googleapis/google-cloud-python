@@ -370,7 +370,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
     def test_props_set_by_server(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud._helpers import _millis
+        from gcloud._helpers import millis
 
         CREATED = datetime.datetime(2015, 8, 11, 12, 13, 22, tzinfo=UTC)
         STARTED = datetime.datetime(2015, 8, 11, 13, 47, 15, tzinfo=UTC)
@@ -393,9 +393,9 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         job._properties['user_email'] = EMAIL
 
         statistics = job._properties['statistics'] = {}
-        statistics['creationTime'] = _millis(CREATED)
-        statistics['startTime'] = _millis(STARTED)
-        statistics['endTime'] = _millis(ENDED)
+        statistics['creationTime'] = millis(CREATED)
+        statistics['startTime'] = millis(STARTED)
+        statistics['endTime'] = millis(ENDED)
         load_stats = statistics['load'] = {}
         load_stats['inputFileBytes'] = 12345
         load_stats['inputFiles'] = 1

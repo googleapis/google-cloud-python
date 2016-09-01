@@ -27,18 +27,18 @@ from gcloud.bigtable.cluster import Cluster
 from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from gcloud.bigtable.table import Table
 from gcloud.operation import Operation
-from gcloud.operation import _compute_type_url
-from gcloud.operation import _register_type_url
+from gcloud.operation import compute_type_url
+from gcloud.operation import register_type_url
 
 
-_EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
+EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
 
 
-_CREATE_INSTANCE_METADATA_URL = _compute_type_url(
+_CREATE_INSTANCE_METADATA_URL = compute_type_url(
     messages_v2_pb2.CreateInstanceMetadata)
-_register_type_url(
+register_type_url(
     _CREATE_INSTANCE_METADATA_URL, messages_v2_pb2.CreateInstanceMetadata)
 
 
@@ -106,7 +106,7 @@ class Instance(object):
     """
 
     def __init__(self, instance_id, client,
-                 location_id=_EXISTING_INSTANCE_LOCATION_ID,
+                 location_id=EXISTING_INSTANCE_LOCATION_ID,
                  display_name=None,
                  serve_nodes=DEFAULT_SERVE_NODES):
         self.instance_id = instance_id
@@ -151,7 +151,7 @@ class Instance(object):
                              'project ID on the client')
         instance_id = match.group('instance_id')
 
-        result = cls(instance_id, client, _EXISTING_INSTANCE_LOCATION_ID)
+        result = cls(instance_id, client, EXISTING_INSTANCE_LOCATION_ID)
         result._update_from_pb(instance_pb)
         return result
 

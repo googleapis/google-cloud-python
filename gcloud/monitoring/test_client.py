@@ -28,7 +28,7 @@ class TestClient(unittest.TestCase):
 
     def test_query(self):
         import datetime
-        from gcloud._helpers import _datetime_to_rfc3339
+        from gcloud._helpers import datetime_to_rfc3339
         from gcloud.exceptions import NotFound
 
         START_TIME = datetime.datetime(2016, 4, 6, 22, 5, 0)
@@ -120,8 +120,8 @@ class TestClient(unittest.TestCase):
             'path': '/projects/{project}/timeSeries/'.format(project=PROJECT),
             'query_params': [
                 ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-                ('interval.endTime', _datetime_to_rfc3339(END_TIME)),
-                ('interval.startTime', _datetime_to_rfc3339(START_TIME)),
+                ('interval.endTime', datetime_to_rfc3339(END_TIME)),
+                ('interval.startTime', datetime_to_rfc3339(START_TIME)),
             ],
         }
 

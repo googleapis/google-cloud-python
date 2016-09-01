@@ -16,7 +16,7 @@
 
 import re
 
-from gcloud._helpers import _name_from_project_path
+from gcloud._helpers import name_from_project_path
 
 
 _TOPIC_TEMPLATE = re.compile(r"""
@@ -51,7 +51,7 @@ def topic_name_from_path(path, project):
              the project from the ``path`` does not agree with the
              ``project`` passed in.
     """
-    return _name_from_project_path(path, project, _TOPIC_TEMPLATE)
+    return name_from_project_path(path, project, _TOPIC_TEMPLATE)
 
 
 def subscription_name_from_path(path, project):
@@ -70,4 +70,4 @@ def subscription_name_from_path(path, project):
              the project from the ``path`` does not agree with the
              ``project`` passed in.
     """
-    return _name_from_project_path(path, project, _SUBSCRIPTION_TEMPLATE)
+    return name_from_project_path(path, project, _SUBSCRIPTION_TEMPLATE)

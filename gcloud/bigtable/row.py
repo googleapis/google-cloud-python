@@ -19,9 +19,9 @@ import struct
 
 import six
 
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud._helpers import _microseconds_from_datetime
-from gcloud._helpers import _to_bytes
+from gcloud._helpers import datetime_from_microseconds
+from gcloud._helpers import microseconds_from_datetime
+from gcloud._helpers import to_bytes
 from gcloud.bigtable._generated import (
     data_pb2 as data_v2_pb2)
 from gcloud.bigtable._generated import (
@@ -52,7 +52,7 @@ class Row(object):
     """
 
     def __init__(self, row_key, table):
-        self._row_key = _to_bytes(row_key)
+        self._row_key = to_bytes(row_key)
         self._table = table
 
 
@@ -122,15 +122,15 @@ class _SetDeleteRow(Row):
         :param state: (Optional) The state that is passed along to
                       :meth:`_get_mutations`.
         """
-        column = _to_bytes(column)
+        column = to_bytes(column)
         if isinstance(value, six.integer_types):
             value = _PACK_I64(value)
-        value = _to_bytes(value)
+        value = to_bytes(value)
         if timestamp is None:
             # Use -1 for current Bigtable server time.
             timestamp_micros = -1
         else:
-            timestamp_micros = _microseconds_from_datetime(timestamp)
+            timestamp_micros = microseconds_from_datetime(timestamp)
             # Truncate to millisecond granularity.
             timestamp_micros -= (timestamp_micros % 1000)
 
@@ -200,7 +200,7 @@ class _SetDeleteRow(Row):
 
             to_append = []
             for column in columns:
-                column = _to_bytes(column)
+                column = to_bytes(column)
                 # time_range will never change if present, but the rest of
                 # delete_kwargs will
                 delete_kwargs.update(
@@ -698,8 +698,8 @@ class AppendRow(Row):
                       the targeted cell is unset, it will be treated as
                       containing the empty string.
         """
-        column = _to_bytes(column)
-        value = _to_bytes(value)
+        column = to_bytes(column)
+        value = to_bytes(value)
         rule_pb = data_v2_pb2.ReadModifyWriteRule(
             family_name=column_family_id,
             column_qualifier=column,
@@ -736,7 +736,7 @@ class AppendRow(Row):
                           big-endian signed integer), or the entire request
                           will fail.
         """
-        column = _to_bytes(column)
+        column = to_bytes(column)
         rule_pb = data_v2_pb2.ReadModifyWriteRule(
             family_name=column_family_id,
             column_qualifier=column,
@@ -880,7 +880,7 @@ def _parse_family_pb(family_pb):
         for cell in column.cells:
             val_pair = (
                 cell.value,
-                _datetime_from_microseconds(cell.timestamp_micros),
+                datetime_from_microseconds(cell.timestamp_micros),
             )
             cells.append(val_pair)
 

@@ -19,8 +19,8 @@ import re
 
 from google.protobuf.json_format import Parse
 
-from gcloud._helpers import _name_from_project_path
-from gcloud._helpers import _rfc3339_nanos_to_datetime
+from gcloud._helpers import name_from_project_path
+from gcloud._helpers import rfc3339_nanos_to_datetime
 
 
 _LOGGER_TEMPLATE = re.compile(r"""
@@ -43,7 +43,7 @@ def logger_name_from_path(path):
              the project from the ``path`` does not agree with the
              ``project`` passed in.
     """
-    return _name_from_project_path(path, None, _LOGGER_TEMPLATE)
+    return name_from_project_path(path, None, _LOGGER_TEMPLATE)
 
 
 class _BaseEntry(object):
@@ -112,7 +112,7 @@ class _BaseEntry(object):
         insert_id = resource.get('insertId')
         timestamp = resource.get('timestamp')
         if timestamp is not None:
-            timestamp = _rfc3339_nanos_to_datetime(timestamp)
+            timestamp = rfc3339_nanos_to_datetime(timestamp)
         labels = resource.get('labels')
         severity = resource.get('severity')
         http_request = resource.get('httpRequest')

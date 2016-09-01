@@ -109,7 +109,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, None)
 
     def test_from_pb_success(self):
-        from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
+        from gcloud.bigtable.instance import EXISTING_INSTANCE_LOCATION_ID
         from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
 
@@ -126,7 +126,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance._client, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance._cluster_location_id,
-                         _EXISTING_INSTANCE_LOCATION_ID)
+                         EXISTING_INSTANCE_LOCATION_ID)
 
     def test_from_pb_bad_instance_name(self):
         from gcloud.bigtable._generated import (
@@ -231,14 +231,14 @@ class TestInstance(unittest.TestCase):
         from google.protobuf.any_pb2 import Any
         from gcloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from gcloud._helpers import _datetime_to_pb_timestamp
+        from gcloud._helpers import datetime_to_pb_timestamp
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.operation import Operation
         from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
         from gcloud.bigtable.instance import _CREATE_INSTANCE_METADATA_URL
 
         NOW = datetime.datetime.utcnow()
-        NOW_PB = _datetime_to_pb_timestamp(NOW)
+        NOW_PB = datetime_to_pb_timestamp(NOW)
         client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
                                  display_name=self.DISPLAY_NAME)

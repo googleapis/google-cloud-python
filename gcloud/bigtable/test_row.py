@@ -666,7 +666,7 @@ class Test__parse_rmw_row_response(unittest.TestCase):
         return _parse_rmw_row_response(row_response)
 
     def test_it(self):
-        from gcloud._helpers import _datetime_from_microseconds
+        from gcloud._helpers import datetime_from_microseconds
         col_fam1 = u'col-fam-id'
         col_fam2 = u'col-fam-id2'
         col_name1 = b'col-name1'
@@ -678,7 +678,7 @@ class Test__parse_rmw_row_response(unittest.TestCase):
         cell_val4 = b'foo'
 
         microseconds = 1000871
-        timestamp = _datetime_from_microseconds(microseconds)
+        timestamp = datetime_from_microseconds(microseconds)
         expected_output = {
             col_fam1: {
                 col_name1: [
@@ -751,7 +751,7 @@ class Test__parse_family_pb(unittest.TestCase):
         return _parse_family_pb(family_pb)
 
     def test_it(self):
-        from gcloud._helpers import _datetime_from_microseconds
+        from gcloud._helpers import datetime_from_microseconds
         col_fam1 = u'col-fam-id'
         col_name1 = b'col-name1'
         col_name2 = b'col-name2'
@@ -760,7 +760,7 @@ class Test__parse_family_pb(unittest.TestCase):
         cell_val3 = b'altcol-cell-val'
 
         microseconds = 5554441037
-        timestamp = _datetime_from_microseconds(microseconds)
+        timestamp = datetime_from_microseconds(microseconds)
         expected_dict = {
             col_name1: [
                 (cell_val1, timestamp),

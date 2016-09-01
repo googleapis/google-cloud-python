@@ -14,7 +14,7 @@
 
 """Shared helper functions for BigQuery API classes."""
 
-from gcloud._helpers import _datetime_from_microseconds
+from gcloud._helpers import datetime_from_microseconds
 
 
 def _not_null(value, field):
@@ -44,7 +44,7 @@ def _datetime_from_json(value, field):
     """Coerce 'value' to a datetime, if set or not nullable."""
     if _not_null(value, field):
         # value will be a float in seconds, to microsecond precision, in UTC.
-        return _datetime_from_microseconds(1e6 * float(value))
+        return datetime_from_microseconds(1e6 * float(value))
 
 
 def _record_from_json(value, field):
@@ -76,7 +76,7 @@ _CELLDATA_FROM_JSON = {
 }
 
 
-def _rows_from_json(rows, schema):
+def rows_from_json(rows, schema):
     """Convert JSON row data to rows w/ appropriate types."""
     rows_data = []
     for row in rows:
@@ -126,7 +126,7 @@ class _ConfigurationProperty(object):
         delattr(instance._configuration, self._backing_name)
 
 
-class _TypedProperty(_ConfigurationProperty):
+class TypedProperty(_ConfigurationProperty):
     """Property implementation:  validates based on value type.
 
     :type name: string
@@ -136,7 +136,7 @@ class _TypedProperty(_ConfigurationProperty):
     :param property_type: type to be validated
     """
     def __init__(self, name, property_type):
-        super(_TypedProperty, self).__init__(name)
+        super(TypedProperty, self).__init__(name)
         self.property_type = property_type
 
     def _validate(self, value):
@@ -148,7 +148,7 @@ class _TypedProperty(_ConfigurationProperty):
             raise ValueError('Required type: %s' % (self.property_type,))
 
 
-class _EnumProperty(_ConfigurationProperty):
+class EnumProperty(_ConfigurationProperty):
     """Pseudo-enumeration class.
 
     Subclasses must define ``ALLOWED`` as a class-level constant:  it must

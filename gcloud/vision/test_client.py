@@ -16,13 +16,13 @@
 import base64
 import unittest
 
-from gcloud._helpers import _to_bytes
+from gcloud._helpers import to_bytes
 
 
 class TestClient(unittest.TestCase):
     PROJECT = 'PROJECT'
     IMAGE_SOURCE = 'gs://some/image.jpg'
-    IMAGE_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
+    IMAGE_CONTENT = to_bytes('/9j/4QNURXhpZgAASUkq')
     B64_IMAGE_CONTENT = base64.b64encode(IMAGE_CONTENT)
 
     def _getTargetClass(self):
@@ -39,8 +39,9 @@ class TestClient(unittest.TestCase):
         self.assertTrue('annotate' in dir(client))
 
     def test_face_annotation(self):
-
         from gcloud.vision._fixtures import FACE_DETECTION_RESPONSE as RETURNED
+        from gcloud.vision.feature import Feature
+        from gcloud.vision.feature import FeatureTypes
 
         REQUEST = {
             "requests": [
@@ -61,8 +62,6 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
-        from gcloud.vision.feature import Feature, FeatureTypes
-
         features = [Feature(feature_type=FeatureTypes.FACE_DETECTION,
                             max_results=3)]
 
@@ -75,7 +74,7 @@ class TestClient(unittest.TestCase):
 
 
 class TestVisionRequest(unittest.TestCase):
-    _IMAGE_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
+    _IMAGE_CONTENT = to_bytes('/9j/4QNURXhpZgAASUkq')
 
     def _getTargetClass(self):
         from gcloud.vision.client import VisionRequest
@@ -85,7 +84,9 @@ class TestVisionRequest(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_make_vision_request(self):
-        from gcloud.vision.feature import Feature, FeatureTypes
+        from gcloud.vision.feature import Feature
+        from gcloud.vision.feature import FeatureTypes
+
         feature = Feature(feature_type=FeatureTypes.FACE_DETECTION,
                           max_results=3)
         vision_request = self._makeOne(self._IMAGE_CONTENT, feature)

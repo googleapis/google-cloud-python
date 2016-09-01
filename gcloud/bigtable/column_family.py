@@ -305,7 +305,7 @@ class ColumnFamily(object):
         client._table_stub.ModifyColumnFamilies(request_pb)
 
 
-def _gc_rule_from_pb(gc_rule_pb):
+def gc_rule_from_pb(gc_rule_pb):
     """Convert a protobuf GC rule to a native object.
 
     :type gc_rule_pb: :class:`.table_v2_pb2.GcRule`
@@ -313,7 +313,7 @@ def _gc_rule_from_pb(gc_rule_pb):
 
     :rtype: :class:`GarbageCollectionRule` or :data:`NoneType <types.NoneType>`
     :returns: An instance of one of the native rules defined
-              in :module:`column_family` or :data:`None` if no values were
+              in :mod:`column_family` or :data:`None` if no values were
               set on the protobuf passed in.
     :raises: :class:`ValueError <exceptions.ValueError>` if the rule name
              is unexpected.
@@ -328,10 +328,10 @@ def _gc_rule_from_pb(gc_rule_pb):
         max_age = _duration_pb_to_timedelta(gc_rule_pb.max_age)
         return MaxAgeGCRule(max_age)
     elif rule_name == 'union':
-        return GCRuleUnion([_gc_rule_from_pb(rule)
+        return GCRuleUnion([gc_rule_from_pb(rule)
                             for rule in gc_rule_pb.union.rules])
     elif rule_name == 'intersection':
-        rules = [_gc_rule_from_pb(rule)
+        rules = [gc_rule_from_pb(rule)
                  for rule in gc_rule_pb.intersection.rules]
         return GCRuleIntersection(rules)
     else:

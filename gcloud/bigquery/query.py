@@ -16,13 +16,13 @@
 
 import six
 
-from gcloud.bigquery._helpers import _TypedProperty
-from gcloud.bigquery._helpers import _rows_from_json
+from gcloud.bigquery._helpers import TypedProperty
+from gcloud.bigquery._helpers import rows_from_json
 from gcloud.bigquery.dataset import Dataset
 from gcloud.bigquery.job import QueryJob
 from gcloud.bigquery.job import UDFResourcesProperty
-from gcloud.bigquery.job import _build_udf_resources
-from gcloud.bigquery.table import _parse_schema_resource
+from gcloud.bigquery.job import build_udf_resources
+from gcloud.bigquery.table import parse_schema_resource
 
 
 class _SyncQueryConfiguration(object):
@@ -201,7 +201,7 @@ class QueryResults(object):
         :rtype: list of tuples of row values, or ``NoneType``
         :returns: fields describing the schema (None until set by the server).
         """
-        return _rows_from_json(self._properties.get('rows', ()), self.schema)
+        return rows_from_json(self._properties.get('rows', ()), self.schema)
 
     @property
     def schema(self):
@@ -213,41 +213,41 @@ class QueryResults(object):
         :rtype: list of :class:`SchemaField`, or ``NoneType``
         :returns: fields describing the schema (None until set by the server).
         """
-        return _parse_schema_resource(self._properties.get('schema', {}))
+        return parse_schema_resource(self._properties.get('schema', {}))
 
-    default_dataset = _TypedProperty('default_dataset', Dataset)
+    default_dataset = TypedProperty('default_dataset', Dataset)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset
     """
 
-    dry_run = _TypedProperty('dry_run', bool)
+    dry_run = TypedProperty('dry_run', bool)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#dryRun
     """
 
-    max_results = _TypedProperty('max_results', six.integer_types)
+    max_results = TypedProperty('max_results', six.integer_types)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#maxResults
     """
 
-    preserve_nulls = _TypedProperty('preserve_nulls', bool)
+    preserve_nulls = TypedProperty('preserve_nulls', bool)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#preserveNulls
     """
 
-    timeout_ms = _TypedProperty('timeout_ms', six.integer_types)
+    timeout_ms = TypedProperty('timeout_ms', six.integer_types)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#timeoutMs
     """
 
     udf_resources = UDFResourcesProperty()
 
-    use_query_cache = _TypedProperty('use_query_cache', bool)
+    use_query_cache = TypedProperty('use_query_cache', bool)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#useQueryCache
     """
 
-    use_legacy_sql = _TypedProperty('use_legacy_sql', bool)
+    use_legacy_sql = TypedProperty('use_legacy_sql', bool)
     """See:
     https://cloud.google.com/bigquery/docs/\
     reference/v2/jobs/query#useLegacySql
@@ -291,7 +291,7 @@ class QueryResults(object):
             resource['dryRun'] = self.dry_run
 
         if len(self._udf_resources) > 0:
-            resource[self._UDF_KEY] = _build_udf_resources(self._udf_resources)
+            resource[self._UDF_KEY] = build_udf_resources(self._udf_resources)
 
         return resource
 
@@ -372,6 +372,6 @@ class QueryResults(object):
         if total_rows is not None:
             total_rows = int(total_rows)
         page_token = response.get('pageToken')
-        rows_data = _rows_from_json(response.get('rows', ()), self.schema)
+        rows_data = rows_from_json(response.get('rows', ()), self.schema)
 
         return rows_data, total_rows, page_token

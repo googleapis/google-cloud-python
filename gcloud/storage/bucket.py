@@ -18,11 +18,11 @@ import copy
 
 import six
 
-from gcloud._helpers import _rfc3339_to_datetime
+from gcloud._helpers import rfc3339_to_datetime
 from gcloud.exceptions import NotFound
 from gcloud.iterator import Iterator
-from gcloud.storage._helpers import _PropertyMixin
-from gcloud.storage._helpers import _scalar_property
+from gcloud.storage._helpers import PropertyMixin
+from gcloud.storage._helpers import scalar_property
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.blob import Blob
@@ -69,7 +69,7 @@ class _BlobIterator(Iterator):
             yield blob
 
 
-class Bucket(_PropertyMixin):
+class Bucket(PropertyMixin):
     """A class representing a Bucket on Cloud Storage.
 
     :type client: :class:`gcloud.storage.client.Client`
@@ -557,7 +557,7 @@ class Bucket(_PropertyMixin):
     def lifecycle_rules(self, rules):
         self._patch_property('lifecycle', {'rule': rules})
 
-    location = _scalar_property('location')
+    location = scalar_property('location')
     """Retrieve location configured for this bucket.
 
     See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
@@ -695,7 +695,7 @@ class Bucket(_PropertyMixin):
         """
         value = self._properties.get('timeCreated')
         if value is not None:
-            return _rfc3339_to_datetime(value)
+            return rfc3339_to_datetime(value)
 
     @property
     def versioning_enabled(self):

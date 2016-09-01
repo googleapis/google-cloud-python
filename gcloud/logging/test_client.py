@@ -39,7 +39,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, self.PROJECT)
 
     def test_logging_api_wo_gax(self):
-        from gcloud.logging.connection import _LoggingAPI
+        from gcloud.logging.connection import LoggingAPI
         from gcloud.logging import client as MUT
         from gcloud._testing import _Monkey
         client = self._makeOne(self.PROJECT, credentials=_Credentials())
@@ -48,7 +48,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=False):
             api = client.logging_api
 
-        self.assertTrue(isinstance(api, _LoggingAPI))
+        self.assertTrue(isinstance(api, LoggingAPI))
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.logging_api
@@ -86,7 +86,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_sinks_api_wo_gax(self):
-        from gcloud.logging.connection import _SinksAPI
+        from gcloud.logging.connection import SinksAPI
         from gcloud.logging import client as MUT
         from gcloud._testing import _Monkey
         client = self._makeOne(self.PROJECT, credentials=_Credentials())
@@ -95,7 +95,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=False):
             api = client.sinks_api
 
-        self.assertTrue(isinstance(api, _SinksAPI))
+        self.assertTrue(isinstance(api, SinksAPI))
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.sinks_api
@@ -133,7 +133,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_metrics_api_wo_gax(self):
-        from gcloud.logging.connection import _MetricsAPI
+        from gcloud.logging.connection import MetricsAPI
         from gcloud.logging import client as MUT
         from gcloud._testing import _Monkey
         client = self._makeOne(self.PROJECT, credentials=_Credentials())
@@ -142,7 +142,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=False):
             api = client.metrics_api
 
-        self.assertTrue(isinstance(api, _MetricsAPI))
+        self.assertTrue(isinstance(api, MetricsAPI))
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.metrics_api

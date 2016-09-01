@@ -91,7 +91,7 @@ class Connection(base_connection.JSONConnection):
             api_base_url=api_base_url, api_version=api_version)
 
 
-class _PublisherAPI(object):
+class PublisherAPI(object):
     """Helper mapping publisher-related APIs.
 
     :type connection: :class:`Connection`
@@ -243,7 +243,7 @@ class _PublisherAPI(object):
         return resp.get('subscriptions', ()), resp.get('nextPageToken')
 
 
-class _SubscriberAPI(object):
+class SubscriberAPI(object):
     """Helper mapping subscriber-related APIs.
 
     :type connection: :class:`Connection`
@@ -468,7 +468,7 @@ class _SubscriberAPI(object):
         conn.api_request(method='POST', path=path, data=data)
 
 
-class _IAMPolicyAPI(object):
+class IAMPolicyAPI(object):
     """Helper mapping IAM policy-related APIs.
 
     :type connection: :class:`Connection`

@@ -82,8 +82,8 @@ class TestQuery(unittest.TestCase):
 
     @staticmethod
     def _make_timestamp(value):
-        from gcloud._helpers import _datetime_to_rfc3339
-        return _datetime_to_rfc3339(value)
+        from gcloud._helpers import datetime_to_rfc3339
+        return datetime_to_rfc3339(value)
 
     def test_constructor_minimal(self):
         client = _Client(project=PROJECT, connection=_Connection())

@@ -16,12 +16,12 @@ import os
 import unittest
 
 
-class Test__LocalStack(unittest.TestCase):
+class Test_LocalStack(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud._helpers import _LocalStack
+        from gcloud._helpers import LocalStack
 
-        return _LocalStack
+        return LocalStack
 
     def _makeOne(self):
         return self._getTargetClass()()
@@ -97,11 +97,11 @@ class Test__UTC(unittest.TestCase):
         self.assertEqual(str(tz), 'UTC')
 
 
-class Test__ensure_tuple_or_list(unittest.TestCase):
+class Test_ensure_tuple_or_list(unittest.TestCase):
 
     def _callFUT(self, arg_name, tuple_or_list):
-        from gcloud._helpers import _ensure_tuple_or_list
-        return _ensure_tuple_or_list(arg_name, tuple_or_list)
+        from gcloud._helpers import ensure_tuple_or_list
+        return ensure_tuple_or_list(arg_name, tuple_or_list)
 
     def test_valid_tuple(self):
         valid_tuple_or_list = ('a', 'b', 'c', 'd')
@@ -305,11 +305,11 @@ class Test__get_production_project(unittest.TestCase):
             self.assertEqual(project, MOCK_PROJECT)
 
 
-class Test__determine_default_project(unittest.TestCase):
+class Test_determine_default_project(unittest.TestCase):
 
     def _callFUT(self, project=None):
-        from gcloud._helpers import _determine_default_project
-        return _determine_default_project(project=project)
+        from gcloud._helpers import determine_default_project
+        return determine_default_project(project=project)
 
     def _determine_default_helper(self, prod=None, gae=None, gce=None,
                                   file_id=None, srv_id=None, project=None):
@@ -384,11 +384,11 @@ class Test__determine_default_project(unittest.TestCase):
                                    'gae_mock', 'gce_mock'])
 
 
-class Test__millis(unittest.TestCase):
+class Test_millis(unittest.TestCase):
 
     def _callFUT(self, value):
-        from gcloud._helpers import _millis
-        return _millis(value)
+        from gcloud._helpers import millis
+        return millis(value)
 
     def test_one_second_from_epoch(self):
         import datetime
@@ -398,11 +398,11 @@ class Test__millis(unittest.TestCase):
         self.assertEqual(self._callFUT(WHEN), 1000)
 
 
-class Test__microseconds_from_datetime(unittest.TestCase):
+class Test_microseconds_from_datetime(unittest.TestCase):
 
     def _callFUT(self, value):
-        from gcloud._helpers import _microseconds_from_datetime
-        return _microseconds_from_datetime(value)
+        from gcloud._helpers import microseconds_from_datetime
+        return microseconds_from_datetime(value)
 
     def test_it(self):
         import datetime
@@ -415,11 +415,11 @@ class Test__microseconds_from_datetime(unittest.TestCase):
         self.assertEqual(result, microseconds)
 
 
-class Test__millis_from_datetime(unittest.TestCase):
+class Testmillis_from_datetime(unittest.TestCase):
 
     def _callFUT(self, value):
-        from gcloud._helpers import _millis_from_datetime
-        return _millis_from_datetime(value)
+        from gcloud._helpers import millis_from_datetime
+        return millis_from_datetime(value)
 
     def test_w_none(self):
         self.assertTrue(self._callFUT(None) is None)
@@ -428,10 +428,10 @@ class Test__millis_from_datetime(unittest.TestCase):
         import datetime
         import six
         from gcloud._helpers import UTC
-        from gcloud._helpers import _microseconds_from_datetime
+        from gcloud._helpers import microseconds_from_datetime
 
         NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
-        NOW_MICROS = _microseconds_from_datetime(NOW)
+        NOW_MICROS = microseconds_from_datetime(NOW)
         MILLIS = NOW_MICROS // 1000
         result = self._callFUT(NOW)
         self.assertTrue(isinstance(result, six.integer_types))
@@ -441,7 +441,7 @@ class Test__millis_from_datetime(unittest.TestCase):
         import datetime
         import six
         from gcloud._helpers import _UTC
-        from gcloud._helpers import _microseconds_from_datetime
+        from gcloud._helpers import microseconds_from_datetime
 
         class CET(_UTC):
             _tzname = 'CET'
@@ -449,7 +449,7 @@ class Test__millis_from_datetime(unittest.TestCase):
 
         zone = CET()
         NOW = datetime.datetime(2015, 7, 28, 16, 34, 47, tzinfo=zone)
-        NOW_MICROS = _microseconds_from_datetime(NOW)
+        NOW_MICROS = microseconds_from_datetime(NOW)
         MILLIS = NOW_MICROS // 1000
         result = self._callFUT(NOW)
         self.assertTrue(isinstance(result, six.integer_types))
@@ -459,39 +459,39 @@ class Test__millis_from_datetime(unittest.TestCase):
         import datetime
         import six
         from gcloud._helpers import UTC
-        from gcloud._helpers import _microseconds_from_datetime
+        from gcloud._helpers import microseconds_from_datetime
 
         NOW = datetime.datetime.utcnow()
-        UTC_NOW = NOW.replace(tzinfo=UTC)
-        UTC_NOW_MICROS = _microseconds_from_datetime(UTC_NOW)
-        MILLIS = UTC_NOW_MICROS // 1000
+        UTCNOW = NOW.replace(tzinfo=UTC)
+        UTCNOW_MICROS = microseconds_from_datetime(UTCNOW)
+        MILLIS = UTCNOW_MICROS // 1000
         result = self._callFUT(NOW)
         self.assertTrue(isinstance(result, six.integer_types))
         self.assertEqual(result, MILLIS)
 
 
-class Test__datetime_from_microseconds(unittest.TestCase):
+class Test_datetime_from_microseconds(unittest.TestCase):
 
     def _callFUT(self, value):
-        from gcloud._helpers import _datetime_from_microseconds
-        return _datetime_from_microseconds(value)
+        from gcloud._helpers import datetime_from_microseconds
+        return datetime_from_microseconds(value)
 
     def test_it(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud._helpers import _microseconds_from_datetime
+        from gcloud._helpers import microseconds_from_datetime
 
         NOW = datetime.datetime(2015, 7, 29, 17, 45, 21, 123456,
                                 tzinfo=UTC)
-        NOW_MICROS = _microseconds_from_datetime(NOW)
+        NOW_MICROS = microseconds_from_datetime(NOW)
         self.assertEqual(self._callFUT(NOW_MICROS), NOW)
 
 
-class Test__rfc3339_to_datetime(unittest.TestCase):
+class Test_rfc3339_to_datetime(unittest.TestCase):
 
     def _callFUT(self, dt_str):
-        from gcloud._helpers import _rfc3339_to_datetime
-        return _rfc3339_to_datetime(dt_str)
+        from gcloud._helpers import rfc3339_to_datetime
+        return rfc3339_to_datetime(dt_str)
 
     def test_w_bogus_zone(self):
         year = 2009
@@ -541,11 +541,11 @@ class Test__rfc3339_to_datetime(unittest.TestCase):
             self._callFUT(dt_str)
 
 
-class Test__rfc3339_nanos_to_datetime(unittest.TestCase):
+class Test_rfc3339_nanos_to_datetime(unittest.TestCase):
 
     def _callFUT(self, dt_str):
-        from gcloud._helpers import _rfc3339_nanos_to_datetime
-        return _rfc3339_nanos_to_datetime(dt_str)
+        from gcloud._helpers import rfc3339_nanos_to_datetime
+        return rfc3339_nanos_to_datetime(dt_str)
 
     def test_w_bogus_zone(self):
         year = 2009
@@ -611,11 +611,11 @@ class Test__rfc3339_nanos_to_datetime(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
 
-class Test__datetime_to_rfc3339(unittest.TestCase):
+class Test_datetime_to_rfc3339(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud._helpers import _datetime_to_rfc3339
-        return _datetime_to_rfc3339(*args, **kwargs)
+        from gcloud._helpers import datetime_to_rfc3339
+        return datetime_to_rfc3339(*args, **kwargs)
 
     @staticmethod
     def _make_timezone(offset):
@@ -661,11 +661,11 @@ class Test__datetime_to_rfc3339(unittest.TestCase):
         self.assertEqual(result, '2016-04-05T13:30:00.000000Z')
 
 
-class Test__to_bytes(unittest.TestCase):
+class Test_to_bytes(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud._helpers import _to_bytes
-        return _to_bytes(*args, **kwargs)
+        from gcloud._helpers import to_bytes
+        return to_bytes(*args, **kwargs)
 
     def test_with_bytes(self):
         value = b'bytes-val'
@@ -688,11 +688,11 @@ class Test__to_bytes(unittest.TestCase):
         self.assertRaises(TypeError, self._callFUT, value)
 
 
-class Test__bytes_to_unicode(unittest.TestCase):
+class Test_bytes_to_unicode(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud._helpers import _bytes_to_unicode
-        return _bytes_to_unicode(*args, **kwargs)
+        from gcloud._helpers import bytes_to_unicode
+        return bytes_to_unicode(*args, **kwargs)
 
     def test_with_bytes(self):
         value = b'bytes-val'
@@ -709,11 +709,11 @@ class Test__bytes_to_unicode(unittest.TestCase):
         self.assertRaises(ValueError, self._callFUT, value)
 
 
-class Test__pb_timestamp_to_datetime(unittest.TestCase):
+class Test_pb_timestamp_to_datetime(unittest.TestCase):
 
     def _callFUT(self, timestamp):
-        from gcloud._helpers import _pb_timestamp_to_datetime
-        return _pb_timestamp_to_datetime(timestamp)
+        from gcloud._helpers import pb_timestamp_to_datetime
+        return pb_timestamp_to_datetime(timestamp)
 
     def test_it(self):
         import datetime
@@ -730,11 +730,11 @@ class Test__pb_timestamp_to_datetime(unittest.TestCase):
         self.assertEqual(self._callFUT(timestamp), dt_stamp)
 
 
-class Test__pb_timestamp_to_rfc3339(unittest.TestCase):
+class Test_pb_timestamp_to_rfc3339(unittest.TestCase):
 
     def _callFUT(self, timestamp):
-        from gcloud._helpers import _pb_timestamp_to_rfc3339
-        return _pb_timestamp_to_rfc3339(timestamp)
+        from gcloud._helpers import pb_timestamp_to_rfc3339
+        return pb_timestamp_to_rfc3339(timestamp)
 
     def test_it(self):
         from google.protobuf.timestamp_pb2 import Timestamp
@@ -747,11 +747,11 @@ class Test__pb_timestamp_to_rfc3339(unittest.TestCase):
                          '1970-01-01T00:01:01.001234Z')
 
 
-class Test__datetime_to_pb_timestamp(unittest.TestCase):
+class Test_datetime_to_pb_timestamp(unittest.TestCase):
 
     def _callFUT(self, when):
-        from gcloud._helpers import _datetime_to_pb_timestamp
-        return _datetime_to_pb_timestamp(when)
+        from gcloud._helpers import datetime_to_pb_timestamp
+        return datetime_to_pb_timestamp(when)
 
     def test_it(self):
         import datetime
@@ -768,15 +768,15 @@ class Test__datetime_to_pb_timestamp(unittest.TestCase):
         self.assertEqual(self._callFUT(dt_stamp), timestamp)
 
 
-class Test__name_from_project_path(unittest.TestCase):
+class Test_name_from_project_path(unittest.TestCase):
 
     PROJECT = 'PROJECT'
     THING_NAME = 'THING_NAME'
     TEMPLATE = r'projects/(?P<project>\w+)/things/(?P<name>\w+)'
 
     def _callFUT(self, path, project, template):
-        from gcloud._helpers import _name_from_project_path
-        return _name_from_project_path(path, project, template)
+        from gcloud._helpers import name_from_project_path
+        return name_from_project_path(path, project, template)
 
     def test_w_invalid_path_length(self):
         PATH = 'projects/foo'

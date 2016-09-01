@@ -24,8 +24,8 @@ from google.protobuf import struct_pb2
 from google.type import latlng_pb2
 import six
 
-from gcloud._helpers import _datetime_to_pb_timestamp
-from gcloud._helpers import _pb_timestamp_to_datetime
+from gcloud._helpers import datetime_to_pb_timestamp
+from gcloud._helpers import pb_timestamp_to_datetime
 from gcloud.datastore._generated import entity_pb2 as _entity_pb2
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
@@ -218,7 +218,7 @@ def entity_to_protobuf(entity):
 
         value_pb = _new_value_pb(entity_pb, name)
         # Set the appropriate value.
-        _set_protobuf_value(value_pb, value)
+        set_protobuf_value(value_pb, value)
 
         # Add index information to protobuf.
         if name in entity.exclude_from_indexes:
@@ -302,7 +302,7 @@ def _pb_attr_value(val):
 
     if isinstance(val, datetime.datetime):
         name = 'timestamp'
-        value = _datetime_to_pb_timestamp(val)
+        value = datetime_to_pb_timestamp(val)
     elif isinstance(val, Key):
         name, value = 'key', val.to_protobuf()
     elif isinstance(val, bool):
@@ -350,7 +350,7 @@ def _get_value_from_value_pb(value_pb):
     value_type = value_pb.WhichOneof('value_type')
 
     if value_type == 'timestamp_value':
-        result = _pb_timestamp_to_datetime(value_pb.timestamp_value)
+        result = pb_timestamp_to_datetime(value_pb.timestamp_value)
 
     elif value_type == 'key_value':
         result = key_from_protobuf(value_pb.key_value)
@@ -390,7 +390,7 @@ def _get_value_from_value_pb(value_pb):
     return result
 
 
-def _set_protobuf_value(value_pb, val):
+def set_protobuf_value(value_pb, val):
     """Assign 'val' to the correct subfield of 'value_pb'.
 
     The Protobuf API uses different attribute names based on value types
@@ -419,7 +419,7 @@ def _set_protobuf_value(value_pb, val):
         l_pb = value_pb.array_value.values
         for item in val:
             i_pb = l_pb.add()
-            _set_protobuf_value(i_pb, item)
+            set_protobuf_value(i_pb, item)
     elif attr == 'geo_point_value':
         value_pb.geo_point_value.CopyFrom(val)
     else:  # scalar, just assign

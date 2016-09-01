@@ -24,7 +24,7 @@ from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import exceptions
 from gcloud import storage
-from gcloud.storage._helpers import _base64_md5hash
+from gcloud.storage._helpers import base64_md5hash
 
 from system_test_utils import unique_resource_id
 from retry import RetryErrors
@@ -117,7 +117,7 @@ class TestStorageFiles(unittest.TestCase):
         super(TestStorageFiles, cls).setUpClass()
         for file_data in cls.FILES.values():
             with open(file_data['path'], 'rb') as file_obj:
-                file_data['hash'] = _base64_md5hash(file_obj)
+                file_data['hash'] = base64_md5hash(file_obj)
         cls.bucket = Config.TEST_BUCKET
 
     def setUp(self):

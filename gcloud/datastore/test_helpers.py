@@ -656,9 +656,9 @@ class Test__get_value_from_value_pb(unittest.TestCase):
 class Test_set_protobuf_value(unittest.TestCase):
 
     def _callFUT(self, value_pb, val):
-        from gcloud.datastore.helpers import _set_protobuf_value
+        from gcloud.datastore.helpers import set_protobuf_value
 
-        return _set_protobuf_value(value_pb, val)
+        return set_protobuf_value(value_pb, val)
 
     def _makePB(self):
         from gcloud.datastore._generated import entity_pb2

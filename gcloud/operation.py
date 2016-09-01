@@ -23,7 +23,7 @@ _TYPE_URL_MAP = {
 }
 
 
-def _compute_type_url(klass, prefix=_GOOGLE_APIS_PREFIX):
+def compute_type_url(klass, prefix=_GOOGLE_APIS_PREFIX):
     """Compute a type URL for a klass.
 
     :type klass: type
@@ -39,7 +39,7 @@ def _compute_type_url(klass, prefix=_GOOGLE_APIS_PREFIX):
     return '%s/%s' % (prefix, name)
 
 
-def _register_type_url(type_url, klass):
+def register_type_url(type_url, klass):
     """Register a klass as the factory for a given type URL.
 
     :type type_url: str

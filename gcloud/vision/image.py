@@ -17,8 +17,8 @@
 
 from base64 import b64encode
 
-from gcloud._helpers import _to_bytes
-from gcloud._helpers import _bytes_to_unicode
+from gcloud._helpers import to_bytes
+from gcloud._helpers import bytes_to_unicode
 
 
 class Image(object):
@@ -37,10 +37,10 @@ class Image(object):
         self._content = None
         self._source = None
 
-        if _bytes_to_unicode(image_source).startswith('gs://'):
+        if bytes_to_unicode(image_source).startswith('gs://'):
             self._source = image_source
         else:
-            self._content = b64encode(_to_bytes(image_source))
+            self._content = b64encode(to_bytes(image_source))
 
     def as_dict(self):
         """Generate dictionary structure for request"""

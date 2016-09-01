@@ -16,7 +16,7 @@
 
 import base64
 
-from gcloud._helpers import _rfc3339_to_datetime
+from gcloud._helpers import rfc3339_to_datetime
 
 
 class Message(object):
@@ -64,7 +64,7 @@ class Message(object):
         stamp = self.attributes.get('timestamp')
         if stamp is None:
             raise ValueError('No timestamp')
-        return _rfc3339_to_datetime(stamp)
+        return rfc3339_to_datetime(stamp)
 
     @property
     def service_timestamp(self):

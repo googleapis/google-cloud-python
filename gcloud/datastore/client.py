@@ -15,9 +15,9 @@
 
 import os
 
-from gcloud._helpers import _LocalStack
-from gcloud._helpers import _determine_default_project as _base_default_project
-from gcloud.client import _ClientProjectMixin
+from gcloud._helpers import LocalStack
+from gcloud._helpers import determine_default_project as _base_default_project
+from gcloud.client import ClientProjectMixin
 from gcloud.client import Client as _BaseClient
 from gcloud.datastore import helpers
 from gcloud.datastore.connection import Connection
@@ -142,7 +142,7 @@ def _extended_lookup(connection, project, key_pbs,
     return results
 
 
-class Client(_BaseClient, _ClientProjectMixin):
+class Client(_BaseClient, ClientProjectMixin):
     """Convenience wrapper for invoking APIs/factories w/ a project.
 
     :type project: string
@@ -167,9 +167,9 @@ class Client(_BaseClient, _ClientProjectMixin):
 
     def __init__(self, project=None, namespace=None,
                  credentials=None, http=None):
-        _ClientProjectMixin.__init__(self, project=project)
+        ClientProjectMixin.__init__(self, project=project)
         self.namespace = namespace
-        self._batch_stack = _LocalStack()
+        self._batch_stack = LocalStack()
         super(Client, self).__init__(credentials, http)
 
     @staticmethod

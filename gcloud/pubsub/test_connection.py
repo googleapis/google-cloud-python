@@ -114,11 +114,11 @@ class TestConnection(_Base):
                          URI)
 
 
-class Test_PublisherAPI(_Base):
+class TestPublisherAPI(_Base):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.connection import _PublisherAPI
-        return _PublisherAPI
+        from gcloud.pubsub.connection import PublisherAPI
+        return PublisherAPI
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -375,11 +375,11 @@ class Test_PublisherAPI(_Base):
         self.assertEqual(connection._called_with['query_params'], {})
 
 
-class Test_SubscriberAPI(_Base):
+class TestSubscriberAPI(_Base):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.connection import _SubscriberAPI
-        return _SubscriberAPI
+        from gcloud.pubsub.connection import SubscriberAPI
+        return SubscriberAPI
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -628,11 +628,11 @@ class Test_SubscriberAPI(_Base):
         self.assertEqual(connection._called_with['data'], BODY)
 
 
-class Test_IAMPolicyAPI(_Base):
+class TestIAMPolicyAPI(_Base):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.connection import _IAMPolicyAPI
-        return _IAMPolicyAPI
+        from gcloud.pubsub.connection import IAMPolicyAPI
+        return IAMPolicyAPI
 
     def test_ctor(self):
         connection = _Connection()
@@ -640,7 +640,10 @@ class Test_IAMPolicyAPI(_Base):
         self.assertTrue(api._connection is connection)
 
     def test_get_iam_policy(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE
+        from gcloud.pubsub.iam import EDITOR_ROLE
+        from gcloud.pubsub.iam import VIEWER_ROLE
+
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -667,7 +670,10 @@ class Test_IAMPolicyAPI(_Base):
         self.assertEqual(connection._called_with['path'], path)
 
     def test_set_iam_policy(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE
+        from gcloud.pubsub.iam import EDITOR_ROLE
+        from gcloud.pubsub.iam import VIEWER_ROLE
+
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -697,7 +703,10 @@ class Test_IAMPolicyAPI(_Base):
                          {'policy': POLICY})
 
     def test_test_iam_permissions(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE
+        from gcloud.pubsub.iam import EDITOR_ROLE
+        from gcloud.pubsub.iam import VIEWER_ROLE
+
         ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
         ALLOWED = ALL_ROLES[1:]
         RETURNED = {'permissions': ALLOWED}
@@ -714,7 +723,10 @@ class Test_IAMPolicyAPI(_Base):
                          {'permissions': ALL_ROLES})
 
     def test_test_iam_permissions_missing_key(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE
+        from gcloud.pubsub.iam import EDITOR_ROLE
+        from gcloud.pubsub.iam import VIEWER_ROLE
+
         ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
         RETURNED = {}
         connection = _Connection(RETURNED)

@@ -15,12 +15,12 @@
 import unittest
 import base64
 
-from gcloud._helpers import _to_bytes
+from gcloud._helpers import to_bytes
 
 
 class TestVisionImage(unittest.TestCase):
     _IMAGE_SOURCE = 'gs://some/image.jpg'
-    _IMAGE_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
+    _IMAGE_CONTENT = to_bytes('/9j/4QNURXhpZgAASUkq')
     _B64_IMAGE_CONTENT = base64.b64encode(_IMAGE_CONTENT)
     _CLIENT_MOCK = {'source': ''}
 

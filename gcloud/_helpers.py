@@ -45,7 +45,7 @@ from gcloud.environment_vars import PROJECT
 from gcloud.environment_vars import CREDENTIALS
 
 
-_NOW = datetime.datetime.utcnow  # To be replaced by tests.
+NOW = datetime.datetime.utcnow  # To be replaced by tests.
 _RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
 _RFC3339_NO_FRACTION = '%Y-%m-%dT%H:%M:%S'
 # datetime.strptime cannot handle nanosecond precision:  parse w/ regex
@@ -60,14 +60,14 @@ _RFC3339_NANOS = re.compile(r"""
 DEFAULT_CONFIGURATION_PATH = '~/.config/gcloud/configurations/config_default'
 
 
-class _LocalStack(Local):
+class LocalStack(Local):
     """Manage a thread-local LIFO stack of resources.
 
     Intended for use in :class:`gcloud.datastore.batch.Batch.__enter__`,
     :class:`gcloud.storage.batch.Batch.__enter__`, etc.
     """
     def __init__(self):
-        super(_LocalStack, self).__init__()
+        super(LocalStack, self).__init__()
         self._stack = []
 
     def __iter__(self):
@@ -135,7 +135,7 @@ class _UTC(datetime.tzinfo):
         return self._tzname
 
 
-def _ensure_tuple_or_list(arg_name, tuple_or_list):
+def ensure_tuple_or_list(arg_name, tuple_or_list):
     """Ensures an input is a tuple or list.
 
     This effectively reduces the iterable types allowed to a very short
@@ -251,7 +251,7 @@ def _get_production_project():
     return os.getenv(PROJECT)
 
 
-def _determine_default_project(project=None):
+def determine_default_project(project=None):
     """Determine default project ID explicitly or implicitly as fall-back.
 
     In implicit case, supports three environments. In order of precedence, the
@@ -288,7 +288,7 @@ def _determine_default_project(project=None):
     return project
 
 
-def _millis(when):
+def millis(when):
     """Convert a zone-aware datetime to integer milliseconds.
 
     :type when: :class:`datetime.datetime`
@@ -297,11 +297,11 @@ def _millis(when):
     :rtype: int
     :returns: milliseconds since epoch for ``when``
     """
-    micros = _microseconds_from_datetime(when)
+    micros = microseconds_from_datetime(when)
     return micros // 1000
 
 
-def _datetime_from_microseconds(value):
+def datetime_from_microseconds(value):
     """Convert timestamp to datetime, assuming UTC.
 
     :type value: float
@@ -313,7 +313,7 @@ def _datetime_from_microseconds(value):
     return _EPOCH + datetime.timedelta(microseconds=value)
 
 
-def _microseconds_from_datetime(value):
+def microseconds_from_datetime(value):
     """Convert non-none datetime to microseconds.
 
     :type value: :class:`datetime.datetime`
@@ -330,7 +330,7 @@ def _microseconds_from_datetime(value):
     return int(calendar.timegm(value.timetuple()) * 1e6) + value.microsecond
 
 
-def _millis_from_datetime(value):
+def millis_from_datetime(value):
     """Convert non-none datetime to timestamp, assuming UTC.
 
     :type value: :class:`datetime.datetime`, or None
@@ -340,10 +340,10 @@ def _millis_from_datetime(value):
     :returns: the timestamp, in milliseconds, or None
     """
     if value is not None:
-        return _millis(value)
+        return millis(value)
 
 
-def _rfc3339_to_datetime(dt_str):
+def rfc3339_to_datetime(dt_str):
     """Convert a microsecond-precision timetamp to a native datetime.
 
     :type dt_str: str
@@ -356,7 +356,7 @@ def _rfc3339_to_datetime(dt_str):
         dt_str, _RFC3339_MICROS).replace(tzinfo=UTC)
 
 
-def _rfc3339_nanos_to_datetime(dt_str):
+def rfc3339_nanos_to_datetime(dt_str):
     """Convert a nanosecond-precision timestamp to a native datetime.
 
     .. note::
@@ -386,7 +386,7 @@ def _rfc3339_nanos_to_datetime(dt_str):
     return bare_seconds.replace(microsecond=micros, tzinfo=UTC)
 
 
-def _datetime_to_rfc3339(value, ignore_zone=True):
+def datetime_to_rfc3339(value, ignore_zone=True):
     """Convert a timestamp to a string.
 
     :type value: :class:`datetime.datetime`
@@ -406,7 +406,7 @@ def _datetime_to_rfc3339(value, ignore_zone=True):
     return value.strftime(_RFC3339_MICROS)
 
 
-def _to_bytes(value, encoding='ascii'):
+def to_bytes(value, encoding='ascii'):
     """Converts a string value to bytes, if necessary.
 
     Unfortunately, ``six.b`` is insufficient for this task since in
@@ -436,7 +436,7 @@ def _to_bytes(value, encoding='ascii'):
         raise TypeError('%r could not be converted to bytes' % (value,))
 
 
-def _bytes_to_unicode(value):
+def bytes_to_unicode(value):
     """Converts bytes to a unicode value, if necessary.
 
     :type value: bytes
@@ -456,7 +456,7 @@ def _bytes_to_unicode(value):
         raise ValueError('%r could not be converted to unicode' % (value,))
 
 
-def _pb_timestamp_to_datetime(timestamp_pb):
+def pb_timestamp_to_datetime(timestamp_pb):
     """Convert a Timestamp protobuf to a datetime object.
 
     :type timestamp_pb: :class:`google.protobuf.timestamp_pb2.Timestamp`
@@ -474,7 +474,7 @@ def _pb_timestamp_to_datetime(timestamp_pb):
     )
 
 
-def _pb_timestamp_to_rfc3339(timestamp_pb):
+def pb_timestamp_to_rfc3339(timestamp_pb):
     """Convert a Timestamp protobuf to an RFC 3339 string.
 
     :type timestamp_pb: :class:`google.protobuf.timestamp_pb2.Timestamp`
@@ -483,11 +483,11 @@ def _pb_timestamp_to_rfc3339(timestamp_pb):
     :rtype: string
     :returns: An RFC 3339 formatted timestamp string.
     """
-    timestamp = _pb_timestamp_to_datetime(timestamp_pb)
-    return _datetime_to_rfc3339(timestamp)
+    timestamp = pb_timestamp_to_datetime(timestamp_pb)
+    return datetime_to_rfc3339(timestamp)
 
 
-def _datetime_to_pb_timestamp(when):
+def datetime_to_pb_timestamp(when):
     """Convert a datetime object to a Timestamp protobuf.
 
     :type when: :class:`datetime.datetime`
@@ -496,13 +496,13 @@ def _datetime_to_pb_timestamp(when):
     :rtype: :class:`google.protobuf.timestamp_pb2.Timestamp`
     :returns: A timestamp protobuf corresponding to the object.
     """
-    ms_value = _microseconds_from_datetime(when)
+    ms_value = microseconds_from_datetime(when)
     seconds, micros = divmod(ms_value, 10**6)
     nanos = micros * 10**3
     return timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
 
 
-def _name_from_project_path(path, project, template):
+def name_from_project_path(path, project, template):
     """Validate a URI path and get the leaf object's name.
 
     :type path: str

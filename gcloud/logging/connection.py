@@ -48,7 +48,7 @@ class Connection(base_connection.JSONConnection):
     """The scopes required for authenticating as a Logging consumer."""
 
 
-class _LoggingAPI(object):
+class LoggingAPI(object):
     """Helper mapping logging-related APIs.
 
     See:
@@ -165,7 +165,7 @@ class _LoggingAPI(object):
         self._connection.api_request(method='DELETE', path=path)
 
 
-class _SinksAPI(object):
+class SinksAPI(object):
     """Helper mapping sink-related APIs.
 
     See:
@@ -304,7 +304,7 @@ class _SinksAPI(object):
         self._connection.api_request(method='DELETE', path=target)
 
 
-class _MetricsAPI(object):
+class MetricsAPI(object):
     """Helper mapping sink-related APIs.
 
     See:

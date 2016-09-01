@@ -205,7 +205,7 @@ class TestClient(unittest.TestCase):
         client._push_batch(xact)
         self.assertTrue(client.current_batch is xact)
         self.assertTrue(client.current_transaction is xact)
-        # list(_LocalStack) returns in reverse order.
+        # list(LocalStack) returns in reverse order.
         self.assertEqual(list(client._batch_stack), [xact, batch])
         self.assertTrue(client._pop_batch() is xact)
         self.assertEqual(list(client._batch_stack), [batch])

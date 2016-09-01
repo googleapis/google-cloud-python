@@ -22,8 +22,8 @@ from six.moves.urllib.parse import urlencode
 from oauth2client import client
 
 from gcloud._helpers import UTC
-from gcloud._helpers import _NOW
-from gcloud._helpers import _microseconds_from_datetime
+from gcloud._helpers import NOW
+from gcloud._helpers import microseconds_from_datetime
 
 
 def get_credentials():
@@ -132,12 +132,12 @@ def _get_expiration_seconds(expiration):
     """
     # If it's a timedelta, add it to `now` in UTC.
     if isinstance(expiration, datetime.timedelta):
-        now = _NOW().replace(tzinfo=UTC)
+        now = NOW().replace(tzinfo=UTC)
         expiration = now + expiration
 
     # If it's a datetime, convert to a timestamp.
     if isinstance(expiration, datetime.datetime):
-        micros = _microseconds_from_datetime(expiration)
+        micros = microseconds_from_datetime(expiration)
         expiration = micros // 10**6
 
     if not isinstance(expiration, six.integer_types):

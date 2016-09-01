@@ -29,12 +29,12 @@ class TestChanges(unittest.TestCase):
 
     def _setUpConstants(self):
         from gcloud._helpers import UTC
-        from gcloud._helpers import _NOW
-        self.WHEN = _NOW().replace(tzinfo=UTC)
+        from gcloud._helpers import NOW
+        self.WHEN = NOW().replace(tzinfo=UTC)
 
     def _makeResource(self):
-        from gcloud._helpers import _datetime_to_rfc3339
-        when_str = _datetime_to_rfc3339(self.WHEN)
+        from gcloud._helpers import datetime_to_rfc3339
+        when_str = datetime_to_rfc3339(self.WHEN)
         return {
             'kind': 'dns#change',
             'id': self.CHANGES_NAME,
@@ -55,9 +55,9 @@ class TestChanges(unittest.TestCase):
         }
 
     def _verifyResourceProperties(self, changes, resource, zone):
-        from gcloud._helpers import _rfc3339_to_datetime
+        from gcloud._helpers import rfc3339_to_datetime
         self.assertEqual(changes.name, resource['id'])
-        started = _rfc3339_to_datetime(resource['startTime'])
+        started = rfc3339_to_datetime(resource['startTime'])
         self.assertEqual(changes.started, started)
         self.assertEqual(changes.status, resource['status'])
 

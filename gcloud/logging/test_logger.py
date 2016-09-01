@@ -238,7 +238,9 @@ class TestLogger(unittest.TestCase):
     def test_log_proto_w_implicit_client(self):
         import json
         from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
         message = Struct(fields={'foo': Value(bool_value=True)})
         ENTRIES = [{
             'logName': 'projects/%s/logs/%s' % (
@@ -260,7 +262,9 @@ class TestLogger(unittest.TestCase):
     def test_log_proto_w_default_labels(self):
         import json
         from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
         message = Struct(fields={'foo': Value(bool_value=True)})
         DEFAULT_LABELS = {'foo': 'spam'}
         ENTRIES = [{
@@ -285,7 +289,9 @@ class TestLogger(unittest.TestCase):
     def test_log_proto_w_explicit_client_labels_severity_httpreq(self):
         import json
         from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
         message = Struct(fields={'foo': Value(bool_value=True)})
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -468,7 +474,9 @@ class TestBatch(unittest.TestCase):
                          [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST)])
 
     def test_log_proto_defaults(self):
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
         message = Struct(fields={'foo': Value(bool_value=True)})
         client = _Client(project=self.PROJECT, connection=object())
         logger = _Logger()
@@ -478,7 +486,9 @@ class TestBatch(unittest.TestCase):
                          [('proto', message, None, None, None, None)])
 
     def test_log_proto_explicit(self):
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
         message = Struct(fields={'foo': Value(bool_value=True)})
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         IID = 'IID'
@@ -510,7 +520,9 @@ class TestBatch(unittest.TestCase):
     def test_commit_w_bound_client(self):
         import json
         from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
         message = Struct(fields={'foo': Value(bool_value=True)})
@@ -543,8 +555,10 @@ class TestBatch(unittest.TestCase):
     def test_commit_w_alternate_client(self):
         import json
         from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
         from gcloud.logging.logger import Logger
+
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
         message = Struct(fields={'foo': Value(bool_value=True)})
@@ -587,8 +601,10 @@ class TestBatch(unittest.TestCase):
     def test_context_mgr_success(self):
         import json
         from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
         from gcloud.logging.logger import Logger
+
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
         message = Struct(fields={'foo': Value(bool_value=True)})
@@ -627,7 +643,9 @@ class TestBatch(unittest.TestCase):
                          (ENTRIES, logger.full_name, RESOURCE, DEFAULT_LABELS))
 
     def test_context_mgr_failure(self):
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}

@@ -133,7 +133,7 @@ class TestTable(unittest.TestCase):
         self.assertNotEqual(table1, table2)
 
     def _create_test_helper(self, initial_split_keys, column_families=()):
-        from gcloud._helpers import _to_bytes
+        from gcloud._helpers import to_bytes
         from gcloud.bigtable._testing import _FakeStub
 
         client = _Client()
@@ -142,7 +142,7 @@ class TestTable(unittest.TestCase):
 
         # Create request_pb
         splits_pb = [
-            _CreateTableRequestSplitPB(key=_to_bytes(key))
+            _CreateTableRequestSplitPB(key=to_bytes(key))
             for key in initial_split_keys or ()]
         table_pb = None
         if column_families:

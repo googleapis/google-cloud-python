@@ -25,8 +25,8 @@ TOP_RESOURCE_LABELS = (
 )
 
 
-def _build_dataframe(time_series_iterable,
-                     label=None, labels=None):  # pragma: NO COVER
+def build_dataframe(time_series_iterable,
+                    label=None, labels=None):  # pragma: NO COVER
     """Build a :mod:`pandas` dataframe out of time series.
 
     :type time_series_iterable:

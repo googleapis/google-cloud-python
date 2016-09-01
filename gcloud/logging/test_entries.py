@@ -125,7 +125,7 @@ class Test_BaseEntry(unittest.TestCase):
         SEVERITY = 'CRITICAL'
         IID = 'IID'
         NOW = datetime.utcnow().replace(tzinfo=UTC)
-        TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
+        TIMESTAMP = datetime_to_rfc3339_w_nanos(NOW)
         LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         METHOD = 'POST'
@@ -167,7 +167,7 @@ class Test_BaseEntry(unittest.TestCase):
         PAYLOAD = 'PAYLOAD'
         IID = 'IID'
         NOW = datetime.utcnow().replace(tzinfo=UTC)
-        TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
+        TIMESTAMP = datetime_to_rfc3339_w_nanos(NOW)
         LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         API_REPR = {
@@ -203,7 +203,9 @@ class TestProtobufEntry(unittest.TestCase):
     def test_parse_message(self):
         import json
         from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
         LOGGER = object()
         message = Struct(fields={'foo': Value(bool_value=False)})
         with_true = Struct(fields={'foo': Value(bool_value=True)})
@@ -213,7 +215,7 @@ class TestProtobufEntry(unittest.TestCase):
         self.assertTrue(message.fields['foo'])
 
 
-def _datetime_to_rfc3339_w_nanos(value):
+def datetime_to_rfc3339_w_nanos(value):
     from gcloud._helpers import _RFC3339_NO_FRACTION
     no_fraction = value.strftime(_RFC3339_NO_FRACTION)
     return '%s.%09dZ' % (no_fraction, value.microsecond * 1000)

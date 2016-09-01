@@ -566,11 +566,11 @@ class TestColumnFamily(unittest.TestCase):
         )])
 
 
-class Test__gc_rule_from_pb(unittest.TestCase):
+class Test_gc_rule_from_pb(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud.bigtable.column_family import _gc_rule_from_pb
-        return _gc_rule_from_pb(*args, **kwargs)
+        from gcloud.bigtable.column_family import gc_rule_from_pb
+        return gc_rule_from_pb(*args, **kwargs)
 
     def test_empty(self):
 

@@ -84,11 +84,11 @@ def generate_query_results():  # pragma: NO COVER
 
 
 @unittest.skipUnless(HAVE_PANDAS, 'No pandas')
-class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
+class Test_build_dataframe(unittest.TestCase):  # pragma: NO COVER
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud.monitoring._dataframe import _build_dataframe
-        return _build_dataframe(*args, **kwargs)
+        from gcloud.monitoring._dataframe import build_dataframe
+        return build_dataframe(*args, **kwargs)
 
     def test_both_label_and_labels_illegal(self):
         with self.assertRaises(ValueError):

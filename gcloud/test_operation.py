@@ -15,13 +15,13 @@
 import unittest
 
 
-class Test__compute_type_url(unittest.TestCase):
+class Test_compute_type_url(unittest.TestCase):
 
     def _callFUT(self, klass, prefix=None):
-        from gcloud.operation import _compute_type_url
+        from gcloud.operation import compute_type_url
         if prefix is None:
-            return _compute_type_url(klass)
-        return _compute_type_url(klass, prefix)
+            return compute_type_url(klass)
+        return compute_type_url(klass, prefix)
 
     def test_wo_prefix(self):
         from google.protobuf.struct_pb2 import Struct
@@ -44,11 +44,11 @@ class Test__compute_type_url(unittest.TestCase):
             '%s/%s' % (PREFIX, Struct.DESCRIPTOR.full_name))
 
 
-class Test__register_type_url(unittest.TestCase):
+class Test_register_type_url(unittest.TestCase):
 
     def _callFUT(self, type_url, klass):
-        from gcloud.operation import _register_type_url
-        _register_type_url(type_url, klass)
+        from gcloud.operation import register_type_url
+        register_type_url(type_url, klass)
 
     def test_simple(self):
         from gcloud import operation as MUT
@@ -136,7 +136,9 @@ class OperationTests(unittest.TestCase):
     def test_from_pb_w_unknown_metadata(self):
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
         TYPE_URI = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
 
         client = _Client()
@@ -156,9 +158,11 @@ class OperationTests(unittest.TestCase):
     def test_from_pb_w_metadata_and_kwargs(self):
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
         from gcloud import operation as MUT
         from gcloud._testing import _Monkey
+
         TYPE_URI = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
         type_url_map = {TYPE_URI: Struct}
 

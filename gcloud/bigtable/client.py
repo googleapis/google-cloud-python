@@ -36,9 +36,9 @@ from gcloud.bigtable._generated import bigtable_table_admin_pb2
 from gcloud.bigtable._generated import operations_grpc_pb2
 from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from gcloud.bigtable.instance import Instance
-from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
-from gcloud.client import _ClientFactoryMixin
-from gcloud.client import _ClientProjectMixin
+from gcloud.bigtable.instance import EXISTING_INSTANCE_LOCATION_ID
+from gcloud.client import ClientFactoryMixin
+from gcloud.client import ClientProjectMixin
 from gcloud.credentials import get_credentials
 
 
@@ -131,7 +131,7 @@ def _make_table_stub(client):
                      TABLE_ADMIN_HOST, TABLE_ADMIN_PORT)
 
 
-class Client(_ClientFactoryMixin, _ClientProjectMixin):
+class Client(ClientFactoryMixin, ClientProjectMixin):
     """Client for interacting with Google Cloud Bigtable API.
 
     .. note::
@@ -175,7 +175,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
 
     def __init__(self, project=None, credentials=None,
                  read_only=False, admin=False, user_agent=DEFAULT_USER_AGENT):
-        _ClientProjectMixin.__init__(self, project=project)
+        ClientProjectMixin.__init__(self, project=project)
         if credentials is None:
             credentials = get_credentials()
 
@@ -297,7 +297,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
             raise ValueError('Client is not an admin client.')
         return self._table_stub_internal
 
-    def instance(self, instance_id, location=_EXISTING_INSTANCE_LOCATION_ID,
+    def instance(self, instance_id, location=EXISTING_INSTANCE_LOCATION_ID,
                  display_name=None, serve_nodes=DEFAULT_SERVE_NODES):
         """Factory to create a instance associated with this client.
 

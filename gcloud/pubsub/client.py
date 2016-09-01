@@ -18,9 +18,9 @@ import os
 
 from gcloud.client import JSONClient
 from gcloud.pubsub.connection import Connection
-from gcloud.pubsub.connection import _PublisherAPI as JSONPublisherAPI
-from gcloud.pubsub.connection import _SubscriberAPI as JSONSubscriberAPI
-from gcloud.pubsub.connection import _IAMPolicyAPI
+from gcloud.pubsub.connection import PublisherAPI as JSONPublisherAPI
+from gcloud.pubsub.connection import SubscriberAPI as JSONSubscriberAPI
+from gcloud.pubsub.connection import IAMPolicyAPI
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
 
@@ -30,8 +30,8 @@ try:
         PublisherApi as GeneratedPublisherAPI)
     from google.cloud.pubsub.v1.subscriber_api import (
         SubscriberApi as GeneratedSubscriberAPI)
-    from gcloud.pubsub._gax import _PublisherAPI as GAXPublisherAPI
-    from gcloud.pubsub._gax import _SubscriberAPI as GAXSubscriberAPI
+    from gcloud.pubsub._gax import PublisherAPI as GAXPublisherAPI
+    from gcloud.pubsub._gax import SubscriberAPI as GAXSubscriberAPI
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False
     GeneratedPublisherAPI = GAXPublisherAPI = None
@@ -95,7 +95,7 @@ class Client(JSONClient):
     def iam_policy_api(self):
         """Helper for IAM policy-related API calls."""
         if self._iam_policy_api is None:
-            self._iam_policy_api = _IAMPolicyAPI(self.connection)
+            self._iam_policy_api = IAMPolicyAPI(self.connection)
         return self._iam_policy_api
 
     def list_topics(self, page_size=None, page_token=None):

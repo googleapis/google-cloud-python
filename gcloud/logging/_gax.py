@@ -26,14 +26,14 @@ from google.logging.v2.log_entry_pb2 import LogEntry
 from google.protobuf.json_format import Parse
 from grpc import StatusCode
 
-from gcloud._helpers import _datetime_to_pb_timestamp
-from gcloud._helpers import _pb_timestamp_to_rfc3339
+from gcloud._helpers import datetime_to_pb_timestamp
+from gcloud._helpers import pb_timestamp_to_rfc3339
 from gcloud._helpers import exc_to_code
 from gcloud.exceptions import Conflict
 from gcloud.exceptions import NotFound
 
 
-class _LoggingAPI(object):
+class LoggingAPI(object):
     """Helper mapping logging-related APIs.
 
     :type gax_api:
@@ -127,7 +127,7 @@ class _LoggingAPI(object):
             raise
 
 
-class _SinksAPI(object):
+class SinksAPI(object):
     """Helper mapping sink-related APIs.
 
     :type gax_api:
@@ -273,7 +273,7 @@ class _SinksAPI(object):
             raise
 
 
-class _MetricsAPI(object):
+class MetricsAPI(object):
     """Helper mapping sink-related APIs.
 
     :type gax_api:
@@ -486,7 +486,7 @@ def _log_entry_pb_to_mapping(entry_pb):
         'resource': _mon_resource_pb_to_mapping(entry_pb.resource),
         'severity': LogSeverity.Name(entry_pb.severity),
         'insertId': entry_pb.insert_id,
-        'timestamp': _pb_timestamp_to_rfc3339(entry_pb.timestamp),
+        'timestamp': pb_timestamp_to_rfc3339(entry_pb.timestamp),
         'labels': entry_pb.labels,
     }
     if entry_pb.HasField('text_payload'):
@@ -591,7 +591,7 @@ def _log_entry_mapping_to_pb(mapping):
         entry_pb.severity = severity
 
     if 'timestamp' in mapping:
-        timestamp = _datetime_to_pb_timestamp(mapping['timestamp'])
+        timestamp = datetime_to_pb_timestamp(mapping['timestamp'])
         entry_pb.timestamp.CopyFrom(timestamp)
 
     if 'labels' in mapping:

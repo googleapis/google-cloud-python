@@ -18,7 +18,7 @@
 import httplib2
 import six
 
-from gcloud._helpers import _to_bytes
+from gcloud._helpers import to_bytes
 from gcloud.translate.connection import Connection
 
 
@@ -115,7 +115,7 @@ class Client(object):
             values = [values]
 
         query_params = [('key', self.api_key)]
-        query_params.extend(('q', _to_bytes(value, 'utf-8'))
+        query_params.extend(('q', to_bytes(value, 'utf-8'))
                             for value in values)
         response = self.connection.api_request(
             method='GET', path='/detect', query_params=query_params)
@@ -200,7 +200,7 @@ class Client(object):
             customization_ids = [customization_ids]
 
         query_params = [('key', self.api_key), ('target', target_language)]
-        query_params.extend(('q', _to_bytes(value, 'utf-8'))
+        query_params.extend(('q', to_bytes(value, 'utf-8'))
                             for value in values)
         query_params.extend(('cid', cid) for cid in customization_ids)
         if format_ is not None:

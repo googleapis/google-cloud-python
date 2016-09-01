@@ -17,14 +17,14 @@
 import six
 
 from gcloud.exceptions import NotFound
-from gcloud._helpers import _datetime_from_microseconds
+from gcloud._helpers import datetime_from_microseconds
 from gcloud.bigquery.dataset import Dataset
 from gcloud.bigquery.schema import SchemaField
 from gcloud.bigquery.table import Table
-from gcloud.bigquery.table import _build_schema_resource
-from gcloud.bigquery.table import _parse_schema_resource
-from gcloud.bigquery._helpers import _EnumProperty
-from gcloud.bigquery._helpers import _TypedProperty
+from gcloud.bigquery.table import build_schema_resource
+from gcloud.bigquery.table import parse_schema_resource
+from gcloud.bigquery._helpers import EnumProperty
+from gcloud.bigquery._helpers import TypedProperty
 
 
 class UDFResource(object):
@@ -48,7 +48,7 @@ class UDFResource(object):
             self.value == other.value)
 
 
-def _build_udf_resources(resources):
+def build_udf_resources(resources):
     """
     :type resources: sequence of :class:`UDFResource`
     :param resources: fields to be appended.
@@ -81,21 +81,21 @@ class UDFResourcesProperty(object):
         instance._udf_resources = tuple(value)
 
 
-class Compression(_EnumProperty):
+class Compression(EnumProperty):
     """Pseudo-enum for ``compression`` properties."""
     GZIP = 'GZIP'
     NONE = 'NONE'
     ALLOWED = (GZIP, NONE)
 
 
-class CreateDisposition(_EnumProperty):
+class CreateDisposition(EnumProperty):
     """Pseudo-enum for ``create_disposition`` properties."""
     CREATE_IF_NEEDED = 'CREATE_IF_NEEDED'
     CREATE_NEVER = 'CREATE_NEVER'
     ALLOWED = (CREATE_IF_NEEDED, CREATE_NEVER)
 
 
-class DestinationFormat(_EnumProperty):
+class DestinationFormat(EnumProperty):
     """Pseudo-enum for ``destination_format`` properties."""
     CSV = 'CSV'
     NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
@@ -103,21 +103,21 @@ class DestinationFormat(_EnumProperty):
     ALLOWED = (CSV, NEWLINE_DELIMITED_JSON, AVRO)
 
 
-class Encoding(_EnumProperty):
+class Encoding(EnumProperty):
     """Pseudo-enum for ``encoding`` properties."""
     UTF_8 = 'UTF-8'
     ISO_8559_1 = 'ISO-8559-1'
     ALLOWED = (UTF_8, ISO_8559_1)
 
 
-class QueryPriority(_EnumProperty):
+class QueryPriority(EnumProperty):
     """Pseudo-enum for ``QueryJob.priority`` property."""
     INTERACTIVE = 'INTERACTIVE'
     BATCH = 'BATCH'
     ALLOWED = (INTERACTIVE, BATCH)
 
 
-class SourceFormat(_EnumProperty):
+class SourceFormat(EnumProperty):
     """Pseudo-enum for ``source_format`` properties."""
     CSV = 'CSV'
     DATASTORE_BACKUP = 'DATASTORE_BACKUP'
@@ -125,7 +125,7 @@ class SourceFormat(_EnumProperty):
     ALLOWED = (CSV, DATASTORE_BACKUP, NEWLINE_DELIMITED_JSON)
 
 
-class WriteDisposition(_EnumProperty):
+class WriteDisposition(EnumProperty):
     """Pseudo-enum for ``write_disposition`` properties."""
     WRITE_APPEND = 'WRITE_APPEND'
     WRITE_TRUNCATE = 'WRITE_TRUNCATE'
@@ -238,7 +238,7 @@ class _AsyncJob(_BaseJob):
         if statistics is not None:
             millis = statistics.get('creationTime')
             if millis is not None:
-                return _datetime_from_microseconds(millis * 1000.0)
+                return datetime_from_microseconds(millis * 1000.0)
 
     @property
     def started(self):
@@ -251,7 +251,7 @@ class _AsyncJob(_BaseJob):
         if statistics is not None:
             millis = statistics.get('startTime')
             if millis is not None:
-                return _datetime_from_microseconds(millis * 1000.0)
+                return datetime_from_microseconds(millis * 1000.0)
 
     @property
     def ended(self):
@@ -264,7 +264,7 @@ class _AsyncJob(_BaseJob):
         if statistics is not None:
             millis = statistics.get('endTime')
             if millis is not None:
-                return _datetime_from_microseconds(millis * 1000.0)
+                return datetime_from_microseconds(millis * 1000.0)
 
     @property
     def error_result(self):
@@ -537,12 +537,12 @@ class LoadTableFromStorageJob(_AsyncJob):
         if statistics is not None:
             return int(statistics['load']['outputRows'])
 
-    allow_jagged_rows = _TypedProperty('allow_jagged_rows', bool)
+    allow_jagged_rows = TypedProperty('allow_jagged_rows', bool)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowJaggedRows
     """
 
-    allow_quoted_newlines = _TypedProperty('allow_quoted_newlines', bool)
+    allow_quoted_newlines = TypedProperty('allow_quoted_newlines', bool)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowQuotedNewlines
     """
@@ -557,27 +557,27 @@ class LoadTableFromStorageJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.encoding
     """
 
-    field_delimiter = _TypedProperty('field_delimiter', six.string_types)
+    field_delimiter = TypedProperty('field_delimiter', six.string_types)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.fieldDelimiter
     """
 
-    ignore_unknown_values = _TypedProperty('ignore_unknown_values', bool)
+    ignore_unknown_values = TypedProperty('ignore_unknown_values', bool)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.ignoreUnknownValues
     """
 
-    max_bad_records = _TypedProperty('max_bad_records', six.integer_types)
+    max_bad_records = TypedProperty('max_bad_records', six.integer_types)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.maxBadRecords
     """
 
-    quote_character = _TypedProperty('quote_character', six.string_types)
+    quote_character = TypedProperty('quote_character', six.string_types)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.quote
     """
 
-    skip_leading_rows = _TypedProperty('skip_leading_rows', six.integer_types)
+    skip_leading_rows = TypedProperty('skip_leading_rows', six.integer_types)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.skipLeadingRows
     """
@@ -640,14 +640,14 @@ class LoadTableFromStorageJob(_AsyncJob):
 
         if len(self.schema) > 0:
             configuration['schema'] = {
-                'fields': _build_schema_resource(self.schema)}
+                'fields': build_schema_resource(self.schema)}
 
         return resource
 
     def _scrub_local_properties(self, cleaned):
         """Helper:  handle subclass properties in cleaned."""
         schema = cleaned.pop('schema', {'fields': ()})
-        self.schema = _parse_schema_resource(schema)
+        self.schema = parse_schema_resource(schema)
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -838,12 +838,12 @@ class ExtractTableToStorageJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.destinationFormat
     """
 
-    field_delimiter = _TypedProperty('field_delimiter', six.string_types)
+    field_delimiter = TypedProperty('field_delimiter', six.string_types)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.fieldDelimiter
     """
 
-    print_header = _TypedProperty('print_header', bool)
+    print_header = TypedProperty('print_header', bool)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.printHeader
     """
@@ -957,7 +957,7 @@ class QueryJob(_AsyncJob):
         self.udf_resources = udf_resources
         self._configuration = _AsyncQueryConfiguration()
 
-    allow_large_results = _TypedProperty('allow_large_results', bool)
+    allow_large_results = TypedProperty('allow_large_results', bool)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.allowLargeResults
     """
@@ -967,17 +967,17 @@ class QueryJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.createDisposition
     """
 
-    default_dataset = _TypedProperty('default_dataset', Dataset)
+    default_dataset = TypedProperty('default_dataset', Dataset)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
     """
 
-    destination = _TypedProperty('destination', Table)
+    destination = TypedProperty('destination', Table)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.destinationTable
     """
 
-    flatten_results = _TypedProperty('flatten_results', bool)
+    flatten_results = TypedProperty('flatten_results', bool)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.flattenResults
     """
@@ -989,12 +989,12 @@ class QueryJob(_AsyncJob):
 
     udf_resources = UDFResourcesProperty()
 
-    use_query_cache = _TypedProperty('use_query_cache', bool)
+    use_query_cache = TypedProperty('use_query_cache', bool)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.useQueryCache
     """
 
-    use_legacy_sql = _TypedProperty('use_legacy_sql', bool)
+    use_legacy_sql = TypedProperty('use_legacy_sql', bool)
     """See:
     https://cloud.google.com/bigquery/docs/\
     reference/v2/jobs#configuration.query.useLegacySql
@@ -1043,7 +1043,7 @@ class QueryJob(_AsyncJob):
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
         if len(self._udf_resources) > 0:
-            configuration[self._UDF_KEY] = _build_udf_resources(
+            configuration[self._UDF_KEY] = build_udf_resources(
                 self._udf_resources)
 
     def _build_resource(self):

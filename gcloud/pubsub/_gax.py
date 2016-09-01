@@ -21,13 +21,13 @@ from google.pubsub.v1.pubsub_pb2 import PubsubMessage
 from google.pubsub.v1.pubsub_pb2 import PushConfig
 from grpc import StatusCode
 
-from gcloud._helpers import _to_bytes
+from gcloud._helpers import to_bytes
 from gcloud._helpers import exc_to_code
 from gcloud.exceptions import Conflict
 from gcloud.exceptions import NotFound
 
 
-class _PublisherAPI(object):
+class PublisherAPI(object):
     """Helper mapping publisher-related APIs.
 
     :type gax_api: :class:`google.pubsub.v1.publisher_api.PublisherApi`
@@ -204,7 +204,7 @@ class _PublisherAPI(object):
         return subs, token
 
 
-class _SubscriberAPI(object):
+class SubscriberAPI(object):
     """Helper mapping subscriber-related APIs.
 
     :type gax_api: :class:`google.pubsub.v1.publisher_api.SubscriberApi`
@@ -443,12 +443,12 @@ class _SubscriberAPI(object):
 
 
 def _message_pb_from_mapping(message):
-    """Helper for :meth:`_PublisherAPI.topic_publish`.
+    """Helper for :meth:`PublisherAPI.topic_publish`.
 
     Performs "impedance matching" between the protobuf attrs and the keys
     expected in the JSON API.
     """
-    return PubsubMessage(data=_to_bytes(message['data']),
+    return PubsubMessage(data=to_bytes(message['data']),
                          attributes=message['attributes'])
 
 

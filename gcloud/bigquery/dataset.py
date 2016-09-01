@@ -15,7 +15,7 @@
 """Define API Datasets."""
 import six
 
-from gcloud._helpers import _datetime_from_microseconds
+from gcloud._helpers import datetime_from_microseconds
 from gcloud.exceptions import NotFound
 from gcloud.bigquery.table import Table
 
@@ -162,7 +162,7 @@ class Dataset(object):
         creation_time = self._properties.get('creationTime')
         if creation_time is not None:
             # creation_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * creation_time)
+            return datetime_from_microseconds(1000.0 * creation_time)
 
     @property
     def dataset_id(self):
@@ -192,7 +192,7 @@ class Dataset(object):
         modified_time = self._properties.get('lastModifiedTime')
         if modified_time is not None:
             # modified_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * modified_time)
+            return datetime_from_microseconds(1000.0 * modified_time)
 
     @property
     def self_link(self):
