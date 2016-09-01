@@ -640,7 +640,10 @@ class Test_IAMPolicyAPI(_Base):
         self.assertTrue(api._connection is connection)
 
     def test_get_iam_policy(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE
+        from gcloud.pubsub.iam import EDITOR_ROLE
+        from gcloud.pubsub.iam import VIEWER_ROLE
+
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -667,7 +670,10 @@ class Test_IAMPolicyAPI(_Base):
         self.assertEqual(connection._called_with['path'], path)
 
     def test_set_iam_policy(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE
+        from gcloud.pubsub.iam import EDITOR_ROLE
+        from gcloud.pubsub.iam import VIEWER_ROLE
+
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -697,7 +703,10 @@ class Test_IAMPolicyAPI(_Base):
                          {'policy': POLICY})
 
     def test_test_iam_permissions(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE
+        from gcloud.pubsub.iam import EDITOR_ROLE
+        from gcloud.pubsub.iam import VIEWER_ROLE
+
         ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
         ALLOWED = ALL_ROLES[1:]
         RETURNED = {'permissions': ALLOWED}
@@ -714,7 +723,10 @@ class Test_IAMPolicyAPI(_Base):
                          {'permissions': ALL_ROLES})
 
     def test_test_iam_permissions_missing_key(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE
+        from gcloud.pubsub.iam import EDITOR_ROLE
+        from gcloud.pubsub.iam import VIEWER_ROLE
+
         ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
         RETURNED = {}
         connection = _Connection(RETURNED)

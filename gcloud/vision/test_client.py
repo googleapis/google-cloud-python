@@ -39,8 +39,9 @@ class TestClient(unittest.TestCase):
         self.assertTrue('annotate' in dir(client))
 
     def test_face_annotation(self):
-
         from gcloud.vision._fixtures import FACE_DETECTION_RESPONSE as RETURNED
+        from gcloud.vision.feature import Feature
+        from gcloud.vision.feature import FeatureTypes
 
         REQUEST = {
             "requests": [
@@ -60,8 +61,6 @@ class TestClient(unittest.TestCase):
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
-
-        from gcloud.vision.feature import Feature, FeatureTypes
 
         features = [Feature(feature_type=FeatureTypes.FACE_DETECTION,
                             max_results=3)]
@@ -85,7 +84,9 @@ class TestVisionRequest(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_make_vision_request(self):
-        from gcloud.vision.feature import Feature, FeatureTypes
+        from gcloud.vision.feature import Feature
+        from gcloud.vision.feature import FeatureTypes
+
         feature = Feature(feature_type=FeatureTypes.FACE_DETECTION,
                           max_results=3)
         vision_request = self._makeOne(self._IMAGE_CONTENT, feature)

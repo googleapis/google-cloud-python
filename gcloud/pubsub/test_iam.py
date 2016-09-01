@@ -91,13 +91,12 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(list(policy.viewers), [])
 
     def test_from_api_repr_complete(self):
-        from gcloud.pubsub.iam import (
-            OWNER_ROLE,
-            EDITOR_ROLE,
-            VIEWER_ROLE,
-            PUBSUB_PUBLISHER_ROLE,
-            PUBSUB_SUBSCRIBER_ROLE,
-        )
+        from gcloud.pubsub.iam import OWNER_ROLE
+        from gcloud.pubsub.iam import EDITOR_ROLE
+        from gcloud.pubsub.iam import VIEWER_ROLE
+        from gcloud.pubsub.iam import PUBSUB_PUBLISHER_ROLE
+        from gcloud.pubsub.iam import PUBSUB_SUBSCRIBER_ROLE
+
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -150,13 +149,12 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(policy.to_api_repr(), {'etag': 'DEADBEEF'})
 
     def test_to_api_repr_full(self):
-        from gcloud.pubsub.iam import (
-            PUBSUB_ADMIN_ROLE,
-            PUBSUB_EDITOR_ROLE,
-            PUBSUB_VIEWER_ROLE,
-            PUBSUB_PUBLISHER_ROLE,
-            PUBSUB_SUBSCRIBER_ROLE,
-        )
+        from gcloud.pubsub.iam import PUBSUB_ADMIN_ROLE
+        from gcloud.pubsub.iam import PUBSUB_EDITOR_ROLE
+        from gcloud.pubsub.iam import PUBSUB_VIEWER_ROLE
+        from gcloud.pubsub.iam import PUBSUB_PUBLISHER_ROLE
+        from gcloud.pubsub.iam import PUBSUB_SUBSCRIBER_ROLE
+
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
         EDITOR1 = 'domain:google.com'

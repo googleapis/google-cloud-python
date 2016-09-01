@@ -203,7 +203,9 @@ class TestProtobufEntry(unittest.TestCase):
     def test_parse_message(self):
         import json
         from google.protobuf.json_format import MessageToJson
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
         LOGGER = object()
         message = Struct(fields={'foo': Value(bool_value=False)})
         with_true = Struct(fields={'foo': Value(bool_value=True)})

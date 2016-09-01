@@ -224,7 +224,9 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from datetime import datetime
         from google.logging.type.log_severity_pb2 import WARNING
         from google.logging.v2.log_entry_pb2 import LogEntry
-        from gcloud._helpers import UTC, _pb_timestamp_to_datetime
+        from gcloud._helpers import _pb_timestamp_to_datetime
+        from gcloud._helpers import UTC
+
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         TEXT = 'TEXT'
         LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
@@ -322,7 +324,9 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from google.logging.v2.log_entry_pb2 import LogEntry
         from google.protobuf.any_pb2 import Any
         from google.protobuf.struct_pb2 import Struct
-        from gcloud._helpers import _datetime_to_rfc3339, UTC
+        from gcloud._helpers import _datetime_to_rfc3339
+        from gcloud._helpers import UTC
+
         TEXT = 'TEXT'
         NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
         TIMESTAMP_TYPE_URL = 'type.googleapis.com/google.protobuf.Timestamp'

@@ -450,13 +450,12 @@ class TestSubscription(unittest.TestCase):
                          (self.SUB_PATH, [ACK_ID1, ACK_ID2], self.DEADLINE))
 
     def test_get_iam_policy_w_bound_client(self):
-        from gcloud.pubsub.iam import (
-            PUBSUB_ADMIN_ROLE,
-            PUBSUB_EDITOR_ROLE,
-            PUBSUB_VIEWER_ROLE,
-            PUBSUB_PUBLISHER_ROLE,
-            PUBSUB_SUBSCRIBER_ROLE,
-        )
+        from gcloud.pubsub.iam import PUBSUB_ADMIN_ROLE
+        from gcloud.pubsub.iam import PUBSUB_EDITOR_ROLE
+        from gcloud.pubsub.iam import PUBSUB_VIEWER_ROLE
+        from gcloud.pubsub.iam import PUBSUB_PUBLISHER_ROLE
+        from gcloud.pubsub.iam import PUBSUB_SUBSCRIBER_ROLE
+
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -516,13 +515,12 @@ class TestSubscription(unittest.TestCase):
 
     def test_set_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import Policy
-        from gcloud.pubsub.iam import (
-            PUBSUB_ADMIN_ROLE,
-            PUBSUB_EDITOR_ROLE,
-            PUBSUB_VIEWER_ROLE,
-            PUBSUB_PUBLISHER_ROLE,
-            PUBSUB_SUBSCRIBER_ROLE,
-        )
+        from gcloud.pubsub.iam import PUBSUB_ADMIN_ROLE
+        from gcloud.pubsub.iam import PUBSUB_EDITOR_ROLE
+        from gcloud.pubsub.iam import PUBSUB_VIEWER_ROLE
+        from gcloud.pubsub.iam import PUBSUB_PUBLISHER_ROLE
+        from gcloud.pubsub.iam import PUBSUB_SUBSCRIBER_ROLE
+
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
         EDITOR1 = 'domain:google.com'
@@ -592,7 +590,10 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(api._set_iam_policy, (self.SUB_PATH, {}))
 
     def test_check_iam_permissions_w_bound_client(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE
+        from gcloud.pubsub.iam import EDITOR_ROLE
+        from gcloud.pubsub.iam import VIEWER_ROLE
+
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         client = _Client(project=self.PROJECT)
         api = client.iam_policy_api = _FauxIAMPolicy()
@@ -607,7 +608,10 @@ class TestSubscription(unittest.TestCase):
                          (self.SUB_PATH, ROLES))
 
     def test_check_iam_permissions_w_alternate_client(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE
+        from gcloud.pubsub.iam import EDITOR_ROLE
+        from gcloud.pubsub.iam import VIEWER_ROLE
+
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
