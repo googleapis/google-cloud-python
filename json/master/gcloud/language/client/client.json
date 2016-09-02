@@ -20,21 +20,21 @@
       "name": "document_from_html", 
       "params": [
         {
-          "description": " The document HTML text content.", 
-          "name": "content", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to be passed along to the", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The document HTML text content.", 
+          "name": "content", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -55,21 +55,21 @@
       "name": "document_from_text", 
       "params": [
         {
-          "description": " The document plain text content.", 
-          "name": "content", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to be passed along to the", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The document plain text content.", 
+          "name": "content", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -90,6 +90,15 @@
       "name": "document_from_url", 
       "params": [
         {
+          "description": " Remaining keyword arguments to be passed along to the", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
           "description": " (Optional) The type of text in the document. Defaults to plain text. Can also be specified as HTML via :attr:~.Document.HTML.", 
           "name": "doc_type", 
           "nullable": null, 
@@ -105,15 +114,6 @@
           "optional": null, 
           "types": [
             "str"
-          ]
-        }, 
-        {
-          "description": " Remaining keyword arguments to be passed along to the", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
           ]
         }
       ], 
@@ -178,21 +178,21 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }, 
         {
@@ -205,12 +205,12 @@
           ]
         }, 
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "string"
           ]
         }
       ], 

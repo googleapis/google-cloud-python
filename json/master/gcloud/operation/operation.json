@@ -29,21 +29,21 @@
           ]
         }, 
         {
-          "description": " caller-assigned metadata about the operation", 
-          "name": "kw", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " The client used to poll for the status of the operation.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "object must provide _operations_stub accessor."
+          ]
+        }, 
+        {
+          "description": " caller-assigned metadata about the operation", 
+          "name": "kw", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 

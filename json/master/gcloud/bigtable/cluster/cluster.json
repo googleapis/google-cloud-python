@@ -62,21 +62,21 @@
       "name": "from_pb", 
       "params": [
         {
-          "description": " A cluster protobuf object.", 
-          "name": "cluster_pb", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "instance_pb2.Cluster"
-          ]
-        }, 
-        {
           "description": " The instance that owns the cluster.", 
           "name": "instance", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigtable/cluster/cluster/instance/instance>\">gcloud.bigtable.cluster.Cluster.instance.Instance></a>"
+          ]
+        }, 
+        {
+          "description": " A cluster protobuf object.", 
+          "name": "cluster_pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "instance_pb2.Cluster"
           ]
         }
       ], 
