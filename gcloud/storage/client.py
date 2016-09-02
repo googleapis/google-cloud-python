@@ -154,7 +154,7 @@ class Client(JSONClient):
           >>> except gcloud.exceptions.NotFound:
           >>>   print 'Sorry, that bucket does not exist!'
 
-        This implements "storage.buckets.get".
+        This implements ``storage.buckets.get``.
 
         :type bucket_name: string
         :param bucket_name: The name of the bucket to get.
@@ -200,7 +200,7 @@ class Client(JSONClient):
           >>> print bucket
           <Bucket: my-bucket>
 
-        This implements "storage.buckets.insert".
+        This implements ``storage.buckets.insert``.
 
         If the bucket already exists, will raise
         :class:`gcloud.exceptions.Conflict`.
@@ -223,9 +223,9 @@ class Client(JSONClient):
         bucket.
 
           >>> for bucket in client.list_buckets():
-          >>>   print bucket
+          >>>   print(bucket)
 
-        This implements "storage.buckets.list".
+        This implements ``storage.buckets.list``.
 
         :type max_results: integer or ``NoneType``
         :param max_results: Optional. Maximum number of buckets to return.
