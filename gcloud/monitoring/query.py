@@ -313,6 +313,25 @@ class Query(object):
 
             metric.label.<label> = ends_with("<value>")
 
+        If the label's value type is ``INT64``, a similar notation can be
+        used to express inequalities:
+
+        ``<label>_less=<value>`` generates::
+
+            metric.label.<label> < <value>
+
+        ``<label>_lessequal=<value>`` generates::
+
+            metric.label.<label> <= <value>
+
+        ``<label>_greater=<value>`` generates::
+
+            metric.label.<label> > <value>
+
+        ``<label>_greaterequal=<value>`` generates::
+
+            metric.label.<label> >= <value>
+
         :type args: tuple
         :param args: Raw filter expression strings to include in the
             conjunction. If just one is provided and no keyword arguments
@@ -637,7 +656,8 @@ def _build_label_filter(category, *args, **kwargs):
             continue
 
         suffix = None
-        if key.endswith('_prefix') or key.endswith('_suffix'):
+        if key.endswith(('_prefix', '_suffix', '_greater', '_greaterequal',
+                         '_less', '_lessequal')):
             key, suffix = key.rsplit('_', 1)
 
         if category == 'resource' and key == 'resource_type':
@@ -649,6 +669,14 @@ def _build_label_filter(category, *args, **kwargs):
             term = '{key} = starts_with("{value}")'
         elif suffix == 'suffix':
             term = '{key} = ends_with("{value}")'
+        elif suffix == 'greater':
+            term = '{key} > {value}'
+        elif suffix == 'greaterequal':
+            term = '{key} >= {value}'
+        elif suffix == 'less':
+            term = '{key} < {value}'
+        elif suffix == 'lessequal':
+            term = '{key} <= {value}'
         else:
             term = '{key} = "{value}"'
 
