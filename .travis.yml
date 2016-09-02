@@ -1,6 +1,10 @@
 language: python
 sudo: false
 
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install pandoc
+
 install:
   - pip install --upgrade pip
   - pip install --upgrade tox
