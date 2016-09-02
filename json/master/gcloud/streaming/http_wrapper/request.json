@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "gcloud/streaming/http_wrapper.py#L144", 
+      "source": "gcloud/streaming/http_wrapper.py#L124", 
       "type": "instance"
     }
   ], 

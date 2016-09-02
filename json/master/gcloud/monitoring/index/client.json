@@ -110,12 +110,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "string"
           ]
         }, 
         {
@@ -128,12 +128,12 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "dict"
           ]
         }
       ], 
@@ -154,21 +154,21 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " The e-mail attached to the service account.", 
           "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }, 
         {
@@ -207,8 +207,26 @@
       "name": "group", 
       "params": [
         {
+          "description": " The ID of the group.", 
+          "name": "group_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }, 
+        {
           "description": " The filter string used to determine which monitored resources belong to this group.", 
           "name": "filter_string", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }, 
+        {
+          "description": " The ID of the group's parent, if it has one.", 
+          "name": "parent_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -231,24 +249,6 @@
           "optional": null, 
           "types": [
             "boolean"
-          ]
-        }, 
-        {
-          "description": " The ID of the group.", 
-          "name": "group_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
-          ]
-        }, 
-        {
-          "description": " The ID of the group's parent, if it has one.", 
-          "name": "parent_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
           ]
         }
       ], 
@@ -293,8 +293,8 @@
       "name": "list_metric_descriptors", 
       "params": [
         {
-          "description": " An optional filter expression describing the metric descriptors to be returned. See the filter documentation_.", 
-          "name": "filter_string", 
+          "description": " An optional prefix constraining the selected metric types. This adds metric.type = starts_with(\"<prefix>\") to the filter.", 
+          "name": "type_prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -302,8 +302,8 @@
           ]
         }, 
         {
-          "description": " An optional prefix constraining the selected metric types. This adds metric.type = starts_with(\"<prefix>\") to the filter.", 
-          "name": "type_prefix", 
+          "description": " An optional filter expression describing the metric descriptors to be returned. See the filter documentation_.", 
+          "name": "filter_string", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -362,6 +362,15 @@
       "name": "metric_descriptor", 
       "params": [
         {
+          "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
+          "name": "type_", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " The kind of measurement. It must be one of", 
           "name": "metric_kind", 
           "nullable": null, 
@@ -380,15 +389,6 @@
           ]
         }, 
         {
-          "description": " The value type of the metric. It must be one of", 
-          "name": "value_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " An optional detailed description of the metric.", 
           "name": "description", 
           "nullable": null, 
@@ -398,8 +398,17 @@
           ]
         }, 
         {
-          "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
-          "name": "type_", 
+          "description": " An optional concise name for the metric.", 
+          "name": "display_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The value type of the metric. It must be one of", 
+          "name": "value_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -413,15 +422,6 @@
           "optional": null, 
           "types": [
             " ~gcloud.monitoring.label.LabelDescriptor"
-          ]
-        }, 
-        {
-          "description": " An optional concise name for the metric.", 
-          "name": "display_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }
       ], 
@@ -446,21 +446,21 @@
       "name": "query", 
       "params": [
         {
+          "description": " The metric type name. The default value is", 
+          "name": "metric_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " The number of minutes in the time interval.", 
           "name": "minutes", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer"
-          ]
-        }, 
-        {
-          "description": " The end time (inclusive) of the time interval for which results should be returned, as a datetime object. The default is the start of the current minute. The start time (exclusive) is determined by combining the values of days, hours, and minutes, and subtracting the resulting duration from the end time. It is also allowed to omit the end time and duration here, in which case", 
-          "name": "end_time", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "datetime.datetime or None"
           ]
         }, 
         {
@@ -482,12 +482,12 @@
           ]
         }, 
         {
-          "description": " The metric type name. The default value is", 
-          "name": "metric_type", 
+          "description": " The end time (inclusive) of the time interval for which results should be returned, as a datetime object. The default is the start of the current minute. The start time (exclusive) is determined by combining the values of days, hours, and minutes, and subtracting the resulting duration from the end time. It is also allowed to omit the end time and duration here, in which case", 
+          "name": "end_time", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "datetime.datetime or None"
           ]
         }
       ], 
