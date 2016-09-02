@@ -61,8 +61,8 @@
           ]
         }, 
         {
-          "description": " (Optional) Flag to enable sentiment analysis of the current document.", 
-          "name": "include_sentiment", 
+          "description": " (Optional) Flag to enable entity extraction from the current document.", 
+          "name": "include_entities", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -70,8 +70,8 @@
           ]
         }, 
         {
-          "description": " (Optional) Flag to enable entity extraction from the current document.", 
-          "name": "include_entities", 
+          "description": " (Optional) Flag to enable sentiment analysis of the current document.", 
+          "name": "include_sentiment", 
           "nullable": null, 
           "optional": null, 
           "types": [

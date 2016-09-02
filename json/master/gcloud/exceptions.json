@@ -10,15 +10,6 @@
       "name": "make_exception", 
       "params": [
         {
-          "description": " A response object that defines a status code as the status attribute.", 
-          "name": "response", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "httplib2.Response or other HTTP response object"
-          ]
-        }, 
-        {
           "description": " Optional string giving extra information about the failed request.", 
           "name": "error_info", 
           "nullable": null, 
@@ -28,12 +19,12 @@
           ]
         }, 
         {
-          "description": " The body of the HTTP error response.", 
-          "name": "content", 
+          "description": " A response object that defines a status code as the status attribute.", 
+          "name": "response", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string or dictionary"
+            "httplib2.Response or other HTTP response object"
           ]
         }, 
         {
@@ -43,6 +34,15 @@
           "optional": null, 
           "types": [
             "bool"
+          ]
+        }, 
+        {
+          "description": " The body of the HTTP error response.", 
+          "name": "content", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or dictionary"
           ]
         }
       ], 

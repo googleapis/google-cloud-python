@@ -36,42 +36,6 @@
       "name": "make_api_request", 
       "params": [
         {
-          "description": " Number of redirects to follow.", 
-          "name": "redirections", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " Function to validate the HTTP response.", 
-          "name": "check_response_func", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "function taking (response, content, url)."
-          ]
-        }, 
-        {
-          "description": " an instance which implements the Http API.", 
-          "name": "http", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "httplib2.Http"
-          ]
-        }, 
-        {
-          "description": " Maximum number of seconds to wait when retrying.", 
-          "name": "max_retry_wait", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " Function to make HTTP request without retries.", 
           "name": "wo_retry_func", 
           "nullable": null, 
@@ -96,6 +60,42 @@
           "optional": null, 
           "types": [
             "Request"
+          ]
+        }, 
+        {
+          "description": " Function to validate the HTTP response.", 
+          "name": "check_response_func", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "function taking (response, content, url)."
+          ]
+        }, 
+        {
+          "description": " Number of redirects to follow.", 
+          "name": "redirections", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " an instance which implements the Http API.", 
+          "name": "http", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "httplib2.Http"
+          ]
+        }, 
+        {
+          "description": " Maximum number of seconds to wait when retrying.", 
+          "name": "max_retry_wait", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }
       ], 
