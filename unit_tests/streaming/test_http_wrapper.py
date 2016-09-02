@@ -277,35 +277,16 @@ class Test___make_api_request_no_retry(unittest.TestCase):
         _httplib2 = _Dummy(debuglevel=1)
         _request = _Request()
         _checked = []
-        with _Monkey(MUT, httplib2=_httplib2):
-            response = self._callFUT(_http, _request,
-                                     check_response_func=_checked.append)
+        with _Monkey(MUT, httplib2=_httplib2,
+                     _check_response=_checked.append):
+            response = self._callFUT(_http, _request)
+
         self.assertTrue(isinstance(response, MUT.Response))
         self.assertEqual(response.info, INFO)
         self.assertEqual(response.content, CONTENT)
         self.assertEqual(response.request_url, _request.url)
         self.assertEqual(_checked, [response])
         self._verify_requested(_http, _request)
-
-    def test_w_explicit_redirections(self):
-        from unit_tests._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
-        INFO = {'status': '200'}
-        CONTENT = 'CONTENT'
-        _http = _Http((INFO, CONTENT))
-        _httplib2 = _Dummy(debuglevel=1)
-        _request = _Request()
-        _checked = []
-        with _Monkey(MUT, httplib2=_httplib2):
-            response = self._callFUT(_http, _request,
-                                     redirections=10,
-                                     check_response_func=_checked.append)
-        self.assertTrue(isinstance(response, MUT.Response))
-        self.assertEqual(response.info, INFO)
-        self.assertEqual(response.content, CONTENT)
-        self.assertEqual(response.request_url, _request.url)
-        self.assertEqual(_checked, [response])
-        self._verify_requested(_http, _request, redirections=10)
 
     def test_w_http_connections_miss(self):
         from unit_tests._testing import _Monkey
@@ -318,9 +299,10 @@ class Test___make_api_request_no_retry(unittest.TestCase):
         _httplib2 = _Dummy(debuglevel=1)
         _request = _Request()
         _checked = []
-        with _Monkey(MUT, httplib2=_httplib2):
-            response = self._callFUT(_http, _request,
-                                     check_response_func=_checked.append)
+        with _Monkey(MUT, httplib2=_httplib2,
+                     _check_response=_checked.append):
+            response = self._callFUT(_http, _request)
+
         self.assertTrue(isinstance(response, MUT.Response))
         self.assertEqual(response.info, INFO)
         self.assertEqual(response.content, CONTENT)
@@ -339,9 +321,10 @@ class Test___make_api_request_no_retry(unittest.TestCase):
         _httplib2 = _Dummy(debuglevel=1)
         _request = _Request()
         _checked = []
-        with _Monkey(MUT, httplib2=_httplib2):
-            response = self._callFUT(_http, _request,
-                                     check_response_func=_checked.append)
+        with _Monkey(MUT, httplib2=_httplib2,
+                     _check_response=_checked.append):
+            response = self._callFUT(_http, _request)
+
         self.assertTrue(isinstance(response, MUT.Response))
         self.assertEqual(response.info, INFO)
         self.assertEqual(response.content, CONTENT)
@@ -373,6 +356,9 @@ class Test_make_api_request(unittest.TestCase):
         return make_api_request(*args, **kw)
 
     def test_wo_exception(self):
+        from gcloud.streaming import http_wrapper as MUT
+        from unit_tests._testing import _Monkey
+
         HTTP, REQUEST, RESPONSE = object(), object(), object()
         _created, _checked = [], []
 
@@ -380,23 +366,22 @@ class Test_make_api_request(unittest.TestCase):
             _created.append((args, kw))
             return RESPONSE
 
-        response = self._callFUT(HTTP, REQUEST,
-                                 wo_retry_func=_wo_exception,
-                                 check_response_func=_checked.append)
+        with _Monkey(MUT, _make_api_request_no_retry=_wo_exception,
+                     _check_response=_checked.append):
+            response = self._callFUT(HTTP, REQUEST)
 
         self.assertTrue(response is RESPONSE)
-        expected_kw = {
-            'redirections': 5,
-            'check_response_func': _checked.append,
-        }
+        expected_kw = {'redirections': MUT._REDIRECTIONS}
         self.assertEqual(_created, [((HTTP, REQUEST), expected_kw)])
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
 
     def test_w_exceptions_lt_max_retries(self):
         from gcloud.streaming.exceptions import RetryAfterError
+        from gcloud.streaming import http_wrapper as MUT
+        from unit_tests._testing import _Monkey
+
         HTTP, RESPONSE = object(), object()
         REQUEST = _Request()
-        WAIT = 10,
         _created, _checked = [], []
         _counter = [None] * 4
 
@@ -407,18 +392,13 @@ class Test_make_api_request(unittest.TestCase):
                 raise RetryAfterError(RESPONSE, '', REQUEST.url, 0.1)
             return RESPONSE
 
-        response = self._callFUT(HTTP, REQUEST,
-                                 retries=5,
-                                 max_retry_wait=WAIT,
-                                 wo_retry_func=_wo_exception,
-                                 check_response_func=_checked.append)
+        with _Monkey(MUT, _make_api_request_no_retry=_wo_exception,
+                     _check_response=_checked.append):
+            response = self._callFUT(HTTP, REQUEST, retries=5)
 
         self.assertTrue(response is RESPONSE)
         self.assertEqual(len(_created), 5)
-        expected_kw = {
-            'redirections': 5,
-            'check_response_func': _checked.append,
-        }
+        expected_kw = {'redirections': MUT._REDIRECTIONS}
         for attempt in _created:
             self.assertEqual(attempt, ((HTTP, REQUEST), expected_kw))
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
@@ -428,92 +408,23 @@ class Test_make_api_request(unittest.TestCase):
         from gcloud.streaming import http_wrapper as MUT
         HTTP = object()
         REQUEST = _Request()
-        WAIT = 10,
         _created, _checked = [], []
 
         def _wo_exception(*args, **kw):
             _created.append((args, kw))
             raise ValueError('Retryable')
 
-        with _Monkey(MUT, calculate_wait_for_retry=lambda *ignored: 0.1):
+        with _Monkey(MUT, calculate_wait_for_retry=lambda *ignored: 0.1,
+                     _make_api_request_no_retry=_wo_exception,
+                     _check_response=_checked.append):
             with self.assertRaises(ValueError):
-                self._callFUT(HTTP, REQUEST,
-                              retries=3,
-                              max_retry_wait=WAIT,
-                              wo_retry_func=_wo_exception,
-                              check_response_func=_checked.append)
+                self._callFUT(HTTP, REQUEST, retries=3)
 
         self.assertEqual(len(_created), 3)
-        expected_kw = {
-            'redirections': 5,
-            'check_response_func': _checked.append,
-        }
+        expected_kw = {'redirections': MUT._REDIRECTIONS}
         for attempt in _created:
             self.assertEqual(attempt, ((HTTP, REQUEST), expected_kw))
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
-
-
-class Test__register_http_factory(unittest.TestCase):
-
-    def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import _register_http_factory
-        return _register_http_factory(*args, **kw)
-
-    def test_it(self):
-        from unit_tests._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
-        _factories = []
-
-        FACTORY = object()
-
-        with _Monkey(MUT, _HTTP_FACTORIES=_factories):
-            self._callFUT(FACTORY)
-            self.assertEqual(_factories, [FACTORY])
-
-
-class Test_get_http(unittest.TestCase):
-
-    def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import get_http
-        return get_http(*args, **kw)
-
-    def test_wo_registered_factories(self):
-        from httplib2 import Http
-        from unit_tests._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
-        _factories = []
-
-        with _Monkey(MUT, _HTTP_FACTORIES=_factories):
-            http = self._callFUT()
-
-        self.assertTrue(isinstance(http, Http))
-
-    def test_w_registered_factories(self):
-        from unit_tests._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
-
-        FOUND = object()
-
-        _misses = []
-
-        def _miss(**kw):
-            _misses.append(kw)
-            return None
-
-        _hits = []
-
-        def _hit(**kw):
-            _hits.append(kw)
-            return FOUND
-
-        _factories = [_miss, _hit]
-
-        with _Monkey(MUT, _HTTP_FACTORIES=_factories):
-            http = self._callFUT(foo='bar')
-
-        self.assertTrue(http is FOUND)
-        self.assertEqual(_misses, [{'foo': 'bar'}])
-        self.assertEqual(_hits, [{'foo': 'bar'}])
 
 
 class _Dummy(object):

@@ -11,13 +11,13 @@ class Test_calculate_wait_for_retry(unittest.TestCase):
         import random
         from unit_tests._testing import _Monkey
         with _Monkey(random, uniform=lambda lower, upper: lower):
-            self.assertEqual(self._callFUT(1, 60), 1.5)
+            self.assertEqual(self._callFUT(1), 1.5)
 
     def test_w_positive_jitter_gt_max_wait(self):
         import random
         from unit_tests._testing import _Monkey
         with _Monkey(random, uniform=lambda lower, upper: upper):
-            self.assertEqual(self._callFUT(4, 10), 10)
+            self.assertEqual(self._callFUT(4), 20)
 
 
 class Test_acceptable_mime_type(unittest.TestCase):

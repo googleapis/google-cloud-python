@@ -22,6 +22,7 @@ import email.mime.nonmultipart as mime_nonmultipart
 import mimetypes
 import os
 
+import httplib2
 import six
 from six.moves import http_client
 
@@ -31,7 +32,6 @@ from gcloud.streaming.exceptions import CommunicationError
 from gcloud.streaming.exceptions import HttpError
 from gcloud.streaming.exceptions import TransferInvalidError
 from gcloud.streaming.exceptions import TransferRetryError
-from gcloud.streaming.http_wrapper import get_http
 from gcloud.streaming.http_wrapper import make_api_request
 from gcloud.streaming.http_wrapper import Request
 from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
@@ -184,7 +184,7 @@ class _Transfer(object):
         """
         self._ensure_uninitialized()
         if self.http is None:
-            self._http = http or get_http()
+            self._http = http or httplib2.Http()
         self._url = url
 
     @property
