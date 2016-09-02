@@ -35,6 +35,7 @@ from gcloud.streaming.exceptions import RetryAfterError
 from gcloud.streaming.util import calculate_wait_for_retry
 
 
+_REDIRECTIONS = 5
 # 308 and 429 don't have names in httplib.
 RESUME_INCOMPLETE = 308
 TOO_MANY_REQUESTS = 429
@@ -60,27 +61,6 @@ _RETRYABLE_EXCEPTIONS = (
     BadStatusCodeError,
     RetryAfterError,
 )
-
-
-class _ExceptionRetryArgs(
-        collections.namedtuple(
-            '_ExceptionRetryArgs',
-            ['http', 'http_request', 'exc', 'num_retries', 'max_retry_wait'])):
-    """Bundle of information for retriable exceptions.
-
-    :type http: :class:`httplib2.Http` (or conforming alternative)
-    :param http: instance used to perform requests.
-
-    :type http_request: :class:`Request`
-    :param http_request: the request whose response was a retriable error.
-
-    :type exc: :class:`Exception` subclass
-    :param exc: the exception being raised.
-
-    :type num_retries: integer
-    :param num_retries: Number of retries consumed; used for exponential
-                        backoff.
-    """
 
 
 @contextlib.contextmanager
@@ -328,8 +308,7 @@ def _reset_http_connections(http):
                 del http.connections[conn_key]
 
 
-def _make_api_request_no_retry(http, http_request, redirections=5,
-                               check_response_func=_check_response):
+def _make_api_request_no_retry(http, http_request, redirections=_REDIRECTIONS):
     """Send an HTTP request via the given http instance.
 
     This wrapper exists to handle translation between the plain httplib2
@@ -343,9 +322,6 @@ def _make_api_request_no_retry(http, http_request, redirections=5,
 
     :type redirections: integer
     :param redirections: Number of redirects to follow.
-
-    :type check_response_func: function taking (response, content, url).
-    :param check_response_func: Function to validate the HTTP response.
 
     :rtype: :class:`Response`
     :returns: an object representing the server's response
@@ -374,16 +350,12 @@ def _make_api_request_no_retry(http, http_request, redirections=5,
         raise RequestError()
 
     response = Response(info, content, http_request.url)
-    check_response_func(response)
+    _check_response(response)
     return response
 
 
-def make_api_request(http, http_request,
-                     retries=7,
-                     max_retry_wait=60,
-                     redirections=5,
-                     check_response_func=_check_response,
-                     wo_retry_func=_make_api_request_no_retry):
+def make_api_request(http, http_request, retries=7,
+                     redirections=_REDIRECTIONS):
     """Send an HTTP request via the given http, performing error/retry handling.
 
     :type http: :class:`httplib2.Http`
@@ -396,18 +368,8 @@ def make_api_request(http, http_request,
     :param retries: Number of retries to attempt on retryable
                     responses (such as 429 or 5XX).
 
-    :type max_retry_wait: integer
-    :param max_retry_wait: Maximum number of seconds to wait when retrying.
-
     :type redirections: integer
     :param redirections: Number of redirects to follow.
-
-    :type check_response_func: function taking (response, content, url).
-    :param check_response_func: Function to validate the HTTP response.
-
-    :type wo_retry_func: function taking
-                         (http, request, redirections, check_response_func)
-    :param wo_retry_func: Function to make HTTP request without retries.
 
     :rtype: :class:`Response`
     :returns: an object representing the server's response.
@@ -418,48 +380,17 @@ def make_api_request(http, http_request,
     retry = 0
     while True:
         try:
-            return wo_retry_func(
-                http, http_request, redirections=redirections,
-                check_response_func=check_response_func)
+            return _make_api_request_no_retry(http, http_request,
+                                              redirections=redirections)
         except _RETRYABLE_EXCEPTIONS as exc:
             retry += 1
             if retry >= retries:
                 raise
             retry_after = getattr(exc, 'retry_after', None)
             if retry_after is None:
-                retry_after = calculate_wait_for_retry(retry, max_retry_wait)
+                retry_after = calculate_wait_for_retry(retry)
 
             _reset_http_connections(http)
             logging.debug('Retrying request to url %s after exception %s',
                           http_request.url, type(exc).__name__)
             time.sleep(retry_after)
-
-
-_HTTP_FACTORIES = []
-
-
-def _register_http_factory(factory):
-    """Register a custom HTTP factory.
-
-    :type factory: callable taking keyword arguments, returning an Http
-                   instance (or an instance implementing the same API).
-    :param factory: the new factory (it may return ``None`` to defer to
-                    a later factory or the default).
-    """
-    _HTTP_FACTORIES.append(factory)
-
-
-def get_http(**kwds):
-    """Construct an Http instance.
-
-    :type kwds: dict
-    :param kwds:  keyword arguments to pass to factories.
-
-    :rtype: :class:`httplib2.Http` (or a workalike)
-    :returns: The HTTP object created.
-    """
-    for factory in _HTTP_FACTORIES:
-        http = factory(**kwds)
-        if http is not None:
-            return http
-    return httplib2.Http(**kwds)

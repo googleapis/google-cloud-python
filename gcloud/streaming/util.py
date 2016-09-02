@@ -17,7 +17,10 @@
 import random
 
 
-def calculate_wait_for_retry(retry_attempt, max_wait=60):
+_MAX_RETRY_WAIT = 60
+
+
+def calculate_wait_for_retry(retry_attempt):
     """Calculate the amount of time to wait before a retry attempt.
 
     Wait time grows exponentially with the number of attempts. A
@@ -27,17 +30,13 @@ def calculate_wait_for_retry(retry_attempt, max_wait=60):
     :type retry_attempt: integer
     :param retry_attempt: Retry attempt counter.
 
-    :type max_wait: integer
-    :param max_wait: Upper bound for wait time [seconds].
-
     :rtype: integer
     :returns: Number of seconds to wait before retrying request.
     """
-
     wait_time = 2 ** retry_attempt
     max_jitter = wait_time / 4.0
     wait_time += random.uniform(-max_jitter, max_jitter)
-    return max(1, min(wait_time, max_wait))
+    return max(1, min(wait_time, _MAX_RETRY_WAIT))
 
 
 def acceptable_mime_type(accept_patterns, mime_type):
