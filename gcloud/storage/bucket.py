@@ -103,7 +103,7 @@ class Bucket(_PropertyMixin):
         """The client bound to this bucket."""
         return self._client
 
-    def blob(self, blob_name, chunk_size=None):
+    def blob(self, blob_name, chunk_size=None, generation=None):
         """Factory constructor for blob object.
 
         .. note::
@@ -118,10 +118,16 @@ class Bucket(_PropertyMixin):
                            (1 MB). This must be a multiple of 256 KB per the
                            API specification.
 
+        :type generation: integer
+        :param generation: The desired generation of the blob object.  This
+                           parameter affects generation based queries on
+                           buckets that support versioning.
+
         :rtype: :class:`gcloud.storage.blob.Blob`
         :returns: The blob object created.
         """
-        return Blob(name=blob_name, bucket=self, chunk_size=chunk_size)
+        return Blob(name=blob_name, bucket=self, chunk_size=chunk_size,
+                    generation=generation)
 
     def exists(self, client=None):
         """Determines whether or not this bucket exists.
@@ -202,7 +208,7 @@ class Bucket(_PropertyMixin):
 
         return self.path_helper(self.name)
 
-    def get_blob(self, blob_name, client=None):
+    def get_blob(self, blob_name, client=None, generation=None):
         """Get a blob object by name.
 
         This will return None if the blob doesn't exist::
@@ -214,6 +220,10 @@ class Bucket(_PropertyMixin):
           <Blob: my-bucket, /path/to/blob.txt>
           >>> print bucket.get_blob('/does-not-exist.txt')
           None
+          >>> print bucket.get_blob(
+          ... '/path/to/versioned_blob.txt',
+          ... generation=generation_id)
+          <Blob: my-bucket, /path/to/versioned_blob.txt>
 
         :type blob_name: string
         :param blob_name: The name of the blob to retrieve.
@@ -222,14 +232,20 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type generation: int
+        :param generation: Optional. The generation id to retrieve in a bucket
+                           that supports versioning.
+
         :rtype: :class:`gcloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
         """
         client = self._require_client(client)
-        blob = Blob(bucket=self, name=blob_name)
+        blob = Blob(bucket=self, name=blob_name, generation=generation)
+        blob_path, query_params = blob.path_with_params
         try:
             response = client.connection.api_request(
-                method='GET', path=blob.path, _target_object=blob)
+                method='GET', path=blob_path,
+                query_params=query_params, _target_object=blob)
             # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
             # NOTE: This will not fail immediately in a batch. However, when
@@ -357,7 +373,7 @@ class Bucket(_PropertyMixin):
         client.connection.api_request(method='DELETE', path=self.path,
                                       _target_object=None)
 
-    def delete_blob(self, blob_name, client=None):
+    def delete_blob(self, blob_name, client=None, generation=None):
         """Deletes a blob from the current bucket.
 
         If the blob isn't found (backend 404), raises a
@@ -384,6 +400,10 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type generation: int
+        :param generation: Optional. The generation of this object to delete.
+                           Only works on buckets with versioning enabled.
+
         :raises: :class:`gcloud.exceptions.NotFound` (to suppress
                  the exception, call ``delete_blobs``, passing a no-op
                  ``on_error`` callback, e.g.::
@@ -392,10 +412,15 @@ class Bucket(_PropertyMixin):
         """
         client = self._require_client(client)
         blob_path = Blob.path_helper(self.path, blob_name)
+        query_params = {}
+        if generation is not None:
+            query_params = {'generation': generation}
+
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
         client.connection.api_request(method='DELETE', path=blob_path,
+                                      query_params=query_params,
                                       _target_object=None)
 
     def delete_blobs(self, blobs, on_error=None, client=None):
@@ -423,7 +448,13 @@ class Bucket(_PropertyMixin):
                 blob_name = blob
                 if not isinstance(blob_name, six.string_types):
                     blob_name = blob.name
-                self.delete_blob(blob_name, client=client)
+
+                generation = None
+                if hasattr(blob, 'generation'):
+                    generation = blob.generation
+
+                self.delete_blob(blob_name, client=client,
+                                 generation=generation)
             except NotFound:
                 if on_error is not None:
                     on_error(blob)
@@ -431,7 +462,7 @@ class Bucket(_PropertyMixin):
                     raise
 
     def copy_blob(self, blob, destination_bucket, new_name=None,
-                  client=None):
+                  client=None, versions=False):
         """Copy the given blob to the given bucket, optionally with a new name.
 
         :type blob: :class:`gcloud.storage.blob.Blob`
@@ -448,18 +479,38 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type versions: boolean
+        :param versions: Optional. Copy each version.
+
         :rtype: :class:`gcloud.storage.blob.Blob`
-        :returns: The new Blob.
+        :returns: The new Blob if versions is ``False``, or will return
+                  a list of new blob versions, and their old blob version
+                  counterparts.
         """
         client = self._require_client(client)
         if new_name is None:
             new_name = blob.name
-        new_blob = Blob(bucket=destination_bucket, name=new_name)
-        api_path = blob.path + '/copyTo' + new_blob.path
-        copy_result = client.connection.api_request(
-            method='POST', path=api_path, _target_object=new_blob)
-        new_blob._set_properties(copy_result)
-        return new_blob
+
+        tmp_blob = Blob(bucket=destination_bucket, name=new_name)
+        api_path = blob.path + '/copyTo' + tmp_blob.path
+        del tmp_blob
+
+        # TODO(tsinha): Support multi-page results from list_blobs
+        old_blobs = list(self.list_blobs(prefix=blob.name, versions=versions))
+        new_blobs = []
+        for old_blob in old_blobs:
+            new_blob = Blob(bucket=destination_bucket, name=new_name)
+            copy_result = client.connection.api_request(
+                method='POST', path=api_path,
+                query_params={'sourceGeneration': old_blob.generation},
+                _target_object=new_blob)
+            new_blob._set_properties(copy_result)
+            new_blobs.append(new_blob)
+
+        if versions:
+            return (new_blobs, old_blobs)
+        else:
+            return new_blobs[0]
 
     def rename_blob(self, blob, new_name, client=None):
         """Rename the given blob using copy and delete operations.
@@ -484,11 +535,19 @@ class Bucket(_PropertyMixin):
                        to the ``client`` stored on the current bucket.
 
         :rtype: :class:`Blob`
-        :returns: The newly-renamed blob.
+        :returns: The newly-renamed blob if bucket versioning is off (or
+                  there is only one version), otherwise will return blobs
+                  for each newly-renamed version.
         """
-        new_blob = self.copy_blob(blob, self, new_name, client=client)
-        blob.delete(client=client)
-        return new_blob
+        new_blobs, old_blobs = self.copy_blob(blob, self, new_name,
+                                              client=client, versions=True)
+        for old_blob in old_blobs:
+            old_blob.delete(client=client)
+
+        if len(new_blobs) == 1:
+            return new_blobs[0]
+        else:
+            return new_blobs
 
     @property
     def cors(self):

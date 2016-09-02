@@ -22,7 +22,7 @@ from hashlib import md5
 
 
 class _PropertyMixin(object):
-    """Abstract mixin for cloud storage classes with associated propertties.
+    """Abstract mixin for cloud storage classes with associated properties.
 
     Non-abstract subclasses should implement:
       - client

@@ -278,6 +278,38 @@ class Test_Blob(unittest.TestCase):
         bucket._blobs[BLOB_NAME] = 1
         self.assertTrue(blob.exists())
 
+    def test_exists_hit_w_generation(self):
+        from six.moves.http_client import OK
+        BLOB_NAME = 'blob-name'
+        GENERATION = 999
+        found_response = {'status': OK}
+        connection = _Connection(found_response)
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket,
+                             properties={'generation': GENERATION})
+        bucket._blobs[BLOB_NAME] = 1
+        self.assertTrue(blob.exists())
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertEqual(kw['query_params']['generation'], GENERATION)
+
+    def test_exists_hit_w_none_generation(self):
+        from six.moves.http_client import OK
+        BLOB_NAME = 'blob-name'
+        GENERATION = None
+        found_response = {'status': OK}
+        connection = _Connection(found_response)
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket,
+                             properties={'generation': GENERATION})
+        bucket._blobs[BLOB_NAME] = 1
+        self.assertTrue(blob.exists())
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertNotIn('generation', kw['query_params'])
+
     def test_delete(self):
         from six.moves.http_client import NOT_FOUND
         BLOB_NAME = 'blob-name'
@@ -291,6 +323,42 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(blob.exists())
         self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
 
+    def test_delete_w_generation(self):
+        from six.moves.http_client import NOT_FOUND
+        BLOB_NAME = 'blob-name'
+        GENERATION = 999
+        not_found_response = {'status': NOT_FOUND}
+        connection = _Connection(not_found_response)
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket,
+                             properties={'generation': GENERATION})
+        bucket._blobs[BLOB_NAME] = 1
+        blob.delete()
+        self.assertFalse(blob.exists())
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertEqual(kw['query_params']['generation'], GENERATION)
+
+    def test_delete_w_none_generation(self):
+        from six.moves.http_client import NOT_FOUND
+        BLOB_NAME = 'blob-name'
+        GENERATION = None
+        not_found_response = {'status': NOT_FOUND}
+        connection = _Connection(not_found_response)
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket,
+                             properties={'generation': GENERATION})
+        bucket._blobs[BLOB_NAME] = 1
+        blob.delete()
+        self.assertFalse(blob.exists())
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertNotIn('generation', kw['query_params'])
+    
     def test_download_to_file_wo_media_link(self):
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
@@ -1468,7 +1536,8 @@ class _Bucket(object):
         self._copied = []
         self._deleted = []
 
-    def delete_blob(self, blob_name, client=None):
+    def delete_blob(self, blob_name, client=None,
+                    generation=None):  # pylint: disable=W0613
         del self._blobs[blob_name]
         self._deleted.append((blob_name, client))
 

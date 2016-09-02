@@ -68,12 +68,13 @@ class Blob(_PropertyMixin):
     _CHUNK_SIZE_MULTIPLE = 256 * 1024
     """Number (256 KB, in bytes) that must divide the chunk size."""
 
-    def __init__(self, name, bucket, chunk_size=None):
+    def __init__(self, name, bucket, chunk_size=None, generation=None):
         super(Blob, self).__init__(name=name)
 
         self.chunk_size = chunk_size  # Check that setter accepts value.
         self.bucket = bucket
         self._acl = ObjectACL(self)
+        self.generation = generation
 
     @property
     def chunk_size(self):
@@ -138,6 +139,22 @@ class Blob(_PropertyMixin):
             raise ValueError('Cannot determine path without a blob name.')
 
         return self.path_helper(self.bucket.path, self.name)
+
+    @property
+    def path_with_params(self):
+        """Getter property for the URL path to this Blob, with version.
+
+        :rtype: tuple of ``path`` (a string) and ``params`` (a dictionary)
+        :returns: the URL path to this blob and a dictionary with the
+                 generation that can be used in query_params for
+                 connection.api_request
+        """
+
+        params = {}
+        if self.generation is not None:
+            params = {'generation': self.generation}
+
+        return (self.path, params)
 
     @property
     def client(self):
@@ -254,6 +271,9 @@ class Blob(_PropertyMixin):
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
             query_params = {'fields': 'name'}
+            if self.generation is not None:
+                query_params['generation'] = self.generation
+
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
             client.connection.api_request(method='GET', path=self.path,
@@ -279,7 +299,8 @@ class Blob(_PropertyMixin):
                  (propagated from
                  :meth:`gcloud.storage.bucket.Bucket.delete_blob`).
         """
-        return self.bucket.delete_blob(self.name, client=client)
+        return self.bucket.delete_blob(self.name, client=client,
+                                       generation=self.generation)
 
     def download_to_file(self, file_obj, encryption_key=None, client=None):
         """Download the contents of this blob into a file-like object.
@@ -751,6 +772,19 @@ class Blob(_PropertyMixin):
         generation = self._properties.get('generation')
         if generation is not None:
             return int(generation)
+
+    @generation.setter
+    def generation(self, value):
+        """Set the generation for this blob.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :type value: integer or ``NoneType``
+        :param value: the generation value for this blob.  Setting this
+                      value is useful when trying to retrieve specific
+                      versions of a blob.
+        """
+        self._patch_property('generation', value)
 
     @property
     def id(self):
