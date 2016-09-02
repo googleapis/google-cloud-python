@@ -4,6 +4,7 @@
 # target Python version and architecture
 wheel
 pytest
+tox
 cryptography
 grpcio >= 1.0rc1
 grpc-google-pubsub-v1
