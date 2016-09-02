@@ -20,12 +20,12 @@
       "name": "fetch_data", 
       "params": [
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
-          "name": "client", 
+          "description": " timeout, in milliseconds, to wait for query to complete", 
+          "name": "timeout_ms", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
+            "integer or NoneType"
           ]
         }, 
         {
@@ -47,17 +47,17 @@
           ]
         }, 
         {
-          "description": " maximum number of rows to return.", 
-          "name": "max_results", 
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
+          "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or NoneType"
+            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
           ]
         }, 
         {
-          "description": " timeout, in milliseconds, to wait for query to complete", 
-          "name": "timeout_ms", 
+          "description": " maximum number of rows to return.", 
+          "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [

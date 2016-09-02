@@ -38,17 +38,8 @@
       "name": "fetch", 
       "params": [
         {
-          "description": " client used to connect to datastore. If not supplied, uses the query's value.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/client/client\">gcloud.datastore.client.Client</a>"
-          ]
-        }, 
-        {
           "description": " An optional cursor passed through to the iterator.", 
-          "name": "end_cursor", 
+          "name": "start_cursor", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -75,11 +66,20 @@
         }, 
         {
           "description": " An optional cursor passed through to the iterator.", 
-          "name": "start_cursor", 
+          "name": "end_cursor", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "bytes"
+          ]
+        }, 
+        {
+          "description": " client used to connect to datastore. If not supplied, uses the query's value.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/client/client\">gcloud.datastore.client.Client</a>"
           ]
         }
       ], 

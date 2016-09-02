@@ -52,6 +52,15 @@
       "name": "annotate_text", 
       "params": [
         {
+          "description": " (Optional) Flag to enable syntax analysis of the current document.", 
+          "name": "include_syntax", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
           "description": " (Optional) Flag to enable sentiment analysis of the current document.", 
           "name": "include_sentiment", 
           "nullable": null, 
@@ -63,15 +72,6 @@
         {
           "description": " (Optional) Flag to enable entity extraction from the current document.", 
           "name": "include_entities", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
-          ]
-        }, 
-        {
-          "description": " (Optional) Flag to enable syntax analysis of the current document.", 
-          "name": "include_syntax", 
           "nullable": null, 
           "optional": null, 
           "types": [
