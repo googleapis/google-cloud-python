@@ -318,19 +318,19 @@ class Query(object):
 
         ``<label>_less=<value>`` generates::
 
-        metric.label.<label> < <value>
+            metric.label.<label> < <value>
 
         ``<label>_lessequal=<value>`` generates::
 
-        metric.label.<label> <= <value>
+            metric.label.<label> <= <value>
 
         ``<label>_greater=<value>`` generates::
 
-        metric.label.<label> > <value>
+            metric.label.<label> > <value>
 
         ``<label>_greaterequal=<value>`` generates::
 
-        metric.label.<label> >= <value>
+            metric.label.<label> >= <value>
 
         :type args: tuple
         :param args: Raw filter expression strings to include in the
