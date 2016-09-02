@@ -83,7 +83,7 @@ build_script:
 test_script:
   - "%CMD_IN_ENV% pip list"
   # Run the project tests
-  - "%CMD_IN_ENV% python setup.py nosetests"
+  - "%CMD_IN_ENV% py.test"
 
 after_test:
   # If tests are successful, create binary packages for the project.

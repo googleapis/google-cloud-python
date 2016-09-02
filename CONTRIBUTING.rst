@@ -118,7 +118,7 @@ Running Tests
 --------------
 
 - To run all tests for ``gcloud-python`` on a single Python version, run
-  ``nosetests`` from your development virtualenv (See
+  ``py.test`` from your development virtualenv (See
   *Using a Development Checkout* above).
 
 - To run the full set of ``gcloud-python`` tests on all platforms, install
@@ -272,11 +272,7 @@ Test Coverage
 -------------
 
 - The codebase *must* have 100% test statement coverage after each commit.
-  You can test coverage via ``tox -e coverage``, or alternately by installing
-  ``nose`` and ``coverage`` into your virtualenv, and running
-  ``setup.py nosetests --with-coverage``.  If you have ``tox`` installed::
-
-   $ tox -e cover
+  You can test coverage via ``tox -e cover``.
 
 Documentation Coverage and Building HTML Documentation
 ------------------------------------------------------
