@@ -1,9 +1,10 @@
 language: python
 sudo: false
 
-before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install pandoc
+addons:
+  apt:
+    packages:
+    - pandoc
 
 install:
   - pip install --upgrade pip
