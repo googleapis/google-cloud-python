@@ -135,7 +135,6 @@ class TestPubsub(unittest.TestCase):
     def test_list_subscriptions(self):
         TOPIC_NAME = 'list-sub' + unique_resource_id('-')
         topic = Config.CLIENT.topic(TOPIC_NAME)
-        self.assertFalse(retry_unavailable(topic.exists)())
         topic.create()
         self.to_delete.append(topic)
         empty, _ = topic.list_subscriptions()
@@ -264,6 +263,9 @@ class TestPubsub(unittest.TestCase):
             new_policy = subscription.set_iam_policy(policy)
             self.assertEqual(new_policy.viewers, policy.viewers)
 
+    # This test is ultra-flaky.  See:
+    # https://github.com/GoogleCloudPlatform/gcloud-python/issues/2080
+    @unittest.expectedFailure
     def test_fetch_delete_subscription_w_deleted_topic(self):
         from gcloud.iterator import MethodIterator
         TO_DELETE = 'delete-me' + unique_resource_id('-')
@@ -292,8 +294,7 @@ class TestPubsub(unittest.TestCase):
         def _no_topic(instance):
             return instance.topic is None
 
-        # Wait for the topic to clear: up to 127 seconds (2 ** 7 - 1)
-        retry_until_no_topic = RetryInstanceState(_no_topic, max_tries=8)
+        retry_until_no_topic = RetryInstanceState(_no_topic)
         retry_until_no_topic(orphaned.reload)()
 
         self.assertTrue(orphaned.topic is None)
