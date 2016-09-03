@@ -470,7 +470,7 @@ class Blob(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
 
         :raises: :class:`ValueError` if size is not passed in and can not be
-                 determined; :class:`google.cloud.exceptions.GCloudError` if the
+                 determined; :class:`google.cloud.exceptions.GoogleCloudError` if the
                  upload response returns an error status.
         """
         client = self._require_client(client)

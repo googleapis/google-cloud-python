@@ -24,7 +24,7 @@ import six
 _HTTP_CODE_TO_EXCEPTION = {}  # populated at end of module
 
 
-class GCloudError(Exception):
+class GoogleCloudError(Exception):
     """Base error class for gcloud errors (abstract).
 
     Each subclass represents a single type of HTTP error response.
@@ -36,7 +36,7 @@ class GCloudError(Exception):
     """
 
     def __init__(self, message, errors=()):
-        super(GCloudError, self).__init__(message)
+        super(GoogleCloudError, self).__init__(message)
         self.message = message
         self._errors = errors
 
@@ -53,7 +53,7 @@ class GCloudError(Exception):
         return [copy.deepcopy(error) for error in self._errors]
 
 
-class Redirection(GCloudError):
+class Redirection(GoogleCloudError):
     """Base for 3xx responses
 
     This class is abstract.
@@ -80,7 +80,7 @@ class ResumeIncomplete(Redirection):
     code = 308
 
 
-class ClientError(GCloudError):
+class ClientError(GoogleCloudError):
     """Base for 4xx responses
 
     This class is abstract
@@ -137,7 +137,7 @@ class TooManyRequests(ClientError):
     code = 429
 
 
-class ServerError(GCloudError):
+class ServerError(GoogleCloudError):
     """Base for 5xx responses:  (abstract)"""
 
 
@@ -178,7 +178,7 @@ def make_exception(response, content, error_info=None, use_json=True):
     :type use_json: bool
     :param use_json: Flag indicating if ``content`` is expected to be JSON.
 
-    :rtype: instance of :class:`GCloudError`, or a concrete subclass.
+    :rtype: instance of :class:`GoogleCloudError`, or a concrete subclass.
     :returns: Exception specific to the error response.
     """
     if isinstance(content, six.binary_type):
@@ -206,7 +206,7 @@ def make_exception(response, content, error_info=None, use_json=True):
     try:
         klass = _HTTP_CODE_TO_EXCEPTION[response.status]
     except KeyError:
-        error = GCloudError(message, errors)
+        error = GoogleCloudError(message, errors)
         error.code = response.status
     else:
         error = klass(message, errors)
@@ -222,7 +222,7 @@ def _walk_subclasses(klass):
 
 
 # Build the code->exception class mapping.
-for _eklass in _walk_subclasses(GCloudError):
+for _eklass in _walk_subclasses(GoogleCloudError):
     code = getattr(_eklass, 'code', None)
     if code is not None:
         _HTTP_CODE_TO_EXCEPTION[code] = _eklass

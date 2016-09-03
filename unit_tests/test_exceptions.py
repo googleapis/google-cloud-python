@@ -15,11 +15,11 @@
 import unittest
 
 
-class Test_GCloudError(unittest.TestCase):
+class Test_GoogleCloudError(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.exceptions import GCloudError
-        return GCloudError
+        from google.cloud.exceptions import GoogleCloudError
+        return GoogleCloudError
 
     def _makeOne(self, message, errors=()):
         return self._getTargetClass()(message, errors=errors)
@@ -63,7 +63,7 @@ class Test_make_exception(unittest.TestCase):
         self.assertEqual(list(exception.errors), [])
 
     def test_miss_w_content_as_dict(self):
-        from google.cloud.exceptions import GCloudError
+        from google.cloud.exceptions import GoogleCloudError
         ERROR = {
             'domain': 'global',
             'location': 'test',
@@ -74,7 +74,7 @@ class Test_make_exception(unittest.TestCase):
         response = _Response(600)
         content = {"error": {"message": "Unknown Error", "errors": [ERROR]}}
         exception = self._callFUT(response, content)
-        self.assertTrue(isinstance(exception, GCloudError))
+        self.assertTrue(isinstance(exception, GoogleCloudError))
         self.assertEqual(exception.message, 'Unknown Error')
         self.assertEqual(list(exception.errors), [ERROR])
 

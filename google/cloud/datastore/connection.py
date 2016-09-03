@@ -77,7 +77,7 @@ class _DatastoreAPIOverHttp(object):
 
         :rtype: string
         :returns: The string response content from the API call.
-        :raises: :class:`google.cloud.exceptions.GCloudError` if the response
+        :raises: :class:`google.cloud.exceptions.GoogleCloudError` if the response
                  code is not 200 OK.
         """
         headers = {

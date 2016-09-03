@@ -201,7 +201,7 @@
           "type": "google/cloud/exceptions/forbidden"
         },
         {
-          "title": "GCloudError",
+          "title": "GoogleCloudError",
           "type": "google/cloud/exceptions/gclouderror"
         },
         {
