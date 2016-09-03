@@ -4,20 +4,20 @@ Natural Language Response Classes
 Entity
 ~~~~~~
 
-.. automodule:: gcloud.language.entity
+.. automodule:: google.cloud.language.entity
   :members:
   :show-inheritance:
 
 Sentiment
 ~~~~~~~~~
 
-.. automodule:: gcloud.language.sentiment
+.. automodule:: google.cloud.language.sentiment
   :members:
   :show-inheritance:
 
 Syntax
 ~~~~~~
 
-.. automodule:: gcloud.language.syntax
+.. automodule:: google.cloud.language.syntax
   :members:
   :show-inheritance:

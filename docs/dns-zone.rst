@@ -1,6 +1,6 @@
 Managed Zones
 ~~~~~~~~~~~~~
 
-.. automodule:: gcloud.dns.zone
+.. automodule:: google.cloud.dns.zone
   :members:
   :show-inheritance:

@@ -1,13 +1,13 @@
 Pub/Sub Client
 ==============
 
-.. automodule:: gcloud.pubsub.client
+.. automodule:: google.cloud.pubsub.client
   :members:
   :show-inheritance:
 
 Connection
 ~~~~~~~~~~
 
-.. automodule:: gcloud.pubsub.connection
+.. automodule:: google.cloud.pubsub.connection
   :members:
   :show-inheritance:

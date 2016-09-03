@@ -1,7 +1,7 @@
 Subscriptions
 ~~~~~~~~~~~~~
 
-.. automodule:: gcloud.pubsub.subscription
+.. automodule:: google.cloud.pubsub.subscription
   :members:
   :member-order: bysource
   :show-inheritance:

@@ -1,6 +1,6 @@
 Row Data
 ~~~~~~~~
 
-.. automodule:: gcloud.bigtable.row_data
+.. automodule:: google.cloud.bigtable.row_data
   :members:
   :show-inheritance:

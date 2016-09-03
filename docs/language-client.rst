@@ -1,13 +1,13 @@
 Natural Language Client
 =======================
 
-.. automodule:: gcloud.language.client
+.. automodule:: google.cloud.language.client
   :members:
   :show-inheritance:
 
 Connection
 ~~~~~~~~~~
 
-.. automodule:: gcloud.language.connection
+.. automodule:: google.cloud.language.connection
   :members:
   :show-inheritance:

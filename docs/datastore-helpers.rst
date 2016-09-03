@@ -1,6 +1,6 @@
 Helpers
 ~~~~~~~
 
-.. automodule:: gcloud.datastore.helpers
+.. automodule:: google.cloud.datastore.helpers
   :members:
   :show-inheritance:

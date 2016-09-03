@@ -1,7 +1,7 @@
 Translate Client
 ================
 
-.. automodule:: gcloud.translate.client
+.. automodule:: google.cloud.translate.client
   :members:
   :undoc-members:
   :show-inheritance:
@@ -9,7 +9,7 @@ Translate Client
 Connection
 ~~~~~~~~~~
 
-.. automodule:: gcloud.translate.connection
+.. automodule:: google.cloud.translate.connection
   :members:
   :undoc-members:
   :show-inheritance:

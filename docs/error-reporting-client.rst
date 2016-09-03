@@ -1,7 +1,7 @@
 Error Reporting Client
 =======================
 
-.. automodule:: gcloud.error_reporting.client
+.. automodule:: google.cloud.error_reporting.client
   :members:
   :show-inheritance:
 

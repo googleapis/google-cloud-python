@@ -60,7 +60,7 @@ level. For example:
 
 ----
 
-.. automodule:: gcloud.bigtable.row_filters
+.. automodule:: google.cloud.bigtable.row_filters
   :members:
   :show-inheritance:
 

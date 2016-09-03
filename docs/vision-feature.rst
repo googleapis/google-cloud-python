@@ -4,7 +4,7 @@ Vision Feature
 Feature
 ~~~~~~~
 
-.. automodule:: gcloud.vision.feature
+.. automodule:: google.cloud.vision.feature
   :members:
   :undoc-members:
   :show-inheritance:

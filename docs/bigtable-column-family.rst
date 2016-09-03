@@ -44,6 +44,6 @@ at the lowest level of the nesting:
 
 ----
 
-.. automodule:: gcloud.bigtable.column_family
+.. automodule:: google.cloud.bigtable.column_family
   :members:
   :show-inheritance:

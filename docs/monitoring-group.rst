@@ -1,7 +1,7 @@
 Groups
 ======
 
-.. automodule:: gcloud.monitoring.group
+.. automodule:: google.cloud.monitoring.group
   :members:
   :show-inheritance:
 

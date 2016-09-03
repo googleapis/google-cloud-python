@@ -1,6 +1,6 @@
 Batches
 ~~~~~~~
 
-.. automodule:: gcloud.storage.batch
+.. automodule:: google.cloud.storage.batch
   :members:
   :show-inheritance:

@@ -1,6 +1,6 @@
 Blobs / Objects
 ~~~~~~~~~~~~~~~
 
-.. automodule:: gcloud.storage.blob
+.. automodule:: google.cloud.storage.blob
   :members:
   :show-inheritance:

@@ -4,7 +4,7 @@ Vision Image
 Image
 ~~~~~
 
-.. automodule:: gcloud.vision.image
+.. automodule:: google.cloud.vision.image
   :members:
   :undoc-members:
   :show-inheritance:

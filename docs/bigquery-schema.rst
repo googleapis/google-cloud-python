@@ -1,7 +1,7 @@
 Schemas
 ~~~~~~~
 
-.. automodule:: gcloud.bigquery.schema
+.. automodule:: google.cloud.bigquery.schema
   :members:
   :show-inheritance:
 

@@ -1,6 +1,6 @@
 Jobs
 ~~~~
 
-.. automodule:: gcloud.bigquery.job
+.. automodule:: google.cloud.bigquery.job
   :members:
   :show-inheritance:

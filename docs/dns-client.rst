@@ -1,13 +1,13 @@
 DNS Client
 ==========
 
-.. automodule:: gcloud.dns.client
+.. automodule:: google.cloud.dns.client
   :members:
   :show-inheritance:
 
 Connection
 ~~~~~~~~~~
 
-.. automodule:: gcloud.dns.connection
+.. automodule:: google.cloud.dns.connection
   :members:
   :show-inheritance:

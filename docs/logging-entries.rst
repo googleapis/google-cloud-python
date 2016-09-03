@@ -1,7 +1,7 @@
 Entries
 =======
 
-.. automodule:: gcloud.logging.entries
+.. automodule:: google.cloud.logging.entries
   :members:
   :show-inheritance:
 

@@ -1,6 +1,6 @@
 Python Logging Module Handler
 ==============================
 
-.. automodule:: gcloud.logging.handlers.handlers
+.. automodule:: google.cloud.logging.handlers.handlers
   :members:
   :show-inheritance:

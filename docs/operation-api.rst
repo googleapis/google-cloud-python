@@ -1,7 +1,7 @@
 Long-Running Operations
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: gcloud.operation
+.. automodule:: google.cloud.operation
   :members:
   :show-inheritance:
 

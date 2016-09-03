@@ -1,7 +1,7 @@
 Bigtable Row
 ============
 
-.. automodule:: gcloud.bigtable.row
+.. automodule:: google.cloud.bigtable.row
   :members:
   :show-inheritance:
   :inherited-members:

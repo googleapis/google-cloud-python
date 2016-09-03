@@ -1,6 +1,6 @@
 Document
 ~~~~~~~~
 
-.. automodule:: gcloud.language.document
+.. automodule:: google.cloud.language.document
   :members:
   :show-inheritance:
