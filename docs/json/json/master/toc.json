@@ -34,112 +34,112 @@
       "nav": [
         {
           "title": "Client",
-          "type": "gcloud/client/client"
+          "type": "google/cloud/client/client"
         },
         {
           "title": "Connection",
-          "type": "gcloud/connection/connection"
+          "type": "google/cloud/connection/connection"
         },
         {
           "title": "Credentials",
-          "type": "gcloud/credentials"
+          "type": "google/cloud/credentials"
         },
         {
           "title": "Environment Variables",
-          "type": "gcloud/environment_vars"
+          "type": "google/cloud/environment_vars"
         },
         {
           "title": "Iterator",
-          "type": "gcloud/iterator"
+          "type": "google/cloud/iterator"
         }
       ],
       "title": "gcloud",
-      "type": "gcloud/gcloud"
+      "type": "google/cloud/gcloud"
     },
     {
       "implemented": ">=0.7.0",
       "nav": [
         {
           "title": "Client",
-          "type": "gcloud/bigquery/client/client"
+          "type": "google/cloud/bigquery/client/client"
         },
         {
           "title": "Dataset",
-          "type": "gcloud/bigquery/dataset/dataset"
+          "type": "google/cloud/bigquery/dataset/dataset"
         },
         {
           "title": "Jobs",
-          "type": "gcloud/bigquery/job"
+          "type": "google/cloud/bigquery/job"
         },
         {
           "title": "Table",
-          "type": "gcloud/bigquery/table/table"
+          "type": "google/cloud/bigquery/table/table"
         },
         {
           "title": "Query",
-          "type": "gcloud/bigquery/query/query"
+          "type": "google/cloud/bigquery/query/query"
         }
       ],
       "title": "BigQuery",
-      "type": "gcloud/bigquery"
+      "type": "google/cloud/bigquery"
     },
     {
       "implemented": ">=0.12.0",
       "nav": [
         {
           "title": "Client",
-          "type": "gcloud/bigtable/client/client"
+          "type": "google/cloud/bigtable/client/client"
         },
         {
           "title": "Cluster",
-          "type": "gcloud/bigtable/cluster/cluster"
+          "type": "google/cloud/bigtable/cluster/cluster"
         },
         {
           "title": "Column Families",
-          "type": "gcloud/bigtable/column_family/columnfamily"
+          "type": "google/cloud/bigtable/column_family/columnfamily"
         },
         {
           "title": "Bigtable Row",
-          "type": "gcloud/bigtable/row/row"
+          "type": "google/cloud/bigtable/row/row"
         },
         {
           "title": "Bigtable Row Filter",
-          "type": "gcloud/bigtable/row_filters/rowfilter"
+          "type": "google/cloud/bigtable/row_filters/rowfilter"
         },
         {
           "title": "Table",
-          "type": "gcloud/bigtable/table/table"
+          "type": "google/cloud/bigtable/table/table"
         }
       ],
       "title": "BigTable",
-      "type": "gcloud/bigtable"
+      "type": "google/cloud/bigtable"
     },
     {
       "implemented": ">=0.3.0",
       "nav": [
         {
           "title": "Client",
-          "type": "gcloud/datastore/client/client"
+          "type": "google/cloud/datastore/client/client"
         },
         {
           "title": "Entity",
-          "type": "gcloud/datastore/entity/entity"
+          "type": "google/cloud/datastore/entity/entity"
         },
         {
           "title": "Key",
-          "type": "gcloud/datastore/key/key"
+          "type": "google/cloud/datastore/key/key"
         },
         {
           "title": "Query",
-          "type": "gcloud/datastore/query/query"
+          "type": "google/cloud/datastore/query/query"
         },
         {
           "title": "Transaction",
-          "type": "gcloud/datastore/transaction/transaction"
+          "type": "google/cloud/datastore/transaction/transaction"
         },
         {
           "title": "Batch",
-          "type": "gcloud/datastore/batch/batch"
+          "type": "google/cloud/datastore/batch/batch"
         },
         {
           "title": "Helpers",
@@ -147,305 +147,305 @@
         }
       ],
       "title": "Datastore",
-      "type": "gcloud/datastore"
+      "type": "google/cloud/datastore"
     },
     {
       "implemented": ">=0.8.0",
       "nav": [
         {
           "title": "Client",
-          "type": "gcloud/dns/client/client"
+          "type": "google/cloud/dns/client/client"
         },
         {
           "title": "Managed Zones",
-          "type": "gcloud/dns/zone/managedzone"
+          "type": "google/cloud/dns/zone/managedzone"
         },
         {
           "title": "Resource Record Set",
-          "type": "gcloud/dns/resource_record_set/resourcerecordset"
+          "type": "google/cloud/dns/resource_record_set/resourcerecordset"
         },
         {
           "title": "Change Sets",
-          "type": "gcloud/dns/changes/changes"
+          "type": "google/cloud/dns/changes/changes"
         }
       ],
       "title": "DNS",
-      "type": "gcloud/dns"
+      "type": "google/cloud/dns"
     },
     {
       "nav": [
         {
           "title": "Client",
-          "type": "gcloud/error_reporting/client/client"
+          "type": "google/cloud/error_reporting/client/client"
         }
       ],
       "title": "Error Reporting",
-      "type": "gcloud/error_reporting"
+      "type": "google/cloud/error_reporting"
     },
     {
       "nav": [
         {
           "title": "BadRequest",
-          "type": "gcloud/exceptions/badrequest"
+          "type": "google/cloud/exceptions/badrequest"
         },
         {
           "title": "ClientError",
-          "type": "gcloud/exceptions/clienterror"
+          "type": "google/cloud/exceptions/clienterror"
         },
         {
           "title": "Conflict",
-          "type": "gcloud/exceptions/conflict"
+          "type": "google/cloud/exceptions/conflict"
         },
         {
           "title": "Forbidden",
-          "type": "gcloud/exceptions/forbidden"
+          "type": "google/cloud/exceptions/forbidden"
         },
         {
           "title": "GCloudError",
-          "type": "gcloud/exceptions/gclouderror"
+          "type": "google/cloud/exceptions/gclouderror"
         },
         {
           "title": "InternalServerError",
-          "type": "gcloud/exceptions/internalservererror"
+          "type": "google/cloud/exceptions/internalservererror"
         },
         {
           "title": "LengthRequired",
-          "type": "gcloud/exceptions/lengthrequired"
+          "type": "google/cloud/exceptions/lengthrequired"
         },
         {
           "title": "MethodNotAllowed",
-          "type": "gcloud/exceptions/methodnotallowed"
+          "type": "google/cloud/exceptions/methodnotallowed"
         },
         {
           "title": "MethodNotImplemented",
-          "type": "gcloud/exceptions/methodnotimplemented"
+          "type": "google/cloud/exceptions/methodnotimplemented"
         },
         {
           "title": "MovedPermanently",
-          "type": "gcloud/exceptions/movedpermanently"
+          "type": "google/cloud/exceptions/movedpermanently"
         },
         {
           "title": "NotFound",
-          "type": "gcloud/exceptions/notfound"
+          "type": "google/cloud/exceptions/notfound"
         },
         {
           "title": "NotModified",
-          "type": "gcloud/exceptions/notmodified"
+          "type": "google/cloud/exceptions/notmodified"
         },
         {
           "title": "PreconditionFailed",
-          "type": "gcloud/exceptions/preconditionfailed"
+          "type": "google/cloud/exceptions/preconditionfailed"
         },
         {
           "title": "Redirection",
-          "type": "gcloud/exceptions/redirection"
+          "type": "google/cloud/exceptions/redirection"
         },
         {
           "title": "RequestRangeNotSatisfiable",
-          "type": "gcloud/exceptions/requestrangenotsatisfiable"
+          "type": "google/cloud/exceptions/requestrangenotsatisfiable"
         },
         {
           "title": "ResumeIncomplete",
-          "type": "gcloud/exceptions/resumeincomplete"
+          "type": "google/cloud/exceptions/resumeincomplete"
         },
         {
           "title": "ServerError",
-          "type": "gcloud/exceptions/servererror"
+          "type": "google/cloud/exceptions/servererror"
         },
         {
           "title": "ServiceUnavailable",
-          "type": "gcloud/exceptions/serviceunavailable"
+          "type": "google/cloud/exceptions/serviceunavailable"
         },
         {
           "title": "TemporaryRedirect",
-          "type": "gcloud/exceptions/temporaryredirect"
+          "type": "google/cloud/exceptions/temporaryredirect"
         },
         {
           "title": "TooManyRequests",
-          "type": "gcloud/exceptions/toomanyrequests"
+          "type": "google/cloud/exceptions/toomanyrequests"
         },
         {
           "title": "Unauthorized",
-          "type": "gcloud/exceptions/unauthorized"
+          "type": "google/cloud/exceptions/unauthorized"
         },
         {
           "title": "Exceptions",
-          "type": "gcloud/exceptions"
+          "type": "google/cloud/exceptions"
         }
       ],
       "title": "Exceptions",
-      "type": "gcloud/exceptions"
+      "type": "google/cloud/exceptions"
     },
     {
       "implemented": ">=0.12.0",
       "nav": [
         {
           "title": "Client",
-          "type": "gcloud/logging/client/client"
+          "type": "google/cloud/logging/client/client"
         },
         {
           "title": "Logger",
-          "type": "gcloud/logging/logger/logger"
+          "type": "google/cloud/logging/logger/logger"
         },
         {
           "title": "Entries",
-          "type": "gcloud/logging/entries"
+          "type": "google/cloud/logging/entries"
         },
         {
           "title": "Metric",
-          "type": "gcloud/logging/metric/metric"
+          "type": "google/cloud/logging/metric/metric"
         },
         {
           "title": "Sink",
-          "type": "gcloud/logging/sink/sink"
+          "type": "google/cloud/logging/sink/sink"
         }
       ],
       "title": "Cloud Logging",
-      "type": "gcloud/logging"
+      "type": "google/cloud/logging"
     },
     {
       "implemented": ">=0.12.0",
       "nav": [
         {
           "title": "Client",
-          "type": "gcloud/monitoring/client/client"
+          "type": "google/cloud/monitoring/client/client"
         },
         {
           "title": "Metric Descriptors",
-          "type": "gcloud/monitoring/metric/metricdescriptor"
+          "type": "google/cloud/monitoring/metric/metricdescriptor"
         },
         {
           "title": "Label Descriptors",
-          "type": "gcloud/monitoring/label/labeldescriptor"
+          "type": "google/cloud/monitoring/label/labeldescriptor"
         },
         {
           "title": "Monitored Resource Descriptors",
-          "type": "gcloud/monitoring/resource/resourcedescriptor"
+          "type": "google/cloud/monitoring/resource/resourcedescriptor"
         },
         {
           "title": "Time Series Query",
-          "type": "gcloud/monitoring/query/query"
+          "type": "google/cloud/monitoring/query/query"
         },
         {
           "title": "Time Series",
-          "type": "gcloud/monitoring/timeseries/timeseries"
+          "type": "googe/cloud/monitoring/timeseries/timeseries"
         }
       ],
       "title": "Cloud Monitoring",
-      "type": "gcloud/monitoring"
+      "type": "google/cloud/monitoring"
     },
     {
       "implemented": ">=0.5.0",
       "nav": [
         {
           "title": "Client",
-          "type": "gcloud/pubsub/client/client"
+          "type": "google/cloud/pubsub/client/client"
         },
         {
           "title": "Topic",
-          "type": "gcloud/pubsub/topic/topic"
+          "type": "google/cloud/pubsub/topic/topic"
         },
         {
           "title": "Subscription",
-          "type": "gcloud/pubsub/subscription/subscription"
+          "type": "google/cloud/pubsub/subscription/subscription"
         },
         {
           "title": "Message",
-          "type": "gcloud/pubsub/message/message"
+          "type": "google/cloud/pubsub/message/message"
         },
         {
           "title": "Policy",
-          "type": "gcloud/pubsub/iam/policy"
+          "type": "google/cloud/pubsub/iam/policy"
         }
       ],
       "title": "Pub/Sub",
-      "type": "gcloud/pubsub"
+      "type": "google/cloud/pubsub"
     },
     {
       "implemented": ">=0.8.0",
       "nav": [
         {
           "title": "Client",
-          "type": "gcloud/resource_manager/client/client"
+          "type": "google/cloud/resource_manager/client/client"
         },
         {
           "title": "Project",
-          "type": "gcloud/resource_manager/project/project"
+          "type": "google/cloud/resource_manager/project/project"
         }
       ],
       "title": "Resource Manager",
-      "type": "gcloud/resource_manager"
+      "type": "google/cloud/resource_manager"
     },
     {
       "implemented": ">=0.3.0",
       "nav": [
         {
           "title": "Client",
-          "type": "gcloud/storage/client/client"
+          "type": "google/cloud/storage/client/client"
         },
         {
           "title": "Blob",
-          "type": "gcloud/storage/blob/blob"
+          "type": "google/cloud/storage/blob/blob"
         },
         {
           "title": "Bucket",
-          "type": "gcloud/storage/bucket/bucket"
+          "type": "google/cloud/storage/bucket/bucket"
         },
         {
           "title": "ACL",
-          "type": "gcloud/storage/acl/acl"
+          "type": "google/cloud/storage/acl/acl"
         },
         {
           "title": "Batch",
-          "type": "gcloud/storage/batch/batch"
+          "type": "google/cloud/storage/batch/batch"
         }
       ],
       "title": "Storage",
-      "type": "gcloud/storage"
+      "type": "google/cloud/storage"
     },
     {
       "nav": [
         {
           "title": "Buffered Stream",
-          "type": "gcloud/streaming/buffered_stream/bufferedstream"
+          "type": "google/cloud/streaming/buffered_stream/bufferedstream"
         },
         {
           "title": "Request",
-          "type": "gcloud/streaming/http_wrapper/request"
+          "type": "google/cloud/streaming/http_wrapper/request"
         },
         {
           "title": "Response",
-          "type": "gcloud/streaming/http_wrapper/response"
+          "type": "google/cloud/streaming/http_wrapper/response"
         },
         {
           "title": "Stream Slice",
-          "type": "gcloud/streaming/stream_slice/streamslice"
+          "type": "google/cloud/streaming/stream_slice/streamslice"
         },
         {
           "title": "Download",
-          "type": "gcloud/streaming/transfer/download"
+          "type": "google/cloud/streaming/transfer/download"
         },
         {
           "title": "Upload",
-          "type": "gcloud/streaming/transfer/upload"
+          "type": "google/cloud/streaming/transfer/upload"
         },
         {
           "title": "Util",
-          "type": "gcloud/streaming/util"
+          "type": "google/cloud/streaming/util"
         }
       ],
       "title": "Streaming",
-      "type": "gcloud/streaming"
+      "type": "google/cloud/streaming"
     },
     {
       "nav": [
         {
           "title": "Connection",
-          "type": "gcloud/vision/connection/connection"
+          "type": "google/cloud/vision/connection/connection"
         }
       ],
       "title": "Vision",
-      "type": "gcloud/vision"
+      "type": "google/cloud/vision"
     }
   ]
 }
