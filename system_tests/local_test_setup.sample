@@ -1,4 +1,4 @@
 export GOOGLE_APPLICATION_CREDENTIALS="app_credentials.json.sample"
-export GCLOUD_TESTS_PROJECT_ID="my-project"
-export GCLOUD_REMOTE_FOR_LINT="upstream"
-export GCLOUD_BRANCH_FOR_LINT="master"
+export GOOGLE_CLOUD_TESTS_PROJECT_ID="my-project"
+export GOOGLE_CLOUD_REMOTE_FOR_LINT="upstream"
+export GOOGLE_CLOUD_BRANCH_FOR_LINT="master"

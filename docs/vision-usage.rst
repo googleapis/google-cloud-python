@@ -8,8 +8,8 @@ Authentication and Configuration
   see :doc:`gcloud-auth`.
 
 - In addition to any authentication configuration, you should also set the
-  :envvar:`GCLOUD_PROJECT` environment variable for the project you'd like
-  to interact with. If the GCLOUD_PROJECT environment variable is not present,
+  :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the project you'd like
+  to interact with. If the GOOGLE_CLOUD_PROJECT environment variable is not present,
   the project ID from JSON file credentials is used.
 
   If you are using Google App Engine or Google Compute Engine

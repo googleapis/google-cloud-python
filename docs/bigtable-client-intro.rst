@@ -26,7 +26,7 @@ Configuration
   see :doc:`gcloud-auth`.
 
 - In addition to any authentication configuration, you can also set the
-  :envvar:`GCLOUD_PROJECT` environment variable for the Google Cloud Console
+  :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the Google Cloud Console
   project you'd like to interact with. If your code is running in Google App
   Engine or Google Compute Engine the project will be detected automatically.
   (Setting this environment variable is not required, you may instead pass the

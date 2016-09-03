@@ -45,7 +45,7 @@ def _determine_default_project(project=None):
     implicit environments are:
 
     * DATASTORE_DATASET environment variable (for ``gcd`` / emulator testing)
-    * GCLOUD_PROJECT environment variable
+    * GOOGLE_CLOUD_PROJECT environment variable
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 

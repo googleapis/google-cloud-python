@@ -17,7 +17,7 @@ Authentication / Configuration
   :meth:`from_service_account_p12 <google.cloud.bigquery.client.Client.from_service_account_p12>`.
 
 - After setting :envvar:`GOOGLE_APPLICATION_CREDENTIALS` and
-  :envvar:`GCLOUD_PROJECT` environment variables, create an instance of
+  :envvar:`GOOGLE_CLOUD_PROJECT` environment variables, create an instance of
   :class:`Client <google.cloud.bigquery.client.Client>`.
 
   .. doctest::

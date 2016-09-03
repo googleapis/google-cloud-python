@@ -36,7 +36,7 @@ TRANSACTION_MAX_GROUPS = 5
 
 
 def print_func(message):
-    if os.getenv('GCLOUD_NO_PRINT') != 'true':
+    if os.getenv('GOOGLE_CLOUD_NO_PRINT') != 'true':
         print(message)
 
 

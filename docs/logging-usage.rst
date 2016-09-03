@@ -9,15 +9,15 @@ Authentication and Configuration
   see :doc:`gcloud-auth`.
 
 - In addition to any authentication configuration, you should also set the
-  :envvar:`GCLOUD_PROJECT` environment variable for the project you'd like
+  :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the project you'd like
   to interact with. If you are Google App Engine or Google Compute Engine
   this will be detected automatically.
 
 - The library now enables the ``gRPC`` transport for the logging API by
   default, assuming that the required dependencies are installed and
   importable.  To *disable* this transport, set the
-  :envvar:`GCLOUD_DISABLE_GAX` environment variable to a non-empty string,
-  e.g.:  ``$ export GCLOUD_DISABLE_GAX=1``.
+  :envvar:`GOOGLE_CLOUD_DISABLE_GAX` environment variable to a non-empty string,
+  e.g.:  ``$ export GOOGLE_CLOUD_DISABLE_GAX=1``.
 
 - After configuring your environment, create a
   :class:`Client <google.cloud.logging.client.Client>`

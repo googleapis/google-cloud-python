@@ -63,10 +63,10 @@ try:
     _USER_ROOT = os.path.expanduser('~')
 except ImportError:  # pragma: NO COVER
     _USER_ROOT = None
-_GCLOUD_CONFIG_FILE = os.path.join(
+_GOOGLE_CLOUD_CONFIG_FILE = os.path.join(
     'gcloud', 'configurations', 'config_default')
-_GCLOUD_CONFIG_SECTION = 'core'
-_GCLOUD_CONFIG_KEY = 'project'
+_GOOGLE_CLOUD_CONFIG_SECTION = 'core'
+_GOOGLE_CLOUD_CONFIG_KEY = 'project'
 
 
 class _LocalStack(Local):
@@ -201,7 +201,7 @@ def _get_nix_config_path():
     :returns: The filename on a *nix system containing the CLI
               config file.
     """
-    return os.path.join(_USER_ROOT, '.config', _GCLOUD_CONFIG_FILE)
+    return os.path.join(_USER_ROOT, '.config', _GOOGLE_CLOUD_CONFIG_FILE)
 
 
 def _get_windows_config_path():
@@ -212,7 +212,7 @@ def _get_windows_config_path():
               config file.
     """
     appdata_dir = os.getenv('APPDATA', '')
-    return os.path.join(appdata_dir, _GCLOUD_CONFIG_FILE)
+    return os.path.join(appdata_dir, _GOOGLE_CLOUD_CONFIG_FILE)
 
 
 def _default_service_project_id():
@@ -242,8 +242,8 @@ def _default_service_project_id():
     config = configparser.RawConfigParser()
     config.read(search_paths)
 
-    if config.has_section(_GCLOUD_CONFIG_SECTION):
-        return config.get(_GCLOUD_CONFIG_SECTION, _GCLOUD_CONFIG_KEY)
+    if config.has_section(_GOOGLE_CLOUD_CONFIG_SECTION):
+        return config.get(_GOOGLE_CLOUD_CONFIG_SECTION, _GOOGLE_CLOUD_CONFIG_KEY)
 
 
 def _compute_engine_id():
@@ -290,7 +290,7 @@ def _determine_default_project(project=None):
     In implicit case, supports three environments. In order of precedence, the
     implicit environments are:
 
-    * GCLOUD_PROJECT environment variable
+    * GOOGLE_CLOUD_PROJECT environment variable
     * GOOGLE_APPLICATION_CREDENTIALS JSON file
     * Get default service project from
       ``$ gcloud beta auth application-default login``

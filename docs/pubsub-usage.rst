@@ -8,15 +8,15 @@ Authentication / Configuration
   your applications.
 
 - In addition to any authentication configuration, you should also set the
-  :envvar:`GCLOUD_PROJECT` environment variable for the project you'd like
+  :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the project you'd like
   to interact with. If you are Google App Engine or Google Compute Engine
   this will be detected automatically.
 
 - The library now enables the ``gRPC`` transport for the pubsub API by
   default, assuming that the required dependencies are installed and
   importable.  To *disable* this transport, set the
-  :envvar:`GCLOUD_DISABLE_GAX` environment variable to a non-empty string,
-  e.g.:  ``$ export GCLOUD_DISABLE_GAX=1``.
+  :envvar:`GOOGLE_CLOUD_DISABLE_GAX` environment variable to a non-empty string,
+  e.g.:  ``$ export GOOGLE_CLOUD_DISABLE_GAX=1``.
 
 - :class:`Client <google.cloud.pubsub.client.Client>` objects hold both a ``project``
   and an authenticated connection to the PubSub service.
@@ -27,7 +27,7 @@ Authentication / Configuration
   and
   :meth:`from_service_account_p12 <google.cloud.pubsub.client.Client.from_service_account_p12>`.
 
-- After setting ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GCLOUD_PROJECT``
+- After setting ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GOOGLE_CLOUD_PROJECT``
   environment variables, create a :class:`Client <google.cloud.pubsub.client.Client>`
 
   .. doctest::

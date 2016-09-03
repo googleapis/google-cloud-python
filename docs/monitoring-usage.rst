@@ -59,7 +59,7 @@ It is thus typical to create a client object as follows::
 
 If you are running in Google Compute Engine or Google App Engine,
 the current project is the default target project. This default
-can be further overridden with the :envvar:`GCLOUD_PROJECT`
+can be further overridden with the :envvar:`GOOGLE_CLOUD_PROJECT`
 environment variable. Using the default target project is
 even easier::
 

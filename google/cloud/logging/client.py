@@ -47,7 +47,7 @@ from google.cloud.logging.metric import Metric
 from google.cloud.logging.sink import Sink
 
 
-_DISABLE_GAX = os.getenv('GCLOUD_DISABLE_GAX', False)
+_DISABLE_GAX = os.getenv('GOOGLE_CLOUD_DISABLE_GAX', False)
 _USE_GAX = _HAVE_GAX and not _DISABLE_GAX
 
 

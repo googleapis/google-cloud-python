@@ -100,8 +100,8 @@ Coding Style
 - In order to make ``tox -e lint`` run faster, you can set some environment
   variables::
 
-   export GCLOUD_REMOTE_FOR_LINT="upstream"
-   export GCLOUD_BRANCH_FOR_LINT="master"
+   export GOOGLE_CLOUD_REMOTE_FOR_LINT="upstream"
+   export GOOGLE_CLOUD_BRANCH_FOR_LINT="master"
 
   By doing this, you are specifying the location of the most up-to-date
   version of ``google-cloud-python``. The the suggested remote name ``upstream``
@@ -153,7 +153,7 @@ Running System Tests
   so you'll need to provide some environment variables to facilitate
   authentication to your project:
 
-  - ``GCLOUD_TESTS_PROJECT_ID``: Developers Console project ID (e.g.
+  - ``GOOGLE_CLOUD_TESTS_PROJECT_ID``: Developers Console project ID (e.g.
     bamboo-shift-455).
   - ``GOOGLE_APPLICATION_CREDENTIALS``: The path to a JSON key file;
     see ``system_tests/app_credentials.json.sample`` as an example. Such a file
@@ -187,7 +187,7 @@ Running System Tests
 
    # Create the indexes
    $ gcloud preview datastore create-indexes system_tests/data/index.yaml \
-   > --project=$GCLOUD_TESTS_PROJECT_ID
+   > --project=$GOOGLE_CLOUD_TESTS_PROJECT_ID
 
    # Restore your environment to its previous state.
    $ unset CLOUDSDK_PYTHON_SITEPACKAGES
@@ -230,7 +230,7 @@ Running System Tests
 
    $ DATASTORE_HOST=http://localhost:8471 \
    >   DATASTORE_DATASET=gcloud-settings-app-id \
-   >   GCLOUD_NO_PRINT=true \
+   >   GOOGLE_CLOUD_NO_PRINT=true \
    >   python system_tests/run_system_test.py \
    >   --package=datastore --ignore-requirements
 

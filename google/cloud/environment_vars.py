@@ -18,10 +18,10 @@ These enable many types of implicit behavior in both production
 and tests.
 """
 
-PROJECT = 'GCLOUD_PROJECT'
+PROJECT = 'GOOGLE_CLOUD_PROJECT'
 """Environment variable defining default project."""
 
-TESTS_PROJECT = 'GCLOUD_TESTS_PROJECT_ID'
+TESTS_PROJECT = 'GOOGLE_CLOUD_TESTS_PROJECT_ID'
 """Environment variable defining project for tests."""
 
 GCD_DATASET = 'DATASTORE_DATASET'
