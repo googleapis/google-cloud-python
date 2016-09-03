@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Custom script to run pycodestyle on gcloud codebase.
+"""Custom script to run pycodestyle on google-cloud codebase.
 
 This runs pycodestyle as a script via subprocess but only runs it on the
 .py files that are checked in to the repository.

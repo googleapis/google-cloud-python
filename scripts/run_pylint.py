@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Custom script to run PyLint on gcloud codebase.
+"""Custom script to run PyLint on google-cloud codebase.
 
 This runs pylint as a script via subprocess in two different
 subprocesses. The first lints the production/library code
@@ -31,14 +31,14 @@ import sys
 
 
 IGNORED_DIRECTORIES = [
-    os.path.join('gcloud', 'bigtable', '_generated'),
-    os.path.join('gcloud', 'datastore', '_generated'),
+    os.path.join('google', 'cloud', 'bigtable', '_generated'),
+    os.path.join('google', 'cloud', 'datastore', '_generated'),
     'scripts/verify_included_modules.py',
 ]
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),
     'setup.py',
-    os.path.join('gcloud', 'vision', '_fixtures.py'),
+    os.path.join('google', 'cloud', 'vision', '_fixtures.py'),
 ]
 SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
 PRODUCTION_RC = os.path.join(SCRIPTS_DIR, 'pylintrc_default')

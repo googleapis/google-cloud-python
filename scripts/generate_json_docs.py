@@ -244,7 +244,7 @@ def build_link_from_list_of_types(type_names, object_type=None):
 def build_link_from_type(type_name, object_type=None):
     type_name = clean_type_name(type_name)
 
-    if not type_name.startswith('gcloud'):
+    if not type_name.startswith('google.cloud'):
         return type_name
     doc_path = type_name
 
@@ -425,13 +425,13 @@ def write_docs_file(path, contents):
 
 def generate_doc_types_json(modules, types_file_path):
     doc_types_list = [{
-        'id': 'gcloud',
+        'id': 'google-cloud',
         'contents': 'index.json',
-        'title': 'gcloud'
+        'title': 'google-cloud'
     }]
 
     for module_name in modules:
-        if module_name == 'gcloud.__init__':
+        if module_name == 'google.cloud.__init__':
             continue
 
         module_title = module_name.replace('.__init__', '').split('.')
@@ -485,7 +485,7 @@ def generate_module_docs(modules, docs_path, real_base_path, toc):
         module_docs_path = os.path.join(docs_path, module_path) + '.json'
 
         if pdoc_module.functions():
-            toc_key = module_name.replace('gcloud.', '').split('.')[0]
+            toc_key = module_name.replace('google.cloud.', '').split('.')[0]
             toc_entry = build_toc_entry(module.name, module_path)
             toc['services'][toc_key].append(toc_entry)
 
@@ -501,7 +501,7 @@ def generate_class_docs(module, klass, base_path, toc):
                    .replace('__init__', 'index'))
     module_docs_path = os.path.join(base_path, module_path,
                                     klass.name.lower()) + '.json'
-    toc_key = module.name.replace('gcloud.', '').split('.')[0]
+    toc_key = module.name.replace('google.cloud.', '').split('.')[0]
 
     toc_entry = build_toc_entry(klass.name,
                                 os.path.join(module_path,
@@ -590,8 +590,8 @@ def package_files(generated_json_dir, docs_build_dir, static_json_dir,
     shutil.rmtree(package_path, ignore_errors=True)
 
     shutil.copytree(static_json_dir, package_path)
-    shutil.copytree(os.path.join(generated_json_dir, 'gcloud'),
-                    os.path.join(package_path, 'json', tag, 'gcloud'))
+    shutil.copytree(os.path.join(generated_json_dir, 'google', 'cloud'),
+                    os.path.join(package_path, 'json', tag, 'google', 'cloud'))
     shutil.copyfile(os.path.join(generated_json_dir, 'types.json'),
                     os.path.join(package_path, 'json', tag, 'types.json'))
 
@@ -609,7 +609,8 @@ def main():
     toc = {
         'services': {
             '__init__': [],
-            'gcloud': [],
+            'google': [],
+            'cloud': [],
             'bigquery': [],
             'bigtable': [],
             'client': [],
@@ -641,8 +642,8 @@ def main():
     JSON_DOCS_DIR = os.path.join(DOCS_BUILD_DIR, 'json', args.tag)
     LIB_DIR = os.path.abspath(args.basepath)
 
-    library_dir = os.path.join(LIB_DIR, 'gcloud')
-    public_mods = get_public_modules(library_dir, base_package='gcloud')
+    library_dir = os.path.join(LIB_DIR, 'google', 'cloud')
+    public_mods = get_public_modules(library_dir, base_package='google')
 
     generate_module_docs(public_mods, JSON_DOCS_DIR, BASE_DIR, toc)
     generate_doc_types_json(public_mods,
