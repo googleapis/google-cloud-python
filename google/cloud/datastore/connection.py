@@ -355,10 +355,6 @@ class Connection(connection_module.Connection):
 
     :type http: :class:`httplib2.Http` or class that defines ``request()``.
     :param http: An optional HTTP object to make requests.
-
-    :type api_base_url: string
-    :param api_base_url: The base of the API call URL. Defaults to
-                         :attr:`API_BASE_URL`.
     """
 
     API_BASE_URL = 'https://' + DATASTORE_API_HOST
@@ -374,15 +370,14 @@ class Connection(connection_module.Connection):
     SCOPE = ('https://www.googleapis.com/auth/datastore',)
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
-    def __init__(self, credentials=None, http=None, api_base_url=None):
+    def __init__(self, credentials=None, http=None):
         super(Connection, self).__init__(credentials=credentials, http=http)
-        if api_base_url is None:
-            try:
-                # gcd.sh has /datastore/ in the path still since it supports
-                # v1beta2 and v1beta3 simultaneously.
-                api_base_url = '%s/datastore' % (os.environ[GCD_HOST],)
-            except KeyError:
-                api_base_url = self.__class__.API_BASE_URL
+        try:
+            # gcd.sh has /datastore/ in the path still since it supports
+            # v1beta2 and v1beta3 simultaneously.
+            api_base_url = '%s/datastore' % (os.environ[GCD_HOST],)
+        except KeyError:
+            api_base_url = self.__class__.API_BASE_URL
         self.api_base_url = api_base_url
         if _USE_GRPC:
             self._datastore_api = _DatastoreAPIOverGRPC(self)

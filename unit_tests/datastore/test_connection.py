@@ -290,13 +290,11 @@ class TestConnection(unittest.TestCase):
         pb.kind.add().name = kind
         return pb
 
-    def _makeOne(self, credentials=None, http=None,
-                 api_base_url=None, use_grpc=False):
+    def _makeOne(self, credentials=None, http=None, use_grpc=False):
         from unit_tests._testing import _Monkey
         from google.cloud.datastore import connection as MUT
         with _Monkey(MUT, _USE_GRPC=use_grpc):
-            return self._getTargetClass()(credentials=credentials, http=http,
-                                          api_base_url=api_base_url)
+            return self._getTargetClass()(credentials=credentials, http=http)
 
     def _verifyProtobufCall(self, called_with, URI, conn):
         self.assertEqual(called_with['uri'], URI)
@@ -325,31 +323,6 @@ class TestConnection(unittest.TestCase):
 
         self.assertNotEqual(conn.api_base_url, API_BASE_URL)
         self.assertEqual(conn.api_base_url, HOST + '/datastore')
-
-    def test_custom_url_from_constructor(self):
-        from google.cloud.connection import API_BASE_URL
-
-        HOST = object()
-        conn = self._makeOne(api_base_url=HOST)
-        self.assertNotEqual(conn.api_base_url, API_BASE_URL)
-        self.assertEqual(conn.api_base_url, HOST)
-
-    def test_custom_url_constructor_and_env(self):
-        import os
-        from unit_tests._testing import _Monkey
-        from google.cloud.connection import API_BASE_URL
-        from google.cloud.environment_vars import GCD_HOST
-
-        HOST1 = object()
-        HOST2 = object()
-        fake_environ = {GCD_HOST: HOST1}
-
-        with _Monkey(os, environ=fake_environ):
-            conn = self._makeOne(api_base_url=HOST2)
-
-        self.assertNotEqual(conn.api_base_url, API_BASE_URL)
-        self.assertNotEqual(conn.api_base_url, HOST1)
-        self.assertEqual(conn.api_base_url, HOST2)
 
     def test_ctor_defaults(self):
         conn = self._makeOne()
