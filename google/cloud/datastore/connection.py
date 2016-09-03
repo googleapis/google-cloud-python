@@ -18,7 +18,7 @@ import os
 
 from google.rpc import status_pb2
 
-from google.cloud._helpers import make_stub
+from google.cloud._helpers import make_secure_stub
 from google.cloud import connection as connection_module
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_HOST
@@ -237,9 +237,10 @@ class _DatastoreAPIOverGRPC(object):
     """
 
     def __init__(self, connection):
-        self._stub = make_stub(connection.credentials, connection.USER_AGENT,
-                               datastore_grpc_pb2.DatastoreStub,
-                               DATASTORE_API_HOST, DATASTORE_API_PORT)
+        self._stub = make_secure_stub(connection.credentials,
+                                      connection.USER_AGENT,
+                                      datastore_grpc_pb2.DatastoreStub,
+                                      DATASTORE_API_HOST, DATASTORE_API_PORT)
 
     def lookup(self, project, request_pb):
         """Perform a ``lookup`` request.

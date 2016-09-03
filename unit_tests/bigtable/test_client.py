@@ -31,17 +31,17 @@ class Test__make_data_stub(unittest.TestCase):
         client = _Client(credentials, user_agent)
 
         fake_stub = object()
-        make_stub_args = []
+        make_secure_stub_args = []
 
-        def mock_make_stub(*args):
-            make_stub_args.append(args)
+        def mock_make_secure_stub(*args):
+            make_secure_stub_args.append(args)
             return fake_stub
 
-        with _Monkey(MUT, make_stub=mock_make_stub):
+        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
             result = self._callFUT(client)
 
         self.assertIs(result, fake_stub)
-        self.assertEqual(make_stub_args, [
+        self.assertEqual(make_secure_stub_args, [
             (
                 client.credentials,
                 client.user_agent,
@@ -67,17 +67,17 @@ class Test__make_instance_stub(unittest.TestCase):
         client = _Client(credentials, user_agent)
 
         fake_stub = object()
-        make_stub_args = []
+        make_secure_stub_args = []
 
-        def mock_make_stub(*args):
-            make_stub_args.append(args)
+        def mock_make_secure_stub(*args):
+            make_secure_stub_args.append(args)
             return fake_stub
 
-        with _Monkey(MUT, make_stub=mock_make_stub):
+        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
             result = self._callFUT(client)
 
         self.assertIs(result, fake_stub)
-        self.assertEqual(make_stub_args, [
+        self.assertEqual(make_secure_stub_args, [
             (
                 client.credentials,
                 client.user_agent,
@@ -103,17 +103,17 @@ class Test__make_operations_stub(unittest.TestCase):
         client = _Client(credentials, user_agent)
 
         fake_stub = object()
-        make_stub_args = []
+        make_secure_stub_args = []
 
-        def mock_make_stub(*args):
-            make_stub_args.append(args)
+        def mock_make_secure_stub(*args):
+            make_secure_stub_args.append(args)
             return fake_stub
 
-        with _Monkey(MUT, make_stub=mock_make_stub):
+        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
             result = self._callFUT(client)
 
         self.assertIs(result, fake_stub)
-        self.assertEqual(make_stub_args, [
+        self.assertEqual(make_secure_stub_args, [
             (
                 client.credentials,
                 client.user_agent,
@@ -139,17 +139,17 @@ class Test__make_table_stub(unittest.TestCase):
         client = _Client(credentials, user_agent)
 
         fake_stub = object()
-        make_stub_args = []
+        make_secure_stub_args = []
 
-        def mock_make_stub(*args):
-            make_stub_args.append(args)
+        def mock_make_secure_stub(*args):
+            make_secure_stub_args.append(args)
             return fake_stub
 
-        with _Monkey(MUT, make_stub=mock_make_stub):
+        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
             result = self._callFUT(client)
 
         self.assertIs(result, fake_stub)
-        self.assertEqual(make_stub_args, [
+        self.assertEqual(make_secure_stub_args, [
             (
                 client.credentials,
                 client.user_agent,

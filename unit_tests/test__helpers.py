@@ -891,11 +891,11 @@ class TestMetadataPlugin(unittest.TestCase):
         self.assertEqual(len(credentials._tokens), 1)
 
 
-class Test_make_stub(unittest.TestCase):
+class Test_make_secure_stub(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from google.cloud._helpers import make_stub
-        return make_stub(*args, **kwargs)
+        from google.cloud._helpers import make_secure_stub
+        return make_secure_stub(*args, **kwargs)
 
     def test_it(self):
         from unit_tests._testing import _Monkey

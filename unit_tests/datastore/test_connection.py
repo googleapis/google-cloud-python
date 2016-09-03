@@ -123,11 +123,11 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         if mock_args is None:
             mock_args = []
 
-        def mock_make_stub(*args):
+        def mock_make_secure_stub(*args):
             mock_args.append(args)
             return stub
 
-        with _Monkey(MUT, make_stub=mock_make_stub):
+        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
             return self._getTargetClass()(connection)
 
     def test_constructor(self):

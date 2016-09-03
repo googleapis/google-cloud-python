@@ -612,8 +612,8 @@ class MetadataPlugin(object):
         callback(headers, None)
 
 
-def make_stub(credentials, user_agent, stub_class, host, port):
-    """Makes a stub for an RPC service.
+def make_secure_stub(credentials, user_agent, stub_class, host, port):
+    """Makes a secure stub for an RPC service.
 
     Uses / depends on gRPC.
 
@@ -636,8 +636,8 @@ def make_stub(credentials, user_agent, stub_class, host, port):
     :rtype: object, instance of ``stub_class``
     :returns: The stub object used to make gRPC requests to a given API.
     """
-    # Leaving the first argument to ssl_channel_credentials() as None
-    # loads root certificates from `grpc/_adapter/credentials/roots.pem`.
+    # ssl_channel_credentials() loads root certificates from
+    # `grpc/_adapter/credentials/roots.pem`.
     transport_creds = grpc.ssl_channel_credentials()
     custom_metadata_plugin = MetadataPlugin(credentials, user_agent)
     auth_creds = grpc.metadata_call_credentials(
