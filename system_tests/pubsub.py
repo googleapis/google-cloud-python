@@ -264,7 +264,7 @@ class TestPubsub(unittest.TestCase):
             self.assertEqual(new_policy.viewers, policy.viewers)
 
     # This test is ultra-flaky.  See:
-    # https://github.com/GoogleCloudPlatform/gcloud-python/issues/2080
+    # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/2080
     @unittest.expectedFailure
     def test_fetch_delete_subscription_w_deleted_topic(self):
         from google.cloud.iterator import MethodIterator

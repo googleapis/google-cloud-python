@@ -63,8 +63,8 @@ class Connection(object):
     :param http: An optional HTTP object to make requests.
     """
 
-    USER_AGENT = "gcloud-python/{0}".format(get_distribution('gcloud').version)
-    """The user agent for gcloud-python requests."""
+    USER_AGENT = "google-cloud-python/{0}".format(get_distribution('gcloud').version)
+    """The user agent for google-cloud-python requests."""
 
     SCOPE = None
     """The scopes required for authenticating with a service.
@@ -310,7 +310,7 @@ class JSONConnection(Connection):
                             you shouldn't provide this and instead use
                             the default for the library.  Default is the
                             latest API version supported by
-                            gcloud-python.
+                            google-cloud-python.
 
         :type expect_json: bool
         :param expect_json: If True, this method will try to parse the

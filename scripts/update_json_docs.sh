@@ -57,11 +57,11 @@ buildDocs ${DOC_VERSION}
 if [ "${TRAVIS_BRANCH}" == "master" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
   pushDocs ${DOC_VERSION}
   cleanSubmodule
-  echo "Done pushing docsite. See: https://googlecloudplatform.github.io/gcloud-python/"
+  echo "Done pushing docsite. See: https://googlecloudplatform.github.io/google-cloud-python/"
 fi
 
 if [[ ! -z ${TRAVIS_TAG} ]]; then
   pushDocs ${DOC_VERSION}
   cleanSubmodule
-  echo "Done pushing docsite. See: https://googlecloudplatform.github.io/gcloud-python/"
+  echo "Done pushing docsite. See: https://googlecloudplatform.github.io/google-cloud-python/"
 fi

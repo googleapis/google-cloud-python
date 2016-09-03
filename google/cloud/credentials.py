@@ -105,7 +105,7 @@ def _get_signed_query_params(credentials, expiration, string_to_sign):
         raise AttributeError('you need a private key to sign credentials.'
                              'the credentials you are currently using %s '
                              'just contains a token. see https://googlecloud'
-                             'platform.github.io/gcloud-python/stable/gcloud-'
+                             'platform.github.io/google-cloud-python/stable/gcloud-'
                              'auth.html#setting-up-a-service-account for more '
                              'details.' % type(credentials))
 
@@ -172,7 +172,7 @@ def generate_signed_url(credentials, resource, expiration,
     See headers `reference`_ for more details on optional arguments.
 
     .. _Issue 922: https://github.com/GoogleCloudPlatform/\
-                   gcloud-python/issues/922
+                   google-cloud-python/issues/922
     .. _reference: https://cloud.google.com/storage/docs/reference-headers
 
     :type credentials: :class:`oauth2client.appengine.AppAssertionCredentials`

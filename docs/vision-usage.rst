@@ -4,7 +4,7 @@ Using the Vision API
 Authentication and Configuration
 --------------------------------
 
-- For an overview of authentication in ``gcloud-python``,
+- For an overview of authentication in ``google-cloud-python``,
   see :doc:`gcloud-auth`.
 
 - In addition to any authentication configuration, you should also set the

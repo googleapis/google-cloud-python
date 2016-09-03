@@ -269,7 +269,7 @@ texinfo_documents = [
 # and parameter definitions from the __init__ docstring.
 autoclass_content = 'both'
 
-issue_uri = ('https://github.com/GoogleCloudPlatform/gcloud-python/issues/'
+issue_uri = ('https://github.com/GoogleCloudPlatform/google-cloud-python/issues/'
              'new?' + urllib.urlencode({'title': '[Documentation Issue] '}))
 issue_uri_template = (
     issue_uri + '&' + urllib.urlencode({'body': 'Page Name: '}) + '{0}' +

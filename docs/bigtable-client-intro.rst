@@ -22,7 +22,7 @@ requests made with the ``client`` you create.
 Configuration
 -------------
 
-- For an overview of authentication in ``gcloud-python``,
+- For an overview of authentication in ``google-cloud-python``,
   see :doc:`gcloud-auth`.
 
 - In addition to any authentication configuration, you can also set the

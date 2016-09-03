@@ -38,7 +38,7 @@ from system_test_utils import unique_resource_id
 
 LOCATION_ID = 'us-central1-c'
 INSTANCE_ID = 'gcloud' + unique_resource_id('-')
-TABLE_ID = 'gcloud-python-test-table'
+TABLE_ID = 'google-cloud-python-test-table'
 COLUMN_FAMILY_ID1 = u'col-fam-id1'
 COLUMN_FAMILY_ID2 = u'col-fam-id2'
 COL_NAME1 = b'col-name1'

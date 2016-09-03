@@ -544,7 +544,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.put_multi([]), None)
 
     def test_put_multi_w_single_empty_entity(self):
-        # https://github.com/GoogleCloudPlatform/gcloud-python/issues/649
+        # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/649
         from google.cloud.datastore.entity import Entity
 
         creds = object()

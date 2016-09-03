@@ -167,7 +167,7 @@ possible to call Google Cloud APIs with a user account via
 
     A production application should **use a service account**,
     but you may wish to use your own personal user account when first
-    getting started with the ``gcloud-python`` library.
+    getting started with the ``google-cloud-python`` library.
 
 The simplest way to use credentials from a user account is via
 Application Default Credentials using ``gcloud auth login``
@@ -305,7 +305,7 @@ you add the correct scopes for the APIs you want to access:
 Advanced Customization
 ======================
 
-Though the ``gcloud-python`` library defaults to using `oauth2client`_
+Though the ``google-cloud-python`` library defaults to using `oauth2client`_
 to sign requests and ``httplib2`` for sending requests,
 it is not a strict requirement.
 
@@ -329,10 +329,10 @@ we only use it as
     http.request(uri, method=method_name, body=body, headers=headers)
 
 For an example of such an implementation,
-a ``gcloud-python`` user created a `custom HTTP class`_
+a ``google-cloud-python`` user created a `custom HTTP class`_
 using the `requests`_ library.
 
-.. _custom HTTP class: https://github.com/GoogleCloudPlatform/gcloud-python/issues/908#issuecomment-110811556
+.. _custom HTTP class: https://github.com/GoogleCloudPlatform/google-cloud-python/issues/908#issuecomment-110811556
 .. _requests: http://www.python-requests.org/en/latest/
 
 As for handling authentication on your own,

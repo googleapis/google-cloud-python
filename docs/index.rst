@@ -167,9 +167,9 @@
   :hidden:
   :caption: External Links
 
-  GitHub <https://github.com/GoogleCloudPlatform/gcloud-python/>
-  Issues <https://github.com/GoogleCloudPlatform/gcloud-python/issues>
-  Stack Overflow <http://stackoverflow.com/questions/tagged/gcloud-python>
+  GitHub <https://github.com/GoogleCloudPlatform/google-cloud-python/>
+  Issues <https://github.com/GoogleCloudPlatform/google-cloud-python/issues>
+  Stack Overflow <http://stackoverflow.com/questions/tagged/google-cloud-python>
   PyPI <https://pypi.python.org/pypi/gcloud>
 
 Getting started
@@ -181,13 +181,13 @@ The ``gcloud`` library is ``pip`` install-able:
 
     $ pip install gcloud
 
-If you want to install ``gcloud-python`` from source,
+If you want to install ``google-cloud-python`` from source,
 you can clone the repository from GitHub:
 
 .. code-block:: console
 
-    $ git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
-    $ cd gcloud-python
+    $ git clone git://github.com/GoogleCloudPlatform/google-cloud-python.git
+    $ cd google-cloud-python
     $ python setup.py install
 
 ----

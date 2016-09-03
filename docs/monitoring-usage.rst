@@ -247,7 +247,7 @@ While you can obtain time series objects by iterating over a
 more useful to retrieve time series data in the form of a
 :class:`pandas.DataFrame`, where each column corresponds to a
 single time series. For this, you must have :mod:`pandas` installed;
-it is not a required dependency of ``gcloud-python``.
+it is not a required dependency of ``google-cloud-python``.
 
 You can display CPU utilization across your GCE instances during
 the last five minutes as follows::

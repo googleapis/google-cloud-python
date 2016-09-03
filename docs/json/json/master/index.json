@@ -1,5 +1,5 @@
 {
-  "description": "<div class=\"section\"><h2><code>gcloud-python</code></h2><p>GCloud API access in idiomatic Python.</p></div>",
+  "description": "<div class=\"section\"><h2><code>google-cloud-python</code></h2><p>GCloud API access in idiomatic Python.</p></div>",
   "examples": [
     "import google.cloud"
   ],

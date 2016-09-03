@@ -6,32 +6,32 @@ Contributing
 #. Make sure that your commit messages clearly describe the changes.
 #. Send a pull request.
 
-Here are some guidelines for hacking on ``gcloud-python``.
+Here are some guidelines for hacking on ``google-cloud-python``.
 
 Using a Development Checkout
 ----------------------------
 
-You'll have to create a development environment to hack on ``gcloud-python``,
+You'll have to create a development environment to hack on ``google-cloud-python``,
 using a Git checkout:
 
-- While logged into your GitHub account, navigate to the ``gcloud-python`` repo
+- While logged into your GitHub account, navigate to the ``google-cloud-python`` repo
   on GitHub.
 
-  https://github.com/GoogleCloudPlatform/gcloud-python
+  https://github.com/GoogleCloudPlatform/google-cloud-python
 
-- Fork and clone the ``gcloud-python`` repository to your GitHub account by
+- Fork and clone the ``google-cloud-python`` repository to your GitHub account by
   clicking the "Fork" button.
 
-- Clone your fork of ``gcloud-python`` from your GitHub account to your local
+- Clone your fork of ``google-cloud-python`` from your GitHub account to your local
   computer, substituting your account username and specifying the destination
   as "hack-on-gcloud".  E.g.::
 
    $ cd ~
-   $ git clone git@github.com:USERNAME/gcloud-python.git hack-on-gcloud
+   $ git clone git@github.com:USERNAME/google-cloud-python.git hack-on-gcloud
    $ cd hack-on-gcloud
-   # Configure remotes such that you can pull changes from the gcloud-python
+   # Configure remotes such that you can pull changes from the google-cloud-python
    # repository into your local repository.
-   $ git remote add upstream https://github.com:GoogleCloudPlatform/gcloud-python
+   $ git remote add upstream https://github.com:GoogleCloudPlatform/google-cloud-python
    # fetch and merge changes from upstream into master
    $ git fetch upstream
    $ git merge upstream/master
@@ -39,7 +39,7 @@ using a Git checkout:
 Now your local repo is set up such that you will push changes to your GitHub
 repo, from which you can submit a pull request.
 
-- Create a virtualenv in which to install ``gcloud-python``::
+- Create a virtualenv in which to install ``google-cloud-python``::
 
    $ cd ~/hack-on-gcloud
    $ virtualenv --python python2.7 env
@@ -57,9 +57,9 @@ repo, from which you can submit a pull request.
   To use the instructions in the steps that follow literally, use the
   ``export VENV=~/hack-on-gcloud/env`` command.
 
-- Install ``gcloud-python`` from the checkout into the virtualenv using
+- Install ``google-cloud-python`` from the checkout into the virtualenv using
   ``setup.py develop``.  Running ``setup.py develop`` *must* be done while
-  the current working directory is the ``gcloud-python`` checkout directory::
+  the current working directory is the ``google-cloud-python`` checkout directory::
 
    $ cd ~/hack-on-gcloud
    $ $VENV/bin/python setup.py develop
@@ -76,7 +76,7 @@ On Debian/Ubuntu::
 Adding Features
 ---------------
 
-In order to add a feature to ``gcloud-python``:
+In order to add a feature to ``google-cloud-python``:
 
 - The feature must be documented in both the API and narrative
   documentation (in ``docs/``).
@@ -104,7 +104,7 @@ Coding Style
    export GCLOUD_BRANCH_FOR_LINT="master"
 
   By doing this, you are specifying the location of the most up-to-date
-  version of ``gcloud-python``. The the suggested remote name ``upstream``
+  version of ``google-cloud-python``. The the suggested remote name ``upstream``
   should point to the official ``GoogleCloudPlatform`` checkout and the
   the branch should be the main branch on that remote (``master``).
 
@@ -117,14 +117,14 @@ Exceptions to PEP8:
 Running Tests
 --------------
 
-- To run all tests for ``gcloud-python`` on a single Python version, run
+- To run all tests for ``google-cloud-python`` on a single Python version, run
   ``py.test`` from your development virtualenv (See
   *Using a Development Checkout* above).
 
-- To run the full set of ``gcloud-python`` tests on all platforms, install
+- To run the full set of ``google-cloud-python`` tests on all platforms, install
   ``tox`` (https://testrun.org/tox/) into a system Python.  The ``tox`` console
   script will be installed into the scripts location for that Python.  While
-  ``cd``'ed to the ``gcloud-python`` checkout root directory (it contains
+  ``cd``'ed to the ``google-cloud-python`` checkout root directory (it contains
   ``tox.ini``), invoke the ``tox`` console script.  This will read the
   ``tox.ini`` file and execute the tests on multiple Python versions and
   platforms; while it runs, it creates a virtualenv for each version/platform
@@ -283,7 +283,7 @@ changed to reflect the bug fix, ideally in the same commit that fixes the bug
 or adds the feature.
 
 To build and review docs (where ``$VENV`` refers to the virtualenv you're
-using to develop ``gcloud-python``):
+using to develop ``google-cloud-python``):
 
 1. After following the steps above in "Using a Development Checkout", install
    Sphinx and all development requirements in your virtualenv::
@@ -291,14 +291,14 @@ using to develop ``gcloud-python``):
      $ cd ~/hack-on-gcloud
      $ $VENV/bin/pip install Sphinx
 
-2. Change into the ``docs`` directory within your ``gcloud-python`` checkout and
+2. Change into the ``docs`` directory within your ``google-cloud-python`` checkout and
    execute the ``make`` command with some flags::
 
-     $ cd ~/hack-on-gcloud/gcloud-python/docs
+     $ cd ~/hack-on-gcloud/google-cloud-python/docs
      $ make clean html SPHINXBUILD=$VENV/bin/sphinx-build
 
    The ``SPHINXBUILD=...`` argument tells Sphinx to use the virtualenv Python,
-   which will have both Sphinx and ``gcloud-python`` (for API documentation
+   which will have both Sphinx and ``google-cloud-python`` (for API documentation
    generation) installed.
 
 3. Open the ``docs/_build/html/index.html`` file to see the resulting HTML
@@ -314,7 +314,7 @@ build via::
 
    $ tox -e docs-rtd
 
-.. _readthedocs: http://gcloud-python.readthedocs.org/
+.. _readthedocs: http://google-cloud-python.readthedocs.org/
 
 Note About ``README`` as it pertains to PyPI
 --------------------------------------------
@@ -323,7 +323,7 @@ The `description on PyPI`_ for the project comes directly from the
 ``README``. Due to the reStructuredText (``rst``) parser used by
 PyPI, relative links which will work on GitHub (e.g. ``CONTRIBUTING.rst``
 instead of
-``https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/CONTRIBUTING.rst``)
+``https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
 .. _description on PyPI: https://pypi.python.org/pypi/gcloud
@@ -364,7 +364,7 @@ We support:
 
 Supported versions can be found in our ``tox.ini`` `config`_.
 
-.. _config: https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/tox.ini
+.. _config: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/tox.ini
 
 We explicitly decided not to support `Python 2.5`_ due to `decreased usage`_
 and lack of continuous integration `support`_.
@@ -387,7 +387,7 @@ We also explicitly decided to support Python 3 beginning with version
 .. _prominent: https://docs.djangoproject.com/en/1.9/faq/install/#what-python-version-can-i-use-with-django
 .. _projects: http://flask.pocoo.org/docs/0.10/python3/
 .. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
-.. _dropped 2.6: https://github.com/GoogleCloudPlatform/gcloud-python/issues/995
+.. _dropped 2.6: https://github.com/GoogleCloudPlatform/google-cloud-python/issues/995
 
 Versioning
 ----------

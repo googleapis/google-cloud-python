@@ -6,7 +6,7 @@ PROTOC_CMD=$(GRPCIO_VIRTUALENV)/bin/python -m grpc.tools.protoc
 GOOGLEAPIS_PROTOS_DIR=$(shell pwd)/googleapis-pb
 
 help:
-	@echo 'Makefile for gcloud-python Bigtable protos                      '
+	@echo 'Makefile for google-cloud-python Bigtable protos                      '
 	@echo '                                                                '
 	@echo '   make generate                 Generates the protobuf modules '
 	@echo '   make clean                    Clean generated files          '

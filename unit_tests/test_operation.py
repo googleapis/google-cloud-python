@@ -35,7 +35,7 @@ class Test__compute_type_url(unittest.TestCase):
 
     def test_w_prefix(self):
         from google.protobuf.struct_pb2 import Struct
-        PREFIX = 'test.gcloud-python.com'
+        PREFIX = 'test.google-cloud-python.com'
 
         type_url = self._callFUT(Struct, PREFIX)
 
@@ -53,7 +53,7 @@ class Test__register_type_url(unittest.TestCase):
     def test_simple(self):
         from google.cloud import operation as MUT
         from unit_tests._testing import _Monkey
-        TYPE_URI = 'testing.gcloud-python.com/testing'
+        TYPE_URI = 'testing.google-cloud-python.com/testing'
         klass = object()
         type_url_map = {}
 
@@ -65,7 +65,7 @@ class Test__register_type_url(unittest.TestCase):
     def test_w_same_class(self):
         from google.cloud import operation as MUT
         from unit_tests._testing import _Monkey
-        TYPE_URI = 'testing.gcloud-python.com/testing'
+        TYPE_URI = 'testing.google-cloud-python.com/testing'
         klass = object()
         type_url_map = {TYPE_URI: klass}
 
@@ -77,7 +77,7 @@ class Test__register_type_url(unittest.TestCase):
     def test_w_conflict(self):
         from google.cloud import operation as MUT
         from unit_tests._testing import _Monkey
-        TYPE_URI = 'testing.gcloud-python.com/testing'
+        TYPE_URI = 'testing.google-cloud-python.com/testing'
         klass, other = object(), object()
         type_url_map = {TYPE_URI: other}
 

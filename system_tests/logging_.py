@@ -31,9 +31,9 @@ DEFAULT_METRIC_NAME = 'system-tests-metric%s' % (_RESOURCE_ID,)
 DEFAULT_SINK_NAME = 'system-tests-sink%s' % (_RESOURCE_ID,)
 DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
 DEFAULT_DESCRIPTION = 'System testing'
-BUCKET_NAME = 'gcloud-python-system-testing%s' % (_RESOURCE_ID,)
+BUCKET_NAME = 'google-cloud-python-system-testing%s' % (_RESOURCE_ID,)
 DATASET_NAME = ('system_testing_dataset' + _RESOURCE_ID).replace('-', '_')
-TOPIC_NAME = 'gcloud-python-system-testing%s' % (_RESOURCE_ID,)
+TOPIC_NAME = 'google-cloud-python-system-testing%s' % (_RESOURCE_ID,)
 
 
 def _retry_on_unavailable(exc):

@@ -510,7 +510,7 @@ class Test_ACL(unittest.TestCase):
         self.assertEqual(acl.get_entities(), [entity])
 
     def test_reload_missing(self):
-        # https://github.com/GoogleCloudPlatform/gcloud-python/issues/652
+        # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/652
         ROLE = 'role'
         connection = _Connection({})
         client = _Client(connection)

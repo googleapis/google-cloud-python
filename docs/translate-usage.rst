@@ -18,7 +18,7 @@ Authentication / Configuration
 
 - **An API key is required for Translate.** See
   `Identifying your application to Google`_ for details. This is
-  significantly different than the other clients in ``gcloud-python``.
+  significantly different than the other clients in ``google-cloud-python``.
 
 Methods
 -------
