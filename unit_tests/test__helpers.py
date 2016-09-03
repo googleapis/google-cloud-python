@@ -295,15 +295,15 @@ class Test__compute_engine_id(unittest.TestCase):
         return _compute_engine_id()
 
     def _monkeyConnection(self, connection):
+        from six.moves import http_client
         from unit_tests._testing import _Monkey
-        from google.cloud import _helpers
 
         def _connection_factory(host, timeout):
             connection.host = host
             connection.timeout = timeout
             return connection
 
-        return _Monkey(_helpers, HTTPConnection=_connection_factory)
+        return _Monkey(http_client, HTTPConnection=_connection_factory)
 
     def test_bad_status(self):
         connection = _HTTPConnection(404, None)
@@ -898,6 +898,7 @@ class Test_make_secure_stub(unittest.TestCase):
         return make_secure_stub(*args, **kwargs)
 
     def test_it(self):
+        from six.moves import http_client
         from unit_tests._testing import _Monkey
         from google.cloud import _helpers as MUT
 
@@ -947,13 +948,12 @@ class Test_make_secure_stub(unittest.TestCase):
             return metadata_plugin
 
         host = 'HOST'
-        port = 1025
         credentials = object()
         user_agent = 'USER_AGENT'
         with _Monkey(MUT, grpc=grpc_mod,
                      MetadataPlugin=mock_plugin):
             result = self._callFUT(credentials, user_agent,
-                                   mock_stub_class, host, port)
+                                   mock_stub_class, host)
 
         self.assertTrue(result is mock_result)
         self.assertEqual(stub_inputs, [CHANNEL])
@@ -964,7 +964,7 @@ class Test_make_secure_stub(unittest.TestCase):
         self.assertEqual(
             grpc_mod.composite_channel_credentials_args,
             (SSL_CREDS, METADATA_CREDS))
-        target = '%s:%d' % (host, port)
+        target = '%s:%d' % (host, http_client.HTTPS_PORT)
         self.assertEqual(grpc_mod.secure_channel_args,
                          (target, COMPOSITE_CREDS))
 

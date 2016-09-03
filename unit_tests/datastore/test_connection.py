@@ -147,7 +147,6 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
             conn.USER_AGENT,
             MUT.datastore_grpc_pb2.DatastoreStub,
             MUT.DATASTORE_API_HOST,
-            MUT.DATASTORE_API_PORT,
         )])
 
     def test_lookup(self):

@@ -42,8 +42,6 @@ else:
 
 DATASTORE_API_HOST = 'datastore.googleapis.com'
 """Datastore API request host."""
-DATASTORE_API_PORT = 443
-"""Datastore API request port."""
 
 _DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
 _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
@@ -240,7 +238,7 @@ class _DatastoreAPIOverGRPC(object):
         self._stub = make_secure_stub(connection.credentials,
                                       connection.USER_AGENT,
                                       datastore_grpc_pb2.DatastoreStub,
-                                      DATASTORE_API_HOST, DATASTORE_API_PORT)
+                                      DATASTORE_API_HOST)
 
     def lookup(self, project, request_pb):
         """Perform a ``lookup`` request.

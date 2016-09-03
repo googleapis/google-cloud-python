@@ -47,7 +47,6 @@ class Test__make_data_stub(unittest.TestCase):
                 client.user_agent,
                 MUT.bigtable_pb2.BigtableStub,
                 MUT.DATA_API_HOST,
-                MUT.DATA_API_PORT,
             ),
         ])
 
@@ -83,7 +82,6 @@ class Test__make_instance_stub(unittest.TestCase):
                 client.user_agent,
                 MUT.bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
                 MUT.INSTANCE_ADMIN_HOST,
-                MUT.INSTANCE_ADMIN_PORT,
             ),
         ])
 
@@ -119,7 +117,6 @@ class Test__make_operations_stub(unittest.TestCase):
                 client.user_agent,
                 MUT.operations_grpc_pb2.OperationsStub,
                 MUT.OPERATIONS_API_HOST,
-                MUT.OPERATIONS_API_PORT,
             ),
         ])
 
@@ -155,7 +152,6 @@ class Test__make_table_stub(unittest.TestCase):
                 client.user_agent,
                 MUT.bigtable_table_admin_pb2.BigtableTableAdminStub,
                 MUT.TABLE_ADMIN_HOST,
-                MUT.TABLE_ADMIN_PORT,
             ),
         ])
 

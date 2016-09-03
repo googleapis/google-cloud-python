@@ -39,7 +39,7 @@ except ImportError:  # pragma: NO COVER
     grpc = None
     _Rendezvous = Exception
 import six
-from six.moves.http_client import HTTPConnection
+from six.moves import http_client
 from six.moves import configparser
 
 # pylint: disable=ungrouped-imports
@@ -269,7 +269,7 @@ def _compute_engine_id():
     host = '169.254.169.254'
     uri_path = '/computeMetadata/v1/project/project-id'
     headers = {'Metadata-Flavor': 'Google'}
-    connection = HTTPConnection(host, timeout=0.1)
+    connection = http_client.HTTPConnection(host, timeout=0.1)
 
     try:
         connection.request('GET', uri_path, headers=headers)
@@ -612,7 +612,7 @@ class MetadataPlugin(object):
         callback(headers, None)
 
 
-def make_secure_stub(credentials, user_agent, stub_class, host, port):
+def make_secure_stub(credentials, user_agent, stub_class, host):
     """Makes a secure stub for an RPC service.
 
     Uses / depends on gRPC.
@@ -630,9 +630,6 @@ def make_secure_stub(credentials, user_agent, stub_class, host, port):
     :type host: str
     :param host: The host for the service.
 
-    :type port: int
-    :param port: The port for the service.
-
     :rtype: object, instance of ``stub_class``
     :returns: The stub object used to make gRPC requests to a given API.
     """
@@ -644,7 +641,7 @@ def make_secure_stub(credentials, user_agent, stub_class, host, port):
         custom_metadata_plugin, name='google_creds')
     channel_creds = grpc.composite_channel_credentials(
         transport_creds, auth_creds)
-    target = '%s:%d' % (host, port)
+    target = '%s:%d' % (host, http_client.HTTPS_PORT)
     channel = grpc.secure_channel(target, channel_creds)
     return stub_class(channel)
 
