@@ -201,7 +201,7 @@ Cloud Datastore
 
 .. code-block:: python
 
-  from gcloud import datastore
+  from google.cloud import datastore
 
   client = datastore.Client()
   key = client.key('Person')
@@ -220,7 +220,7 @@ Cloud Storage
 
 .. code-block:: python
 
-  from gcloud import storage
+  from google.cloud import storage
 
   client = storage.Client()
   bucket = client.get_bucket('<your-bucket-name>')

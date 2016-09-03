@@ -88,7 +88,7 @@ to activate Cloud Datastore for your project.
 
 .. code:: python
 
-    from gcloud import datastore
+    from google.cloud import datastore
     # Create, populate and persist an entity
     entity = datastore.Entity(key=datastore.Key('EntityKind'))
     entity.update({
@@ -124,7 +124,7 @@ how to create a bucket.
 
 .. code:: python
 
-    from gcloud import storage
+    from google.cloud import storage
     client = storage.Client()
     bucket = client.get_bucket('bucket-id-here')
     # Then do other things...
@@ -156,7 +156,7 @@ To get started with this API, you'll need to create
 
 .. code:: python
 
-    from gcloud import pubsub
+    from google.cloud import pubsub
 
     client = pubsub.Client()
     topic = client.topic('topic_name')
@@ -185,7 +185,7 @@ Load data from CSV
 
     import csv
 
-    from gcloud import bigquery
+    from google.cloud import bigquery
     from gcloud.bigquery import SchemaField
 
     client = bigquery.Client()
@@ -252,7 +252,7 @@ analyze, monitor, and alert on log data and events from Google Cloud Platform.
 
 .. code:: python
 
-    from gcloud import logging
+    from google.cloud import logging
     client = logging.Client()
     logger = client.logger('log_name')
     logger.log_text("A simple entry")  # API call
@@ -290,7 +290,7 @@ List available metric types:
 
 .. code:: python
 
-    from gcloud import monitoring
+    from google.cloud import monitoring
     client = monitoring.Client()
     for descriptor in client.list_metric_descriptors():
         print(descriptor.type)

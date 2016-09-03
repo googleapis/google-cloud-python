@@ -34,7 +34,7 @@ class Batch(object):
     operations and the ``delete`` operation into the same mutation, and send
     them to the server in a single API request::
 
-      >>> from gcloud import datastore
+      >>> from google.cloud import datastore
       >>> client = datastore.Client()
       >>> batch = client.batch()
       >>> batch.put(entity1)

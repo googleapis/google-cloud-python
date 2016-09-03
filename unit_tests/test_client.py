@@ -46,7 +46,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_defaults(self):
         from unit_tests._testing import _Monkey
-        from gcloud import client
+        from google.cloud import client
 
         CREDENTIALS = object()
         FUNC_CALLS = []
@@ -73,7 +73,7 @@ class TestClient(unittest.TestCase):
 
     def test_from_service_account_json(self):
         from unit_tests._testing import _Monkey
-        from gcloud import client
+        from google.cloud import client
 
         KLASS = self._getTargetClass()
         MOCK_FILENAME = 'foo.path'
@@ -93,7 +93,7 @@ class TestClient(unittest.TestCase):
 
     def test_from_service_account_p12(self):
         from unit_tests._testing import _Monkey
-        from gcloud import client
+        from google.cloud import client
 
         KLASS = self._getTargetClass()
         CLIENT_EMAIL = 'phred@example.com'
@@ -135,7 +135,7 @@ class TestJSONClient(unittest.TestCase):
 
     def test_ctor_defaults(self):
         from unit_tests._testing import _Monkey
-        from gcloud import client
+        from google.cloud import client
 
         PROJECT = 'PROJECT'
         CREDENTIALS = object()
@@ -162,7 +162,7 @@ class TestJSONClient(unittest.TestCase):
 
     def test_ctor_missing_project(self):
         from unit_tests._testing import _Monkey
-        from gcloud import client
+        from google.cloud import client
 
         FUNC_CALLS = []
 

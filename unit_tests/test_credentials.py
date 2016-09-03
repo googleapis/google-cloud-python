@@ -18,12 +18,12 @@ import unittest
 class Test_get_credentials(unittest.TestCase):
 
     def _callFUT(self):
-        from gcloud import credentials
+        from google.cloud import credentials
         return credentials.get_credentials()
 
     def test_it(self):
         from unit_tests._testing import _Monkey
-        from gcloud import credentials as MUT
+        from google.cloud import credentials as MUT
 
         client = _Client()
         with _Monkey(MUT, client=client):
@@ -45,7 +45,7 @@ class Test_generate_signed_url(unittest.TestCase):
         from six.moves.urllib.parse import parse_qs
         from six.moves.urllib.parse import urlsplit
         from unit_tests._testing import _Monkey
-        from gcloud import credentials as MUT
+        from google.cloud import credentials as MUT
 
         ENDPOINT = 'http://api.example.com'
         RESOURCE = '/name/path'
@@ -197,7 +197,7 @@ class Test__get_expiration_seconds(unittest.TestCase):
     def test_w_timedelta_seconds(self):
         import datetime
         from unit_tests._testing import _Monkey
-        from gcloud import credentials as MUT
+        from google.cloud import credentials as MUT
 
         dummy_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
         utc_seconds = self._utc_seconds(dummy_utcnow)
@@ -211,7 +211,7 @@ class Test__get_expiration_seconds(unittest.TestCase):
     def test_w_timedelta_days(self):
         import datetime
         from unit_tests._testing import _Monkey
-        from gcloud import credentials as MUT
+        from google.cloud import credentials as MUT
 
         dummy_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
         utc_seconds = self._utc_seconds(dummy_utcnow)

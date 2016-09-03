@@ -20,10 +20,10 @@ import unittest
 import httplib2
 import six
 
-from gcloud import _helpers
+from google.cloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
-from gcloud import exceptions
-from gcloud import storage
+from google.cloud import exceptions
+from google.cloud import storage
 from gcloud.storage._helpers import _base64_md5hash
 
 from system_test_utils import unique_resource_id

@@ -14,7 +14,7 @@
 
 """Basic connection for Google Cloud Natural Language API."""
 
-from gcloud import connection as base_connection
+from google.cloud import connection as base_connection
 
 
 class Connection(base_connection.JSONConnection):

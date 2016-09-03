@@ -14,11 +14,11 @@
 
 import unittest
 
-from gcloud import _helpers
+from google.cloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
-from gcloud import exceptions
-from gcloud import language
-from gcloud import storage
+from google.cloud import exceptions
+from google.cloud import language
+from google.cloud import storage
 
 from system_test_utils import unique_resource_id
 from retry import RetryErrors

@@ -16,7 +16,7 @@
 
 import os
 
-from gcloud import connection as base_connection
+from google.cloud import connection as base_connection
 from gcloud.environment_vars import PUBSUB_EMULATOR
 
 

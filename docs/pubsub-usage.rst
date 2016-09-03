@@ -32,7 +32,7 @@ Authentication / Configuration
 
   .. doctest::
 
-     >>> from gcloud import pubsub
+     >>> from google.cloud import pubsub
      >>> client = pubsub.Client()
 
 

@@ -20,7 +20,7 @@ Here's a quick example of the full life-cycle:
 
 .. code-block:: python
 
-    >>> from gcloud import resource_manager
+    >>> from google.cloud import resource_manager
     >>> client = resource_manager.Client()
 
     >>> # List all projects you have access to
@@ -82,5 +82,5 @@ And then simply create a client:
 
 .. code-block:: python
 
-    >>> from gcloud import resource_manager
+    >>> from google.cloud import resource_manager
     >>> client = resource_manager.Client()

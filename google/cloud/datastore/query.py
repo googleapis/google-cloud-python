@@ -197,7 +197,7 @@ class Query(object):
         and operator is one of ``OPERATORS``
         (ie, ``=``, ``<``, ``<=``, ``>``, ``>=``)::
 
-          >>> from gcloud import datastore
+          >>> from google.cloud import datastore
           >>> client = datastore.Client()
           >>> query = client.query(kind='Person')
           >>> query.add_filter('name', '=', 'James')
@@ -318,7 +318,7 @@ class Query(object):
 
         For example::
 
-          >>> from gcloud import datastore
+          >>> from google.cloud import datastore
           >>> client = datastore.Client()
           >>> query = client.query(kind='Person')
           >>> query.add_filter('name', '=', 'Sally')

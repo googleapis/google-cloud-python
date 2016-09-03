@@ -14,7 +14,7 @@
 
 """Create / interact with gcloud dns connections."""
 
-from gcloud import connection as base_connection
+from google.cloud import connection as base_connection
 
 
 class Connection(base_connection.JSONConnection):

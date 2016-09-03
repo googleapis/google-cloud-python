@@ -16,9 +16,9 @@ import operator
 
 import unittest
 
-from gcloud import _helpers
+from google.cloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
-from gcloud import bigquery
+from google.cloud import bigquery
 from gcloud.exceptions import Forbidden
 
 from retry import RetryErrors

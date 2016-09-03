@@ -54,7 +54,7 @@ more information.
 
 It is thus typical to create a client object as follows::
 
-    >>> from gcloud import monitoring
+    >>> from google.cloud import monitoring
     >>> client = monitoring.Client(project='target-project')
 
 If you are running in Google Compute Engine or Google App Engine,

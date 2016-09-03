@@ -16,7 +16,7 @@
 
 You'll typically use these to get started with the API:
 
->>> from gcloud import storage
+>>> from google.cloud import storage
 >>> client = storage.Client()
 >>> bucket = client.get_bucket('bucket-id-here')
 >>> # Then do other things...

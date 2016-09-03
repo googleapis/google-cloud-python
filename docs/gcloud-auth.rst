@@ -50,7 +50,7 @@ For example:
 
 .. code-block:: python
 
-    from gcloud import datastore
+    from google.cloud import datastore
     client = datastore.Client()
 
 Passing no arguments at all will "just work" if you've followed the

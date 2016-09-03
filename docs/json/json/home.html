@@ -79,7 +79,7 @@
 
     <div class="quote-box--supplementary">
       <h4>Retrieve Datastore Entities</h4>
-      <pre><code class="hljs python">from gcloud import datastore
+      <pre><code class="hljs python">from google.cloud import datastore
 
 client = datastore.Client()
 product_key = client.key('Product', 123)

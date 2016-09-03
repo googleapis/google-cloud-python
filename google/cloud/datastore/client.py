@@ -446,7 +446,7 @@ class Client(_BaseClient, _ClientProjectMixin):
 
         Using query to search a datastore::
 
-        >>> from gcloud import datastore
+        >>> from google.cloud import datastore
         >>> client = datastore.Client()
         >>> query = client.query(kind='MyKind')
         >>> query.add_filter('property', '=', 'val')

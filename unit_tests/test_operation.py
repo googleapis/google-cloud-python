@@ -51,7 +51,7 @@ class Test__register_type_url(unittest.TestCase):
         _register_type_url(type_url, klass)
 
     def test_simple(self):
-        from gcloud import operation as MUT
+        from google.cloud import operation as MUT
         from unit_tests._testing import _Monkey
         TYPE_URI = 'testing.gcloud-python.com/testing'
         klass = object()
@@ -63,7 +63,7 @@ class Test__register_type_url(unittest.TestCase):
         self.assertEqual(type_url_map, {TYPE_URI: klass})
 
     def test_w_same_class(self):
-        from gcloud import operation as MUT
+        from google.cloud import operation as MUT
         from unit_tests._testing import _Monkey
         TYPE_URI = 'testing.gcloud-python.com/testing'
         klass = object()
@@ -75,7 +75,7 @@ class Test__register_type_url(unittest.TestCase):
         self.assertEqual(type_url_map, {TYPE_URI: klass})
 
     def test_w_conflict(self):
-        from gcloud import operation as MUT
+        from google.cloud import operation as MUT
         from unit_tests._testing import _Monkey
         TYPE_URI = 'testing.gcloud-python.com/testing'
         klass, other = object(), object()
@@ -157,7 +157,7 @@ class OperationTests(unittest.TestCase):
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
         from google.protobuf.struct_pb2 import Struct, Value
-        from gcloud import operation as MUT
+        from google.cloud import operation as MUT
         from unit_tests._testing import _Monkey
         TYPE_URI = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
         type_url_map = {TYPE_URI: Struct}

@@ -19,7 +19,7 @@ import google.cloud.logging
 import google.cloud.logging.handlers.handlers
 from gcloud.logging.handlers.handlers import CloudLoggingHandler
 from gcloud.logging.handlers.transports import SyncTransport
-from gcloud import _helpers
+from google.cloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
 
 from retry import RetryErrors
@@ -287,7 +287,7 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(after.description, NEW_DESCRIPTION)
 
     def _init_storage_bucket(self):
-        from gcloud import storage
+        from google.cloud import storage
         BUCKET_URI = 'storage.googleapis.com/%s' % (BUCKET_NAME,)
 
         # Create the destination bucket, and set up the ACL to allow
@@ -313,7 +313,7 @@ class TestLogging(unittest.TestCase):
         self.assertTrue(sink.exists())
 
     def test_create_sink_pubsub_topic(self):
-        from gcloud import pubsub
+        from google.cloud import pubsub
 
         # Create the destination topic, and set up the IAM policy to allow
         # Stackdriver Logging to write into it.
@@ -335,7 +335,7 @@ class TestLogging(unittest.TestCase):
         self.assertTrue(sink.exists())
 
     def _init_bigquery_dataset(self):
-        from gcloud import bigquery
+        from google.cloud import bigquery
         from gcloud.bigquery.dataset import AccessGrant
         DATASET_URI = 'bigquery.googleapis.com/projects/%s/datasets/%s' % (
             Config.CLIENT.project, DATASET_NAME,)

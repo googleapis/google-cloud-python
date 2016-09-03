@@ -18,7 +18,7 @@
 an ACL object under the hood, and you can interact with that using
 :func:`gcloud.storage.bucket.Bucket.acl`::
 
-  >>> from gcloud import storage
+  >>> from google.cloud import storage
   >>> client = storage.Client()
   >>> bucket = client.get_bucket(bucket_name)
   >>> acl = bucket.acl

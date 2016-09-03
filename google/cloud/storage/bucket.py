@@ -207,7 +207,7 @@ class Bucket(_PropertyMixin):
 
         This will return None if the blob doesn't exist::
 
-          >>> from gcloud import storage
+          >>> from google.cloud import storage
           >>> client = storage.Client()
           >>> bucket = client.get_bucket('my-bucket')
           >>> print bucket.get_blob('/path/to/blob.txt')
@@ -366,7 +366,7 @@ class Bucket(_PropertyMixin):
         For example::
 
           >>> from gcloud.exceptions import NotFound
-          >>> from gcloud import storage
+          >>> from google.cloud import storage
           >>> client = storage.Client()
           >>> bucket = client.get_bucket('my-bucket')
           >>> print bucket.list_blobs()
@@ -735,7 +735,7 @@ class Bucket(_PropertyMixin):
         If you want this bucket to host a website, just provide the name
         of an index page and a page to use when a blob isn't found::
 
-          >>> from gcloud import storage
+          >>> from google.cloud import storage
           >>> client = storage.Client()
           >>> bucket = client.get_bucket(bucket_name)
           >>> bucket.configure_website('index.html', '404.html')

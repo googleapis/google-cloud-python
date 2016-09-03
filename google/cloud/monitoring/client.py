@@ -16,7 +16,7 @@
 
 Example::
 
-    >>> from gcloud import monitoring
+    >>> from google.cloud import monitoring
     >>> client = monitoring.Client()
     >>> query = client.query(minutes=5)
     >>> print(query.as_dataframe())  # Requires pandas.

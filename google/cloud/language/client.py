@@ -15,7 +15,7 @@
 """Basic client for Google Cloud Natural Language API."""
 
 
-from gcloud import client as client_module
+from google.cloud import client as client_module
 from gcloud.language.connection import Connection
 from gcloud.language.document import Document
 

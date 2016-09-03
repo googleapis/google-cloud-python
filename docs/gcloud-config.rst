@@ -10,7 +10,7 @@ For example:
 
 .. code-block:: python
 
-    >>> from gcloud import bigquery
+    >>> from google.cloud import bigquery
     >>> client = bigquery.Client()
 
 When creating a client in this way, the project ID will be determined by
@@ -28,7 +28,7 @@ You can override the detection of your default project by setting the
 
 .. code-block:: python
 
-    >>> from gcloud import bigquery
+    >>> from google.cloud import bigquery
     >>> client = bigquery.Client(project='my-project')
 
 You can see what project ID a client is referencing by accessing the ``project``

@@ -18,9 +18,9 @@ import unittest
 
 import httplib2
 
-from gcloud import _helpers
+from google.cloud import _helpers
 from gcloud._helpers import UTC
-from gcloud import datastore
+from google.cloud import datastore
 from gcloud.datastore.helpers import GeoPoint
 from gcloud.environment_vars import GCD_DATASET
 from gcloud.environment_vars import TESTS_PROJECT

@@ -27,7 +27,7 @@ To create a client:
 
   .. code::
 
-     >>> from gcloud import translate
+     >>> from google.cloud import translate
      >>> client = translate.Client('my-api-key')
 
 By default, the client targets English when doing detections
@@ -36,7 +36,7 @@ well:
 
   .. code::
 
-     >>> from gcloud import translate
+     >>> from google.cloud import translate
      >>> client = translate.Client('my-api-key', target_language='es')
 
 The Google Translate API has three supported methods, and they
@@ -49,7 +49,7 @@ To get a list of languages supported by Google Translate
 
   .. code::
 
-     >>> from gcloud import translate
+     >>> from google.cloud import translate
      >>> client = translate.Client('my-api-key')
      >>> client.get_languages()
      [
@@ -64,7 +64,7 @@ To detect the language that some given text is written in:
 
   .. code::
 
-     >>> from gcloud import translate
+     >>> from google.cloud import translate
      >>> client = translate.Client('my-api-key')
      >>> client.detect_language(['Me llamo', 'I am'])
      [
@@ -87,7 +87,7 @@ To translate text:
 
   .. code::
 
-     >>> from gcloud import translate
+     >>> from google.cloud import translate
      >>> client = translate.Client('my-api-key')
      >>> client.translate('koszula')
      {
@@ -100,7 +100,7 @@ or to use a non-default target language:
 
   .. code::
 
-     >>> from gcloud import translate
+     >>> from google.cloud import translate
      >>> client = translate.Client('my-api-key')
      >>> client.translate(['Me llamo Jeff', 'My name is Jeff'],
      ...                  target_language='de')

@@ -22,7 +22,7 @@ Authentication / Configuration
 
   .. doctest::
 
-     >>> from gcloud import bigquery
+     >>> from google.cloud import bigquery
      >>> client = bigquery.Client()
 
 
@@ -41,7 +41,7 @@ To override the project inferred from the environment, pass an explicit
 
   .. doctest::
 
-     >>> from gcloud import bigquery
+     >>> from google.cloud import bigquery
      >>> client = bigquery.Client(project='PROJECT_ID')
 
 
@@ -103,7 +103,7 @@ Replace the ACL for a dataset, and update all writeable fields:
 
 .. doctest::
 
-   >>> from gcloud import bigquery
+   >>> from google.cloud import bigquery
    >>> client = bigquery.Client()
    >>> dataset = client.dataset('dataset_name')
    >>> dataset.get()  # API request
@@ -232,7 +232,7 @@ Background a query, loading the results into a table:
 
 .. doctest::
 
-   >>> from gcloud import bigquery
+   >>> from google.cloud import bigquery
    >>> client = bigquery.Client()
    >>> query = """\
    SELECT firstname + ' ' + last_name AS full_name,
@@ -294,7 +294,7 @@ the job locally:
 
 .. doctest::
 
-   >>> from gcloud import bigquery
+   >>> from google.cloud import bigquery
    >>> from gcloud.bigquery import SchemaField
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
@@ -355,7 +355,7 @@ located on Google Cloud Storage.  First, create the job locally:
 
 .. doctest::
 
-   >>> from gcloud import bigquery
+   >>> from google.cloud import bigquery
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
    >>> job = client.extract_table_to_storage(
@@ -412,7 +412,7 @@ First, create the job locally:
 
 .. doctest::
 
-   >>> from gcloud import bigquery
+   >>> from google.cloud import bigquery
    >>> client = bigquery.Client()
    >>> source_table = dataset.table(name='person_ages')
    >>> destination_table = dataset.table(name='person_ages_copy')

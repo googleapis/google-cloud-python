@@ -18,14 +18,14 @@ Authentication and Configuration
 
   .. doctest::
 
-     >>> from gcloud import error_reporting
+     >>> from google.cloud import error_reporting
      >>> client = error_reporting.Client()
 
   or pass in ``credentials`` and ``project`` explicitly
 
   .. doctest::
 
-     >>> from gcloud import error_reporting
+     >>> from google.cloud import error_reporting
      >>> client = error_reporting.Client(project='my-project', credentials=creds)
 
   Error Reporting associates errors with a service, which is an identifier for an executable,
@@ -36,7 +36,7 @@ Authentication and Configuration
 
     .. doctest::
 
-       >>> from gcloud import error_reporting
+       >>> from google.cloud import error_reporting
        >>> client = error_reporting.Client(project='my-project',
        ...                                 service="login_service",
        ...                                 version="0.1.0")
@@ -48,7 +48,7 @@ Report a stacktrace to Stackdriver Error Reporting after an exception
 
 .. doctest::
 
-   >>> from gcloud import error_reporting
+   >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
    >>> try:
    >>>     raise NameError
@@ -65,7 +65,7 @@ be used by Stackdriver Error Reporting to help group exceptions.
 
 .. doctest::
 
-   >>> from gcloud import error_reporting
+   >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
    >>> user = 'example@gmail.com'
    >>> http_context = HTTPContext(method='GET', url='/', userAgent='test agent',
@@ -85,7 +85,7 @@ error was reported.
 
 .. doctest::
 
-   >>> from gcloud import error_reporting
+   >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
    >>> error_reporting.report("Found an error!")
 
@@ -93,7 +93,7 @@ Similarly to reporting an exception, the user and HTTP context can be provided:
 
 .. doctest::
 
-   >>> from gcloud import error_reporting
+   >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
    >>> user = 'example@gmail.com'
    >>> http_context = HTTPContext(method='GET', url='/', userAgent='test agent',

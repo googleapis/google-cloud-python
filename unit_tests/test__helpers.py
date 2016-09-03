@@ -54,7 +54,7 @@ class Test__UTC(unittest.TestCase):
         return self._getTargetClass()()
 
     def test_module_property(self):
-        from gcloud import _helpers as MUT
+        from google.cloud import _helpers as MUT
         klass = self._getTargetClass()
         try:
             import pytz
@@ -132,7 +132,7 @@ class Test__app_engine_id(unittest.TestCase):
 
     def test_no_value(self):
         from unit_tests._testing import _Monkey
-        from gcloud import _helpers
+        from google.cloud import _helpers
 
         with _Monkey(_helpers, app_identity=None):
             dataset_id = self._callFUT()
@@ -140,7 +140,7 @@ class Test__app_engine_id(unittest.TestCase):
 
     def test_value_set(self):
         from unit_tests._testing import _Monkey
-        from gcloud import _helpers
+        from google.cloud import _helpers
 
         APP_ENGINE_ID = object()
         APP_IDENTITY = _AppIdentity(APP_ENGINE_ID)
@@ -189,7 +189,7 @@ class Test__get_nix_config_path(unittest.TestCase):
         return _get_nix_config_path()
 
     def test_it(self):
-        from gcloud import _helpers as MUT
+        from google.cloud import _helpers as MUT
         from unit_tests._testing import _Monkey
 
         user_root = 'a'
@@ -209,7 +209,7 @@ class Test__get_windows_config_path(unittest.TestCase):
         return _get_windows_config_path()
 
     def test_it(self):
-        from gcloud import _helpers as MUT
+        from google.cloud import _helpers as MUT
         from unit_tests._testing import _Monkey
 
         appdata_dir = 'a'
@@ -232,7 +232,7 @@ class Test__default_service_project_id(unittest.TestCase):
         return _default_service_project_id()
 
     def test_nix(self):
-        from gcloud import _helpers as MUT
+        from google.cloud import _helpers as MUT
         from unit_tests._testing import _Monkey
         from unit_tests._testing import _NamedTemporaryFile
 
@@ -255,7 +255,7 @@ class Test__default_service_project_id(unittest.TestCase):
             self.assertEqual(result, project_id)
 
     def test_windows(self):
-        from gcloud import _helpers as MUT
+        from google.cloud import _helpers as MUT
         from unit_tests._testing import _Monkey
         from unit_tests._testing import _NamedTemporaryFile
 
@@ -278,7 +278,7 @@ class Test__default_service_project_id(unittest.TestCase):
             self.assertEqual(result, project_id)
 
     def test_gae(self):
-        from gcloud import _helpers as MUT
+        from google.cloud import _helpers as MUT
         from unit_tests._testing import _Monkey
 
         with _Monkey(os, name='not-nt'):
@@ -296,7 +296,7 @@ class Test__compute_engine_id(unittest.TestCase):
 
     def _monkeyConnection(self, connection):
         from unit_tests._testing import _Monkey
-        from gcloud import _helpers
+        from google.cloud import _helpers
 
         def _connection_factory(host, timeout):
             connection.host = host
@@ -359,7 +359,7 @@ class Test__determine_default_project(unittest.TestCase):
     def _determine_default_helper(self, prod=None, gae=None, gce=None,
                                   file_id=None, srv_id=None, project=None):
         from unit_tests._testing import _Monkey
-        from gcloud import _helpers
+        from google.cloud import _helpers
 
         _callers = []
 
@@ -899,7 +899,7 @@ class Test_make_stub(unittest.TestCase):
 
     def test_it(self):
         from unit_tests._testing import _Monkey
-        from gcloud import _helpers as MUT
+        from google.cloud import _helpers as MUT
 
         mock_result = object()
         stub_inputs = []

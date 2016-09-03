@@ -30,7 +30,7 @@ class Client(BaseClient):
 
     Automatically get credentials::
 
-        >>> from gcloud import resource_manager
+        >>> from google.cloud import resource_manager
         >>> client = resource_manager.Client()
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
@@ -98,7 +98,7 @@ class Client(BaseClient):
 
         Example::
 
-            >>> from gcloud import resource_manager
+            >>> from google.cloud import resource_manager
             >>> client = resource_manager.Client()
             >>> for project in client.list_projects():
             ...     print project.project_id
@@ -106,7 +106,7 @@ class Client(BaseClient):
         List all projects with label ``'environment'`` set to ``'prod'``
         (filtering by labels)::
 
-            >>> from gcloud import resource_manager
+            >>> from google.cloud import resource_manager
             >>> client = resource_manager.Client()
             >>> env_filter = {'labels.environment': 'prod'}
             >>> for project in client.list_projects(env_filter):

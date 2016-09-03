@@ -29,7 +29,7 @@ class Project(object):
 
     To manage labels on a :class:`Project`::
 
-        >>> from gcloud import resource_manager
+        >>> from google.cloud import resource_manager
         >>> client = resource_manager.Client()
         >>> project = client.new_project('purple-spaceship-123')
         >>> project.labels = {'color': 'purple'}

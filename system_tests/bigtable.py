@@ -17,7 +17,7 @@ import operator
 
 import unittest
 
-from gcloud import _helpers
+from google.cloud import _helpers
 from gcloud._helpers import _datetime_from_microseconds
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import UTC

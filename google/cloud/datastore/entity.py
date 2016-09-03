@@ -39,7 +39,7 @@ class Entity(dict):
 
     Use :func:`gcloud.datastore.get` to retrieve an existing entity.
 
-      >>> from gcloud import datastore
+      >>> from google.cloud import datastore
       >>> client = datastore.Client()
       >>> client.get(key)
       <Entity[{'kind': 'EntityKind', id: 1234}] {'property': 'value'}>

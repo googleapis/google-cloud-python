@@ -17,7 +17,7 @@ import os
 
 import unittest
 
-from gcloud import translate
+from google.cloud import translate
 
 
 ENV_VAR = 'GCLOUD_TESTS_API_KEY'

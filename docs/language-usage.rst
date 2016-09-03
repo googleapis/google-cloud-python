@@ -33,7 +33,7 @@ create an instance of :class:`~gcloud.language.client.Client`.
 
   .. code-block:: python
 
-     >>> from gcloud import language
+     >>> from google.cloud import language
      >>> client = language.Client()
 
 By default the ``language`` is ``'en-US'`` and the ``encoding`` is

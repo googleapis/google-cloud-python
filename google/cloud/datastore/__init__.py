@@ -16,7 +16,7 @@
 
 You'll typically use these to get started with the API::
 
-    >>> from gcloud import datastore
+    >>> from google.cloud import datastore
     >>>
     >>> client = datastore.Client()
     >>> key = client.key('EntityKind', 1234)

@@ -19,7 +19,7 @@ import os
 from google.rpc import status_pb2
 
 from gcloud._helpers import make_stub
-from gcloud import connection as connection_module
+from google.cloud import connection as connection_module
 from gcloud.environment_vars import GCD_HOST
 from gcloud.exceptions import Conflict
 from gcloud.exceptions import make_exception
@@ -428,7 +428,7 @@ class Connection(connection_module.Connection):
         is used under the hood in
         :meth:`Client.get() <.datastore.client.Client.get>`:
 
-        >>> from gcloud import datastore
+        >>> from google.cloud import datastore
         >>> client = datastore.Client(project='project')
         >>> key = client.key('MyKind', 1234)
         >>> client.get(key)

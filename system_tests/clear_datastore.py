@@ -20,7 +20,7 @@ import os
 
 import six
 
-from gcloud import datastore
+from google.cloud import datastore
 from gcloud.environment_vars import TESTS_PROJECT
 
 

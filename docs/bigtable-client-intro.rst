@@ -38,14 +38,14 @@ Configuration
 
   .. code::
 
-     >>> from gcloud import bigtable
+     >>> from google.cloud import bigtable
      >>> client = bigtable.Client()
 
   or pass in ``credentials`` and ``project`` explicitly
 
   .. code::
 
-     >>> from gcloud import bigtable
+     >>> from google.cloud import bigtable
      >>> client = bigtable.Client(project='my-project', credentials=creds)
 
 .. tip::

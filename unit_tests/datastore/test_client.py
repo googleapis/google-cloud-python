@@ -151,7 +151,7 @@ class TestClient(unittest.TestCase):
     def test_ctor_w_implicit_inputs(self):
         from unit_tests._testing import _Monkey
         from gcloud.datastore import client as _MUT
-        from gcloud import client as _base_client
+        from google.cloud import client as _base_client
 
         OTHER = 'other'
         creds = object()

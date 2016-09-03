@@ -27,7 +27,7 @@ class Transaction(Batch):
     operations (either ``insert`` or ``upsert``) into the same
     mutation, and execute those within a transaction::
 
-      >>> from gcloud import datastore
+      >>> from google.cloud import datastore
       >>> client = datastore.Client()
       >>> with client.transaction():
       ...     client.put_multi([entity1, entity2])
