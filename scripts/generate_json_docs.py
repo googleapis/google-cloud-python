@@ -643,7 +643,8 @@ def main():
     LIB_DIR = os.path.abspath(args.basepath)
 
     library_dir = os.path.join(LIB_DIR, 'google', 'cloud')
-    public_mods = get_public_modules(library_dir, base_package='google')
+    public_mods = get_public_modules(library_dir,
+                                     base_package='google.cloud')
 
     generate_module_docs(public_mods, JSON_DOCS_DIR, BASE_DIR, toc)
     generate_doc_types_json(public_mods,

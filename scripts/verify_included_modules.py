@@ -135,7 +135,7 @@ def main(build_root='_build'):
 
     library_dir = os.path.join(BASE_DIR, 'google', 'cloud')
     public_mods = get_public_modules(library_dir,
-                                     base_package='google')
+                                     base_package='google.cloud')
     public_mods = set(public_mods)
 
     if not sphinx_mods <= public_mods:
