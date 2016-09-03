@@ -15,8 +15,8 @@ Authentication / Configuration
 - The library now enables the ``gRPC`` transport for the pubsub API by
   default, assuming that the required dependencies are installed and
   importable.  To *disable* this transport, set the
-  :envvar:`GOOGLE_CLOUD_DISABLE_GAX` environment variable to a non-empty string,
-  e.g.:  ``$ export GOOGLE_CLOUD_DISABLE_GAX=1``.
+  :envvar:`GOOGLE_CLOUD_DISABLE_GRPC` environment variable to a
+  non-empty string, e.g.:  ``$ export GOOGLE_CLOUD_DISABLE_GRPC=true``.
 
 - :class:`Client <google.cloud.pubsub.client.Client>` objects hold both a ``project``
   and an authenticated connection to the PubSub service.

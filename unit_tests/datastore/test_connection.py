@@ -292,10 +292,10 @@ class TestConnection(unittest.TestCase):
         return pb
 
     def _makeOne(self, credentials=None, http=None,
-                 api_base_url=None, have_grpc=False):
+                 api_base_url=None, use_grpc=False):
         from unit_tests._testing import _Monkey
         from google.cloud.datastore import connection as MUT
-        with _Monkey(MUT, _HAVE_GRPC=have_grpc):
+        with _Monkey(MUT, _USE_GRPC=use_grpc):
             return self._getTargetClass()(credentials=credentials, http=http,
                                           api_base_url=api_base_url)
 
@@ -368,7 +368,7 @@ class TestConnection(unittest.TestCase):
             return return_val
 
         with _Monkey(MUT, _DatastoreAPIOverHttp=mock_api):
-            conn = self._makeOne(have_grpc=False)
+            conn = self._makeOne(use_grpc=False)
 
         self.assertEqual(conn.credentials, None)
         self.assertIs(conn._datastore_api, return_val)
@@ -386,7 +386,7 @@ class TestConnection(unittest.TestCase):
             return return_val
 
         with _Monkey(MUT, _DatastoreAPIOverGRPC=mock_api):
-            conn = self._makeOne(have_grpc=True)
+            conn = self._makeOne(use_grpc=True)
 
         self.assertEqual(conn.credentials, None)
         self.assertIs(conn._datastore_api, return_val)

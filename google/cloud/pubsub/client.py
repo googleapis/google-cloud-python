@@ -17,6 +17,7 @@
 import os
 
 from google.cloud.client import JSONClient
+from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.pubsub.connection import Connection
 from google.cloud.pubsub.connection import _PublisherAPI as JSONPublisherAPI
 from google.cloud.pubsub.connection import _SubscriberAPI as JSONSubscriberAPI
@@ -41,7 +42,7 @@ else:
 # pylint: enable=ungrouped-imports
 
 
-_DISABLE_GAX = os.getenv('GOOGLE_CLOUD_DISABLE_GAX', False)
+_DISABLE_GAX = os.getenv(DISABLE_GRPC, False)
 _USE_GAX = _HAVE_GAX and not _DISABLE_GAX
 
 

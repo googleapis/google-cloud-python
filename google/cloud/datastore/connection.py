@@ -20,6 +20,7 @@ from google.rpc import status_pb2
 
 from google.cloud._helpers import make_stub
 from google.cloud import connection as connection_module
+from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_HOST
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import make_exception
@@ -43,6 +44,9 @@ DATASTORE_API_HOST = 'datastore.googleapis.com'
 """Datastore API request host."""
 DATASTORE_API_PORT = 443
 """Datastore API request port."""
+
+_DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
+_USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 
 
 class _DatastoreAPIOverHttp(object):
@@ -381,7 +385,7 @@ class Connection(connection_module.Connection):
             except KeyError:
                 api_base_url = self.__class__.API_BASE_URL
         self.api_base_url = api_base_url
-        if _HAVE_GRPC:
+        if _USE_GRPC:
             self._datastore_api = _DatastoreAPIOverGRPC(self)
         else:
             self._datastore_api = _DatastoreAPIOverHttp(self)

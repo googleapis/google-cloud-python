@@ -35,3 +35,10 @@ PUBSUB_EMULATOR = 'PUBSUB_EMULATOR_HOST'
 
 CREDENTIALS = 'GOOGLE_APPLICATION_CREDENTIALS'
 """Environment variable defining location of Google credentials."""
+
+DISABLE_GRPC = 'GOOGLE_CLOUD_DISABLE_GRPC'
+"""Environment variable acting as flag to disable gRPC.
+
+To be used for APIs where both an HTTP and gRPC implementation
+exist.
+"""
