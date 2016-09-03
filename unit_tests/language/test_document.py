@@ -40,7 +40,7 @@ def _make_token_json(name, part_of_speech, head, edge_label):
 
 
 def _get_token_and_sentences(include_syntax):
-    from gcloud.language.syntax import PartOfSpeech
+    from google.cloud.language.syntax import PartOfSpeech
 
     if include_syntax:
         token_info = [
@@ -68,7 +68,7 @@ def _get_token_and_sentences(include_syntax):
 
 
 def _get_entities(include_entities):
-    from gcloud.language.entity import EntityType
+    from google.cloud.language.entity import EntityType
 
     if include_entities:
         entities = [
@@ -98,7 +98,7 @@ def _get_entities(include_entities):
 class TestDocument(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.language.document import Document
+        from google.cloud.language.document import Document
         return Document
 
     def _makeOne(self, *args, **kw):
@@ -176,7 +176,7 @@ class TestDocument(unittest.TestCase):
         })
 
     def _verify_entity(self, entity, name, entity_type, wiki_url, salience):
-        from gcloud.language.entity import Entity
+        from google.cloud.language.entity import Entity
 
         self.assertIsInstance(entity, Entity)
         self.assertEqual(entity.name, name)
@@ -187,7 +187,7 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(entity.mentions, [name])
 
     def test_analyze_entities(self):
-        from gcloud.language.entity import EntityType
+        from google.cloud.language.entity import EntityType
 
         name1 = 'R-O-C-K'
         name2 = 'USA'
@@ -248,7 +248,7 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(req['method'], 'POST')
 
     def _verify_sentiment(self, sentiment, polarity, magnitude):
-        from gcloud.language.sentiment import Sentiment
+        from google.cloud.language.sentiment import Sentiment
 
         self.assertIsInstance(sentiment, Sentiment)
         self.assertEqual(sentiment.polarity, polarity)
@@ -279,7 +279,7 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(req['method'], 'POST')
 
     def _verify_sentences(self, include_syntax, annotations):
-        from gcloud.language.syntax import Sentence
+        from google.cloud.language.syntax import Sentence
 
         if include_syntax:
             self.assertEqual(len(annotations.sentences), 1)
@@ -291,7 +291,7 @@ class TestDocument(unittest.TestCase):
             self.assertEqual(annotations.sentences, [])
 
     def _verify_tokens(self, annotations, token_info):
-        from gcloud.language.syntax import Token
+        from google.cloud.language.syntax import Token
 
         self.assertEqual(len(annotations.tokens), len(token_info))
         for token, info in zip(annotations.tokens, token_info):
@@ -305,8 +305,8 @@ class TestDocument(unittest.TestCase):
 
     def _annotate_text_helper(self, include_sentiment,
                               include_entities, include_syntax):
-        from gcloud.language.document import Annotations
-        from gcloud.language.entity import EntityType
+        from google.cloud.language.document import Annotations
+        from google.cloud.language.entity import EntityType
 
         token_info, sentences = _get_token_and_sentences(include_syntax)
         entities = _get_entities(include_entities)

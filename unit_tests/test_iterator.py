@@ -18,7 +18,7 @@ import unittest
 class TestIterator(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.iterator import Iterator
+        from google.cloud.iterator import Iterator
         return Iterator
 
     def _makeOne(self, *args, **kw):
@@ -175,7 +175,7 @@ class TestIterator(unittest.TestCase):
 class TestMethodIterator(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.iterator import MethodIterator
+        from google.cloud.iterator import MethodIterator
         return MethodIterator
 
     def _makeOne(self, *args, **kw):

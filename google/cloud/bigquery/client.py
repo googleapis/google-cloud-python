@@ -15,14 +15,14 @@
 """Client for interacting with the Google BigQuery API."""
 
 
-from gcloud.client import JSONClient
-from gcloud.bigquery.connection import Connection
-from gcloud.bigquery.dataset import Dataset
-from gcloud.bigquery.job import CopyJob
-from gcloud.bigquery.job import ExtractTableToStorageJob
-from gcloud.bigquery.job import LoadTableFromStorageJob
-from gcloud.bigquery.job import QueryJob
-from gcloud.bigquery.query import QueryResults
+from google.cloud.client import JSONClient
+from google.cloud.bigquery.connection import Connection
+from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.job import CopyJob
+from google.cloud.bigquery.job import ExtractTableToStorageJob
+from google.cloud.bigquery.job import LoadTableFromStorageJob
+from google.cloud.bigquery.job import QueryJob
+from google.cloud.bigquery.query import QueryResults
 
 
 class Client(JSONClient):

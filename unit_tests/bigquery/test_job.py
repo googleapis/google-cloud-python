@@ -18,7 +18,7 @@ import unittest
 class Test_UDFResourcesProperty(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigquery.job import UDFResourcesProperty
+        from google.cloud.bigquery.job import UDFResourcesProperty
         return UDFResourcesProperty
 
     def _makeOne(self, *args, **kw):
@@ -43,7 +43,7 @@ class Test_UDFResourcesProperty(unittest.TestCase):
         self.assertEqual(instance.udf_resources, [])
 
     def test_instance_getter_w_non_empty_list(self):
-        from gcloud.bigquery.job import UDFResource
+        from google.cloud.bigquery.job import UDFResource
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
         _, klass = self._descriptor_and_klass()
@@ -53,7 +53,7 @@ class Test_UDFResourcesProperty(unittest.TestCase):
         self.assertEqual(instance.udf_resources, udf_resources)
 
     def test_instance_setter_w_empty_list(self):
-        from gcloud.bigquery.job import UDFResource
+        from google.cloud.bigquery.job import UDFResource
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
         _, klass = self._descriptor_and_klass()
@@ -65,7 +65,7 @@ class Test_UDFResourcesProperty(unittest.TestCase):
         self.assertEqual(instance.udf_resources, [])
 
     def test_instance_setter_w_valid_udf(self):
-        from gcloud.bigquery.job import UDFResource
+        from google.cloud.bigquery.job import UDFResource
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
         _, klass = self._descriptor_and_klass()
@@ -97,7 +97,7 @@ class _Base(object):
 
     def _setUpConstants(self):
         import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         self.WHEN_TS = 1437767599.006
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
@@ -193,7 +193,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
     JOB_TYPE = 'load'
 
     def _getTargetClass(self):
-        from gcloud.bigquery.job import LoadTableFromStorageJob
+        from google.cloud.bigquery.job import LoadTableFromStorageJob
         return LoadTableFromStorageJob
 
     def _setUpConstants(self):
@@ -332,7 +332,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertTrue(job.write_disposition is None)
 
     def test_ctor_w_schema(self):
-        from gcloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
         client = _Client(self.PROJECT)
         table = _Table()
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
@@ -349,7 +349,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
             job.schema = object()
 
     def test_schema_setter_invalid_field(self):
-        from gcloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
         client = _Client(self.PROJECT)
         table = _Table()
         job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
@@ -358,7 +358,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
             job.schema = [full_name, object()]
 
     def test_schema_setter(self):
-        from gcloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
         client = _Client(self.PROJECT)
         table = _Table()
         job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
@@ -369,8 +369,8 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
 
     def test_props_set_by_server(self):
         import datetime
-        from gcloud._helpers import UTC
-        from gcloud._helpers import _millis
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _millis
 
         CREATED = datetime.datetime(2015, 8, 11, 12, 13, 22, tzinfo=UTC)
         STARTED = datetime.datetime(2015, 8, 11, 13, 47, 15, tzinfo=UTC)
@@ -523,7 +523,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
-        from gcloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
         PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource(ended=True)
         LOAD_CONFIGURATION = {
@@ -701,7 +701,7 @@ class TestCopyJob(unittest.TestCase, _Base):
     DESTINATION_TABLE = 'destination_table'
 
     def _getTargetClass(self):
-        from gcloud.bigquery.job import CopyJob
+        from google.cloud.bigquery.job import CopyJob
         return CopyJob
 
     def _makeResource(self, started=False, ended=False):
@@ -998,7 +998,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
     DESTINATION_URI = 'gs://bucket_name/object_name'
 
     def _getTargetClass(self):
-        from gcloud.bigquery.job import ExtractTableToStorageJob
+        from google.cloud.bigquery.job import ExtractTableToStorageJob
         return ExtractTableToStorageJob
 
     def _makeResource(self, started=False, ended=False):
@@ -1291,7 +1291,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     DESTINATION_TABLE = 'destination_table'
 
     def _getTargetClass(self):
-        from gcloud.bigquery.job import QueryJob
+        from google.cloud.bigquery.job import QueryJob
         return QueryJob
 
     def _makeResource(self, started=False, ended=False):
@@ -1474,8 +1474,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
-        from gcloud.bigquery.dataset import Dataset
-        from gcloud.bigquery.dataset import Table
+        from google.cloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import Table
         PATH = 'projects/%s/jobs' % self.PROJECT
         TABLE = 'TABLE'
         DS_NAME = 'DATASET'
@@ -1539,7 +1539,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_bound_client_and_udf(self):
-        from gcloud.bigquery.job import UDFResource
+        from google.cloud.bigquery.job import UDFResource
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource()
@@ -1611,8 +1611,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_reload_w_bound_client(self):
-        from gcloud.bigquery.dataset import Dataset
-        from gcloud.bigquery.dataset import Table
+        from google.cloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import Table
         PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         DS_NAME = 'DATASET'
         DEST_TABLE = 'dest_table'
@@ -1669,7 +1669,7 @@ class _Client(object):
         self.connection = connection
 
     def dataset(self, name):
-        from gcloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import Dataset
         return Dataset(name, client=self)
 
 
@@ -1700,7 +1700,7 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kw):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._requested.append(kw)
 
         try:

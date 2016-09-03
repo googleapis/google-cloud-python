@@ -19,7 +19,7 @@ import unittest
 class TestCell(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_data import Cell
+        from google.cloud.bigtable.row_data import Cell
         return Cell
 
     def _makeOne(self, *args, **kwargs):
@@ -27,8 +27,8 @@ class TestCell(unittest.TestCase):
 
     def _from_pb_test_helper(self, labels=None):
         import datetime
-        from gcloud._helpers import _EPOCH
-        from gcloud.bigtable._generated import (
+        from google.cloud._helpers import _EPOCH
+        from google.cloud.bigtable._generated import (
             data_pb2 as data_v2_pb2)
 
         timestamp_micros = 18738724000  # Make sure millis granularity
@@ -94,7 +94,7 @@ class TestCell(unittest.TestCase):
 class TestPartialRowData(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_data import PartialRowData
+        from google.cloud.bigtable.row_data import PartialRowData
         return PartialRowData
 
     def _makeOne(self, *args, **kwargs):
@@ -185,7 +185,7 @@ class TestPartialRowData(unittest.TestCase):
 class TestPartialRowsData(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_data import PartialRowsData
+        from google.cloud.bigtable.row_data import PartialRowsData
         return PartialRowsData
 
     def _getDoNothingClass(self):
@@ -383,7 +383,7 @@ class TestPartialRowsData(unittest.TestCase):
         self.assertTrue(prd._rows[ROW_KEY] is row)
 
     def test_invalid_last_scanned_row_key_on_start(self):
-        from gcloud.bigtable.row_data import InvalidReadRowsResponse
+        from google.cloud.bigtable.row_data import InvalidReadRowsResponse
         response = _ReadRowsResponseV2(chunks=(), last_scanned_row_key='ABC')
         iterator = _MockCancellableIterator(response)
         prd = self._makeOne(iterator)
@@ -400,7 +400,7 @@ class TestPartialRowsData(unittest.TestCase):
         self.assertEqual(prd._last_scanned_row_key, 'AFTER')
 
     def test_invalid_empty_chunk(self):
-        from gcloud.bigtable.row_data import InvalidChunk
+        from google.cloud.bigtable.row_data import InvalidChunk
         chunks = _generate_cell_chunks([''])
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
@@ -409,7 +409,7 @@ class TestPartialRowsData(unittest.TestCase):
             prd.consume_next()
 
     def test_invalid_empty_second_chunk(self):
-        from gcloud.bigtable.row_data import InvalidChunk
+        from google.cloud.bigtable.row_data import InvalidChunk
         chunks = _generate_cell_chunks(['', ''])
         first = chunks[0]
         first.row_key = b'RK'
@@ -427,7 +427,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
     _json_tests = None
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_data import PartialRowsData
+        from google.cloud.bigtable.row_data import PartialRowsData
         return PartialRowsData
 
     def _makeOne(self, *args, **kwargs):
@@ -447,7 +447,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
     # JSON Error cases:  invalid chunks
 
     def _fail_during_consume(self, testcase_name):
-        from gcloud.bigtable.row_data import InvalidChunk
+        from google.cloud.bigtable.row_data import InvalidChunk
         chunks, results = self._load_json_test(testcase_name)
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
@@ -637,8 +637,8 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
 def _flatten_cells(prd):
     # Match results format from JSON testcases.
     # Doesn't handle error cases.
-    from gcloud._helpers import _bytes_to_unicode
-    from gcloud._helpers import _microseconds_from_datetime
+    from google.cloud._helpers import _bytes_to_unicode
+    from google.cloud._helpers import _microseconds_from_datetime
     for row_key, row in prd.rows.items():
         for family_name, family in row.cells.items():
             for qualifier, column in family.items():
@@ -698,7 +698,7 @@ class _ReadRowsResponseV2(object):
 
 def _generate_cell_chunks(chunk_text_pbs):
     from google.protobuf.text_format import Merge
-    from gcloud.bigtable._generated.bigtable_pb2 import ReadRowsResponse
+    from google.cloud.bigtable._generated.bigtable_pb2 import ReadRowsResponse
 
     chunks = []
 

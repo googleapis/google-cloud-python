@@ -23,7 +23,7 @@ class TestSink(unittest.TestCase):
     DESTINATION_URI = 'faux.googleapis.com/destination'
 
     def _getTargetClass(self):
-        from gcloud.logging.sink import Sink
+        from google.cloud.logging.sink import Sink
         return Sink
 
     def _makeOne(self, *args, **kw):
@@ -247,7 +247,7 @@ class _DummySinksAPI(object):
             project, sink_name, filter_, destination)
 
     def sink_get(self, project, sink_name):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._sink_get_called_with = (project, sink_name)
         try:
             return self._sink_get_response

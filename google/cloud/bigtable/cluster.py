@@ -17,13 +17,13 @@
 
 import re
 
-from gcloud.bigtable._generated import (
+from google.cloud.bigtable._generated import (
     instance_pb2 as data_v2_pb2)
-from gcloud.bigtable._generated import (
+from google.cloud.bigtable._generated import (
     bigtable_instance_admin_pb2 as messages_v2_pb2)
-from gcloud.operation import Operation
-from gcloud.operation import _compute_type_url
-from gcloud.operation import _register_type_url
+from google.cloud.operation import Operation
+from google.cloud.operation import _compute_type_url
+from google.cloud.operation import _register_type_url
 
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'

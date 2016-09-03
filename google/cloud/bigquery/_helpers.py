@@ -14,7 +14,7 @@
 
 """Shared helper functions for BigQuery API classes."""
 
-from gcloud._helpers import _datetime_from_microseconds
+from google.cloud._helpers import _datetime_from_microseconds
 
 
 def _not_null(value, field):

@@ -21,10 +21,10 @@
 
 import re
 
-from gcloud._helpers import _datetime_to_rfc3339
-from gcloud._helpers import _name_from_project_path
-from gcloud.exceptions import NotFound
-from gcloud.monitoring.resource import Resource
+from google.cloud._helpers import _datetime_to_rfc3339
+from google.cloud._helpers import _name_from_project_path
+from google.cloud.exceptions import NotFound
+from google.cloud.monitoring.resource import Resource
 
 
 _GROUP_TEMPLATE = re.compile(r"""

@@ -18,14 +18,14 @@ import unittest
 class Test__compute_type_url(unittest.TestCase):
 
     def _callFUT(self, klass, prefix=None):
-        from gcloud.operation import _compute_type_url
+        from google.cloud.operation import _compute_type_url
         if prefix is None:
             return _compute_type_url(klass)
         return _compute_type_url(klass, prefix)
 
     def test_wo_prefix(self):
         from google.protobuf.struct_pb2 import Struct
-        from gcloud.operation import _GOOGLE_APIS_PREFIX
+        from google.cloud.operation import _GOOGLE_APIS_PREFIX
 
         type_url = self._callFUT(Struct)
 
@@ -47,7 +47,7 @@ class Test__compute_type_url(unittest.TestCase):
 class Test__register_type_url(unittest.TestCase):
 
     def _callFUT(self, type_url, klass):
-        from gcloud.operation import _register_type_url
+        from google.cloud.operation import _register_type_url
         _register_type_url(type_url, klass)
 
     def test_simple(self):
@@ -93,7 +93,7 @@ class OperationTests(unittest.TestCase):
     OPERATION_NAME = 'operations/projects/foo/instances/bar/operations/123'
 
     def _getTargetClass(self):
-        from gcloud.operation import Operation
+        from google.cloud.operation import Operation
         return Operation
 
     def _makeOne(self, *args, **kw):

@@ -26,8 +26,8 @@ import json
 import httplib2
 import six
 
-from gcloud.exceptions import make_exception
-from gcloud.storage.connection import Connection
+from google.cloud.exceptions import make_exception
+from google.cloud.storage.connection import Connection
 
 
 class MIMEApplicationHTTP(MIMEApplication):

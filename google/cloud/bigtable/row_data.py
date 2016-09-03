@@ -18,8 +18,8 @@
 import copy
 import six
 
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud._helpers import _to_bytes
+from google.cloud._helpers import _datetime_from_microseconds
+from google.cloud._helpers import _to_bytes
 
 
 class Cell(object):

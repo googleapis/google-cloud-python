@@ -14,7 +14,7 @@
 
 """Create / interact with gcloud datastore transactions."""
 
-from gcloud.datastore.batch import Batch
+from google.cloud.datastore.batch import Batch
 
 
 class Transaction(Batch):

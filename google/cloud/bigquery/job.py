@@ -16,15 +16,15 @@
 
 import six
 
-from gcloud.exceptions import NotFound
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud.bigquery.dataset import Dataset
-from gcloud.bigquery.schema import SchemaField
-from gcloud.bigquery.table import Table
-from gcloud.bigquery.table import _build_schema_resource
-from gcloud.bigquery.table import _parse_schema_resource
-from gcloud.bigquery._helpers import _EnumProperty
-from gcloud.bigquery._helpers import _TypedProperty
+from google.cloud.exceptions import NotFound
+from google.cloud._helpers import _datetime_from_microseconds
+from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.schema import SchemaField
+from google.cloud.bigquery.table import Table
+from google.cloud.bigquery.table import _build_schema_resource
+from google.cloud.bigquery.table import _parse_schema_resource
+from google.cloud.bigquery._helpers import _EnumProperty
+from google.cloud.bigquery._helpers import _TypedProperty
 
 
 class UDFResource(object):

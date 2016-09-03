@@ -17,8 +17,8 @@
 
 from base64 import b64encode
 
-from gcloud._helpers import _to_bytes
-from gcloud._helpers import _bytes_to_unicode
+from google.cloud._helpers import _to_bytes
+from google.cloud._helpers import _bytes_to_unicode
 
 
 class Image(object):

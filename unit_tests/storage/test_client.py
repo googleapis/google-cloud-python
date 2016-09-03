@@ -18,14 +18,14 @@ import unittest
 class TestClient(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage.client import Client
+        from google.cloud.storage.client import Client
         return Client
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor_connection_type(self):
-        from gcloud.storage.connection import Connection
+        from google.cloud.storage.connection import Connection
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
@@ -38,7 +38,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(client._batch_stack), [])
 
     def test__push_batch_and__pop_batch(self):
-        from gcloud.storage.batch import Batch
+        from google.cloud.storage.batch import Batch
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
@@ -80,7 +80,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(client.current_batch is None)
 
     def test_connection_getter_with_batch(self):
-        from gcloud.storage.batch import Batch
+        from google.cloud.storage.batch import Batch
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
@@ -91,7 +91,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(client.current_batch is batch)
 
     def test_bucket(self):
-        from gcloud.storage.bucket import Bucket
+        from google.cloud.storage.bucket import Bucket
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
@@ -104,7 +104,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(bucket.name, BUCKET_NAME)
 
     def test_batch(self):
-        from gcloud.storage.batch import Batch
+        from google.cloud.storage.batch import Batch
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
@@ -115,7 +115,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(batch._client is client)
 
     def test_get_bucket_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
@@ -138,7 +138,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_get_bucket_hit(self):
-        from gcloud.storage.bucket import Bucket
+        from google.cloud.storage.bucket import Bucket
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
@@ -186,7 +186,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_lookup_bucket_hit(self):
-        from gcloud.storage.bucket import Bucket
+        from google.cloud.storage.bucket import Bucket
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
@@ -212,7 +212,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_create_bucket_conflict(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
@@ -235,7 +235,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_create_bucket_success(self):
-        from gcloud.storage.bucket import Bucket
+        from google.cloud.storage.bucket import Bucket
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
@@ -373,7 +373,7 @@ class TestClient(unittest.TestCase):
 class Test__BucketIterator(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage.client import _BucketIterator
+        from google.cloud.storage.client import _BucketIterator
         return _BucketIterator
 
     def _makeOne(self, *args, **kw):
@@ -395,7 +395,7 @@ class Test__BucketIterator(unittest.TestCase):
         self.assertEqual(list(iterator.get_items_from_response({})), [])
 
     def test_get_items_from_response_non_empty(self):
-        from gcloud.storage.bucket import Bucket
+        from google.cloud.storage.bucket import Bucket
         BLOB_NAME = 'blob-name'
         response = {'items': [{'name': BLOB_NAME}]}
         connection = object()

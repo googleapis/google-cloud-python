@@ -16,8 +16,8 @@ import unittest
 
 
 def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
-    from gcloud.datastore._generated import entity_pb2
-    from gcloud.datastore.helpers import _new_value_pb
+    from google.cloud.datastore._generated import entity_pb2
+    from google.cloud.datastore.helpers import _new_value_pb
 
     entity_pb = entity_pb2.Entity()
     entity_pb.key.partition_id.project_id = project
@@ -34,7 +34,7 @@ def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
 class Test__get_gcd_project(unittest.TestCase):
 
     def _callFUT(self):
-        from gcloud.datastore.client import _get_gcd_project
+        from google.cloud.datastore.client import _get_gcd_project
         return _get_gcd_project()
 
     def test_no_value(self):
@@ -49,7 +49,7 @@ class Test__get_gcd_project(unittest.TestCase):
     def test_value_set(self):
         import os
         from unit_tests._testing import _Monkey
-        from gcloud.datastore.client import GCD_DATASET
+        from google.cloud.datastore.client import GCD_DATASET
 
         MOCK_PROJECT = object()
         environ = {GCD_DATASET: MOCK_PROJECT}
@@ -61,14 +61,14 @@ class Test__get_gcd_project(unittest.TestCase):
 class Test__determine_default_project(unittest.TestCase):
 
     def _callFUT(self, project=None):
-        from gcloud.datastore.client import (
+        from google.cloud.datastore.client import (
             _determine_default_project)
         return _determine_default_project(project=project)
 
     def _determine_default_helper(self, gcd=None, fallback=None,
                                   project_called=None):
         from unit_tests._testing import _Monkey
-        from gcloud.datastore import client
+        from google.cloud.datastore import client
 
         _callers = []
 
@@ -129,7 +129,7 @@ class TestClient(unittest.TestCase):
         KLASS._connection_class = self.original_cnxn_class
 
     def _getTargetClass(self):
-        from gcloud.datastore.client import Client
+        from google.cloud.datastore.client import Client
         return Client
 
     def _makeOne(self, project=PROJECT, namespace=None,
@@ -141,7 +141,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_w_project_no_environ(self):
         from unit_tests._testing import _Monkey
-        from gcloud.datastore import client as _MUT
+        from google.cloud.datastore import client as _MUT
 
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
@@ -150,7 +150,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_w_implicit_inputs(self):
         from unit_tests._testing import _Monkey
-        from gcloud.datastore import client as _MUT
+        from google.cloud.datastore import client as _MUT
         from google.cloud import client as _base_client
 
         OTHER = 'other'
@@ -263,7 +263,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(results, [])
 
     def test_get_multi_miss(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -273,8 +273,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(results, [])
 
     def test_get_multi_miss_w_missing(self):
-        from gcloud.datastore._generated import entity_pb2
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore._generated import entity_pb2
+        from google.cloud.datastore.key import Key
 
         KIND = 'Kind'
         ID = 1234
@@ -299,7 +299,7 @@ class TestClient(unittest.TestCase):
                          [key.to_protobuf()])
 
     def test_get_multi_w_missing_non_empty(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -310,7 +310,7 @@ class TestClient(unittest.TestCase):
                           [key], missing=missing)
 
     def test_get_multi_w_deferred_non_empty(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -321,7 +321,7 @@ class TestClient(unittest.TestCase):
                           [key], deferred=deferred)
 
     def test_get_multi_miss_w_deferred(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
 
         key = Key('Kind', 1234, project=self.PROJECT)
 
@@ -337,9 +337,9 @@ class TestClient(unittest.TestCase):
                          [key.to_protobuf()])
 
     def test_get_multi_w_deferred_from_backend_but_not_passed(self):
-        from gcloud.datastore._generated import entity_pb2
-        from gcloud.datastore.entity import Entity
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore._generated import entity_pb2
+        from google.cloud.datastore.entity import Entity
+        from google.cloud.datastore.key import Key
 
         key1 = Key('Kind', project=self.PROJECT)
         key1_pb = key1.to_protobuf()
@@ -390,7 +390,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(tid is None)
 
     def test_get_multi_hit(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
 
         KIND = 'Kind'
         ID = 1234
@@ -416,7 +416,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(result['foo'], 'Foo')
 
     def test_get_multi_hit_w_transaction(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
 
         TXN_ID = '123'
         KIND = 'Kind'
@@ -450,7 +450,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(transaction_id, TXN_ID)
 
     def test_get_multi_hit_multiple_keys_same_project(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
 
         KIND = 'Kind'
         ID1 = 1234
@@ -476,7 +476,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(dict(retrieved2), {})
 
     def test_get_multi_hit_multiple_keys_different_project(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
 
         PROJECT1 = 'PROJECT'
         PROJECT2 = 'PROJECT-ALT'
@@ -495,8 +495,8 @@ class TestClient(unittest.TestCase):
 
     def test_get_multi_max_loops(self):
         from unit_tests._testing import _Monkey
-        from gcloud.datastore import client as _MUT
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore import client as _MUT
+        from google.cloud.datastore.key import Key
 
         KIND = 'Kind'
         ID = 1234
@@ -545,14 +545,14 @@ class TestClient(unittest.TestCase):
 
     def test_put_multi_w_single_empty_entity(self):
         # https://github.com/GoogleCloudPlatform/gcloud-python/issues/649
-        from gcloud.datastore.entity import Entity
+        from google.cloud.datastore.entity import Entity
 
         creds = object()
         client = self._makeOne(credentials=creds)
         self.assertRaises(ValueError, client.put_multi, Entity())
 
     def test_put_multi_no_batch_w_partial_key(self):
-        from gcloud.datastore.helpers import _property_tuples
+        from google.cloud.datastore.helpers import _property_tuples
 
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(self.PROJECT)
@@ -582,7 +582,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(transaction_id is None)
 
     def test_put_multi_existing_batch_w_completed_key(self):
-        from gcloud.datastore.helpers import _property_tuples
+        from google.cloud.datastore.helpers import _property_tuples
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -701,7 +701,7 @@ class TestClient(unittest.TestCase):
                           client.key, KIND, ID, project=self.PROJECT)
 
     def test_key_wo_project(self):
-        from gcloud.datastore import client as MUT
+        from google.cloud.datastore import client as MUT
         from unit_tests._testing import _Monkey
 
         KIND = 'KIND'
@@ -722,7 +722,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_key_w_namespace(self):
-        from gcloud.datastore import client as MUT
+        from google.cloud.datastore import client as MUT
         from unit_tests._testing import _Monkey
 
         KIND = 'KIND'
@@ -743,7 +743,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_key_w_namespace_collision(self):
-        from gcloud.datastore import client as MUT
+        from google.cloud.datastore import client as MUT
         from unit_tests._testing import _Monkey
 
         KIND = 'KIND'
@@ -765,7 +765,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_batch(self):
-        from gcloud.datastore import client as MUT
+        from google.cloud.datastore import client as MUT
         from unit_tests._testing import _Monkey
 
         creds = object()
@@ -779,7 +779,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(batch.kwargs, {})
 
     def test_transaction_defaults(self):
-        from gcloud.datastore import client as MUT
+        from google.cloud.datastore import client as MUT
         from unit_tests._testing import _Monkey
 
         creds = object()
@@ -811,7 +811,7 @@ class TestClient(unittest.TestCase):
                           client.query, kind=KIND, project=self.PROJECT)
 
     def test_query_w_defaults(self):
-        from gcloud.datastore import client as MUT
+        from google.cloud.datastore import client as MUT
         from unit_tests._testing import _Monkey
 
         creds = object()
@@ -829,7 +829,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query.kwargs, expected_kwargs)
 
     def test_query_explicit(self):
-        from gcloud.datastore import client as MUT
+        from google.cloud.datastore import client as MUT
         from unit_tests._testing import _Monkey
 
         KIND = 'KIND'
@@ -869,7 +869,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query.kwargs, kwargs)
 
     def test_query_w_namespace(self):
-        from gcloud.datastore import client as MUT
+        from google.cloud.datastore import client as MUT
         from unit_tests._testing import _Monkey
 
         KIND = 'KIND'
@@ -891,7 +891,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query.kwargs, expected_kwargs)
 
     def test_query_w_namespace_collision(self):
-        from gcloud.datastore import client as MUT
+        from google.cloud.datastore import client as MUT
         from unit_tests._testing import _Monkey
 
         KIND = 'KIND'
@@ -957,7 +957,7 @@ class _MockConnection(object):
 class _NoCommitBatch(object):
 
     def __init__(self, client):
-        from gcloud.datastore.batch import Batch
+        from google.cloud.datastore.batch import Batch
         self._client = client
         self._batch = Batch(client)
 
@@ -972,7 +972,7 @@ class _NoCommitBatch(object):
 class _NoCommitTransaction(object):
 
     def __init__(self, client, transaction_id='TRANSACTION'):
-        from gcloud.datastore.transaction import Transaction
+        from google.cloud.datastore.transaction import Transaction
         self._client = client
         xact = self._transaction = Transaction(client)
         xact._id = transaction_id
@@ -1007,7 +1007,7 @@ class _Key(object):
         return self._id is None
 
     def to_protobuf(self):
-        from gcloud.datastore._generated import entity_pb2
+        from google.cloud.datastore._generated import entity_pb2
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
         # key.partition_id.project_id = self.project

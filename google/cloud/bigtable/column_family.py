@@ -19,9 +19,9 @@ import datetime
 
 from google.protobuf import duration_pb2
 
-from gcloud.bigtable._generated import (
+from google.cloud.bigtable._generated import (
     table_pb2 as table_v2_pb2)
-from gcloud.bigtable._generated import (
+from google.cloud.bigtable._generated import (
     bigtable_table_admin_pb2 as table_admin_v2_pb2)
 
 

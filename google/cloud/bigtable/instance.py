@@ -17,18 +17,18 @@
 
 import re
 
-from gcloud.bigtable._generated import (
+from google.cloud.bigtable._generated import (
     instance_pb2 as data_v2_pb2)
-from gcloud.bigtable._generated import (
+from google.cloud.bigtable._generated import (
     bigtable_instance_admin_pb2 as messages_v2_pb2)
-from gcloud.bigtable._generated import (
+from google.cloud.bigtable._generated import (
     bigtable_table_admin_pb2 as table_messages_v2_pb2)
-from gcloud.bigtable.cluster import Cluster
-from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
-from gcloud.bigtable.table import Table
-from gcloud.operation import Operation
-from gcloud.operation import _compute_type_url
-from gcloud.operation import _register_type_url
+from google.cloud.bigtable.cluster import Cluster
+from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+from google.cloud.bigtable.table import Table
+from google.cloud.operation import Operation
+from google.cloud.operation import _compute_type_url
+from google.cloud.operation import _register_type_url
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'

@@ -15,9 +15,9 @@
 """Client for interacting with the Google Cloud DNS API."""
 
 
-from gcloud.client import JSONClient
-from gcloud.dns.connection import Connection
-from gcloud.dns.zone import ManagedZone
+from google.cloud.client import JSONClient
+from google.cloud.dns.connection import Connection
+from google.cloud.dns.zone import ManagedZone
 
 
 class Client(JSONClient):

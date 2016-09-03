@@ -28,20 +28,20 @@ import httplib2
 import six
 from six.moves.urllib.parse import quote
 
-from gcloud._helpers import _rfc3339_to_datetime
-from gcloud._helpers import _to_bytes
-from gcloud._helpers import _bytes_to_unicode
-from gcloud.credentials import generate_signed_url
-from gcloud.exceptions import NotFound
-from gcloud.exceptions import make_exception
-from gcloud.storage._helpers import _PropertyMixin
-from gcloud.storage._helpers import _scalar_property
-from gcloud.storage.acl import ObjectACL
-from gcloud.streaming.http_wrapper import Request
-from gcloud.streaming.http_wrapper import make_api_request
-from gcloud.streaming.transfer import Download
-from gcloud.streaming.transfer import RESUMABLE_UPLOAD
-from gcloud.streaming.transfer import Upload
+from google.cloud._helpers import _rfc3339_to_datetime
+from google.cloud._helpers import _to_bytes
+from google.cloud._helpers import _bytes_to_unicode
+from google.cloud.credentials import generate_signed_url
+from google.cloud.exceptions import NotFound
+from google.cloud.exceptions import make_exception
+from google.cloud.storage._helpers import _PropertyMixin
+from google.cloud.storage._helpers import _scalar_property
+from google.cloud.storage.acl import ObjectACL
+from google.cloud.streaming.http_wrapper import Request
+from google.cloud.streaming.http_wrapper import make_api_request
+from google.cloud.streaming.transfer import Download
+from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+from google.cloud.streaming.transfer import Upload
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'

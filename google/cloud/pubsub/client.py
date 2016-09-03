@@ -16,13 +16,13 @@
 
 import os
 
-from gcloud.client import JSONClient
-from gcloud.pubsub.connection import Connection
-from gcloud.pubsub.connection import _PublisherAPI as JSONPublisherAPI
-from gcloud.pubsub.connection import _SubscriberAPI as JSONSubscriberAPI
-from gcloud.pubsub.connection import _IAMPolicyAPI
-from gcloud.pubsub.subscription import Subscription
-from gcloud.pubsub.topic import Topic
+from google.cloud.client import JSONClient
+from google.cloud.pubsub.connection import Connection
+from google.cloud.pubsub.connection import _PublisherAPI as JSONPublisherAPI
+from google.cloud.pubsub.connection import _SubscriberAPI as JSONSubscriberAPI
+from google.cloud.pubsub.connection import _IAMPolicyAPI
+from google.cloud.pubsub.subscription import Subscription
+from google.cloud.pubsub.topic import Topic
 
 # pylint: disable=ungrouped-imports
 try:
@@ -30,8 +30,8 @@ try:
         PublisherApi as GeneratedPublisherAPI)
     from google.cloud.pubsub.v1.subscriber_api import (
         SubscriberApi as GeneratedSubscriberAPI)
-    from gcloud.pubsub._gax import _PublisherAPI as GAXPublisherAPI
-    from gcloud.pubsub._gax import _SubscriberAPI as GAXSubscriberAPI
+    from google.cloud.pubsub._gax import _PublisherAPI as GAXPublisherAPI
+    from google.cloud.pubsub._gax import _SubscriberAPI as GAXSubscriberAPI
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False
     GeneratedPublisherAPI = GAXPublisherAPI = None

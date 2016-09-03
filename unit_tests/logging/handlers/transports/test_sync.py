@@ -21,7 +21,7 @@ class TestSyncHandler(unittest.TestCase):
     PROJECT = 'PROJECT'
 
     def _getTargetClass(self):
-        from gcloud.logging.handlers.transports import SyncTransport
+        from google.cloud.logging.handlers.transports import SyncTransport
         return SyncTransport
 
     def _makeOne(self, *args, **kw):

@@ -19,12 +19,12 @@ import unittest
 class Test__make_data_stub(unittest.TestCase):
 
     def _callFUT(self, client):
-        from gcloud.bigtable.client import _make_data_stub
+        from google.cloud.bigtable.client import _make_data_stub
         return _make_data_stub(client)
 
     def test_it(self):
         from unit_tests._testing import _Monkey
-        from gcloud.bigtable import client as MUT
+        from google.cloud.bigtable import client as MUT
 
         credentials = _Credentials()
         user_agent = 'you-sir-age-int'
@@ -55,12 +55,12 @@ class Test__make_data_stub(unittest.TestCase):
 class Test__make_instance_stub(unittest.TestCase):
 
     def _callFUT(self, client):
-        from gcloud.bigtable.client import _make_instance_stub
+        from google.cloud.bigtable.client import _make_instance_stub
         return _make_instance_stub(client)
 
     def test_it(self):
         from unit_tests._testing import _Monkey
-        from gcloud.bigtable import client as MUT
+        from google.cloud.bigtable import client as MUT
 
         credentials = _Credentials()
         user_agent = 'you-sir-age-int'
@@ -91,12 +91,12 @@ class Test__make_instance_stub(unittest.TestCase):
 class Test__make_operations_stub(unittest.TestCase):
 
     def _callFUT(self, client):
-        from gcloud.bigtable.client import _make_operations_stub
+        from google.cloud.bigtable.client import _make_operations_stub
         return _make_operations_stub(client)
 
     def test_it(self):
         from unit_tests._testing import _Monkey
-        from gcloud.bigtable import client as MUT
+        from google.cloud.bigtable import client as MUT
 
         credentials = _Credentials()
         user_agent = 'you-sir-age-int'
@@ -127,12 +127,12 @@ class Test__make_operations_stub(unittest.TestCase):
 class Test__make_table_stub(unittest.TestCase):
 
     def _callFUT(self, client):
-        from gcloud.bigtable.client import _make_table_stub
+        from google.cloud.bigtable.client import _make_table_stub
         return _make_table_stub(client)
 
     def test_it(self):
         from unit_tests._testing import _Monkey
-        from gcloud.bigtable import client as MUT
+        from google.cloud.bigtable import client as MUT
 
         credentials = _Credentials()
         user_agent = 'you-sir-age-int'
@@ -168,7 +168,7 @@ class TestClient(unittest.TestCase):
     USER_AGENT = 'you-sir-age-int'
 
     def _getTargetClass(self):
-        from gcloud.bigtable.client import Client
+        from google.cloud.bigtable.client import Client
         return Client
 
     def _makeOne(self, *args, **kwargs):
@@ -176,7 +176,7 @@ class TestClient(unittest.TestCase):
 
     def _makeOneWithMocks(self, *args, **kwargs):
         from unit_tests._testing import _Monkey
-        from gcloud.bigtable import client as MUT
+        from google.cloud.bigtable import client as MUT
 
         mock_make_data_stub = _MakeStubMock()
         mock_make_instance_stub = _MakeStubMock()
@@ -192,7 +192,7 @@ class TestClient(unittest.TestCase):
                                  read_only=False, admin=False,
                                  user_agent=None, expected_creds=None):
         from unit_tests._testing import _Monkey
-        from gcloud.bigtable import client as MUT
+        from google.cloud.bigtable import client as MUT
 
         user_agent = user_agent or MUT.DEFAULT_USER_AGENT
 
@@ -241,14 +241,14 @@ class TestClient(unittest.TestCase):
             self.assertIsNone(client._table_stub_internal)
 
     def test_constructor_default_scopes(self):
-        from gcloud.bigtable import client as MUT
+        from google.cloud.bigtable import client as MUT
 
         expected_scopes = [MUT.DATA_SCOPE]
         creds = _Credentials()
         self._constructor_test_helper(expected_scopes, creds)
 
     def test_constructor_custom_user_agent(self):
-        from gcloud.bigtable import client as MUT
+        from google.cloud.bigtable import client as MUT
 
         CUSTOM_USER_AGENT = 'custom-application'
         expected_scopes = [MUT.DATA_SCOPE]
@@ -257,14 +257,14 @@ class TestClient(unittest.TestCase):
                                       user_agent=CUSTOM_USER_AGENT)
 
     def test_constructor_with_admin(self):
-        from gcloud.bigtable import client as MUT
+        from google.cloud.bigtable import client as MUT
 
         expected_scopes = [MUT.DATA_SCOPE, MUT.ADMIN_SCOPE]
         creds = _Credentials()
         self._constructor_test_helper(expected_scopes, creds, admin=True)
 
     def test_constructor_with_read_only(self):
-        from gcloud.bigtable import client as MUT
+        from google.cloud.bigtable import client as MUT
 
         expected_scopes = [MUT.READ_ONLY_SCOPE]
         creds = _Credentials()
@@ -278,7 +278,7 @@ class TestClient(unittest.TestCase):
 
     def test_constructor_implicit_credentials(self):
         from unit_tests._testing import _Monkey
-        from gcloud.bigtable import client as MUT
+        from google.cloud.bigtable import client as MUT
 
         creds = _Credentials()
         expected_scopes = [MUT.DATA_SCOPE]
@@ -297,7 +297,7 @@ class TestClient(unittest.TestCase):
 
     def _copy_test_helper(self, read_only=False, admin=False):
         from unit_tests._testing import _Monkey
-        from gcloud.bigtable import client as MUT
+        from google.cloud.bigtable import client as MUT
 
         credentials = _Credentials('value')
         client = self._makeOneWithMocks(
@@ -407,9 +407,9 @@ class TestClient(unittest.TestCase):
             getattr(client, '_table_stub')
 
     def test_instance_factory_defaults(self):
-        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
-        from gcloud.bigtable.instance import Instance
-        from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable.instance import Instance
+        from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
 
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
@@ -429,7 +429,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(instance._client is client)
 
     def test_instance_factory_w_explicit_serve_nodes(self):
-        from gcloud.bigtable.instance import Instance
+        from google.cloud.bigtable.instance import Instance
 
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
@@ -452,9 +452,9 @@ class TestClient(unittest.TestCase):
         self.assertTrue(instance._client is client)
 
     def test_list_instances(self):
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from unit_tests.bigtable._testing import _FakeStub
 

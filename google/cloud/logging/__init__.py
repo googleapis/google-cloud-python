@@ -14,8 +14,8 @@
 
 """Google Stackdriver Logging API wrapper."""
 
-from gcloud.logging.client import Client
-from gcloud.logging.connection import Connection
+from google.cloud.logging.client import Client
+from google.cloud.logging.connection import Connection
 
 
 SCOPE = Connection.SCOPE

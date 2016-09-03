@@ -7,7 +7,7 @@ and creating other objects:
 
 .. code:: python
 
-    from gcloud.bigtable.client import Client
+    from google.cloud.bigtable.client import Client
     client = Client()
 
 Long-lived Defaults

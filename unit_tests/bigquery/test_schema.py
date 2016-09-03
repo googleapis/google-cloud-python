@@ -18,7 +18,7 @@ import unittest
 class TestSchemaField(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
         return SchemaField
 
     def _makeOne(self, *args, **kw):

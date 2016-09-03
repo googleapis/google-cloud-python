@@ -43,7 +43,7 @@ TS2 = '2016-04-06T22:05:02.042Z'
 class TestAligner(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.query import Aligner
+        from google.cloud.monitoring.query import Aligner
         return Aligner
 
     def test_one(self):
@@ -58,7 +58,7 @@ class TestAligner(unittest.TestCase):
 class TestReducer(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.query import Reducer
+        from google.cloud.monitoring.query import Reducer
         return Reducer
 
     def test_one(self):
@@ -74,7 +74,7 @@ class TestReducer(unittest.TestCase):
 class TestQuery(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.query import Query
+        from google.cloud.monitoring.query import Query
         return Query
 
     def _makeOne(self, *args, **kwargs):
@@ -82,7 +82,7 @@ class TestQuery(unittest.TestCase):
 
     @staticmethod
     def _make_timestamp(value):
-        from gcloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import _datetime_to_rfc3339
         return _datetime_to_rfc3339(value)
 
     def test_constructor_minimal(self):
@@ -127,7 +127,7 @@ class TestQuery(unittest.TestCase):
     def test_constructor_default_end_time(self):
         import datetime
         from unit_tests._testing import _Monkey
-        from gcloud.monitoring import query as MUT
+        from google.cloud.monitoring import query as MUT
 
         MINUTES = 5
         NOW, T0, T1 = [
@@ -334,7 +334,7 @@ class TestQuery(unittest.TestCase):
     def test_iteration_paged(self):
         import copy
         import datetime
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
 
         T0 = datetime.datetime(2016, 4, 6, 22, 5, 0)
         T1 = datetime.datetime(2016, 4, 6, 22, 10, 0)
@@ -500,7 +500,7 @@ class TestQuery(unittest.TestCase):
 class Test_Filter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.query import _Filter
+        from google.cloud.monitoring.query import _Filter
         return _Filter
 
     def _makeOne(self, metric_type):
@@ -534,7 +534,7 @@ class Test_Filter(unittest.TestCase):
 class Test__build_label_filter(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud.monitoring.query import _build_label_filter
+        from google.cloud.monitoring.query import _build_label_filter
         return _build_label_filter(*args, **kwargs)
 
     def test_no_labels(self):
@@ -630,7 +630,7 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kwargs):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)

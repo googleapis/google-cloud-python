@@ -18,7 +18,7 @@ import unittest
 class Test__BlobIterator(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage.bucket import _BlobIterator
+        from google.cloud.storage.bucket import _BlobIterator
         return _BlobIterator
 
     def _makeOne(self, *args, **kw):
@@ -46,7 +46,7 @@ class Test__BlobIterator(unittest.TestCase):
         self.assertEqual(iterator.prefixes, set())
 
     def test_get_items_from_response_non_empty(self):
-        from gcloud.storage.blob import Blob
+        from google.cloud.storage.blob import Blob
         BLOB_NAME = 'blob-name'
         response = {'items': [{'name': BLOB_NAME}], 'prefixes': ['foo']}
         connection = _Connection()
@@ -61,7 +61,7 @@ class Test__BlobIterator(unittest.TestCase):
         self.assertEqual(iterator.prefixes, set(['foo']))
 
     def test_get_items_from_response_cumulative_prefixes(self):
-        from gcloud.storage.blob import Blob
+        from google.cloud.storage.blob import Blob
         BLOB_NAME = 'blob-name1'
         response1 = {'items': [{'name': BLOB_NAME}], 'prefixes': ['foo']}
         response2 = {
@@ -88,7 +88,7 @@ class Test__BlobIterator(unittest.TestCase):
 class Test_Bucket(unittest.TestCase):
 
     def _makeOne(self, client=None, name=None, properties=None):
-        from gcloud.storage.bucket import Bucket
+        from google.cloud.storage.bucket import Bucket
         if client is None:
             connection = _Connection()
             client = _Client(connection)
@@ -108,7 +108,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertTrue(bucket._default_object_acl.bucket is bucket)
 
     def test_blob(self):
-        from gcloud.storage.blob import Blob
+        from google.cloud.storage.blob import Blob
 
         BUCKET_NAME = 'BUCKET_NAME'
         BLOB_NAME = 'BLOB_NAME'
@@ -123,7 +123,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(blob.chunk_size, CHUNK_SIZE)
 
     def test_exists_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
 
         class _FakeConnection(object):
 
@@ -230,14 +230,14 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['data'], DATA)
 
     def test_acl_property(self):
-        from gcloud.storage.acl import BucketACL
+        from google.cloud.storage.acl import BucketACL
         bucket = self._makeOne()
         acl = bucket.acl
         self.assertTrue(isinstance(acl, BucketACL))
         self.assertTrue(acl is bucket._acl)
 
     def test_default_object_acl_property(self):
-        from gcloud.storage.acl import DefaultObjectACL
+        from google.cloud.storage.acl import DefaultObjectACL
         bucket = self._makeOne()
         acl = bucket.default_object_acl
         self.assertTrue(isinstance(acl, DefaultObjectACL))
@@ -342,7 +342,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
 
     def test_delete_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         NAME = 'name'
         connection = _Connection()
         client = _Client(connection)
@@ -435,7 +435,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(connection._deleted_buckets, [])
 
     def test_delete_blob_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
@@ -479,7 +479,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
     def test_delete_blobs_miss_no_on_error(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         NONESUCH = 'nonesuch'
@@ -790,8 +790,8 @@ class Test_Bucket(unittest.TestCase):
 
     def test_time_created(self):
         import datetime
-        from gcloud._helpers import _RFC3339_MICROS
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import _RFC3339_MICROS
+        from google.cloud._helpers import UTC
         TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
         TIME_CREATED = TIMESTAMP.strftime(_RFC3339_MICROS)
         properties = {'timeCreated': TIME_CREATED}
@@ -845,7 +845,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket._properties, UNSET)
 
     def test_make_public_defaults(self):
-        from gcloud.storage.acl import _ACLEntity
+        from google.cloud.storage.acl import _ACLEntity
         NAME = 'name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive, 'defaultObjectAcl': []}
@@ -865,7 +865,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def _make_public_w_future_helper(self, default_object_acl_loaded=True):
-        from gcloud.storage.acl import _ACLEntity
+        from google.cloud.storage.acl import _ACLEntity
         NAME = 'name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after1 = {'acl': permissive, 'defaultObjectAcl': []}
@@ -907,8 +907,8 @@ class Test_Bucket(unittest.TestCase):
         self._make_public_w_future_helper(default_object_acl_loaded=False)
 
     def test_make_public_recursive(self):
-        from gcloud.storage.acl import _ACLEntity
-        from gcloud.storage.bucket import _BlobIterator
+        from google.cloud.storage.acl import _ACLEntity
+        from google.cloud.storage.bucket import _BlobIterator
         _saved = []
 
         class _Blob(object):
@@ -965,7 +965,7 @@ class Test_Bucket(unittest.TestCase):
                          {'maxResults': max_results, 'projection': 'full'})
 
     def test_make_public_recursive_too_many(self):
-        from gcloud.storage.acl import _ACLEntity
+        from google.cloud.storage.acl import _ACLEntity
 
         PERMISSIVE = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         AFTER = {'acl': PERMISSIVE, 'defaultObjectAcl': []}
@@ -1004,7 +1004,7 @@ class _Connection(object):
         return path.startswith('/b/') and path.count('/') == 2
 
     def api_request(self, **kw):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._requested.append(kw)
 
         method = kw.get('method')

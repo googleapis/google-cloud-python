@@ -14,9 +14,9 @@
 
 """Google Cloud Resource Manager API wrapper."""
 
-from gcloud.resource_manager.client import Client
-from gcloud.resource_manager.connection import Connection
-from gcloud.resource_manager.project import Project
+from google.cloud.resource_manager.client import Client
+from google.cloud.resource_manager.connection import Connection
+from google.cloud.resource_manager.project import Project
 
 
 SCOPE = Connection.SCOPE

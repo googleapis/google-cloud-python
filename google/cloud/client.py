@@ -17,9 +17,9 @@
 from oauth2client.service_account import ServiceAccountCredentials
 import six
 
-from gcloud._helpers import _determine_default_project
-from gcloud.connection import Connection
-from gcloud.credentials import get_credentials
+from google.cloud._helpers import _determine_default_project
+from google.cloud.connection import Connection
+from google.cloud.credentials import get_credentials
 
 
 class _ClientFactoryMixin(object):

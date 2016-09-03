@@ -18,14 +18,14 @@ import unittest
 class TestClient(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.language.client import Client
+        from google.cloud.language.client import Client
         return Client
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor(self):
-        from gcloud.language.connection import Connection
+        from google.cloud.language.connection import Connection
 
         creds = _Credentials()
         http = object()
@@ -35,7 +35,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(client.connection.http is http)
 
     def test_document_from_text_factory(self):
-        from gcloud.language.document import Document
+        from google.cloud.language.document import Document
 
         creds = _Credentials()
         client = self._makeOne(credentials=creds, http=object())
@@ -59,7 +59,7 @@ class TestClient(unittest.TestCase):
             client.document_from_text('abc', doc_type='foo')
 
     def test_document_from_html_factory(self):
-        from gcloud.language.document import Document
+        from google.cloud.language.document import Document
 
         creds = _Credentials()
         client = self._makeOne(credentials=creds, http=object())
@@ -83,7 +83,7 @@ class TestClient(unittest.TestCase):
             client.document_from_html('abc', doc_type='foo')
 
     def test_document_from_url_factory(self):
-        from gcloud.language.document import Document
+        from google.cloud.language.document import Document
 
         creds = _Credentials()
         client = self._makeOne(credentials=creds, http=object())
@@ -97,8 +97,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(document.doc_type, Document.PLAIN_TEXT)
 
     def test_document_from_url_factory_explicit(self):
-        from gcloud.language.document import Document
-        from gcloud.language.document import Encoding
+        from google.cloud.language.document import Document
+        from google.cloud.language.document import Encoding
 
         creds = _Credentials()
         client = self._makeOne(credentials=creds, http=object())

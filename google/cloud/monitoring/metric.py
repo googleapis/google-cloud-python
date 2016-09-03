@@ -21,7 +21,7 @@
 
 import collections
 
-from gcloud.monitoring.label import LabelDescriptor
+from google.cloud.monitoring.label import LabelDescriptor
 
 
 class MetricKind(object):

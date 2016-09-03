@@ -54,16 +54,16 @@ ARRAY = [VALUES] * DIMENSIONS[0]
 
 def parse_timestamps():  # pragma: NO COVER
     import datetime
-    from gcloud._helpers import _RFC3339_MICROS
+    from google.cloud._helpers import _RFC3339_MICROS
     return [datetime.datetime.strptime(t, _RFC3339_MICROS)
             for t in TIMESTAMPS]
 
 
 def generate_query_results():  # pragma: NO COVER
-    from gcloud.monitoring.metric import Metric
-    from gcloud.monitoring.resource import Resource
-    from gcloud.monitoring.timeseries import Point
-    from gcloud.monitoring.timeseries import TimeSeries
+    from google.cloud.monitoring.metric import Metric
+    from google.cloud.monitoring.resource import Resource
+    from google.cloud.monitoring.timeseries import Point
+    from google.cloud.monitoring.timeseries import TimeSeries
 
     def P(timestamp, value):
         return Point(
@@ -87,7 +87,7 @@ def generate_query_results():  # pragma: NO COVER
 class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud.monitoring._dataframe import _build_dataframe
+        from google.cloud.monitoring._dataframe import _build_dataframe
         return _build_dataframe(*args, **kwargs)
 
     def test_both_label_and_labels_illegal(self):
@@ -208,19 +208,19 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
 class Test__sorted_resource_labels(unittest.TestCase):
 
     def _callFUT(self, labels):
-        from gcloud.monitoring._dataframe import _sorted_resource_labels
+        from google.cloud.monitoring._dataframe import _sorted_resource_labels
         return _sorted_resource_labels(labels)
 
     def test_empty(self):
         self.assertEqual(self._callFUT([]), [])
 
     def test_sorted(self):
-        from gcloud.monitoring._dataframe import TOP_RESOURCE_LABELS
+        from google.cloud.monitoring._dataframe import TOP_RESOURCE_LABELS
         EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
         self.assertSequenceEqual(self._callFUT(EXPECTED), EXPECTED)
 
     def test_reversed(self):
-        from gcloud.monitoring._dataframe import TOP_RESOURCE_LABELS
+        from google.cloud.monitoring._dataframe import TOP_RESOURCE_LABELS
         EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
         INPUT = list(reversed(EXPECTED))
         self.assertSequenceEqual(self._callFUT(INPUT), EXPECTED)

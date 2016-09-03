@@ -18,7 +18,7 @@ import unittest
 class TestConnection(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.language.connection import Connection
+        from google.cloud.language.connection import Connection
         return Connection
 
     def _makeOne(self, *args, **kw):

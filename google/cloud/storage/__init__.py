@@ -39,11 +39,11 @@ The main concepts with this API are:
   machine).
 """
 
-from gcloud.storage.batch import Batch
-from gcloud.storage.blob import Blob
-from gcloud.storage.bucket import Bucket
-from gcloud.storage.client import Client
-from gcloud.storage.connection import Connection
+from google.cloud.storage.batch import Batch
+from google.cloud.storage.blob import Blob
+from google.cloud.storage.bucket import Bucket
+from google.cloud.storage.client import Client
+from google.cloud.storage.connection import Connection
 
 
 SCOPE = Connection.SCOPE

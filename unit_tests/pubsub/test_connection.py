@@ -32,7 +32,7 @@ class _Base(unittest.TestCase):
 class TestConnection(_Base):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.connection import Connection
+        from google.cloud.pubsub.connection import Connection
         return Connection
 
     def test_default_url(self):
@@ -43,7 +43,7 @@ class TestConnection(_Base):
     def test_custom_url_from_env(self):
         import os
         from unit_tests._testing import _Monkey
-        from gcloud.environment_vars import PUBSUB_EMULATOR
+        from google.cloud.environment_vars import PUBSUB_EMULATOR
 
         HOST = 'localhost:8187'
         fake_environ = {PUBSUB_EMULATOR: HOST}
@@ -66,7 +66,7 @@ class TestConnection(_Base):
     def test_custom_url_constructor_and_env(self):
         import os
         from unit_tests._testing import _Monkey
-        from gcloud.environment_vars import PUBSUB_EMULATOR
+        from google.cloud.environment_vars import PUBSUB_EMULATOR
 
         HOST1 = object()
         HOST2 = object()
@@ -117,7 +117,7 @@ class TestConnection(_Base):
 class Test_PublisherAPI(_Base):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.connection import _PublisherAPI
+        from google.cloud.pubsub.connection import _PublisherAPI
         return _PublisherAPI
 
     def _makeOne(self, *args, **kw):
@@ -200,7 +200,7 @@ class Test_PublisherAPI(_Base):
         self.assertEqual(connection._called_with['path'], path)
 
     def test_topic_create_already_exists(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         connection = _Connection()
         connection._no_response_error = Conflict
         api = self._makeOne(connection)
@@ -225,7 +225,7 @@ class Test_PublisherAPI(_Base):
         self.assertEqual(connection._called_with['path'], path)
 
     def test_topic_get_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         connection = _Connection()
         api = self._makeOne(connection)
 
@@ -248,7 +248,7 @@ class Test_PublisherAPI(_Base):
         self.assertEqual(connection._called_with['path'], path)
 
     def test_topic_delete_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         connection = _Connection()
         api = self._makeOne(connection)
 
@@ -280,7 +280,7 @@ class Test_PublisherAPI(_Base):
 
     def test_topic_publish_miss(self):
         import base64
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MESSAGE = {'data': B64, 'attributes': {}}
@@ -362,7 +362,7 @@ class Test_PublisherAPI(_Base):
         self.assertEqual(connection._called_with['query_params'], {})
 
     def test_topic_list_subscriptions_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         connection = _Connection()
         api = self._makeOne(connection)
 
@@ -378,7 +378,7 @@ class Test_PublisherAPI(_Base):
 class Test_SubscriberAPI(_Base):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.connection import _SubscriberAPI
+        from google.cloud.pubsub.connection import _SubscriberAPI
         return _SubscriberAPI
 
     def _makeOne(self, *args, **kw):
@@ -631,7 +631,7 @@ class Test_SubscriberAPI(_Base):
 class Test_IAMPolicyAPI(_Base):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.connection import _IAMPolicyAPI
+        from google.cloud.pubsub.connection import _IAMPolicyAPI
         return _IAMPolicyAPI
 
     def test_ctor(self):
@@ -640,7 +640,7 @@ class Test_IAMPolicyAPI(_Base):
         self.assertTrue(api._connection is connection)
 
     def test_get_iam_policy(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.cloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -667,7 +667,7 @@ class Test_IAMPolicyAPI(_Base):
         self.assertEqual(connection._called_with['path'], path)
 
     def test_set_iam_policy(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.cloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -697,7 +697,7 @@ class Test_IAMPolicyAPI(_Base):
                          {'policy': POLICY})
 
     def test_test_iam_permissions(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.cloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
         ALLOWED = ALL_ROLES[1:]
         RETURNED = {'permissions': ALLOWED}
@@ -714,7 +714,7 @@ class Test_IAMPolicyAPI(_Base):
                          {'permissions': ALL_ROLES})
 
     def test_test_iam_permissions_missing_key(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.cloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
         RETURNED = {}
         connection = _Connection(RETURNED)
@@ -739,7 +739,7 @@ class _Connection(object):
         self._responses = responses
 
     def api_request(self, **kw):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._called_with = kw
         try:
             response, self._responses = self._responses[0], self._responses[1:]

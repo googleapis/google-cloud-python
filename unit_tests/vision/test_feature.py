@@ -17,14 +17,14 @@ import unittest
 
 class TestFeature(unittest.TestCase):
     def _getTargetClass(self):
-        from gcloud.vision.feature import Feature
+        from google.cloud.vision.feature import Feature
         return Feature
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
     def test_construct_feature(self):
-        from gcloud.vision.feature import FeatureTypes
+        from google.cloud.vision.feature import FeatureTypes
         feature = self._makeOne(FeatureTypes.LABEL_DETECTION)
         self.assertEqual(1, feature.max_results)
         self.assertEqual('LABEL_DETECTION', feature.feature_type)
@@ -34,7 +34,7 @@ class TestFeature(unittest.TestCase):
         self.assertEqual('FACE_DETECTION', feature.feature_type)
 
     def test_feature_as_dict(self):
-        from gcloud.vision.feature import FeatureTypes
+        from google.cloud.vision.feature import FeatureTypes
         feature = self._makeOne(FeatureTypes.FACE_DETECTION, max_results=5)
         EXPECTED = {
             'type': 'FACE_DETECTION',

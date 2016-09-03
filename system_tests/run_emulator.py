@@ -25,9 +25,9 @@ import subprocess
 
 import psutil
 
-from gcloud.environment_vars import GCD_DATASET
-from gcloud.environment_vars import GCD_HOST
-from gcloud.environment_vars import PUBSUB_EMULATOR
+from google.cloud.environment_vars import GCD_DATASET
+from google.cloud.environment_vars import GCD_HOST
+from google.cloud.environment_vars import PUBSUB_EMULATOR
 from run_system_test import run_module_tests
 
 

@@ -16,7 +16,7 @@
 
 import base64
 
-from gcloud._helpers import _rfc3339_to_datetime
+from google.cloud._helpers import _rfc3339_to_datetime
 
 
 class Message(object):

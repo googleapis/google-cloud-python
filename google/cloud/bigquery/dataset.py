@@ -15,9 +15,9 @@
 """Define API Datasets."""
 import six
 
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud.exceptions import NotFound
-from gcloud.bigquery.table import Table
+from google.cloud._helpers import _datetime_from_microseconds
+from google.cloud.exceptions import NotFound
+from google.cloud.bigquery.table import Table
 
 
 class AccessGrant(object):

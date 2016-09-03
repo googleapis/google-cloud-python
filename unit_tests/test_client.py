@@ -18,7 +18,7 @@ import unittest
 class Test_ClientFactoryMixin(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.client import _ClientFactoryMixin
+        from google.cloud.client import _ClientFactoryMixin
         return _ClientFactoryMixin
 
     def test_virtual(self):
@@ -38,7 +38,7 @@ class TestClient(unittest.TestCase):
         KLASS._connection_class = self.original_cnxn_class
 
     def _getTargetClass(self):
-        from gcloud.client import Client
+        from google.cloud.client import Client
         return Client
 
     def _makeOne(self, *args, **kw):
@@ -127,7 +127,7 @@ class TestJSONClient(unittest.TestCase):
         KLASS._connection_class = self.original_cnxn_class
 
     def _getTargetClass(self):
-        from gcloud.client import JSONClient
+        from google.cloud.client import JSONClient
         return JSONClient
 
     def _makeOne(self, *args, **kw):

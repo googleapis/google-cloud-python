@@ -29,10 +29,10 @@ import six
 from six.moves import http_client
 from six.moves.urllib import parse
 
-from gcloud.streaming.exceptions import BadStatusCodeError
-from gcloud.streaming.exceptions import RequestError
-from gcloud.streaming.exceptions import RetryAfterError
-from gcloud.streaming.util import calculate_wait_for_retry
+from google.cloud.streaming.exceptions import BadStatusCodeError
+from google.cloud.streaming.exceptions import RequestError
+from google.cloud.streaming.exceptions import RetryAfterError
+from google.cloud.streaming.util import calculate_wait_for_retry
 
 
 _REDIRECTIONS = 5

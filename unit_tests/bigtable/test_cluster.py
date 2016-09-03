@@ -26,14 +26,14 @@ class TestCluster(unittest.TestCase):
                     '/clusters/' + CLUSTER_ID)
 
     def _getTargetClass(self):
-        from gcloud.bigtable.cluster import Cluster
+        from google.cloud.bigtable.cluster import Cluster
         return Cluster
 
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_constructor_defaults(self):
-        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
 
@@ -70,7 +70,7 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(cluster, new_cluster)
 
     def test__update_from_pb_success(self):
-        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         SERVE_NODES = 8
         cluster_pb = _ClusterPB(
@@ -85,7 +85,7 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
 
     def test__update_from_pb_no_serve_nodes(self):
-        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         cluster_pb = _ClusterPB()
         client = _Client(self.PROJECT)
@@ -188,7 +188,7 @@ class TestCluster(unittest.TestCase):
 
     def test_reload(self):
         from unit_tests.bigtable._testing import _FakeStub
-        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         SERVE_NODES = 31
         LOCATION = 'LOCATION'
@@ -229,8 +229,8 @@ class TestCluster(unittest.TestCase):
 
     def test_create(self):
         from google.longrunning import operations_pb2
-        from gcloud.operation import Operation
-        from gcloud.bigtable._generated import (
+        from google.cloud.operation import Operation
+        from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from unit_tests.bigtable._testing import _FakeStub
 
@@ -274,15 +274,15 @@ class TestCluster(unittest.TestCase):
     def test_update(self):
         import datetime
         from google.longrunning import operations_pb2
-        from gcloud.operation import Operation
+        from google.cloud.operation import Operation
         from google.protobuf.any_pb2 import Any
-        from gcloud._helpers import _datetime_to_pb_timestamp
-        from gcloud.bigtable._generated import (
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from unit_tests.bigtable._testing import _FakeStub
-        from gcloud.bigtable.cluster import _UPDATE_CLUSTER_METADATA_URL
+        from google.cloud.bigtable.cluster import _UPDATE_CLUSTER_METADATA_URL
 
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
@@ -372,11 +372,11 @@ class TestCluster(unittest.TestCase):
 class Test__prepare_create_request(unittest.TestCase):
 
     def _callFUT(self, cluster):
-        from gcloud.bigtable.cluster import _prepare_create_request
+        from google.cloud.bigtable.cluster import _prepare_create_request
         return _prepare_create_request(cluster)
 
     def test_it(self):
-        from gcloud.bigtable.cluster import Cluster
+        from google.cloud.bigtable.cluster import Cluster
 
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
@@ -396,19 +396,19 @@ class Test__prepare_create_request(unittest.TestCase):
 
 
 def _ClusterPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         instance_pb2 as instance_v2_pb2)
     return instance_v2_pb2.Cluster(*args, **kw)
 
 
 def _DeleteClusterRequestPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_instance_admin_pb2 as messages_v2_pb2)
     return messages_v2_pb2.DeleteClusterRequest(*args, **kw)
 
 
 def _GetClusterRequestPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_instance_admin_pb2 as messages_v2_pb2)
     return messages_v2_pb2.GetClusterRequest(*args, **kw)
 

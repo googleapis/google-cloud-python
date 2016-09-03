@@ -21,8 +21,8 @@ import atexit
 import copy
 import threading
 
-from gcloud.logging import Client
-from gcloud.logging.handlers.transports.base import Transport
+from google.cloud.logging import Client
+from google.cloud.logging.handlers.transports.base import Transport
 
 
 class _Worker(object):

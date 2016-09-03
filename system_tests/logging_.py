@@ -17,10 +17,10 @@ import unittest
 
 import google.cloud.logging
 import google.cloud.logging.handlers.handlers
-from gcloud.logging.handlers.handlers import CloudLoggingHandler
-from gcloud.logging.handlers.transports import SyncTransport
+from google.cloud.logging.handlers.handlers import CloudLoggingHandler
+from google.cloud.logging.handlers.transports import SyncTransport
 from google.cloud import _helpers
-from gcloud.environment_vars import TESTS_PROJECT
+from google.cloud.environment_vars import TESTS_PROJECT
 
 from retry import RetryErrors
 from retry import RetryResult
@@ -67,7 +67,7 @@ class TestLogging(unittest.TestCase):
         self._handlers_cache = logging.getLogger().handlers[:]
 
     def tearDown(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         retry = RetryErrors(NotFound)
         for doomed in self.to_delete:
             retry(doomed.delete)()
@@ -254,7 +254,7 @@ class TestLogging(unittest.TestCase):
                          set([DEFAULT_METRIC_NAME]))
 
     def test_reload_metric(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         retry = RetryErrors(Conflict)
         metric = Config.CLIENT.metric(
             DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
@@ -268,7 +268,7 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(metric.description, DEFAULT_DESCRIPTION)
 
     def test_update_metric(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         retry = RetryErrors(Conflict)
         NEW_FILTER = 'logName:other'
         NEW_DESCRIPTION = 'updated'
@@ -336,7 +336,7 @@ class TestLogging(unittest.TestCase):
 
     def _init_bigquery_dataset(self):
         from google.cloud import bigquery
-        from gcloud.bigquery.dataset import AccessGrant
+        from google.cloud.bigquery.dataset import AccessGrant
         DATASET_URI = 'bigquery.googleapis.com/projects/%s/datasets/%s' % (
             Config.CLIENT.project, DATASET_NAME,)
 
@@ -377,7 +377,7 @@ class TestLogging(unittest.TestCase):
                          set([DEFAULT_SINK_NAME]))
 
     def test_reload_sink(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         retry = RetryErrors(Conflict)
         uri = self._init_bigquery_dataset()
         sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
@@ -391,7 +391,7 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(sink.destination, uri)
 
     def test_update_sink(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         retry = RetryErrors(Conflict)
         bucket_uri = self._init_storage_bucket()
         dataset_uri = self._init_bigquery_dataset()

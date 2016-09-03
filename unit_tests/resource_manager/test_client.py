@@ -18,7 +18,7 @@ import unittest
 class Test__ProjectIterator(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.resource_manager.client import _ProjectIterator
+        from google.cloud.resource_manager.client import _ProjectIterator
         return _ProjectIterator
 
     def _makeOne(self, *args, **kw):
@@ -39,7 +39,7 @@ class Test__ProjectIterator(unittest.TestCase):
         self.assertEqual(list(iterator.get_items_from_response({})), [])
 
     def test_get_items_from_response_non_empty(self):
-        from gcloud.resource_manager.project import Project
+        from google.cloud.resource_manager.project import Project
 
         PROJECT_ID = 'project-id'
         PROJECT_NAME = 'My Project Name'
@@ -72,14 +72,14 @@ class Test__ProjectIterator(unittest.TestCase):
 class TestClient(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.resource_manager.client import Client
+        from google.cloud.resource_manager.client import Client
         return Client
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
     def test_constructor(self):
-        from gcloud.resource_manager.connection import Connection
+        from google.cloud.resource_manager.connection import Connection
 
         http = object()
         credentials = _Credentials()
@@ -89,7 +89,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.connection._http, http)
 
     def test_new_project_factory(self):
-        from gcloud.resource_manager.project import Project
+        from google.cloud.resource_manager.project import Project
 
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials)
@@ -105,7 +105,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project.labels, labels)
 
     def test_fetch_project(self):
-        from gcloud.resource_manager.project import Project
+        from google.cloud.resource_manager.project import Project
 
         project_id = 'project-id'
         project_number = 123
@@ -132,7 +132,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project.labels, labels)
 
     def test_list_projects_return_type(self):
-        from gcloud.resource_manager.client import _ProjectIterator
+        from google.cloud.resource_manager.client import _ProjectIterator
 
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials)

@@ -18,8 +18,8 @@
 import httplib2
 import six
 
-from gcloud._helpers import _to_bytes
-from gcloud.translate.connection import Connection
+from google.cloud._helpers import _to_bytes
+from google.cloud.translate.connection import Connection
 
 
 ENGLISH_ISO_639 = 'en'

@@ -23,9 +23,9 @@ try:
         LoggingServiceV2Api as GeneratedLoggingAPI)
     from google.cloud.logging.v2.metrics_service_v2_api import (
         MetricsServiceV2Api as GeneratedMetricsAPI)
-    from gcloud.logging._gax import _LoggingAPI as GAXLoggingAPI
-    from gcloud.logging._gax import _MetricsAPI as GAXMetricsAPI
-    from gcloud.logging._gax import _SinksAPI as GAXSinksAPI
+    from google.cloud.logging._gax import _LoggingAPI as GAXLoggingAPI
+    from google.cloud.logging._gax import _MetricsAPI as GAXMetricsAPI
+    from google.cloud.logging._gax import _SinksAPI as GAXSinksAPI
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False
     GeneratedLoggingAPI = GAXLoggingAPI = None
@@ -34,17 +34,17 @@ except ImportError:  # pragma: NO COVER
 else:
     _HAVE_GAX = True
 
-from gcloud.client import JSONClient
-from gcloud.logging.connection import Connection
-from gcloud.logging.connection import _LoggingAPI as JSONLoggingAPI
-from gcloud.logging.connection import _MetricsAPI as JSONMetricsAPI
-from gcloud.logging.connection import _SinksAPI as JSONSinksAPI
-from gcloud.logging.entries import ProtobufEntry
-from gcloud.logging.entries import StructEntry
-from gcloud.logging.entries import TextEntry
-from gcloud.logging.logger import Logger
-from gcloud.logging.metric import Metric
-from gcloud.logging.sink import Sink
+from google.cloud.client import JSONClient
+from google.cloud.logging.connection import Connection
+from google.cloud.logging.connection import _LoggingAPI as JSONLoggingAPI
+from google.cloud.logging.connection import _MetricsAPI as JSONMetricsAPI
+from google.cloud.logging.connection import _SinksAPI as JSONSinksAPI
+from google.cloud.logging.entries import ProtobufEntry
+from google.cloud.logging.entries import StructEntry
+from google.cloud.logging.entries import TextEntry
+from google.cloud.logging.logger import Logger
+from google.cloud.logging.metric import Metric
+from google.cloud.logging.sink import Sink
 
 
 _DISABLE_GAX = os.getenv('GCLOUD_DISABLE_GAX', False)

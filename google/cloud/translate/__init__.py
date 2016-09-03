@@ -14,5 +14,5 @@
 
 """Google Cloud Translate API wrapper."""
 
-from gcloud.translate.client import Client
-from gcloud.translate.connection import Connection
+from google.cloud.translate.client import Client
+from google.cloud.translate.connection import Connection

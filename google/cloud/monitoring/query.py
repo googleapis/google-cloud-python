@@ -25,9 +25,9 @@ import itertools
 
 import six
 
-from gcloud._helpers import _datetime_to_rfc3339
-from gcloud.monitoring._dataframe import _build_dataframe
-from gcloud.monitoring.timeseries import TimeSeries
+from google.cloud._helpers import _datetime_to_rfc3339
+from google.cloud.monitoring._dataframe import _build_dataframe
+from google.cloud.monitoring.timeseries import TimeSeries
 
 _UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.
 

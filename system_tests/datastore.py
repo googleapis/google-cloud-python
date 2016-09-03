@@ -19,12 +19,12 @@ import unittest
 import httplib2
 
 from google.cloud import _helpers
-from gcloud._helpers import UTC
+from google.cloud._helpers import UTC
 from google.cloud import datastore
-from gcloud.datastore.helpers import GeoPoint
-from gcloud.environment_vars import GCD_DATASET
-from gcloud.environment_vars import TESTS_PROJECT
-from gcloud.exceptions import Conflict
+from google.cloud.datastore.helpers import GeoPoint
+from google.cloud.environment_vars import GCD_DATASET
+from google.cloud.environment_vars import TESTS_PROJECT
+from google.cloud.exceptions import Conflict
 
 import clear_datastore
 import populate_datastore

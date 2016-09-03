@@ -18,18 +18,18 @@ import operator
 import unittest
 
 from google.cloud import _helpers
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud._helpers import _microseconds_from_datetime
-from gcloud._helpers import UTC
-from gcloud.bigtable.client import Client
-from gcloud.bigtable.column_family import MaxVersionsGCRule
-from gcloud.bigtable.row_filters import ApplyLabelFilter
-from gcloud.bigtable.row_filters import ColumnQualifierRegexFilter
-from gcloud.bigtable.row_filters import RowFilterChain
-from gcloud.bigtable.row_filters import RowFilterUnion
-from gcloud.bigtable.row_data import Cell
-from gcloud.bigtable.row_data import PartialRowData
-from gcloud.environment_vars import TESTS_PROJECT
+from google.cloud._helpers import _datetime_from_microseconds
+from google.cloud._helpers import _microseconds_from_datetime
+from google.cloud._helpers import UTC
+from google.cloud.bigtable.client import Client
+from google.cloud.bigtable.column_family import MaxVersionsGCRule
+from google.cloud.bigtable.row_filters import ApplyLabelFilter
+from google.cloud.bigtable.row_filters import ColumnQualifierRegexFilter
+from google.cloud.bigtable.row_filters import RowFilterChain
+from google.cloud.bigtable.row_filters import RowFilterUnion
+from google.cloud.bigtable.row_data import Cell
+from google.cloud.bigtable.row_data import PartialRowData
+from google.cloud.environment_vars import TESTS_PROJECT
 
 from retry import RetryErrors
 from retry import RetryResult

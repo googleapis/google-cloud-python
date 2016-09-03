@@ -17,7 +17,7 @@
 import os
 
 from google.cloud import connection as base_connection
-from gcloud.environment_vars import PUBSUB_EMULATOR
+from google.cloud.environment_vars import PUBSUB_EMULATOR
 
 
 class Connection(base_connection.JSONConnection):

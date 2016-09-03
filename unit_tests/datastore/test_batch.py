@@ -18,7 +18,7 @@ import unittest
 class TestBatch(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.datastore.batch import Batch
+        from google.cloud.datastore.batch import Batch
 
         return Batch
 
@@ -26,7 +26,7 @@ class TestBatch(unittest.TestCase):
         return self._getTargetClass()(client)
 
     def test_ctor(self):
-        from gcloud.datastore._generated import datastore_pb2
+        from google.cloud.datastore._generated import datastore_pb2
         _PROJECT = 'PROJECT'
         _NAMESPACE = 'NAMESPACE'
         connection = _Connection()
@@ -97,7 +97,7 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch._partial_key_entities, [entity])
 
     def test_put_entity_w_completed_key(self):
-        from gcloud.datastore.helpers import _property_tuples
+        from google.cloud.datastore.helpers import _property_tuples
 
         _PROJECT = 'PROJECT'
         _PROPERTIES = {
@@ -344,7 +344,7 @@ class _Key(object):
         return self._id is None
 
     def to_protobuf(self):
-        from gcloud.datastore._generated import entity_pb2
+        from google.cloud.datastore._generated import entity_pb2
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
         # key.partition_id.project_id = self.project

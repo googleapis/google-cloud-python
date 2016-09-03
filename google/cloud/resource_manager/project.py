@@ -15,7 +15,7 @@
 """Utility for managing projects via the Cloud Resource Manager API."""
 
 
-from gcloud.exceptions import NotFound
+from google.cloud.exceptions import NotFound
 
 
 class Project(object):

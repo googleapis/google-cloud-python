@@ -15,7 +15,7 @@
 import unittest
 import base64
 
-from gcloud._helpers import _to_bytes
+from google.cloud._helpers import _to_bytes
 
 
 class TestVisionImage(unittest.TestCase):
@@ -25,7 +25,7 @@ class TestVisionImage(unittest.TestCase):
     _CLIENT_MOCK = {'source': ''}
 
     def _getTargetClass(self):
-        from gcloud.vision.image import Image
+        from google.cloud.vision.image import Image
         return Image
 
     def _makeOne(self, *args, **kw):

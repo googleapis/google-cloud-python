@@ -26,11 +26,11 @@ from google.logging.v2.log_entry_pb2 import LogEntry
 from google.protobuf.json_format import Parse
 from grpc import StatusCode
 
-from gcloud._helpers import _datetime_to_pb_timestamp
-from gcloud._helpers import _pb_timestamp_to_rfc3339
-from gcloud._helpers import exc_to_code
-from gcloud.exceptions import Conflict
-from gcloud.exceptions import NotFound
+from google.cloud._helpers import _datetime_to_pb_timestamp
+from google.cloud._helpers import _pb_timestamp_to_rfc3339
+from google.cloud._helpers import exc_to_code
+from google.cloud.exceptions import Conflict
+from google.cloud.exceptions import NotFound
 
 
 class _LoggingAPI(object):

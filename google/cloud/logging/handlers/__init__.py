@@ -14,5 +14,5 @@
 
 """Python :mod:`logging` handlers for Google Cloud Logging."""
 
-from gcloud.logging.handlers.handlers import CloudLoggingHandler
-from gcloud.logging.handlers.handlers import setup_logging
+from google.cloud.logging.handlers.handlers import CloudLoggingHandler
+from google.cloud.logging.handlers.handlers import setup_logging

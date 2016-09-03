@@ -14,6 +14,6 @@
 
 """Client library for Google Cloud Natural Language API."""
 
-from gcloud.language.client import Client
-from gcloud.language.document import Document
-from gcloud.language.document import Encoding
+from google.cloud.language.client import Client
+from google.cloud.language.document import Document
+from google.cloud.language.document import Encoding

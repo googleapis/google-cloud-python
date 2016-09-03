@@ -15,7 +15,7 @@
 """Google Cloud Bigtable API package."""
 
 
-from gcloud.bigtable.client import Client
+from google.cloud.bigtable.client import Client
 
 
 _ERR_MSG = """\

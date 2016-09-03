@@ -4,7 +4,7 @@ import unittest
 class Test_StreamSlice(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.streaming.stream_slice import StreamSlice
+        from google.cloud.streaming.stream_slice import StreamSlice
         return StreamSlice
 
     def _makeOne(self, *args, **kw):

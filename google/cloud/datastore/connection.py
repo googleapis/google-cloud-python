@@ -18,17 +18,17 @@ import os
 
 from google.rpc import status_pb2
 
-from gcloud._helpers import make_stub
+from google.cloud._helpers import make_stub
 from google.cloud import connection as connection_module
-from gcloud.environment_vars import GCD_HOST
-from gcloud.exceptions import Conflict
-from gcloud.exceptions import make_exception
-from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
+from google.cloud.environment_vars import GCD_HOST
+from google.cloud.exceptions import Conflict
+from google.cloud.exceptions import make_exception
+from google.cloud.datastore._generated import datastore_pb2 as _datastore_pb2
 # pylint: disable=ungrouped-imports
 try:
     from grpc import StatusCode
     from grpc._channel import _Rendezvous
-    from gcloud.datastore._generated import datastore_grpc_pb2
+    from google.cloud.datastore._generated import datastore_grpc_pb2
 except ImportError:  # pragma: NO COVER
     _HAVE_GRPC = False
     datastore_grpc_pb2 = None

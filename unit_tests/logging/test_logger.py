@@ -21,7 +21,7 @@ class TestLogger(unittest.TestCase):
     LOGGER_NAME = 'logger-name'
 
     def _getTargetClass(self):
-        from gcloud.logging.logger import Logger
+        from google.cloud.logging.logger import Logger
         return Logger
 
     def _makeOne(self, *args, **kw):
@@ -55,7 +55,7 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(logger.labels, LABELS)
 
     def test_batch_w_bound_client(self):
-        from gcloud.logging.logger import Batch
+        from google.cloud.logging.logger import Batch
         conn = object()
         client = _Client(self.PROJECT, conn)
         logger = self._makeOne(self.LOGGER_NAME, client=client)
@@ -65,7 +65,7 @@ class TestLogger(unittest.TestCase):
         self.assertTrue(batch.client is client)
 
     def test_batch_w_alternate_client(self):
-        from gcloud.logging.logger import Batch
+        from google.cloud.logging.logger import Batch
         conn1 = object()
         conn2 = object()
         client1 = _Client(self.PROJECT, conn1)
@@ -364,7 +364,7 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(client._listed, LISTED)
 
     def test_list_entries_explicit(self):
-        from gcloud.logging import DESCENDING
+        from google.cloud.logging import DESCENDING
         PROJECT1 = 'PROJECT1'
         PROJECT2 = 'PROJECT2'
         FILTER = 'resource.type:global'
@@ -393,7 +393,7 @@ class TestBatch(unittest.TestCase):
     PROJECT = 'test-project'
 
     def _getTargetClass(self):
-        from gcloud.logging.logger import Batch
+        from google.cloud.logging.logger import Batch
         return Batch
 
     def _makeOne(self, *args, **kwargs):
@@ -544,7 +544,7 @@ class TestBatch(unittest.TestCase):
         import json
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct, Value
-        from gcloud.logging.logger import Logger
+        from google.cloud.logging.logger import Logger
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
         message = Struct(fields={'foo': Value(bool_value=True)})
@@ -588,7 +588,7 @@ class TestBatch(unittest.TestCase):
         import json
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct, Value
-        from gcloud.logging.logger import Logger
+        from google.cloud.logging.logger import Logger
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
         message = Struct(fields={'foo': Value(bool_value=True)})

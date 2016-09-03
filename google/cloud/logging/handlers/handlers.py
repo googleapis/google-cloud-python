@@ -16,7 +16,7 @@
 
 import logging
 
-from gcloud.logging.handlers.transports import BackgroundThreadTransport
+from google.cloud.logging.handlers.transports import BackgroundThreadTransport
 
 
 EXCLUDE_LOGGER_DEFAULTS = (
@@ -58,7 +58,7 @@ class CloudLoggingHandler(logging.StreamHandler):
     .. doctest::
 
         import google.cloud.logging
-        from gcloud.logging.handlers import CloudLoggingHandler
+        from google.cloud.logging.handlers import CloudLoggingHandler
 
         client = gcloud.logging.Client()
         handler = CloudLoggingHandler(client)
@@ -113,7 +113,7 @@ def setup_logging(handler, excluded_loggers=EXCLUDE_LOGGER_DEFAULTS):
 
         import logging
         import google.cloud.logging
-        from gcloud.logging.handlers import CloudLoggingHandler
+        from google.cloud.logging.handlers import CloudLoggingHandler
 
         client = gcloud.logging.Client()
         handler = CloudLoggingHandler(client)

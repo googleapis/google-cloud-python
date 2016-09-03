@@ -26,8 +26,8 @@ need to be deleted during teardown.
 import operator
 import time
 
-from gcloud.bigquery import SchemaField
-from gcloud.bigquery.client import Client
+from google.cloud.bigquery import SchemaField
+from google.cloud.bigquery.client import Client
 
 ORIGINAL_FRIENDLY_NAME = 'Original friendly name'
 ORIGINAL_DESCRIPTION = 'Original description'
@@ -162,7 +162,7 @@ def dataset_update(client, to_delete):
     dataset.reload()
 
     # [START dataset_update]
-    from gcloud.bigquery import AccessGrant
+    from google.cloud.bigquery import AccessGrant
     assert dataset.description == ORIGINAL_DESCRIPTION
     assert dataset.default_table_expiration_ms is None
     grant = AccessGrant(

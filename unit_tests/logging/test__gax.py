@@ -41,7 +41,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
     LOG_NAME = 'log_name'
 
     def _getTargetClass(self):
-        from gcloud.logging._gax import _LoggingAPI
+        from google.cloud.logging._gax import _LoggingAPI
         return _LoggingAPI
 
     def test_ctor(self):
@@ -51,7 +51,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
     def test_list_entries_no_paging(self):
         from google.gax import INITIAL_PAGE
-        from gcloud.logging import DESCENDING
+        from google.cloud.logging import DESCENDING
         from unit_tests._testing import _GAXPageIterator
         TOKEN = 'TOKEN'
         TEXT = 'TEXT'
@@ -116,9 +116,9 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from datetime import datetime
         from google.logging.type.log_severity_pb2 import WARNING
         from unit_tests._testing import _GAXPageIterator
-        from gcloud._helpers import UTC
-        from gcloud._helpers import _datetime_to_rfc3339
-        from gcloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import _datetime_to_pb_timestamp
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         SIZE = 23
         TOKEN = 'TOKEN'
@@ -224,7 +224,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from datetime import datetime
         from google.logging.type.log_severity_pb2 import WARNING
         from google.logging.v2.log_entry_pb2 import LogEntry
-        from gcloud._helpers import UTC, _pb_timestamp_to_datetime
+        from google.cloud._helpers import UTC, _pb_timestamp_to_datetime
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         TEXT = 'TEXT'
         LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
@@ -322,7 +322,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from google.logging.v2.log_entry_pb2 import LogEntry
         from google.protobuf.any_pb2 import Any
         from google.protobuf.struct_pb2 import Struct
-        from gcloud._helpers import _datetime_to_rfc3339, UTC
+        from google.cloud._helpers import _datetime_to_rfc3339, UTC
         TEXT = 'TEXT'
         NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
         TIMESTAMP_TYPE_URL = 'type.googleapis.com/google.protobuf.Timestamp'
@@ -409,7 +409,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_logger_delete_not_found(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
         gax_api = _GAXLoggingAPI(_delete_not_found=True)
         api = self._makeOne(gax_api)
@@ -442,7 +442,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     DESTINATION_URI = 'faux.googleapis.com/destination'
 
     def _getTargetClass(self):
-        from gcloud.logging._gax import _SinksAPI
+        from google.cloud.logging._gax import _SinksAPI
         return _SinksAPI
 
     def test_ctor(self):
@@ -512,7 +512,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
                 self.DESTINATION_URI)
 
     def test_sink_create_conflict(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         gax_api = _GAXSinksAPI(_create_sink_conflict=True)
         api = self._makeOne(gax_api)
 
@@ -539,7 +539,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_sink_get_error(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXSinksAPI()
         api = self._makeOne(gax_api)
 
@@ -584,7 +584,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
                 self.DESTINATION_URI)
 
     def test_sink_update_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXSinksAPI()
         api = self._makeOne(gax_api)
 
@@ -621,7 +621,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
             api.sink_delete(self.PROJECT, self.SINK_NAME)
 
     def test_sink_delete_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXSinksAPI(_sink_not_found=True)
         api = self._makeOne(gax_api)
 
@@ -646,7 +646,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     DESCRIPTION = 'Description'
 
     def _getTargetClass(self):
-        from gcloud.logging._gax import _MetricsAPI
+        from google.cloud.logging._gax import _MetricsAPI
         return _MetricsAPI
 
     def test_ctor(self):
@@ -716,7 +716,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
                 self.DESCRIPTION)
 
     def test_metric_create_conflict(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         gax_api = _GAXMetricsAPI(_create_log_metric_conflict=True)
         api = self._makeOne(gax_api)
 
@@ -743,7 +743,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_metric_get_error(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXMetricsAPI()
         api = self._makeOne(gax_api)
 
@@ -788,7 +788,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
                 self.DESCRIPTION)
 
     def test_metric_update_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXMetricsAPI()
         api = self._makeOne(gax_api)
 
@@ -825,7 +825,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
             api.metric_delete(self.PROJECT, self.METRIC_NAME)
 
     def test_metric_delete_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXMetricsAPI(_log_metric_not_found=True)
         api = self._makeOne(gax_api)
 
@@ -847,7 +847,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 class Test_value_pb_to_value(_Base, unittest.TestCase):
 
     def _callFUT(self, value_pb):
-        from gcloud.logging._gax import _value_pb_to_value
+        from google.cloud.logging._gax import _value_pb_to_value
         return _value_pb_to_value(value_pb)
 
     def test_w_null_values(self):
@@ -1080,8 +1080,8 @@ class _LogEntryPB(object):
     @staticmethod
     def _make_timestamp():
         from datetime import datetime
-        from gcloud._helpers import UTC
-        from gcloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _datetime_to_pb_timestamp
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         return _datetime_to_pb_timestamp(NOW)
 

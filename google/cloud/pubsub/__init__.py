@@ -23,10 +23,10 @@ The main concepts with this API are:
   subscription (either pull or push) to a topic.
 """
 
-from gcloud.pubsub.client import Client
-from gcloud.pubsub.connection import Connection
-from gcloud.pubsub.subscription import Subscription
-from gcloud.pubsub.topic import Topic
+from google.cloud.pubsub.client import Client
+from google.cloud.pubsub.connection import Connection
+from google.cloud.pubsub.subscription import Subscription
+from google.cloud.pubsub.topic import Topic
 
 
 SCOPE = Connection.SCOPE

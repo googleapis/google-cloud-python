@@ -41,8 +41,8 @@ import six
 from six.moves.http_client import HTTPConnection
 from six.moves import configparser
 
-from gcloud.environment_vars import PROJECT
-from gcloud.environment_vars import CREDENTIALS
+from google.cloud.environment_vars import PROJECT
+from google.cloud.environment_vars import CREDENTIALS
 
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.

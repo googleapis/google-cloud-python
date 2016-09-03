@@ -22,7 +22,7 @@ import os
 import six
 
 from google.cloud import datastore
-from gcloud.environment_vars import TESTS_PROJECT
+from google.cloud.environment_vars import TESTS_PROJECT
 
 
 ANCESTOR = ('Book', 'GoT')

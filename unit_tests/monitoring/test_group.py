@@ -18,7 +18,7 @@ import unittest
 class Test_group_id_from_name(unittest.TestCase):
 
     def _callFUT(self, path, project):
-        from gcloud.monitoring.group import _group_id_from_name
+        from google.cloud.monitoring.group import _group_id_from_name
         return _group_id_from_name(path, project)
 
     def test_w_empty_name(self):
@@ -86,7 +86,7 @@ class TestGroup(unittest.TestCase):
         }
 
     def _setUpResources(self):
-        from gcloud.monitoring.resource import Resource
+        from google.cloud.monitoring.resource import Resource
         info1 = {
             'type': 'gce_instance',
             'labels': {
@@ -108,7 +108,7 @@ class TestGroup(unittest.TestCase):
         self.MEMBERS = [info1, info2]
 
     def _getTargetClass(self):
-        from gcloud.monitoring.group import Group
+        from google.cloud.monitoring.group import Group
         return Group
 
     def _makeOne(self, *args, **kwargs):
@@ -350,7 +350,7 @@ class TestGroup(unittest.TestCase):
         self.assertEqual(request, expected_request)
 
     def test_list_paged(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
 
         LIST_OF_GROUPS = [self.JSON_GROUP, self.JSON_PARENT]
         TOKEN = 'second-page-please'
@@ -483,7 +483,7 @@ class TestGroup(unittest.TestCase):
 
     def test_list_members_w_all_arguments(self):
         import datetime
-        from gcloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import _datetime_to_rfc3339
 
         self._setUpResources()
 
@@ -532,7 +532,7 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kwargs):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)

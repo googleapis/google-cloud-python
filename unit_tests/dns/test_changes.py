@@ -21,19 +21,19 @@ class TestChanges(unittest.TestCase):
     CHANGES_NAME = 'changeset_id'
 
     def _getTargetClass(self):
-        from gcloud.dns.changes import Changes
+        from google.cloud.dns.changes import Changes
         return Changes
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
     def _setUpConstants(self):
-        from gcloud._helpers import UTC
-        from gcloud._helpers import _NOW
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _NOW
         self.WHEN = _NOW().replace(tzinfo=UTC)
 
     def _makeResource(self):
-        from gcloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import _datetime_to_rfc3339
         when_str = _datetime_to_rfc3339(self.WHEN)
         return {
             'kind': 'dns#change',
@@ -55,7 +55,7 @@ class TestChanges(unittest.TestCase):
         }
 
     def _verifyResourceProperties(self, changes, resource, zone):
-        from gcloud._helpers import _rfc3339_to_datetime
+        from google.cloud._helpers import _rfc3339_to_datetime
         self.assertEqual(changes.name, resource['id'])
         started = _rfc3339_to_datetime(resource['startTime'])
         self.assertEqual(changes.started, started)
@@ -133,7 +133,7 @@ class TestChanges(unittest.TestCase):
             changes.add_record_set(object())
 
     def test_add_record_set(self):
-        from gcloud.dns.resource_record_set import ResourceRecordSet
+        from google.cloud.dns.resource_record_set import ResourceRecordSet
         zone = _Zone()
         changes = self._makeOne(zone)
         rrs = ResourceRecordSet('test.example.com', 'CNAME', 3600,
@@ -149,7 +149,7 @@ class TestChanges(unittest.TestCase):
             changes.delete_record_set(object())
 
     def test_delete_record_set(self):
-        from gcloud.dns.resource_record_set import ResourceRecordSet
+        from google.cloud.dns.resource_record_set import ResourceRecordSet
         zone = _Zone()
         changes = self._makeOne(zone)
         rrs = ResourceRecordSet('test.example.com', 'CNAME', 3600,
@@ -171,7 +171,7 @@ class TestChanges(unittest.TestCase):
         self.assertEqual(len(conn._requested), 0)
 
     def test_create_w_bound_client(self):
-        from gcloud.dns.resource_record_set import ResourceRecordSet
+        from google.cloud.dns.resource_record_set import ResourceRecordSet
         self._setUpConstants()
         RESOURCE = self._makeResource()
         PATH = 'projects/%s/managedZones/%s/changes' % (
@@ -199,7 +199,7 @@ class TestChanges(unittest.TestCase):
         self._verifyResourceProperties(changes, RESOURCE, zone)
 
     def test_create_w_alternate_client(self):
-        from gcloud.dns.resource_record_set import ResourceRecordSet
+        from google.cloud.dns.resource_record_set import ResourceRecordSet
         self._setUpConstants()
         RESOURCE = self._makeResource()
         PATH = 'projects/%s/managedZones/%s/changes' % (
@@ -332,7 +332,7 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kw):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._requested.append(kw)
 
         try:

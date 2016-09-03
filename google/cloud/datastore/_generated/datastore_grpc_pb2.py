@@ -1,19 +1,19 @@
 # BEGIN: Imports from datastore_pb2
-from gcloud.datastore._generated.datastore_pb2 import AllocateIdsRequest
-from gcloud.datastore._generated.datastore_pb2 import AllocateIdsResponse
-from gcloud.datastore._generated.datastore_pb2 import BeginTransactionRequest
-from gcloud.datastore._generated.datastore_pb2 import BeginTransactionResponse
-from gcloud.datastore._generated.datastore_pb2 import CommitRequest
-from gcloud.datastore._generated.datastore_pb2 import CommitResponse
-from gcloud.datastore._generated.datastore_pb2 import LookupRequest
-from gcloud.datastore._generated.datastore_pb2 import LookupResponse
-from gcloud.datastore._generated.datastore_pb2 import Mutation
-from gcloud.datastore._generated.datastore_pb2 import MutationResult
-from gcloud.datastore._generated.datastore_pb2 import ReadOptions
-from gcloud.datastore._generated.datastore_pb2 import RollbackRequest
-from gcloud.datastore._generated.datastore_pb2 import RollbackResponse
-from gcloud.datastore._generated.datastore_pb2 import RunQueryRequest
-from gcloud.datastore._generated.datastore_pb2 import RunQueryResponse
+from google.cloud.datastore._generated.datastore_pb2 import AllocateIdsRequest
+from google.cloud.datastore._generated.datastore_pb2 import AllocateIdsResponse
+from google.cloud.datastore._generated.datastore_pb2 import BeginTransactionRequest
+from google.cloud.datastore._generated.datastore_pb2 import BeginTransactionResponse
+from google.cloud.datastore._generated.datastore_pb2 import CommitRequest
+from google.cloud.datastore._generated.datastore_pb2 import CommitResponse
+from google.cloud.datastore._generated.datastore_pb2 import LookupRequest
+from google.cloud.datastore._generated.datastore_pb2 import LookupResponse
+from google.cloud.datastore._generated.datastore_pb2 import Mutation
+from google.cloud.datastore._generated.datastore_pb2 import MutationResult
+from google.cloud.datastore._generated.datastore_pb2 import ReadOptions
+from google.cloud.datastore._generated.datastore_pb2 import RollbackRequest
+from google.cloud.datastore._generated.datastore_pb2 import RollbackResponse
+from google.cloud.datastore._generated.datastore_pb2 import RunQueryRequest
+from google.cloud.datastore._generated.datastore_pb2 import RunQueryResponse
 #   END: Imports from datastore_pb2
 import grpc
 from grpc.beta import implementations as beta_implementations

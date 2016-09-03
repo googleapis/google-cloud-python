@@ -31,14 +31,14 @@ class TestInstance(unittest.TestCase):
     TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
 
     def _getTargetClass(self):
-        from gcloud.bigtable.instance import Instance
+        from google.cloud.bigtable.instance import Instance
         return Instance
 
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_constructor_defaults(self):
-        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         client = object()
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
@@ -74,7 +74,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance, new_instance)
 
     def test_table_factory(self):
-        from gcloud.bigtable.table import Table
+        from google.cloud.bigtable.table import Table
 
         instance = self._makeOne(self.INSTANCE_ID, None, self.LOCATION_ID)
 
@@ -84,7 +84,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(table._instance, instance)
 
     def test__update_from_pb_success(self):
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
 
         display_name = 'display_name'
@@ -98,7 +98,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, display_name)
 
     def test__update_from_pb_no_display_name(self):
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
 
         instance_pb = data_v2_pb2.Instance()
@@ -109,8 +109,8 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, None)
 
     def test_from_pb_success(self):
-        from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
+        from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
 
         client = _Client(project=self.PROJECT)
@@ -129,7 +129,7 @@ class TestInstance(unittest.TestCase):
                          _EXISTING_INSTANCE_LOCATION_ID)
 
     def test_from_pb_bad_instance_name(self):
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
 
         instance_name = 'INCORRECT_FORMAT'
@@ -140,7 +140,7 @@ class TestInstance(unittest.TestCase):
             klass.from_pb(instance_pb, None)
 
     def test_from_pb_project_mistmatch(self):
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
 
         ALT_PROJECT = 'ALT_PROJECT'
@@ -185,9 +185,9 @@ class TestInstance(unittest.TestCase):
         self.assertNotEqual(instance1, instance2)
 
     def test_reload(self):
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
         from unit_tests.bigtable._testing import _FakeStub
 
@@ -229,13 +229,13 @@ class TestInstance(unittest.TestCase):
         import datetime
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from gcloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud._helpers import _datetime_to_pb_timestamp
         from unit_tests.bigtable._testing import _FakeStub
-        from gcloud.operation import Operation
-        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
-        from gcloud.bigtable.instance import _CREATE_INSTANCE_METADATA_URL
+        from google.cloud.operation import Operation
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable.instance import _CREATE_INSTANCE_METADATA_URL
 
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
@@ -283,10 +283,10 @@ class TestInstance(unittest.TestCase):
 
     def test_create_w_explicit_serve_nodes(self):
         from google.longrunning import operations_pb2
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from unit_tests.bigtable._testing import _FakeStub
-        from gcloud.operation import Operation
+        from google.cloud.operation import Operation
 
         SERVE_NODES = 5
 
@@ -322,7 +322,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(kwargs, {})
 
     def test_update(self):
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
         from unit_tests.bigtable._testing import _FakeStub
 
@@ -357,7 +357,7 @@ class TestInstance(unittest.TestCase):
 
     def test_delete(self):
         from google.protobuf import empty_pb2
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
         from unit_tests.bigtable._testing import _FakeStub
 
@@ -388,9 +388,9 @@ class TestInstance(unittest.TestCase):
         )])
 
     def test_list_clusters(self):
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             instance_pb2 as instance_v2_pb2)
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from unit_tests.bigtable._testing import _FakeStub
 
@@ -445,9 +445,9 @@ class TestInstance(unittest.TestCase):
         )])
 
     def _list_tables_helper(self, table_name=None):
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             table_pb2 as table_data_v2_pb2)
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             bigtable_table_admin_pb2 as table_messages_v1_pb2)
         from unit_tests.bigtable._testing import _FakeStub
 
@@ -511,16 +511,16 @@ class Test__prepare_create_request(unittest.TestCase):
     CLUSTER_NAME = INSTANCE_NAME + '/clusters/' + INSTANCE_ID
 
     def _callFUT(self, instance, **kw):
-        from gcloud.bigtable.instance import _prepare_create_request
+        from google.cloud.bigtable.instance import _prepare_create_request
         return _prepare_create_request(instance, **kw)
 
     def test_w_defaults(self):
-        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
-        from gcloud.bigtable.instance import Instance
+        from google.cloud.bigtable.instance import Instance
 
         client = _Client(self.PROJECT)
 
@@ -542,11 +542,11 @@ class Test__prepare_create_request(unittest.TestCase):
         self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
 
     def test_w_explicit_serve_nodes(self):
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
-        from gcloud.bigtable._generated import (
+        from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
-        from gcloud.bigtable.instance import Instance
+        from google.cloud.bigtable.instance import Instance
         DISPLAY_NAME = u'DISPLAY_NAME'
         SERVE_NODES = 5
         client = _Client(self.PROJECT)

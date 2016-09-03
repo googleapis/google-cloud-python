@@ -19,12 +19,12 @@ import struct
 
 import six
 
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud._helpers import _microseconds_from_datetime
-from gcloud._helpers import _to_bytes
-from gcloud.bigtable._generated import (
+from google.cloud._helpers import _datetime_from_microseconds
+from google.cloud._helpers import _microseconds_from_datetime
+from google.cloud._helpers import _to_bytes
+from google.cloud.bigtable._generated import (
     data_pb2 as data_v2_pb2)
-from gcloud.bigtable._generated import (
+from google.cloud.bigtable._generated import (
     bigtable_pb2 as messages_v2_pb2)
 
 

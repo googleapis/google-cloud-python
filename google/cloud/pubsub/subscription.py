@@ -14,10 +14,10 @@
 
 """Define API Subscriptions."""
 
-from gcloud.exceptions import NotFound
-from gcloud.pubsub._helpers import topic_name_from_path
-from gcloud.pubsub.iam import Policy
-from gcloud.pubsub.message import Message
+from google.cloud.exceptions import NotFound
+from google.cloud.pubsub._helpers import topic_name_from_path
+from google.cloud.pubsub.iam import Policy
+from google.cloud.pubsub.message import Message
 
 
 class Subscription(object):

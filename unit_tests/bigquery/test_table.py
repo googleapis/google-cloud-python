@@ -36,7 +36,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     TABLE_NAME = 'table-name'
 
     def _getTargetClass(self):
-        from gcloud.bigquery.table import Table
+        from google.cloud.bigquery.table import Table
         return Table
 
     def _makeOne(self, *args, **kw):
@@ -44,7 +44,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def _setUpConstants(self):
         import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         self.WHEN_TS = 1437767599.006
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
@@ -160,7 +160,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.view_query, None)
 
     def test_ctor_w_schema(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
@@ -221,7 +221,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             table.schema = object()
 
     def test_schema_setter_invalid_field(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
         table = self._makeOne(self.TABLE_NAME, dataset)
@@ -230,7 +230,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             table.schema = [full_name, object()]
 
     def test_schema_setter(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
         table = self._makeOne(self.TABLE_NAME, dataset)
@@ -241,8 +241,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_props_set_by_server(self):
         import datetime
-        from gcloud._helpers import UTC
-        from gcloud._helpers import _millis
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _millis
 
         CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=UTC)
         MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=UTC)
@@ -294,7 +294,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_expires_setter(self):
         import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         WHEN = datetime.datetime(2015, 7, 28, 16, 39, tzinfo=UTC)
         client = _Client(self.PROJECT)
@@ -400,7 +400,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             table.create()
 
     def test_create_w_bound_client(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
@@ -430,7 +430,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_create_w_partition_no_expire(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
@@ -464,7 +464,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_create_w_partition_and_expire(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
@@ -498,7 +498,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_partition_type_setter_bad_type(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -511,7 +511,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             table.partitioning_type = 123
 
     def test_partition_type_setter_unknown_value(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -524,7 +524,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             table.partitioning_type = "HASH"
 
     def test_partition_type_setter_w_known_value(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -538,7 +538,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.partitioning_type, 'DAY')
 
     def test_partition_type_setter_w_none(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -553,7 +553,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertFalse('timePartitioning' in table._properties)
 
     def test_partition_experation_bad_type(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -566,7 +566,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             table.partition_expiration = "NEVER"
 
     def test_partition_expiration_w_integer(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -581,7 +581,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.partition_expiration, 100)
 
     def test_partition_expiration_w_none(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -600,7 +600,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.partition_expiration, None)
 
     def test_partition_expiration_w_none_no_partition_set(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -615,7 +615,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.partition_expiration, None)
 
     def test_list_partitions(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         client._query_results = [(20160804, None), (20160805, None)]
@@ -628,9 +628,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_create_w_alternate_client(self):
         import datetime
-        from gcloud._helpers import UTC
-        from gcloud._helpers import _millis
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _millis
+        from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
         DESCRIPTION = 'DESCRIPTION'
@@ -680,7 +680,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_create_w_missing_output_properties(self):
         # In the wild, the resource returned from 'dataset.create' sometimes
         # lacks 'creationTime' / 'lastModifiedTime'
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
         RESOURCE = self._makeResource()
         del RESOURCE['creationTime']
@@ -825,9 +825,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_patch_w_alternate_client(self):
         import datetime
-        from gcloud._helpers import UTC
-        from gcloud._helpers import _millis
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _millis
+        from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
@@ -894,7 +894,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_update_w_bound_client(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         DESCRIPTION = 'DESCRIPTION'
@@ -934,8 +934,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_update_w_alternate_client(self):
         import datetime
-        from gcloud._helpers import UTC
-        from gcloud._helpers import _millis
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _millis
 
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
@@ -1015,8 +1015,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_fetch_data_w_bound_client(self):
         import datetime
-        from gcloud._helpers import UTC
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud._helpers import UTC
+        from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
@@ -1084,7 +1084,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_fetch_data_w_alternate_client(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         MAX = 10
@@ -1150,7 +1150,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
                          {'maxResults': MAX, 'pageToken': TOKEN})
 
     def test_fetch_data_w_repeated_fields(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         ROWS = 1234
@@ -1192,7 +1192,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_fetch_data_w_record_schema(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         ROWS = 1234
@@ -1250,9 +1250,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_insert_data_w_bound_client(self):
         import datetime
-        from gcloud._helpers import UTC
-        from gcloud._helpers import _microseconds_from_datetime
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _microseconds_from_datetime
+        from google.cloud.bigquery.table import SchemaField
 
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
@@ -1296,7 +1296,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['data'], SENT)
 
     def test_insert_data_w_alternate_client(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         RESPONSE = {
@@ -1360,7 +1360,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['data'], SENT)
 
     def test_insert_data_w_repeated_fields(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         conn = _Connection({})
@@ -1395,7 +1395,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['data'], SENT)
 
     def test_insert_data_w_record_schema(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         conn = _Connection({})
@@ -1462,9 +1462,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         import csv
         import datetime
         from six.moves.http_client import OK
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
         from unit_tests._testing import _NamedTemporaryFile
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
 
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
@@ -1514,7 +1514,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         import json
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from gcloud._helpers import _to_bytes
+        from google.cloud._helpers import _to_bytes
 
         requested, PATH, BODY = self._upload_from_file_helper()
         parse_chunk = _email_chunk_parser()
@@ -1571,7 +1571,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
         from unit_tests._testing import _Monkey
-        from gcloud.bigquery import table as MUT
+        from google.cloud.bigquery import table as MUT
 
         UPLOAD_PATH = 'https://example.com/upload/test'
         initial_response = {'status': OK, 'location': UPLOAD_PATH}
@@ -1656,7 +1656,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
 
     def _callFUT(self, resource):
-        from gcloud.bigquery.table import _parse_schema_resource
+        from google.cloud.bigquery.table import _parse_schema_resource
         return _parse_schema_resource(resource)
 
     def _makeResource(self):
@@ -1700,11 +1700,11 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
 class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
 
     def _callFUT(self, resource):
-        from gcloud.bigquery.table import _build_schema_resource
+        from google.cloud.bigquery.table import _build_schema_resource
         return _build_schema_resource(resource)
 
     def test_defaults(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         resource = self._callFUT([full_name, age])
@@ -1719,7 +1719,7 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
                           'mode': 'REQUIRED'})
 
     def test_w_description(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         DESCRIPTION = 'DESCRIPTION'
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED',
                                 description=DESCRIPTION)
@@ -1737,7 +1737,7 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
                           'mode': 'REQUIRED'})
 
     def test_w_subfields(self):
-        from gcloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import SchemaField
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         ph_type = SchemaField('type', 'STRING', 'REQUIRED')
         ph_num = SchemaField('number', 'STRING', 'REQUIRED')
@@ -1836,7 +1836,7 @@ class _Connection(_Responder):
         self.http = _HTTP(*responses)
 
     def api_request(self, **kw):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._requested.append(kw)
 
         try:

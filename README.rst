@@ -186,7 +186,7 @@ Load data from CSV
     import csv
 
     from google.cloud import bigquery
-    from gcloud.bigquery import SchemaField
+    from google.cloud.bigquery import SchemaField
 
     client = bigquery.Client()
 

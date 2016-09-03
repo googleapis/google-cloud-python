@@ -14,7 +14,7 @@
 
 """Define Stackdriver Logging API Sinks."""
 
-from gcloud.exceptions import NotFound
+from google.cloud.exceptions import NotFound
 
 
 class Sink(object):

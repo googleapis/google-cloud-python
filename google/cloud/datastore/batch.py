@@ -21,8 +21,8 @@ See
 https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operations
 """
 
-from gcloud.datastore import helpers
-from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
+from google.cloud.datastore import helpers
+from google.cloud.datastore._generated import datastore_pb2 as _datastore_pb2
 
 
 class Batch(object):

@@ -21,7 +21,7 @@ class TestConnection(unittest.TestCase):
     FILTER = 'logName:syslog AND severity>=ERROR'
 
     def _getTargetClass(self):
-        from gcloud.logging.connection import Connection
+        from google.cloud.logging.connection import Connection
         return Connection
 
     def _makeOne(self, *args, **kw):
@@ -43,7 +43,7 @@ class Test_LoggingAPI(unittest.TestCase):
     FILTER = 'logName:syslog AND severity>=ERROR'
 
     def _getTargetClass(self):
-        from gcloud.logging.connection import _LoggingAPI
+        from google.cloud.logging.connection import _LoggingAPI
         return _LoggingAPI
 
     def _makeOne(self, *args, **kw):
@@ -57,7 +57,7 @@ class Test_LoggingAPI(unittest.TestCase):
     @staticmethod
     def _make_timestamp():
         from datetime import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         return _datetime_to_rfc3339_w_nanos(NOW)
@@ -97,7 +97,7 @@ class Test_LoggingAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['data'], SENT)
 
     def test_list_entries_w_paging(self):
-        from gcloud.logging import DESCENDING
+        from google.cloud.logging import DESCENDING
         PROJECT1 = 'PROJECT1'
         PROJECT2 = 'PROJECT2'
         TIMESTAMP = self._make_timestamp()
@@ -227,7 +227,7 @@ class Test_SinksAPI(unittest.TestCase):
     DESTINATION_URI = 'faux.googleapis.com/destination'
 
     def _getTargetClass(self):
-        from gcloud.logging.connection import _SinksAPI
+        from google.cloud.logging.connection import _SinksAPI
         return _SinksAPI
 
     def _makeOne(self, *args, **kw):
@@ -287,7 +287,7 @@ class Test_SinksAPI(unittest.TestCase):
                          {'pageSize': PAGE_SIZE, 'pageToken': TOKEN})
 
     def test_sink_create_conflict(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         SENT = {
             'name': self.SINK_NAME,
             'filter': self.FILTER,
@@ -325,7 +325,7 @@ class Test_SinksAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['data'], SENT)
 
     def test_sink_get_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         conn = _Connection()
         api = self._makeOne(conn)
 
@@ -353,7 +353,7 @@ class Test_SinksAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['path'], path)
 
     def test_sink_update_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         SENT = {
             'name': self.SINK_NAME,
             'filter': self.FILTER,
@@ -390,7 +390,7 @@ class Test_SinksAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['data'], SENT)
 
     def test_sink_delete_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         conn = _Connection()
         api = self._makeOne(conn)
 
@@ -422,7 +422,7 @@ class Test_MetricsAPI(unittest.TestCase):
     DESCRIPTION = 'DESCRIPTION'
 
     def _getTargetClass(self):
-        from gcloud.logging.connection import _MetricsAPI
+        from google.cloud.logging.connection import _MetricsAPI
         return _MetricsAPI
 
     def _makeOne(self, *args, **kw):
@@ -474,7 +474,7 @@ class Test_MetricsAPI(unittest.TestCase):
                          {'pageSize': PAGE_SIZE, 'pageToken': TOKEN})
 
     def test_metric_create_conflict(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         SENT = {
             'name': self.METRIC_NAME,
             'filter': self.FILTER,
@@ -512,7 +512,7 @@ class Test_MetricsAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['data'], SENT)
 
     def test_metric_get_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         conn = _Connection()
         api = self._makeOne(conn)
 
@@ -540,7 +540,7 @@ class Test_MetricsAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['path'], path)
 
     def test_metric_update_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         SENT = {
             'name': self.METRIC_NAME,
             'filter': self.FILTER,
@@ -577,7 +577,7 @@ class Test_MetricsAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['data'], SENT)
 
     def test_metric_delete_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         conn = _Connection()
         api = self._makeOne(conn)
 
@@ -621,8 +621,8 @@ class _Connection(object):
         self._responses = responses
 
     def api_request(self, **kw):
-        from gcloud.exceptions import Conflict
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import Conflict
+        from google.cloud.exceptions import NotFound
         self._called_with = kw
         if self._raise_conflict:
             raise Conflict('oops')
@@ -634,6 +634,6 @@ class _Connection(object):
 
 
 def _datetime_to_rfc3339_w_nanos(value):
-    from gcloud._helpers import _RFC3339_NO_FRACTION
+    from google.cloud._helpers import _RFC3339_NO_FRACTION
     no_fraction = value.strftime(_RFC3339_NO_FRACTION)
     return '%s.%09dZ' % (no_fraction, value.microsecond * 1000)

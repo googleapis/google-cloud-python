@@ -16,8 +16,8 @@
 
 
 from google.cloud import client as client_module
-from gcloud.language.connection import Connection
-from gcloud.language.document import Document
+from google.cloud.language.connection import Connection
+from google.cloud.language.document import Document
 
 
 class Client(client_module.Client):

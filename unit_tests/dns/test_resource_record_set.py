@@ -18,7 +18,7 @@ import unittest
 class TestResourceRecordSet(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.dns.resource_record_set import ResourceRecordSet
+        from google.cloud.dns.resource_record_set import ResourceRecordSet
         return ResourceRecordSet
 
     def _makeOne(self, *args, **kw):

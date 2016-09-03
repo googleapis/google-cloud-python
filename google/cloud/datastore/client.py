@@ -15,18 +15,18 @@
 
 import os
 
-from gcloud._helpers import _LocalStack
-from gcloud._helpers import _determine_default_project as _base_default_project
-from gcloud.client import _ClientProjectMixin
-from gcloud.client import Client as _BaseClient
-from gcloud.datastore import helpers
-from gcloud.datastore.connection import Connection
-from gcloud.datastore.batch import Batch
-from gcloud.datastore.entity import Entity
-from gcloud.datastore.key import Key
-from gcloud.datastore.query import Query
-from gcloud.datastore.transaction import Transaction
-from gcloud.environment_vars import GCD_DATASET
+from google.cloud._helpers import _LocalStack
+from google.cloud._helpers import _determine_default_project as _base_default_project
+from google.cloud.client import _ClientProjectMixin
+from google.cloud.client import Client as _BaseClient
+from google.cloud.datastore import helpers
+from google.cloud.datastore.connection import Connection
+from google.cloud.datastore.batch import Batch
+from google.cloud.datastore.entity import Entity
+from google.cloud.datastore.key import Key
+from google.cloud.datastore.query import Query
+from google.cloud.datastore.transaction import Transaction
+from google.cloud.environment_vars import GCD_DATASET
 
 
 _MAX_LOOPS = 128

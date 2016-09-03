@@ -21,7 +21,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
     PROJECT = 'PROJECT'
 
     def _getTargetClass(self):
-        from gcloud.logging.handlers.handlers import CloudLoggingHandler
+        from google.cloud.logging.handlers.handlers import CloudLoggingHandler
         return CloudLoggingHandler
 
     def _makeOne(self, *args, **kw):
@@ -46,7 +46,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
 class TestSetupLogging(unittest.TestCase):
 
     def _callFUT(self, handler, excludes=None):
-        from gcloud.logging.handlers.handlers import setup_logging
+        from google.cloud.logging.handlers.handlers import setup_logging
         if excludes:
             return setup_logging(handler, excluded_loggers=excludes)
         else:

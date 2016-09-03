@@ -26,17 +26,17 @@ import httplib2
 import six
 from six.moves import http_client
 
-from gcloud._helpers import _to_bytes
-from gcloud.streaming.buffered_stream import BufferedStream
-from gcloud.streaming.exceptions import CommunicationError
-from gcloud.streaming.exceptions import HttpError
-from gcloud.streaming.exceptions import TransferInvalidError
-from gcloud.streaming.exceptions import TransferRetryError
-from gcloud.streaming.http_wrapper import make_api_request
-from gcloud.streaming.http_wrapper import Request
-from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
-from gcloud.streaming.stream_slice import StreamSlice
-from gcloud.streaming.util import acceptable_mime_type
+from google.cloud._helpers import _to_bytes
+from google.cloud.streaming.buffered_stream import BufferedStream
+from google.cloud.streaming.exceptions import CommunicationError
+from google.cloud.streaming.exceptions import HttpError
+from google.cloud.streaming.exceptions import TransferInvalidError
+from google.cloud.streaming.exceptions import TransferRetryError
+from google.cloud.streaming.http_wrapper import make_api_request
+from google.cloud.streaming.http_wrapper import Request
+from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE
+from google.cloud.streaming.stream_slice import StreamSlice
+from google.cloud.streaming.util import acceptable_mime_type
 
 
 RESUMABLE_UPLOAD_THRESHOLD = 5 << 20

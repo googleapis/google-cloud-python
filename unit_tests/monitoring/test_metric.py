@@ -18,7 +18,7 @@ import unittest
 class TestMetricKind(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.metric import MetricKind
+        from google.cloud.monitoring.metric import MetricKind
         return MetricKind
 
     def test_one(self):
@@ -33,7 +33,7 @@ class TestMetricKind(unittest.TestCase):
 class TestValueType(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.metric import ValueType
+        from google.cloud.monitoring.metric import ValueType
         return ValueType
 
     def test_one(self):
@@ -48,14 +48,14 @@ class TestValueType(unittest.TestCase):
 class TestMetricDescriptor(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.metric import MetricDescriptor
+        from google.cloud.monitoring.metric import MetricDescriptor
         return MetricDescriptor
 
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_constructor(self):
-        from gcloud.monitoring.label import LabelDescriptor
+        from google.cloud.monitoring.label import LabelDescriptor
 
         TYPE = 'appengine.googleapis.com/http/server/response_count'
         NAME = 'projects/my-project/metricDescriptors/' + TYPE
@@ -384,7 +384,7 @@ class TestMetricDescriptor(unittest.TestCase):
         self.assertEqual(request, expected_request)
 
     def test_list_paged(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
 
         PROJECT = 'my-project'
         PATH = 'projects/{project}/metricDescriptors/'.format(project=PROJECT)
@@ -493,7 +493,7 @@ class TestMetricDescriptor(unittest.TestCase):
 class TestMetric(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.metric import Metric
+        from google.cloud.monitoring.metric import Metric
         return Metric
 
     def _makeOne(self, *args, **kwargs):
@@ -538,7 +538,7 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kwargs):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)

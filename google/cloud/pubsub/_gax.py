@@ -21,10 +21,10 @@ from google.pubsub.v1.pubsub_pb2 import PubsubMessage
 from google.pubsub.v1.pubsub_pb2 import PushConfig
 from grpc import StatusCode
 
-from gcloud._helpers import _to_bytes
-from gcloud._helpers import exc_to_code
-from gcloud.exceptions import Conflict
-from gcloud.exceptions import NotFound
+from google.cloud._helpers import _to_bytes
+from google.cloud._helpers import exc_to_code
+from google.cloud.exceptions import Conflict
+from google.cloud.exceptions import NotFound
 
 
 class _PublisherAPI(object):

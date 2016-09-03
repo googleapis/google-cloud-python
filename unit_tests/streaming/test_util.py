@@ -4,7 +4,7 @@ import unittest
 class Test_calculate_wait_for_retry(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.util import calculate_wait_for_retry
+        from google.cloud.streaming.util import calculate_wait_for_retry
         return calculate_wait_for_retry(*args, **kw)
 
     def test_w_negative_jitter_lt_max_wait(self):
@@ -23,7 +23,7 @@ class Test_calculate_wait_for_retry(unittest.TestCase):
 class Test_acceptable_mime_type(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.util import acceptable_mime_type
+        from google.cloud.streaming.util import acceptable_mime_type
         return acceptable_mime_type(*args, **kw)
 
     def test_pattern_wo_slash(self):

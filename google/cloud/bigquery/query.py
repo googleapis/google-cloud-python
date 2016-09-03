@@ -16,13 +16,13 @@
 
 import six
 
-from gcloud.bigquery._helpers import _TypedProperty
-from gcloud.bigquery._helpers import _rows_from_json
-from gcloud.bigquery.dataset import Dataset
-from gcloud.bigquery.job import QueryJob
-from gcloud.bigquery.job import UDFResourcesProperty
-from gcloud.bigquery.job import _build_udf_resources
-from gcloud.bigquery.table import _parse_schema_resource
+from google.cloud.bigquery._helpers import _TypedProperty
+from google.cloud.bigquery._helpers import _rows_from_json
+from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.job import QueryJob
+from google.cloud.bigquery.job import UDFResourcesProperty
+from google.cloud.bigquery.job import _build_udf_resources
+from google.cloud.bigquery.table import _parse_schema_resource
 
 
 class _SyncQueryConfiguration(object):

@@ -18,7 +18,7 @@ import unittest
 class TestPolicy(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.iam import Policy
+        from google.cloud.pubsub.iam import Policy
         return Policy
 
     def _makeOne(self, *args, **kw):
@@ -91,7 +91,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(list(policy.viewers), [])
 
     def test_from_api_repr_complete(self):
-        from gcloud.pubsub.iam import (
+        from google.cloud.pubsub.iam import (
             OWNER_ROLE,
             EDITOR_ROLE,
             VIEWER_ROLE,
@@ -150,7 +150,7 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(policy.to_api_repr(), {'etag': 'DEADBEEF'})
 
     def test_to_api_repr_full(self):
-        from gcloud.pubsub.iam import (
+        from google.cloud.pubsub.iam import (
             PUBSUB_ADMIN_ROLE,
             PUBSUB_EDITOR_ROLE,
             PUBSUB_VIEWER_ROLE,

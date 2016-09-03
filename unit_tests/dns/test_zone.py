@@ -22,7 +22,7 @@ class TestManagedZone(unittest.TestCase):
     DNS_NAME = 'test.example.com'
 
     def _getTargetClass(self):
-        from gcloud.dns.zone import ManagedZone
+        from google.cloud.dns.zone import ManagedZone
         return ManagedZone
 
     def _makeOne(self, *args, **kw):
@@ -30,7 +30,7 @@ class TestManagedZone(unittest.TestCase):
 
     def _setUpConstants(self):
         import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         year = 2015
         month = 7
@@ -184,7 +184,7 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(zone.name_server_set, 'NAME_SERVER_SET')
 
     def test_resource_record_set(self):
-        from gcloud.dns.resource_record_set import ResourceRecordSet
+        from google.cloud.dns.resource_record_set import ResourceRecordSet
         RRS_NAME = 'other.example.com'
         RRS_TYPE = 'CNAME'
         TTL = 3600
@@ -200,7 +200,7 @@ class TestManagedZone(unittest.TestCase):
         self.assertTrue(rrs.zone is zone)
 
     def test_changes(self):
-        from gcloud.dns.changes import Changes
+        from google.cloud.dns.changes import Changes
         client = _Client(self.PROJECT)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
         changes = zone.changes()
@@ -260,7 +260,7 @@ class TestManagedZone(unittest.TestCase):
         self._verifyResourceProperties(zone, RESOURCE)
 
     def test_create_wo_dns_name_or_description(self):
-        from gcloud.exceptions import BadRequest
+        from google.cloud.exceptions import BadRequest
         PATH = 'projects/%s/managedZones' % self.PROJECT
 
         _requested = []
@@ -409,7 +409,7 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_resource_record_sets_defaults(self):
-        from gcloud.dns.resource_record_set import ResourceRecordSet
+        from google.cloud.dns.resource_record_set import ResourceRecordSet
         PATH = 'projects/%s/managedZones/%s/rrsets' % (
             self.PROJECT, self.ZONE_NAME)
         TOKEN = 'TOKEN'
@@ -457,7 +457,7 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_resource_record_sets_explicit(self):
-        from gcloud.dns.resource_record_set import ResourceRecordSet
+        from google.cloud.dns.resource_record_set import ResourceRecordSet
         PATH = 'projects/%s/managedZones/%s/rrsets' % (
             self.PROJECT, self.ZONE_NAME)
         TOKEN = 'TOKEN'
@@ -510,9 +510,9 @@ class TestManagedZone(unittest.TestCase):
                          {'maxResults': 3, 'pageToken': TOKEN})
 
     def test_list_changes_defaults(self):
-        from gcloud._helpers import _datetime_to_rfc3339
-        from gcloud.dns.changes import Changes
-        from gcloud.dns.resource_record_set import ResourceRecordSet
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud.dns.changes import Changes
+        from google.cloud.dns.resource_record_set import ResourceRecordSet
         self._setUpConstants()
         PATH = 'projects/%s/managedZones/%s/changes' % (
             self.PROJECT, self.ZONE_NAME)
@@ -586,9 +586,9 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_changes_explicit(self):
-        from gcloud._helpers import _datetime_to_rfc3339
-        from gcloud.dns.changes import Changes
-        from gcloud.dns.resource_record_set import ResourceRecordSet
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud.dns.changes import Changes
+        from google.cloud.dns.resource_record_set import ResourceRecordSet
         self._setUpConstants()
         PATH = 'projects/%s/managedZones/%s/changes' % (
             self.PROJECT, self.ZONE_NAME)
@@ -681,7 +681,7 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kw):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._requested.append(kw)
 
         try:

@@ -20,7 +20,7 @@ sends the API using a :class:`~gcloud.logging.logger.Batch` object in
 the background.
 """
 
-from gcloud.logging.handlers.transports.base import Transport
-from gcloud.logging.handlers.transports.sync import SyncTransport
-from gcloud.logging.handlers.transports.background_thread import (
+from google.cloud.logging.handlers.transports.base import Transport
+from google.cloud.logging.handlers.transports.sync import SyncTransport
+from google.cloud.logging.handlers.transports.background_thread import (
     BackgroundThreadTransport)

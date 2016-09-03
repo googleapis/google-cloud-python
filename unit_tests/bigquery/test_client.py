@@ -18,14 +18,14 @@ import unittest
 class TestClient(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigquery.client import Client
+        from google.cloud.bigquery.client import Client
         return Client
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor(self):
-        from gcloud.bigquery.connection import Connection
+        from google.cloud.bigquery.connection import Connection
         PROJECT = 'PROJECT'
         creds = _Credentials()
         http = object()
@@ -35,7 +35,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(client.connection.http is http)
 
     def test_list_datasets_defaults(self):
-        from gcloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import Dataset
         PROJECT = 'PROJECT'
         DATASET_1 = 'dataset_one'
         DATASET_2 = 'dataset_two'
@@ -97,7 +97,7 @@ class TestClient(unittest.TestCase):
                          {'all': True, 'maxResults': 3, 'pageToken': TOKEN})
 
     def test_dataset(self):
-        from gcloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import Dataset
         PROJECT = 'PROJECT'
         DATASET = 'dataset_name'
         creds = _Credentials()
@@ -116,10 +116,10 @@ class TestClient(unittest.TestCase):
             client.job_from_resource({'configuration': {'nonesuch': {}}})
 
     def test_list_jobs_defaults(self):
-        from gcloud.bigquery.job import LoadTableFromStorageJob
-        from gcloud.bigquery.job import CopyJob
-        from gcloud.bigquery.job import ExtractTableToStorageJob
-        from gcloud.bigquery.job import QueryJob
+        from google.cloud.bigquery.job import LoadTableFromStorageJob
+        from google.cloud.bigquery.job import CopyJob
+        from google.cloud.bigquery.job import ExtractTableToStorageJob
+        from google.cloud.bigquery.job import QueryJob
         PROJECT = 'PROJECT'
         DATASET = 'test_dataset'
         SOURCE_TABLE = 'source_table'
@@ -243,7 +243,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], {'projection': 'full'})
 
     def test_list_jobs_load_job_wo_sourceUris(self):
-        from gcloud.bigquery.job import LoadTableFromStorageJob
+        from google.cloud.bigquery.job import LoadTableFromStorageJob
         PROJECT = 'PROJECT'
         DATASET = 'test_dataset'
         SOURCE_TABLE = 'source_table'
@@ -321,7 +321,7 @@ class TestClient(unittest.TestCase):
                           'stateFilter': 'done'})
 
     def test_load_table_from_storage(self):
-        from gcloud.bigquery.job import LoadTableFromStorageJob
+        from google.cloud.bigquery.job import LoadTableFromStorageJob
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         DATASET = 'dataset_name'
@@ -340,7 +340,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(job.destination is destination)
 
     def test_copy_table(self):
-        from gcloud.bigquery.job import CopyJob
+        from google.cloud.bigquery.job import CopyJob
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         DATASET = 'dataset_name'
@@ -360,7 +360,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(job.destination is destination)
 
     def test_extract_table_to_storage(self):
-        from gcloud.bigquery.job import ExtractTableToStorageJob
+        from google.cloud.bigquery.job import ExtractTableToStorageJob
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         DATASET = 'dataset_name'
@@ -379,7 +379,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(job.destination_uris), [DESTINATION])
 
     def test_run_async_query(self):
-        from gcloud.bigquery.job import QueryJob
+        from google.cloud.bigquery.job import QueryJob
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         QUERY = 'select count(*) from persons'
@@ -393,7 +393,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.query, QUERY)
 
     def test_run_sync_query(self):
-        from gcloud.bigquery.query import QueryResults
+        from google.cloud.bigquery.query import QueryResults
         PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
         creds = _Credentials()

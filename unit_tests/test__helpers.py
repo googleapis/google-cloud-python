@@ -19,7 +19,7 @@ import unittest
 class Test__LocalStack(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud._helpers import _LocalStack
+        from google.cloud._helpers import _LocalStack
 
         return _LocalStack
 
@@ -47,7 +47,7 @@ class Test__LocalStack(unittest.TestCase):
 class Test__UTC(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud._helpers import _UTC
+        from google.cloud._helpers import _UTC
         return _UTC
 
     def _makeOne(self):
@@ -100,7 +100,7 @@ class Test__UTC(unittest.TestCase):
 class Test__ensure_tuple_or_list(unittest.TestCase):
 
     def _callFUT(self, arg_name, tuple_or_list):
-        from gcloud._helpers import _ensure_tuple_or_list
+        from google.cloud._helpers import _ensure_tuple_or_list
         return _ensure_tuple_or_list(arg_name, tuple_or_list)
 
     def test_valid_tuple(self):
@@ -127,7 +127,7 @@ class Test__ensure_tuple_or_list(unittest.TestCase):
 class Test__app_engine_id(unittest.TestCase):
 
     def _callFUT(self):
-        from gcloud._helpers import _app_engine_id
+        from google.cloud._helpers import _app_engine_id
         return _app_engine_id()
 
     def test_no_value(self):
@@ -152,11 +152,11 @@ class Test__app_engine_id(unittest.TestCase):
 class Test__file_project_id(unittest.TestCase):
 
     def _callFUT(self):
-        from gcloud._helpers import _file_project_id
+        from google.cloud._helpers import _file_project_id
         return _file_project_id()
 
     def test_success(self):
-        from gcloud.environment_vars import CREDENTIALS
+        from google.cloud.environment_vars import CREDENTIALS
         from unit_tests._testing import _Monkey
         from unit_tests._testing import _NamedTemporaryFile
 
@@ -185,7 +185,7 @@ class Test__file_project_id(unittest.TestCase):
 class Test__get_nix_config_path(unittest.TestCase):
 
     def _callFUT(self):
-        from gcloud._helpers import _get_nix_config_path
+        from google.cloud._helpers import _get_nix_config_path
         return _get_nix_config_path()
 
     def test_it(self):
@@ -205,7 +205,7 @@ class Test__get_nix_config_path(unittest.TestCase):
 class Test__get_windows_config_path(unittest.TestCase):
 
     def _callFUT(self):
-        from gcloud._helpers import _get_windows_config_path
+        from google.cloud._helpers import _get_windows_config_path
         return _get_windows_config_path()
 
     def test_it(self):
@@ -228,7 +228,7 @@ class Test__default_service_project_id(unittest.TestCase):
     CONFIG_TEMPLATE = '[%s]\n%s = %s\n'
 
     def _callFUT(self):
-        from gcloud._helpers import _default_service_project_id
+        from google.cloud._helpers import _default_service_project_id
         return _default_service_project_id()
 
     def test_nix(self):
@@ -291,7 +291,7 @@ class Test__default_service_project_id(unittest.TestCase):
 class Test__compute_engine_id(unittest.TestCase):
 
     def _callFUT(self):
-        from gcloud._helpers import _compute_engine_id
+        from google.cloud._helpers import _compute_engine_id
         return _compute_engine_id()
 
     def _monkeyConnection(self, connection):
@@ -328,7 +328,7 @@ class Test__compute_engine_id(unittest.TestCase):
 class Test__get_production_project(unittest.TestCase):
 
     def _callFUT(self):
-        from gcloud._helpers import _get_production_project
+        from google.cloud._helpers import _get_production_project
         return _get_production_project()
 
     def test_no_value(self):
@@ -341,7 +341,7 @@ class Test__get_production_project(unittest.TestCase):
 
     def test_value_set(self):
         from unit_tests._testing import _Monkey
-        from gcloud._helpers import PROJECT
+        from google.cloud._helpers import PROJECT
 
         MOCK_PROJECT = object()
         environ = {PROJECT: MOCK_PROJECT}
@@ -353,7 +353,7 @@ class Test__get_production_project(unittest.TestCase):
 class Test__determine_default_project(unittest.TestCase):
 
     def _callFUT(self, project=None):
-        from gcloud._helpers import _determine_default_project
+        from google.cloud._helpers import _determine_default_project
         return _determine_default_project(project=project)
 
     def _determine_default_helper(self, prod=None, gae=None, gce=None,
@@ -432,12 +432,12 @@ class Test__determine_default_project(unittest.TestCase):
 class Test__millis(unittest.TestCase):
 
     def _callFUT(self, value):
-        from gcloud._helpers import _millis
+        from google.cloud._helpers import _millis
         return _millis(value)
 
     def test_one_second_from_epoch(self):
         import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         WHEN = datetime.datetime(1970, 1, 1, 0, 0, 1, tzinfo=UTC)
         self.assertEqual(self._callFUT(WHEN), 1000)
@@ -446,7 +446,7 @@ class Test__millis(unittest.TestCase):
 class Test__microseconds_from_datetime(unittest.TestCase):
 
     def _callFUT(self, value):
-        from gcloud._helpers import _microseconds_from_datetime
+        from google.cloud._helpers import _microseconds_from_datetime
         return _microseconds_from_datetime(value)
 
     def test_it(self):
@@ -463,7 +463,7 @@ class Test__microseconds_from_datetime(unittest.TestCase):
 class Test__millis_from_datetime(unittest.TestCase):
 
     def _callFUT(self, value):
-        from gcloud._helpers import _millis_from_datetime
+        from google.cloud._helpers import _millis_from_datetime
         return _millis_from_datetime(value)
 
     def test_w_none(self):
@@ -472,8 +472,8 @@ class Test__millis_from_datetime(unittest.TestCase):
     def test_w_utc_datetime(self):
         import datetime
         import six
-        from gcloud._helpers import UTC
-        from gcloud._helpers import _microseconds_from_datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _microseconds_from_datetime
 
         NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
         NOW_MICROS = _microseconds_from_datetime(NOW)
@@ -485,8 +485,8 @@ class Test__millis_from_datetime(unittest.TestCase):
     def test_w_non_utc_datetime(self):
         import datetime
         import six
-        from gcloud._helpers import _UTC
-        from gcloud._helpers import _microseconds_from_datetime
+        from google.cloud._helpers import _UTC
+        from google.cloud._helpers import _microseconds_from_datetime
 
         class CET(_UTC):
             _tzname = 'CET'
@@ -503,8 +503,8 @@ class Test__millis_from_datetime(unittest.TestCase):
     def test_w_naive_datetime(self):
         import datetime
         import six
-        from gcloud._helpers import UTC
-        from gcloud._helpers import _microseconds_from_datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _microseconds_from_datetime
 
         NOW = datetime.datetime.utcnow()
         UTC_NOW = NOW.replace(tzinfo=UTC)
@@ -518,13 +518,13 @@ class Test__millis_from_datetime(unittest.TestCase):
 class Test__datetime_from_microseconds(unittest.TestCase):
 
     def _callFUT(self, value):
-        from gcloud._helpers import _datetime_from_microseconds
+        from google.cloud._helpers import _datetime_from_microseconds
         return _datetime_from_microseconds(value)
 
     def test_it(self):
         import datetime
-        from gcloud._helpers import UTC
-        from gcloud._helpers import _microseconds_from_datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _microseconds_from_datetime
 
         NOW = datetime.datetime(2015, 7, 29, 17, 45, 21, 123456,
                                 tzinfo=UTC)
@@ -535,7 +535,7 @@ class Test__datetime_from_microseconds(unittest.TestCase):
 class Test__rfc3339_to_datetime(unittest.TestCase):
 
     def _callFUT(self, dt_str):
-        from gcloud._helpers import _rfc3339_to_datetime
+        from google.cloud._helpers import _rfc3339_to_datetime
         return _rfc3339_to_datetime(dt_str)
 
     def test_w_bogus_zone(self):
@@ -554,7 +554,7 @@ class Test__rfc3339_to_datetime(unittest.TestCase):
 
     def test_w_microseconds(self):
         import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         year = 2009
         month = 12
@@ -589,7 +589,7 @@ class Test__rfc3339_to_datetime(unittest.TestCase):
 class Test__rfc3339_nanos_to_datetime(unittest.TestCase):
 
     def _callFUT(self, dt_str):
-        from gcloud._helpers import _rfc3339_nanos_to_datetime
+        from google.cloud._helpers import _rfc3339_nanos_to_datetime
         return _rfc3339_nanos_to_datetime(dt_str)
 
     def test_w_bogus_zone(self):
@@ -608,7 +608,7 @@ class Test__rfc3339_nanos_to_datetime(unittest.TestCase):
 
     def test_w_truncated_nanos(self):
         import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         year = 2009
         month = 12
@@ -637,7 +637,7 @@ class Test__rfc3339_nanos_to_datetime(unittest.TestCase):
 
     def test_w_naonseconds(self):
         import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         year = 2009
         month = 12
@@ -659,12 +659,12 @@ class Test__rfc3339_nanos_to_datetime(unittest.TestCase):
 class Test__datetime_to_rfc3339(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import _datetime_to_rfc3339
         return _datetime_to_rfc3339(*args, **kwargs)
 
     @staticmethod
     def _make_timezone(offset):
-        from gcloud._helpers import _UTC
+        from google.cloud._helpers import _UTC
 
         class CET(_UTC):
             _tzname = 'CET'
@@ -674,7 +674,7 @@ class Test__datetime_to_rfc3339(unittest.TestCase):
 
     def test_w_utc_datetime(self):
         import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         TIMESTAMP = datetime.datetime(2016, 4, 5, 13, 30, 0, tzinfo=UTC)
         result = self._callFUT(TIMESTAMP, ignore_zone=False)
@@ -682,7 +682,7 @@ class Test__datetime_to_rfc3339(unittest.TestCase):
 
     def test_w_non_utc_datetime(self):
         import datetime
-        from gcloud._helpers import _UTC
+        from google.cloud._helpers import _UTC
 
         zone = self._make_timezone(offset=datetime.timedelta(hours=-1))
         TIMESTAMP = datetime.datetime(2016, 4, 5, 13, 30, 0, tzinfo=zone)
@@ -691,7 +691,7 @@ class Test__datetime_to_rfc3339(unittest.TestCase):
 
     def test_w_non_utc_datetime_and_ignore_zone(self):
         import datetime
-        from gcloud._helpers import _UTC
+        from google.cloud._helpers import _UTC
 
         zone = self._make_timezone(offset=datetime.timedelta(hours=-1))
         TIMESTAMP = datetime.datetime(2016, 4, 5, 13, 30, 0, tzinfo=zone)
@@ -709,7 +709,7 @@ class Test__datetime_to_rfc3339(unittest.TestCase):
 class Test__to_bytes(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud._helpers import _to_bytes
+        from google.cloud._helpers import _to_bytes
         return _to_bytes(*args, **kwargs)
 
     def test_with_bytes(self):
@@ -736,7 +736,7 @@ class Test__to_bytes(unittest.TestCase):
 class Test__bytes_to_unicode(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud._helpers import _bytes_to_unicode
+        from google.cloud._helpers import _bytes_to_unicode
         return _bytes_to_unicode(*args, **kwargs)
 
     def test_with_bytes(self):
@@ -757,13 +757,13 @@ class Test__bytes_to_unicode(unittest.TestCase):
 class Test__pb_timestamp_to_datetime(unittest.TestCase):
 
     def _callFUT(self, timestamp):
-        from gcloud._helpers import _pb_timestamp_to_datetime
+        from google.cloud._helpers import _pb_timestamp_to_datetime
         return _pb_timestamp_to_datetime(timestamp)
 
     def test_it(self):
         import datetime
         from google.protobuf.timestamp_pb2 import Timestamp
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         # Epoch is midnight on January 1, 1970 ...
         dt_stamp = datetime.datetime(1970, month=1, day=1, hour=0,
@@ -778,7 +778,7 @@ class Test__pb_timestamp_to_datetime(unittest.TestCase):
 class Test__pb_timestamp_to_rfc3339(unittest.TestCase):
 
     def _callFUT(self, timestamp):
-        from gcloud._helpers import _pb_timestamp_to_rfc3339
+        from google.cloud._helpers import _pb_timestamp_to_rfc3339
         return _pb_timestamp_to_rfc3339(timestamp)
 
     def test_it(self):
@@ -795,13 +795,13 @@ class Test__pb_timestamp_to_rfc3339(unittest.TestCase):
 class Test__datetime_to_pb_timestamp(unittest.TestCase):
 
     def _callFUT(self, when):
-        from gcloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud._helpers import _datetime_to_pb_timestamp
         return _datetime_to_pb_timestamp(when)
 
     def test_it(self):
         import datetime
         from google.protobuf.timestamp_pb2 import Timestamp
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         # Epoch is midnight on January 1, 1970 ...
         dt_stamp = datetime.datetime(1970, month=1, day=1, hour=0,
@@ -820,7 +820,7 @@ class Test__name_from_project_path(unittest.TestCase):
     TEMPLATE = r'projects/(?P<project>\w+)/things/(?P<name>\w+)'
 
     def _callFUT(self, path, project, template):
-        from gcloud._helpers import _name_from_project_path
+        from google.cloud._helpers import _name_from_project_path
         return _name_from_project_path(path, project, template)
 
     def test_w_invalid_path_length(self):
@@ -858,7 +858,7 @@ class Test__name_from_project_path(unittest.TestCase):
 class TestMetadataPlugin(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud._helpers import MetadataPlugin
+        from google.cloud._helpers import MetadataPlugin
         return MetadataPlugin
 
     def _makeOne(self, *args, **kwargs):
@@ -894,7 +894,7 @@ class TestMetadataPlugin(unittest.TestCase):
 class Test_make_stub(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud._helpers import make_stub
+        from google.cloud._helpers import make_stub
         return make_stub(*args, **kwargs)
 
     def test_it(self):
@@ -972,7 +972,7 @@ class Test_make_stub(unittest.TestCase):
 class Test_exc_to_code(unittest.TestCase):
 
     def _callFUT(self, exc):
-        from gcloud._helpers import exc_to_code
+        from google.cloud._helpers import exc_to_code
         return exc_to_code(exc)
 
     def test_with_stable(self):

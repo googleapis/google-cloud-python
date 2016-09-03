@@ -16,7 +16,7 @@
 
 import re
 
-from gcloud._helpers import _name_from_project_path
+from google.cloud._helpers import _name_from_project_path
 
 
 _TOPIC_TEMPLATE = re.compile(r"""

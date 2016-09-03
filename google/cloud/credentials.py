@@ -21,9 +21,9 @@ from six.moves.urllib.parse import urlencode
 
 from oauth2client import client
 
-from gcloud._helpers import UTC
-from gcloud._helpers import _NOW
-from gcloud._helpers import _microseconds_from_datetime
+from google.cloud._helpers import UTC
+from google.cloud._helpers import _NOW
+from google.cloud._helpers import _microseconds_from_datetime
 
 
 def get_credentials():

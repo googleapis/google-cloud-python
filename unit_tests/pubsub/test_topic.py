@@ -21,7 +21,7 @@ class TestTopic(unittest.TestCase):
     TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
 
     def _getTargetClass(self):
-        from gcloud.pubsub.topic import Topic
+        from google.cloud.pubsub.topic import Topic
         return Topic
 
     def _makeOne(self, *args, **kw):
@@ -138,8 +138,8 @@ class TestTopic(unittest.TestCase):
     def test_publish_single_bytes_wo_attrs_w_add_timestamp_alt_client(self):
         import base64
         import datetime
-        from gcloud.pubsub import topic as MUT
-        from gcloud._helpers import _RFC3339_MICROS
+        from google.cloud.pubsub import topic as MUT
+        from google.cloud._helpers import _RFC3339_MICROS
         from unit_tests._testing import _Monkey
         NOW = datetime.datetime.utcnow()
 
@@ -287,7 +287,7 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(getattr(api, '_topic_published', self), self)
 
     def test_subscription(self):
-        from gcloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.subscription import Subscription
         client = _Client(project=self.PROJECT)
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
@@ -298,7 +298,7 @@ class TestTopic(unittest.TestCase):
         self.assertTrue(subscription.topic is topic)
 
     def test_list_subscriptions_no_paging(self):
-        from gcloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.subscription import Subscription
         SUB_NAME_1 = 'subscription_1'
         SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (
             self.PROJECT, SUB_NAME_1)
@@ -332,7 +332,7 @@ class TestTopic(unittest.TestCase):
                          (self.TOPIC_PATH, None, None))
 
     def test_list_subscriptions_with_paging(self):
-        from gcloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.subscription import Subscription
         SUB_NAME_1 = 'subscription_1'
         SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (
             self.PROJECT, SUB_NAME_1)
@@ -382,7 +382,7 @@ class TestTopic(unittest.TestCase):
                          (self.TOPIC_PATH, None, None))
 
     def test_get_iam_policy_w_bound_client(self):
-        from gcloud.pubsub.iam import (
+        from google.cloud.pubsub.iam import (
             PUBSUB_ADMIN_ROLE,
             PUBSUB_EDITOR_ROLE,
             PUBSUB_VIEWER_ROLE,
@@ -447,8 +447,8 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(api._got_iam_policy, self.TOPIC_PATH)
 
     def test_set_iam_policy_w_bound_client(self):
-        from gcloud.pubsub.iam import Policy
-        from gcloud.pubsub.iam import (
+        from google.cloud.pubsub.iam import Policy
+        from google.cloud.pubsub.iam import (
             PUBSUB_ADMIN_ROLE,
             PUBSUB_EDITOR_ROLE,
             PUBSUB_VIEWER_ROLE,
@@ -509,7 +509,7 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(api._set_iam_policy, (self.TOPIC_PATH, POLICY))
 
     def test_set_iam_policy_w_alternate_client(self):
-        from gcloud.pubsub.iam import Policy
+        from google.cloud.pubsub.iam import Policy
         RESPONSE = {'etag': 'ACAB'}
 
         client1 = _Client(project=self.PROJECT)
@@ -530,7 +530,7 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(api._set_iam_policy, (self.TOPIC_PATH, {}))
 
     def test_check_iam_permissions_w_bound_client(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.cloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         client = _Client(project=self.PROJECT)
         api = client.iam_policy_api = _FauxIAMPolicy()
@@ -544,7 +544,7 @@ class TestTopic(unittest.TestCase):
                          (self.TOPIC_PATH, ROLES))
 
     def test_check_iam_permissions_w_alternate_client(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.cloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
@@ -563,7 +563,7 @@ class TestBatch(unittest.TestCase):
     PROJECT = 'PROJECT'
 
     def _getTargetClass(self):
-        from gcloud.pubsub.topic import Batch
+        from google.cloud.pubsub.topic import Batch
         return Batch
 
     def _makeOne(self, *args, **kwargs):
@@ -735,7 +735,7 @@ class _FauxPublisherAPI(object):
         return self._topic_create_response
 
     def topic_get(self, topic_path):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._topic_got = topic_path
         try:
             return self._topic_get_response

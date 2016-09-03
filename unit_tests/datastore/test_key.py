@@ -20,7 +20,7 @@ class TestKey(unittest.TestCase):
     _DEFAULT_PROJECT = 'PROJECT'
 
     def _getTargetClass(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
         return Key
 
     def _makeOne(self, *args, **kwargs):
@@ -313,7 +313,7 @@ class TestKey(unittest.TestCase):
         self.assertRaises(ValueError, key.completed_key, 5678)
 
     def test_to_protobuf_defaults(self):
-        from gcloud.datastore._generated import entity_pb2
+        from google.cloud.datastore._generated import entity_pb2
 
         _KIND = 'KIND'
         key = self._makeOne(_KIND, project=self._DEFAULT_PROJECT)

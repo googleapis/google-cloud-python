@@ -36,7 +36,7 @@ class Test_get_credentials(unittest.TestCase):
 class Test_generate_signed_url(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud.credentials import generate_signed_url
+        from google.cloud.credentials import generate_signed_url
         return generate_signed_url(*args, **kwargs)
 
     def _generate_helper(self, response_type=None, response_disposition=None,
@@ -104,7 +104,7 @@ class Test_generate_signed_url(unittest.TestCase):
 class Test_generate_signed_url_exception(unittest.TestCase):
     def test_with_google_credentials(self):
         import time
-        from gcloud.credentials import generate_signed_url
+        from google.cloud.credentials import generate_signed_url
         RESOURCE = '/name/path'
 
         credentials = _GoogleCredentials()
@@ -116,7 +116,7 @@ class Test_generate_signed_url_exception(unittest.TestCase):
 class Test__get_signed_query_params(unittest.TestCase):
 
     def _callFUT(self, credentials, expiration, string_to_sign):
-        from gcloud.credentials import _get_signed_query_params
+        from google.cloud.credentials import _get_signed_query_params
         return _get_signed_query_params(credentials, expiration,
                                         string_to_sign)
 
@@ -143,7 +143,7 @@ class Test__get_signed_query_params(unittest.TestCase):
 class Test__get_expiration_seconds(unittest.TestCase):
 
     def _callFUT(self, expiration):
-        from gcloud.credentials import _get_expiration_seconds
+        from google.cloud.credentials import _get_expiration_seconds
         return _get_expiration_seconds(expiration)
 
     def _utc_seconds(self, when):
@@ -174,7 +174,7 @@ class Test__get_expiration_seconds(unittest.TestCase):
 
     def test_w_utc_datetime(self):
         import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         expiration_utc = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, UTC)
         utc_seconds = self._utc_seconds(expiration_utc)
@@ -182,7 +182,7 @@ class Test__get_expiration_seconds(unittest.TestCase):
 
     def test_w_other_zone_datetime(self):
         import datetime
-        from gcloud._helpers import _UTC
+        from google.cloud._helpers import _UTC
 
         class CET(_UTC):
             _tzname = 'CET'

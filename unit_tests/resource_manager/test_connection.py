@@ -18,7 +18,7 @@ import unittest
 class TestConnection(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.resource_manager.connection import Connection
+        from google.cloud.resource_manager.connection import Connection
         return Connection
 
     def _makeOne(self, *args, **kw):

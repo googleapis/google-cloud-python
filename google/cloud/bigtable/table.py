@@ -14,19 +14,19 @@
 
 """User friendly container for Google Cloud Bigtable Table."""
 
-from gcloud._helpers import _to_bytes
-from gcloud.bigtable._generated import (
+from google.cloud._helpers import _to_bytes
+from google.cloud.bigtable._generated import (
     bigtable_pb2 as data_messages_v2_pb2)
-from gcloud.bigtable._generated import (
+from google.cloud.bigtable._generated import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
-from gcloud.bigtable._generated import (
+from google.cloud.bigtable._generated import (
     table_pb2 as table_v2_pb2)
-from gcloud.bigtable.column_family import _gc_rule_from_pb
-from gcloud.bigtable.column_family import ColumnFamily
-from gcloud.bigtable.row import AppendRow
-from gcloud.bigtable.row import ConditionalRow
-from gcloud.bigtable.row import DirectRow
-from gcloud.bigtable.row_data import PartialRowsData
+from google.cloud.bigtable.column_family import _gc_rule_from_pb
+from google.cloud.bigtable.column_family import ColumnFamily
+from google.cloud.bigtable.row import AppendRow
+from google.cloud.bigtable.row import ConditionalRow
+from google.cloud.bigtable.row import DirectRow
+from google.cloud.bigtable.row_data import PartialRowsData
 
 
 class Table(object):

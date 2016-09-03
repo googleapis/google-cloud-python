@@ -30,7 +30,7 @@ class TestTable(unittest.TestCase):
     VALUE = b'value'
 
     def _getTargetClass(self):
-        from gcloud.bigtable.table import Table
+        from google.cloud.bigtable.table import Table
         return Table
 
     def _makeOne(self, *args, **kwargs):
@@ -54,7 +54,7 @@ class TestTable(unittest.TestCase):
         self.assertEqual(table.name, expected_name)
 
     def test_column_family_factory(self):
-        from gcloud.bigtable.column_family import ColumnFamily
+        from google.cloud.bigtable.column_family import ColumnFamily
 
         table_id = 'table-id'
         gc_rule = object()
@@ -68,7 +68,7 @@ class TestTable(unittest.TestCase):
         self.assertEqual(column_family._table, table)
 
     def test_row_factory_direct(self):
-        from gcloud.bigtable.row import DirectRow
+        from google.cloud.bigtable.row import DirectRow
 
         table_id = 'table-id'
         table = self._makeOne(table_id, None)
@@ -80,7 +80,7 @@ class TestTable(unittest.TestCase):
         self.assertEqual(row._table, table)
 
     def test_row_factory_conditional(self):
-        from gcloud.bigtable.row import ConditionalRow
+        from google.cloud.bigtable.row import ConditionalRow
 
         table_id = 'table-id'
         table = self._makeOne(table_id, None)
@@ -93,7 +93,7 @@ class TestTable(unittest.TestCase):
         self.assertEqual(row._table, table)
 
     def test_row_factory_append(self):
-        from gcloud.bigtable.row import AppendRow
+        from google.cloud.bigtable.row import AppendRow
 
         table_id = 'table-id'
         table = self._makeOne(table_id, None)
@@ -133,7 +133,7 @@ class TestTable(unittest.TestCase):
         self.assertNotEqual(table1, table2)
 
     def _create_test_helper(self, initial_split_keys, column_families=()):
-        from gcloud._helpers import _to_bytes
+        from google.cloud._helpers import _to_bytes
         from unit_tests.bigtable._testing import _FakeStub
 
         client = _Client()
@@ -186,8 +186,8 @@ class TestTable(unittest.TestCase):
         self._create_test_helper(initial_split_keys)
 
     def test_create_with_column_families(self):
-        from gcloud.bigtable.column_family import ColumnFamily
-        from gcloud.bigtable.column_family import MaxVersionsGCRule
+        from google.cloud.bigtable.column_family import ColumnFamily
+        from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
         cf_id1 = 'col-fam-id1'
         cf1 = ColumnFamily(cf_id1, None)
@@ -269,7 +269,7 @@ class TestTable(unittest.TestCase):
     def _read_row_helper(self, chunks, expected_result):
         from unit_tests._testing import _Monkey
         from unit_tests.bigtable._testing import _FakeStub
-        from gcloud.bigtable import table as MUT
+        from google.cloud.bigtable import table as MUT
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -315,8 +315,8 @@ class TestTable(unittest.TestCase):
         self._read_row_helper(chunks, None)
 
     def test_read_row_complete(self):
-        from gcloud.bigtable.row_data import Cell
-        from gcloud.bigtable.row_data import PartialRowData
+        from google.cloud.bigtable.row_data import Cell
+        from google.cloud.bigtable.row_data import PartialRowData
 
         chunk = _ReadRowsResponseCellChunkPB(
             row_key=self.ROW_KEY,
@@ -349,8 +349,8 @@ class TestTable(unittest.TestCase):
     def test_read_rows(self):
         from unit_tests._testing import _Monkey
         from unit_tests.bigtable._testing import _FakeStub
-        from gcloud.bigtable.row_data import PartialRowsData
-        from gcloud.bigtable import table as MUT
+        from google.cloud.bigtable.row_data import PartialRowsData
+        from google.cloud.bigtable import table as MUT
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -430,7 +430,7 @@ class Test__create_row_request(unittest.TestCase):
 
     def _callFUT(self, table_name, row_key=None, start_key=None, end_key=None,
                  filter_=None, limit=None):
-        from gcloud.bigtable.table import _create_row_request
+        from google.cloud.bigtable.table import _create_row_request
         return _create_row_request(
             table_name, row_key=row_key, start_key=start_key, end_key=end_key,
             filter_=filter_, limit=limit)
@@ -484,7 +484,7 @@ class Test__create_row_request(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_with_filter(self):
-        from gcloud.bigtable.row_filters import RowSampleFilter
+        from google.cloud.bigtable.row_filters import RowSampleFilter
         table_name = 'table_name'
         row_filter = RowSampleFilter(0.33)
         result = self._callFUT(table_name, filter_=row_filter)
@@ -506,37 +506,37 @@ class Test__create_row_request(unittest.TestCase):
 
 
 def _CreateTableRequestPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_table_admin_pb2 as table_admin_v2_pb2)
     return table_admin_v2_pb2.CreateTableRequest(*args, **kw)
 
 
 def _CreateTableRequestSplitPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_table_admin_pb2 as table_admin_v2_pb2)
     return table_admin_v2_pb2.CreateTableRequest.Split(*args, **kw)
 
 
 def _DeleteTableRequestPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_table_admin_pb2 as table_admin_v2_pb2)
     return table_admin_v2_pb2.DeleteTableRequest(*args, **kw)
 
 
 def _GetTableRequestPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_table_admin_pb2 as table_admin_v2_pb2)
     return table_admin_v2_pb2.GetTableRequest(*args, **kw)
 
 
 def _ReadRowsRequestPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.ReadRowsRequest(*args, **kw)
 
 
 def _ReadRowsResponseCellChunkPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     family_name = kw.pop('family_name')
     qualifier = kw.pop('qualifier')
@@ -547,25 +547,25 @@ def _ReadRowsResponseCellChunkPB(*args, **kw):
 
 
 def _ReadRowsResponsePB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.ReadRowsResponse(*args, **kw)
 
 
 def _SampleRowKeysRequestPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.SampleRowKeysRequest(*args, **kw)
 
 
 def _TablePB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
     return table_v2_pb2.Table(*args, **kw)
 
 
 def _ColumnFamilyPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
     return table_v2_pb2.ColumnFamily(*args, **kw)
 

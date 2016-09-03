@@ -23,15 +23,15 @@ class TestClient(unittest.TestCase):
     SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
 
     def _getTargetClass(self):
-        from gcloud.pubsub.client import Client
+        from google.cloud.pubsub.client import Client
         return Client
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
     def test_publisher_api_wo_gax(self):
-        from gcloud.pubsub.connection import _PublisherAPI
-        from gcloud.pubsub import client as MUT
+        from google.cloud.pubsub.connection import _PublisherAPI
+        from google.cloud.pubsub import client as MUT
         from unit_tests._testing import _Monkey
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
@@ -47,7 +47,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_publisher_api_w_gax(self):
-        from gcloud.pubsub import client as MUT
+        from google.cloud.pubsub import client as MUT
         from unit_tests._testing import _Monkey
 
         wrapped = object()
@@ -78,8 +78,8 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_subscriber_api_wo_gax(self):
-        from gcloud.pubsub.connection import _SubscriberAPI
-        from gcloud.pubsub import client as MUT
+        from google.cloud.pubsub.connection import _SubscriberAPI
+        from google.cloud.pubsub import client as MUT
         from unit_tests._testing import _Monkey
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
@@ -95,7 +95,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_subscriber_api_w_gax(self):
-        from gcloud.pubsub import client as MUT
+        from google.cloud.pubsub import client as MUT
         from unit_tests._testing import _Monkey
 
         wrapped = object()
@@ -126,7 +126,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_iam_policy_api(self):
-        from gcloud.pubsub.connection import _IAMPolicyAPI
+        from google.cloud.pubsub.connection import _IAMPolicyAPI
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = object()
@@ -138,7 +138,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_list_topics_no_paging(self):
-        from gcloud.pubsub.topic import Topic
+        from google.cloud.pubsub.topic import Topic
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         client.connection = object()
@@ -155,7 +155,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(api._listed_topics, (self.PROJECT, None, None))
 
     def test_list_topics_with_paging(self):
-        from gcloud.pubsub.topic import Topic
+        from google.cloud.pubsub.topic import Topic
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
@@ -189,7 +189,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(api._listed_topics, (self.PROJECT, None, None))
 
     def test_list_subscriptions_no_paging(self):
-        from gcloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.subscription import Subscription
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
@@ -209,7 +209,7 @@ class TestClient(unittest.TestCase):
                          (self.PROJECT, None, None))
 
     def test_list_subscriptions_with_paging(self):
-        from gcloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.subscription import Subscription
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)

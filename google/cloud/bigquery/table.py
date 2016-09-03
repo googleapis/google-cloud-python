@@ -20,16 +20,16 @@ import os
 
 import six
 
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud._helpers import _microseconds_from_datetime
-from gcloud._helpers import _millis_from_datetime
-from gcloud.exceptions import NotFound
-from gcloud.streaming.http_wrapper import Request
-from gcloud.streaming.http_wrapper import make_api_request
-from gcloud.streaming.transfer import RESUMABLE_UPLOAD
-from gcloud.streaming.transfer import Upload
-from gcloud.bigquery.schema import SchemaField
-from gcloud.bigquery._helpers import _rows_from_json
+from google.cloud._helpers import _datetime_from_microseconds
+from google.cloud._helpers import _microseconds_from_datetime
+from google.cloud._helpers import _millis_from_datetime
+from google.cloud.exceptions import NotFound
+from google.cloud.streaming.http_wrapper import Request
+from google.cloud.streaming.http_wrapper import make_api_request
+from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
+from google.cloud.streaming.transfer import Upload
+from google.cloud.bigquery.schema import SchemaField
+from google.cloud.bigquery._helpers import _rows_from_json
 
 
 _MARKER = object()

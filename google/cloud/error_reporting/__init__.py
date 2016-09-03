@@ -14,4 +14,4 @@
 
 """Client library for Stackdriver Error Reporting"""
 
-from gcloud.error_reporting.client import Client
+from google.cloud.error_reporting.client import Client

@@ -19,10 +19,10 @@ A document is used to hold text to be analyzed and annotated.
 
 import collections
 
-from gcloud.language.entity import Entity
-from gcloud.language.sentiment import Sentiment
-from gcloud.language.syntax import Sentence
-from gcloud.language.syntax import Token
+from google.cloud.language.entity import Entity
+from google.cloud.language.sentiment import Sentiment
+from google.cloud.language.syntax import Sentence
+from google.cloud.language.syntax import Token
 
 
 DEFAULT_LANGUAGE = 'en-US'

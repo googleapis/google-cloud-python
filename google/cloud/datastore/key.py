@@ -17,7 +17,7 @@
 import copy
 import six
 
-from gcloud.datastore._generated import entity_pb2 as _entity_pb2
+from google.cloud.datastore._generated import entity_pb2 as _entity_pb2
 
 
 class Key(object):

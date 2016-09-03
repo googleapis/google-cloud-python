@@ -14,22 +14,22 @@
 
 """Google Stackdriver Monitoring API wrapper."""
 
-from gcloud.monitoring.client import Client
-from gcloud.monitoring.connection import Connection
-from gcloud.monitoring.group import Group
-from gcloud.monitoring.label import LabelDescriptor
-from gcloud.monitoring.label import LabelValueType
-from gcloud.monitoring.metric import Metric
-from gcloud.monitoring.metric import MetricDescriptor
-from gcloud.monitoring.metric import MetricKind
-from gcloud.monitoring.metric import ValueType
-from gcloud.monitoring.query import Aligner
-from gcloud.monitoring.query import Query
-from gcloud.monitoring.query import Reducer
-from gcloud.monitoring.resource import Resource
-from gcloud.monitoring.resource import ResourceDescriptor
-from gcloud.monitoring.timeseries import Point
-from gcloud.monitoring.timeseries import TimeSeries
+from google.cloud.monitoring.client import Client
+from google.cloud.monitoring.connection import Connection
+from google.cloud.monitoring.group import Group
+from google.cloud.monitoring.label import LabelDescriptor
+from google.cloud.monitoring.label import LabelValueType
+from google.cloud.monitoring.metric import Metric
+from google.cloud.monitoring.metric import MetricDescriptor
+from google.cloud.monitoring.metric import MetricKind
+from google.cloud.monitoring.metric import ValueType
+from google.cloud.monitoring.query import Aligner
+from google.cloud.monitoring.query import Query
+from google.cloud.monitoring.query import Reducer
+from google.cloud.monitoring.resource import Resource
+from google.cloud.monitoring.resource import ResourceDescriptor
+from google.cloud.monitoring.timeseries import Point
+from google.cloud.monitoring.timeseries import TimeSeries
 
 __all__ = (
     'Client',

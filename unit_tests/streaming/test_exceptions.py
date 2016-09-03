@@ -4,7 +4,7 @@ import unittest
 class Test_HttpError(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.streaming.exceptions import HttpError
+        from google.cloud.streaming.exceptions import HttpError
         return HttpError
 
     def _makeOne(self, *args, **kw):
@@ -45,7 +45,7 @@ class Test_HttpError(unittest.TestCase):
 class Test_RetryAfterError(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.streaming.exceptions import RetryAfterError
+        from google.cloud.streaming.exceptions import RetryAfterError
         return RetryAfterError
 
     def _makeOne(self, *args, **kw):

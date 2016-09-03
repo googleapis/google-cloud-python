@@ -29,17 +29,17 @@ In the hierarchy of API concepts
 
 from pkg_resources import get_distribution
 
-from gcloud._helpers import make_stub
-from gcloud.bigtable._generated import bigtable_instance_admin_pb2
-from gcloud.bigtable._generated import bigtable_pb2
-from gcloud.bigtable._generated import bigtable_table_admin_pb2
-from gcloud.bigtable._generated import operations_grpc_pb2
-from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
-from gcloud.bigtable.instance import Instance
-from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
-from gcloud.client import _ClientFactoryMixin
-from gcloud.client import _ClientProjectMixin
-from gcloud.credentials import get_credentials
+from google.cloud._helpers import make_stub
+from google.cloud.bigtable._generated import bigtable_instance_admin_pb2
+from google.cloud.bigtable._generated import bigtable_pb2
+from google.cloud.bigtable._generated import bigtable_table_admin_pb2
+from google.cloud.bigtable._generated import operations_grpc_pb2
+from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
+from google.cloud.bigtable.instance import Instance
+from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
+from google.cloud.client import _ClientFactoryMixin
+from google.cloud.client import _ClientProjectMixin
+from google.cloud.credentials import get_credentials
 
 
 TABLE_ADMIN_HOST = 'bigtableadmin.googleapis.com'

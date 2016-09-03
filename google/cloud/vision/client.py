@@ -15,10 +15,10 @@
 """Client for interacting with the Google Cloud Vision API."""
 
 
-from gcloud.client import JSONClient
-from gcloud.vision.connection import Connection
-from gcloud.vision.feature import Feature
-from gcloud.vision.image import Image
+from google.cloud.client import JSONClient
+from google.cloud.vision.connection import Connection
+from google.cloud.vision.feature import Feature
+from google.cloud.vision.image import Image
 
 
 class VisionRequest(object):

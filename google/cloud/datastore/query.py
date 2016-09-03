@@ -16,10 +16,10 @@
 
 import base64
 
-from gcloud._helpers import _ensure_tuple_or_list
-from gcloud.datastore._generated import query_pb2 as _query_pb2
-from gcloud.datastore import helpers
-from gcloud.datastore.key import Key
+from google.cloud._helpers import _ensure_tuple_or_list
+from google.cloud.datastore._generated import query_pb2 as _query_pb2
+from google.cloud.datastore import helpers
+from google.cloud.datastore.key import Key
 
 
 class Query(object):

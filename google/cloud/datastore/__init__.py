@@ -50,13 +50,13 @@ The main concepts with this API are:
   when race conditions may occur.
 """
 
-from gcloud.datastore.batch import Batch
-from gcloud.datastore.connection import Connection
-from gcloud.datastore.client import Client
-from gcloud.datastore.entity import Entity
-from gcloud.datastore.key import Key
-from gcloud.datastore.query import Query
-from gcloud.datastore.transaction import Transaction
+from google.cloud.datastore.batch import Batch
+from google.cloud.datastore.connection import Connection
+from google.cloud.datastore.client import Client
+from google.cloud.datastore.entity import Entity
+from google.cloud.datastore.key import Key
+from google.cloud.datastore.query import Query
+from google.cloud.datastore.transaction import Transaction
 
 
 SCOPE = Connection.SCOPE

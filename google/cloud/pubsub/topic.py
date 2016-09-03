@@ -16,13 +16,13 @@
 
 import base64
 
-from gcloud._helpers import _datetime_to_rfc3339
-from gcloud._helpers import _NOW
-from gcloud.exceptions import NotFound
-from gcloud.pubsub._helpers import subscription_name_from_path
-from gcloud.pubsub._helpers import topic_name_from_path
-from gcloud.pubsub.iam import Policy
-from gcloud.pubsub.subscription import Subscription
+from google.cloud._helpers import _datetime_to_rfc3339
+from google.cloud._helpers import _NOW
+from google.cloud.exceptions import NotFound
+from google.cloud.pubsub._helpers import subscription_name_from_path
+from google.cloud.pubsub._helpers import topic_name_from_path
+from google.cloud.pubsub.iam import Policy
+from google.cloud.pubsub.subscription import Subscription
 
 
 class Topic(object):

@@ -19,8 +19,8 @@ import re
 
 from google.protobuf.json_format import Parse
 
-from gcloud._helpers import _name_from_project_path
-from gcloud._helpers import _rfc3339_nanos_to_datetime
+from google.cloud._helpers import _name_from_project_path
+from google.cloud._helpers import _rfc3339_nanos_to_datetime
 
 
 _LOGGER_TEMPLATE = re.compile(r"""

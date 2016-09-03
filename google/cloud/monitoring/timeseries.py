@@ -24,8 +24,8 @@ Features intentionally omitted from this first version of the client library:
 
 import collections
 
-from gcloud.monitoring.metric import Metric
-from gcloud.monitoring.resource import Resource
+from google.cloud.monitoring.metric import Metric
+from google.cloud.monitoring.resource import Resource
 
 
 class TimeSeries(collections.namedtuple(

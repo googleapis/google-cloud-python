@@ -30,18 +30,18 @@ and monitored resource descriptors.
 
 import datetime
 
-from gcloud.client import JSONClient
-from gcloud.monitoring.connection import Connection
-from gcloud.monitoring.group import Group
-from gcloud.monitoring.metric import Metric
-from gcloud.monitoring.metric import MetricDescriptor
-from gcloud.monitoring.metric import MetricKind
-from gcloud.monitoring.metric import ValueType
-from gcloud.monitoring.query import Query
-from gcloud.monitoring.resource import Resource
-from gcloud.monitoring.resource import ResourceDescriptor
-from gcloud.monitoring.timeseries import Point
-from gcloud.monitoring.timeseries import TimeSeries
+from google.cloud.client import JSONClient
+from google.cloud.monitoring.connection import Connection
+from google.cloud.monitoring.group import Group
+from google.cloud.monitoring.metric import Metric
+from google.cloud.monitoring.metric import MetricDescriptor
+from google.cloud.monitoring.metric import MetricKind
+from google.cloud.monitoring.metric import ValueType
+from google.cloud.monitoring.query import Query
+from google.cloud.monitoring.resource import Resource
+from google.cloud.monitoring.resource import ResourceDescriptor
+from google.cloud.monitoring.timeseries import Point
+from google.cloud.monitoring.timeseries import TimeSeries
 
 _UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.
 

@@ -24,11 +24,11 @@ from google.protobuf import struct_pb2
 from google.type import latlng_pb2
 import six
 
-from gcloud._helpers import _datetime_to_pb_timestamp
-from gcloud._helpers import _pb_timestamp_to_datetime
-from gcloud.datastore._generated import entity_pb2 as _entity_pb2
-from gcloud.datastore.entity import Entity
-from gcloud.datastore.key import Key
+from google.cloud._helpers import _datetime_to_pb_timestamp
+from google.cloud._helpers import _pb_timestamp_to_datetime
+from google.cloud.datastore._generated import entity_pb2 as _entity_pb2
+from google.cloud.datastore.entity import Entity
+from google.cloud.datastore.key import Key
 
 __all__ = ('entity_from_protobuf', 'key_from_protobuf')
 

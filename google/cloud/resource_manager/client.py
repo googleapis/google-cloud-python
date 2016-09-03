@@ -15,10 +15,10 @@
 """A Client for interacting with the Resource Manager API."""
 
 
-from gcloud.client import Client as BaseClient
-from gcloud.iterator import Iterator
-from gcloud.resource_manager.connection import Connection
-from gcloud.resource_manager.project import Project
+from google.cloud.client import Client as BaseClient
+from google.cloud.iterator import Iterator
+from google.cloud.resource_manager.connection import Connection
+from google.cloud.resource_manager.project import Project
 
 
 class Client(BaseClient):

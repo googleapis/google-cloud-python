@@ -21,7 +21,7 @@ from six.moves.urllib.parse import urlencode
 
 import httplib2
 
-from gcloud.exceptions import make_exception
+from google.cloud.exceptions import make_exception
 
 
 API_BASE_URL = 'https://www.googleapis.com'

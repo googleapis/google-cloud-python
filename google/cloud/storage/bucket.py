@@ -18,14 +18,14 @@ import copy
 
 import six
 
-from gcloud._helpers import _rfc3339_to_datetime
-from gcloud.exceptions import NotFound
-from gcloud.iterator import Iterator
-from gcloud.storage._helpers import _PropertyMixin
-from gcloud.storage._helpers import _scalar_property
-from gcloud.storage.acl import BucketACL
-from gcloud.storage.acl import DefaultObjectACL
-from gcloud.storage.blob import Blob
+from google.cloud._helpers import _rfc3339_to_datetime
+from google.cloud.exceptions import NotFound
+from google.cloud.iterator import Iterator
+from google.cloud.storage._helpers import _PropertyMixin
+from google.cloud.storage._helpers import _scalar_property
+from google.cloud.storage.acl import BucketACL
+from google.cloud.storage.acl import DefaultObjectACL
+from google.cloud.storage.blob import Blob
 
 
 class _BlobIterator(Iterator):
