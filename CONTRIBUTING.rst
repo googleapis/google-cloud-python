@@ -24,11 +24,11 @@ using a Git checkout:
 
 - Clone your fork of ``google-cloud-python`` from your GitHub account to your local
   computer, substituting your account username and specifying the destination
-  as "hack-on-gcloud".  E.g.::
+  as "hack-on-google-cloud-python".  E.g.::
 
    $ cd ~
-   $ git clone git@github.com:USERNAME/google-cloud-python.git hack-on-gcloud
-   $ cd hack-on-gcloud
+   $ git clone git@github.com:USERNAME/google-cloud-python.git hack-on-google-cloud-python
+   $ cd hack-on-google-cloud-python
    # Configure remotes such that you can pull changes from the google-cloud-python
    # repository into your local repository.
    $ git remote add upstream https://github.com:GoogleCloudPlatform/google-cloud-python
@@ -41,7 +41,7 @@ repo, from which you can submit a pull request.
 
 - Create a virtualenv in which to install ``google-cloud-python``::
 
-   $ cd ~/hack-on-gcloud
+   $ cd ~/hack-on-google-cloud-python
    $ virtualenv --python python2.7 env
 
   Note that very old versions of virtualenv (virtualenv versions below, say,
@@ -52,16 +52,16 @@ repo, from which you can submit a pull request.
   flag to ``virtualenv``.  For example, ``virtualenv --python python2.7``
   chooses the Python 2.7 interpreter to be installed.
 
-  From here on in within these instructions, the ``~/hack-on-gcloud/env``
+  From here on in within these instructions, the ``~/hack-on-google-cloud-python/env``
   virtual environment you created above will be referred to as ``$VENV``.
   To use the instructions in the steps that follow literally, use the
-  ``export VENV=~/hack-on-gcloud/env`` command.
+  ``export VENV=~/hack-on-google-cloud-python/env`` command.
 
 - Install ``google-cloud-python`` from the checkout into the virtualenv using
   ``setup.py develop``.  Running ``setup.py develop`` *must* be done while
   the current working directory is the ``google-cloud-python`` checkout directory::
 
-   $ cd ~/hack-on-gcloud
+   $ cd ~/hack-on-google-cloud-python
    $ $VENV/bin/python setup.py develop
 
 I'm getting weird errors... Can you help?
@@ -131,7 +131,7 @@ Running Tests
   combination.  For example::
 
    $ sudo /usr/bin/pip install tox
-   $ cd ~/hack-on-gcloud/
+   $ cd ~/hack-on-google-cloud-python/
    $ /usr/bin/tox
 
 Running System Tests
@@ -288,13 +288,13 @@ using to develop ``google-cloud-python``):
 1. After following the steps above in "Using a Development Checkout", install
    Sphinx and all development requirements in your virtualenv::
 
-     $ cd ~/hack-on-gcloud
+     $ cd ~/hack-on-google-cloud-python
      $ $VENV/bin/pip install Sphinx
 
 2. Change into the ``docs`` directory within your ``google-cloud-python`` checkout and
    execute the ``make`` command with some flags::
 
-     $ cd ~/hack-on-gcloud/google-cloud-python/docs
+     $ cd ~/hack-on-google-cloud-python/google-cloud-python/docs
      $ make clean html SPHINXBUILD=$VENV/bin/sphinx-build
 
    The ``SPHINXBUILD=...`` argument tells Sphinx to use the virtualenv Python,
