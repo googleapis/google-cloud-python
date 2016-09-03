@@ -16,7 +16,7 @@
 
 import traceback
 
-import gcloud.logging.client
+import google.cloud.logging.client
 import six
 
 

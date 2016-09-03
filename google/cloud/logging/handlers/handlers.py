@@ -57,7 +57,7 @@ class CloudLoggingHandler(logging.StreamHandler):
 
     .. doctest::
 
-        import gcloud.logging
+        import google.cloud.logging
         from gcloud.logging.handlers import CloudLoggingHandler
 
         client = gcloud.logging.Client()
@@ -112,7 +112,7 @@ def setup_logging(handler, excluded_loggers=EXCLUDE_LOGGER_DEFAULTS):
     .. doctest::
 
         import logging
-        import gcloud.logging
+        import google.cloud.logging
         from gcloud.logging.handlers import CloudLoggingHandler
 
         client = gcloud.logging.Client()

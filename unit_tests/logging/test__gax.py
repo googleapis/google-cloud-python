@@ -17,7 +17,7 @@ import unittest
 
 try:
     # pylint: disable=unused-import
-    import gcloud.logging._gax
+    import google.cloud.logging._gax
     # pylint: enable=unused-import
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False

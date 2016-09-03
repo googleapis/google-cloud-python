@@ -105,7 +105,7 @@ class TestDocument(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_constructor_defaults(self):
-        import gcloud.language.document as MUT
+        import google.cloud.language.document as MUT
 
         client = object()
         content = 'abc'
@@ -118,7 +118,7 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(document.encoding, MUT.Encoding.UTF8)
 
     def test_constructor_explicit(self):
-        import gcloud.language.document as MUT
+        import google.cloud.language.document as MUT
 
         client = object()
         gcs_url = 'gs://some-bucket/some-obj.html'

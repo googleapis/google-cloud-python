@@ -395,7 +395,7 @@ Logging client.
 .. doctest::
 
     >>> import logging
-    >>> import gcloud.logging # Don't conflict with standard logging
+    >>> import google.cloud.logging # Don't conflict with standard logging
     >>> from gcloud.logging.handlers import CloudLoggingHandler
     >>> client = gcloud.logging.Client()
     >>> handler = CloudLoggingHandler(client)
@@ -427,7 +427,7 @@ this automatically:
 .. doctest::
 
     >>> import logging
-    >>> import gcloud.logging # Don't conflict with standard logging
+    >>> import google.cloud.logging # Don't conflict with standard logging
     >>> from gcloud.logging.handlers import CloudLoggingHandler, setup_logging
     >>> client = gcloud.logging.Client()
     >>> handler = CloudLoggingHandler(client)

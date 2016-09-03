@@ -15,8 +15,8 @@
 import logging
 import unittest
 
-import gcloud.logging
-import gcloud.logging.handlers.handlers
+import google.cloud.logging
+import google.cloud.logging.handlers.handlers
 from gcloud.logging.handlers.handlers import CloudLoggingHandler
 from gcloud.logging.handlers.transports import SyncTransport
 from gcloud import _helpers
