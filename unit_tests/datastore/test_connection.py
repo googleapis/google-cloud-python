@@ -112,29 +112,35 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         from google.cloud.datastore.connection import _DatastoreAPIOverGRPC
         return _DatastoreAPIOverGRPC
 
-    def _makeOne(self, stub, connection=None, mock_args=None):
+    def _makeOne(self, stub, connection=None, secure=True, mock_args=None):
         from unit_tests._testing import _Monkey
         from google.cloud.datastore import connection as MUT
 
         if connection is None:
             connection = _Connection(None)
             connection.credentials = object()
+            connection.host = 'CURR_HOST'
 
         if mock_args is None:
             mock_args = []
 
-        def mock_make_secure_stub(*args):
+        def mock_make_stub(*args):
             mock_args.append(args)
             return stub
 
-        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
-            return self._getTargetClass()(connection)
+        if secure:
+            to_monkey = {'make_secure_stub': mock_make_stub}
+        else:
+            to_monkey = {'make_insecure_stub': mock_make_stub}
+        with _Monkey(MUT, **to_monkey):
+            return self._getTargetClass()(connection, secure)
 
     def test_constructor(self):
         from google.cloud.datastore import connection as MUT
 
         conn = _Connection(None)
         conn.credentials = object()
+        conn.host = 'CURR_HOST'
 
         stub = _GRPCStub()
         mock_args = []
@@ -146,7 +152,26 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
             conn.credentials,
             conn.USER_AGENT,
             MUT.datastore_grpc_pb2.DatastoreStub,
-            MUT.DATASTORE_API_HOST,
+            conn.host,
+        )])
+
+    def test_constructor_insecure(self):
+        from gcloud.datastore import connection as MUT
+
+        conn = _Connection(None)
+        conn.credentials = object()
+        conn.host = 'CURR_HOST:1234'
+
+        stub = _GRPCStub()
+        mock_args = []
+        datastore_api = self._makeOne(stub, connection=conn,
+                                      secure=False,
+                                      mock_args=mock_args)
+        self.assertIs(datastore_api._stub, stub)
+
+        self.assertEqual(mock_args, [(
+            MUT.datastore_grpc_pb2.DatastoreStub,
+            conn.host,
         )])
 
     def test_lookup(self):
@@ -322,7 +347,7 @@ class TestConnection(unittest.TestCase):
             conn = self._makeOne()
 
         self.assertNotEqual(conn.api_base_url, API_BASE_URL)
-        self.assertEqual(conn.api_base_url, HOST + '/datastore')
+        self.assertEqual(conn.api_base_url, 'http://' + HOST)
 
     def test_ctor_defaults(self):
         conn = self._makeOne()
@@ -350,11 +375,11 @@ class TestConnection(unittest.TestCase):
         from unit_tests._testing import _Monkey
         from google.cloud.datastore import connection as MUT
 
-        connections = []
+        api_args = []
         return_val = object()
 
-        def mock_api(connection):
-            connections.append(connection)
+        def mock_api(connection, secure):
+            api_args.append((connection, secure))
             return return_val
 
         with _Monkey(MUT, _DatastoreAPIOverGRPC=mock_api):
@@ -362,7 +387,7 @@ class TestConnection(unittest.TestCase):
 
         self.assertEqual(conn.credentials, None)
         self.assertIs(conn._datastore_api, return_val)
-        self.assertEqual(connections, [conn])
+        self.assertEqual(api_args, [(conn, True)])
 
     def test_ctor_explicit(self):
         class Creds(object):
@@ -1065,6 +1090,7 @@ class Http(object):
 
 class _Connection(object):
 
+    host = None
     USER_AGENT = 'you-sir-age-int'
 
     def __init__(self, api_url):

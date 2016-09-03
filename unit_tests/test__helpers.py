@@ -975,7 +975,7 @@ class Test_make_insecure_stub(unittest.TestCase):
         from gcloud._helpers import make_insecure_stub
         return make_insecure_stub(*args, **kwargs)
 
-    def test_it(self):
+    def _helper(self, target, host, port=None):
         from unit_tests._testing import _Monkey
         from gcloud import _helpers as MUT
 
@@ -995,15 +995,22 @@ class Test_make_insecure_stub(unittest.TestCase):
             stub_inputs.append(channel)
             return mock_result
 
-        host = 'HOST'
-        port = 1025
         with _Monkey(MUT, grpc=grpc_mod):
-            result = self._callFUT(mock_stub_class, host, port)
+            result = self._callFUT(mock_stub_class, host, port=port)
 
         self.assertTrue(result is mock_result)
         self.assertEqual(stub_inputs, [CHANNEL])
-        target = '%s:%d' % (host, port)
         self.assertEqual(grpc_mod.insecure_channel_args, (target,))
+
+    def test_with_port_argument(self):
+        host = 'HOST'
+        port = 1025
+        target = '%s:%d' % (host, port)
+        self._helper(target, host, port=port)
+
+    def test_without_port_argument(self):
+        host = 'HOST:1114'
+        self._helper(host, host)
 
 
 class Test_exc_to_code(unittest.TestCase):

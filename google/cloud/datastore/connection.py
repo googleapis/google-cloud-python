@@ -18,6 +18,7 @@ import os
 
 from google.rpc import status_pb2
 
+from google.cloud._helpers import make_insecure_stub
 from google.cloud._helpers import make_secure_stub
 from google.cloud import connection as connection_module
 from google.cloud.environment_vars import DISABLE_GRPC
@@ -232,13 +233,20 @@ class _DatastoreAPIOverGRPC(object):
     :type connection: :class:`google.cloud.datastore.connection.Connection`
     :param connection: A connection object that contains helpful
                        information for making requests.
+
+    :type secure: bool
+    :param secure: Flag indicating if a secure stub connection is needed.
     """
 
-    def __init__(self, connection):
-        self._stub = make_secure_stub(connection.credentials,
-                                      connection.USER_AGENT,
-                                      datastore_grpc_pb2.DatastoreStub,
-                                      DATASTORE_API_HOST)
+    def __init__(self, connection, secure):
+        if secure:
+            self._stub = make_secure_stub(connection.credentials,
+                                          connection.USER_AGENT,
+                                          datastore_grpc_pb2.DatastoreStub,
+                                          connection.host)
+        else:
+            self._stub = make_insecure_stub(datastore_grpc_pb2.DatastoreStub,
+                                            connection.host)
 
     def lookup(self, project, request_pb):
         """Perform a ``lookup`` request.
@@ -373,14 +381,15 @@ class Connection(connection_module.Connection):
     def __init__(self, credentials=None, http=None):
         super(Connection, self).__init__(credentials=credentials, http=http)
         try:
-            # gcd.sh has /datastore/ in the path still since it supports
-            # v1beta2 and v1beta3 simultaneously.
-            api_base_url = '%s/datastore' % (os.environ[GCD_HOST],)
+            self.host = os.environ[GCD_HOST]
+            self.api_base_url = 'http://' + self.host
+            secure = False
         except KeyError:
-            api_base_url = self.__class__.API_BASE_URL
-        self.api_base_url = api_base_url
+            self.host = DATASTORE_API_HOST
+            self.api_base_url = self.__class__.API_BASE_URL
+            secure = True
         if _USE_GRPC:
-            self._datastore_api = _DatastoreAPIOverGRPC(self)
+            self._datastore_api = _DatastoreAPIOverGRPC(self, secure=secure)
         else:
             self._datastore_api = _DatastoreAPIOverHttp(self)
 
