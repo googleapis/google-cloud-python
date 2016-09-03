@@ -30,7 +30,7 @@ def _build_dataframe(time_series_iterable,
     """Build a :mod:`pandas` dataframe out of time series.
 
     :type time_series_iterable:
-        iterable over :class:`~gcloud.monitoring.timeseries.TimeSeries`
+        iterable over :class:`~google.cloud.monitoring.timeseries.TimeSeries`
     :param time_series_iterable:
         An iterable (e.g., a query object) yielding time series.
 

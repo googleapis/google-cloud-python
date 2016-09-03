@@ -72,7 +72,7 @@ class Document(object):
     stored on the document or referred to in a Google Cloud Storage
     object.
 
-    :type client: :class:`~gcloud.language.client.Client`
+    :type client: :class:`~google.cloud.language.client.Client`
     :param client: A client which holds credentials and other
                    configuration.
 

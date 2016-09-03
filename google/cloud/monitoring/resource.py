@@ -45,7 +45,7 @@ class ResourceDescriptor(object):
     :param description:
         A detailed description that might be used in documentation.
 
-    :type labels: list of :class:`~gcloud.monitoring.label.LabelDescriptor`
+    :type labels: list of :class:`~google.cloud.monitoring.label.LabelDescriptor`
     :param labels:
         A sequence of label descriptors specifying the labels used
         to identify a specific instance of this monitored resource.
@@ -159,8 +159,8 @@ class Resource(collections.namedtuple('Resource', 'type labels')):
     """A monitored resource identified by specifying values for all labels.
 
     The preferred way to construct a resource object is using the
-    :meth:`~gcloud.monitoring.client.Client.resource` factory method
-    of the :class:`~gcloud.monitoring.client.Client` class.
+    :meth:`~google.cloud.monitoring.client.Client.resource` factory method
+    of the :class:`~google.cloud.monitoring.client.Client` class.
 
     :type type: string
     :param type: The resource type name.

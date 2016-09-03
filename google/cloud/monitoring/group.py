@@ -242,7 +242,7 @@ class Group(object):
         Returns groups whose parent_name field contains the group name. If no
         groups have this parent, the results are empty.
 
-        :rtype: list of :class:`~gcloud.monitoring.group.Group`
+        :rtype: list of :class:`~google.cloud.monitoring.group.Group`
         :returns: A list of group instances.
         """
         return self._list(self.client, children_of_group=self.name)
@@ -254,7 +254,7 @@ class Group(object):
         and ending with the most distant ancestor. If the specified group has
         no immediate parent, the results are empty.
 
-        :rtype: list of :class:`~gcloud.monitoring.group.Group`
+        :rtype: list of :class:`~google.cloud.monitoring.group.Group`
         :returns: A list of group instances.
         """
         return self._list(self.client, ancestors_of_group=self.name)
@@ -265,7 +265,7 @@ class Group(object):
         This returns a superset of the results returned by the :meth:`children`
         method, and includes children-of-children, and so forth.
 
-        :rtype: list of :class:`~gcloud.monitoring.group.Group`
+        :rtype: list of :class:`~google.cloud.monitoring.group.Group`
         :returns: A list of group instances.
         """
         return self._list(self.client, descendants_of_group=self.name)
@@ -313,7 +313,7 @@ class Group(object):
             The start time (exclusive) of the time interval for which results
             should be returned, as a datetime object.
 
-        :rtype: list of :class:`~gcloud.monitoring.resource.Resource`
+        :rtype: list of :class:`~google.cloud.monitoring.resource.Resource`
         :returns: A list of resource instances.
 
         :raises:
@@ -402,7 +402,7 @@ class Group(object):
             of the results returned by the children_of_group filter, and
             includes children-of-children, and so forth.
 
-        :rtype: list of :class:`~gcloud.monitoring.group.Group`
+        :rtype: list of :class:`~google.cloud.monitoring.group.Group`
         :returns: A list of group instances.
         """
         path = '/projects/%s/groups/' % (client.project,)

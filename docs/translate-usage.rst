@@ -10,10 +10,10 @@ paid service. See the `Pricing`_ and `FAQ`_ pages for details.
 Authentication / Configuration
 ------------------------------
 
-- Use :class:`~gcloud.translate.client.Client` objects to configure
+- Use :class:`~google.cloud.translate.client.Client` objects to configure
   your applications.
 
-- :class:`~gcloud.translate.client.Client` objects hold both a ``key``
+- :class:`~google.cloud.translate.client.Client` objects hold both a ``key``
   and a connection to the Translate service.
 
 - **An API key is required for Translate.** See
@@ -41,9 +41,9 @@ well:
 
 The Google Translate API has three supported methods, and they
 map to three methods on a client:
-:meth:`~gcloud.translate.client.Client.get_languages`,
-:meth:`~gcloud.translate.client.Client.detect_language` and
-:meth:`~gcloud.translate.client.Client.translate`.
+:meth:`~google.cloud.translate.client.Client.get_languages`,
+:meth:`~google.cloud.translate.client.Client.detect_language` and
+:meth:`~google.cloud.translate.client.Client.translate`.
 
 To get a list of languages supported by Google Translate
 

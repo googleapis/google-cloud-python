@@ -72,8 +72,8 @@ class Query(object):
     """Query object for retrieving metric data.
 
     The preferred way to construct a query object is using the
-    :meth:`~gcloud.monitoring.client.Client.query` method
-    of the :class:`~gcloud.monitoring.client.Client` class.
+    :meth:`~google.cloud.monitoring.client.Client.query` method
+    of the :class:`~google.cloud.monitoring.client.Client` class.
 
     :type client: :class:`google.cloud.monitoring.client.Client`
     :param client: The client to use.
@@ -97,7 +97,7 @@ class Query(object):
 
         It is also allowed to omit the end time and duration here,
         in which case
-        :meth:`~gcloud.monitoring.query.Query.select_interval`
+        :meth:`~google.cloud.monitoring.query.Query.select_interval`
         must be called before the query is executed.
 
     :type days: integer
@@ -112,7 +112,7 @@ class Query(object):
     :raises: :exc:`ValueError` if ``end_time`` is specified but
         ``days``, ``hours``, and ``minutes`` are all zero.
         If you really want to specify a point in time, use
-        :meth:`~gcloud.monitoring.query.Query.select_interval`.
+        :meth:`~google.cloud.monitoring.query.Query.select_interval`.
 
     .. _supported metrics: https://cloud.google.com/monitoring/api/metrics
     """
@@ -430,7 +430,7 @@ class Query(object):
         """Yield all time series objects selected by the query.
 
         The generator returned iterates over
-        :class:`~gcloud.monitoring.timeseries.TimeSeries` objects
+        :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects
         containing points ordered from oldest to newest.
 
         Note that the :class:`Query` object itself is an iterable, such that
@@ -508,7 +508,7 @@ class Query(object):
         :type headers_only: boolean
         :param headers_only:
              Whether to omit the point data from the
-             :class:`~gcloud.monitoring.timeseries.TimeSeries` objects.
+             :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects.
 
         :type page_size: integer or None
         :param page_size: A limit on the number of points to return per page.

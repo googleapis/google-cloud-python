@@ -62,8 +62,8 @@ class MetricDescriptor(object):
     """Specification of a metric type and its schema.
 
     The preferred way to construct a metric descriptor object is using the
-    :meth:`~gcloud.monitoring.client.Client.metric_descriptor` factory method
-    of the :class:`~gcloud.monitoring.client.Client` class.
+    :meth:`~google.cloud.monitoring.client.Client.metric_descriptor` factory method
+    of the :class:`~google.cloud.monitoring.client.Client` class.
 
     :type client: :class:`google.cloud.monitoring.client.Client`
     :param client: A client for operating on the metric descriptor.
@@ -87,7 +87,7 @@ class MetricDescriptor(object):
         or :data:`ValueType.DISTRIBUTION`.
         See :class:`ValueType`.
 
-    :type labels: list of :class:`~gcloud.monitoring.label.LabelDescriptor`
+    :type labels: list of :class:`~google.cloud.monitoring.label.LabelDescriptor`
     :param labels:
         A sequence of zero or more label descriptors specifying the labels
         used to identify a specific instance of this metric.
@@ -320,8 +320,8 @@ class Metric(collections.namedtuple('Metric', 'type labels')):
     """A specific metric identified by specifying values for all labels.
 
     The preferred way to construct a metric object is using the
-    :meth:`~gcloud.monitoring.client.Client.metric` factory method
-    of the :class:`~gcloud.monitoring.client.Client` class.
+    :meth:`~google.cloud.monitoring.client.Client.metric` factory method
+    of the :class:`~google.cloud.monitoring.client.Client` class.
 
     :type type: string
     :param type: The metric type name.

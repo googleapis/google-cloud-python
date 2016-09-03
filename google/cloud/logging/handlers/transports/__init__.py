@@ -16,7 +16,7 @@
 
 Currently two options are provided, a synchronous transport that makes
 an API call for each log statement, and an asynchronous handler that
-sends the API using a :class:`~gcloud.logging.logger.Batch` object in
+sends the API using a :class:`~google.cloud.logging.logger.Batch` object in
 the background.
 """
 

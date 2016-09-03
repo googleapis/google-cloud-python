@@ -1002,7 +1002,7 @@ class Upload(_Transfer):
 
         :raises: :exc:`ValueError` if the instance has not been configured
                  with a strategy.
-        :rtype: :class:`~gcloud.streaming.http_wrapper.Response`
+        :rtype: :class:`~google.cloud.streaming.http_wrapper.Response`
         :returns: The response if the upload is resumable and auto transfer
                   is not used.
         """

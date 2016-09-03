@@ -33,28 +33,28 @@ class TimeSeries(collections.namedtuple(
     """A single time series of metric values.
 
     The preferred way to construct a
-    :class:`~gcloud.monitoring.timeseries.TimeSeries` object is
-    using the :meth:`~gcloud.monitoring.client.Client.time_series` factory
-    method of the :class:`~gcloud.monitoring.client.Client` class.
+    :class:`~google.cloud.monitoring.timeseries.TimeSeries` object is
+    using the :meth:`~google.cloud.monitoring.client.Client.time_series` factory
+    method of the :class:`~google.cloud.monitoring.client.Client` class.
 
-    :type metric: :class:`~gcloud.monitoring.metric.Metric`
+    :type metric: :class:`~google.cloud.monitoring.metric.Metric`
     :param metric: A metric object.
 
-    :type resource: :class:`~gcloud.monitoring.resource.Resource`
+    :type resource: :class:`~google.cloud.monitoring.resource.Resource`
     :param resource: A resource object.
 
     :type metric_kind: string
     :param metric_kind:
         The kind of measurement: :data:`MetricKind.GAUGE`,
         :data:`MetricKind.DELTA`, or :data:`MetricKind.CUMULATIVE`.
-        See :class:`~gcloud.monitoring.metric.MetricKind`.
+        See :class:`~google.cloud.monitoring.metric.MetricKind`.
 
     :type value_type: string
     :param value_type:
         The value type of the metric: :data:`ValueType.BOOL`,
         :data:`ValueType.INT64`, :data:`ValueType.DOUBLE`,
         :data:`ValueType.STRING`, or :data:`ValueType.DISTRIBUTION`.
-        See :class:`~gcloud.monitoring.metric.ValueType`.
+        See :class:`~google.cloud.monitoring.metric.ValueType`.
 
     :type points: list of :class:`Point`
     :param points: A list of point objects.

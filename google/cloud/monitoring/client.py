@@ -98,7 +98,7 @@ class Client(JSONClient):
 
             It is also allowed to omit the end time and duration here,
             in which case
-            :meth:`~gcloud.monitoring.query.Query.select_interval`
+            :meth:`~google.cloud.monitoring.query.Query.select_interval`
             must be called before the query is executed.
 
         :type days: integer
@@ -110,13 +110,13 @@ class Client(JSONClient):
         :type minutes: integer
         :param minutes: The number of minutes in the time interval.
 
-        :rtype: :class:`~gcloud.monitoring.query.Query`
+        :rtype: :class:`~google.cloud.monitoring.query.Query`
         :returns: The query object.
 
         :raises: :exc:`ValueError` if ``end_time`` is specified but
             ``days``, ``hours``, and ``minutes`` are all zero.
             If you really want to specify a point in time, use
-            :meth:`~gcloud.monitoring.query.Query.select_interval`.
+            :meth:`~google.cloud.monitoring.query.Query.select_interval`.
 
         .. _supported metrics: https://cloud.google.com/monitoring/api/metrics
         """
@@ -133,7 +133,7 @@ class Client(JSONClient):
         Metric descriptors specify the schema for a particular metric type.
 
         This factory method is used most often in conjunction with the metric
-        descriptor :meth:`~gcloud.monitoring.metric.MetricDescriptor.create`
+        descriptor :meth:`~google.cloud.monitoring.metric.MetricDescriptor.create`
         method to define custom metrics::
 
             >>> descriptor = client.metric_descriptor(
@@ -166,7 +166,7 @@ class Client(JSONClient):
             The kind of measurement. It must be one of
             :data:`MetricKind.GAUGE`, :data:`MetricKind.DELTA`,
             or :data:`MetricKind.CUMULATIVE`.
-            See :class:`~gcloud.monitoring.metric.MetricKind`.
+            See :class:`~google.cloud.monitoring.metric.MetricKind`.
 
         :type value_type: string
         :param value_type:
@@ -176,7 +176,7 @@ class Client(JSONClient):
             or :data:`ValueType.DISTRIBUTION`.
             See :class:`ValueType`.
 
-        :type labels: list of :class:`~gcloud.monitoring.label.LabelDescriptor`
+        :type labels: list of :class:`~google.cloud.monitoring.label.LabelDescriptor`
         :param labels:
             A sequence of zero or more label descriptors specifying the labels
             used to identify a specific instance of this metric.
@@ -207,10 +207,10 @@ class Client(JSONClient):
     def metric(type_, labels):
         """Factory for constructing metric objects.
 
-        :class:`~gcloud.monitoring.metric.Metric` objects are typically
+        :class:`~google.cloud.monitoring.metric.Metric` objects are typically
         created to write custom metric values. The type should match the
         metric type specified in the
-        :class:`~gcloud.monitoring.metric.MetricDescriptor` used to
+        :class:`~google.cloud.monitoring.metric.MetricDescriptor` used to
         create the custom metric::
 
              >>> metric = client.metric('custom.googleapis.com/my_metric',
@@ -224,9 +224,9 @@ class Client(JSONClient):
         :type labels: dict
         :param labels: A mapping from label names to values for all labels
                        enumerated in the associated
-                       :class:`~gcloud.monitoring.metric.MetricDescriptor`.
+                       :class:`~google.cloud.monitoring.metric.MetricDescriptor`.
 
-        :rtype: :class:`~gcloud.monitoring.metric.Metric`
+        :rtype: :class:`~google.cloud.monitoring.metric.Metric`
         :returns: The metric object.
         """
         return Metric(type=type_, labels=labels)
@@ -236,9 +236,9 @@ class Client(JSONClient):
         """Factory for constructing monitored resource objects.
 
         A monitored resource object (
-        :class:`~gcloud.monitoring.resource.Resource`) is
+        :class:`~google.cloud.monitoring.resource.Resource`) is
         typically used to create a
-        :class:`~gcloud.monitoring.timeseries.TimeSeries` object.
+        :class:`~google.cloud.monitoring.timeseries.TimeSeries` object.
 
         For a list of possible monitored resource types and their associated
         labels, see:
@@ -251,11 +251,11 @@ class Client(JSONClient):
         :type labels: dict
         :param labels: A mapping from label names to values for all labels
                        enumerated in the associated
-                       :class:`~gcloud.monitoring.resource.ResourceDescriptor`,
+                       :class:`~google.cloud.monitoring.resource.ResourceDescriptor`,
                        except that ``project_id`` can and should be omitted
                        when writing time series data.
 
-        :rtype: :class:`~gcloud.monitoring.resource.Resource`
+        :rtype: :class:`~google.cloud.monitoring.resource.Resource`
         :returns: A monitored resource object.
         """
         return Resource(type_, labels)
@@ -267,9 +267,9 @@ class Client(JSONClient):
 
         .. note::
 
-           While :class:`~gcloud.monitoring.timeseries.TimeSeries` objects
+           While :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects
            returned by the API typically have multiple data points,
-           :class:`~gcloud.monitoring.timeseries.TimeSeries` objects
+           :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects
            sent to the API must have at most one point.
 
         For example::
@@ -281,17 +281,17 @@ class Client(JSONClient):
 
         https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TimeSeries
 
-        :type metric: :class:`~gcloud.monitoring.metric.Metric`
-        :param metric: A :class:`~gcloud.monitoring.metric.Metric` object.
+        :type metric: :class:`~google.cloud.monitoring.metric.Metric`
+        :param metric: A :class:`~google.cloud.monitoring.metric.Metric` object.
 
-        :type resource: :class:`~gcloud.monitoring.resource.Resource`
-        :param resource: A :class:`~gcloud.monitoring.resource.Resource`
+        :type resource: :class:`~google.cloud.monitoring.resource.Resource`
+        :param resource: A :class:`~google.cloud.monitoring.resource.Resource`
                          object.
 
         :type value: bool, int, string, or float
         :param value:
             The value of the data point to create for the
-            :class:`~gcloud.monitoring.timeseries.TimeSeries`.
+            :class:`~google.cloud.monitoring.timeseries.TimeSeries`.
 
             .. note::
 
@@ -314,7 +314,7 @@ class Client(JSONClient):
             Defaults to None. If the start time is unspecified,
             the API interprets the start time to be the same as the end time.
 
-        :rtype: :class:`~gcloud.monitoring.timeseries.TimeSeries`
+        :rtype: :class:`~google.cloud.monitoring.timeseries.TimeSeries`
         :returns: A time series object.
         """
         if end_time is None:
@@ -334,7 +334,7 @@ class Client(JSONClient):
         :type metric_type: string
         :param metric_type: The metric type name.
 
-        :rtype: :class:`~gcloud.monitoring.metric.MetricDescriptor`
+        :rtype: :class:`~google.cloud.monitoring.metric.MetricDescriptor`
         :returns: The metric descriptor instance.
 
         :raises: :class:`google.cloud.exceptions.NotFound` if the metric descriptor
@@ -364,7 +364,7 @@ class Client(JSONClient):
             metric types. This adds ``metric.type = starts_with("<prefix>")``
             to the filter.
 
-        :rtype: list of :class:`~gcloud.monitoring.metric.MetricDescriptor`
+        :rtype: list of :class:`~google.cloud.monitoring.metric.MetricDescriptor`
         :returns: A list of metric descriptor instances.
 
         .. _filter documentation:
@@ -383,7 +383,7 @@ class Client(JSONClient):
         :type resource_type: string
         :param resource_type: The resource type name.
 
-        :rtype: :class:`~gcloud.monitoring.resource.ResourceDescriptor`
+        :rtype: :class:`~google.cloud.monitoring.resource.ResourceDescriptor`
         :returns: The resource descriptor instance.
 
         :raises: :class:`google.cloud.exceptions.NotFound` if the resource descriptor
@@ -404,7 +404,7 @@ class Client(JSONClient):
             An optional filter expression describing the resource descriptors
             to be returned. See the `filter documentation`_.
 
-        :rtype: list of :class:`~gcloud.monitoring.resource.ResourceDescriptor`
+        :rtype: list of :class:`~google.cloud.monitoring.resource.ResourceDescriptor`
         :returns: A list of resource descriptor instances.
 
         .. _filter documentation:
@@ -471,7 +471,7 @@ class Client(JSONClient):
         :type group_id: string
         :param group_id: The ID of the group.
 
-        :rtype: :class:`~gcloud.monitoring.group.Group`
+        :rtype: :class:`~google.cloud.monitoring.group.Group`
         :returns: The group instance.
 
         :raises: :class:`google.cloud.exceptions.NotFound` if the group is not found.
@@ -486,7 +486,7 @@ class Client(JSONClient):
             >>> for group in client.list_groups():
             ...     print((group.display_name, group.name))
 
-        :rtype: list of :class:`~gcloud.monitoring.group.Group`
+        :rtype: list of :class:`~google.cloud.monitoring.group.Group`
         :returns: A list of group instances.
         """
         return Group._list(self)
