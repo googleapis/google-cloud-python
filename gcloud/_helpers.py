@@ -57,7 +57,16 @@ _RFC3339_NANOS = re.compile(r"""
     (?P<nanos>\d{1,9})                       # nanoseconds, maybe truncated
     Z                                        # Zulu
 """, re.VERBOSE)
-DEFAULT_CONFIGURATION_PATH = '~/.config/gcloud/configurations/config_default'
+# NOTE: Catching this ImportError is a workaround for GAE not supporting the
+#       "pwd" module which is imported lazily when "expanduser" is called.
+try:
+    _USER_ROOT = os.path.expanduser('~')
+except ImportError:  # pragma: NO COVER
+    _USER_ROOT = None
+_GCLOUD_CONFIG_FILE = os.path.join(
+    'gcloud', 'configurations', 'config_default')
+_GCLOUD_CONFIG_SECTION = 'core'
+_GCLOUD_CONFIG_KEY = 'project'
 
 
 class _LocalStack(Local):
@@ -171,10 +180,10 @@ def _app_engine_id():
 
 
 def _file_project_id():
-    """Gets the project id from the credentials file if one is available.
+    """Gets the project ID from the credentials file if one is available.
 
     :rtype: str or ``NoneType``
-    :returns: Project-ID from JSON credentials file if value exists,
+    :returns: Project ID from JSON credentials file if value exists,
               else ``None``.
     """
     credentials_file_path = os.getenv(CREDENTIALS)
@@ -185,8 +194,36 @@ def _file_project_id():
             return credentials.get('project_id')
 
 
+def _get_nix_config_path():
+    """Get the ``gcloud`` CLI config path on *nix systems.
+
+    :rtype: str
+    :returns: The filename on a *nix system containing the CLI
+              config file.
+    """
+    return os.path.join(_USER_ROOT, '.config', _GCLOUD_CONFIG_FILE)
+
+
+def _get_windows_config_path():
+    """Get the ``gcloud`` CLI config path on Windows systems.
+
+    :rtype: str
+    :returns: The filename on a Windows system containing the CLI
+              config file.
+    """
+    appdata_dir = os.getenv('APPDATA', '')
+    return os.path.join(appdata_dir, _GCLOUD_CONFIG_FILE)
+
+
 def _default_service_project_id():
     """Retrieves the project ID from the gcloud command line tool.
+
+    This assumes the ``.config`` directory is stored
+    - in ~/.config on *nix systems
+    - in the %APPDATA% directory on Windows systems
+
+    Additionally, the ${HOME} / "~" directory may not be present on Google
+    App Engine, so this may be conditionally ignored.
 
     Files that cannot be opened with configparser are silently ignored; this is
     designed so that you can specify a list of potential configuration file
@@ -196,21 +233,17 @@ def _default_service_project_id():
     :returns: Project-ID from default configuration file else ``None``
     """
     search_paths = []
-    # Workaround for GAE not supporting pwd which is used by expanduser.
-    try:
-        search_paths.append(os.path.expanduser(DEFAULT_CONFIGURATION_PATH))
-    except ImportError:
-        pass
+    if _USER_ROOT is not None:
+        search_paths.append(_get_nix_config_path())
 
-    windows_config_path = os.path.join(os.getenv('APPDATA', ''),
-                                       'gcloud', 'configurations',
-                                       'config_default')
-    search_paths.append(windows_config_path)
+    if os.name == 'nt':
+        search_paths.append(_get_windows_config_path())
+
     config = configparser.RawConfigParser()
     config.read(search_paths)
 
-    if config.has_section('core'):
-        return config.get('core', 'project')
+    if config.has_section(_GCLOUD_CONFIG_SECTION):
+        return config.get(_GCLOUD_CONFIG_SECTION, _GCLOUD_CONFIG_KEY)
 
 
 def _compute_engine_id():

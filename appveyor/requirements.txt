@@ -3,8 +3,8 @@
 # pip will build them from source using the MSVC compiler matching the
 # target Python version and architecture
 wheel
-nose
-nose-exclude
+pytest
+tox
 cryptography
 grpcio >= 1.0rc1
 grpc-google-pubsub-v1
