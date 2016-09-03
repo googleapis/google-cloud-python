@@ -208,13 +208,14 @@ Running System Tests
   ``datastore`` emulator::
 
    $ tox -e datastore-emulator
+   $ GOOGLE_CLOUD_DISABLE_GRPC=true tox -e datastore-emulator
 
   This also requires that the ``gcloud`` command line tool is
   installed. If you'd like to run them directly (outside of a
   ``tox`` environment), first start the emulator and
   take note of the process ID::
 
-   $ gcloud beta emulators datastore start 2>&1 > log.txt &
+   $ gcloud beta emulators datastore start --no-legacy 2>&1 > log.txt &
    [1] 33333
 
   then determine the environment variables needed to interact with

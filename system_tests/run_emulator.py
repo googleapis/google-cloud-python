@@ -35,7 +35,10 @@ PACKAGE_INFO = {
     'datastore': (GCD_DATASET, GCD_HOST),
     'pubsub': (PUBSUB_EMULATOR,)
 }
-_DS_READY_LINE = '[datastore] INFO: Dev App Server is now running\n'
+EXTRA = {
+    'datastore': ('--no-legacy',),
+}
+_DS_READY_LINE = '[datastore] Dev App Server is now running.\n'
 _PS_READY_LINE_PREFIX = '[pubsub] INFO: Server started, listening on '
 
 
@@ -62,7 +65,9 @@ def get_start_command(package):
     :rtype: tuple
     :returns: The arguments to be used, in a tuple.
     """
-    return 'gcloud', 'beta', 'emulators', package, 'start'
+    result = ('gcloud', 'beta', 'emulators', package, 'start')
+    extra = EXTRA.get(package, ())
+    return result + extra
 
 
 def get_env_init_command(package):
@@ -74,7 +79,9 @@ def get_env_init_command(package):
     :rtype: tuple
     :returns: The arguments to be used, in a tuple.
     """
-    return 'gcloud', 'beta', 'emulators', package, 'env-init'
+    result = ('gcloud', 'beta', 'emulators', package, 'env-init')
+    extra = EXTRA.get(package, ())
+    return result + extra
 
 
 def datastore_wait_ready(popen):
