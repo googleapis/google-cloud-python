@@ -249,7 +249,7 @@ See: `Setting permissions for BigQuery`_
 .. doctest::
 
     >>> from google.cloud import bigquery
-    >>> from gcloud.bigquery.dataset import AccessGrant
+    >>> from google.cloud.bigquery.dataset import AccessGrant
     >>> bigquery_client = bigquery.Client()
     >>> dataset = bigquery_client.dataset('my-dataset-name')
     >>> dataset.create()
@@ -396,7 +396,7 @@ Logging client.
 
     >>> import logging
     >>> import google.cloud.logging # Don't conflict with standard logging
-    >>> from gcloud.logging.handlers import CloudLoggingHandler
+    >>> from google.cloud.logging.handlers import CloudLoggingHandler
     >>> client = gcloud.logging.Client()
     >>> handler = CloudLoggingHandler(client)
     >>> cloud_logger = logging.getLogger('cloudLogger')
@@ -428,7 +428,7 @@ this automatically:
 
     >>> import logging
     >>> import google.cloud.logging # Don't conflict with standard logging
-    >>> from gcloud.logging.handlers import CloudLoggingHandler, setup_logging
+    >>> from google.cloud.logging.handlers import CloudLoggingHandler, setup_logging
     >>> client = gcloud.logging.Client()
     >>> handler = CloudLoggingHandler(client)
     >>> logging.getLogger().setLevel(logging.INFO) # defaults to WARN

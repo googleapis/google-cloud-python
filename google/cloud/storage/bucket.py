@@ -365,7 +365,7 @@ class Bucket(_PropertyMixin):
 
         For example::
 
-          >>> from gcloud.exceptions import NotFound
+          >>> from google.cloud.exceptions import NotFound
           >>> from google.cloud import storage
           >>> client = storage.Client()
           >>> bucket = client.get_bucket('my-bucket')

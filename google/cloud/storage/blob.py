@@ -293,7 +293,7 @@ class Blob(_PropertyMixin):
          encryption key::
 
             >>> from google.cloud import storage
-            >>> from gcloud.storage import Blob
+            >>> from google.cloud.storage import Blob
 
             >>> client = storage.Client(project='my-project')
             >>> bucket = client.get_bucket('my-bucket')
@@ -426,7 +426,7 @@ class Blob(_PropertyMixin):
         Uploading a file with a `customer-supplied`_ encryption key::
 
             >>> from google.cloud import storage
-            >>> from gcloud.storage import Blob
+            >>> from google.cloud.storage import Blob
 
             >>> client = storage.Client(project='my-project')
             >>> bucket = client.get_bucket('my-bucket')

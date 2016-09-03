@@ -295,7 +295,7 @@ the job locally:
 .. doctest::
 
    >>> from google.cloud import bigquery
-   >>> from gcloud.bigquery import SchemaField
+   >>> from google.cloud.bigquery import SchemaField
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
    >>> table.schema = [

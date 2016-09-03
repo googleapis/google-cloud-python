@@ -113,7 +113,7 @@ client's :meth:`~gcloud.monitoring.client.Client.metric_descriptor`
 factory and then calling the object's
 :meth:`~gcloud.monitoring.metric.MetricDescriptor.create` method::
 
-    >>> from gcloud.monitoring import MetricKind, ValueType
+    >>> from google.cloud.monitoring import MetricKind, ValueType
     >>> descriptor = client.metric_descriptor(
     ...     'custom.googleapis.com/my_metric',
     ...     metric_kind=MetricKind.GAUGE,
@@ -135,7 +135,7 @@ and include them in the
 before you call
 :meth:`~gcloud.monitoring.metric.MetricDescriptor.create`::
 
-    >>> from gcloud.monitoring import LabelDescriptor, LabelValueType
+    >>> from google.cloud.monitoring import LabelDescriptor, LabelValueType
     >>> label = LabelDescriptor('response_code', LabelValueType.INT64,
     ...                         description='HTTP status code')
     >>> descriptor = client.metric_descriptor(
@@ -268,7 +268,7 @@ across GCE instances with names beginning with ``"mycluster-"``,
 averaged over five-minute intervals and aggregated per zone, as
 follows::
 
-    >>> from gcloud.monitoring import Aligner, Reducer
+    >>> from google.cloud.monitoring import Aligner, Reducer
     >>> METRIC = 'compute.googleapis.com/instance/cpu/utilization'
     >>> query = (client.query(METRIC, hours=1)
     ...          .select_metrics(instance_name_prefix='mycluster-')
