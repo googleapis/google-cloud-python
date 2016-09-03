@@ -15,7 +15,7 @@
 """Testable usage examples for Google Cloud BigQuery API wrapper
 
 Each example function takes a ``client`` argument (which must be an instance
-of :class:`gcloud.bigquery.client.Client`) and uses it to perform a task with
+of :class:`google.cloud.bigquery.client.Client`) and uses it to perform a task with
 the API.
 
 To facilitate running the examples as system tests, each example is also passed

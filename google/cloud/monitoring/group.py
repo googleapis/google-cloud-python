@@ -73,7 +73,7 @@ def _group_name_from_id(project, group_id):
 class Group(object):
     """A dynamic collection of monitored resources.
 
-    :type client: :class:`gcloud.monitoring.client.Client`
+    :type client: :class:`google.cloud.monitoring.client.Client`
     :param client: A client for operating on the metric descriptor.
 
     :type group_id: string or None
@@ -362,7 +362,7 @@ class Group(object):
     def _fetch(cls, client, group_id):
         """Fetch a group from the API based on it's ID.
 
-        :type client: :class:`gcloud.monitoring.client.Client`
+        :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
         :type group_id: string
@@ -371,7 +371,7 @@ class Group(object):
         :rtype: :class:`Group`
         :returns: The group instance.
 
-        :raises: :class:`gcloud.exceptions.NotFound` if the group
+        :raises: :class:`google.cloud.exceptions.NotFound` if the group
             is not found.
         """
         new_group = cls(client, group_id)
@@ -383,7 +383,7 @@ class Group(object):
               descendants_of_group=None):
         """Lists all groups in the project.
 
-        :type client: :class:`gcloud.monitoring.client.Client`
+        :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
         :type children_of_group: string or None
@@ -438,7 +438,7 @@ class Group(object):
     def _from_dict(cls, client, info):
         """Constructs a Group instance from the parsed JSON representation.
 
-        :type client: :class:`gcloud.monitoring.client.Client`
+        :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: A client to be included in the returned object.
 
         :type info: dict

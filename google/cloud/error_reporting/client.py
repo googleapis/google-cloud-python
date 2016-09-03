@@ -139,7 +139,7 @@ class Client(object):
                This should be a Python dict that contains the keys 'filePath',
                'lineNumber', and 'functionName'
 
-        :type http_context: :class`gcloud.error_reporting.HTTPContext`
+        :type http_context: :class`google.cloud.error_reporting.HTTPContext`
         :param http_context: The HTTP request which was processed when the
                              error was triggered.
 
@@ -190,7 +190,7 @@ class Client(object):
            :param message: A user-supplied message to report
 
 
-          :type http_context: :class`gcloud.error_reporting.HTTPContext`
+          :type http_context: :class`google.cloud.error_reporting.HTTPContext`
           :param http_context: The HTTP request which was processed when the
                                error was triggered.
 
@@ -226,7 +226,7 @@ class Client(object):
         """ Reports the details of the latest exceptions to Stackdriver Error
             Reporting.
 
-          :type http_context: :class`gcloud.error_reporting.HTTPContext`
+          :type http_context: :class`google.cloud.error_reporting.HTTPContext`
           :param http_context: The HTTP request which was processed when the
                                error was triggered.
 

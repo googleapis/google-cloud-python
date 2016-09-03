@@ -34,7 +34,7 @@ class Feature(object):
 
     :type feature_type: str
     :param feature_type: String representation of
-                         :class:`gcloud.vision.feature.FeatureType`.
+                         :class:`google.cloud.vision.feature.FeatureType`.
 
     :type max_results: int
     :param max_results: Number of results to return for the specified

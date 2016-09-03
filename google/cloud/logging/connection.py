@@ -55,7 +55,7 @@ class _LoggingAPI(object):
     https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries
     https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs
 
-    :type connection: :class:`gcloud.logging.connection.Connection`
+    :type connection: :class:`google.cloud.logging.connection.Connection`
     :param connection: the connection used to make API requests.
     """
     def __init__(self, connection):
@@ -77,8 +77,8 @@ class _LoggingAPI(object):
                         https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: str
-        :param order_by: One of :data:`gcloud.logging.ASCENDING` or
-                         :data:`gcloud.logging.DESCENDING`.
+        :param order_by: One of :data:`google.cloud.logging.ASCENDING` or
+                         :data:`google.cloud.logging.DESCENDING`.
 
         :type page_size: int
         :param page_size: maximum number of entries to return, If not passed,
@@ -171,7 +171,7 @@ class _SinksAPI(object):
     See:
     https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks
 
-    :type connection: :class:`gcloud.logging.connection.Connection`
+    :type connection: :class:`google.cloud.logging.connection.Connection`
     :param connection: the connection used to make API requests.
     """
     def __init__(self, connection):
@@ -310,7 +310,7 @@ class _MetricsAPI(object):
     See:
     https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics
 
-    :type connection: :class:`gcloud.logging.connection.Connection`
+    :type connection: :class:`google.cloud.logging.connection.Connection`
     :param connection: the connection used to make API requests.
     """
     def __init__(self, connection):

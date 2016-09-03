@@ -82,7 +82,7 @@ class _PublisherAPI(object):
 
         :rtype: dict
         :returns: ``Topic`` resource returned from the API.
-        :raises: :exc:`gcloud.exceptions.Conflict` if the topic already
+        :raises: :exc:`google.cloud.exceptions.Conflict` if the topic already
                     exists
         """
         try:
@@ -105,7 +105,7 @@ class _PublisherAPI(object):
 
         :rtype: dict
         :returns: ``Topic`` resource returned from the API.
-        :raises: :exc:`gcloud.exceptions.NotFound` if the topic does not
+        :raises: :exc:`google.cloud.exceptions.NotFound` if the topic does not
                     exist
         """
         try:
@@ -148,7 +148,7 @@ class _PublisherAPI(object):
 
         :rtype: list of string
         :returns: list of opaque IDs for published messages.
-        :raises: :exc:`gcloud.exceptions.NotFound` if the topic does not
+        :raises: :exc:`google.cloud.exceptions.NotFound` if the topic does not
                     exist
         """
         options = CallOptions(is_bundling=False)
@@ -186,7 +186,7 @@ class _PublisherAPI(object):
         :rtype: list of strings
         :returns: fully-qualified names of subscriptions for the supplied
                 topic.
-        :raises: :exc:`gcloud.exceptions.NotFound` if the topic does not
+        :raises: :exc:`google.cloud.exceptions.NotFound` if the topic does not
                     exist
         """
         if page_token is None:

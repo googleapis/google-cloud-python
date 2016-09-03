@@ -14,7 +14,7 @@ Authentication and Configuration
   this will be detected automatically.
 
 - After configuring your environment, create a
-  :class:`Client <gcloud.error_reporting.client.Client>`
+  :class:`Client <google.cloud.error_reporting.client.Client>`
 
   .. doctest::
 
@@ -60,7 +60,7 @@ By default, the client will report the error using the service specified in the 
 constructor, or the default service of "python".
 
 The user and HTTP context can also be included in the exception. The HTTP context
-can be constructed using :class:`gcloud.error_reporting.HTTPContext`. This will
+can be constructed using :class:`google.cloud.error_reporting.HTTPContext`. This will
 be used by Stackdriver Error Reporting to help group exceptions.
 
 .. doctest::

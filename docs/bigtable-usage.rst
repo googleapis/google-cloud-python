@@ -6,19 +6,19 @@ In order to support this, we'll rely on `gRPC`_. We are working with the gRPC
 team to rapidly make the install story more user-friendly.
 
 Get started by learning about the
-:class:`Client <gcloud.bigtable.client.Client>` on the
+:class:`Client <google.cloud.bigtable.client.Client>` on the
 :doc:`bigtable-client-intro` page.
 
 In the hierarchy of API concepts
 
-* a :class:`Client <gcloud.bigtable.client.Client>` owns a
-  :class:`Cluster <gcloud.bigtable.instance.Instance`
-* a :class:`Cluster <gcloud.bigtable.instance.Instance` owns a
-  :class:`Table <gcloud.bigtable.table.Table>`
-* a :class:`Table <gcloud.bigtable.table.Table>` owns a
-  :class:`ColumnFamily <gcloud.bigtable.column_family.ColumnFamily>`
-* a :class:`Table <gcloud.bigtable.table.Table>` owns a
-  :class:`Row <gcloud.bigtable.row.Row>`
+* a :class:`Client <google.cloud.bigtable.client.Client>` owns a
+  :class:`Cluster <google.cloud.bigtable.instance.Instance`
+* a :class:`Cluster <google.cloud.bigtable.instance.Instance` owns a
+  :class:`Table <google.cloud.bigtable.table.Table>`
+* a :class:`Table <google.cloud.bigtable.table.Table>` owns a
+  :class:`ColumnFamily <google.cloud.bigtable.column_family.ColumnFamily>`
+* a :class:`Table <google.cloud.bigtable.table.Table>` owns a
+  :class:`Row <google.cloud.bigtable.row.Row>`
   (and all the cells in the row)
 
 .. _Google Cloud Bigtable: https://cloud.google.com/bigtable/docs/

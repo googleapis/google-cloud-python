@@ -44,7 +44,7 @@ Overview
 Client-Provided Authentication
 ==============================
 
-Every package uses a :class:`Client <gcloud.client.Client>`
+Every package uses a :class:`Client <google.cloud.client.Client>`
 as a base for interacting with an API.
 For example:
 
@@ -94,7 +94,7 @@ In these situations, you can create an explicit
 :class:`Credentials <oauth2client.client.Credentials>` object suited to your
 environment.
 After creation,
-you can pass it directly to a :class:`Client <gcloud.client.Client>`:
+you can pass it directly to a :class:`Client <google.cloud.client.Client>`:
 
 .. code:: python
 
@@ -133,10 +133,10 @@ a PKCS12/P12 keyfile.
 Directly creating ``credentials`` in `oauth2client`_ for a service
 account is a rather complex process,
 so as a convenience, the
-:meth:`from_service_account_json() <gcloud.client.Client.from_service_account_json>`
+:meth:`from_service_account_json() <google.cloud.client.Client.from_service_account_json>`
 and
-:meth:`from_service_account_p12() <gcloud.client.Client.from_service_account_p12>`
-factories are provided to create a :class:`Client <gcloud.client.Client>` with
+:meth:`from_service_account_p12() <google.cloud.client.Client.from_service_account_p12>`
+factories are provided to create a :class:`Client <google.cloud.client.Client>` with
 service account credentials.
 
 .. _oauth2client: http://oauth2client.readthedocs.org/en/latest/
@@ -309,7 +309,7 @@ Though the ``google-cloud-python`` library defaults to using `oauth2client`_
 to sign requests and ``httplib2`` for sending requests,
 it is not a strict requirement.
 
-The :class:`Client <gcloud.client.Client>` constructor accepts an optional
+The :class:`Client <google.cloud.client.Client>` constructor accepts an optional
 ``http`` argument in place of a ``credentials`` object.
 If passed, all HTTP requests made by the client will use your
 custom HTTP object.

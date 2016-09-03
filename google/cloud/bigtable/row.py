@@ -47,7 +47,7 @@ class Row(object):
     :type row_key: bytes
     :param row_key: The key for the current row.
 
-    :type table: :class:`Table <gcloud.bigtable.table.Table>`
+    :type table: :class:`Table <google.cloud.bigtable.table.Table>`
     :param table: The table that owns the row.
     """
 
@@ -69,7 +69,7 @@ class _SetDeleteRow(Row):
     :type row_key: bytes
     :param row_key: The key for the current row.
 
-    :type table: :class:`Table <gcloud.bigtable.table.Table>`
+    :type table: :class:`Table <google.cloud.bigtable.table.Table>`
     :param table: The table that owns the row.
     """
 
@@ -244,7 +244,7 @@ class DirectRow(_SetDeleteRow):
     :type row_key: bytes
     :param row_key: The key for the current row.
 
-    :type table: :class:`Table <gcloud.bigtable.table.Table>`
+    :type table: :class:`Table <google.cloud.bigtable.table.Table>`
     :param table: The table that owns the row.
     """
 
@@ -434,7 +434,7 @@ class ConditionalRow(_SetDeleteRow):
     :type row_key: bytes
     :param row_key: The key for the current row.
 
-    :type table: :class:`Table <gcloud.bigtable.table.Table>`
+    :type table: :class:`Table <google.cloud.bigtable.table.Table>`
     :param table: The table that owns the row.
 
     :type filter_: :class:`.RowFilter`
@@ -662,7 +662,7 @@ class AppendRow(Row):
     :type row_key: bytes
     :param row_key: The key for the current row.
 
-    :type table: :class:`Table <gcloud.bigtable.table.Table>`
+    :type table: :class:`Table <google.cloud.bigtable.table.Table>`
     :param table: The table that owns the row.
     """
 

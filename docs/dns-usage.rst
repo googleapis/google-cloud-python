@@ -4,14 +4,14 @@ Using the API
 Client
 ------
 
-:class:`Client <gcloud.dns.client.Client>` objects provide a means to
+:class:`Client <google.cloud.dns.client.Client>` objects provide a means to
 configure your DNS applications.  Each instance holds both a ``project``
 and an authenticated connection to the DNS service.
 
 For an overview of authentication in ``google-cloud-python``, see :doc:`gcloud-auth`.
 
 Assuming your environment is set up as described in that document,
-create an instance of :class:`Client <gcloud.dns.client.Client>`.
+create an instance of :class:`Client <google.cloud.dns.client.Client>`.
 
   .. doctest::
 

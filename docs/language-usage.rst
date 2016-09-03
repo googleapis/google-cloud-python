@@ -45,9 +45,9 @@ UTF-8. To over-ride these values:
      ...                          encoding=language.Encoding.UTF16)
 
 The encoding can be one of
-:attr:`Encoding.UTF8 <gcloud.language.document.Encoding.UTF8>`,
-:attr:`Encoding.UTF16 <gcloud.language.document.Encoding.UTF16>`, or
-:attr:`Encoding.UTF32 <gcloud.language.document.Encoding.UTF32>`.
+:attr:`Encoding.UTF8 <google.cloud.language.document.Encoding.UTF8>`,
+:attr:`Encoding.UTF16 <google.cloud.language.document.Encoding.UTF16>`, or
+:attr:`Encoding.UTF32 <google.cloud.language.document.Encoding.UTF32>`.
 
 Methods
 -------
@@ -117,8 +117,8 @@ However, the ``analyzeSentiment`` method `only supports`_ English text.
 .. _only supports: https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/analyzeSentiment#body.request_body.FIELDS.document
 
 The document type (``doc_type``) value can be one of
-:attr:`Document.PLAIN_TEXT <gcloud.language.document.Document.PLAIN_TEXT>` or
-:attr:`Document.HTML <gcloud.language.document.Document.HTML>`.
+:attr:`Document.PLAIN_TEXT <google.cloud.language.document.Document.PLAIN_TEXT>` or
+:attr:`Document.HTML <google.cloud.language.document.Document.HTML>`.
 
 In addition to supplying the text / HTML content, a document can refer
 to content stored in `Google Cloud Storage`_. We can use the

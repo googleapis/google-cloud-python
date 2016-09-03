@@ -50,11 +50,11 @@ class _PropertyMixin(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
 
-        :rtype: :class:`gcloud.storage.client.Client`
+        :rtype: :class:`google.cloud.storage.client.Client`
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
@@ -64,7 +64,7 @@ class _PropertyMixin(object):
     def reload(self, client=None):
         """Reload properties from Cloud Storage.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
         """
@@ -98,7 +98,7 @@ class _PropertyMixin(object):
     def _set_properties(self, value):
         """Set the properties for the current object.
 
-        :type value: dict or :class:`gcloud.storage.batch._FutureDict`
+        :type value: dict or :class:`google.cloud.storage.batch._FutureDict`
         :param value: The properties to be set.
         """
         self._properties = value
@@ -110,7 +110,7 @@ class _PropertyMixin(object):
 
         Updates the ``_properties`` with the response from the backend.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
         """

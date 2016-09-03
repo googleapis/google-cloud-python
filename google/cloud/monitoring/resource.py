@@ -62,7 +62,7 @@ class ResourceDescriptor(object):
     def _fetch(cls, client, resource_type):
         """Look up a monitored resource descriptor by type.
 
-        :type client: :class:`gcloud.monitoring.client.Client`
+        :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
         :type resource_type: string
@@ -71,7 +71,7 @@ class ResourceDescriptor(object):
         :rtype: :class:`ResourceDescriptor`
         :returns: The resource descriptor instance.
 
-        :raises: :class:`gcloud.exceptions.NotFound` if the resource descriptor
+        :raises: :class:`google.cloud.exceptions.NotFound` if the resource descriptor
             is not found.
         """
         path = ('/projects/{project}/monitoredResourceDescriptors/{type}'
@@ -84,7 +84,7 @@ class ResourceDescriptor(object):
     def _list(cls, client, filter_string=None):
         """List all monitored resource descriptors for the project.
 
-        :type client: :class:`gcloud.monitoring.client.Client`
+        :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
         :type filter_string: string or None

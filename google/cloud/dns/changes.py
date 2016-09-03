@@ -24,12 +24,12 @@ from google.cloud.dns.resource_record_set import ResourceRecordSet
 class Changes(object):
     """Changes are bundled additions / deletions of DNS resource records.
 
-    Changes are owned by a :class:`gcloud.dns.zone.ManagedZone` instance.
+    Changes are owned by a :class:`google.cloud.dns.zone.ManagedZone` instance.
 
     See:
     https://cloud.google.com/dns/api/v1/changes
 
-    :type zone: :class:`gcloud.dns.zone.ManagedZone`
+    :type zone: :class:`google.cloud.dns.zone.ManagedZone`
     :param zone: A zone which holds one or more record sets.
     """
 
@@ -45,10 +45,10 @@ class Changes(object):
         :type resource: dict
         :param resource: change set representation returned from the API.
 
-        :type zone: :class:`gcloud.dns.zone.ManagedZone`
+        :type zone: :class:`google.cloud.dns.zone.ManagedZone`
         :param zone: A zone which holds zero or more change sets.
 
-        :rtype: :class:`gcloud.dns.changes.Changes`
+        :rtype: :class:`google.cloud.dns.changes.Changes`
         :returns: RRS parsed from ``resource``.
         """
         changes = cls(zone=zone)
@@ -125,7 +125,7 @@ class Changes(object):
         """Resource record sets to be added to the zone.
 
         :rtype: sequence of
-                :class:`gcloud.dns.resource_record_set.ResourceRecordSet`.
+                :class:`google.cloud.dns.resource_record_set.ResourceRecordSet`.
         :returns: record sets appended via :meth:`add_record_set`.
         """
         return self._additions
@@ -135,7 +135,7 @@ class Changes(object):
         """Resource record sets to be deleted from the zone.
 
         :rtype: sequence of
-                :class:`gcloud.dns.resource_record_set.ResourceRecordSet`.
+                :class:`google.cloud.dns.resource_record_set.ResourceRecordSet`.
         :returns: record sets appended via :meth:`delete_record_set`.
         """
         return self._deletions
@@ -144,7 +144,7 @@ class Changes(object):
         """Append a record set to the 'additions' for the change set.
 
         :type record_set:
-            :class:`gcloud.dns.resource_record_set.ResourceRecordSet`
+            :class:`google.cloud.dns.resource_record_set.ResourceRecordSet`
         :param record_set: the record set to append.
 
         :raises: ``ValueError`` if ``record_set`` is not of the required type.
@@ -157,7 +157,7 @@ class Changes(object):
         """Append a record set to the 'deletions' for the change set.
 
         :type record_set:
-            :class:`gcloud.dns.resource_record_set.ResourceRecordSet`
+            :class:`google.cloud.dns.resource_record_set.ResourceRecordSet`
         :param record_set: the record set to append.
 
         :raises: ``ValueError`` if ``record_set`` is not of the required type.
@@ -169,11 +169,11 @@ class Changes(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`gcloud.dns.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current zone.
 
-        :rtype: :class:`gcloud.dns.client.Client`
+        :rtype: :class:`google.cloud.dns.client.Client`
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
@@ -207,7 +207,7 @@ class Changes(object):
         See:
         https://cloud.google.com/dns/api/v1/changes/create
 
-        :type client: :class:`gcloud.dns.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current zone.
         """
@@ -226,7 +226,7 @@ class Changes(object):
         See
         https://cloud.google.com/dns/api/v1/changes/get
 
-        :type client: :class:`gcloud.dns.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current zone.
 
@@ -248,7 +248,7 @@ class Changes(object):
         See
         https://cloud.google.com/dns/api/v1/changes/get
 
-        :type client: :class:`gcloud.dns.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current zone.
         """

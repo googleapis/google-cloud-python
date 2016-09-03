@@ -75,13 +75,13 @@ class Query(object):
     :meth:`~gcloud.monitoring.client.Client.query` method
     of the :class:`~gcloud.monitoring.client.Client` class.
 
-    :type client: :class:`gcloud.monitoring.client.Client`
+    :type client: :class:`google.cloud.monitoring.client.Client`
     :param client: The client to use.
 
     :type metric_type: string
     :param metric_type: The metric type name. The default value is
         :data:`Query.DEFAULT_METRIC_TYPE
-        <gcloud.monitoring.query.Query.DEFAULT_METRIC_TYPE>`,
+        <google.cloud.monitoring.query.Query.DEFAULT_METRIC_TYPE>`,
         but please note that this default value is provided only for
         demonstration purposes and is subject to change. See the
         `supported metrics`_.

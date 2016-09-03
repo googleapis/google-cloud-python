@@ -28,13 +28,13 @@ You'll typically use these to get started with the API:
 
 The main concepts with this API are:
 
-- :class:`gcloud.storage.connection.Connection` which represents a
+- :class:`google.cloud.storage.connection.Connection` which represents a
   connection between your machine and the Cloud Storage API.
 
-- :class:`gcloud.storage.bucket.Bucket` which represents a particular
+- :class:`google.cloud.storage.bucket.Bucket` which represents a particular
   bucket (akin to a mounted disk on a computer).
 
-- :class:`gcloud.storage.blob.Blob` which represents a pointer to a
+- :class:`google.cloud.storage.blob.Blob` which represents a pointer to a
   particular entity in Cloud Storage (akin to a file path on a remote
   machine).
 """

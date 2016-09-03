@@ -127,7 +127,7 @@ class Client(JSONClient):
         :type name: str
         :param name: the name of the logger to be constructed.
 
-        :rtype: :class:`gcloud.logging.logger.Logger`
+        :rtype: :class:`google.cloud.logging.logger.Logger`
         :returns: Logger created with the current client.
         """
         return Logger(name, client=self)
@@ -143,9 +143,9 @@ class Client(JSONClient):
                         passed, the entry will have a newly-created logger.
 
         :rtype: One of:
-                :class:`gcloud.logging.entries.TextEntry`,
-                :class:`gcloud.logging.entries.StructEntry`,
-                :class:`gcloud.logging.entries.ProtobufEntry`
+                :class:`google.cloud.logging.entries.TextEntry`,
+                :class:`google.cloud.logging.entries.StructEntry`,
+                :class:`google.cloud.logging.entries.ProtobufEntry`
         :returns: the entry instance, constructed via the resource
         """
         if 'textPayload' in resource:
@@ -172,8 +172,8 @@ class Client(JSONClient):
                         https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: str
-        :param order_by: One of :data:`gcloud.logging.ASCENDING` or
-                         :data:`gcloud.logging.DESCENDING`.
+        :param order_by: One of :data:`google.cloud.logging.ASCENDING` or
+                         :data:`google.cloud.logging.DESCENDING`.
 
         :type page_size: int
         :param page_size: maximum number of entries to return, If not passed,
@@ -185,7 +185,7 @@ class Client(JSONClient):
                            entries.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.logging.entry.TextEntry`, plus a
+        :returns: list of :class:`google.cloud.logging.entry.TextEntry`, plus a
                   "next page token" string:  if not None, indicates that
                   more entries can be retrieved with another call (pass that
                   value as ``page_token``).
@@ -219,7 +219,7 @@ class Client(JSONClient):
                             already exist, to be refreshed via
                             :meth:`Sink.reload`.
 
-        :rtype: :class:`gcloud.logging.sink.Sink`
+        :rtype: :class:`google.cloud.logging.sink.Sink`
         :returns: Sink created with the current client.
         """
         return Sink(name, filter_, destination, client=self)
@@ -240,7 +240,7 @@ class Client(JSONClient):
                            sinks.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.logging.sink.Sink`, plus a
+        :returns: list of :class:`google.cloud.logging.sink.Sink`, plus a
                   "next page token" string:  if not None, indicates that
                   more sinks can be retrieved with another call (pass that
                   value as ``page_token``).
@@ -268,7 +268,7 @@ class Client(JSONClient):
                             If not passed, the instance should already exist,
                             to be refreshed via :meth:`Metric.reload`.
 
-        :rtype: :class:`gcloud.logging.metric.Metric`
+        :rtype: :class:`google.cloud.logging.metric.Metric`
         :returns: Metric created with the current client.
         """
         return Metric(name, filter_, client=self, description=description)
@@ -289,7 +289,7 @@ class Client(JSONClient):
                            metrics.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.logging.metric.Metric`, plus a
+        :returns: list of :class:`google.cloud.logging.metric.Metric`, plus a
                   "next page token" string:  if not None, indicates that
                   more metrics can be retrieved with another call (pass that
                   value as ``page_token``).

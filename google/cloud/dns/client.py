@@ -75,7 +75,7 @@ class Client(JSONClient):
                            zones.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.dns.zone.ManagedZone`, plus a
+        :returns: list of :class:`google.cloud.dns.zone.ManagedZone`, plus a
                   "next page token" string:  if the token is not None,
                   indicates that more zones can be retrieved with another
                   call (pass that value as ``page_token``).
@@ -109,7 +109,7 @@ class Client(JSONClient):
         :param description: the description for the zone.  If not passed,
                             defaults to the value of 'dns_name'.
 
-        :rtype: :class:`gcloud.dns.zone.ManagedZone`
+        :rtype: :class:`google.cloud.dns.zone.ManagedZone`
         :returns: a new ``ManagedZone`` instance.
         """
         return ManagedZone(name, dns_name, client=self,

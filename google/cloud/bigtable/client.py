@@ -19,10 +19,10 @@ This is the base from which all interactions with the API occur.
 In the hierarchy of API concepts
 
 * a :class:`Client` owns an :class:`.Instance`
-* a :class:`.Instance` owns a :class:`Table <gcloud.bigtable.table.Table>`
-* a :class:`Table <gcloud.bigtable.table.Table>` owns a
+* a :class:`.Instance` owns a :class:`Table <google.cloud.bigtable.table.Table>`
+* a :class:`Table <google.cloud.bigtable.table.Table>` owns a
   :class:`ColumnFamily <.column_family.ColumnFamily>`
-* a :class:`Table <gcloud.bigtable.table.Table>` owns a :class:`Row <.row.Row>`
+* a :class:`Table <google.cloud.bigtable.table.Table>` owns a :class:`Row <.row.Row>`
   (and all the cells in the row)
 """
 

@@ -136,7 +136,7 @@ class WriteDisposition(_EnumProperty):
 class _BaseJob(object):
     """Base class for jobs.
 
-    :type client: :class:`gcloud.bigquery.client.Client`
+    :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
@@ -156,11 +156,11 @@ class _BaseJob(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :rtype: :class:`gcloud.bigquery.client.Client`
+        :rtype: :class:`google.cloud.bigquery.client.Client`
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
@@ -174,7 +174,7 @@ class _AsyncJob(_BaseJob):
     :type name: string
     :param name: the name of the job
 
-    :type client: :class:`gcloud.bigquery.client.Client`
+    :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
@@ -354,7 +354,7 @@ class _AsyncJob(_BaseJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/insert
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -370,7 +370,7 @@ class _AsyncJob(_BaseJob):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/get
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -393,7 +393,7 @@ class _AsyncJob(_BaseJob):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/get
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -409,7 +409,7 @@ class _AsyncJob(_BaseJob):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/cancel
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -444,18 +444,18 @@ class LoadTableFromStorageJob(_AsyncJob):
     :type name: string
     :param name: the name of the job
 
-    :type destination: :class:`gcloud.bigquery.table.Table`
+    :type destination: :class:`google.cloud.bigquery.table.Table`
     :param destination: Table into which data is to be loaded.
 
     :type source_uris: sequence of string
     :param source_uris: URIs of one or more data files to be loaded, in
                         format ``gs://<bucket_name>/<object_name_or_glob>``.
 
-    :type client: :class:`gcloud.bigquery.client.Client`
+    :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
 
-    :type schema: list of :class:`gcloud.bigquery.table.SchemaField`
+    :type schema: list of :class:`google.cloud.bigquery.table.SchemaField`
     :param schema: The job's schema
     """
 
@@ -661,11 +661,11 @@ class LoadTableFromStorageJob(_AsyncJob):
         :type resource: dict
         :param resource: dataset job representation returned from the API
 
-        :type client: :class:`gcloud.bigquery.client.Client`
+        :type client: :class:`google.cloud.bigquery.client.Client`
         :param client: Client which holds credentials and project
                        configuration for the dataset.
 
-        :rtype: :class:`gcloud.bigquery.job.LoadTableFromStorageJob`
+        :rtype: :class:`google.cloud.bigquery.job.LoadTableFromStorageJob`
         :returns: Job parsed from ``resource``.
         """
         name, config = cls._get_resource_config(resource)
@@ -693,13 +693,13 @@ class CopyJob(_AsyncJob):
     :type name: string
     :param name: the name of the job
 
-    :type destination: :class:`gcloud.bigquery.table.Table`
+    :type destination: :class:`google.cloud.bigquery.table.Table`
     :param destination: Table into which data is to be loaded.
 
-    :type sources: list of :class:`gcloud.bigquery.table.Table`
+    :type sources: list of :class:`google.cloud.bigquery.table.Table`
     :param sources: Table into which data is to be loaded.
 
-    :type client: :class:`gcloud.bigquery.client.Client`
+    :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
@@ -771,11 +771,11 @@ class CopyJob(_AsyncJob):
         :type resource: dict
         :param resource: dataset job representation returned from the API
 
-        :type client: :class:`gcloud.bigquery.client.Client`
+        :type client: :class:`google.cloud.bigquery.client.Client`
         :param client: Client which holds credentials and project
                        configuration for the dataset.
 
-        :rtype: :class:`gcloud.bigquery.job.CopyJob`
+        :rtype: :class:`google.cloud.bigquery.job.CopyJob`
         :returns: Job parsed from ``resource``.
         """
         name, config = cls._get_resource_config(resource)
@@ -808,7 +808,7 @@ class ExtractTableToStorageJob(_AsyncJob):
     :type name: string
     :param name: the name of the job
 
-    :type source: :class:`gcloud.bigquery.table.Table`
+    :type source: :class:`google.cloud.bigquery.table.Table`
     :param source: Table into which data is to be loaded.
 
     :type destination_uris: list of string
@@ -816,7 +816,7 @@ class ExtractTableToStorageJob(_AsyncJob):
                              extracted data will be written, in format
                              ``gs://<bucket_name>/<object_name_or_glob>``.
 
-    :type client: :class:`gcloud.bigquery.client.Client`
+    :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
@@ -897,11 +897,11 @@ class ExtractTableToStorageJob(_AsyncJob):
         :type resource: dict
         :param resource: dataset job representation returned from the API
 
-        :type client: :class:`gcloud.bigquery.client.Client`
+        :type client: :class:`google.cloud.bigquery.client.Client`
         :param client: Client which holds credentials and project
                        configuration for the dataset.
 
-        :rtype: :class:`gcloud.bigquery.job.ExtractTableToStorageJob`
+        :rtype: :class:`google.cloud.bigquery.job.ExtractTableToStorageJob`
         :returns: Job parsed from ``resource``.
         """
         name, config = cls._get_resource_config(resource)
@@ -939,13 +939,13 @@ class QueryJob(_AsyncJob):
     :type query: string
     :param query: SQL query string
 
-    :type client: :class:`gcloud.bigquery.client.Client`
+    :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
 
     :type udf_resources: tuple
     :param udf_resources: An iterable of
-                        :class:`gcloud.bigquery.job.UDFResource`
+                        :class:`google.cloud.bigquery.job.UDFResource`
                         (empty by default)
     """
     _JOB_TYPE = 'query'
@@ -1092,11 +1092,11 @@ class QueryJob(_AsyncJob):
         :type resource: dict
         :param resource: dataset job representation returned from the API
 
-        :type client: :class:`gcloud.bigquery.client.Client`
+        :type client: :class:`google.cloud.bigquery.client.Client`
         :param client: Client which holds credentials and project
                        configuration for the dataset.
 
-        :rtype: :class:`gcloud.bigquery.job.RunAsyncQueryJob`
+        :rtype: :class:`google.cloud.bigquery.job.RunAsyncQueryJob`
         :returns: Job parsed from ``resource``.
         """
         name, config = cls._get_resource_config(resource)

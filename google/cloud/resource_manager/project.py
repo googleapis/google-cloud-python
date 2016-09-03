@@ -25,7 +25,7 @@ class Project(object):
 
         A :class:`Project` can also be created via
         :meth:`Client.new_project() \
-        <gcloud.resource_manager.client.Client.new_project>`
+        <google.cloud.resource_manager.client.Client.new_project>`
 
     To manage labels on a :class:`Project`::
 
@@ -42,7 +42,7 @@ class Project(object):
     :type project_id: string
     :param project_id: The globally unique ID of the project.
 
-    :type client: :class:`gcloud.resource_manager.client.Client`
+    :type client: :class:`google.cloud.resource_manager.client.Client`
     :param client: The Client used with this project.
 
     :type name: string
@@ -69,10 +69,10 @@ class Project(object):
         :type resource: dict
         :param resource: project resource representation returned from the API
 
-        :type client: :class:`gcloud.resource_manager.client.Client`
+        :type client: :class:`google.cloud.resource_manager.client.Client`
         :param client: The Client used with this project.
 
-        :rtype: :class:`gcloud.resource_manager.project.Project`
+        :rtype: :class:`google.cloud.resource_manager.project.Project`
         :returns: The project created.
         """
         project = cls(project_id=resource['projectId'], client=client)
@@ -101,12 +101,12 @@ class Project(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`gcloud.resource_manager.client.Client` or
+        :type client: :class:`google.cloud.resource_manager.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current project.
 
-        :rtype: :class:`gcloud.resource_manager.client.Client`
+        :rtype: :class:`google.cloud.resource_manager.client.Client`
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
@@ -119,7 +119,7 @@ class Project(object):
         See
         https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/create
 
-        :type client: :class:`gcloud.resource_manager.client.Client` or
+        :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
         :param client: the client to use.  If not passed, falls back to
                        the client stored on the current project.
@@ -141,7 +141,7 @@ class Project(object):
         This method will reload the newest metadata for the project. If you've
         created a new :class:`Project` instance via
         :meth:`Client.new_project() \
-        <gcloud.resource_manager.client.Client.new_project>`,
+        <google.cloud.resource_manager.client.Client.new_project>`,
         this method will retrieve project metadata.
 
         .. warning::
@@ -152,7 +152,7 @@ class Project(object):
         See
         https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get
 
-        :type client: :class:`gcloud.resource_manager.client.Client` or
+        :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
         :param client: the client to use.  If not passed, falls back to
                        the client stored on the current project.
@@ -170,7 +170,7 @@ class Project(object):
         See
         https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get
 
-        :type client: :class:`gcloud.resource_manager.client.Client` or
+        :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
         :param client: the client to use.  If not passed, falls back to
                        the client stored on the current project.
@@ -195,7 +195,7 @@ class Project(object):
         See
         https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/update
 
-        :type client: :class:`gcloud.resource_manager.client.Client` or
+        :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
         :param client: the client to use.  If not passed, falls back to
                        the client stored on the current project.
@@ -219,7 +219,7 @@ class Project(object):
         ``DELETE_IN_PROGRESS`` state, which means the deleting has actually
         begun.
 
-        :type client: :class:`gcloud.resource_manager.client.Client` or
+        :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
         :param client: the client to use.  If not passed, falls back to
                        the client stored on the current project.
@@ -249,7 +249,7 @@ class Project(object):
         If the project has already reached a status of ``DELETE_IN_PROGRESS``,
         this request will fail and the project cannot be restored.
 
-        :type client: :class:`gcloud.resource_manager.client.Client` or
+        :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
         :param client: the client to use.  If not passed, falls back to
                        the client stored on the current project.

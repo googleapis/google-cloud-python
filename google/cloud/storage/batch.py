@@ -126,7 +126,7 @@ class _FutureDict(object):
 class Batch(Connection):
     """Proxy an underlying connection, batching up change operations.
 
-    :type client: :class:`gcloud.storage.client.Client`
+    :type client: :class:`google.cloud.storage.client.Client`
     :param client: The client to use for making connections.
     """
     _MAX_BATCH_SIZE = 1000

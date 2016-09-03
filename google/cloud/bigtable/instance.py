@@ -85,7 +85,7 @@ class Instance(object):
     :type instance_id: str
     :param instance_id: The ID of the instance.
 
-    :type client: :class:`Client <gcloud.bigtable.client.Client>`
+    :type client: :class:`Client <google.cloud.bigtable.client.Client>`
     :param client: The client that owns the instance. Provides
                    authorization and a project ID.
 
@@ -131,7 +131,7 @@ class Instance(object):
         :type instance_pb: :class:`instance_pb2.Instance`
         :param instance_pb: A instance protobuf object.
 
-        :type client: :class:`Client <gcloud.bigtable.client.Client>`
+        :type client: :class:`Client <google.cloud.bigtable.client.Client>`
         :param client: The client that owns the instance.
 
         :rtype: :class:`Instance`
@@ -327,7 +327,7 @@ class Instance(object):
         :type table_id: str
         :param table_id: The ID of the table.
 
-        :rtype: :class:`Table <gcloud.bigtable.table.Table>`
+        :rtype: :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: The table owned by this instance.
         """
         return Table(table_id, self)
@@ -335,7 +335,7 @@ class Instance(object):
     def list_tables(self):
         """List the tables in this instance.
 
-        :rtype: list of :class:`Table <gcloud.bigtable.table.Table>`
+        :rtype: list of :class:`Table <google.cloud.bigtable.table.Table>`
         :returns: The list of tables owned by the instance.
         :raises: :class:`ValueError <exceptions.ValueError>` if one of the
                  returned tables has a name that is not of the expected format.

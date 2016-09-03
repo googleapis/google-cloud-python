@@ -200,7 +200,7 @@ class _Transfer(object):
     def _ensure_initialized(self):
         """Helper:  assert that the instance is initialized.
 
-        :raises: :exc:`gcloud.streaming.exceptions.TransferInvalidError`
+        :raises: :exc:`google.cloud.streaming.exceptions.TransferInvalidError`
                  if the instance is not initialized.
         """
         if not self.initialized:
@@ -210,7 +210,7 @@ class _Transfer(object):
     def _ensure_uninitialized(self):
         """Helper:  assert that the instance is not initialized.
 
-        :raises: :exc:`gcloud.streaming.exceptions.TransferInvalidError`
+        :raises: :exc:`google.cloud.streaming.exceptions.TransferInvalidError`
                  if the instance is already initialized.
         """
         if self.initialized:
@@ -334,7 +334,7 @@ class Download(_Transfer):
     def configure_request(self, http_request, url_builder):
         """Update http_request/url_builder with download-appropriate values.
 
-        :type http_request: :class:`gcloud.streaming.http_wrapper.Request`
+        :type http_request: :class:`google.cloud.streaming.http_wrapper.Request`
         :param http_request: the request to be updated
 
         :type url_builder: instance with settable 'query_params' attribute.
@@ -366,7 +366,7 @@ class Download(_Transfer):
         If the instance has :attr:`auto_transfer` enabled, begins the
         download immediately.
 
-        :type http_request: :class:`gcloud.streaming.http_wrapper.Request`
+        :type http_request: :class:`google.cloud.streaming.http_wrapper.Request`
         :param http_request: the request to use to initialize this download.
 
         :type http: :class:`httplib2.Http` (or workalike)
@@ -402,7 +402,7 @@ class Download(_Transfer):
 
         :rtype: tuple, (start, end)
         :returns:  the normalized start, end pair.
-        :raises: :exc:`gcloud.streaming.exceptions.TransferInvalidError`
+        :raises: :exc:`google.cloud.streaming.exceptions.TransferInvalidError`
                  for invalid combinations of start, end.
         """
         if end is not None:
@@ -426,7 +426,7 @@ class Download(_Transfer):
     def _set_range_header(request, start, end=None):
         """Update the 'Range' header in a request to match a byte range.
 
-        :type request: :class:`gcloud.streaming.http_wrapper.Request`
+        :type request: :class:`google.cloud.streaming.http_wrapper.Request`
         :param request: the request to update
 
         :type start: integer
@@ -497,7 +497,7 @@ class Download(_Transfer):
         :type end: integer or None
         :param end: end byte of the range.
 
-        :rtype: :class:`gcloud.streaming.http_wrapper.Response`
+        :rtype: :class:`google.cloud.streaming.http_wrapper.Response`
         :returns: response from the chunk request.
         """
         self._ensure_initialized()
@@ -509,14 +509,14 @@ class Download(_Transfer):
     def _process_response(self, response):
         """Update attribtes and writing stream, based on response.
 
-        :type response: :class:`gcloud.streaming.http_wrapper.Response`
+        :type response: :class:`google.cloud.streaming.http_wrapper.Response`
         :param response: response from a download request.
 
-        :rtype: :class:`gcloud.streaming.http_wrapper.Response`
+        :rtype: :class:`google.cloud.streaming.http_wrapper.Response`
         :returns: the response
-        :raises: :exc:`gcloud.streaming.exceptions.HttpError` for
+        :raises: :exc:`google.cloud.streaming.exceptions.HttpError` for
                  missing / unauthorized responses;
-                 :exc:`gcloud.streaming.exceptions.TransferRetryError`
+                 :exc:`google.cloud.streaming.exceptions.TransferRetryError`
                  for other error responses.
         """
         if response.status_code not in self._ACCEPTABLE_STATUSES:
@@ -564,7 +564,7 @@ class Download(_Transfer):
                            and fetch this range in a single request.
                            If True, streams via chunks.
 
-        :raises: :exc:`gcloud.streaming.exceptions.TransferRetryError`
+        :raises: :exc:`google.cloud.streaming.exceptions.TransferRetryError`
                  if a request returns an empty response.
         """
         self._ensure_initialized()
@@ -810,7 +810,7 @@ class Upload(_Transfer):
                              attributes
         :param upload_config: Configuration for the upload endpoint.
 
-        :type http_request: :class:`gcloud.streaming.http_wrapper.Request`
+        :type http_request: :class:`google.cloud.streaming.http_wrapper.Request`
         :param http_request: The associated http request.
         """
         if upload_config.resumable_path is None:
@@ -834,7 +834,7 @@ class Upload(_Transfer):
                              attributes
         :param upload_config: transfer policy object to be queried
 
-        :type http_request: :class:`gcloud.streaming.http_wrapper.Request`
+        :type http_request: :class:`google.cloud.streaming.http_wrapper.Request`
         :param http_request: the request to be updated
 
         :type url_builder: instance with settable 'relative_path' and
@@ -970,7 +970,7 @@ class Upload(_Transfer):
     def _get_range_header(response):
         """Return a 'Range' header from a response.
 
-        :type response: :class:`gcloud.streaming.http_wrapper.Response`
+        :type response: :class:`google.cloud.streaming.http_wrapper.Response`
         :param response: response to be queried
 
         :rtype: string
@@ -994,7 +994,7 @@ class Upload(_Transfer):
     def initialize_upload(self, http_request, http):
         """Initialize this upload from the given http_request.
 
-        :type http_request: :class:`gcloud.streaming.http_wrapper.Request`
+        :type http_request: :class:`google.cloud.streaming.http_wrapper.Request`
         :param http_request: the request to be used
 
         :type http: :class:`httplib2.Http` (or workalike)
@@ -1070,7 +1070,7 @@ class Upload(_Transfer):
         :param use_chunks: If False, send the stream in a single request.
                            Otherwise, send it in chunks.
 
-        :rtype: :class:`gcloud.streaming.http_wrapper.Response`
+        :rtype: :class:`google.cloud.streaming.http_wrapper.Response`
         :returns: The response for the final request made.
         """
         if self.strategy != RESUMABLE_UPLOAD:
@@ -1110,15 +1110,15 @@ class Upload(_Transfer):
 
         Helper for _send_media_body & _send_chunk:
 
-        :type request: :class:`gcloud.streaming.http_wrapper.Request`
+        :type request: :class:`google.cloud.streaming.http_wrapper.Request`
         :param request: the request to upload
 
         :type end: integer
         :param end: end byte of the to be uploaded
 
-        :rtype: :class:`gcloud.streaming.http_wrapper.Response`
+        :rtype: :class:`google.cloud.streaming.http_wrapper.Response`
         :returns: the response
-        :raises: :exc:`gcloud.streaming.exceptions.HttpError` if the status
+        :raises: :exc:`google.cloud.streaming.exceptions.HttpError` if the status
                  code from the response indicates an error.
         """
         response = make_api_request(
@@ -1144,7 +1144,7 @@ class Upload(_Transfer):
         :type start: integer
         :param start: start byte of the range.
 
-        :rtype: :class:`gcloud.streaming.http_wrapper.Response`
+        :rtype: :class:`google.cloud.streaming.http_wrapper.Response`
         :returns: The response from the media upload request.
         """
         self._ensure_initialized()
@@ -1174,7 +1174,7 @@ class Upload(_Transfer):
         :type start: integer
         :param start: start byte of the range.
 
-        :rtype: :class:`gcloud.streaming.http_wrapper.Response`
+        :rtype: :class:`google.cloud.streaming.http_wrapper.Response`
         :returns: The response from the chunked upload request.
         """
         self._ensure_initialized()

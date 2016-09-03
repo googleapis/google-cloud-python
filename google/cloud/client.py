@@ -48,7 +48,7 @@ class _ClientFactoryMixin(object):
         :type kwargs: dict
         :param kwargs: Remaining keyword arguments to pass to constructor.
 
-        :rtype: :class:`gcloud.pubsub.client.Client`
+        :rtype: :class:`google.cloud.pubsub.client.Client`
         :returns: The client created with the retrieved JSON credentials.
         :raises: :class:`TypeError` if there is a conflict with the kwargs
                  and the credentials created by the factory.
@@ -83,7 +83,7 @@ class _ClientFactoryMixin(object):
         :type kwargs: dict
         :param kwargs: Remaining keyword arguments to pass to constructor.
 
-        :rtype: :class:`gcloud.client.Client`
+        :rtype: :class:`google.cloud.client.Client`
         :returns: The client created with the retrieved P12 credentials.
         :raises: :class:`TypeError` if there is a conflict with the kwargs
                  and the credentials created by the factory.

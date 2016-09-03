@@ -66,7 +66,7 @@ class Config(object):
 def _wait_until_complete(operation, max_attempts=5):
     """Wait until an operation has completed.
 
-    :type operation: :class:`gcloud.bigtable.instance.Operation`
+    :type operation: :class:`google.cloud.bigtable.instance.Operation`
     :param operation: Operation that has not complete.
 
     :type max_attempts: int

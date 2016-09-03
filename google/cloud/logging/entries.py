@@ -53,7 +53,7 @@ class _BaseEntry(object):
     :param payload: The payload passed as ``textPayload``, ``jsonPayload``,
                     or ``protoPayload``.
 
-    :type logger: :class:`gcloud.logging.logger.Logger`
+    :type logger: :class:`google.cloud.logging.logger.Logger`
     :param logger: the logger used to write the entry.
 
     :type insert_id: text, or :class:`NoneType`
@@ -90,7 +90,7 @@ class _BaseEntry(object):
         :param resource: text entry resource representation returned from
                          the API
 
-        :type client: :class:`gcloud.logging.client.Client`
+        :type client: :class:`google.cloud.logging.client.Client`
         :param client: Client which holds credentials and project
                        configuration.
 
@@ -98,7 +98,7 @@ class _BaseEntry(object):
         :param loggers: A mapping of logger fullnames -> loggers.  If not
                         passed, the entry will have a newly-created logger.
 
-        :rtype: :class:`gcloud.logging.entries.TextEntry`
+        :rtype: :class:`google.cloud.logging.entries.TextEntry`
         :returns: Text entry parsed from ``resource``.
         """
         if loggers is None:

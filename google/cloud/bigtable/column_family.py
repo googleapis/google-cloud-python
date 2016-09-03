@@ -206,7 +206,7 @@ class ColumnFamily(object):
     :param column_family_id: The ID of the column family. Must be of the
                              form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
-    :type table: :class:`Table <gcloud.bigtable.table.Table>`
+    :type table: :class:`Table <google.cloud.bigtable.table.Table>`
     :param table: The table that owns the column family.
 
     :type gc_rule: :class:`GarbageCollectionRule`

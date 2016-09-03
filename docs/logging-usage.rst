@@ -20,7 +20,7 @@ Authentication and Configuration
   e.g.:  ``$ export GCLOUD_DISABLE_GAX=1``.
 
 - After configuring your environment, create a
-  :class:`Client <gcloud.logging.client.Client>`
+  :class:`Client <google.cloud.logging.client.Client>`
 
   .. doctest::
 
@@ -389,7 +389,7 @@ Integration with Python logging module
 
 
 It's possible to tie the Python :mod:`logging` module directly into Google Cloud Logging. To use it,
-create a :class:`CloudLoggingHandler <gcloud.logging.CloudLoggingHandler>` instance from your
+create a :class:`CloudLoggingHandler <google.cloud.logging.CloudLoggingHandler>` instance from your
 Logging client.
 
 .. doctest::
@@ -421,7 +421,7 @@ change it by providing a name to the handler:
 It is also possible to attach the handler to the root Python logger, so that for example a plain
 `logging.warn` call would be sent to Cloud Logging, as well as any other loggers created. However,
 you must avoid infinite recursion from the logging calls the client itself makes. A helper
-method :meth:`setup_logging <gcloud.logging.handlers.setup_logging>` is provided to configure
+method :meth:`setup_logging <google.cloud.logging.handlers.setup_logging>` is provided to configure
 this automatically:
 
 .. doctest::
@@ -447,10 +447,10 @@ Python logging handler transports
 ==================================
 
 The Python logging handler can use different transports. The default is
-:class:`gcloud.logging.handlers.BackgroundThreadTransport`.
+:class:`google.cloud.logging.handlers.BackgroundThreadTransport`.
 
- 1. :class:`gcloud.logging.handlers.BackgroundThreadTransport` this is the default. It writes
+ 1. :class:`google.cloud.logging.handlers.BackgroundThreadTransport` this is the default. It writes
  entries on a background :class:`python.threading.Thread`.
 
- 1. :class:`gcloud.logging.handlers.SyncTransport` this handler does a direct API call on each
+ 1. :class:`google.cloud.logging.handlers.SyncTransport` this handler does a direct API call on each
  logging statement to write the entry.

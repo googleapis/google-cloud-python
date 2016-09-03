@@ -28,7 +28,7 @@ class Logger(object):
     :type name: string
     :param name: the name of the logger
 
-    :type client: :class:`gcloud.logging.client.Client`
+    :type client: :class:`google.cloud.logging.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the logger (which requires a project).
 
@@ -64,11 +64,11 @@ class Logger(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
 
-        :rtype: :class:`gcloud.logging.client.Client`
+        :rtype: :class:`google.cloud.logging.client.Client`
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
@@ -78,7 +78,7 @@ class Logger(object):
     def batch(self, client=None):
         """Return a batch to use as a context manager.
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
 
@@ -165,7 +165,7 @@ class Logger(object):
         :type text: text
         :param text: the log message.
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
 
@@ -198,7 +198,7 @@ class Logger(object):
         :type info: dict
         :param info: the log entry information
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
 
@@ -231,7 +231,7 @@ class Logger(object):
         :type message: Protobuf message
         :param message: the message to be logged
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
 
@@ -260,7 +260,7 @@ class Logger(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs/delete
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
         """
@@ -283,8 +283,8 @@ class Logger(object):
                         https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: string
-        :param order_by: One of :data:`gcloud.logging.ASCENDING` or
-                         :data:`gcloud.logging.DESCENDING`.
+        :param order_by: One of :data:`google.cloud.logging.ASCENDING` or
+                         :data:`google.cloud.logging.DESCENDING`.
 
         :type page_size: int
         :param page_size: maximum number of entries to return, If not passed,
@@ -296,7 +296,7 @@ class Logger(object):
                            entries.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.logging.entry.TextEntry`, plus a
+        :returns: list of :class:`google.cloud.logging.entry.TextEntry`, plus a
                   "next page token" string:  if not None, indicates that
                   more entries can be retrieved with another call (pass that
                   value as ``page_token``).
@@ -316,10 +316,10 @@ class Batch(object):
 
     Helper returned by :meth:`Logger.batch`
 
-    :type logger: :class:`gcloud.logging.logger.Logger`
+    :type logger: :class:`google.cloud.logging.logger.Logger`
     :param logger: the logger to which entries will be logged.
 
-    :type client: :class:`gcloud.logging.client.Client`
+    :type client: :class:`google.cloud.logging.client.Client`
     :param client: The client to use.
     """
     def __init__(self, logger, client):
@@ -406,7 +406,7 @@ class Batch(object):
     def commit(self, client=None):
         """Send saved log entries as a single API call.
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current batch.
         """

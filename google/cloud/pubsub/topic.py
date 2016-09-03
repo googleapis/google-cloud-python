@@ -36,7 +36,7 @@ class Topic(object):
     :type name: string
     :param name: the name of the topic
 
-    :type client: :class:`gcloud.pubsub.client.Client`
+    :type client: :class:`google.cloud.pubsub.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the topic (which requires a project).
 
@@ -96,11 +96,11 @@ class Topic(object):
         :type resource: dict
         :param resource: topic resource representation returned from the API
 
-        :type client: :class:`gcloud.pubsub.client.Client`
+        :type client: :class:`google.cloud.pubsub.client.Client`
         :param client: Client which holds credentials and project
                        configuration for the topic.
 
-        :rtype: :class:`gcloud.pubsub.topic.Topic`
+        :rtype: :class:`google.cloud.pubsub.topic.Topic`
         :returns: Topic parsed from ``resource``.
         :raises: :class:`ValueError` if ``client`` is not ``None`` and the
                  project from the resource does not agree with the project
@@ -122,11 +122,11 @@ class Topic(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
 
-        :rtype: :class:`gcloud.pubsub.client.Client`
+        :rtype: :class:`google.cloud.pubsub.client.Client`
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
@@ -145,7 +145,7 @@ class Topic(object):
            :start-after: [START topic_create]
            :end-before: [END topic_create]
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
         """
@@ -165,7 +165,7 @@ class Topic(object):
            :start-after: [START topic_exists]
            :end-before: [END topic_exists]
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
 
@@ -194,7 +194,7 @@ class Topic(object):
            :start-after: [START topic_delete]
            :end-before: [END topic_delete]
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
         """
@@ -233,7 +233,7 @@ class Topic(object):
         :type message: bytes
         :param message: the message payload
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
 
@@ -267,7 +267,7 @@ class Topic(object):
            used as a context manager, and only if the block exits without
            raising an exception.
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
 
@@ -298,12 +298,12 @@ class Topic(object):
                            passed, the API will return the first page of
                            topics.
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.pubsub.subscription.Subscription`,
+        :returns: list of :class:`google.cloud.pubsub.subscription.Subscription`,
                   plus a "next page token" string:  if not None, indicates that
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
@@ -330,11 +330,11 @@ class Topic(object):
            :start-after: [START topic_get_iam_policy]
            :end-before: [END topic_get_iam_policy]
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current batch.
 
-        :rtype: :class:`gcloud.pubsub.iam.Policy`
+        :rtype: :class:`google.cloud.pubsub.iam.Policy`
         :returns: policy created from the resource returned by the
                   ``getIamPolicy`` API request.
         """
@@ -355,15 +355,15 @@ class Topic(object):
            :start-after: [START topic_set_iam_policy]
            :end-before: [END topic_set_iam_policy]
 
-        :type policy: :class:`gcloud.pubsub.iam.Policy`
+        :type policy: :class:`google.cloud.pubsub.iam.Policy`
         :param policy: the new policy, typically fetched via
                        :meth:`get_iam_policy` and updated in place.
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current batch.
 
-        :rtype: :class:`gcloud.pubsub.iam.Policy`
+        :rtype: :class:`google.cloud.pubsub.iam.Policy`
         :returns: updated policy created from the resource returned by the
                   ``setIamPolicy`` API request.
         """
@@ -388,7 +388,7 @@ class Topic(object):
         :type permissions: list of string
         :param permissions: list of permissions to be tested
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current batch.
 
@@ -406,10 +406,10 @@ class Batch(object):
 
     Helper returned by :meth:Topic.batch
 
-    :type topic: :class:`gcloud.pubsub.topic.Topic`
+    :type topic: :class:`google.cloud.pubsub.topic.Topic`
     :param topic: the topic being published
 
-    :type client: :class:`gcloud.pubsub.client.Client`
+    :type client: :class:`google.cloud.pubsub.client.Client`
     :param client: The client to use.
     """
     def __init__(self, topic, client):
@@ -445,7 +445,7 @@ class Batch(object):
     def commit(self, client=None):
         """Send saved messages as a single API call.
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current batch.
         """

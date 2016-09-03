@@ -72,8 +72,8 @@ _GCLOUD_CONFIG_KEY = 'project'
 class _LocalStack(Local):
     """Manage a thread-local LIFO stack of resources.
 
-    Intended for use in :class:`gcloud.datastore.batch.Batch.__enter__`,
-    :class:`gcloud.storage.batch.Batch.__enter__`, etc.
+    Intended for use in :class:`google.cloud.datastore.batch.Batch.__enter__`,
+    :class:`google.cloud.storage.batch.Batch.__enter__`, etc.
     """
     def __init__(self):
         super(_LocalStack, self).__init__()

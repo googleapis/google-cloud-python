@@ -44,7 +44,7 @@ class Table(object):
     :type name: str
     :param name: the name of the table
 
-    :type dataset: :class:`gcloud.bigquery.dataset.Dataset`
+    :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
     :param dataset: The dataset which contains the table.
 
     :type schema: list of :class:`SchemaField`
@@ -368,7 +368,7 @@ class Table(object):
     def list_partitions(self, client=None):
         """List the partitions in a table.
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -388,10 +388,10 @@ class Table(object):
         :type resource: dict
         :param resource: table resource representation returned from the API
 
-        :type dataset: :class:`gcloud.bigquery.dataset.Dataset`
+        :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
         :param dataset: The dataset containing the table.
 
-        :rtype: :class:`gcloud.bigquery.table.Table`
+        :rtype: :class:`google.cloud.bigquery.table.Table`
         :returns: Table parsed from ``resource``.
         """
         if ('tableReference' not in resource or
@@ -406,11 +406,11 @@ class Table(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :rtype: :class:`gcloud.bigquery.client.Client`
+        :rtype: :class:`google.cloud.bigquery.client.Client`
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
@@ -477,7 +477,7 @@ class Table(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/tables/insert
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -494,7 +494,7 @@ class Table(object):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/tables/get
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -517,7 +517,7 @@ class Table(object):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/tables/get
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -540,7 +540,7 @@ class Table(object):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/tables/patch
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -606,7 +606,7 @@ class Table(object):
         See
         https://cloud.google.com/bigquery/docs/reference/v2/tables/update
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -621,7 +621,7 @@ class Table(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/tables/delete
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -648,7 +648,7 @@ class Table(object):
         :type page_token: str or ``NoneType``
         :param page_token: token representing a cursor into the table's rows.
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -714,7 +714,7 @@ class Table(object):
                                 schema of the template table. See:
                                 https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
@@ -796,7 +796,7 @@ class Table(object):
         :type source_format: str
         :param source_format: one of 'CSV' or 'NEWLINE_DELIMITED_JSON'.
                               job configuration option; see
-                              :meth:`gcloud.bigquery.job.LoadJob`
+                              :meth:`google.cloud.bigquery.job.LoadJob`
 
         :type rewind: boolean
         :param rewind: If True, seek to the beginning of the file handle before
@@ -813,49 +813,49 @@ class Table(object):
 
         :type allow_jagged_rows: boolean
         :param allow_jagged_rows: job configuration option;  see
-                                  :meth:`gcloud.bigquery.job.LoadJob`.
+                                  :meth:`google.cloud.bigquery.job.LoadJob`.
 
         :type allow_quoted_newlines: boolean
         :param allow_quoted_newlines: job configuration option; see
-                                      :meth:`gcloud.bigquery.job.LoadJob`.
+                                      :meth:`google.cloud.bigquery.job.LoadJob`.
 
         :type create_disposition: str
         :param create_disposition: job configuration option; see
-                                   :meth:`gcloud.bigquery.job.LoadJob`.
+                                   :meth:`google.cloud.bigquery.job.LoadJob`.
 
         :type encoding: str
         :param encoding: job configuration option; see
-                         :meth:`gcloud.bigquery.job.LoadJob`.
+                         :meth:`google.cloud.bigquery.job.LoadJob`.
 
         :type field_delimiter: str
         :param field_delimiter: job configuration option; see
-                                :meth:`gcloud.bigquery.job.LoadJob`.
+                                :meth:`google.cloud.bigquery.job.LoadJob`.
 
         :type ignore_unknown_values: boolean
         :param ignore_unknown_values: job configuration option; see
-                                      :meth:`gcloud.bigquery.job.LoadJob`.
+                                      :meth:`google.cloud.bigquery.job.LoadJob`.
 
         :type max_bad_records: integer
         :param max_bad_records: job configuration option; see
-                                :meth:`gcloud.bigquery.job.LoadJob`.
+                                :meth:`google.cloud.bigquery.job.LoadJob`.
 
         :type quote_character: str
         :param quote_character: job configuration option; see
-                                :meth:`gcloud.bigquery.job.LoadJob`.
+                                :meth:`google.cloud.bigquery.job.LoadJob`.
 
         :type skip_leading_rows: integer
         :param skip_leading_rows: job configuration option; see
-                                  :meth:`gcloud.bigquery.job.LoadJob`.
+                                  :meth:`google.cloud.bigquery.job.LoadJob`.
 
         :type write_disposition: str
         :param write_disposition: job configuration option; see
-                                  :meth:`gcloud.bigquery.job.LoadJob`.
+                                  :meth:`google.cloud.bigquery.job.LoadJob`.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current dataset.
 
-        :rtype: :class:`gcloud.bigquery.jobs.LoadTableFromStorageJob`
+        :rtype: :class:`google.cloud.bigquery.jobs.LoadTableFromStorageJob`
         :returns: the job instance used to load the data (e.g., for
                   querying status).
         :raises: :class:`ValueError` if ``size`` is not passed in and can not

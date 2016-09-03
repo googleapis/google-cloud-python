@@ -37,7 +37,7 @@ class CloudLoggingHandler(logging.StreamHandler):
     which means each logging statement that uses this handler will require
     an API call.
 
-    :type client: :class:`gcloud.logging.client`
+    :type client: :class:`google.cloud.logging.client`
     :param client: the authenticated gcloud logging client for this handler
                    to use
 

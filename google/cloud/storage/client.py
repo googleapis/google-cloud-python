@@ -57,7 +57,7 @@ class Client(JSONClient):
     def connection(self):
         """Get connection or batch on the client.
 
-        :rtype: :class:`gcloud.storage.connection.Connection`
+        :rtype: :class:`google.cloud.storage.connection.Connection`
         :returns: The connection set on the client, or the batch
                   if one is set.
         """
@@ -74,7 +74,7 @@ class Client(JSONClient):
             self.connection = connection
         Will raise if the connection is set more than once.
 
-        :type value: :class:`gcloud.storage.connection.Connection`
+        :type value: :class:`google.cloud.storage.connection.Connection`
         :param value: The connection set on the client.
 
         :raises: :class:`ValueError` if connection has already been set.
@@ -88,7 +88,7 @@ class Client(JSONClient):
 
         "Protected", intended for use by batch context mgrs.
 
-        :type batch: :class:`gcloud.storage.batch.Batch`
+        :type batch: :class:`google.cloud.storage.batch.Batch`
         :param batch: newly-active batch
         """
         self._batch_stack.push(batch)
@@ -99,7 +99,7 @@ class Client(JSONClient):
         "Protected", intended for use by batch context mgrs.
 
         :raises: IndexError if the stack is empty.
-        :rtype: :class:`gcloud.storage.batch.Batch`
+        :rtype: :class:`google.cloud.storage.batch.Batch`
         :returns: the top-most batch/transaction, after removing it.
         """
         return self._batch_stack.pop()
@@ -108,7 +108,7 @@ class Client(JSONClient):
     def current_batch(self):
         """Currently-active batch.
 
-        :rtype: :class:`gcloud.storage.batch.Batch` or ``NoneType`` (if
+        :rtype: :class:`google.cloud.storage.batch.Batch` or ``NoneType`` (if
                 no batch is active).
         :returns: The batch at the top of the batch stack.
         """
@@ -124,7 +124,7 @@ class Client(JSONClient):
         :type bucket_name: string
         :param bucket_name: The name of the bucket to be instantiated.
 
-        :rtype: :class:`gcloud.storage.bucket.Bucket`
+        :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The bucket object created.
         """
         return Bucket(client=self, name=bucket_name)
@@ -136,7 +136,7 @@ class Client(JSONClient):
           This will not make an HTTP request; it simply instantiates
           a batch object owned by this client.
 
-        :rtype: :class:`gcloud.storage.batch.Batch`
+        :rtype: :class:`google.cloud.storage.batch.Batch`
         :returns: The batch object created.
         """
         return Batch(client=self)
@@ -145,7 +145,7 @@ class Client(JSONClient):
         """Get a bucket by name.
 
         If the bucket isn't found, this will raise a
-        :class:`gcloud.storage.exceptions.NotFound`.
+        :class:`google.cloud.storage.exceptions.NotFound`.
 
         For example::
 
@@ -159,9 +159,9 @@ class Client(JSONClient):
         :type bucket_name: string
         :param bucket_name: The name of the bucket to get.
 
-        :rtype: :class:`gcloud.storage.bucket.Bucket`
+        :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The bucket matching the name provided.
-        :raises: :class:`gcloud.exceptions.NotFound`
+        :raises: :class:`google.cloud.exceptions.NotFound`
         """
         bucket = Bucket(self, name=bucket_name)
         bucket.reload(client=self)
@@ -183,7 +183,7 @@ class Client(JSONClient):
         :type bucket_name: string
         :param bucket_name: The name of the bucket to get.
 
-        :rtype: :class:`gcloud.storage.bucket.Bucket`
+        :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The bucket matching the name provided or None if not found.
         """
         try:
@@ -203,12 +203,12 @@ class Client(JSONClient):
         This implements "storage.buckets.insert".
 
         If the bucket already exists, will raise
-        :class:`gcloud.exceptions.Conflict`.
+        :class:`google.cloud.exceptions.Conflict`.
 
         :type bucket_name: string
         :param bucket_name: The bucket name to create.
 
-        :rtype: :class:`gcloud.storage.bucket.Bucket`
+        :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The newly created bucket.
         """
         bucket = Bucket(self, name=bucket_name)
@@ -250,7 +250,7 @@ class Client(JSONClient):
                        and the language of each bucket returned:
                        'items/id,nextPageToken'
 
-        :rtype: iterable of :class:`gcloud.storage.bucket.Bucket` objects.
+        :rtype: iterable of :class:`google.cloud.storage.bucket.Bucket` objects.
         :returns: All buckets belonging to this project.
         """
         extra_params = {'project': self.project}
@@ -279,10 +279,10 @@ class _BucketIterator(Iterator):
     """An iterator listing all buckets.
 
     You shouldn't have to use this directly, but instead should use the
-    helper methods on :class:`gcloud.storage.connection.Connection`
+    helper methods on :class:`google.cloud.storage.connection.Connection`
     objects.
 
-    :type client: :class:`gcloud.storage.client.Client`
+    :type client: :class:`google.cloud.storage.client.Client`
     :param client: The client to use for making connections.
 
     :type extra_params: dict or ``NoneType``

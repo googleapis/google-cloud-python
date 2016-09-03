@@ -89,7 +89,7 @@ class Client(JSONClient):
         :param image: A string which can be a URL, a Google Cloud Storage path,
                       or a byte stream of the image.
 
-        :type features:  list of :class:`gcloud.vision.feature.Feature`
+        :type features:  list of :class:`google.cloud.vision.feature.Feature`
         :param features: The type of detection that the Vision API should
                          use to determine image attributes. Pricing is
                          based on the number of Feature Types.

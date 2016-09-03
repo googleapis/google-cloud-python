@@ -32,15 +32,15 @@ class _BlobIterator(Iterator):
     """An iterator listing blobs in a bucket
 
     You shouldn't have to use this directly, but instead should use the
-    :class:`gcloud.storage.blob.Bucket.list_blobs` method.
+    :class:`google.cloud.storage.blob.Bucket.list_blobs` method.
 
-    :type bucket: :class:`gcloud.storage.bucket.Bucket`
+    :type bucket: :class:`google.cloud.storage.bucket.Bucket`
     :param bucket: The bucket from which to list blobs.
 
     :type extra_params: dict or None
     :param extra_params: Extra query string parameters for the API call.
 
-    :type client: :class:`gcloud.storage.client.Client`
+    :type client: :class:`google.cloud.storage.client.Client`
     :param client: Optional. The client to use for making connections.
                    Defaults to the bucket's client.
     """
@@ -72,7 +72,7 @@ class _BlobIterator(Iterator):
 class Bucket(_PropertyMixin):
     """A class representing a Bucket on Cloud Storage.
 
-    :type client: :class:`gcloud.storage.client.Client`
+    :type client: :class:`google.cloud.storage.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the bucket (which requires a project).
 
@@ -118,7 +118,7 @@ class Bucket(_PropertyMixin):
                            (1 MB). This must be a multiple of 256 KB per the
                            API specification.
 
-        :rtype: :class:`gcloud.storage.blob.Blob`
+        :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The blob object created.
         """
         return Blob(name=blob_name, bucket=self, chunk_size=chunk_size)
@@ -126,7 +126,7 @@ class Bucket(_PropertyMixin):
     def exists(self, client=None):
         """Determines whether or not this bucket exists.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
@@ -154,11 +154,11 @@ class Bucket(_PropertyMixin):
         """Creates current bucket.
 
         If the bucket already exists, will raise
-        :class:`gcloud.exceptions.Conflict`.
+        :class:`google.cloud.exceptions.Conflict`.
 
         This implements "storage.buckets.insert".
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         """
@@ -218,11 +218,11 @@ class Bucket(_PropertyMixin):
         :type blob_name: string
         :param blob_name: The name of the blob to retrieve.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: :class:`gcloud.storage.blob.Blob` or None
+        :rtype: :class:`google.cloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
         """
         client = self._require_client(client)
@@ -273,7 +273,7 @@ class Bucket(_PropertyMixin):
                        and the language of each blob returned:
                        'items/contentLanguage,nextPageToken'
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
@@ -315,8 +315,8 @@ class Bucket(_PropertyMixin):
         objects / blobs in the bucket (i.e. try to empty the bucket).
 
         If the bucket doesn't exist, this will raise
-        :class:`gcloud.exceptions.NotFound`.  If the bucket is not empty
-        (and ``force=False``), will raise :class:`gcloud.exceptions.Conflict`.
+        :class:`google.cloud.exceptions.NotFound`.  If the bucket is not empty
+        (and ``force=False``), will raise :class:`google.cloud.exceptions.Conflict`.
 
         If ``force=True`` and the bucket contains more than 256 objects / blobs
         this will cowardly refuse to delete the objects (or the bucket). This
@@ -326,7 +326,7 @@ class Bucket(_PropertyMixin):
         :type force: boolean
         :param force: If True, empties the bucket's objects then deletes it.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
@@ -361,7 +361,7 @@ class Bucket(_PropertyMixin):
         """Deletes a blob from the current bucket.
 
         If the blob isn't found (backend 404), raises a
-        :class:`gcloud.exceptions.NotFound`.
+        :class:`google.cloud.exceptions.NotFound`.
 
         For example::
 
@@ -380,11 +380,11 @@ class Bucket(_PropertyMixin):
         :type blob_name: string
         :param blob_name: A blob name to delete.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :raises: :class:`gcloud.exceptions.NotFound` (to suppress
+        :raises: :class:`google.cloud.exceptions.NotFound` (to suppress
                  the exception, call ``delete_blobs``, passing a no-op
                  ``on_error`` callback, e.g.::
 
@@ -403,19 +403,19 @@ class Bucket(_PropertyMixin):
 
         Uses :func:`Bucket.delete_blob` to delete each individual blob.
 
-        :type blobs: list of string or :class:`gcloud.storage.blob.Blob`
+        :type blobs: list of string or :class:`google.cloud.storage.blob.Blob`
         :param blobs: A list of blob names or Blob objects to delete.
 
         :type on_error: a callable taking (blob)
         :param on_error: If not ``None``, called once for each blob raising
-                         :class:`gcloud.exceptions.NotFound`;
+                         :class:`google.cloud.exceptions.NotFound`;
                          otherwise, the exception is propagated.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :raises: :class:`gcloud.exceptions.NotFound` (if
+        :raises: :class:`google.cloud.exceptions.NotFound` (if
                  `on_error` is not passed).
         """
         for blob in blobs:
@@ -434,21 +434,21 @@ class Bucket(_PropertyMixin):
                   client=None):
         """Copy the given blob to the given bucket, optionally with a new name.
 
-        :type blob: :class:`gcloud.storage.blob.Blob`
+        :type blob: :class:`google.cloud.storage.blob.Blob`
         :param blob: The blob to be copied.
 
-        :type destination_bucket: :class:`gcloud.storage.bucket.Bucket`
+        :type destination_bucket: :class:`google.cloud.storage.bucket.Bucket`
         :param destination_bucket: The bucket into which the blob should be
                                    copied.
 
         :type new_name: string
         :param new_name: (optional) the new name for the copied file.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: :class:`gcloud.storage.blob.Blob`
+        :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The new Blob.
         """
         client = self._require_client(client)
@@ -473,13 +473,13 @@ class Bucket(_PropertyMixin):
           old blob.  This means that with very large objects renaming
           could be a very (temporarily) costly or a very slow operation.
 
-        :type blob: :class:`gcloud.storage.blob.Blob`
+        :type blob: :class:`google.cloud.storage.blob.Blob`
         :param blob: The blob to be renamed.
 
         :type new_name: string
         :param new_name: The new name for this blob.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
@@ -785,7 +785,7 @@ class Bucket(_PropertyMixin):
         :param future: If True, this will make all objects created in the
                        future public as well.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         """

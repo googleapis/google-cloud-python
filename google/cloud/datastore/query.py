@@ -28,7 +28,7 @@ class Query(object):
     This class serves as an abstraction for creating a query over data
     stored in the Cloud Datastore.
 
-    :type client: :class:`gcloud.datastore.client.Client`
+    :type client: :class:`google.cloud.datastore.client.Client`
     :param client: The client used to connect to Datastore.
 
     :type kind: string
@@ -42,7 +42,7 @@ class Query(object):
     :param namespace: The namespace to which to restrict results.  If not
                       passed, uses the client's value.
 
-    :type ancestor: :class:`gcloud.datastore.key.Key` or None
+    :type ancestor: :class:`google.cloud.datastore.key.Key` or None
     :param ancestor: key of the ancestor to which this query's results are
                      restricted.
 
@@ -212,7 +212,7 @@ class Query(object):
         :type value: :class:`int`, :class:`str`, :class:`bool`,
                      :class:`float`, :class:`NoneType`,
                      :class:`datetime.datetime`,
-                     :class:`gcloud.datastore.key.Key`
+                     :class:`google.cloud.datastore.key.Key`
         :param value: The value to filter on.
 
         :raises: :class:`ValueError` if ``operation`` is not one of the
@@ -257,7 +257,7 @@ class Query(object):
     def key_filter(self, key, operator='='):
         """Filter on a key.
 
-        :type key: :class:`gcloud.datastore.key.Key`
+        :type key: :class:`google.cloud.datastore.key.Key`
         :param key: The key to filter on.
 
         :type operator: string
@@ -339,7 +339,7 @@ class Query(object):
         :type end_cursor: bytes
         :param end_cursor: An optional cursor passed through to the iterator.
 
-        :type client: :class:`gcloud.datastore.client.Client`
+        :type client: :class:`google.cloud.datastore.client.Client`
         :param client: client used to connect to datastore.
                        If not supplied, uses the query's value.
 
@@ -358,12 +358,12 @@ class Query(object):
 class Iterator(object):
     """Represent the state of a given execution of a Query.
 
-    :type query: :class:`gcloud.datastore.query.Query`
+    :type query: :class:`google.cloud.datastore.query.Query`
     :param query: Query object holding permanent configuration (i.e.
                   things that don't change on with each page in
                   a results set).
 
-    :type client: :class:`gcloud.datastore.client.Client`
+    :type client: :class:`google.cloud.datastore.client.Client`
     :param client: The client used to make a request.
 
     :type limit: integer
@@ -457,7 +457,7 @@ class Iterator(object):
     def __iter__(self):
         """Generator yielding all results matching our query.
 
-        :rtype: sequence of :class:`gcloud.datastore.entity.Entity`
+        :rtype: sequence of :class:`google.cloud.datastore.entity.Entity`
         """
         while True:
             self.next_page()
@@ -480,7 +480,7 @@ def _pb_from_query(query):
     :type query: :class:`Query`
     :param query: The source query.
 
-    :rtype: :class:`gcloud.datastore._generated.query_pb2.Query`
+    :rtype: :class:`google.cloud.datastore._generated.query_pb2.Query`
     :returns: A protobuf that can be sent to the protobuf API.  N.b. that
               it does not contain "in-flight" fields for ongoing query
               executions (cursors, offset, limit).

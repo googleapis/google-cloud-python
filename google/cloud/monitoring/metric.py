@@ -65,7 +65,7 @@ class MetricDescriptor(object):
     :meth:`~gcloud.monitoring.client.Client.metric_descriptor` factory method
     of the :class:`~gcloud.monitoring.client.Client` class.
 
-    :type client: :class:`gcloud.monitoring.client.Client`
+    :type client: :class:`google.cloud.monitoring.client.Client`
     :param client: A client for operating on the metric descriptor.
 
     :type type_: string
@@ -172,7 +172,7 @@ class MetricDescriptor(object):
     def _fetch(cls, client, metric_type):
         """Look up a metric descriptor by type.
 
-        :type client: :class:`gcloud.monitoring.client.Client`
+        :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
         :type metric_type: string
@@ -181,7 +181,7 @@ class MetricDescriptor(object):
         :rtype: :class:`MetricDescriptor`
         :returns: The metric descriptor instance.
 
-        :raises: :class:`gcloud.exceptions.NotFound` if the metric descriptor
+        :raises: :class:`google.cloud.exceptions.NotFound` if the metric descriptor
             is not found.
         """
         path = '/projects/{project}/metricDescriptors/{type}'.format(
@@ -194,7 +194,7 @@ class MetricDescriptor(object):
     def _list(cls, client, filter_string=None, type_prefix=None):
         """List all metric descriptors for the project.
 
-        :type client: :class:`gcloud.monitoring.client.Client`
+        :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
         :type filter_string: string or None
@@ -250,7 +250,7 @@ class MetricDescriptor(object):
     def _from_dict(cls, client, info):
         """Construct a metric descriptor from the parsed JSON representation.
 
-        :type client: :class:`gcloud.monitoring.client.Client`
+        :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: A client to be included in the returned object.
 
         :type info: dict

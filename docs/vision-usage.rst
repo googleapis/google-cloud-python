@@ -16,7 +16,7 @@ Authentication and Configuration
   this will be detected automatically.
 
 - After configuring your environment, create a
-  :class:`Client <gcloud.vision.client.Client>`
+  :class:`Client <google.cloud.vision.client.Client>`
 
 .. code-block:: python
 

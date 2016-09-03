@@ -29,7 +29,7 @@ class Subscription(object):
     :type name: string
     :param name: the name of the subscription.
 
-    :type topic: :class:`gcloud.pubsub.topic.Topic` or ``NoneType``
+    :type topic: :class:`google.cloud.pubsub.topic.Topic` or ``NoneType``
     :param topic: the topic to which the subscription belongs;  if ``None``,
                   the subscription's topic has been deleted.
 
@@ -41,7 +41,7 @@ class Subscription(object):
     :param push_endpoint: URL to which messages will be pushed by the back-end.
                           If not set, the application must pull messages.
 
-    :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+    :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
     :param client: the client to use.  If not passed, falls back to the
                    ``client`` stored on the topic.
     """
@@ -76,7 +76,7 @@ class Subscription(object):
         :type resource: dict
         :param resource: topic resource representation returned from the API.
 
-        :type client: :class:`gcloud.pubsub.client.Client`
+        :type client: :class:`google.cloud.pubsub.client.Client`
         :param client: Client which holds credentials and project
                        configuration for a topic.
 
@@ -84,7 +84,7 @@ class Subscription(object):
         :param topics: A mapping of topic names -> topics.  If not passed,
                        the subscription will have a newly-created topic.
 
-        :rtype: :class:`gcloud.pubsub.subscription.Subscription`
+        :rtype: :class:`google.cloud.pubsub.subscription.Subscription`
         :returns: Subscription parsed from ``resource``.
         """
         if topics is None:
@@ -132,7 +132,7 @@ class Subscription(object):
         :type max_messages: int
         :param max_messages: passed through to :meth:`Subscription.pull`
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: passed through to :meth:`Subscription.pull` and
                       :meth:`Subscription.acknowledge`.
 
@@ -144,12 +144,12 @@ class Subscription(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the topic of the
                        current subscription.
 
-        :rtype: :class:`gcloud.pubsub.client.Client`
+        :rtype: :class:`google.cloud.pubsub.client.Client`
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
@@ -168,7 +168,7 @@ class Subscription(object):
            :start-after: [START subscription_create]
            :end-before: [END subscription_create]
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
         """
@@ -190,7 +190,7 @@ class Subscription(object):
            :start-after: [START subscription_exists]
            :end-before: [END subscription_exists]
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
 
@@ -218,7 +218,7 @@ class Subscription(object):
            :start-after: [START subscription_reload]
            :end-before: [END subscription_reload]
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
         """
@@ -241,7 +241,7 @@ class Subscription(object):
            :start-after: [START subscription_delete]
            :end-before: [END subscription_delete]
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
         """
@@ -270,7 +270,7 @@ class Subscription(object):
                               back-end.  If None, the application must pull
                               messages.
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
         """
@@ -300,14 +300,14 @@ class Subscription(object):
         :type max_messages: int
         :param max_messages: the maximum number of messages to return.
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
 
         :rtype: list of (ack_id, message) tuples
         :returns: sequence of tuples: ``ack_id`` is the ID to be used in a
                   subsequent call to :meth:`acknowledge`, and ``message``
-                  is an instance of :class:`gcloud.pubsub.message.Message`.
+                  is an instance of :class:`google.cloud.pubsub.message.Message`.
         """
         client = self._require_client(client)
         api = client.subscriber_api
@@ -331,7 +331,7 @@ class Subscription(object):
         :type ack_ids: list of string
         :param ack_ids: ack IDs of messages being acknowledged
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
         """
@@ -351,7 +351,7 @@ class Subscription(object):
         :type ack_deadline: int
         :param ack_deadline: new deadline for the message, in seconds
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
         """
@@ -372,11 +372,11 @@ class Subscription(object):
            :start-after: [START subscription_get_iam_policy]
            :end-before: [END subscription_get_iam_policy]
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
 
-        :rtype: :class:`gcloud.pubsub.iam.Policy`
+        :rtype: :class:`google.cloud.pubsub.iam.Policy`
         :returns: policy created from the resource returned by the
                   ``getIamPolicy`` API request.
         """
@@ -397,15 +397,15 @@ class Subscription(object):
            :start-after: [START subscription_set_iam_policy]
            :end-before: [END subscription_set_iam_policy]
 
-        :type policy: :class:`gcloud.pubsub.iam.Policy`
+        :type policy: :class:`google.cloud.pubsub.iam.Policy`
         :param policy: the new policy, typically fetched via
                        :meth:`get_iam_policy` and updated in place.
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
 
-        :rtype: :class:`gcloud.pubsub.iam.Policy`
+        :rtype: :class:`google.cloud.pubsub.iam.Policy`
         :returns: updated policy created from the resource returned by the
                   ``setIamPolicy`` API request.
         """
@@ -430,7 +430,7 @@ class Subscription(object):
         :type permissions: list of string
         :param permissions: list of permissions to be tested
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
 
@@ -471,7 +471,7 @@ class AutoAck(dict):
     :type max_messages: int
     :param max_messages: passed through to :meth:`Subscription.pull`
 
-    :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+    :type client: :class:`google.cloud.pubsub.client.Client` or ``NoneType``
     :param client: passed through to :meth:`Subscription.pull` and
                    :meth:`Subscription.acknowledge`.
     """

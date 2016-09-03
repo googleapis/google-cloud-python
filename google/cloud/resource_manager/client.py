@@ -52,7 +52,7 @@ class Client(BaseClient):
         """Create a :class:`.Project` bound to the current client.
 
         Use :meth:`Project.reload() \
-        <gcloud.resource_manager.project.Project.reload>` to retrieve
+        <google.cloud.resource_manager.project.Project.reload>` to retrieve
         project metadata after creating a :class:`.Project` instance.
 
         .. note:
@@ -81,7 +81,7 @@ class Client(BaseClient):
         .. note::
 
             If the project does not exist, this will raise a
-            :class:`NotFound <gcloud.exceptions.NotFound>` error.
+            :class:`NotFound <google.cloud.exceptions.NotFound>` error.
 
         :type project_id: str
         :param project_id: The ID for this project.
@@ -159,10 +159,10 @@ class _ProjectIterator(Iterator):
     """An iterator over a list of Project resources.
 
     You shouldn't have to use this directly, but instead should use the
-    helper methods on :class:`gcloud.resource_manager.client.Client`
+    helper methods on :class:`google.cloud.resource_manager.client.Client`
     objects.
 
-    :type client: :class:`gcloud.resource_manager.client.Client`
+    :type client: :class:`google.cloud.resource_manager.client.Client`
     :param client: The client to use for making connections.
 
     :type extra_params: dict

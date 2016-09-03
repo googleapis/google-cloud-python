@@ -120,7 +120,7 @@ class Client(JSONClient):
                            topics.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.pubsub.topic.Topic`, plus a
+        :returns: list of :class:`google.cloud.pubsub.topic.Topic`, plus a
                   "next page token" string:  if not None, indicates that
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
@@ -154,7 +154,7 @@ class Client(JSONClient):
                            topics.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.pubsub.subscription.Subscription`,
+        :returns: list of :class:`google.cloud.pubsub.subscription.Subscription`,
                   plus a "next page token" string:  if not None, indicates that
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
@@ -183,7 +183,7 @@ class Client(JSONClient):
         :type timestamp_messages: boolean
         :param timestamp_messages: To be passed to ``Topic`` constructor.
 
-        :rtype: :class:`gcloud.pubsub.topic.Topic`
+        :rtype: :class:`google.cloud.pubsub.topic.Topic`
         :returns: Topic created with the current client.
         """
         return Topic(name, client=self, timestamp_messages=timestamp_messages)

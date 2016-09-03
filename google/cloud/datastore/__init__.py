@@ -25,27 +25,27 @@ You'll typically use these to get started with the API::
 
 The main concepts with this API are:
 
-- :class:`gcloud.datastore.connection.Connection`
+- :class:`google.cloud.datastore.connection.Connection`
   which represents a connection between your machine and the Cloud Datastore
   API.
 
-- :class:`gcloud.datastore.client.Client`
+- :class:`google.cloud.datastore.client.Client`
   which represents a project (string) and namespace (string) bundled with
   a connection and has convenience methods for constructing objects with that
   project / namespace.
 
-- :class:`gcloud.datastore.entity.Entity`
+- :class:`google.cloud.datastore.entity.Entity`
   which represents a single entity in the datastore
   (akin to a row in relational database world).
 
-- :class:`gcloud.datastore.key.Key`
+- :class:`google.cloud.datastore.key.Key`
   which represents a pointer to a particular entity in the datastore
   (akin to a unique identifier in relational database world).
 
-- :class:`gcloud.datastore.query.Query`
+- :class:`google.cloud.datastore.query.Query`
   which represents a lookup or search over the rows in the datastore.
 
-- :class:`gcloud.datastore.transaction.Transaction`
+- :class:`google.cloud.datastore.transaction.Transaction`
   which represents an all-or-none transaction and enables consistency
   when race conditions may occur.
 """

@@ -53,7 +53,7 @@ class Key(object):
 
     * namespace (string): A namespace identifier for the key.
     * project (string): The project associated with the key.
-    * parent (:class:`gcloud.datastore.key.Key`): The parent of the key.
+    * parent (:class:`google.cloud.datastore.key.Key`): The parent of the key.
 
     The project argument is required unless it has been set implicitly.
     """
@@ -193,7 +193,7 @@ class Key(object):
         Most attributes are simple types, so don't require copying. Other
         attributes like ``parent`` are long-lived and so we re-use them.
 
-        :rtype: :class:`gcloud.datastore.key.Key`
+        :rtype: :class:`google.cloud.datastore.key.Key`
         :returns: A new ``Key`` instance with the same data as the current one.
         """
         cloned_self = self.__class__(*self.flat_path,
@@ -210,7 +210,7 @@ class Key(object):
         :type id_or_name: string or integer
         :param id_or_name: ID or name to be added to the key.
 
-        :rtype: :class:`gcloud.datastore.key.Key`
+        :rtype: :class:`google.cloud.datastore.key.Key`
         :returns: A new ``Key`` instance with the same data as the current one
                   and an extra ID or name added.
         :raises: :class:`ValueError` if the current key is not partial or if
@@ -235,7 +235,7 @@ class Key(object):
     def to_protobuf(self):
         """Return a protobuf corresponding to the key.
 
-        :rtype: :class:`gcloud.datastore._generated.entity_pb2.Key`
+        :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Key`
         :returns: The protobuf representing the key.
         """
         key = _entity_pb2.Key()
@@ -346,7 +346,7 @@ class Key(object):
         Extracts all but the last element in the key path and creates a new
         key, while still matching the namespace and the project.
 
-        :rtype: :class:`gcloud.datastore.key.Key` or :class:`NoneType`
+        :rtype: :class:`google.cloud.datastore.key.Key` or :class:`NoneType`
         :returns: A new ``Key`` instance, whose path consists of all but the
                   last element of current path. If the current key has only
                   one path element, returns ``None``.
@@ -363,7 +363,7 @@ class Key(object):
     def parent(self):
         """The parent of the current key.
 
-        :rtype: :class:`gcloud.datastore.key.Key` or :class:`NoneType`
+        :rtype: :class:`google.cloud.datastore.key.Key` or :class:`NoneType`
         :returns: A new ``Key`` instance, whose path consists of all but the
                   last element of current path. If the current key has only
                   one path element, returns ``None``.
@@ -388,7 +388,7 @@ def _validate_project(project, parent):
     :type project: string
     :param project: A project.
 
-    :type parent: :class:`gcloud.datastore.key.Key` or ``NoneType``
+    :type parent: :class:`google.cloud.datastore.key.Key` or ``NoneType``
     :param parent: The parent of the key or ``None``.
 
     :rtype: string

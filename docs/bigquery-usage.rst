@@ -4,21 +4,21 @@ Using the API
 Authentication / Configuration
 ------------------------------
 
-- Use :class:`Client <gcloud.bigquery.client.Client>` objects to configure
+- Use :class:`Client <google.cloud.bigquery.client.Client>` objects to configure
   your applications.
 
-- :class:`Client <gcloud.bigquery.client.Client>` objects hold both a ``project``
+- :class:`Client <google.cloud.bigquery.client.Client>` objects hold both a ``project``
   and an authenticated connection to the BigQuery service.
 
 - The authentication credentials can be implicitly determined from the
   environment or directly via
-  :meth:`from_service_account_json <gcloud.bigquery.client.Client.from_service_account_json>`
+  :meth:`from_service_account_json <google.cloud.bigquery.client.Client.from_service_account_json>`
   and
-  :meth:`from_service_account_p12 <gcloud.bigquery.client.Client.from_service_account_p12>`.
+  :meth:`from_service_account_p12 <google.cloud.bigquery.client.Client.from_service_account_p12>`.
 
 - After setting :envvar:`GOOGLE_APPLICATION_CREDENTIALS` and
   :envvar:`GCLOUD_PROJECT` environment variables, create an instance of
-  :class:`Client <gcloud.bigquery.client.Client>`.
+  :class:`Client <google.cloud.bigquery.client.Client>`.
 
   .. doctest::
 
@@ -255,7 +255,7 @@ Background a query, loading the results into a table:
 
 .. note::
 
-   - ``gcloud.bigquery`` generates a UUID for each job.
+   - ``google.cloud.bigquery`` generates a UUID for each job.
    - The ``created`` and ``state`` fields are not set until the job
      is submitted to the BigQuery back-end.
 
@@ -317,7 +317,7 @@ the job locally:
 
 .. note::
 
-   - ``gcloud.bigquery`` generates a UUID for each job.
+   - ``google.cloud.bigquery`` generates a UUID for each job.
    - The ``created`` and ``state`` fields are not set until the job
      is submitted to the BigQuery back-end.
 
@@ -375,7 +375,7 @@ located on Google Cloud Storage.  First, create the job locally:
 
 .. note::
 
-   - ``gcloud.bigquery`` generates a UUID for each job.
+   - ``google.cloud.bigquery`` generates a UUID for each job.
    - The ``created`` and ``state`` fields are not set until the job
      is submitted to the BigQuery back-end.
 
@@ -429,7 +429,7 @@ First, create the job locally:
 
 .. note::
 
-   - ``gcloud.bigquery`` generates a UUID for each job.
+   - ``google.cloud.bigquery`` generates a UUID for each job.
    - The ``created`` and ``state`` fields are not set until the job
      is submitted to the BigQuery back-end.
 

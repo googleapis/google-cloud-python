@@ -16,9 +16,9 @@
 
 The main concepts with this API are:
 
-- :class:`gcloud.bigquery.dataset.Dataset` represents an collection of tables.
+- :class:`google.cloud.bigquery.dataset.Dataset` represents an collection of tables.
 
-- :class:`gcloud.bigquery.table.Table` represents a single "relation".
+- :class:`google.cloud.bigquery.table.Table` represents a single "relation".
 """
 
 from google.cloud.bigquery.client import Client

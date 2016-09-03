@@ -59,7 +59,7 @@ class HttpError(CommunicationError):
     def from_response(cls, http_response):
         """Factory:  construct an exception from a response.
 
-        :type http_response: :class:`gcloud.streaming.http_wrapper.Response`
+        :type http_response: :class:`google.cloud.streaming.http_wrapper.Response`
         :param http_response: the response which returned the error
 
         :rtype: :class:`HttpError`
@@ -108,7 +108,7 @@ class RetryAfterError(HttpError):
     def from_response(cls, http_response):
         """Factory:  construct an exception from a response.
 
-        :type http_response: :class:`gcloud.streaming.http_wrapper.Response`
+        :type http_response: :class:`google.cloud.streaming.http_wrapper.Response`
         :param http_response: the response which returned the error.
 
         :rtype: :class:`RetryAfterError`

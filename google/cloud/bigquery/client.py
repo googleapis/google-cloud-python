@@ -68,7 +68,7 @@ class Client(JSONClient):
                            datasets.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.bigquery.dataset.Dataset`, plus a
+        :returns: list of :class:`google.cloud.bigquery.dataset.Dataset`, plus a
                   "next page token" string:  if the token is not None,
                   indicates that more datasets can be retrieved with another
                   call (pass that value as ``page_token``).
@@ -97,7 +97,7 @@ class Client(JSONClient):
         :type dataset_name: str
         :param dataset_name: Name of the dataset.
 
-        :rtype: :class:`gcloud.bigquery.dataset.Dataset`
+        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
         :returns: a new ``Dataset`` instance
         """
         return Dataset(dataset_name, client=self)
@@ -109,11 +109,11 @@ class Client(JSONClient):
         :param resource: one job resource from API response
 
         :rtype: One of:
-                :class:`gcloud.bigquery.job.LoadTableFromStorageJob`,
-                :class:`gcloud.bigquery.job.CopyJob`,
-                :class:`gcloud.bigquery.job.ExtractTableToStorageJob`,
-                :class:`gcloud.bigquery.job.QueryJob`,
-                :class:`gcloud.bigquery.job.RunSyncQueryJob`
+                :class:`google.cloud.bigquery.job.LoadTableFromStorageJob`,
+                :class:`google.cloud.bigquery.job.CopyJob`,
+                :class:`google.cloud.bigquery.job.ExtractTableToStorageJob`,
+                :class:`google.cloud.bigquery.job.QueryJob`,
+                :class:`google.cloud.bigquery.job.RunSyncQueryJob`
         :returns: the job instance, constructed via the resource
         """
         config = resource['configuration']
@@ -191,14 +191,14 @@ class Client(JSONClient):
         :type job_name: str
         :param job_name: Name of the job.
 
-        :type destination: :class:`gcloud.bigquery.table.Table`
+        :type destination: :class:`google.cloud.bigquery.table.Table`
         :param destination: Table into which data is to be loaded.
 
         :type source_uris: sequence of string
         :param source_uris: URIs of data files to be loaded; in format
                             ``gs://<bucket_name>/<object_name_or_glob>``.
 
-        :rtype: :class:`gcloud.bigquery.job.LoadTableFromStorageJob`
+        :rtype: :class:`google.cloud.bigquery.job.LoadTableFromStorageJob`
         :returns: a new ``LoadTableFromStorageJob`` instance
         """
         return LoadTableFromStorageJob(job_name, destination, source_uris,
@@ -213,13 +213,13 @@ class Client(JSONClient):
         :type job_name: str
         :param job_name: Name of the job.
 
-        :type destination: :class:`gcloud.bigquery.table.Table`
+        :type destination: :class:`google.cloud.bigquery.table.Table`
         :param destination: Table into which data is to be copied.
 
-        :type sources: sequence of :class:`gcloud.bigquery.table.Table`
+        :type sources: sequence of :class:`google.cloud.bigquery.table.Table`
         :param sources: tables to be copied.
 
-        :rtype: :class:`gcloud.bigquery.job.CopyJob`
+        :rtype: :class:`google.cloud.bigquery.job.CopyJob`
         :returns: a new ``CopyJob`` instance
         """
         return CopyJob(job_name, destination, sources, client=self)
@@ -233,7 +233,7 @@ class Client(JSONClient):
         :type job_name: str
         :param job_name: Name of the job.
 
-        :type source: :class:`gcloud.bigquery.table.Table`
+        :type source: :class:`google.cloud.bigquery.table.Table`
         :param source: table to be extracted.
 
         :type destination_uris: sequence of string
@@ -241,7 +241,7 @@ class Client(JSONClient):
                                  table data is to be extracted; in format
                                  ``gs://<bucket_name>/<object_name_or_glob>``.
 
-        :rtype: :class:`gcloud.bigquery.job.ExtractTableToStorageJob`
+        :rtype: :class:`google.cloud.bigquery.job.ExtractTableToStorageJob`
         :returns: a new ``ExtractTableToStorageJob`` instance
         """
         return ExtractTableToStorageJob(job_name, source, destination_uris,
@@ -259,7 +259,7 @@ class Client(JSONClient):
         :type query: str
         :param query: SQL query to be executed
 
-        :rtype: :class:`gcloud.bigquery.job.QueryJob`
+        :rtype: :class:`google.cloud.bigquery.job.QueryJob`
         :returns: a new ``QueryJob`` instance
         """
         return QueryJob(job_name, query, client=self)
@@ -270,7 +270,7 @@ class Client(JSONClient):
         :type query: str
         :param query: SQL query to be executed
 
-        :rtype: :class:`gcloud.bigquery.query.QueryResults`
+        :rtype: :class:`google.cloud.bigquery.query.QueryResults`
         :returns: a new ``QueryResults`` instance
         """
         return QueryResults(query, client=self)

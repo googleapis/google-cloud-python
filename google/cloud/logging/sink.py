@@ -36,7 +36,7 @@ class Sink(object):
                         If not passed, the instance should already exist, to
                         be refreshed via :meth:`reload`.
 
-    :type client: :class:`gcloud.logging.client.Client`
+    :type client: :class:`google.cloud.logging.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the sink (which requires a project).
     """
@@ -73,11 +73,11 @@ class Sink(object):
         :type resource: dict
         :param resource: sink resource representation returned from the API
 
-        :type client: :class:`gcloud.logging.client.Client`
+        :type client: :class:`google.cloud.logging.client.Client`
         :param client: Client which holds credentials and project
                        configuration for the sink.
 
-        :rtype: :class:`gcloud.logging.sink.Sink`
+        :rtype: :class:`google.cloud.logging.sink.Sink`
         :returns: Sink parsed from ``resource``.
         :raises: :class:`ValueError` if ``client`` is not ``None`` and the
                  project from the resource does not agree with the project
@@ -91,11 +91,11 @@ class Sink(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
 
-        :rtype: :class:`gcloud.logging.client.Client`
+        :rtype: :class:`google.cloud.logging.client.Client`
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
@@ -108,7 +108,7 @@ class Sink(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/create
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
         """
@@ -122,7 +122,7 @@ class Sink(object):
         See
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/get
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
 
@@ -144,7 +144,7 @@ class Sink(object):
         See
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/get
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
         """
@@ -159,7 +159,7 @@ class Sink(object):
         See
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/update
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
         """
@@ -173,7 +173,7 @@ class Sink(object):
         See
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/delete
 
-        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
         """

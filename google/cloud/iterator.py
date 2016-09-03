@@ -48,7 +48,7 @@ requests)::
 class Iterator(object):
     """A generic class for iterating through Cloud JSON APIs list responses.
 
-    :type client: :class:`gcloud.client.Client`
+    :type client: :class:`google.cloud.client.Client`
     :param client: The client, which owns a connection to make requests.
 
     :type path: string

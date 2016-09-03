@@ -1,7 +1,7 @@
 Base for Everything
 ===================
 
-To use the API, the :class:`Client <gcloud.bigtable.client.Client>`
+To use the API, the :class:`Client <google.cloud.bigtable.client.Client>`
 class defines a high-level interface which handles authorization
 and creating other objects:
 
@@ -13,9 +13,9 @@ and creating other objects:
 Long-lived Defaults
 -------------------
 
-When creating a :class:`Client <gcloud.bigtable.client.Client>`, the
+When creating a :class:`Client <google.cloud.bigtable.client.Client>`, the
 ``user_agent`` argument has sensible a default
-(:data:`DEFAULT_USER_AGENT <gcloud.bigtable.client.DEFAULT_USER_AGENT>`).
+(:data:`DEFAULT_USER_AGENT <google.cloud.bigtable.client.DEFAULT_USER_AGENT>`).
 However, you may over-ride it and the value will be used throughout all API
 requests made with the ``client`` you create.
 
@@ -31,10 +31,10 @@ Configuration
   Engine or Google Compute Engine the project will be detected automatically.
   (Setting this environment variable is not required, you may instead pass the
   ``project`` explicitly when constructing a
-  :class:`Client <gcloud.storage.client.Client>`).
+  :class:`Client <google.cloud.storage.client.Client>`).
 
 - After configuring your environment, create a
-  :class:`Client <gcloud.storage.client.Client>`
+  :class:`Client <google.cloud.storage.client.Client>`
 
   .. code::
 
@@ -73,15 +73,15 @@ you can pass the ``read_only`` argument:
     client = bigtable.Client(read_only=True)
 
 This will ensure that the
-:data:`READ_ONLY_SCOPE <gcloud.bigtable.client.READ_ONLY_SCOPE>` is used
+:data:`READ_ONLY_SCOPE <google.cloud.bigtable.client.READ_ONLY_SCOPE>` is used
 for API requests (so any accidental requests that would modify data will
 fail).
 
 Next Step
 ---------
 
-After a :class:`Client <gcloud.bigtable.client.Client>`, the next highest-level
-object is a :class:`Instance <gcloud.bigtable.instance.Instance>`. You'll need
+After a :class:`Client <google.cloud.bigtable.client.Client>`, the next highest-level
+object is a :class:`Instance <google.cloud.bigtable.instance.Instance>`. You'll need
 one before you can interact with tables or data.
 
 Head next to learn about the :doc:`bigtable-instance-api`.

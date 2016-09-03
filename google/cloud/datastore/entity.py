@@ -24,7 +24,7 @@ class Entity(dict):
     An entity storing the actual instance of data.
 
     Each entity is officially represented with a
-    :class:`gcloud.datastore.key.Key` class, however it is possible that
+    :class:`google.cloud.datastore.key.Key` class, however it is possible that
     you might create an Entity with only a partial Key (that is, a Key
     with a Kind, and possibly a parent, but without an ID).  In such a
     case, the datastore service will automatically assign an ID to the
@@ -37,7 +37,7 @@ class Entity(dict):
     This means you could take an existing entity and change the key
     to duplicate the object.
 
-    Use :func:`gcloud.datastore.get` to retrieve an existing entity.
+    Use :func:`google.cloud.datastore.get` to retrieve an existing entity.
 
       >>> from google.cloud import datastore
       >>> client = datastore.Client()
@@ -68,7 +68,7 @@ class Entity(dict):
        Python3), will be saved using the 'blob_value' field, without
        any decoding / encoding step.
 
-    :type key: :class:`gcloud.datastore.key.Key`
+    :type key: :class:`google.cloud.datastore.key.Key`
     :param key: Optional key to be set on entity.
 
     :type exclude_from_indexes: tuple of string
@@ -118,7 +118,7 @@ class Entity(dict):
         """Get the kind of the current entity.
 
         .. note::
-          This relies entirely on the :class:`gcloud.datastore.key.Key`
+          This relies entirely on the :class:`google.cloud.datastore.key.Key`
           set on the entity.  That means that we're not storing the kind
           of the entity at all, just the properties and a pointer to a
           Key which knows its Kind.

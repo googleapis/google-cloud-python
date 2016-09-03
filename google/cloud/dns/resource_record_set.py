@@ -18,7 +18,7 @@
 class ResourceRecordSet(object):
     """ResourceRecordSets are DNS resource records.
 
-    RRS are owned by a :class:`gcloud.dns.zone.ManagedZone` instance.
+    RRS are owned by a :class:`google.cloud.dns.zone.ManagedZone` instance.
 
     See:
     https://cloud.google.com/dns/api/v1/resourceRecordSets
@@ -35,7 +35,7 @@ class ResourceRecordSet(object):
     :type rrdatas: list of string
     :param rrdatas: one or more lines containing the resource data.
 
-    :type zone: :class:`gcloud.dns.zone.ManagedZone`
+    :type zone: :class:`google.cloud.dns.zone.ManagedZone`
     :param zone: A zone which holds one or more record sets.
     """
 
@@ -53,10 +53,10 @@ class ResourceRecordSet(object):
         :type resource: dict
         :param resource: record sets representation returned from the API
 
-        :type zone: :class:`gcloud.dns.zone.ManagedZone`
+        :type zone: :class:`google.cloud.dns.zone.ManagedZone`
         :param zone: A zone which holds one or more record sets.
 
-        :rtype: :class:`gcloud.dns.zone.ResourceRecordSet`
+        :rtype: :class:`google.cloud.dns.zone.ResourceRecordSet`
         :returns: RRS parsed from ``resource``.
         """
         name = resource['name']

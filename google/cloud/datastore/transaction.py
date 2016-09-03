@@ -86,7 +86,7 @@ class Transaction(Batch):
       ... else:
       ...     transaction.commit()
 
-    :type client: :class:`gcloud.datastore.client.Client`
+    :type client: :class:`google.cloud.datastore.client.Client`
     :param client: the client used to connect to datastore.
     """
 
@@ -111,7 +111,7 @@ class Transaction(Batch):
             If the topmost element on the stack is not a transaction,
             returns None.
 
-        :rtype: :class:`gcloud.datastore.transaction.Transaction` or None
+        :rtype: :class:`google.cloud.datastore.transaction.Transaction` or None
         :returns: The current transaction (if any are active).
         """
         top = super(Transaction, self).current()

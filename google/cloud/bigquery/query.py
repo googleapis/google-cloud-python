@@ -45,13 +45,13 @@ class QueryResults(object):
     :type query: string
     :param query: SQL query string
 
-    :type client: :class:`gcloud.bigquery.client.Client`
+    :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
 
     :type udf_resources: tuple
     :param udf_resources: An iterable of
-                        :class:`gcloud.bigquery.job.UDFResource`
+                        :class:`google.cloud.bigquery.job.UDFResource`
                         (empty by default)
     """
 
@@ -77,11 +77,11 @@ class QueryResults(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :rtype: :class:`gcloud.bigquery.client.Client`
+        :rtype: :class:`google.cloud.bigquery.client.Client`
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
@@ -144,7 +144,7 @@ class QueryResults(object):
     def job(self):
         """Job instance used to run the query.
 
-        :rtype: :class:`gcloud.bigquery.job.QueryJob`, or ``NoneType``
+        :rtype: :class:`google.cloud.bigquery.job.QueryJob`, or ``NoneType``
         :returns: Job instance used to run the query (None until
                   ``jobReference`` property is set by the server).
         """
@@ -301,7 +301,7 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
@@ -331,7 +331,7 @@ class QueryResults(object):
         :param timeout_ms: timeout, in milliseconds, to wait for query to
                            complete
 
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :type client: :class:`google.cloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 

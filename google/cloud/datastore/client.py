@@ -71,13 +71,13 @@ def _extended_lookup(connection, project, key_pbs,
 
     Helper function for :meth:`Client.get_multi`.
 
-    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :type connection: :class:`google.cloud.datastore.connection.Connection`
     :param connection: The connection used to connect to datastore.
 
     :type project: string
     :param project: The project to make the request for.
 
-    :type key_pbs: list of :class:`gcloud.datastore._generated.entity_pb2.Key`
+    :type key_pbs: list of :class:`google.cloud.datastore._generated.entity_pb2.Key`
     :param key_pbs: The keys to retrieve from the datastore.
 
     :type missing: list
@@ -99,7 +99,7 @@ def _extended_lookup(connection, project, key_pbs,
                            the given transaction.  Incompatible with
                            ``eventual==True``.
 
-    :rtype: list of :class:`gcloud.datastore._generated.entity_pb2.Entity`
+    :rtype: list of :class:`google.cloud.datastore._generated.entity_pb2.Entity`
     :returns: The requested entities.
     :raises: :class:`ValueError` if missing / deferred are not null or
              empty list.
@@ -182,7 +182,7 @@ class Client(_BaseClient, _ClientProjectMixin):
 
         "Protected", intended for use by batch / transaction context mgrs.
 
-        :type batch: :class:`gcloud.datastore.batch.Batch`, or an object
+        :type batch: :class:`google.cloud.datastore.batch.Batch`, or an object
                      implementing its API.
         :param batch: newly-active batch/transaction.
         """
@@ -194,7 +194,7 @@ class Client(_BaseClient, _ClientProjectMixin):
         "Protected", intended for use by batch / transaction context mgrs.
 
         :raises: IndexError if the stack is empty.
-        :rtype: :class:`gcloud.datastore.batch.Batch`, or an object
+        :rtype: :class:`google.cloud.datastore.batch.Batch`, or an object
                  implementing its API.
         :returns: the top-most batch/transaction, after removing it.
         """
@@ -204,7 +204,7 @@ class Client(_BaseClient, _ClientProjectMixin):
     def current_batch(self):
         """Currently-active batch.
 
-        :rtype: :class:`gcloud.datastore.batch.Batch`, or an object
+        :rtype: :class:`google.cloud.datastore.batch.Batch`, or an object
                 implementing its API, or ``NoneType`` (if no batch is active).
         :returns: The batch/transaction at the top of the batch stack.
         """
@@ -214,7 +214,7 @@ class Client(_BaseClient, _ClientProjectMixin):
     def current_transaction(self):
         """Currently-active transaction.
 
-        :rtype: :class:`gcloud.datastore.transaction.Transaction`, or an object
+        :rtype: :class:`google.cloud.datastore.transaction.Transaction`, or an object
                 implementing its API, or ``NoneType`` (if no transaction is
                 active).
         :returns: The transaction at the top of the batch stack.
@@ -232,7 +232,7 @@ class Client(_BaseClient, _ClientProjectMixin):
            The backend API does not make a distinction between a single key or
            multiple keys in a lookup request.
 
-        :type key: :class:`gcloud.datastore.key.Key`
+        :type key: :class:`google.cloud.datastore.key.Key`
         :param key: The key to be retrieved from the datastore.
 
         :type missing: list
@@ -244,11 +244,11 @@ class Client(_BaseClient, _ClientProjectMixin):
         :param deferred: (Optional) If a list is passed, the keys returned
                          by the backend as "deferred" will be copied into it.
 
-        :type transaction: :class:`gcloud.datastore.transaction.Transaction`
+        :type transaction: :class:`google.cloud.datastore.transaction.Transaction`
         :param transaction: (Optional) Transaction to use for read consistency.
                             If not passed, uses current transaction, if set.
 
-        :rtype: :class:`gcloud.datastore.entity.Entity` or ``NoneType``
+        :rtype: :class:`google.cloud.datastore.entity.Entity` or ``NoneType``
         :returns: The requested entity if it exists.
         """
         entities = self.get_multi(keys=[key], missing=missing,
@@ -259,7 +259,7 @@ class Client(_BaseClient, _ClientProjectMixin):
     def get_multi(self, keys, missing=None, deferred=None, transaction=None):
         """Retrieve entities, along with their attributes.
 
-        :type keys: list of :class:`gcloud.datastore.key.Key`
+        :type keys: list of :class:`google.cloud.datastore.key.Key`
         :param keys: The keys to be retrieved from the datastore.
 
         :type missing: list
@@ -272,11 +272,11 @@ class Client(_BaseClient, _ClientProjectMixin):
                          by the backend as "deferred" will be copied into it.
                          If the list is not empty, an error will occur.
 
-        :type transaction: :class:`gcloud.datastore.transaction.Transaction`
+        :type transaction: :class:`google.cloud.datastore.transaction.Transaction`
         :param transaction: (Optional) Transaction to use for read consistency.
                             If not passed, uses current transaction, if set.
 
-        :rtype: list of :class:`gcloud.datastore.entity.Entity`
+        :rtype: list of :class:`google.cloud.datastore.entity.Entity`
         :returns: The requested entities.
         :raises: :class:`ValueError` if one or more of ``keys`` has a project
                  which does not match our project.
@@ -323,7 +323,7 @@ class Client(_BaseClient, _ClientProjectMixin):
            The backend API does not make a distinction between a single
            entity or multiple entities in a commit request.
 
-        :type entity: :class:`gcloud.datastore.entity.Entity`
+        :type entity: :class:`google.cloud.datastore.entity.Entity`
         :param entity: The entity to be saved to the datastore.
         """
         self.put_multi(entities=[entity])
@@ -331,7 +331,7 @@ class Client(_BaseClient, _ClientProjectMixin):
     def put_multi(self, entities):
         """Save entities in the Cloud Datastore.
 
-        :type entities: list of :class:`gcloud.datastore.entity.Entity`
+        :type entities: list of :class:`google.cloud.datastore.entity.Entity`
         :param entities: The entities to be saved to the datastore.
 
         :raises: :class:`ValueError` if ``entities`` is a single entity.
@@ -363,7 +363,7 @@ class Client(_BaseClient, _ClientProjectMixin):
            The backend API does not make a distinction between a single key or
            multiple keys in a commit request.
 
-        :type key: :class:`gcloud.datastore.key.Key`
+        :type key: :class:`google.cloud.datastore.key.Key`
         :param key: The key to be deleted from the datastore.
         """
         self.delete_multi(keys=[key])
@@ -371,7 +371,7 @@ class Client(_BaseClient, _ClientProjectMixin):
     def delete_multi(self, keys):
         """Delete keys from the Cloud Datastore.
 
-        :type keys: list of :class:`gcloud.datastore.key.Key`
+        :type keys: list of :class:`google.cloud.datastore.key.Key`
         :param keys: The keys to be deleted from the Datastore.
         """
         if not keys:
@@ -393,13 +393,13 @@ class Client(_BaseClient, _ClientProjectMixin):
     def allocate_ids(self, incomplete_key, num_ids):
         """Allocate a list of IDs from a partial key.
 
-        :type incomplete_key: :class:`gcloud.datastore.key.Key`
+        :type incomplete_key: :class:`google.cloud.datastore.key.Key`
         :param incomplete_key: Partial key to use as base for allocated IDs.
 
         :type num_ids: int
         :param num_ids: The number of IDs to allocate.
 
-        :rtype: list of :class:`gcloud.datastore.key.Key`
+        :rtype: list of :class:`google.cloud.datastore.key.Key`
         :returns: The (complete) keys allocated with ``incomplete_key`` as
                   root.
         :raises: :class:`ValueError` if ``incomplete_key`` is not a
@@ -420,7 +420,7 @@ class Client(_BaseClient, _ClientProjectMixin):
                 for allocated_id in allocated_ids]
 
     def key(self, *path_args, **kwargs):
-        """Proxy to :class:`gcloud.datastore.key.Key`.
+        """Proxy to :class:`google.cloud.datastore.key.Key`.
 
         Passes our ``project``.
         """
@@ -432,15 +432,15 @@ class Client(_BaseClient, _ClientProjectMixin):
         return Key(*path_args, **kwargs)
 
     def batch(self):
-        """Proxy to :class:`gcloud.datastore.batch.Batch`."""
+        """Proxy to :class:`google.cloud.datastore.batch.Batch`."""
         return Batch(self)
 
     def transaction(self):
-        """Proxy to :class:`gcloud.datastore.transaction.Transaction`."""
+        """Proxy to :class:`google.cloud.datastore.transaction.Transaction`."""
         return Transaction(self)
 
     def query(self, **kwargs):
-        """Proxy to :class:`gcloud.datastore.query.Query`.
+        """Proxy to :class:`google.cloud.datastore.query.Query`.
 
         Passes our ``project``.
 
@@ -452,7 +452,7 @@ class Client(_BaseClient, _ClientProjectMixin):
         >>> query.add_filter('property', '=', 'val')
 
         Using the query iterator's
-        :meth:`next_page() <gcloud.datastore.query.Iterator.next_page>` method:
+        :meth:`next_page() <google.cloud.datastore.query.Iterator.next_page>` method:
 
         >>> query_iter = query.fetch()
         >>> entities, more_results, cursor = query_iter.next_page()
@@ -470,10 +470,10 @@ class Client(_BaseClient, _ClientProjectMixin):
 
         :type kwargs: dict
         :param kwargs: Parameters for initializing and instance of
-                       :class:`gcloud.datastore.query.Query`.
+                       :class:`google.cloud.datastore.query.Query`.
 
-        :rtype: :class:`gcloud.datastore.query.Query`
-        :returns: An instance of :class:`gcloud.datastore.query.Query`
+        :rtype: :class:`google.cloud.datastore.query.Query`
+        :returns: An instance of :class:`google.cloud.datastore.query.Query`
         """
         if 'client' in kwargs:
             raise TypeError('Cannot pass client')

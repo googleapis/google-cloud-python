@@ -57,7 +57,7 @@ class Batch(object):
       ...     do_some_work(batch)
       ...     raise Exception()  # rolls back
 
-    :type client: :class:`gcloud.datastore.client.Client`
+    :type client: :class:`google.cloud.datastore.client.Client`
     :param client: The client used to connect to datastore.
     """
 
@@ -107,7 +107,7 @@ class Batch(object):
     def connection(self):
         """Getter for connection over which the batch will run.
 
-        :rtype: :class:`gcloud.datastore.connection.Connection`
+        :rtype: :class:`google.cloud.datastore.connection.Connection`
         :returns: The connection over which the batch will run.
         """
         return self._client.connection
@@ -115,7 +115,7 @@ class Batch(object):
     def _add_partial_key_entity_pb(self):
         """Adds a new mutation for an entity with a partial key.
 
-        :rtype: :class:`gcloud.datastore._generated.entity_pb2.Entity`
+        :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Entity`
         :returns: The newly created entity protobuf that will be
                   updated and sent with a commit.
         """
@@ -125,7 +125,7 @@ class Batch(object):
     def _add_complete_key_entity_pb(self):
         """Adds a new mutation for an entity with a completed key.
 
-        :rtype: :class:`gcloud.datastore._generated.entity_pb2.Entity`
+        :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Entity`
         :returns: The newly created entity protobuf that will be
                   updated and sent with a commit.
         """
@@ -138,7 +138,7 @@ class Batch(object):
     def _add_delete_key_pb(self):
         """Adds a new mutation for a key to be deleted.
 
-        :rtype: :class:`gcloud.datastore._generated.entity_pb2.Key`
+        :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Key`
         :returns: The newly created key protobuf that will be
                   deleted when sent with a commit.
         """
@@ -180,7 +180,7 @@ class Batch(object):
         the key for the ``entity`` passed in is updated to match the key ID
         assigned by the server.
 
-        :type entity: :class:`gcloud.datastore.entity.Entity`
+        :type entity: :class:`google.cloud.datastore.entity.Entity`
         :param entity: the entity to be saved.
 
         :raises: ValueError if entity has no key assigned, or if the key's
@@ -203,7 +203,7 @@ class Batch(object):
     def delete(self, key):
         """Remember a key to be deleted during :meth:`commit`.
 
-        :type key: :class:`gcloud.datastore.key.Key`
+        :type key: :class:`google.cloud.datastore.key.Key`
         :param key: the key to be deleted.
 
         :raises: ValueError if key is not complete, or if the key's
@@ -225,7 +225,7 @@ class Batch(object):
         statement, however it can be called explicitly if you don't want
         to use a context manager.
 
-        Overridden by :class:`gcloud.datastore.transaction.Transaction`.
+        Overridden by :class:`google.cloud.datastore.transaction.Transaction`.
 
         :raises: :class:`ValueError` if the batch has already begun.
         """
@@ -266,7 +266,7 @@ class Batch(object):
 
         Marks the batch as aborted (can't be used again).
 
-        Overridden by :class:`gcloud.datastore.transaction.Transaction`.
+        Overridden by :class:`google.cloud.datastore.transaction.Transaction`.
         """
         self._status = self._ABORTED
 
@@ -290,10 +290,10 @@ def _assign_entity_to_pb(entity_pb, entity):
 
     Helper method for ``Batch.put``.
 
-    :type entity_pb: :class:`gcloud.datastore._generated.entity_pb2.Entity`
+    :type entity_pb: :class:`google.cloud.datastore._generated.entity_pb2.Entity`
     :param entity_pb: The entity owned by a mutation.
 
-    :type entity: :class:`gcloud.datastore.entity.Entity`
+    :type entity: :class:`google.cloud.datastore.entity.Entity`
     :param entity: The entity being updated within the batch / transaction.
     """
     bare_entity_pb = helpers.entity_to_protobuf(entity)

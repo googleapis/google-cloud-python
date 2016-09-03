@@ -4,7 +4,7 @@ Using the API
 Authentication / Configuration
 ------------------------------
 
-- Use :class:`Client <gcloud.pubsub.client.Client>` objects to configure
+- Use :class:`Client <google.cloud.pubsub.client.Client>` objects to configure
   your applications.
 
 - In addition to any authentication configuration, you should also set the
@@ -18,17 +18,17 @@ Authentication / Configuration
   :envvar:`GCLOUD_DISABLE_GAX` environment variable to a non-empty string,
   e.g.:  ``$ export GCLOUD_DISABLE_GAX=1``.
 
-- :class:`Client <gcloud.pubsub.client.Client>` objects hold both a ``project``
+- :class:`Client <google.cloud.pubsub.client.Client>` objects hold both a ``project``
   and an authenticated connection to the PubSub service.
 
 - The authentication credentials can be implicitly determined from the
   environment or directly via
-  :meth:`from_service_account_json <gcloud.pubsub.client.Client.from_service_account_json>`
+  :meth:`from_service_account_json <google.cloud.pubsub.client.Client.from_service_account_json>`
   and
-  :meth:`from_service_account_p12 <gcloud.pubsub.client.Client.from_service_account_p12>`.
+  :meth:`from_service_account_p12 <google.cloud.pubsub.client.Client.from_service_account_p12>`.
 
 - After setting ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GCLOUD_PROJECT``
-  environment variables, create a :class:`Client <gcloud.pubsub.client.Client>`
+  environment variables, create a :class:`Client <google.cloud.pubsub.client.Client>`
 
   .. doctest::
 

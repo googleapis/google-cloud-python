@@ -82,7 +82,7 @@ class Client(JSONClient):
         :type metric_type: string
         :param metric_type: The metric type name. The default value is
             :data:`Query.DEFAULT_METRIC_TYPE
-            <gcloud.monitoring.query.Query.DEFAULT_METRIC_TYPE>`,
+            <google.cloud.monitoring.query.Query.DEFAULT_METRIC_TYPE>`,
             but please note that this default value is provided only for
             demonstration purposes and is subject to change. See the
             `supported metrics`_.
@@ -337,7 +337,7 @@ class Client(JSONClient):
         :rtype: :class:`~gcloud.monitoring.metric.MetricDescriptor`
         :returns: The metric descriptor instance.
 
-        :raises: :class:`gcloud.exceptions.NotFound` if the metric descriptor
+        :raises: :class:`google.cloud.exceptions.NotFound` if the metric descriptor
             is not found.
         """
         return MetricDescriptor._fetch(self, metric_type)
@@ -386,7 +386,7 @@ class Client(JSONClient):
         :rtype: :class:`~gcloud.monitoring.resource.ResourceDescriptor`
         :returns: The resource descriptor instance.
 
-        :raises: :class:`gcloud.exceptions.NotFound` if the resource descriptor
+        :raises: :class:`google.cloud.exceptions.NotFound` if the resource descriptor
             is not found.
         """
         return ResourceDescriptor._fetch(self, resource_type)
@@ -474,7 +474,7 @@ class Client(JSONClient):
         :rtype: :class:`~gcloud.monitoring.group.Group`
         :returns: The group instance.
 
-        :raises: :class:`gcloud.exceptions.NotFound` if the group is not found.
+        :raises: :class:`google.cloud.exceptions.NotFound` if the group is not found.
         """
         return Group._fetch(self, group_id)
 
