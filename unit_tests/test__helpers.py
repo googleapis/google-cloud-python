@@ -969,6 +969,43 @@ class Test_make_secure_stub(unittest.TestCase):
                          (target, COMPOSITE_CREDS))
 
 
+class Test_make_insecure_stub(unittest.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud._helpers import make_insecure_stub
+        return make_insecure_stub(*args, **kwargs)
+
+    def test_it(self):
+        from unit_tests._testing import _Monkey
+        from gcloud import _helpers as MUT
+
+        mock_result = object()
+        stub_inputs = []
+        CHANNEL = object()
+
+        class _GRPCModule(object):
+
+            def insecure_channel(self, *args):
+                self.insecure_channel_args = args
+                return CHANNEL
+
+        grpc_mod = _GRPCModule()
+
+        def mock_stub_class(channel):
+            stub_inputs.append(channel)
+            return mock_result
+
+        host = 'HOST'
+        port = 1025
+        with _Monkey(MUT, grpc=grpc_mod):
+            result = self._callFUT(mock_stub_class, host, port)
+
+        self.assertTrue(result is mock_result)
+        self.assertEqual(stub_inputs, [CHANNEL])
+        target = '%s:%d' % (host, port)
+        self.assertEqual(grpc_mod.insecure_channel_args, (target,))
+
+
 class Test_exc_to_code(unittest.TestCase):
 
     def _callFUT(self, exc):

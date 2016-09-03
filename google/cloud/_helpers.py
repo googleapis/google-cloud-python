@@ -649,6 +649,29 @@ def make_secure_stub(credentials, user_agent, stub_class, host, port):
     return stub_class(channel)
 
 
+def make_insecure_stub(stub_class, host, port):
+    """Makes an insecure stub for an RPC service.
+
+    Uses / depends on gRPC.
+
+    :type stub_class: type
+    :param stub_class: A gRPC stub type for a given service.
+
+    :type host: str
+    :param host: The host for the service.
+
+    :type port: int
+    :param port: The port for the service.
+
+    :rtype: object, instance of ``stub_class``
+    :returns: The stub object used to make gRPC requests to a given API.
+    """
+    # NOTE: This assumes port != http_client.HTTPS_PORT:
+    target = '%s:%d' % (host, port)
+    channel = grpc.insecure_channel(target)
+    return stub_class(channel)
+
+
 def exc_to_code(exc):
     """Retrieves the status code from a gRPC exception.
 
