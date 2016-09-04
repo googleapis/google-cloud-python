@@ -14,11 +14,14 @@
 
 """GAX wrapper for Pubsub API requests."""
 
+from google.cloud.pubsub.v1.publisher_api import PublisherApi
+from google.cloud.pubsub.v1.subscriber_api import SubscriberApi
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
 from google.pubsub.v1.pubsub_pb2 import PubsubMessage
 from google.pubsub.v1.pubsub_pb2 import PushConfig
+from grpc.beta.implementations import insecure_channel
 from grpc import StatusCode
 
 # pylint: disable=ungrouped-imports
@@ -498,3 +501,44 @@ def _received_message_pb_to_mapping(received_message_pb):
         'message': _message_pb_to_mapping(
             received_message_pb.message),
     }
+
+
+def make_gax_publisher_api(connection):
+    """Create an instance of the GAX Publisher API.
+
+    If the ``connection`` is intended for a local emulator, then
+    an insecure ``channel`` is created pointing at the local
+    Pub / Sub server.
+
+    :type connection: :class:`~google.cloud.pubsub.connection.Connection`
+    :param connection: The connection that holds configuration details.
+
+    :rtype: :class:`~google.cloud.pubsub.v1.publisher_api.PublisherApi`
+    :returns: A publisher API instance with the proper connection
+              configuration.
+    :rtype: :class:`~google.cloud.pubsub.v1.subscriber_api.SubscriberApi`
+    """
+    channel = None
+    if connection.in_emulator:
+        channel = insecure_channel(connection.host, None)
+    return PublisherApi(channel=channel)
+
+
+def make_gax_subscriber_api(connection):
+    """Create an instance of the GAX Subscriber API.
+
+    If the ``connection`` is intended for a local emulator, then
+    an insecure ``channel`` is created pointing at the local
+    Pub / Sub server.
+
+    :type connection: :class:`~google.cloud.pubsub.connection.Connection`
+    :param connection: The connection that holds configuration details.
+
+    :rtype: :class:`~google.cloud.pubsub.v1.subscriber_api.SubscriberApi`
+    :returns: A subscriber API instance with the proper connection
+              configuration.
+    """
+    channel = None
+    if connection.in_emulator:
+        channel = insecure_channel(connection.host, None)
+    return SubscriberApi(channel=channel)
