@@ -33,6 +33,9 @@ GCD_HOST = 'DATASTORE_EMULATOR_HOST'
 PUBSUB_EMULATOR = 'PUBSUB_EMULATOR_HOST'
 """Environment variable defining host for Pub/Sub emulator."""
 
+BIGTABLE_EMULATOR = 'BIGTABLE_EMULATOR_HOST'
+"""Environment variable defining host for Bigtable emulator."""
+
 CREDENTIALS = 'GOOGLE_APPLICATION_CREDENTIALS'
 """Environment variable defining location of Google credentials."""
 

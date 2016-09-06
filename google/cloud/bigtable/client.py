@@ -27,8 +27,11 @@ In the hierarchy of API concepts
 """
 
 
+import os
+
 from pkg_resources import get_distribution
 
+from google.cloud._helpers import make_insecure_stub
 from google.cloud._helpers import make_secure_stub
 from google.cloud.bigtable._generated import bigtable_instance_admin_pb2
 from google.cloud.bigtable._generated import bigtable_pb2
@@ -40,6 +43,7 @@ from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
 from google.cloud.client import _ClientFactoryMixin
 from google.cloud.client import _ClientProjectMixin
 from google.cloud.credentials import get_credentials
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 
 TABLE_ADMIN_HOST = 'bigtableadmin.googleapis.com'
@@ -74,8 +78,12 @@ def _make_data_stub(client):
     :rtype: :class:`._generated.bigtable_pb2.BigtableStub`
     :returns: A gRPC stub object.
     """
-    return make_secure_stub(client.credentials, client.user_agent,
-                            bigtable_pb2.BigtableStub, DATA_API_HOST)
+    if client.emulator_host is None:
+        return make_secure_stub(client.credentials, client.user_agent,
+                                bigtable_pb2.BigtableStub, DATA_API_HOST)
+    else:
+        return make_insecure_stub(bigtable_pb2.BigtableStub,
+                                  client.emulator_host)
 
 
 def _make_instance_stub(client):
@@ -87,10 +95,15 @@ def _make_instance_stub(client):
     :rtype: :class:`.bigtable_instance_admin_pb2.BigtableInstanceAdminStub`
     :returns: A gRPC stub object.
     """
-    return make_secure_stub(
-        client.credentials, client.user_agent,
-        bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
-        INSTANCE_ADMIN_HOST)
+    if client.emulator_host is None:
+        return make_secure_stub(
+            client.credentials, client.user_agent,
+            bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
+            INSTANCE_ADMIN_HOST)
+    else:
+        return make_insecure_stub(
+            bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
+            client.emulator_host)
 
 
 def _make_operations_stub(client):
@@ -105,9 +118,13 @@ def _make_operations_stub(client):
     :rtype: :class:`._generated.operations_grpc_pb2.OperationsStub`
     :returns: A gRPC stub object.
     """
-    return make_secure_stub(client.credentials, client.user_agent,
-                            operations_grpc_pb2.OperationsStub,
-                            OPERATIONS_API_HOST)
+    if client.emulator_host is None:
+        return make_secure_stub(client.credentials, client.user_agent,
+                                operations_grpc_pb2.OperationsStub,
+                                OPERATIONS_API_HOST)
+    else:
+        return make_insecure_stub(operations_grpc_pb2.OperationsStub,
+                                  client.emulator_host)
 
 
 def _make_table_stub(client):
@@ -119,9 +136,15 @@ def _make_table_stub(client):
     :rtype: :class:`.bigtable_instance_admin_pb2.BigtableTableAdminStub`
     :returns: A gRPC stub object.
     """
-    return make_secure_stub(client.credentials, client.user_agent,
-                            bigtable_table_admin_pb2.BigtableTableAdminStub,
-                            TABLE_ADMIN_HOST)
+    if client.emulator_host is None:
+        return make_secure_stub(
+            client.credentials, client.user_agent,
+            bigtable_table_admin_pb2.BigtableTableAdminStub,
+            TABLE_ADMIN_HOST)
+    else:
+        return make_insecure_stub(
+            bigtable_table_admin_pb2.BigtableTableAdminStub,
+            client.emulator_host)
 
 
 class Client(_ClientFactoryMixin, _ClientProjectMixin):
@@ -192,6 +215,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
             pass
         self._credentials = credentials
         self.user_agent = user_agent
+        self.emulator_host = os.getenv(BIGTABLE_EMULATOR)
 
         # Create gRPC stubs for making requests.
         self._data_stub = _make_data_stub(self)
