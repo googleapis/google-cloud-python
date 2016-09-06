@@ -316,27 +316,19 @@
         },
         {
           "title": "Label Descriptors",
-          "type": "gcloud/monitoring/index/labeldescriptor"
-        },
-        {
-          "title": "Metric Descriptors",
-          "type": "gcloud/monitoring/index/metricdescriptor"
+          "type": "gcloud/monitoring/label/labeldescriptor"
         },
         {
           "title": "Monitored Resource Descriptors",
-          "type": "gcloud/monitoring/index/resourcedescriptor"
+          "type": "gcloud/monitoring/resource/resourcedescriptor"
         },
         {
           "title": "Time Series Query",
-          "type": "gcloud/monitoring/index/query"
+          "type": "gcloud/monitoring/query/query"
         },
         {
           "title": "Time Series",
           "type": "gcloud/monitoring/timeseries/timeseries"
-        },
-        {
-          "title": "Label Descriptors",
-          "type": "gcloud/monitoring/label/labeldescriptor"
         }
       ],
       "title": "Cloud Monitoring",
