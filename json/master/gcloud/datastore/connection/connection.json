@@ -191,6 +191,15 @@
           ]
         }, 
         {
+          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
+          "name": "eventual", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
           "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
           "name": "transaction_id", 
           "nullable": null, 
@@ -206,15 +215,6 @@
           "optional": null, 
           "types": [
             ""
-          ]
-        }, 
-        {
-          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
-          "name": "eventual", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
           ]
         }
       ], 
@@ -263,8 +263,8 @@
           ]
         }, 
         {
-          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
-          "name": "transaction_id", 
+          "description": " The namespace over which to run the query.", 
+          "name": "namespace", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -281,8 +281,8 @@
           ]
         }, 
         {
-          "description": " The namespace over which to run the query.", 
-          "name": "namespace", 
+          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
+          "name": "transaction_id", 
           "nullable": null, 
           "optional": null, 
           "types": [

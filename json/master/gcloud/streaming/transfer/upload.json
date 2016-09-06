@@ -30,21 +30,21 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or None"
-          ]
-        }, 
-        {
           "description": " keyword arguments: passed through to _Transfer.__init__().", 
           "name": "kwds", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {
@@ -57,12 +57,12 @@
           ]
         }, 
         {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "boolean or None"
           ]
         }
       ], 
@@ -92,21 +92,21 @@
           ]
         }, 
         {
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " Size of the file being uploaded", 
           "name": "total_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer or None"
-          ]
-        }, 
-        {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
           ]
         }, 
         {
@@ -119,12 +119,12 @@
           ]
         }, 
         {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "dict"
           ]
         }
       ], 

@@ -90,21 +90,21 @@
       "name": "document_from_url", 
       "params": [
         {
-          "description": " The URL of the Google Cloud Storage object holding the content. Of the form <code>gs://{bucket}/{blob-name}</code>.", 
-          "name": "gcs_url", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to be passed along to the", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The URL of the Google Cloud Storage object holding the content. Of the form <code>gs://{bucket}/{blob-name}</code>.", 
+          "name": "gcs_url", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }, 
         {
@@ -134,21 +134,21 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {
