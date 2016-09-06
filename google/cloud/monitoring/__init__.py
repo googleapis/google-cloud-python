@@ -14,9 +14,34 @@
 
 """Google Stackdriver Monitoring API wrapper."""
 
-try:
-    import pkg_resources
-    pkg_resources.declare_namespace(__name__)
-except ImportError:
-    import pkgutil
-    __path__ = pkgutil.extend_path(__path__, __name__)
+from google.cloud.monitoring.client import Client
+from google.cloud.monitoring.connection import Connection
+from google.cloud.monitoring.group import Group
+from google.cloud.monitoring.label import LabelDescriptor
+from google.cloud.monitoring.label import LabelValueType
+from google.cloud.monitoring.metric import Metric
+from google.cloud.monitoring.metric import MetricDescriptor
+from google.cloud.monitoring.metric import MetricKind
+from google.cloud.monitoring.metric import ValueType
+from google.cloud.monitoring.query import Aligner
+from google.cloud.monitoring.query import Query
+from google.cloud.monitoring.query import Reducer
+from google.cloud.monitoring.resource import Resource
+from google.cloud.monitoring.resource import ResourceDescriptor
+from google.cloud.monitoring.timeseries import Point
+from google.cloud.monitoring.timeseries import TimeSeries
+
+__all__ = (
+    'Client',
+    'Connection',
+    'Group',
+    'LabelDescriptor', 'LabelValueType',
+    'Metric', 'MetricDescriptor', 'MetricKind', 'ValueType',
+    'Aligner', 'Query', 'Reducer',
+    'Resource', 'ResourceDescriptor',
+    'Point', 'TimeSeries',
+    'SCOPE',
+)
+
+
+SCOPE = Connection.SCOPE

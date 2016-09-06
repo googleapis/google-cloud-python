@@ -39,9 +39,11 @@ The main concepts with this API are:
   machine).
 """
 
-try:
-    import pkg_resources
-    pkg_resources.declare_namespace(__name__)
-except ImportError:
-    import pkgutil
-    __path__ = pkgutil.extend_path(__path__, __name__)
+from google.cloud.storage.batch import Batch
+from google.cloud.storage.blob import Blob
+from google.cloud.storage.bucket import Bucket
+from google.cloud.storage.client import Client
+from google.cloud.storage.connection import Connection
+
+
+SCOPE = Connection.SCOPE

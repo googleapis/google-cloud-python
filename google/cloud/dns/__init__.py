@@ -24,9 +24,12 @@ The main concepts with this API are:
   (adding/deleting resource record sets) to a zone.
 """
 
-try:
-    import pkg_resources
-    pkg_resources.declare_namespace(__name__)
-except ImportError:
-    import pkgutil
-    __path__ = pkgutil.extend_path(__path__, __name__)
+
+from google.cloud.dns.zone import Changes
+from google.cloud.dns.client import Client
+from google.cloud.dns.connection import Connection
+from google.cloud.dns.zone import ManagedZone
+from google.cloud.dns.resource_record_set import ResourceRecordSet
+
+
+SCOPE = Connection.SCOPE
