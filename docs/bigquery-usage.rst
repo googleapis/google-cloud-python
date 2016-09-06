@@ -242,7 +242,7 @@ Background a query, loading the results into a table:
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')
    >>> job = client.run_async_query('fullname-age-query-job', query)
-   >>> job.destination_table = table
+   >>> job.destination = table
    >>> job.write_disposition= 'truncate'
    >>> job.name
    'fullname-age-query-job'
