@@ -20,21 +20,21 @@
       "name": "annotate", 
       "params": [
         {
-          "description": " The type of detection that the Vision API should use to determine image attributes. Pricing is based on the number of Feature Types. See: <a href=\"https://cloud.google.com/vision/docs/pricing\">https://cloud.google.com/vision/docs/pricing</a>", 
-          "name": "features", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " gcloud.vision.feature.Feature"
-          ]
-        }, 
-        {
           "description": " A string which can be a URL, a Google Cloud Storage path, or a byte stream of the image.", 
           "name": "image", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " The type of detection that the Vision API should use to determine image attributes. Pricing is based on the number of Feature Types. See: <a href=\"https://cloud.google.com/vision/docs/pricing\">https://cloud.google.com/vision/docs/pricing</a>", 
+          "name": "features", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " gcloud.vision.feature.Feature"
           ]
         }
       ], 
@@ -55,21 +55,21 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }, 
         {
@@ -99,8 +99,8 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -117,21 +117,21 @@
           ]
         }, 
         {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
-          ]
-        }, 
-        {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }
       ], 

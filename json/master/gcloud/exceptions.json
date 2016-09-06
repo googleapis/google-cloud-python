@@ -19,21 +19,21 @@
           ]
         }, 
         {
-          "description": " A response object that defines a status code as the status attribute.", 
-          "name": "response", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "httplib2.Response or other HTTP response object"
-          ]
-        }, 
-        {
           "description": " Flag indicating if <code>content</code> is expected to be JSON.", 
           "name": "use_json", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "bool"
+          ]
+        }, 
+        {
+          "description": " A response object that defines a status code as the status attribute.", 
+          "name": "response", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "httplib2.Response or other HTTP response object"
           ]
         }, 
         {

@@ -82,21 +82,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " zone resource representation returned from the API", 
-          "name": "resource", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " Client which holds credentials and project configuration for the zone.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/dns/client/client\">gcloud.dns.client.Client</a>"
+          ]
+        }, 
+        {
+          "description": " zone resource representation returned from the API", 
+          "name": "resource", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -215,6 +215,24 @@
       "name": "resource_record_set", 
       "params": [
         {
+          "description": " RR type", 
+          "name": "record_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " resource data for the RR", 
+          "name": "rrdatas", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " string"
+          ]
+        }, 
+        {
           "description": " Name of the record set.", 
           "name": "name", 
           "nullable": null, 
@@ -230,24 +248,6 @@
           "optional": null, 
           "types": [
             "integer"
-          ]
-        }, 
-        {
-          "description": " resource data for the RR", 
-          "name": "rrdatas", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " string"
-          ]
-        }, 
-        {
-          "description": " RR type", 
-          "name": "record_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }
       ], 
