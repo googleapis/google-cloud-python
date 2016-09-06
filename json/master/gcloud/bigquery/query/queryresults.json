@@ -29,6 +29,15 @@
           ]
         }, 
         {
+          "description": " zero-based index of starting row", 
+          "name": "start_index", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or NoneType"
+          ]
+        }, 
+        {
           "description": " timeout, in milliseconds, to wait for query to complete", 
           "name": "timeout_ms", 
           "nullable": null, 
@@ -38,8 +47,8 @@
           ]
         }, 
         {
-          "description": " zero-based index of starting row", 
-          "name": "start_index", 
+          "description": " maximum number of rows to return.", 
+          "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -53,15 +62,6 @@
           "optional": null, 
           "types": [
             "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " maximum number of rows to return.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or NoneType"
           ]
         }
       ], 

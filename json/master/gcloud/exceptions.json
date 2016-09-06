@@ -10,6 +10,15 @@
       "name": "make_exception", 
       "params": [
         {
+          "description": " Flag indicating if <code>content</code> is expected to be JSON.", 
+          "name": "use_json", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
           "description": " Optional string giving extra information about the failed request.", 
           "name": "error_info", 
           "nullable": null, 
@@ -34,15 +43,6 @@
           "optional": null, 
           "types": [
             "httplib2.Response or other HTTP response object"
-          ]
-        }, 
-        {
-          "description": " Flag indicating if <code>content</code> is expected to be JSON.", 
-          "name": "use_json", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
           ]
         }
       ], 

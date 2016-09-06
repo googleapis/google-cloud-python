@@ -197,21 +197,21 @@
           ]
         }, 
         {
-          "description": " opaque marker for the next \"page\" of topics. If not passed, the API will return the first page of topics.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " maximum number of topics to return, If not passed, defaults to a value set by the API.", 
           "name": "page_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of topics. If not passed, the API will return the first page of topics.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -241,21 +241,21 @@
           ]
         }, 
         {
-          "description": " key-value pairs to send as message attributes", 
-          "name": "attrs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict (string -> string)"
-          ]
-        }, 
-        {
           "description": " the message payload", 
           "name": "message", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "bytes"
+          ]
+        }, 
+        {
+          "description": " key-value pairs to send as message attributes", 
+          "name": "attrs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict (string -> string)"
           ]
         }
       ], 
@@ -311,21 +311,21 @@
       "name": "subscription", 
       "params": [
         {
-          "description": " URL to which messages will be pushed by the back-end. If not set, the application must pull messages.", 
-          "name": "push_endpoint", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " the deadline (in seconds) by which messages pulled from the back-end must be acknowledged.", 
           "name": "ack_deadline", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " URL to which messages will be pushed by the back-end. If not set, the application must pull messages.", 
+          "name": "push_endpoint", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {

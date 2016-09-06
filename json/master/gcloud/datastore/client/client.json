@@ -20,21 +20,21 @@
       "name": "allocate_ids", 
       "params": [
         {
-          "description": " Partial key to use as base for allocated IDs.", 
-          "name": "incomplete_key", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
-          ]
-        }, 
-        {
           "description": " The number of IDs to allocate.", 
           "name": "num_ids", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " Partial key to use as base for allocated IDs.", 
+          "name": "incomplete_key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
           ]
         }
       ], 
@@ -85,15 +85,6 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
@@ -109,6 +100,15 @@
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -129,17 +129,8 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -156,8 +147,17 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -191,6 +191,15 @@
           ]
         }, 
         {
+          "description": " The key to be retrieved from the datastore.", 
+          "name": "key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
+          ]
+        }, 
+        {
           "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it.", 
           "name": "deferred", 
           "nullable": null, 
@@ -206,15 +215,6 @@
           "optional": null, 
           "types": [
             "list"
-          ]
-        }, 
-        {
-          "description": " The key to be retrieved from the datastore.", 
-          "name": "key", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
           ]
         }
       ], 
@@ -253,21 +253,21 @@
           ]
         }, 
         {
-          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it. If the list is not empty, an error will occur.", 
-          "name": "missing", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "list"
-          ]
-        }, 
-        {
           "description": " The keys to be retrieved from the datastore.", 
           "name": "keys", 
           "nullable": null, 
           "optional": null, 
           "types": [
             " gcloud.datastore.key.Key"
+          ]
+        }, 
+        {
+          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it. If the list is not empty, an error will occur.", 
+          "name": "missing", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
           ]
         }
       ], 
