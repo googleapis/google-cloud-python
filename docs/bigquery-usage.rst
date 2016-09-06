@@ -267,7 +267,7 @@ Then, begin executing the job on the server:
    >>> job.created
    datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
    >>> job.state
-   'running'
+   'RUNNING'
 
 Poll until the job is complete:
 
@@ -275,7 +275,7 @@ Poll until the job is complete:
 
    >>> import time
    >>> retry_count = 100
-   >>> while retry_count > 0 and job.state == 'running':
+   >>> while retry_count > 0 and job.state != 'DONE':
    ...     retry_count -= 1
    ...     time.sleep(10)
    ...     job.reload()  # API call
@@ -329,7 +329,7 @@ Then, begin executing the job on the server:
    >>> job.created
    datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
    >>> job.state
-   'running'
+   'RUNNING'
 
 Poll until the job is complete:
 
@@ -337,7 +337,7 @@ Poll until the job is complete:
 
    >>> import time
    >>> retry_count = 100
-   >>> while retry_count > 0 and job.state == 'running':
+   >>> while retry_count > 0 and job.state != 'DONE':
    ...     retry_count -= 1
    ...     time.sleep(10)
    ...     job.reload()  # API call
@@ -387,7 +387,7 @@ Then, begin executing the job on the server:
    >>> job.created
    datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
    >>> job.state
-   'running'
+   'RUNNING'
 
 Poll until the job is complete:
 
@@ -395,7 +395,7 @@ Poll until the job is complete:
 
    >>> import time
    >>> retry_count = 100
-   >>> while retry_count > 0 and job.state == 'running':
+   >>> while retry_count > 0 and job.state != 'DONE':
    ...     retry_count -= 1
    ...     time.sleep(10)
    ...     job.reload()  # API call
@@ -441,7 +441,7 @@ Then, begin executing the job on the server:
    >>> job.created
    datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
    >>> job.state
-   'running'
+   'RUNNING'
 
 Poll until the job is complete:
 
@@ -449,7 +449,7 @@ Poll until the job is complete:
 
    >>> import time
    >>> retry_count = 100
-   >>> while retry_count > 0 and job.state == 'running':
+   >>> while retry_count > 0 and job.state != 'DONE':
    ...     retry_count -= 1
    ...     time.sleep(10)
    ...     job.reload()  # API call
