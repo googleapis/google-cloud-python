@@ -156,7 +156,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         )])
 
     def test_constructor_insecure(self):
-        from gcloud.datastore import connection as MUT
+        from google.cloud.datastore import connection as MUT
 
         conn = _Connection(None)
         conn.credentials = object()

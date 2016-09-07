@@ -972,12 +972,12 @@ class Test_make_secure_stub(unittest.TestCase):
 class Test_make_insecure_stub(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud._helpers import make_insecure_stub
+        from google.cloud._helpers import make_insecure_stub
         return make_insecure_stub(*args, **kwargs)
 
     def _helper(self, target, host, port=None):
         from unit_tests._testing import _Monkey
-        from gcloud import _helpers as MUT
+        from google.cloud import _helpers as MUT
 
         mock_result = object()
         stub_inputs = []
