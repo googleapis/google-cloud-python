@@ -1,6 +1,11 @@
 language: python
 sudo: false
 
+addons:
+  apt:
+    packages:
+    - pandoc
+
 install:
   - pip install --upgrade pip
   - pip install --upgrade tox
