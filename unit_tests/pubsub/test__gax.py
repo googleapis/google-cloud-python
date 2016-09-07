@@ -585,13 +585,25 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_pull_explicit(self):
         import base64
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud._helpers import _datetime_to_rfc3339
+        NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        NOW_PB = _datetime_to_pb_timestamp(NOW)
+        NOW_RFC3339 = _datetime_to_rfc3339(NOW)
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
-        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
+        MESSAGE = {
+            'messageId': MSG_ID,
+            'data': B64,
+            'attributes': {'a': 'b'},
+            'publishTime': NOW_RFC3339,
+        }
         RECEIVED = [{'ackId': ACK_ID, 'message': MESSAGE}]
-        message_pb = _PubsubMessagePB(MSG_ID, B64, {'a': 'b'})
+        message_pb = _PubsubMessagePB(MSG_ID, B64, {'a': 'b'}, NOW_PB)
         response_pb = _PullResponsePB([_ReceivedMessagePB(ACK_ID, message_pb)])
         gax_api = _GAXSubscriberAPI(_pull_response=response_pb)
         api = self._makeOne(gax_api)
@@ -891,10 +903,11 @@ class _PushConfigPB(object):
 
 class _PubsubMessagePB(object):
 
-    def __init__(self, message_id, data, attributes):
+    def __init__(self, message_id, data, attributes, publish_time):
         self.message_id = message_id
         self.data = data
         self.attributes = attributes
+        self.publish_time = publish_time
 
 
 class _ReceivedMessagePB(object):
