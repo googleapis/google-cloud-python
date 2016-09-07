@@ -49,11 +49,12 @@ class Client(BaseClient):
     _connection_class = Connection
 
     def new_project(self, project_id, name=None, labels=None):
-        """Create a :class:`.Project` bound to the current client.
+        """Create a project bound to the current client.
 
         Use :meth:`Project.reload() \
         <google.cloud.resource_manager.project.Project.reload>` to retrieve
-        project metadata after creating a :class:`.Project` instance.
+        project metadata after creating a
+        :class:`~gcloud.resource_manager.project.Project` instance.
 
         .. note:
 
@@ -68,9 +69,10 @@ class Client(BaseClient):
         :type labels: dict
         :param labels: A list of labels associated with the project.
 
-        :rtype: :class:`.Project`
-        :returns: A new instance of a :class:`.Project` **without**
-                  any metadata loaded.
+        :rtype: :class:`~gcloud.resource_manager.project.Project`
+        :returns: A new instance of a
+                  :class:`~gcloud.resource_manager.project.Project`
+                  **without** any metadata loaded.
         """
         return Project(project_id=project_id,
                        client=self, name=name, labels=labels)
@@ -86,8 +88,9 @@ class Client(BaseClient):
         :type project_id: str
         :param project_id: The ID for this project.
 
-        :rtype: :class:`.Project`
-        :returns: A :class:`.Project` with metadata fetched from the API.
+        :rtype: :class:`~gcloud.resource_manager.project.Project`
+        :returns: A :class:`~gcloud.resource_manager.project.Project` with
+                  metadata fetched from the API.
         """
         project = self.new_project(project_id)
         project.reload()
@@ -142,7 +145,7 @@ class Client(BaseClient):
         :returns: A project iterator. The iterator will make multiple API
                   requests if you continue iterating and there are more
                   pages of results. Each item returned will be a.
-                  :class:`.Project`.
+                  :class:`~gcloud.resource_manager.project.Project`.
         """
         extra_params = {}
 
@@ -175,7 +178,7 @@ class _ProjectIterator(Iterator):
                                                extra_params=extra_params)
 
     def get_items_from_response(self, response):
-        """Yield :class:`.Project` items from response.
+        """Yield projects from response.
 
         :type response: dict
         :param response: The JSON API response for a page of projects.
