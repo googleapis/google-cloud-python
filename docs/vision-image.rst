@@ -12,7 +12,7 @@ Image
 Geometry
 ~~~~~~~~
 
-.. automodule:: gcloud.vision.geometry
+.. automodule:: google.cloud.vision.geometry
   :members:
   :undoc-members:
   :show-inheritance:
@@ -20,7 +20,7 @@ Geometry
 Likelihood
 ~~~~~~~~~~
 
-.. automodule:: gcloud.vision.likelihood
+.. automodule:: google.cloud.vision.likelihood
   :members:
   :undoc-members:
   :show-inheritance:

@@ -4,7 +4,7 @@ Vision Face
 Face
 ~~~~
 
-.. automodule:: gcloud.vision.face
+.. automodule:: google.cloud.vision.face
   :members:
   :undoc-members:
   :show-inheritance:

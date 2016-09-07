@@ -85,8 +85,8 @@ You can call the detection method manually.
 .. code-block:: python
 
     >>> from google.cloud import vision
-    >>> from gcloud.vision.image import Feature
-    >>> from gcloud.vision.image import FeatureTypes
+    >>> from google.cloud.vision.image import Feature
+    >>> from google.cloud.vision.image import FeatureTypes
     >>> client = vision.Client()
     >>> image = client.image('gs://my-test-bucket/image.jpg')
     >>> features = [Feature(FeatureTypes.FACE_DETECTION, 5),
