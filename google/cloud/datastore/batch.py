@@ -290,7 +290,7 @@ def _assign_entity_to_pb(entity_pb, entity):
 
     Helper method for ``Batch.put``.
 
-    :type entity_pb: :class:`.datastore._generated.entity_pb2.Entity`
+    :type entity_pb: :class:`._generated.entity_pb2.Entity`
     :param entity_pb: The entity owned by a mutation.
 
     :type entity: :class:`google.cloud.datastore.entity.Entity`
