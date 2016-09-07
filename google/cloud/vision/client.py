@@ -113,7 +113,7 @@ class Client(JSONClient):
         :type image_source: str or bytes
         :param image_source: Byte stream of an image or a GCS URI.
 
-        :rtype: :class:`gcloud.vision.image.Image`
+        :rtype: :class:`google.cloud.vision.image.Image`
         :returns: Image instance with the current client attached.
         """
         return Image(client=self, image_source=image_source)

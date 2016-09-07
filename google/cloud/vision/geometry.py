@@ -27,7 +27,7 @@ class BoundsBase(object):
         :type response_vertices: dict
         :param response_vertices: List of vertices.
 
-        :rtype: :class:`gcloud.vision.geometry.BoundsBase`
+        :rtype: :class:`google.cloud.vision.geometry.BoundsBase`
         :returns: Instance of BoundsBase with populated verticies.
         """
         vertices = []
@@ -61,7 +61,7 @@ class Position(object):
     def from_api_repr(cls, response_position):
         """Factory: construct 3D position from API response.
 
-        :rtype: :class:`gcloud.vision.geometry.Position`
+        :rtype: :class:`google.cloud.vision.geometry.Position`
         :returns: `Position` constructed with 3D points from API response.
         """
         x_coordinate = response_position['x']

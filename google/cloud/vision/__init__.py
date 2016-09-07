@@ -13,4 +13,4 @@
 # limitations under the License.
 
 """Google Cloud Vision API package."""
-from gcloud.vision.client import Client
+from google.cloud.vision.client import Client

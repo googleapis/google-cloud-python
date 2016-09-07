@@ -62,8 +62,6 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
-        from google.cloud.vision.feature import Feature, FeatureTypes
-
         features = [Feature(feature_type=FeatureTypes.FACE_DETECTION,
                             max_results=3)]
         image = client.image(_IMAGE_CONTENT)
@@ -84,7 +82,8 @@ class TestClient(unittest.TestCase):
 
     def test_face_detection_from_source(self):
         from google.cloud.vision.face import Face
-        from google.cloud.vision._fixtures import FACE_DETECTION_RESPONSE as RETURNED
+        from google.cloud.vision._fixtures import FACE_DETECTION_RESPONSE
+        RETURNED = FACE_DETECTION_RESPONSE
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
@@ -100,7 +99,8 @@ class TestClient(unittest.TestCase):
 
     def test_face_detection_from_content(self):
         from google.cloud.vision.face import Face
-        from google.cloud.vision._fixtures import FACE_DETECTION_RESPONSE as RETURNED
+        from google.cloud.vision._fixtures import FACE_DETECTION_RESPONSE
+        RETURNED = FACE_DETECTION_RESPONSE
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
