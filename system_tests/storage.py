@@ -305,13 +305,24 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertEqual(iterator.prefixes, set(['parent/child/']))
 
     def test_second_level(self):
-        iterator = self.bucket.list_blobs(delimiter='/',
-                                          prefix='parent/child/')
-        response = iterator.get_next_page_response()
-        blobs = list(iterator.get_items_from_response(response))
-        self.assertEqual([blob.name for blob in blobs],
-                         ['parent/child/file21.txt',
-                          'parent/child/file22.txt'])
+        expected_names = [
+            'parent/child/file21.txt',
+            'parent/child/file22.txt',
+        ]
+
+        def _all_in_list(pair):
+            _, blobs = pair
+            return [blob.name for blob in blobs] == expected_names
+
+        def _all_blobs():
+            iterator = self.bucket.list_blobs(delimiter='/',
+                                              prefix='parent/child/')
+            response = iterator.get_next_page_response()
+            blobs = list(iterator.get_items_from_response(response))
+            return iterator, blobs
+
+        retry = RetryResult(_all_in_list)
+        iterator, _ = retry(_all_blobs)()
         self.assertEqual(iterator.page_number, 1)
         self.assertTrue(iterator.next_page_token is None)
         self.assertEqual(iterator.prefixes,
