@@ -19,6 +19,7 @@ import google.cloud.logging
 import google.cloud.logging.handlers.handlers
 from google.cloud.logging.handlers.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers.transports import SyncTransport
+from google.cloud.logging import client
 from google.cloud import _helpers
 from google.cloud.environment_vars import TESTS_PROJECT
 
@@ -27,13 +28,8 @@ from retry import RetryResult
 from system_test_utils import unique_resource_id
 
 _RESOURCE_ID = unique_resource_id('-')
-DEFAULT_METRIC_NAME = 'system-tests-metric%s' % (_RESOURCE_ID,)
-DEFAULT_SINK_NAME = 'system-tests-sink%s' % (_RESOURCE_ID,)
 DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
 DEFAULT_DESCRIPTION = 'System testing'
-BUCKET_NAME = 'google-cloud-python-system-testing%s' % (_RESOURCE_ID,)
-DATASET_NAME = ('system_testing_dataset' + _RESOURCE_ID).replace('-', '_')
-TOPIC_NAME = 'google-cloud-python-system-testing%s' % (_RESOURCE_ID,)
 
 
 def _retry_on_unavailable(exc):
@@ -57,7 +53,7 @@ class Config(object):
 
 def setUpModule():
     _helpers.PROJECT = TESTS_PROJECT
-    Config.CLIENT = google.cloud.logging.Client()
+    Config.CLIENT = client.Client()
 
 
 class TestLogging(unittest.TestCase):
@@ -232,16 +228,18 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(request['status'], STATUS)
 
     def test_create_metric(self):
+        METRIC_NAME = 'test-create-metric%s' % (_RESOURCE_ID,)
         metric = Config.CLIENT.metric(
-            DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
+            METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
         self.assertFalse(metric.exists())
         metric.create()
         self.to_delete.append(metric)
         self.assertTrue(metric.exists())
 
     def test_list_metrics(self):
+        METRIC_NAME = 'test-list-metrics%s' % (_RESOURCE_ID,)
         metric = Config.CLIENT.metric(
-            DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
+            METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
         self.assertFalse(metric.exists())
         before_metrics, _ = Config.CLIENT.list_metrics()
         before_names = set(metric.name for metric in before_metrics)
@@ -251,13 +249,14 @@ class TestLogging(unittest.TestCase):
         after_metrics, _ = Config.CLIENT.list_metrics()
         after_names = set(metric.name for metric in after_metrics)
         self.assertEqual(after_names - before_names,
-                         set([DEFAULT_METRIC_NAME]))
+                         set([METRIC_NAME]))
 
     def test_reload_metric(self):
         from google.cloud.exceptions import Conflict
+        METRIC_NAME = 'test-reload-metric%s' % (_RESOURCE_ID,)
         retry = RetryErrors(Conflict)
         metric = Config.CLIENT.metric(
-            DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
+            METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
         self.assertFalse(metric.exists())
         retry(metric.create)()
         self.to_delete.append(metric)
@@ -269,11 +268,12 @@ class TestLogging(unittest.TestCase):
 
     def test_update_metric(self):
         from google.cloud.exceptions import Conflict
+        METRIC_NAME = 'test-update-metric%s' % (_RESOURCE_ID,)
         retry = RetryErrors(Conflict)
         NEW_FILTER = 'logName:other'
         NEW_DESCRIPTION = 'updated'
         metric = Config.CLIENT.metric(
-            DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
+            METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
         self.assertFalse(metric.exists())
         retry(metric.create)()
         self.to_delete.append(metric)
@@ -282,12 +282,13 @@ class TestLogging(unittest.TestCase):
         metric.update()
         after_metrics, _ = Config.CLIENT.list_metrics()
         after_info = dict((metric.name, metric) for metric in after_metrics)
-        after = after_info[DEFAULT_METRIC_NAME]
+        after = after_info[METRIC_NAME]
         self.assertEqual(after.filter_, NEW_FILTER)
         self.assertEqual(after.description, NEW_DESCRIPTION)
 
     def _init_storage_bucket(self):
         from google.cloud import storage
+        BUCKET_NAME = 'g-c-python-testing%s' % (_RESOURCE_ID,)
         BUCKET_URI = 'storage.googleapis.com/%s' % (BUCKET_NAME,)
 
         # Create the destination bucket, and set up the ACL to allow
@@ -305,19 +306,22 @@ class TestLogging(unittest.TestCase):
 
     def test_create_sink_storage_bucket(self):
         uri = self._init_storage_bucket()
+        SINK_NAME = 'test-create-sink-bucket%s' % (_RESOURCE_ID,)
 
-        sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
+        sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
         sink.create()
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
     def test_create_sink_pubsub_topic(self):
-        from google.cloud import pubsub
+        from google.cloud.pubsub import client as pubsub_client
+        SINK_NAME = 'test-create-sink-topic%s' % (_RESOURCE_ID,)
+        TOPIC_NAME = 'logging-test-sink%s' % (_RESOURCE_ID,)
 
         # Create the destination topic, and set up the IAM policy to allow
         # Stackdriver Logging to write into it.
-        pubsub_client = pubsub.Client()
+        pubsub_client = pubsub_client.Client()
         topic = pubsub_client.topic(TOPIC_NAME)
         topic.create()
         self.to_delete.append(topic)
@@ -327,8 +331,7 @@ class TestLogging(unittest.TestCase):
 
         TOPIC_URI = 'pubsub.googleapis.com/%s' % (topic.full_name,)
 
-        sink = Config.CLIENT.sink(
-            DEFAULT_SINK_NAME, DEFAULT_FILTER, TOPIC_URI)
+        sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, TOPIC_URI)
         self.assertFalse(sink.exists())
         sink.create()
         self.to_delete.append(sink)
@@ -337,6 +340,8 @@ class TestLogging(unittest.TestCase):
     def _init_bigquery_dataset(self):
         from google.cloud import bigquery
         from google.cloud.bigquery.dataset import AccessGrant
+        DATASET_NAME = (
+            'system_testing_dataset' + _RESOURCE_ID).replace('-', '_')
         DATASET_URI = 'bigquery.googleapis.com/projects/%s/datasets/%s' % (
             Config.CLIENT.project, DATASET_NAME,)
 
@@ -355,16 +360,18 @@ class TestLogging(unittest.TestCase):
         return DATASET_URI
 
     def test_create_sink_bigquery_dataset(self):
+        SINK_NAME = 'test-create-sink-dataset%s' % (_RESOURCE_ID,)
         uri = self._init_bigquery_dataset()
-        sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
+        sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
         sink.create()
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
     def test_list_sinks(self):
+        SINK_NAME = 'test-list-sinks%s' % (_RESOURCE_ID,)
         uri = self._init_storage_bucket()
-        sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
+        sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
         before_sinks, _ = Config.CLIENT.list_sinks()
         before_names = set(sink.name for sink in before_sinks)
@@ -374,13 +381,14 @@ class TestLogging(unittest.TestCase):
         after_sinks, _ = Config.CLIENT.list_sinks()
         after_names = set(sink.name for sink in after_sinks)
         self.assertEqual(after_names - before_names,
-                         set([DEFAULT_SINK_NAME]))
+                         set([SINK_NAME]))
 
     def test_reload_sink(self):
         from google.cloud.exceptions import Conflict
+        SINK_NAME = 'test-reload-sink%s' % (_RESOURCE_ID,)
         retry = RetryErrors(Conflict)
         uri = self._init_bigquery_dataset()
-        sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
+        sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
         retry(sink.create)()
         self.to_delete.append(sink)
@@ -392,12 +400,12 @@ class TestLogging(unittest.TestCase):
 
     def test_update_sink(self):
         from google.cloud.exceptions import Conflict
+        SINK_NAME = 'test-update-sink%s' % (_RESOURCE_ID,)
         retry = RetryErrors(Conflict)
         bucket_uri = self._init_storage_bucket()
         dataset_uri = self._init_bigquery_dataset()
         UPDATED_FILTER = 'logName:syslog'
-        sink = Config.CLIENT.sink(
-            DEFAULT_SINK_NAME, DEFAULT_FILTER, bucket_uri)
+        sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, bucket_uri)
         self.assertFalse(sink.exists())
         retry(sink.create)()
         self.to_delete.append(sink)

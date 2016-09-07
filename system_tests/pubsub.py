@@ -24,7 +24,7 @@ import httplib2
 from google.cloud import _helpers
 from google.cloud.environment_vars import PUBSUB_EMULATOR
 from google.cloud.environment_vars import TESTS_PROJECT
-from google.cloud import pubsub
+from google.cloud.pubsub import client
 # pylint: enable=ungrouped-imports
 
 from retry import RetryInstanceState
@@ -53,11 +53,11 @@ class Config(object):
 def setUpModule():
     _helpers.PROJECT = TESTS_PROJECT
     if os.getenv(PUBSUB_EMULATOR) is None:
-        Config.CLIENT = pubsub.Client()
+        Config.CLIENT = client.Client()
     else:
         credentials = EmulatorCreds()
         http = httplib2.Http()  # Un-authorized.
-        Config.CLIENT = pubsub.Client(credentials=credentials,
+        Config.CLIENT = client.Client(credentials=credentials,
                                       http=http)
 
 
