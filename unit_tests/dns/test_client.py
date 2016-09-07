@@ -21,14 +21,14 @@ class TestClient(unittest.TestCase):
     ZONE_NAME = 'zone-name'
 
     def _getTargetClass(self):
-        from gcloud.dns.client import Client
+        from google.cloud.dns.client import Client
         return Client
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor(self):
-        from gcloud.dns.connection import Connection
+        from google.cloud.dns.connection import Connection
         creds = _Credentials()
         http = object()
         client = self._makeOne(project=self.PROJECT, credentials=creds,
@@ -106,7 +106,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_zones_defaults(self):
-        from gcloud.dns.zone import ManagedZone
+        from google.cloud.dns.zone import ManagedZone
         ID_1 = '123'
         ZONE_1 = 'zone_one'
         DNS_1 = 'one.example.com'
@@ -148,7 +148,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_zones_explicit(self):
-        from gcloud.dns.zone import ManagedZone
+        from google.cloud.dns.zone import ManagedZone
         ID_1 = '123'
         ZONE_1 = 'zone_one'
         DNS_1 = 'one.example.com'
@@ -191,7 +191,7 @@ class TestClient(unittest.TestCase):
                          {'maxResults': 3, 'pageToken': TOKEN})
 
     def test_zone_explicit(self):
-        from gcloud.dns.zone import ManagedZone
+        from google.cloud.dns.zone import ManagedZone
         DESCRIPTION = 'DESCRIPTION'
         DNS_NAME = 'test.example.com'
         creds = _Credentials()
@@ -204,7 +204,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(zone._client is client)
 
     def test_zone_w_dns_name_wo_description(self):
-        from gcloud.dns.zone import ManagedZone
+        from google.cloud.dns.zone import ManagedZone
         DNS_NAME = 'test.example.com'
         creds = _Credentials()
         client = self._makeOne(self.PROJECT, creds)
@@ -216,7 +216,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(zone._client is client)
 
     def test_zone_wo_dns_name(self):
-        from gcloud.dns.zone import ManagedZone
+        from google.cloud.dns.zone import ManagedZone
         creds = _Credentials()
         client = self._makeOne(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME)

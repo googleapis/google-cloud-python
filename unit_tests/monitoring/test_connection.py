@@ -18,7 +18,7 @@ import unittest
 class TestConnection(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.connection import Connection
+        from google.cloud.monitoring.connection import Connection
         return Connection
 
     def _makeOne(self, *args, **kwargs):

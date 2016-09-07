@@ -1,7 +1,7 @@
 IAM Policy
 ~~~~~~~~~~
 
-.. automodule:: gcloud.pubsub.iam
+.. automodule:: google.cloud.pubsub.iam
   :members:
   :member-order: bysource
   :show-inheritance:

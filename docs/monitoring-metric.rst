@@ -1,6 +1,6 @@
 Metric Descriptors
 ==================
 
-.. automodule:: gcloud.monitoring.metric
+.. automodule:: google.cloud.monitoring.metric
   :members:
   :show-inheritance:

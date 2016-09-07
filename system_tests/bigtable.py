@@ -17,19 +17,19 @@ import operator
 
 import unittest
 
-from gcloud import _helpers
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud._helpers import _microseconds_from_datetime
-from gcloud._helpers import UTC
-from gcloud.bigtable.client import Client
-from gcloud.bigtable.column_family import MaxVersionsGCRule
-from gcloud.bigtable.row_filters import ApplyLabelFilter
-from gcloud.bigtable.row_filters import ColumnQualifierRegexFilter
-from gcloud.bigtable.row_filters import RowFilterChain
-from gcloud.bigtable.row_filters import RowFilterUnion
-from gcloud.bigtable.row_data import Cell
-from gcloud.bigtable.row_data import PartialRowData
-from gcloud.environment_vars import TESTS_PROJECT
+from google.cloud import _helpers
+from google.cloud._helpers import _datetime_from_microseconds
+from google.cloud._helpers import _microseconds_from_datetime
+from google.cloud._helpers import UTC
+from google.cloud.bigtable.client import Client
+from google.cloud.bigtable.column_family import MaxVersionsGCRule
+from google.cloud.bigtable.row_filters import ApplyLabelFilter
+from google.cloud.bigtable.row_filters import ColumnQualifierRegexFilter
+from google.cloud.bigtable.row_filters import RowFilterChain
+from google.cloud.bigtable.row_filters import RowFilterUnion
+from google.cloud.bigtable.row_data import Cell
+from google.cloud.bigtable.row_data import PartialRowData
+from google.cloud.environment_vars import TESTS_PROJECT
 
 from retry import RetryErrors
 from retry import RetryResult
@@ -37,8 +37,8 @@ from system_test_utils import unique_resource_id
 
 
 LOCATION_ID = 'us-central1-c'
-INSTANCE_ID = 'gcloud' + unique_resource_id('-')
-TABLE_ID = 'gcloud-python-test-table'
+INSTANCE_ID = 'google-cloud' + unique_resource_id('-')
+TABLE_ID = 'google-cloud-python-test-table'
 COLUMN_FAMILY_ID1 = u'col-fam-id1'
 COLUMN_FAMILY_ID2 = u'col-fam-id2'
 COL_NAME1 = b'col-name1'
@@ -66,7 +66,7 @@ class Config(object):
 def _wait_until_complete(operation, max_attempts=5):
     """Wait until an operation has completed.
 
-    :type operation: :class:`gcloud.bigtable.instance.Operation`
+    :type operation: :class:`google.cloud.bigtable.instance.Operation`
     :param operation: Operation that has not complete.
 
     :type max_attempts: int

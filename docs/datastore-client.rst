@@ -1,13 +1,13 @@
 Datastore Client
 ================
 
-.. automodule:: gcloud.datastore.client
+.. automodule:: google.cloud.datastore.client
   :members:
   :show-inheritance:
 
 Connection
 ~~~~~~~~~~
 
-.. automodule:: gcloud.datastore.connection
+.. automodule:: google.cloud.datastore.connection
   :members:
   :show-inheritance:

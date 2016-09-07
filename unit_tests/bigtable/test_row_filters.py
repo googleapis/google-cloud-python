@@ -19,7 +19,7 @@ import unittest
 class Test_BoolFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import _BoolFilter
+        from google.cloud.bigtable.row_filters import _BoolFilter
         return _BoolFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -53,7 +53,7 @@ class Test_BoolFilter(unittest.TestCase):
 class TestSinkFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import SinkFilter
+        from google.cloud.bigtable.row_filters import SinkFilter
         return SinkFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -70,7 +70,7 @@ class TestSinkFilter(unittest.TestCase):
 class TestPassAllFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import PassAllFilter
+        from google.cloud.bigtable.row_filters import PassAllFilter
         return PassAllFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -87,7 +87,7 @@ class TestPassAllFilter(unittest.TestCase):
 class TestBlockAllFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import BlockAllFilter
+        from google.cloud.bigtable.row_filters import BlockAllFilter
         return BlockAllFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -104,7 +104,7 @@ class TestBlockAllFilter(unittest.TestCase):
 class Test_RegexFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import _RegexFilter
+        from google.cloud.bigtable.row_filters import _RegexFilter
         return _RegexFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -143,7 +143,7 @@ class Test_RegexFilter(unittest.TestCase):
 class TestRowKeyRegexFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import RowKeyRegexFilter
+        from google.cloud.bigtable.row_filters import RowKeyRegexFilter
         return RowKeyRegexFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -160,7 +160,7 @@ class TestRowKeyRegexFilter(unittest.TestCase):
 class TestRowSampleFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import RowSampleFilter
+        from google.cloud.bigtable.row_filters import RowSampleFilter
         return RowSampleFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -194,7 +194,7 @@ class TestRowSampleFilter(unittest.TestCase):
 class TestFamilyNameRegexFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import FamilyNameRegexFilter
+        from google.cloud.bigtable.row_filters import FamilyNameRegexFilter
         return FamilyNameRegexFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -211,7 +211,8 @@ class TestFamilyNameRegexFilter(unittest.TestCase):
 class TestColumnQualifierRegexFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import ColumnQualifierRegexFilter
+        from google.cloud.bigtable.row_filters import (
+            ColumnQualifierRegexFilter)
         return ColumnQualifierRegexFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -229,7 +230,7 @@ class TestColumnQualifierRegexFilter(unittest.TestCase):
 class TestTimestampRange(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import TimestampRange
+        from google.cloud.bigtable.row_filters import TimestampRange
         return TimestampRange
 
     def _makeOne(self, *args, **kwargs):
@@ -266,7 +267,7 @@ class TestTimestampRange(unittest.TestCase):
 
     def _to_pb_helper(self, start_micros=None, end_micros=None):
         import datetime
-        from gcloud._helpers import _EPOCH
+        from google.cloud._helpers import _EPOCH
         pb_kwargs = {}
 
         start = None
@@ -303,7 +304,7 @@ class TestTimestampRange(unittest.TestCase):
 class TestTimestampRangeFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import TimestampRangeFilter
+        from google.cloud.bigtable.row_filters import TimestampRangeFilter
         return TimestampRangeFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -327,7 +328,7 @@ class TestTimestampRangeFilter(unittest.TestCase):
         self.assertEqual(row_filter1, row_filter2)
 
     def test_to_pb(self):
-        from gcloud.bigtable.row_filters import TimestampRange
+        from google.cloud.bigtable.row_filters import TimestampRange
 
         range_ = TimestampRange()
         row_filter = self._makeOne(range_)
@@ -340,7 +341,7 @@ class TestTimestampRangeFilter(unittest.TestCase):
 class TestColumnRangeFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import ColumnRangeFilter
+        from google.cloud.bigtable.row_filters import ColumnRangeFilter
         return ColumnRangeFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -464,7 +465,7 @@ class TestColumnRangeFilter(unittest.TestCase):
 class TestValueRegexFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import ValueRegexFilter
+        from google.cloud.bigtable.row_filters import ValueRegexFilter
         return ValueRegexFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -481,7 +482,7 @@ class TestValueRegexFilter(unittest.TestCase):
 class TestValueRangeFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import ValueRangeFilter
+        from google.cloud.bigtable.row_filters import ValueRangeFilter
         return ValueRangeFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -572,7 +573,7 @@ class TestValueRangeFilter(unittest.TestCase):
 class Test_CellCountFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import _CellCountFilter
+        from google.cloud.bigtable.row_filters import _CellCountFilter
         return _CellCountFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -606,7 +607,7 @@ class Test_CellCountFilter(unittest.TestCase):
 class TestCellsRowOffsetFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import CellsRowOffsetFilter
+        from google.cloud.bigtable.row_filters import CellsRowOffsetFilter
         return CellsRowOffsetFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -624,7 +625,7 @@ class TestCellsRowOffsetFilter(unittest.TestCase):
 class TestCellsRowLimitFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import CellsRowLimitFilter
+        from google.cloud.bigtable.row_filters import CellsRowLimitFilter
         return CellsRowLimitFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -642,7 +643,7 @@ class TestCellsRowLimitFilter(unittest.TestCase):
 class TestCellsColumnLimitFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import CellsColumnLimitFilter
+        from google.cloud.bigtable.row_filters import CellsColumnLimitFilter
         return CellsColumnLimitFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -660,7 +661,8 @@ class TestCellsColumnLimitFilter(unittest.TestCase):
 class TestStripValueTransformerFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
         return StripValueTransformerFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -677,7 +679,7 @@ class TestStripValueTransformerFilter(unittest.TestCase):
 class TestApplyLabelFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import ApplyLabelFilter
+        from google.cloud.bigtable.row_filters import ApplyLabelFilter
         return ApplyLabelFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -711,7 +713,7 @@ class TestApplyLabelFilter(unittest.TestCase):
 class Test_FilterCombination(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import _FilterCombination
+        from google.cloud.bigtable.row_filters import _FilterCombination
         return _FilterCombination
 
     def _makeOne(self, *args, **kwargs):
@@ -742,15 +744,16 @@ class Test_FilterCombination(unittest.TestCase):
 class TestRowFilterChain(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import RowFilterChain
+        from google.cloud.bigtable.row_filters import RowFilterChain
         return RowFilterChain
 
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_to_pb(self):
-        from gcloud.bigtable.row_filters import RowSampleFilter
-        from gcloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import RowSampleFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter1_pb = row_filter1.to_pb()
@@ -769,9 +772,10 @@ class TestRowFilterChain(unittest.TestCase):
         self.assertEqual(filter_pb, expected_pb)
 
     def test_to_pb_nested(self):
-        from gcloud.bigtable.row_filters import CellsRowLimitFilter
-        from gcloud.bigtable.row_filters import RowSampleFilter
-        from gcloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import CellsRowLimitFilter
+        from google.cloud.bigtable.row_filters import RowSampleFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter2 = RowSampleFilter(0.25)
@@ -796,15 +800,16 @@ class TestRowFilterChain(unittest.TestCase):
 class TestRowFilterUnion(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import RowFilterUnion
+        from google.cloud.bigtable.row_filters import RowFilterUnion
         return RowFilterUnion
 
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_to_pb(self):
-        from gcloud.bigtable.row_filters import RowSampleFilter
-        from gcloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import RowSampleFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter1_pb = row_filter1.to_pb()
@@ -823,9 +828,10 @@ class TestRowFilterUnion(unittest.TestCase):
         self.assertEqual(filter_pb, expected_pb)
 
     def test_to_pb_nested(self):
-        from gcloud.bigtable.row_filters import CellsRowLimitFilter
-        from gcloud.bigtable.row_filters import RowSampleFilter
-        from gcloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import CellsRowLimitFilter
+        from google.cloud.bigtable.row_filters import RowSampleFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter2 = RowSampleFilter(0.25)
@@ -850,7 +856,7 @@ class TestRowFilterUnion(unittest.TestCase):
 class TestConditionalRowFilter(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row_filters import ConditionalRowFilter
+        from google.cloud.bigtable.row_filters import ConditionalRowFilter
         return ConditionalRowFilter
 
     def _makeOne(self, *args, **kwargs):
@@ -890,9 +896,10 @@ class TestConditionalRowFilter(unittest.TestCase):
         self.assertNotEqual(cond_filter1, cond_filter2)
 
     def test_to_pb(self):
-        from gcloud.bigtable.row_filters import CellsRowOffsetFilter
-        from gcloud.bigtable.row_filters import RowSampleFilter
-        from gcloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import CellsRowOffsetFilter
+        from google.cloud.bigtable.row_filters import RowSampleFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter1_pb = row_filter1.to_pb()
@@ -917,8 +924,9 @@ class TestConditionalRowFilter(unittest.TestCase):
         self.assertEqual(filter_pb, expected_pb)
 
     def test_to_pb_true_only(self):
-        from gcloud.bigtable.row_filters import RowSampleFilter
-        from gcloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import RowSampleFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter1_pb = row_filter1.to_pb()
@@ -938,8 +946,9 @@ class TestConditionalRowFilter(unittest.TestCase):
         self.assertEqual(filter_pb, expected_pb)
 
     def test_to_pb_false_only(self):
-        from gcloud.bigtable.row_filters import RowSampleFilter
-        from gcloud.bigtable.row_filters import StripValueTransformerFilter
+        from google.cloud.bigtable.row_filters import RowSampleFilter
+        from google.cloud.bigtable.row_filters import (
+            StripValueTransformerFilter)
 
         row_filter1 = StripValueTransformerFilter(True)
         row_filter1_pb = row_filter1.to_pb()
@@ -960,42 +969,42 @@ class TestConditionalRowFilter(unittest.TestCase):
 
 
 def _ColumnRangePB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.ColumnRange(*args, **kw)
 
 
 def _RowFilterPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.RowFilter(*args, **kw)
 
 
 def _RowFilterChainPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.RowFilter.Chain(*args, **kw)
 
 
 def _RowFilterConditionPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.RowFilter.Condition(*args, **kw)
 
 
 def _RowFilterInterleavePB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.RowFilter.Interleave(*args, **kw)
 
 
 def _TimestampRangePB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.TimestampRange(*args, **kw)
 
 
 def _ValueRangePB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.ValueRange(*args, **kw)

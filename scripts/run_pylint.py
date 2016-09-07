@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Custom script to run PyLint on gcloud codebase.
+"""Custom script to run PyLint on google-cloud codebase.
 
 This runs pylint as a script via subprocess in two different
 subprocesses. The first lints the production/library code
@@ -31,14 +31,14 @@ import sys
 
 
 IGNORED_DIRECTORIES = [
-    os.path.join('gcloud', 'bigtable', '_generated'),
-    os.path.join('gcloud', 'datastore', '_generated'),
+    os.path.join('google', 'cloud', 'bigtable', '_generated'),
+    os.path.join('google', 'cloud', 'datastore', '_generated'),
     'scripts/verify_included_modules.py',
 ]
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),
     'setup.py',
-    os.path.join('gcloud', 'vision', '_fixtures.py'),
+    os.path.join('google', 'cloud', 'vision', '_fixtures.py'),
 ]
 SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
 PRODUCTION_RC = os.path.join(SCRIPTS_DIR, 'pylintrc_default')
@@ -144,8 +144,8 @@ def get_files_for_linting(allow_limited=True):
     this value is not dependable.
 
     To allow faster local ``tox`` runs, the environment variables
-    ``GCLOUD_REMOTE_FOR_LINT`` and ``GCLOUD_BRANCH_FOR_LINT`` can be set to
-    specify a remote branch to diff against.
+    ``GOOGLE_CLOUD_REMOTE_FOR_LINT`` and ``GOOGLE_CLOUD_BRANCH_FOR_LINT`` can
+    be set to specify a remote branch to diff against.
 
     :type allow_limited: bool
     :param allow_limited: Boolean indicating if a reduced set of files can
@@ -163,8 +163,8 @@ def get_files_for_linting(allow_limited=True):
         diff_base = 'origin/master'
     elif os.getenv('TRAVIS') is None:
         # Only allow specified remote and branch in local dev.
-        remote = os.getenv('GCLOUD_REMOTE_FOR_LINT')
-        branch = os.getenv('GCLOUD_BRANCH_FOR_LINT')
+        remote = os.getenv('GOOGLE_CLOUD_REMOTE_FOR_LINT')
+        branch = os.getenv('GOOGLE_CLOUD_BRANCH_FOR_LINT')
         if remote is not None and branch is not None:
             diff_base = '%s/%s' % (remote, branch)
 

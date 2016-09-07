@@ -1,6 +1,6 @@
 Buckets
 ~~~~~~~
 
-.. automodule:: gcloud.storage.bucket
+.. automodule:: google.cloud.storage.bucket
   :members:
   :show-inheritance:

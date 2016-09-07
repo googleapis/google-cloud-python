@@ -18,7 +18,7 @@ import unittest
 class TestAccessGrant(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigquery.dataset import AccessGrant
+        from google.cloud.bigquery.dataset import AccessGrant
         return AccessGrant
 
     def _makeOne(self, *args, **kw):
@@ -81,7 +81,7 @@ class TestDataset(unittest.TestCase):
     DS_NAME = 'dataset-name'
 
     def _getTargetClass(self):
-        from gcloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import Dataset
         return Dataset
 
     def _makeOne(self, *args, **kw):
@@ -89,7 +89,7 @@ class TestDataset(unittest.TestCase):
 
     def _setUpConstants(self):
         import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         self.WHEN_TS = 1437767599.006
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
@@ -201,7 +201,7 @@ class TestDataset(unittest.TestCase):
             dataset.access_grants = object()
 
     def test_access_roles_setter_invalid_field(self):
-        from gcloud.bigquery.dataset import AccessGrant
+        from google.cloud.bigquery.dataset import AccessGrant
         client = _Client(self.PROJECT)
         dataset = self._makeOne(self.DS_NAME, client)
         phred = AccessGrant('OWNER', 'userByEmail', 'phred@example.com')
@@ -209,7 +209,7 @@ class TestDataset(unittest.TestCase):
             dataset.access_grants = [phred, object()]
 
     def test_access_roles_setter(self):
-        from gcloud.bigquery.dataset import AccessGrant
+        from google.cloud.bigquery.dataset import AccessGrant
         client = _Client(self.PROJECT)
         dataset = self._makeOne(self.DS_NAME, client)
         phred = AccessGrant('OWNER', 'userByEmail', 'phred@example.com')
@@ -340,7 +340,7 @@ class TestDataset(unittest.TestCase):
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_create_w_alternate_client(self):
-        from gcloud.bigquery.dataset import AccessGrant
+        from google.cloud.bigquery.dataset import AccessGrant
         PATH = 'projects/%s/datasets' % self.PROJECT
         USER_EMAIL = 'phred@example.com'
         GROUP_EMAIL = 'group-name@lists.example.com'
@@ -649,7 +649,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_tables_defaults(self):
-        from gcloud.bigquery.table import Table
+        from google.cloud.bigquery.table import Table
 
         TABLE_1 = 'table_one'
         TABLE_2 = 'table_two'
@@ -692,7 +692,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_tables_explicit(self):
-        from gcloud.bigquery.table import Table
+        from google.cloud.bigquery.table import Table
 
         TABLE_1 = 'table_one'
         TABLE_2 = 'table_two'
@@ -736,7 +736,7 @@ class TestDataset(unittest.TestCase):
                          {'maxResults': 3, 'pageToken': TOKEN})
 
     def test_table_wo_schema(self):
-        from gcloud.bigquery.table import Table
+        from google.cloud.bigquery.table import Table
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = self._makeOne(self.DS_NAME, client=client)
@@ -747,8 +747,8 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(table.schema, [])
 
     def test_table_w_schema(self):
-        from gcloud.bigquery.schema import SchemaField
-        from gcloud.bigquery.table import Table
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = self._makeOne(self.DS_NAME, client=client)
@@ -775,7 +775,7 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kw):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._requested.append(kw)
 
         try:

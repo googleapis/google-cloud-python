@@ -4,7 +4,7 @@ import unittest
 class Test__httplib2_debug_level(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.streaming.http_wrapper import _httplib2_debug_level
+        from google.cloud.streaming.http_wrapper import _httplib2_debug_level
         return _httplib2_debug_level
 
     def _makeOne(self, *args, **kw):
@@ -12,7 +12,7 @@ class Test__httplib2_debug_level(unittest.TestCase):
 
     def test_wo_loggable_body_wo_http(self):
         from unit_tests._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
+        from google.cloud.streaming import http_wrapper as MUT
 
         request = _Request()
         LEVEL = 1
@@ -23,7 +23,7 @@ class Test__httplib2_debug_level(unittest.TestCase):
 
     def test_w_loggable_body_wo_http(self):
         from unit_tests._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
+        from google.cloud.streaming import http_wrapper as MUT
 
         request = _Request(loggable_body=object())
         LEVEL = 1
@@ -35,7 +35,7 @@ class Test__httplib2_debug_level(unittest.TestCase):
 
     def test_w_loggable_body_w_http(self):
         from unit_tests._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
+        from google.cloud.streaming import http_wrapper as MUT
 
         class _Connection(object):
             debuglevel = 0
@@ -63,7 +63,7 @@ class Test__httplib2_debug_level(unittest.TestCase):
 class Test_Request(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.streaming.http_wrapper import Request
+        from google.cloud.streaming.http_wrapper import Request
         return Request
 
     def _makeOne(self, *args, **kw):
@@ -78,7 +78,7 @@ class Test_Request(unittest.TestCase):
         self.assertEqual(request.loggable_body, None)
 
     def test_loggable_body_setter_w_body_None(self):
-        from gcloud.streaming.exceptions import RequestError
+        from google.cloud.streaming.exceptions import RequestError
         request = self._makeOne(body=None)
         with self.assertRaises(RequestError):
             request.loggable_body = 'abc'
@@ -103,7 +103,7 @@ class Test_Request(unittest.TestCase):
 class Test_Response(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.streaming.http_wrapper import Response
+        from google.cloud.streaming.http_wrapper import Response
         return Response
 
     def _makeOne(self, *args, **kw):
@@ -199,23 +199,23 @@ class Test_Response(unittest.TestCase):
 class Test__check_response(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import _check_response
+        from google.cloud.streaming.http_wrapper import _check_response
         return _check_response(*args, **kw)
 
     def test_w_none(self):
-        from gcloud.streaming.exceptions import RequestError
+        from google.cloud.streaming.exceptions import RequestError
         with self.assertRaises(RequestError):
             self._callFUT(None)
 
     def test_w_TOO_MANY_REQUESTS(self):
-        from gcloud.streaming.exceptions import BadStatusCodeError
-        from gcloud.streaming.http_wrapper import TOO_MANY_REQUESTS
+        from google.cloud.streaming.exceptions import BadStatusCodeError
+        from google.cloud.streaming.http_wrapper import TOO_MANY_REQUESTS
 
         with self.assertRaises(BadStatusCodeError):
             self._callFUT(_Response(TOO_MANY_REQUESTS))
 
     def test_w_50x(self):
-        from gcloud.streaming.exceptions import BadStatusCodeError
+        from google.cloud.streaming.exceptions import BadStatusCodeError
 
         with self.assertRaises(BadStatusCodeError):
             self._callFUT(_Response(500))
@@ -224,7 +224,7 @@ class Test__check_response(unittest.TestCase):
             self._callFUT(_Response(503))
 
     def test_w_retry_after(self):
-        from gcloud.streaming.exceptions import RetryAfterError
+        from google.cloud.streaming.exceptions import RetryAfterError
 
         with self.assertRaises(RetryAfterError):
             self._callFUT(_Response(200, 20))
@@ -236,7 +236,7 @@ class Test__check_response(unittest.TestCase):
 class Test__reset_http_connections(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import _reset_http_connections
+        from google.cloud.streaming.http_wrapper import _reset_http_connections
         return _reset_http_connections(*args, **kw)
 
     def test_wo_connections(self):
@@ -254,7 +254,8 @@ class Test__reset_http_connections(unittest.TestCase):
 class Test___make_api_request_no_retry(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import _make_api_request_no_retry
+        from google.cloud.streaming.http_wrapper import (
+            _make_api_request_no_retry)
         return _make_api_request_no_retry(*args, **kw)
 
     def _verify_requested(self, http, request,
@@ -270,7 +271,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
 
     def test_defaults_wo_connections(self):
         from unit_tests._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
+        from google.cloud.streaming import http_wrapper as MUT
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
         _http = _Http((INFO, CONTENT))
@@ -290,7 +291,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
 
     def test_w_http_connections_miss(self):
         from unit_tests._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
+        from google.cloud.streaming import http_wrapper as MUT
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
         CONN_TYPE = object()
@@ -312,7 +313,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
 
     def test_w_http_connections_hit(self):
         from unit_tests._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
+        from google.cloud.streaming import http_wrapper as MUT
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
         CONN_TYPE = object()
@@ -334,8 +335,8 @@ class Test___make_api_request_no_retry(unittest.TestCase):
 
     def test_w_request_returning_None(self):
         from unit_tests._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
-        from gcloud.streaming.exceptions import RequestError
+        from google.cloud.streaming import http_wrapper as MUT
+        from google.cloud.streaming.exceptions import RequestError
         INFO = None
         CONTENT = None
         CONN_TYPE = object()
@@ -352,11 +353,11 @@ class Test___make_api_request_no_retry(unittest.TestCase):
 class Test_make_api_request(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import make_api_request
+        from google.cloud.streaming.http_wrapper import make_api_request
         return make_api_request(*args, **kw)
 
     def test_wo_exception(self):
-        from gcloud.streaming import http_wrapper as MUT
+        from google.cloud.streaming import http_wrapper as MUT
         from unit_tests._testing import _Monkey
 
         HTTP, REQUEST, RESPONSE = object(), object(), object()
@@ -376,8 +377,8 @@ class Test_make_api_request(unittest.TestCase):
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
 
     def test_w_exceptions_lt_max_retries(self):
-        from gcloud.streaming.exceptions import RetryAfterError
-        from gcloud.streaming import http_wrapper as MUT
+        from google.cloud.streaming.exceptions import RetryAfterError
+        from google.cloud.streaming import http_wrapper as MUT
         from unit_tests._testing import _Monkey
 
         HTTP, RESPONSE = object(), object()
@@ -405,7 +406,7 @@ class Test_make_api_request(unittest.TestCase):
 
     def test_w_exceptions_gt_max_retries(self):
         from unit_tests._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
+        from google.cloud.streaming import http_wrapper as MUT
         HTTP = object()
         REQUEST = _Request()
         _created, _checked = [], []

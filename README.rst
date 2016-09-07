@@ -10,8 +10,8 @@ Google Cloud Python Client
 -  `Homepage`_
 -  `API Documentation`_
 
-.. _Homepage: https://googlecloudplatform.github.io/gcloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/gcloud-python/#/docs/master/gcloud
+.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
+.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/#/docs/master/google-cloud
 
 This client supports the following Google Cloud Platform services:
 
@@ -23,13 +23,13 @@ This client supports the following Google Cloud Platform services:
 -  `Google Stackdriver Logging`_
 -  `Google Stackdriver Monitoring`_
 
-.. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-datastore
-.. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-storage
-.. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-pubsub
-.. _Google BigQuery: https://github.com/GoogleCloudPlatform/gcloud-python#google-bigquery
-.. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-resource-manager
-.. _Google Stackdriver Logging: https://github.com/GoogleCloudPlatform/gcloud-python#google-stackdriver-logging
-.. _Google Stackdriver Monitoring: https://github.com/GoogleCloudPlatform/gcloud-python#google-stackdriver-monitoring
+.. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-datastore
+.. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-storage
+.. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-pubsub
+.. _Google BigQuery: https://github.com/GoogleCloudPlatform/google-cloud-python#google-bigquery
+.. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-resource-manager
+.. _Google Stackdriver Logging: https://github.com/GoogleCloudPlatform/google-cloud-python#google-stackdriver-logging
+.. _Google Stackdriver Monitoring: https://github.com/GoogleCloudPlatform/google-cloud-python#google-stackdriver-monitoring
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
@@ -41,27 +41,27 @@ Quick Start
 
 ::
 
-    $ pip install --upgrade gcloud
+    $ pip install --upgrade google-cloud
 
 Example Applications
 --------------------
 
 -  `getting-started-python`_ - A sample and `tutorial`_ that demonstrates how to build a complete web application using Cloud Datastore, Cloud Storage, and Cloud Pub/Sub and deploy it to Google App Engine or Google Compute Engine.
--  `gcloud-python-expenses-demo`_ - A sample expenses demo using Cloud Datastore and Cloud Storage
+-  `google-cloud-python-expenses-demo`_ - A sample expenses demo using Cloud Datastore and Cloud Storage
 
 .. _getting-started-python: https://github.com/GoogleCloudPlatform/getting-started-python
 .. _tutorial: https://cloud.google.com/python
-.. _gcloud-python-expenses-demo: https://github.com/GoogleCloudPlatform/gcloud-python-expenses-demo
+.. _google-cloud-python-expenses-demo: https://github.com/GoogleCloudPlatform/google-cloud-python-expenses-demo
 
 Authentication
 --------------
 
-With ``gcloud-python`` we try to make authentication as painless as possible.
+With ``google-cloud-python`` we try to make authentication as painless as possible.
 Check out the `Authentication section`_ in our documentation to learn more.
-You may also find the `authentication document`_ shared by all the ``gcloud-*``
-libraries to be helpful.
+You may also find the `authentication document`_ shared by all the
+``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: http://gcloud-python.readthedocs.org/en/latest/gcloud-auth.html
+.. _Authentication section: http://google-cloud-python.readthedocs.org/en/latest/gcloud-auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Google Cloud Datastore
@@ -76,10 +76,10 @@ consistency for all other queries.
 .. _Cloud Datastore: https://cloud.google.com/datastore/docs
 .. _Datastore API docs: https://cloud.google.com/datastore/docs/
 
-See the ``gcloud-python`` API `datastore documentation`_ to learn how to
+See the ``google-cloud-python`` API `datastore documentation`_ to learn how to
 interact with the Cloud Datastore using this Client Library.
 
-.. _datastore documentation: https://googlecloudplatform.github.io/gcloud-python/stable/datastore-client.html
+.. _datastore documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/datastore-client.html
 
 See the `official Google Cloud Datastore documentation`_ for more details on how
 to activate Cloud Datastore for your project.
@@ -88,7 +88,7 @@ to activate Cloud Datastore for your project.
 
 .. code:: python
 
-    from gcloud import datastore
+    from google.cloud import datastore
     # Create, populate and persist an entity
     entity = datastore.Entity(key=datastore.Key('EntityKind'))
     entity.update({
@@ -111,10 +111,10 @@ be used to distribute large data objects to users via direct download.
 .. _Cloud Storage: https://cloud.google.com/storage/docs
 .. _Storage API docs: https://cloud.google.com/storage/docs/json_api/v1
 
-See the ``gcloud-python`` API `storage documentation`_ to learn how to connect
+See the ``google-cloud-python`` API `storage documentation`_ to learn how to connect
 to Cloud Storage using this Client Library.
 
-.. _storage documentation: https://googlecloudplatform.github.io/gcloud-python/stable/storage-client.html
+.. _storage documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/storage-client.html
 
 You need to create a Google Cloud Storage bucket to use this client library.
 Follow along with the `official Google Cloud Storage documentation`_ to learn
@@ -124,7 +124,7 @@ how to create a bucket.
 
 .. code:: python
 
-    from gcloud import storage
+    from google.cloud import storage
     client = storage.Client()
     bucket = client.get_bucket('bucket-id-here')
     # Then do other things...
@@ -147,16 +147,16 @@ independently written applications.
 .. _Cloud Pub/Sub: https://cloud.google.com/pubsub/docs
 .. _Pub/Sub API docs: https://cloud.google.com/pubsub/reference/rest/
 
-See the ``gcloud-python`` API `Pub/Sub documentation`_ to learn how to connect
+See the ``google-cloud-python`` API `Pub/Sub documentation`_ to learn how to connect
 to Cloud Pub/Sub using this Client Library.
 
-.. _Pub/Sub documentation: https://googlecloudplatform.github.io/gcloud-python/stable/pubsub-usage.html
+.. _Pub/Sub documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/pubsub-usage.html
 
 To get started with this API, you'll need to create
 
 .. code:: python
 
-    from gcloud import pubsub
+    from google.cloud import pubsub
 
     client = pubsub.Client()
     topic = client.topic('topic_name')
@@ -185,8 +185,8 @@ Load data from CSV
 
     import csv
 
-    from gcloud import bigquery
-    from gcloud.bigquery import SchemaField
+    from google.cloud import bigquery
+    from google.cloud.bigquery import SchemaField
 
     client = bigquery.Client()
 
@@ -221,10 +221,10 @@ Perform a synchronous query
         print row
 
 
-See the ``gcloud-python`` API `BigQuery documentation`_ to learn how to connect
+See the ``google-cloud-python`` API `BigQuery documentation`_ to learn how to connect
 to BigQuery using this Client Library.
 
-.. _BigQuery documentation: https://googlecloudplatform.github.io/gcloud-python/stable/bigquery-usage.html
+.. _BigQuery documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery-usage.html
 
 Google Cloud Resource Manager
 -----------------------------
@@ -236,10 +236,10 @@ Google Cloud Platform.
 .. _Resource Manager: https://cloud.google.com/resource-manager/
 .. _Resource Manager API docs: https://cloud.google.com/resource-manager/reference/rest/
 
-See the ``gcloud-python`` API `Resource Manager documentation`_ to learn how to
+See the ``google-cloud-python`` API `Resource Manager documentation`_ to learn how to
 manage projects using this Client Library.
 
-.. _Resource Manager documentation: https://googlecloudplatform.github.io/gcloud-python/stable/resource-manager-api.html
+.. _Resource Manager documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/resource-manager-api.html
 
 Google Stackdriver Logging
 --------------------------
@@ -252,7 +252,7 @@ analyze, monitor, and alert on log data and events from Google Cloud Platform.
 
 .. code:: python
 
-    from gcloud import logging
+    from google.cloud import logging
     client = logging.Client()
     logger = client.logger('log_name')
     logger.log_text("A simple entry")  # API call
@@ -265,10 +265,10 @@ Example of fetching entries:
     for entry in entries:
         print entry.payload
 
-See the ``gcloud-python`` API `logging documentation`_ to learn how to connect
+See the ``google-cloud-python`` API `logging documentation`_ to learn how to connect
 to Stackdriver Logging using this Client Library.
 
-.. _logging documentation: https://googlecloudplatform.github.io/gcloud-python/stable/logging-usage.html
+.. _logging documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/logging-usage.html
 
 Google Stackdriver Monitoring
 -----------------------------
@@ -290,7 +290,7 @@ List available metric types:
 
 .. code:: python
 
-    from gcloud import monitoring
+    from google.cloud import monitoring
     client = monitoring.Client()
     for descriptor in client.list_metric_descriptors():
         print(descriptor.type)
@@ -303,10 +303,10 @@ Display CPU utilization across your GCE instances during the last five minutes:
     query = client.query(metric, minutes=5)
     print(query.as_dataframe())
 
-See the ``gcloud-python`` API `monitoring documentation`_ to learn how to connect
+See the ``google-cloud-python`` API `monitoring documentation`_ to learn how to connect
 to Stackdriver Monitoring using this Client Library.
 
-.. _monitoring documentation: https://googlecloudplatform.github.io/gcloud-python/stable/monitoring-usage.html
+.. _monitoring documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/monitoring-usage.html
 
 Contributing
 ------------
@@ -315,20 +315,20 @@ Contributions to this library are always welcome and highly encouraged.
 
 See `CONTRIBUTING`_ for more information on how to get started.
 
-.. _CONTRIBUTING: https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/CONTRIBUTING.rst
+.. _CONTRIBUTING: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst
 
 License
 -------
 
 Apache 2.0 - See `LICENSE`_ for more information.
 
-.. _LICENSE: https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/LICENSE
+.. _LICENSE: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/LICENSE
 
-.. |build| image:: https://travis-ci.org/GoogleCloudPlatform/gcloud-python.svg?branch=master
-   :target: https://travis-ci.org/GoogleCloudPlatform/gcloud-python
-.. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/gcloud-python/badge.png?branch=master
-   :target: https://coveralls.io/r/GoogleCloudPlatform/gcloud-python?branch=master
-.. |pypi| image:: https://img.shields.io/pypi/v/gcloud.svg
-   :target: https://pypi.python.org/pypi/gcloud
-.. |versions| image:: https://img.shields.io/pypi/pyversions/gcloud.svg
-   :target: https://pypi.python.org/pypi/gcloud
+.. |build| image:: https://travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master
+   :target: https://travis-ci.org/GoogleCloudPlatform/google-cloud-python
+.. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/google-cloud-python/badge.png?branch=master
+   :target: https://coveralls.io/r/GoogleCloudPlatform/google-cloud-python?branch=master
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud.svg
+   :target: https://pypi.python.org/pypi/google-cloud
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud.svg
+   :target: https://pypi.python.org/pypi/google-cloud

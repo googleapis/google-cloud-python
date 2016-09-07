@@ -1,13 +1,13 @@
 Stackdriver Logging Client
 ==========================
 
-.. automodule:: gcloud.logging.client
+.. automodule:: google.cloud.logging.client
   :members:
   :show-inheritance:
 
 Connection
 ~~~~~~~~~~
 
-.. automodule:: gcloud.logging.connection
+.. automodule:: google.cloud.logging.connection
   :members:
   :show-inheritance:

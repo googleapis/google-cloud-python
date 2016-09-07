@@ -32,14 +32,20 @@ if sys.version_info[:2] == (2, 7) and 'READTHEDOCS' not in os.environ:
     REQUIREMENTS.extend(GRPC_EXTRAS)
 
 setup(
-    name='gcloud',
+    name='google-cloud',
     version='0.18.0',
     description='API Client library for Google Cloud',
     author='Google Cloud Platform',
-    author_email='jjg+gcloud-python@google.com',
+    author_email='jjg+google-cloud-python@google.com',
     long_description=README,
     scripts=[],
-    url='https://github.com/GoogleCloudPlatform/gcloud-python',
+    url='https://github.com/GoogleCloudPlatform/google-cloud-python',
+    namespace_packages=[
+        'google',
+        'google.cloud',
+        'google.cloud.logging',
+        'google.cloud.pubsub',
+    ],
     packages=find_packages(),
     license='Apache 2.0',
     platforms='Posix; MacOS X; Windows',

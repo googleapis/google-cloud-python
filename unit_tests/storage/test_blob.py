@@ -18,7 +18,7 @@ import unittest
 class Test_Blob(unittest.TestCase):
 
     def _makeOne(self, *args, **kw):
-        from gcloud.storage.blob import Blob
+        from google.cloud.storage.blob import Blob
         properties = kw.pop('properties', None)
         blob = Blob(*args, **kw)
         blob._properties = properties or {}
@@ -36,7 +36,7 @@ class Test_Blob(unittest.TestCase):
         self.assertTrue(blob._acl.blob is blob)
 
     def test_chunk_size_ctor(self):
-        from gcloud.storage.blob import Blob
+        from google.cloud.storage.blob import Blob
         BLOB_NAME = 'blob-name'
         BUCKET = object()
         chunk_size = 10 * Blob._CHUNK_SIZE_MULTIPLE
@@ -71,7 +71,7 @@ class Test_Blob(unittest.TestCase):
             blob.chunk_size = 11
 
     def test_acl_property(self):
-        from gcloud.storage.acl import ObjectACL
+        from google.cloud.storage.acl import ObjectACL
         FAKE_BUCKET = _Bucket()
         blob = self._makeOne(None, bucket=FAKE_BUCKET)
         acl = blob.acl
@@ -119,7 +119,7 @@ class Test_Blob(unittest.TestCase):
 
     def _basic_generate_signed_url_helper(self, credentials=None):
         from unit_tests._testing import _Monkey
-        from gcloud.storage import blob as MUT
+        from google.cloud.storage import blob as MUT
 
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
@@ -158,7 +158,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_generate_signed_url_w_content_type(self):
         from unit_tests._testing import _Monkey
-        from gcloud.storage import blob as MUT
+        from google.cloud.storage import blob as MUT
 
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
@@ -196,7 +196,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_generate_signed_url_w_slash_in_name(self):
         from unit_tests._testing import _Monkey
-        from gcloud.storage import blob as MUT
+        from google.cloud.storage import blob as MUT
 
         BLOB_NAME = 'parent/child'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
@@ -227,7 +227,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_generate_signed_url_w_method_arg(self):
         from unit_tests._testing import _Monkey
-        from gcloud.storage import blob as MUT
+        from google.cloud.storage import blob as MUT
 
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
@@ -511,7 +511,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from gcloud.streaming import http_wrapper
+        from google.cloud.streaming import http_wrapper
 
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
@@ -608,7 +608,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_upload_from_file_simple_not_found(self):
         from six.moves.http_client import NOT_FOUND
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         with self.assertRaises(NotFound):
             self._upload_from_file_simple_test_helper(status=NOT_FOUND)
 
@@ -643,8 +643,8 @@ class Test_Blob(unittest.TestCase):
         from six.moves.urllib.parse import urlsplit
         from unit_tests._testing import _Monkey
         from unit_tests._testing import _NamedTemporaryFile
-        from gcloud.streaming import http_wrapper
-        from gcloud.streaming import transfer
+        from google.cloud.streaming import http_wrapper
+        from google.cloud.streaming import transfer
 
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
@@ -727,8 +727,8 @@ class Test_Blob(unittest.TestCase):
         from six.moves.urllib.parse import urlsplit
         from unit_tests._testing import _Monkey
         from unit_tests._testing import _NamedTemporaryFile
-        from gcloud.streaming import transfer
-        from gcloud.streaming.exceptions import HttpError
+        from google.cloud.streaming import transfer
+        from google.cloud.streaming.exceptions import HttpError
 
         BLOB_NAME = 'blob-name'
         DATA = b'ABCDEF'
@@ -780,7 +780,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
         from unit_tests._testing import _NamedTemporaryFile
-        from gcloud.streaming import http_wrapper
+        from google.cloud.streaming import http_wrapper
 
         BLOB_NAME = 'parent/child'
         UPLOAD_URL = 'http://example.com/upload/name/parent%2Fchild'
@@ -830,7 +830,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
         from unit_tests._testing import _NamedTemporaryFile
-        from gcloud.streaming import http_wrapper
+        from google.cloud.streaming import http_wrapper
 
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
@@ -889,7 +889,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
         from unit_tests._testing import _NamedTemporaryFile
-        from gcloud.streaming import http_wrapper
+        from google.cloud.streaming import http_wrapper
 
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
@@ -959,7 +959,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from gcloud.streaming import http_wrapper
+        from google.cloud.streaming import http_wrapper
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = b'ABCDEF'
@@ -998,7 +998,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from gcloud.streaming import http_wrapper
+        from google.cloud.streaming import http_wrapper
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = u'ABCDEF\u1234'
@@ -1038,7 +1038,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from gcloud.streaming import http_wrapper
+        from google.cloud.streaming import http_wrapper
         BLOB_NAME = 'blob-name'
         KEY = 'aa426195405adee2c8081bb9e7e74b19'
         HEADER_KEY_VALUE = 'YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk='
@@ -1084,7 +1084,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_make_public(self):
         from six.moves.http_client import OK
-        from gcloud.storage.acl import _ACLEntity
+        from google.cloud.storage.acl import _ACLEntity
         BLOB_NAME = 'blob-name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = ({'status': OK}, {'acl': permissive})
@@ -1368,8 +1368,8 @@ class Test_Blob(unittest.TestCase):
 
     def test_time_deleted(self):
         import datetime
-        from gcloud._helpers import _RFC3339_MICROS
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import _RFC3339_MICROS
+        from google.cloud._helpers import UTC
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
         TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
@@ -1385,8 +1385,8 @@ class Test_Blob(unittest.TestCase):
 
     def test_updated(self):
         import datetime
-        from gcloud._helpers import _RFC3339_MICROS
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import _RFC3339_MICROS
+        from google.cloud._helpers import UTC
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
         TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
@@ -1426,7 +1426,7 @@ class _Connection(_Responder):
 
     def api_request(self, **kw):
         from six.moves.http_client import NOT_FOUND
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         info, content = self._respond(**kw)
         if info.get('status') == NOT_FOUND:
             raise NotFound(info)

@@ -14,12 +14,12 @@
 
 import unittest
 
-from gcloud import _helpers
-from gcloud.environment_vars import TESTS_PROJECT
-from gcloud.exceptions import InternalServerError
-from gcloud.exceptions import NotFound
-from gcloud.exceptions import ServiceUnavailable
-from gcloud import monitoring
+from google.cloud import _helpers
+from google.cloud.environment_vars import TESTS_PROJECT
+from google.cloud.exceptions import InternalServerError
+from google.cloud.exceptions import NotFound
+from google.cloud.exceptions import ServiceUnavailable
+from google.cloud import monitoring
 
 from retry import RetryErrors
 from system_test_utils import unique_resource_id

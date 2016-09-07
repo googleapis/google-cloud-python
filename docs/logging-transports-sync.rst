@@ -1,6 +1,6 @@
 Python Logging Handler Sync Transport
 ======================================
 
-.. automodule:: gcloud.logging.handlers.transports.sync
+.. automodule:: google.cloud.logging.handlers.transports.sync
   :members:
   :show-inheritance:

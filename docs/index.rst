@@ -1,7 +1,7 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
-  :caption: gcloud
+  :caption: google-cloud
 
   gcloud-api
   gcloud-config
@@ -167,27 +167,27 @@
   :hidden:
   :caption: External Links
 
-  GitHub <https://github.com/GoogleCloudPlatform/gcloud-python/>
-  Issues <https://github.com/GoogleCloudPlatform/gcloud-python/issues>
-  Stack Overflow <http://stackoverflow.com/questions/tagged/gcloud-python>
-  PyPI <https://pypi.python.org/pypi/gcloud>
+  GitHub <https://github.com/GoogleCloudPlatform/google-cloud-python/>
+  Issues <https://github.com/GoogleCloudPlatform/google-cloud-python/issues>
+  Stack Overflow <http://stackoverflow.com/questions/tagged/google-cloud-python>
+  PyPI <https://pypi.python.org/pypi/google-cloud>
 
 Getting started
 ---------------
 
-The ``gcloud`` library is ``pip`` install-able:
+The ``google-cloud`` library is ``pip`` install-able:
 
 .. code-block:: console
 
-    $ pip install gcloud
+    $ pip install google-cloud
 
-If you want to install ``gcloud-python`` from source,
+If you want to install ``google-cloud-python`` from source,
 you can clone the repository from GitHub:
 
 .. code-block:: console
 
-    $ git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
-    $ cd gcloud-python
+    $ git clone git://github.com/GoogleCloudPlatform/google-cloud-python.git
+    $ cd google-cloud-python
     $ python setup.py install
 
 ----
@@ -201,7 +201,7 @@ Cloud Datastore
 
 .. code-block:: python
 
-  from gcloud import datastore
+  from google.cloud import datastore
 
   client = datastore.Client()
   key = client.key('Person')
@@ -220,7 +220,7 @@ Cloud Storage
 
 .. code-block:: python
 
-  from gcloud import storage
+  from google.cloud import storage
 
   client = storage.Client()
   bucket = client.get_bucket('<your-bucket-name>')

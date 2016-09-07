@@ -4,30 +4,30 @@ Using the Vision API
 Authentication and Configuration
 --------------------------------
 
-- For an overview of authentication in ``gcloud-python``,
+- For an overview of authentication in ``google-cloud-python``,
   see :doc:`gcloud-auth`.
 
 - In addition to any authentication configuration, you should also set the
-  :envvar:`GCLOUD_PROJECT` environment variable for the project you'd like
-  to interact with. If the GCLOUD_PROJECT environment variable is not present,
+  :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the project you'd like
+  to interact with. If the GOOGLE_CLOUD_PROJECT environment variable is not present,
   the project ID from JSON file credentials is used.
 
   If you are using Google App Engine or Google Compute Engine
   this will be detected automatically.
 
 - After configuring your environment, create a
-  :class:`Client <gcloud.vision.client.Client>`
+  :class:`Client <google.cloud.vision.client.Client>`
 
 .. code-block:: python
 
-     >>> from gcloud import vision
+     >>> from google.cloud import vision
      >>> client = vision.Client()
 
 or pass in ``credentials`` and ``project`` explicitly
 
 .. code-block:: python
 
-     >>> from gcloud import vision
+     >>> from google.cloud import vision
      >>> client = vision.Client(project='my-project', credentials=creds)
 
 Annotating an Image
@@ -38,7 +38,7 @@ Annotate a single image
 
 .. code-block:: python
 
-    >>> from gcloud import vision
+    >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> image = client.image('./image.png')
     >>> faces = image.detect_faces(limit=10)
@@ -70,7 +70,7 @@ Failing annotations return no results for the feature type requested.
 
 .. code-block:: python
 
-    >>> from gcloud import vision
+    >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> image = client.image('./image.jpg')
     >>> logos = image.detect_logos(limit=10)
@@ -85,7 +85,7 @@ You can call the detection method manually.
 
 .. code-block:: python
 
-    >>> from gcloud import vision
+    >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> image = client.image('gs://my-test-bucket/image.jpg')
     >>> faces = image.detect(type=vision.FACE_DETECTION, limit=10)
@@ -100,7 +100,7 @@ see: https://cloud.google.com/vision/reference/rest/v1/images/annotate#type_1
 
 .. code-block:: python
 
-    >>> from gcloud import vision
+    >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> image = client.image('./image.jpg')
     >>> faces = image.detect_faces(limit=10)
@@ -126,7 +126,7 @@ attempt to identify those objects.
 
 .. code-block:: python
 
-    >>> from gcloud import vision
+    >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> image = client.image('./image.jpg')
     >>> labels = image.detect_labels(limit=3)
@@ -145,7 +145,7 @@ locations if available.
 
 .. code-block:: python
 
-    >>> from gcloud import vision
+    >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> image = client.image('./image.jpg')
     >>> landmarks = image.detect_landmarks()
@@ -167,7 +167,7 @@ Google Vision can also attempt to detect company and brand logos in images.
 
 .. code-block:: python
 
-    >>> from gcloud import vision
+    >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> image = client.image('./image.jpg')
     >>> logos = image.detect_logos(limit=1)
@@ -187,7 +187,7 @@ Detecting safe search properties of an image.
 
 .. code-block:: python
 
-    >>> from gcloud import vision
+    >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> image = client.image('./image.jpg')
     >>> safe_search = image.detect_safe_search()
@@ -203,7 +203,7 @@ Detecting text with ORC from an image.
 
 .. code-block:: python
 
-    >>> from gcloud import vision
+    >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> image = client.image('./image.jpg')
     >>> text = image.detect_text()
@@ -219,7 +219,7 @@ Detecting image color properties.
 
 .. code-block:: python
 
-    >>> from gcloud import vision
+    >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> image = client.image('./image.jpg')
     >>> colors = image.detect_properties()

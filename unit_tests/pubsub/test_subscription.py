@@ -25,7 +25,7 @@ class TestSubscription(unittest.TestCase):
     ENDPOINT = 'https://api.example.com/push'
 
     def _getTargetClass(self):
-        from gcloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.subscription import Subscription
         return Subscription
 
     def _makeOne(self, *args, **kw):
@@ -68,7 +68,7 @@ class TestSubscription(unittest.TestCase):
             self._makeOne(self.SUB_NAME)
 
     def test_from_api_repr_no_topics(self):
-        from gcloud.pubsub.topic import Topic
+        from google.cloud.pubsub.topic import Topic
         resource = {'topic': self.TOPIC_PATH,
                     'name': self.SUB_PATH,
                     'ackDeadlineSeconds': self.DEADLINE,
@@ -99,7 +99,7 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
 
     def test_from_api_repr_w_topics_no_topic_match(self):
-        from gcloud.pubsub.topic import Topic
+        from google.cloud.pubsub.topic import Topic
         resource = {'topic': self.TOPIC_PATH,
                     'name': self.SUB_PATH,
                     'ackDeadlineSeconds': self.DEADLINE,
@@ -144,7 +144,7 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(subscription.path, SUB_PATH)
 
     def test_autoack_defaults(self):
-        from gcloud.pubsub.subscription import AutoAck
+        from google.cloud.pubsub.subscription import AutoAck
         client = _Client(project=self.PROJECT)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
@@ -156,7 +156,7 @@ class TestSubscription(unittest.TestCase):
         self.assertTrue(auto_ack._client is None)
 
     def test_autoack_explicit(self):
-        from gcloud.pubsub.subscription import AutoAck
+        from google.cloud.pubsub.subscription import AutoAck
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -323,7 +323,7 @@ class TestSubscription(unittest.TestCase):
 
     def test_pull_wo_return_immediately_max_messages_w_bound_client(self):
         import base64
-        from gcloud.pubsub.message import Message
+        from google.cloud.pubsub.message import Message
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
@@ -350,7 +350,7 @@ class TestSubscription(unittest.TestCase):
 
     def test_pull_w_return_immediately_w_max_messages_w_alt_client(self):
         import base64
-        from gcloud.pubsub.message import Message
+        from google.cloud.pubsub.message import Message
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
@@ -450,7 +450,7 @@ class TestSubscription(unittest.TestCase):
                          (self.SUB_PATH, [ACK_ID1, ACK_ID2], self.DEADLINE))
 
     def test_get_iam_policy_w_bound_client(self):
-        from gcloud.pubsub.iam import (
+        from google.cloud.pubsub.iam import (
             PUBSUB_ADMIN_ROLE,
             PUBSUB_EDITOR_ROLE,
             PUBSUB_VIEWER_ROLE,
@@ -515,8 +515,8 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(api._got_iam_policy, self.SUB_PATH)
 
     def test_set_iam_policy_w_bound_client(self):
-        from gcloud.pubsub.iam import Policy
-        from gcloud.pubsub.iam import (
+        from google.cloud.pubsub.iam import Policy
+        from google.cloud.pubsub.iam import (
             PUBSUB_ADMIN_ROLE,
             PUBSUB_EDITOR_ROLE,
             PUBSUB_VIEWER_ROLE,
@@ -572,7 +572,7 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(api._set_iam_policy, (self.SUB_PATH, POLICY))
 
     def test_set_iam_policy_w_alternate_client(self):
-        from gcloud.pubsub.iam import Policy
+        from google.cloud.pubsub.iam import Policy
         RESPONSE = {'etag': 'ACAB'}
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
@@ -592,7 +592,10 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(api._set_iam_policy, (self.SUB_PATH, {}))
 
     def test_check_iam_permissions_w_bound_client(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.cloud.pubsub.iam import OWNER_ROLE
+        from google.cloud.pubsub.iam import EDITOR_ROLE
+        from google.cloud.pubsub.iam import VIEWER_ROLE
+
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         client = _Client(project=self.PROJECT)
         api = client.iam_policy_api = _FauxIAMPolicy()
@@ -607,7 +610,10 @@ class TestSubscription(unittest.TestCase):
                          (self.SUB_PATH, ROLES))
 
     def test_check_iam_permissions_w_alternate_client(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.cloud.pubsub.iam import OWNER_ROLE
+        from google.cloud.pubsub.iam import EDITOR_ROLE
+        from google.cloud.pubsub.iam import VIEWER_ROLE
+
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
@@ -632,7 +638,7 @@ class _FauxSubscribererAPI(object):
         return self._subscription_create_response
 
     def subscription_get(self, subscription_path):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._subscription_got = subscription_path
         try:
             return self._subscription_get_response
@@ -669,7 +675,7 @@ class _FauxSubscribererAPI(object):
 class TestAutoAck(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.subscription import AutoAck
+        from google.cloud.pubsub.subscription import AutoAck
         return AutoAck
 
     def _makeOne(self, *args, **kw):
@@ -774,7 +780,7 @@ class _Client(object):
         self.project = project
 
     def topic(self, name, timestamp_messages=False):
-        from gcloud.pubsub.topic import Topic
+        from google.cloud.pubsub.topic import Topic
         return Topic(name, client=self, timestamp_messages=timestamp_messages)
 
 

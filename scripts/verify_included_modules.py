@@ -30,31 +30,31 @@ BASE_DIR = os.path.abspath(
 DOCS_DIR = os.path.join(BASE_DIR, 'docs')
 IGNORED_PREFIXES = ('test_', '_')
 IGNORED_MODULES = frozenset([
-    'gcloud.__init__',
-    'gcloud.bigquery.__init__',
-    'gcloud.bigtable.__init__',
-    'gcloud.datastore.__init__',
-    'gcloud.dns.__init__',
-    'gcloud.error_reporting.__init__',
-    'gcloud.iterator',
-    'gcloud.language.__init__',
-    'gcloud.logging.__init__',
-    'gcloud.logging.handlers.__init__',
-    'gcloud.logging.handlers.transports.__init__',
-    'gcloud.monitoring.__init__',
-    'gcloud.pubsub.__init__',
-    'gcloud.resource_manager.__init__',
-    'gcloud.storage.__init__',
-    'gcloud.streaming.__init__',
-    'gcloud.streaming.buffered_stream',
-    'gcloud.streaming.exceptions',
-    'gcloud.streaming.http_wrapper',
-    'gcloud.streaming.stream_slice',
-    'gcloud.streaming.transfer',
-    'gcloud.streaming.util',
-    'gcloud.translate.__init__',
-    'gcloud.vision.__init__',
-    'gcloud.vision.fixtures',
+    'google.cloud.__init__',
+    'google.cloud.bigquery.__init__',
+    'google.cloud.bigtable.__init__',
+    'google.cloud.datastore.__init__',
+    'google.cloud.dns.__init__',
+    'google.cloud.error_reporting.__init__',
+    'google.cloud.iterator',
+    'google.cloud.language.__init__',
+    'google.cloud.logging.__init__',
+    'google.cloud.logging.handlers.__init__',
+    'google.cloud.logging.handlers.transports.__init__',
+    'google.cloud.monitoring.__init__',
+    'google.cloud.pubsub.__init__',
+    'google.cloud.resource_manager.__init__',
+    'google.cloud.storage.__init__',
+    'google.cloud.streaming.__init__',
+    'google.cloud.streaming.buffered_stream',
+    'google.cloud.streaming.exceptions',
+    'google.cloud.streaming.http_wrapper',
+    'google.cloud.streaming.stream_slice',
+    'google.cloud.streaming.transfer',
+    'google.cloud.streaming.util',
+    'google.cloud.translate.__init__',
+    'google.cloud.vision.__init__',
+    'google.cloud.vision.fixtures',
 ])
 
 
@@ -133,9 +133,9 @@ def main(build_root='_build'):
                                 object_inventory_relpath)
     sphinx_mods = set(inventory['py:module'].keys())
 
-    library_dir = os.path.join(BASE_DIR, 'gcloud')
+    library_dir = os.path.join(BASE_DIR, 'google', 'cloud')
     public_mods = get_public_modules(library_dir,
-                                     base_package='gcloud')
+                                     base_package='google.cloud')
     public_mods = set(public_mods)
 
     if not sphinx_mods <= public_mods:
@@ -163,8 +163,9 @@ def get_parser():
     :rtype: :class:`argparse.ArgumentParser`
     :returns: The parser for this script.
     """
-    parser = argparse.ArgumentParser(
-        description='Run check that all GCloud modules are included in docs.')
+    description = ('Run check that all google-cloud '
+                   'modules are included in docs.')
+    parser = argparse.ArgumentParser(description=description)
     parser.add_argument('--build-root', dest='build_root',
                         help='The root directory where docs are located.')
     return parser

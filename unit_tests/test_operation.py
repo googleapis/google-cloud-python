@@ -18,14 +18,14 @@ import unittest
 class Test__compute_type_url(unittest.TestCase):
 
     def _callFUT(self, klass, prefix=None):
-        from gcloud.operation import _compute_type_url
+        from google.cloud.operation import _compute_type_url
         if prefix is None:
             return _compute_type_url(klass)
         return _compute_type_url(klass, prefix)
 
     def test_wo_prefix(self):
         from google.protobuf.struct_pb2 import Struct
-        from gcloud.operation import _GOOGLE_APIS_PREFIX
+        from google.cloud.operation import _GOOGLE_APIS_PREFIX
 
         type_url = self._callFUT(Struct)
 
@@ -35,7 +35,7 @@ class Test__compute_type_url(unittest.TestCase):
 
     def test_w_prefix(self):
         from google.protobuf.struct_pb2 import Struct
-        PREFIX = 'test.gcloud-python.com'
+        PREFIX = 'test.google-cloud-python.com'
 
         type_url = self._callFUT(Struct, PREFIX)
 
@@ -47,13 +47,13 @@ class Test__compute_type_url(unittest.TestCase):
 class Test__register_type_url(unittest.TestCase):
 
     def _callFUT(self, type_url, klass):
-        from gcloud.operation import _register_type_url
+        from google.cloud.operation import _register_type_url
         _register_type_url(type_url, klass)
 
     def test_simple(self):
-        from gcloud import operation as MUT
+        from google.cloud import operation as MUT
         from unit_tests._testing import _Monkey
-        TYPE_URI = 'testing.gcloud-python.com/testing'
+        TYPE_URI = 'testing.google-cloud-python.com/testing'
         klass = object()
         type_url_map = {}
 
@@ -63,9 +63,9 @@ class Test__register_type_url(unittest.TestCase):
         self.assertEqual(type_url_map, {TYPE_URI: klass})
 
     def test_w_same_class(self):
-        from gcloud import operation as MUT
+        from google.cloud import operation as MUT
         from unit_tests._testing import _Monkey
-        TYPE_URI = 'testing.gcloud-python.com/testing'
+        TYPE_URI = 'testing.google-cloud-python.com/testing'
         klass = object()
         type_url_map = {TYPE_URI: klass}
 
@@ -75,9 +75,9 @@ class Test__register_type_url(unittest.TestCase):
         self.assertEqual(type_url_map, {TYPE_URI: klass})
 
     def test_w_conflict(self):
-        from gcloud import operation as MUT
+        from google.cloud import operation as MUT
         from unit_tests._testing import _Monkey
-        TYPE_URI = 'testing.gcloud-python.com/testing'
+        TYPE_URI = 'testing.google-cloud-python.com/testing'
         klass, other = object(), object()
         type_url_map = {TYPE_URI: other}
 
@@ -93,7 +93,7 @@ class OperationTests(unittest.TestCase):
     OPERATION_NAME = 'operations/projects/foo/instances/bar/operations/123'
 
     def _getTargetClass(self):
-        from gcloud.operation import Operation
+        from google.cloud.operation import Operation
         return Operation
 
     def _makeOne(self, *args, **kw):
@@ -157,7 +157,7 @@ class OperationTests(unittest.TestCase):
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
         from google.protobuf.struct_pb2 import Struct, Value
-        from gcloud import operation as MUT
+        from google.cloud import operation as MUT
         from unit_tests._testing import _Monkey
         TYPE_URI = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
         type_url_map = {TYPE_URI: Struct}

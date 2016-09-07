@@ -1,6 +1,6 @@
 Cluster
 ~~~~~~~
 
-.. automodule:: gcloud.bigtable.cluster
+.. automodule:: google.cloud.bigtable.cluster
   :members:
   :show-inheritance:

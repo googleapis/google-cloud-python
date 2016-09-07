@@ -5,27 +5,27 @@ Using the API
 Authentication and Configuration
 --------------------------------
 
-- For an overview of authentication in ``gcloud-python``,
+- For an overview of authentication in ``google-cloud-python``,
   see :doc:`gcloud-auth`.
 
 - In addition to any authentication configuration, you should also set the
-  :envvar:`GCLOUD_PROJECT` environment variable for the project you'd like
+  :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the project you'd like
   to interact with. If you are Google App Engine or Google Compute Engine
   this will be detected automatically.
 
 - After configuring your environment, create a
-  :class:`Client <gcloud.error_reporting.client.Client>`
+  :class:`Client <google.cloud.error_reporting.client.Client>`
 
   .. doctest::
 
-     >>> from gcloud import error_reporting
+     >>> from google.cloud import error_reporting
      >>> client = error_reporting.Client()
 
   or pass in ``credentials`` and ``project`` explicitly
 
   .. doctest::
 
-     >>> from gcloud import error_reporting
+     >>> from google.cloud import error_reporting
      >>> client = error_reporting.Client(project='my-project', credentials=creds)
 
   Error Reporting associates errors with a service, which is an identifier for an executable,
@@ -36,7 +36,7 @@ Authentication and Configuration
 
     .. doctest::
 
-       >>> from gcloud import error_reporting
+       >>> from google.cloud import error_reporting
        >>> client = error_reporting.Client(project='my-project',
        ...                                 service="login_service",
        ...                                 version="0.1.0")
@@ -48,7 +48,7 @@ Report a stacktrace to Stackdriver Error Reporting after an exception
 
 .. doctest::
 
-   >>> from gcloud import error_reporting
+   >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
    >>> try:
    >>>     raise NameError
@@ -60,12 +60,12 @@ By default, the client will report the error using the service specified in the 
 constructor, or the default service of "python".
 
 The user and HTTP context can also be included in the exception. The HTTP context
-can be constructed using :class:`gcloud.error_reporting.HTTPContext`. This will
+can be constructed using :class:`google.cloud.error_reporting.HTTPContext`. This will
 be used by Stackdriver Error Reporting to help group exceptions.
 
 .. doctest::
 
-   >>> from gcloud import error_reporting
+   >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
    >>> user = 'example@gmail.com'
    >>> http_context = HTTPContext(method='GET', url='/', userAgent='test agent',
@@ -85,7 +85,7 @@ error was reported.
 
 .. doctest::
 
-   >>> from gcloud import error_reporting
+   >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
    >>> error_reporting.report("Found an error!")
 
@@ -93,7 +93,7 @@ Similarly to reporting an exception, the user and HTTP context can be provided:
 
 .. doctest::
 
-   >>> from gcloud import error_reporting
+   >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
    >>> user = 'example@gmail.com'
    >>> http_context = HTTPContext(method='GET', url='/', userAgent='test agent',

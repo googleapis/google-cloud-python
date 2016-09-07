@@ -18,7 +18,7 @@ import unittest
 class TestConnection(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigquery.connection import Connection
+        from google.cloud.bigquery.connection import Connection
         return Connection
 
     def _makeOne(self, *args, **kw):

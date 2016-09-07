@@ -1,7 +1,7 @@
 <section class="hero-banner">
   <div class="container clearfix">
     <div class="quote-box">
-      <h1>gcloud-python</h1>
+      <h1>google-cloud-python</h1>
       <p>Google Cloud Client Library for Python
       - an idiomatic, intuitive, and natural way for Python developers to
       integrate with Google Cloud Platform services, like Cloud Datastore
@@ -9,7 +9,7 @@
     </div>
 
     <div class="quote-box--supplementary">
-      <pre class="skip-highlight"><code class="subtle--blue">$</code> pip install <code class="subtle--blue">--upgrade</code> <strong>gcloud</strong></pre>
+      <pre class="skip-highlight"><code class="subtle--blue">$</code> pip install <code class="subtle--blue">--upgrade</code> <strong>google-cloud</strong></pre>
       <h4 class="latest-release subtle" ng-if="home.latestRelease">
         Latest Release <a ng-href="{{home.latestRelease.link}}" class="latest-release--link white">{{home.latestRelease.name}}</a>
         {{home.latestRelease.date|date}}
@@ -22,31 +22,31 @@
   <div class="container">
     <ul class="featuring-links">
       <li>
-        <a href="#/docs/{{home.latestRelease.name}}/gcloud" title="gcloud-python docs" class="btn btn-docs">
+        <a href="#/docs/{{home.latestRelease.name}}/google-cloud" title="google-cloud-python docs" class="btn btn-docs">
           <img src="src/images/icon-lang-python-gray.svg" alt="Python icon" />
           Read the Docs
         </a>
       </li>
       <li>
-        <a href="https://github.com/GoogleCloudPlatform/gcloud-python" title="gcloud-python on GitHub" class="ext-link">
+        <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" title="google-cloud-python on GitHub" class="ext-link">
           <img src="src/images/icon-link-github.svg" alt="GitHub icon" />
           GitHub
         </a>
       </li>
       <li>
-        <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues" title="gcloud-python issues on Github" class="ext-link">
+        <a href="https://github.com/GoogleCloudPlatform/google-cloud-python/issues" title="google-cloud-python issues on Github" class="ext-link">
           <img src="src/images/icon-link-github.svg" alt="GitHub icon" />
           Issues
         </a>
       </li>
       <li>
-        <a href="http://stackoverflow.com/questions/tagged/gcloud-python" title="gcloud-python on StackOverflow" class="ext-link">
+        <a href="http://stackoverflow.com/questions/tagged/google-cloud-python" title="google-cloud-python on StackOverflow" class="ext-link">
           <img src="src/images/icon-link-stackoverflow.svg" alt="StackOverflow icon" />
           StackOverflow
         </a>
       </li>
       <li>
-        <a href="https://pypi.python.org/pypi/gcloud" title="gcloud-python on pypi" class="ext-link">
+        <a href="https://pypi.python.org/pypi/google-cloud" title="google-cloud-python on pypi" class="ext-link">
           <img src="src/images/icon-link-package-manager.svg" alt="pypi icon" />
           PyPI
         </a>
@@ -60,7 +60,7 @@
     <div class="quote-box">
       <h3 class="block-title">What is it?</h3>
 
-      <p><code>gcloud-python</code> is a client library for accessing Google
+      <p><code>google-cloud-python</code> is a client library for accessing Google
       Cloud Platform services that significantly reduces the boilerplate
       code you have to write. The library provides high-level API
       abstractions so they're easier to understand. It embraces
@@ -69,7 +69,7 @@
       All this means you spend more time creating code that matters
       to you.</p>
 
-      <p><code>gcloud-python</code> is configured to access Google Cloud Platform
+      <p><code>google-cloud-python</code> is configured to access Google Cloud Platform
       services and authorize (OAuth 2.0) automatically on your behalf.
       With a one-line install and a private key, you are up and ready
       to go. Better yet, if you are running on a Google Compute Engine
@@ -79,7 +79,7 @@
 
     <div class="quote-box--supplementary">
       <h4>Retrieve Datastore Entities</h4>
-      <pre><code class="hljs python">from gcloud import datastore
+      <pre><code class="hljs python">from google.cloud import datastore
 
 client = datastore.Client()
 product_key = client.key('Product', 123)
@@ -94,7 +94,7 @@ print(client.get(product_key))</code></pre>
 
     <ul>
       <li>
-        <a href="https://github.com/GoogleCloudPlatform/gcloud-python-expenses-demo"><code>gcloud-python-expenses-demo</code></a> - Use gcloud-python with the Datastore and Cloud Storage to manage expenses
+        <a href="https://github.com/GoogleCloudPlatform/google-cloud-python-expenses-demo"><code>google-cloud-python-expenses-demo</code></a> - Use google-cloud-python with the Datastore and Cloud Storage to manage expenses
       </li>
     </ul>
   </div>
@@ -104,22 +104,22 @@ print(client.get(product_key))</code></pre>
     <div class="container clearfix">
     <h3 class="block-title">FAQ</h3>
 
-    <h4>What is the relationship between the <code>gcloud-python</code> package
-    and the <code>gcloud</code> command-line tool?</h4>
-    <p>Both the <code>gcloud</code> command-line tool and
-    <code>gcloud-python</code> package are a part of the Google Cloud SDK: a collection
+    <h4>What is the relationship between the <code>google-cloud-python</code> package
+    and the <code>google-cloud</code> command-line tool?</h4>
+    <p>Both the <code>google-cloud</code> command-line tool and
+    <code>google-cloud-python</code> package are a part of the Google Cloud SDK: a collection
     of tools and libraries that enable you to easily create and manage
-    resources on the Google Cloud Platform. The <code>gcloud</code> command-line
+    resources on the Google Cloud Platform. The <code>google-cloud</code> command-line
     tool can be used to manage both your development workflow and your
-    Google Cloud Platform resources while the <code>gcloud-python</code> package is the
+    Google Cloud Platform resources while the <code>google-cloud-python</code> package is the
     Google Cloud Client Library for Python.</p>
 
-    <h4>What is the relationship between <code>gcloud-python</code>
+    <h4>What is the relationship between <code>google-cloud-python</code>
     and the Google APIs Python Client?</h4>
     <p>The <a href="https://github.com/google/google-api-python-client">
     Google APIs Python Client</a> is a client library for
     using the broad set of Google APIs.
-    <code>gcloud-python</code> is built specifically for the Google Cloud Platform
+    <code>google-cloud-python</code> is built specifically for the Google Cloud Platform
     and is the recommended way to integrate Google Cloud APIs into your
     Python applications. If your application requires both Google Cloud Platform and
     other Google APIs, the 2 libraries may be used by your application.</p>

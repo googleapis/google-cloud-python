@@ -17,7 +17,7 @@ import unittest
 
 try:
     # pylint: disable=unused-import
-    import gcloud.pubsub._gax
+    import google.cloud.pubsub._gax
     # pylint: enable=unused-import
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False
@@ -45,7 +45,7 @@ class _Base(object):
 class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.pubsub._gax import _PublisherAPI
+        from google.cloud.pubsub._gax import _PublisherAPI
         return _PublisherAPI
 
     def test_ctor(self):
@@ -111,7 +111,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_topic_create_already_exists(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         gax_api = _GAXPublisherAPI(_create_topic_conflict=True)
         api = self._makeOne(gax_api)
 
@@ -147,7 +147,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_topic_get_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXPublisherAPI()
         api = self._makeOne(gax_api)
 
@@ -181,7 +181,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_topic_delete_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXPublisherAPI(_delete_topic_ok=False)
         api = self._makeOne(gax_api)
 
@@ -226,7 +226,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_publish_miss_w_attrs_w_bytes_payload(self):
         import base64
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD)
         MESSAGE = {'data': B64, 'attributes': {'foo': 'bar'}}
@@ -314,7 +314,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_list_subscriptions_miss(self):
         from google.gax import INITIAL_PAGE
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXPublisherAPI()
         api = self._makeOne(gax_api)
 
@@ -349,7 +349,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     PUSH_ENDPOINT = 'https://api.example.com/push'
 
     def _getTargetClass(self):
-        from gcloud.pubsub._gax import _SubscriberAPI
+        from google.cloud.pubsub._gax import _SubscriberAPI
         return _SubscriberAPI
 
     def test_ctor(self):
@@ -432,7 +432,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_create_already_exists(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         DEADLINE = 600
         gax_api = _GAXSubscriberAPI(_create_subscription_conflict=True)
         api = self._makeOne(gax_api)
@@ -487,7 +487,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_get_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXSubscriberAPI()
         api = self._makeOne(gax_api)
 
@@ -521,7 +521,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_delete_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXSubscriberAPI(_delete_subscription_ok=False)
         api = self._makeOne(gax_api)
 
@@ -556,7 +556,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_modify_push_config_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXSubscriberAPI()
         api = self._makeOne(gax_api)
 
@@ -609,7 +609,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_pull_defaults_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         gax_api = _GAXSubscriberAPI()
         api = self._makeOne(gax_api)
 
@@ -652,7 +652,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_acknowledge_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         gax_api = _GAXSubscriberAPI()
@@ -699,7 +699,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_modify_ack_deadline_miss(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         NEW_DEADLINE = 90

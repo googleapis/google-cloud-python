@@ -1,6 +1,6 @@
 Datasets
 ~~~~~~~~
 
-.. automodule:: gcloud.bigquery.dataset
+.. automodule:: google.cloud.bigquery.dataset
   :members:
   :show-inheritance:

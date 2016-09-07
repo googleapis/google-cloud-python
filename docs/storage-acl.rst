@@ -1,6 +1,6 @@
 ACL
 ~~~
 
-.. automodule:: gcloud.storage.acl
+.. automodule:: google.cloud.storage.acl
   :members:
   :show-inheritance:

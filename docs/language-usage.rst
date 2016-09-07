@@ -21,19 +21,19 @@ with your document storage on Google Cloud Storage.
 Client
 ------
 
-:class:`~gcloud.language.client.Client` objects provide a
+:class:`~google.cloud.language.client.Client` objects provide a
 means to configure your application. Each instance holds
 an authenticated connection to the Natural Language service.
 
-For an overview of authentication in ``gcloud-python``, see
+For an overview of authentication in ``google-cloud-python``, see
 :doc:`gcloud-auth`.
 
 Assuming your environment is set up as described in that document,
-create an instance of :class:`~gcloud.language.client.Client`.
+create an instance of :class:`~google.cloud.language.client.Client`.
 
   .. code-block:: python
 
-     >>> from gcloud import language
+     >>> from google.cloud import language
      >>> client = language.Client()
 
 By default the ``language`` is ``'en-US'`` and the ``encoding`` is
@@ -45,9 +45,9 @@ UTF-8. To over-ride these values:
      ...                          encoding=language.Encoding.UTF16)
 
 The encoding can be one of
-:attr:`Encoding.UTF8 <gcloud.language.document.Encoding.UTF8>`,
-:attr:`Encoding.UTF16 <gcloud.language.document.Encoding.UTF16>`, or
-:attr:`Encoding.UTF32 <gcloud.language.document.Encoding.UTF32>`.
+:attr:`Encoding.UTF8 <google.cloud.language.document.Encoding.UTF8>`,
+:attr:`Encoding.UTF16 <google.cloud.language.document.Encoding.UTF16>`, or
+:attr:`Encoding.UTF32 <google.cloud.language.document.Encoding.UTF32>`.
 
 Methods
 -------
@@ -59,7 +59,7 @@ The Google Natural Language API has three supported methods
 - `annotateText`_
 
 and each method uses a `Document`_ for representing text. To
-create a :class:`~gcloud.language.document.Document`,
+create a :class:`~google.cloud.language.document.Document`,
 
   .. code-block:: python
 
@@ -70,7 +70,7 @@ create a :class:`~gcloud.language.document.Document`,
      ...     'their new Android phones.')
      >>> document = client.document_from_text(text_content)
 
-By using :meth:`~gcloud.language.client.Client.document_from_text`,
+By using :meth:`~google.cloud.language.client.Client.document_from_text`,
 the document's type is plain text:
 
   .. code-block:: python
@@ -89,7 +89,7 @@ the client
      True
 
 In addition, the
-:meth:`~gcloud.language.client.Client.document_from_html`,
+:meth:`~google.cloud.language.client.Client.document_from_html`,
 factory can be used to created an HTML document. In this
 method and the from text method, the language can be
 over-ridden:
@@ -117,12 +117,12 @@ However, the ``analyzeSentiment`` method `only supports`_ English text.
 .. _only supports: https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/analyzeSentiment#body.request_body.FIELDS.document
 
 The document type (``doc_type``) value can be one of
-:attr:`Document.PLAIN_TEXT <gcloud.language.document.Document.PLAIN_TEXT>` or
-:attr:`Document.HTML <gcloud.language.document.Document.HTML>`.
+:attr:`Document.PLAIN_TEXT <google.cloud.language.document.Document.PLAIN_TEXT>` or
+:attr:`Document.HTML <google.cloud.language.document.Document.HTML>`.
 
 In addition to supplying the text / HTML content, a document can refer
 to content stored in `Google Cloud Storage`_. We can use the
-:meth:`~gcloud.language.client.Client.document_from_url` method:
+:meth:`~google.cloud.language.client.Client.document_from_url` method:
 
   .. code-block:: python
 
@@ -150,9 +150,9 @@ The document type can be specified with the ``doc_type`` argument:
 Analyze Entities
 ----------------
 
-The :meth:`~gcloud.language.document.Document.analyze_entities` method
+The :meth:`~google.cloud.language.document.Document.analyze_entities` method
 finds named entities (i.e. proper names) in the text and returns them
-as a :class:`list` of :class:`~gcloud.language.entity.Entity` objects.
+as a :class:`list` of :class:`~google.cloud.language.entity.Entity` objects.
 Each entity has a corresponding type, salience (prominence), associated
 metadata and other properties.
 
@@ -191,9 +191,9 @@ metadata and other properties.
 Analyze Sentiment
 -----------------
 
-The :meth:`~gcloud.language.document.Document.analyze_sentiment` method
+The :meth:`~google.cloud.language.document.Document.analyze_sentiment` method
 analyzes the sentiment of the provided text and returns a
-:class:`~gcloud.language.sentiment.Sentiment`. Currently, this method
+:class:`~google.cloud.language.sentiment.Sentiment`. Currently, this method
 only supports English text.
 
   .. code-block:: python
@@ -209,23 +209,23 @@ only supports English text.
 Annotate Text
 -------------
 
-The :meth:`~gcloud.language.document.Document.annotate_text` method
+The :meth:`~google.cloud.language.document.Document.annotate_text` method
 analyzes a document and is intended for users who are familiar with
 machine learning and need in-depth text features to build upon.
 
 The method returns a named tuple with four entries:
 
 * ``sentences``: A :class:`list` of sentences in the text
-* ``tokens``: A :class:`list` of :class:`~gcloud.language.syntax.Token`
+* ``tokens``: A :class:`list` of :class:`~google.cloud.language.syntax.Token`
   object (e.g. words, punctuation)
-* ``sentiment``: The :class:`~gcloud.language.sentiment.Sentiment` of
+* ``sentiment``: The :class:`~google.cloud.language.sentiment.Sentiment` of
   the text (as returned by
-  :meth:`~gcloud.language.document.Document.analyze_sentiment`)
-* ``entities``: :class:`list` of :class:`~gcloud.language.entity.Entity`
+  :meth:`~google.cloud.language.document.Document.analyze_sentiment`)
+* ``entities``: :class:`list` of :class:`~google.cloud.language.entity.Entity`
   objects extracted from the text (as returned by
-  :meth:`~gcloud.language.document.Document.analyze_entities`)
+  :meth:`~google.cloud.language.document.Document.analyze_entities`)
 
-By default :meth:`~gcloud.language.document.Document.annotate_text` has
+By default :meth:`~google.cloud.language.document.Document.annotate_text` has
 three arguments ``include_syntax``, ``include_entities`` and
 ``include_sentiment`` which are all :data:`True`. However, each of these
 `Features`_ can be selectively turned off by setting the corresponding

@@ -20,10 +20,12 @@ from grpc import StatusCode
 from grpc._channel import _Rendezvous
 import httplib2
 
-from gcloud import _helpers
-from gcloud.environment_vars import PUBSUB_EMULATOR
-from gcloud.environment_vars import TESTS_PROJECT
-from gcloud import pubsub
+# pylint: disable=ungrouped-imports
+from google.cloud import _helpers
+from google.cloud.environment_vars import PUBSUB_EMULATOR
+from google.cloud.environment_vars import TESTS_PROJECT
+from google.cloud import pubsub
+# pylint: enable=ungrouped-imports
 
 from retry import RetryInstanceState
 from retry import RetryResult
@@ -213,7 +215,7 @@ class TestPubsub(unittest.TestCase):
             self.skipTest('IAM not supported by Pub/Sub emulator')
 
     def test_topic_iam_policy(self):
-        from gcloud.pubsub.iam import PUBSUB_TOPICS_GET_IAM_POLICY
+        from google.cloud.pubsub.iam import PUBSUB_TOPICS_GET_IAM_POLICY
         self._maybe_emulator_skip()
         topic_name = 'test-topic-iam-policy-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
@@ -233,7 +235,7 @@ class TestPubsub(unittest.TestCase):
             self.assertEqual(new_policy.viewers, policy.viewers)
 
     def test_subscription_iam_policy(self):
-        from gcloud.pubsub.iam import PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY
+        from google.cloud.pubsub.iam import PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY
         self._maybe_emulator_skip()
         topic_name = 'test-sub-iam-policy-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
@@ -264,10 +266,10 @@ class TestPubsub(unittest.TestCase):
             self.assertEqual(new_policy.viewers, policy.viewers)
 
     # This test is ultra-flaky.  See:
-    # https://github.com/GoogleCloudPlatform/gcloud-python/issues/2080
+    # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/2080
     @unittest.expectedFailure
     def test_fetch_delete_subscription_w_deleted_topic(self):
-        from gcloud.iterator import MethodIterator
+        from google.cloud.iterator import MethodIterator
         TO_DELETE = 'delete-me' + unique_resource_id('-')
         ORPHANED = 'orphaned' + unique_resource_id('-')
         topic = Config.CLIENT.topic(TO_DELETE)

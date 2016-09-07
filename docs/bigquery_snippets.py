@@ -15,8 +15,8 @@
 """Testable usage examples for Google Cloud BigQuery API wrapper
 
 Each example function takes a ``client`` argument (which must be an instance
-of :class:`gcloud.bigquery.client.Client`) and uses it to perform a task with
-the API.
+of :class:`google.cloud.bigquery.client.Client`) and uses it to perform a task
+with the API.
 
 To facilitate running the examples as system tests, each example is also passed
 a ``to_delete`` list;  the function adds to the list any objects created which
@@ -26,8 +26,8 @@ need to be deleted during teardown.
 import operator
 import time
 
-from gcloud.bigquery import SchemaField
-from gcloud.bigquery.client import Client
+from google.cloud.bigquery import SchemaField
+from google.cloud.bigquery.client import Client
 
 ORIGINAL_FRIENDLY_NAME = 'Original friendly name'
 ORIGINAL_DESCRIPTION = 'Original description'
@@ -162,7 +162,7 @@ def dataset_update(client, to_delete):
     dataset.reload()
 
     # [START dataset_update]
-    from gcloud.bigquery import AccessGrant
+    from google.cloud.bigquery import AccessGrant
     assert dataset.description == ORIGINAL_DESCRIPTION
     assert dataset.default_table_expiration_ms is None
     grant = AccessGrant(

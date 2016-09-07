@@ -4,7 +4,7 @@ Shared Core Modules
 Base Client
 ~~~~~~~~~~~
 
-.. automodule:: gcloud.client
+.. automodule:: google.cloud.client
   :members:
   :show-inheritance:
   :inherited-members:
@@ -12,27 +12,27 @@ Base Client
 Credentials Helpers
 ~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: gcloud.credentials
+.. automodule:: google.cloud.credentials
   :members:
   :show-inheritance:
 
 Base Connections
 ~~~~~~~~~~~~~~~~
 
-.. automodule:: gcloud.connection
+.. automodule:: google.cloud.connection
   :members:
   :show-inheritance:
 
 Exceptions
 ~~~~~~~~~~
 
-.. automodule:: gcloud.exceptions
+.. automodule:: google.cloud.exceptions
   :members:
   :show-inheritance:
 
 Environment Variables
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: gcloud.environment_vars
+.. automodule:: google.cloud.environment_vars
   :members:
   :show-inheritance:

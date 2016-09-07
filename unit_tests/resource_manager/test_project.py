@@ -18,7 +18,7 @@ import unittest
 class TestProject(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.resource_manager.project import Project
+        from google.cloud.resource_manager.project import Project
         return Project
 
     def _makeOne(self, *args, **kw):
@@ -323,7 +323,7 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kw):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._requested.append(kw)
 
         try:

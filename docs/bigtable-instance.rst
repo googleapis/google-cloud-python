@@ -1,6 +1,6 @@
 Instance
 ~~~~~~~~
 
-.. automodule:: gcloud.bigtable.instance
+.. automodule:: google.cloud.bigtable.instance
   :members:
   :show-inheritance:

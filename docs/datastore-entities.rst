@@ -1,6 +1,6 @@
 Entities
 ~~~~~~~~
 
-.. automodule:: gcloud.datastore.entity
+.. automodule:: google.cloud.datastore.entity
   :members:
   :show-inheritance:

@@ -4,7 +4,7 @@ Vision Client
 Client
 ~~~~~~
 
-.. automodule:: gcloud.vision.client
+.. automodule:: google.cloud.vision.client
   :members:
   :undoc-members:
   :show-inheritance:
@@ -12,7 +12,7 @@ Client
 Connection
 ~~~~~~~~~~
 
-.. automodule:: gcloud.vision.connection
+.. automodule:: google.cloud.vision.connection
   :members:
   :undoc-members:
   :show-inheritance:

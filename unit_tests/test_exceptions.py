@@ -15,11 +15,11 @@
 import unittest
 
 
-class Test_GCloudError(unittest.TestCase):
+class Test_GoogleCloudError(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.exceptions import GCloudError
-        return GCloudError
+        from google.cloud.exceptions import GoogleCloudError
+        return GoogleCloudError
 
     def _makeOne(self, message, errors=()):
         return self._getTargetClass()(message, errors=errors)
@@ -49,12 +49,12 @@ class Test_GCloudError(unittest.TestCase):
 class Test_make_exception(unittest.TestCase):
 
     def _callFUT(self, response, content, error_info=None, use_json=True):
-        from gcloud.exceptions import make_exception
+        from google.cloud.exceptions import make_exception
         return make_exception(response, content, error_info=error_info,
                               use_json=use_json)
 
     def test_hit_w_content_as_str(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         response = _Response(404)
         content = b'{"error": {"message": "Not Found"}}'
         exception = self._callFUT(response, content)
@@ -63,7 +63,7 @@ class Test_make_exception(unittest.TestCase):
         self.assertEqual(list(exception.errors), [])
 
     def test_miss_w_content_as_dict(self):
-        from gcloud.exceptions import GCloudError
+        from google.cloud.exceptions import GoogleCloudError
         ERROR = {
             'domain': 'global',
             'location': 'test',
@@ -74,12 +74,12 @@ class Test_make_exception(unittest.TestCase):
         response = _Response(600)
         content = {"error": {"message": "Unknown Error", "errors": [ERROR]}}
         exception = self._callFUT(response, content)
-        self.assertTrue(isinstance(exception, GCloudError))
+        self.assertTrue(isinstance(exception, GoogleCloudError))
         self.assertEqual(exception.message, 'Unknown Error')
         self.assertEqual(list(exception.errors), [ERROR])
 
     def test_html_when_json_expected(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         response = _Response(NotFound.code)
         content = '<html><body>404 Not Found</body></html>'
         exception = self._callFUT(response, content, use_json=True)

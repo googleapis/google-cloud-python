@@ -15,8 +15,8 @@
 """Testable usage examples for Google Cloud Pubsub API wrapper
 
 Each example function takes a ``client`` argument (which must be an instance
-of :class:`gcloud.pubsub.client.Client`) and uses it to perform a task with
-the API.
+of :class:`google.cloud.pubsub.client.Client`) and uses it to perform a task
+with the API.
 
 To facilitate running the examples as system tests, each example is also passed
 a ``to_delete`` list;  the function adds to the list any objects created which
@@ -25,7 +25,7 @@ need to be deleted during teardown.
 
 import time
 
-from gcloud.pubsub.client import Client
+from google.cloud.pubsub.client import Client
 
 
 def snippet(func):
@@ -154,7 +154,7 @@ def topic_check_iam_permissions(client, to_delete):
     to_delete.append(topic)
 
     # [START topic_check_iam_permissions]
-    from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+    from google.cloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
     TO_CHECK = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
     ALLOWED = topic.check_iam_permissions(TO_CHECK)
     assert set(ALLOWED) == set(TO_CHECK)
@@ -376,7 +376,7 @@ def subscription_pull_w_autoack(client, to_delete):
             extras.append(message.attributes)
 
     # [START subscription_pull_autoack]
-    from gcloud.pubsub.subscription import AutoAck
+    from google.cloud.pubsub.subscription import AutoAck
     with AutoAck(subscription, max_messages=10) as ack:
         for ack_id, message in list(ack.items()):
             try:
@@ -436,7 +436,7 @@ def subscription_check_iam_permissions(client, to_delete):
     to_delete.append(subscription)
 
     # [START subscription_check_iam_permissions]
-    from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+    from google.cloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
     TO_CHECK = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
     ALLOWED = subscription.check_iam_permissions(TO_CHECK)
     assert set(ALLOWED) == set(TO_CHECK)

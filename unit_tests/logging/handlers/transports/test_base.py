@@ -20,7 +20,7 @@ class TestBaseHandler(unittest.TestCase):
     PROJECT = 'PROJECT'
 
     def _getTargetClass(self):
-        from gcloud.logging.handlers.transports import Transport
+        from google.cloud.logging.handlers.transports import Transport
         return Transport
 
     def _makeOne(self, *args, **kw):

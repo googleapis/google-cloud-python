@@ -25,10 +25,10 @@ IMPORT_TEMPLATE = 'import %s'
 IMPORT_FROM_TEMPLATE = 'from %s import '
 REPLACEMENTS = {
     # Bigtable v2
-    'google.bigtable.v2': 'gcloud.bigtable._generated',
-    'google.bigtable.admin.v2': 'gcloud.bigtable._generated',
+    'google.bigtable.v2': 'google.cloud.bigtable._generated',
+    'google.bigtable.admin.v2': 'google.cloud.bigtable._generated',
     # Datastore v1
-    'google.datastore.v1': 'gcloud.datastore._generated',
+    'google.datastore.v1': 'google.cloud.datastore._generated',
 }
 
 

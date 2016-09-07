@@ -18,7 +18,7 @@ import unittest
 class Test_ClientFactoryMixin(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.client import _ClientFactoryMixin
+        from google.cloud.client import _ClientFactoryMixin
         return _ClientFactoryMixin
 
     def test_virtual(self):
@@ -38,7 +38,7 @@ class TestClient(unittest.TestCase):
         KLASS._connection_class = self.original_cnxn_class
 
     def _getTargetClass(self):
-        from gcloud.client import Client
+        from google.cloud.client import Client
         return Client
 
     def _makeOne(self, *args, **kw):
@@ -46,7 +46,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_defaults(self):
         from unit_tests._testing import _Monkey
-        from gcloud import client
+        from google.cloud import client
 
         CREDENTIALS = object()
         FUNC_CALLS = []
@@ -73,7 +73,7 @@ class TestClient(unittest.TestCase):
 
     def test_from_service_account_json(self):
         from unit_tests._testing import _Monkey
-        from gcloud import client
+        from google.cloud import client
 
         KLASS = self._getTargetClass()
         MOCK_FILENAME = 'foo.path'
@@ -93,7 +93,7 @@ class TestClient(unittest.TestCase):
 
     def test_from_service_account_p12(self):
         from unit_tests._testing import _Monkey
-        from gcloud import client
+        from google.cloud import client
 
         KLASS = self._getTargetClass()
         CLIENT_EMAIL = 'phred@example.com'
@@ -127,7 +127,7 @@ class TestJSONClient(unittest.TestCase):
         KLASS._connection_class = self.original_cnxn_class
 
     def _getTargetClass(self):
-        from gcloud.client import JSONClient
+        from google.cloud.client import JSONClient
         return JSONClient
 
     def _makeOne(self, *args, **kw):
@@ -135,7 +135,7 @@ class TestJSONClient(unittest.TestCase):
 
     def test_ctor_defaults(self):
         from unit_tests._testing import _Monkey
-        from gcloud import client
+        from google.cloud import client
 
         PROJECT = 'PROJECT'
         CREDENTIALS = object()
@@ -162,7 +162,7 @@ class TestJSONClient(unittest.TestCase):
 
     def test_ctor_missing_project(self):
         from unit_tests._testing import _Monkey
-        from gcloud import client
+        from google.cloud import client
 
         FUNC_CALLS = []
 

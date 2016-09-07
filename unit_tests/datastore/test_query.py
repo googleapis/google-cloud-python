@@ -20,7 +20,7 @@ class TestQuery(unittest.TestCase):
     _PROJECT = 'PROJECT'
 
     def _getTargetClass(self):
-        from gcloud.datastore.query import Query
+        from google.cloud.datastore.query import Query
         return Query
 
     def _makeOne(self, *args, **kw):
@@ -45,7 +45,7 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.distinct_on, [])
 
     def test_ctor_explicit(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
         _PROJECT = 'OTHER_PROJECT'
         _KIND = 'KIND'
         _NAMESPACE = 'OTHER_NAMESPACE'
@@ -143,7 +143,7 @@ class TestQuery(unittest.TestCase):
         self.assertRaises(TypeError, _assign, ['KIND', 'NAME'])
 
     def test_ancestor_setter_w_key(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
         _NAME = u'NAME'
         key = Key('KIND', 123, project=self._PROJECT)
         query = self._makeOne(self._makeClient())
@@ -152,7 +152,7 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.ancestor.path, key.path)
 
     def test_ancestor_deleter_w_key(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
         key = Key('KIND', 123, project=self._PROJECT)
         query = self._makeOne(client=self._makeClient(), ancestor=key)
         del query.ancestor
@@ -183,7 +183,7 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.filters[4], ('eq_prop', '=', u'val5'))
 
     def test_add_filter_w_known_operator_and_entity(self):
-        from gcloud.datastore.entity import Entity
+        from google.cloud.datastore.entity import Entity
         query = self._makeOne(self._makeClient())
         other = Entity()
         other['firstname'] = u'John'
@@ -198,14 +198,14 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.filters, [(PROPERTY_NAME, '=', u'John')])
 
     def test_add_filter___key__valid_key(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
         query = self._makeOne(self._makeClient())
         key = Key('Foo', project=self._PROJECT)
         query.add_filter('__key__', '=', key)
         self.assertEqual(query.filters, [('__key__', '=', key)])
 
     def test_filter___key__not_equal_operator(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
         key = Key('Foo', project=self._PROJECT)
         query = self._makeOne(self._makeClient())
         query.add_filter('__key__', '<', key)
@@ -245,7 +245,7 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.projection, ['__key__'])
 
     def test_key_filter_defaults(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
 
         client = self._makeClient()
         query = self._makeOne(client)
@@ -255,7 +255,7 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.filters, [('__key__', '=', key)])
 
     def test_key_filter_explicit(self):
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
 
         client = self._makeClient()
         query = self._makeOne(client)
@@ -339,7 +339,7 @@ class TestIterator(unittest.TestCase):
     _END = b'\xFF'
 
     def _getTargetClass(self):
-        from gcloud.datastore.query import Iterator
+        from google.cloud.datastore.query import Iterator
         return Iterator
 
     def _makeOne(self, *args, **kw):
@@ -347,9 +347,9 @@ class TestIterator(unittest.TestCase):
 
     def _addQueryResults(self, connection, cursor=_END, more=False,
                          skipped_results=None, no_entity=False):
-        from gcloud.datastore._generated import entity_pb2
-        from gcloud.datastore._generated import query_pb2
-        from gcloud.datastore.helpers import _new_value_pb
+        from google.cloud.datastore._generated import entity_pb2
+        from google.cloud.datastore._generated import query_pb2
+        from google.cloud.datastore.helpers import _new_value_pb
 
         if more:
             more_enum = query_pb2.QueryResultBatch.NOT_FINISHED
@@ -394,7 +394,7 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(iterator._offset, 29)
 
     def test_next_page_no_cursors_no_more(self):
-        from gcloud.datastore.query import _pb_from_query
+        from google.cloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
         query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
@@ -421,7 +421,7 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(connection._called_with, [EXPECTED])
 
     def test_next_page_no_cursors_no_more_w_offset_and_limit(self):
-        from gcloud.datastore.query import _pb_from_query
+        from google.cloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
         query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
@@ -453,7 +453,7 @@ class TestIterator(unittest.TestCase):
     def test_next_page_w_cursors_w_more(self):
         from base64 import urlsafe_b64decode
         from base64 import urlsafe_b64encode
-        from gcloud.datastore.query import _pb_from_query
+        from google.cloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
         query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
@@ -496,7 +496,7 @@ class TestIterator(unittest.TestCase):
         self.assertRaises(ValueError, iterator.next_page)
 
     def test___iter___no_more(self):
-        from gcloud.datastore.query import _pb_from_query
+        from google.cloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
         query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
@@ -520,7 +520,7 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(connection._called_with, [EXPECTED])
 
     def test___iter___w_more(self):
-        from gcloud.datastore.query import _pb_from_query
+        from google.cloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
         query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
@@ -556,7 +556,7 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(connection._called_with[1], EXPECTED2)
 
     def test___iter___w_limit(self):
-        from gcloud.datastore.query import _pb_from_query
+        from google.cloud.datastore.query import _pb_from_query
 
         connection = _Connection()
         client = self._makeClient(connection)
@@ -614,11 +614,11 @@ class TestIterator(unittest.TestCase):
 class Test__pb_from_query(unittest.TestCase):
 
     def _callFUT(self, query):
-        from gcloud.datastore.query import _pb_from_query
+        from google.cloud.datastore.query import _pb_from_query
         return _pb_from_query(query)
 
     def test_empty(self):
-        from gcloud.datastore._generated import query_pb2
+        from google.cloud.datastore._generated import query_pb2
 
         pb = self._callFUT(_Query())
         self.assertEqual(list(pb.projection), [])
@@ -645,8 +645,8 @@ class Test__pb_from_query(unittest.TestCase):
         self.assertEqual([item.name for item in pb.kind], ['KIND'])
 
     def test_ancestor(self):
-        from gcloud.datastore.key import Key
-        from gcloud.datastore._generated import query_pb2
+        from google.cloud.datastore.key import Key
+        from google.cloud.datastore._generated import query_pb2
 
         ancestor = Key('Ancestor', 123, project='PROJECT')
         pb = self._callFUT(_Query(ancestor=ancestor))
@@ -659,7 +659,7 @@ class Test__pb_from_query(unittest.TestCase):
         self.assertEqual(pfilter.value.key_value, ancestor_pb)
 
     def test_filter(self):
-        from gcloud.datastore._generated import query_pb2
+        from google.cloud.datastore._generated import query_pb2
 
         query = _Query(filters=[('name', '=', u'John')])
         query.OPERATORS = {
@@ -674,8 +674,8 @@ class Test__pb_from_query(unittest.TestCase):
         self.assertEqual(pfilter.value.string_value, u'John')
 
     def test_filter_key(self):
-        from gcloud.datastore.key import Key
-        from gcloud.datastore._generated import query_pb2
+        from google.cloud.datastore.key import Key
+        from google.cloud.datastore._generated import query_pb2
 
         key = Key('Kind', 123, project='PROJECT')
         query = _Query(filters=[('__key__', '=', key)])
@@ -692,7 +692,7 @@ class Test__pb_from_query(unittest.TestCase):
         self.assertEqual(pfilter.value.key_value, key_pb)
 
     def test_order(self):
-        from gcloud.datastore._generated import query_pb2
+        from google.cloud.datastore._generated import query_pb2
 
         pb = self._callFUT(_Query(order=['a', '-b', 'c']))
         self.assertEqual([item.property.name for item in pb.order],

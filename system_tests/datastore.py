@@ -18,13 +18,13 @@ import unittest
 
 import httplib2
 
-from gcloud import _helpers
-from gcloud._helpers import UTC
-from gcloud import datastore
-from gcloud.datastore.helpers import GeoPoint
-from gcloud.environment_vars import GCD_DATASET
-from gcloud.environment_vars import TESTS_PROJECT
-from gcloud.exceptions import Conflict
+from google.cloud import _helpers
+from google.cloud._helpers import UTC
+from google.cloud import datastore
+from google.cloud.datastore.helpers import GeoPoint
+from google.cloud.environment_vars import GCD_DATASET
+from google.cloud.environment_vars import TESTS_PROJECT
+from google.cloud.exceptions import Conflict
 
 import clear_datastore
 import populate_datastore
@@ -433,7 +433,8 @@ class TestDatastoreTransaction(TestDatastore):
         self.assertEqual(retrieved_entity, entity)
 
     def test_transaction_via_explicit_begin_get_commit(self):
-        # See https://github.com/GoogleCloudPlatform/gcloud-python/issues/1859
+        # See
+        # github.com/GoogleCloudPlatform/google-cloud-python/issues/1859
         # Note that this example lacks the threading which provokes the race
         # condition in that issue:  we are basically just exercising the
         # "explict" path for using transactions.

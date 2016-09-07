@@ -16,10 +16,10 @@ import operator
 
 import unittest
 
-from gcloud import _helpers
-from gcloud.environment_vars import TESTS_PROJECT
-from gcloud import bigquery
-from gcloud.exceptions import Forbidden
+from google.cloud import _helpers
+from google.cloud.environment_vars import TESTS_PROJECT
+from google.cloud import bigquery
+from google.cloud.exceptions import Forbidden
 
 from retry import RetryErrors
 from retry import RetryInstanceState
@@ -244,7 +244,7 @@ class TestBigQuery(unittest.TestCase):
 
     def test_load_table_then_dump_table(self):
         import datetime
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import UTC
 
         NOW_SECONDS = 1448911495.484366
         NOW = datetime.datetime.utcfromtimestamp(
@@ -294,7 +294,7 @@ class TestBigQuery(unittest.TestCase):
     def test_load_table_from_storage_then_dump_table(self):
         import csv
         import tempfile
-        from gcloud.storage import Client as StorageClient
+        from google.cloud.storage import Client as StorageClient
         local_id = unique_resource_id()
         BUCKET_NAME = 'bq_load_test' + local_id
         BLOB_NAME = 'person_ages.csv'

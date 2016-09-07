@@ -25,9 +25,9 @@ import subprocess
 
 import psutil
 
-from gcloud.environment_vars import GCD_DATASET
-from gcloud.environment_vars import GCD_HOST
-from gcloud.environment_vars import PUBSUB_EMULATOR
+from google.cloud.environment_vars import GCD_DATASET
+from google.cloud.environment_vars import GCD_HOST
+from google.cloud.environment_vars import PUBSUB_EMULATOR
 from run_system_test import run_module_tests
 
 
@@ -46,7 +46,7 @@ def get_parser():
     :returns: The parser for this script.
     """
     parser = argparse.ArgumentParser(
-        description='Run GCloud system tests against local emulator.')
+        description='Run google-cloud system tests against local emulator.')
     parser.add_argument('--package', dest='package',
                         choices=('datastore', 'pubsub'),
                         default='datastore', help='Package to be tested.')

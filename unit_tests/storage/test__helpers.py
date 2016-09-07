@@ -18,7 +18,7 @@ import unittest
 class Test_PropertyMixin(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage._helpers import _PropertyMixin
+        from google.cloud.storage._helpers import _PropertyMixin
         return _PropertyMixin
 
     def _makeOne(self, *args, **kw):
@@ -97,7 +97,7 @@ class Test_PropertyMixin(unittest.TestCase):
 class Test__scalar_property(unittest.TestCase):
 
     def _callFUT(self, fieldName):
-        from gcloud.storage._helpers import _scalar_property
+        from google.cloud.storage._helpers import _scalar_property
         return _scalar_property(fieldName)
 
     def test_getter(self):
@@ -125,7 +125,7 @@ class Test__scalar_property(unittest.TestCase):
 class Test__base64_md5hash(unittest.TestCase):
 
     def _callFUT(self, bytes_to_sign):
-        from gcloud.storage._helpers import _base64_md5hash
+        from google.cloud.storage._helpers import _base64_md5hash
         return _base64_md5hash(bytes_to_sign)
 
     def test_it(self):
@@ -140,7 +140,7 @@ class Test__base64_md5hash(unittest.TestCase):
 
     def test_it_with_stubs(self):
         from unit_tests._testing import _Monkey
-        from gcloud.storage import _helpers as MUT
+        from google.cloud.storage import _helpers as MUT
 
         class _Buffer(object):
 

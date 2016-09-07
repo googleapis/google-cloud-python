@@ -1,6 +1,6 @@
 Table
 ~~~~~
 
-.. automodule:: gcloud.bigtable.table
+.. automodule:: google.cloud.bigtable.table
   :members:
   :show-inheritance:

@@ -18,14 +18,14 @@ import unittest
 class TestResourceDescriptor(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.resource import ResourceDescriptor
+        from google.cloud.monitoring.resource import ResourceDescriptor
         return ResourceDescriptor
 
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_constructor(self):
-        from gcloud.monitoring.label import LabelDescriptor
+        from google.cloud.monitoring.label import LabelDescriptor
 
         TYPE = 'gce_instance'
         NAME = 'projects/my-project/monitoredResourceDescriptors/' + TYPE
@@ -192,7 +192,7 @@ class TestResourceDescriptor(unittest.TestCase):
         self.assertEqual(request, expected_request)
 
     def test_list_paged(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
 
         PROJECT = 'my-project'
         PATH = 'projects/{project}/monitoredResourceDescriptors/'.format(
@@ -277,7 +277,7 @@ class TestResourceDescriptor(unittest.TestCase):
 class TestResource(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.resource import Resource
+        from google.cloud.monitoring.resource import Resource
         return Resource
 
     def _makeOne(self, *args, **kwargs):
@@ -324,7 +324,7 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kwargs):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)

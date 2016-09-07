@@ -18,7 +18,7 @@ import unittest
 class TestPartOfSpeech(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.language.syntax import PartOfSpeech
+        from google.cloud.language.syntax import PartOfSpeech
         return PartOfSpeech
 
     def test_reverse(self):
@@ -36,14 +36,14 @@ class TestPartOfSpeech(unittest.TestCase):
 class TestToken(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.language.syntax import Token
+        from google.cloud.language.syntax import Token
         return Token
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
     def test_constructor(self):
-        from gcloud.language.syntax import PartOfSpeech
+        from google.cloud.language.syntax import PartOfSpeech
 
         text_content = 'All'
         text_begin = -1
@@ -61,7 +61,7 @@ class TestToken(unittest.TestCase):
         self.assertEqual(token.lemma, lemma)
 
     def test_from_api_repr(self):
-        from gcloud.language.syntax import PartOfSpeech
+        from google.cloud.language.syntax import PartOfSpeech
 
         klass = self._getTargetClass()
         text_content = 'pretty'
@@ -96,7 +96,7 @@ class TestToken(unittest.TestCase):
 class TestSentence(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.language.syntax import Sentence
+        from google.cloud.language.syntax import Sentence
         return Sentence
 
     def _makeOne(self, *args, **kw):

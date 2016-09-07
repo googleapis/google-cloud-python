@@ -15,12 +15,12 @@
 import logging
 import unittest
 
-import gcloud.logging
-import gcloud.logging.handlers.handlers
-from gcloud.logging.handlers.handlers import CloudLoggingHandler
-from gcloud.logging.handlers.transports import SyncTransport
-from gcloud import _helpers
-from gcloud.environment_vars import TESTS_PROJECT
+import google.cloud.logging
+import google.cloud.logging.handlers.handlers
+from google.cloud.logging.handlers.handlers import CloudLoggingHandler
+from google.cloud.logging.handlers.transports import SyncTransport
+from google.cloud import _helpers
+from google.cloud.environment_vars import TESTS_PROJECT
 
 from retry import RetryErrors
 from retry import RetryResult
@@ -31,9 +31,9 @@ DEFAULT_METRIC_NAME = 'system-tests-metric%s' % (_RESOURCE_ID,)
 DEFAULT_SINK_NAME = 'system-tests-sink%s' % (_RESOURCE_ID,)
 DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
 DEFAULT_DESCRIPTION = 'System testing'
-BUCKET_NAME = 'gcloud-python-system-testing%s' % (_RESOURCE_ID,)
+BUCKET_NAME = 'google-cloud-python-system-testing%s' % (_RESOURCE_ID,)
 DATASET_NAME = ('system_testing_dataset' + _RESOURCE_ID).replace('-', '_')
-TOPIC_NAME = 'gcloud-python-system-testing%s' % (_RESOURCE_ID,)
+TOPIC_NAME = 'google-cloud-python-system-testing%s' % (_RESOURCE_ID,)
 
 
 def _retry_on_unavailable(exc):
@@ -57,7 +57,7 @@ class Config(object):
 
 def setUpModule():
     _helpers.PROJECT = TESTS_PROJECT
-    Config.CLIENT = gcloud.logging.Client()
+    Config.CLIENT = google.cloud.logging.Client()
 
 
 class TestLogging(unittest.TestCase):
@@ -67,7 +67,7 @@ class TestLogging(unittest.TestCase):
         self._handlers_cache = logging.getLogger().handlers[:]
 
     def tearDown(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         retry = RetryErrors(NotFound)
         for doomed in self.to_delete:
             retry(doomed.delete)()
@@ -188,7 +188,7 @@ class TestLogging(unittest.TestCase):
         logger = Config.CLIENT.logger(handler.name)
         self.to_delete.append(logger)
 
-        gcloud.logging.handlers.handlers.setup_logging(handler)
+        google.cloud.logging.handlers.handlers.setup_logging(handler)
         logging.warn(LOG_MESSAGE)
 
         entries, _ = self._list_entries(logger)
@@ -254,7 +254,7 @@ class TestLogging(unittest.TestCase):
                          set([DEFAULT_METRIC_NAME]))
 
     def test_reload_metric(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         retry = RetryErrors(Conflict)
         metric = Config.CLIENT.metric(
             DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
@@ -268,7 +268,7 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(metric.description, DEFAULT_DESCRIPTION)
 
     def test_update_metric(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         retry = RetryErrors(Conflict)
         NEW_FILTER = 'logName:other'
         NEW_DESCRIPTION = 'updated'
@@ -287,7 +287,7 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(after.description, NEW_DESCRIPTION)
 
     def _init_storage_bucket(self):
-        from gcloud import storage
+        from google.cloud import storage
         BUCKET_URI = 'storage.googleapis.com/%s' % (BUCKET_NAME,)
 
         # Create the destination bucket, and set up the ACL to allow
@@ -313,7 +313,7 @@ class TestLogging(unittest.TestCase):
         self.assertTrue(sink.exists())
 
     def test_create_sink_pubsub_topic(self):
-        from gcloud import pubsub
+        from google.cloud import pubsub
 
         # Create the destination topic, and set up the IAM policy to allow
         # Stackdriver Logging to write into it.
@@ -335,8 +335,8 @@ class TestLogging(unittest.TestCase):
         self.assertTrue(sink.exists())
 
     def _init_bigquery_dataset(self):
-        from gcloud import bigquery
-        from gcloud.bigquery.dataset import AccessGrant
+        from google.cloud import bigquery
+        from google.cloud.bigquery.dataset import AccessGrant
         DATASET_URI = 'bigquery.googleapis.com/projects/%s/datasets/%s' % (
             Config.CLIENT.project, DATASET_NAME,)
 
@@ -377,7 +377,7 @@ class TestLogging(unittest.TestCase):
                          set([DEFAULT_SINK_NAME]))
 
     def test_reload_sink(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         retry = RetryErrors(Conflict)
         uri = self._init_bigquery_dataset()
         sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
@@ -391,7 +391,7 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(sink.destination, uri)
 
     def test_update_sink(self):
-        from gcloud.exceptions import Conflict
+        from google.cloud.exceptions import Conflict
         retry = RetryErrors(Conflict)
         bucket_uri = self._init_storage_bucket()
         dataset_uri = self._init_bigquery_dataset()

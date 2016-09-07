@@ -19,7 +19,7 @@ import unittest
 class Test_SetDeleteRow(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row import _SetDeleteRow
+        from google.cloud.bigtable.row import _SetDeleteRow
         return _SetDeleteRow
 
     def _makeOne(self, *args, **kwargs):
@@ -34,7 +34,7 @@ class Test_SetDeleteRow(unittest.TestCase):
 class TestDirectRow(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row import DirectRow
+        from google.cloud.bigtable.row import DirectRow
         return DirectRow
 
     def _makeOne(self, *args, **kwargs):
@@ -123,7 +123,7 @@ class TestDirectRow(unittest.TestCase):
 
     def test_set_cell_with_non_null_timestamp(self):
         import datetime
-        from gcloud._helpers import _EPOCH
+        from google.cloud._helpers import _EPOCH
 
         microseconds = 898294371
         millis_granularity = microseconds - (microseconds % 1000)
@@ -243,8 +243,8 @@ class TestDirectRow(unittest.TestCase):
 
     def test_delete_cells_with_time_range(self):
         import datetime
-        from gcloud._helpers import _EPOCH
-        from gcloud.bigtable.row_filters import TimestampRange
+        from google.cloud._helpers import _EPOCH
+        from google.cloud.bigtable.row_filters import TimestampRange
 
         microseconds = 30871000  # Makes sure already milliseconds granularity
         start = _EPOCH + datetime.timedelta(microseconds=microseconds)
@@ -344,7 +344,7 @@ class TestDirectRow(unittest.TestCase):
 
     def test_commit_too_many_mutations(self):
         from unit_tests._testing import _Monkey
-        from gcloud.bigtable import row as MUT
+        from google.cloud.bigtable import row as MUT
 
         row_key = b'row_key'
         table = object()
@@ -377,7 +377,7 @@ class TestDirectRow(unittest.TestCase):
 class TestConditionalRow(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row import ConditionalRow
+        from google.cloud.bigtable.row import ConditionalRow
         return ConditionalRow
 
     def _makeOne(self, *args, **kwargs):
@@ -408,7 +408,7 @@ class TestConditionalRow(unittest.TestCase):
 
     def test_commit(self):
         from unit_tests.bigtable._testing import _FakeStub
-        from gcloud.bigtable.row_filters import RowSampleFilter
+        from google.cloud.bigtable.row_filters import RowSampleFilter
 
         row_key = b'row_key'
         table_name = 'projects/more-stuff'
@@ -482,7 +482,7 @@ class TestConditionalRow(unittest.TestCase):
 
     def test_commit_too_many_mutations(self):
         from unit_tests._testing import _Monkey
-        from gcloud.bigtable import row as MUT
+        from google.cloud.bigtable import row as MUT
 
         row_key = b'row_key'
         table = object()
@@ -518,7 +518,7 @@ class TestConditionalRow(unittest.TestCase):
 class TestAppendRow(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row import AppendRow
+        from google.cloud.bigtable.row import AppendRow
         return AppendRow
 
     def _makeOne(self, *args, **kwargs):
@@ -574,7 +574,7 @@ class TestAppendRow(unittest.TestCase):
     def test_commit(self):
         from unit_tests._testing import _Monkey
         from unit_tests.bigtable._testing import _FakeStub
-        from gcloud.bigtable import row as MUT
+        from google.cloud.bigtable import row as MUT
 
         row_key = b'row_key'
         table_name = 'projects/more-stuff'
@@ -647,7 +647,7 @@ class TestAppendRow(unittest.TestCase):
 
     def test_commit_too_many_mutations(self):
         from unit_tests._testing import _Monkey
-        from gcloud.bigtable import row as MUT
+        from google.cloud.bigtable import row as MUT
 
         row_key = b'row_key'
         table = object()
@@ -662,11 +662,11 @@ class TestAppendRow(unittest.TestCase):
 class Test__parse_rmw_row_response(unittest.TestCase):
 
     def _callFUT(self, row_response):
-        from gcloud.bigtable.row import _parse_rmw_row_response
+        from google.cloud.bigtable.row import _parse_rmw_row_response
         return _parse_rmw_row_response(row_response)
 
     def test_it(self):
-        from gcloud._helpers import _datetime_from_microseconds
+        from google.cloud._helpers import _datetime_from_microseconds
         col_fam1 = u'col-fam-id'
         col_fam2 = u'col-fam-id2'
         col_name1 = b'col-name1'
@@ -747,11 +747,11 @@ class Test__parse_rmw_row_response(unittest.TestCase):
 class Test__parse_family_pb(unittest.TestCase):
 
     def _callFUT(self, family_pb):
-        from gcloud.bigtable.row import _parse_family_pb
+        from google.cloud.bigtable.row import _parse_family_pb
         return _parse_family_pb(family_pb)
 
     def test_it(self):
-        from gcloud._helpers import _datetime_from_microseconds
+        from google.cloud._helpers import _datetime_from_microseconds
         col_fam1 = u'col-fam-id'
         col_name1 = b'col-name1'
         col_name2 = b'col-name2'
@@ -802,91 +802,91 @@ class Test__parse_family_pb(unittest.TestCase):
 
 
 def _CheckAndMutateRowRequestPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.CheckAndMutateRowRequest(*args, **kw)
 
 
 def _CheckAndMutateRowResponsePB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.CheckAndMutateRowResponse(*args, **kw)
 
 
 def _MutateRowRequestPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.MutateRowRequest(*args, **kw)
 
 
 def _ReadModifyWriteRowRequestPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.ReadModifyWriteRowRequest(*args, **kw)
 
 
 def _ReadModifyWriteRowResponsePB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.ReadModifyWriteRowResponse(*args, **kw)
 
 
 def _CellPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Cell(*args, **kw)
 
 
 def _ColumnPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Column(*args, **kw)
 
 
 def _FamilyPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Family(*args, **kw)
 
 
 def _MutationPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Mutation(*args, **kw)
 
 
 def _MutationSetCellPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Mutation.SetCell(*args, **kw)
 
 
 def _MutationDeleteFromColumnPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Mutation.DeleteFromColumn(*args, **kw)
 
 
 def _MutationDeleteFromFamilyPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Mutation.DeleteFromFamily(*args, **kw)
 
 
 def _MutationDeleteFromRowPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Mutation.DeleteFromRow(*args, **kw)
 
 
 def _RowPB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Row(*args, **kw)
 
 
 def _ReadModifyWriteRulePB(*args, **kw):
-    from gcloud.bigtable._generated import (
+    from google.cloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.ReadModifyWriteRule(*args, **kw)
 

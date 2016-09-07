@@ -15,7 +15,7 @@
 import unittest
 import base64
 
-from gcloud._helpers import _to_bytes
+from google.cloud._helpers import _to_bytes
 
 
 class TestVisionImage(unittest.TestCase):
@@ -25,7 +25,7 @@ class TestVisionImage(unittest.TestCase):
     _CLIENT_MOCK = {'source': ''}
 
     def _getTargetClass(self):
-        from gcloud.vision.image import Image
+        from google.cloud.vision.image import Image
         return Image
 
     def _makeOne(self, *args, **kw):
@@ -42,7 +42,7 @@ class TestVisionImage(unittest.TestCase):
         self.assertEqual(None, image.source)
         self.assertEqual(_AS_DICT, image.as_dict())
 
-    def test_image_source_type_gcloud_storage(self):
+    def test_image_source_type_google_cloud_storage(self):
         image = self._makeOne(self._IMAGE_SOURCE, self._CLIENT_MOCK)
 
         _AS_DICT = {

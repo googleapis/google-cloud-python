@@ -17,10 +17,10 @@ import os
 
 import unittest
 
-from gcloud import translate
+from google.cloud import translate
 
 
-ENV_VAR = 'GCLOUD_TESTS_API_KEY'
+ENV_VAR = 'GOOGLE_CLOUD_TESTS_API_KEY'
 
 
 class Config(object):

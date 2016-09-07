@@ -24,7 +24,7 @@ class TestQueryResults(unittest.TestCase):
     TOKEN = 'TOKEN'
 
     def _getTargetClass(self):
-        from gcloud.bigquery.query import QueryResults
+        from google.cloud.bigquery.query import QueryResults
         return QueryResults
 
     def _makeOne(self, *args, **kw):
@@ -73,7 +73,7 @@ class TestQueryResults(unittest.TestCase):
         return resource
 
     def _verifySchema(self, query, resource):
-        from gcloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.schema import SchemaField
         if 'schema' in resource:
             fields = resource['schema']['fields']
             self.assertEqual(len(query.schema), len(fields))
@@ -144,7 +144,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertTrue(query.job is None)
 
     def test_job_w_jobid(self):
-        from gcloud.bigquery.job import QueryJob
+        from google.cloud.bigquery.job import QueryJob
         SERVER_GENERATED = 'SERVER_GENERATED'
         client = _Client(self.PROJECT)
         query = self._makeOne(self.QUERY, client)
@@ -234,7 +234,7 @@ class TestQueryResults(unittest.TestCase):
         self._verifyResourceProperties(query, RESOURCE)
 
     def test_run_w_inline_udf(self):
-        from gcloud.bigquery.job import UDFResource
+        from google.cloud.bigquery.job import UDFResource
         INLINE_UDF_CODE = 'var someCode = "here";'
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
@@ -256,7 +256,7 @@ class TestQueryResults(unittest.TestCase):
         self._verifyResourceProperties(query, RESOURCE)
 
     def test_run_w_udf_resource_uri(self):
-        from gcloud.bigquery.job import UDFResource
+        from google.cloud.bigquery.job import UDFResource
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
@@ -278,7 +278,7 @@ class TestQueryResults(unittest.TestCase):
         self._verifyResourceProperties(query, RESOURCE)
 
     def test_run_w_mixed_udfs(self):
-        from gcloud.bigquery.job import UDFResource
+        from google.cloud.bigquery.job import UDFResource
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         INLINE_UDF_CODE = 'var someCode = "here";'
         PATH = 'projects/%s/queries' % self.PROJECT
@@ -388,7 +388,7 @@ class _Client(object):
         self.connection = connection
 
     def dataset(self, name):
-        from gcloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import Dataset
         return Dataset(name, client=self)
 
 

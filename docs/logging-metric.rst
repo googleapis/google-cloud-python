@@ -1,6 +1,6 @@
 Metrics
 =======
 
-.. automodule:: gcloud.logging.metric
+.. automodule:: google.cloud.logging.metric
   :members:
   :show-inheritance:

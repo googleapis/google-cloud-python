@@ -27,7 +27,7 @@ PROTOS_DIR = os.path.join(ROOT_DIR, 'googleapis-pb')
 PROTO_PATH = os.path.join(PROTOS_DIR, 'google', 'longrunning',
                           'operations.proto')
 GENERATED_SUBDIR = os.getenv('GENERATED_SUBDIR', '_generated')
-GRPC_ONLY_FILE = os.path.join(ROOT_DIR, 'gcloud', 'bigtable',
+GRPC_ONLY_FILE = os.path.join(ROOT_DIR, 'google', 'cloud', 'bigtable',
                               GENERATED_SUBDIR, 'operations_grpc_pb2.py')
 GRPCIO_VIRTUALENV = os.getenv('GRPCIO_VIRTUALENV')
 if GRPCIO_VIRTUALENV is None:

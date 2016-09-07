@@ -1,6 +1,6 @@
 Batches
 ~~~~~~~
 
-.. automodule:: gcloud.datastore.batch
+.. automodule:: google.cloud.datastore.batch
   :members:
   :show-inheritance:

@@ -5,33 +5,33 @@ Using the API
 Authentication and Configuration
 --------------------------------
 
-- For an overview of authentication in ``gcloud-python``,
+- For an overview of authentication in ``google-cloud-python``,
   see :doc:`gcloud-auth`.
 
 - In addition to any authentication configuration, you should also set the
-  :envvar:`GCLOUD_PROJECT` environment variable for the project you'd like
+  :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the project you'd like
   to interact with. If you are Google App Engine or Google Compute Engine
   this will be detected automatically.
 
 - The library now enables the ``gRPC`` transport for the logging API by
   default, assuming that the required dependencies are installed and
   importable.  To *disable* this transport, set the
-  :envvar:`GCLOUD_DISABLE_GAX` environment variable to a non-empty string,
-  e.g.:  ``$ export GCLOUD_DISABLE_GAX=1``.
+  :envvar:`GOOGLE_CLOUD_DISABLE_GAX` environment variable to a non-empty string,
+  e.g.:  ``$ export GOOGLE_CLOUD_DISABLE_GAX=1``.
 
 - After configuring your environment, create a
-  :class:`Client <gcloud.logging.client.Client>`
+  :class:`Client <google.cloud.logging.client.Client>`
 
   .. doctest::
 
-     >>> from gcloud import logging
+     >>> from google.cloud import logging
      >>> client = logging.Client()
 
   or pass in ``credentials`` and ``project`` explicitly
 
   .. doctest::
 
-     >>> from gcloud import logging
+     >>> from google.cloud import logging
      >>> client = logging.Client(project='my-project', credentials=creds)
 
 
@@ -42,7 +42,7 @@ Write a simple text entry to a logger.
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> logger = client.logger('log_name')
    >>> logger.log_text("A simple entry")  # API call
@@ -51,7 +51,7 @@ Write a dictionary entry to a logger.
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> logger = client.logger('log_name')
    >>> logger.log_struct(
@@ -66,7 +66,7 @@ Fetch entries for the default project.
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> entries, token = client.list_entries()  # API call
    >>> for entry in entries:
@@ -80,7 +80,7 @@ Fetch entries across multiple projects.
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> entries, token = client.list_entries(
    ...     project_ids=['one-project', 'another-project'])  # API call
@@ -91,7 +91,7 @@ Filter entries retrieved using the `Advanced Logs Filters`_ syntax
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> FILTER = "log:log_name AND textPayload:simple"
    >>> entries, token = client.list_entries(filter=FILTER)  # API call
@@ -100,7 +100,7 @@ Sort entries in descending timestamp order.
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> entries, token = client.list_entries(order_by=logging.DESCENDING)  # API call
 
@@ -108,7 +108,7 @@ Retrieve entries in batches of 10, iterating until done.
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> retrieved = []
    >>> token = None
@@ -122,7 +122,7 @@ Retrieve entries for a single logger, sorting in descending timestamp order:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> logger = client.logger('log_name')
    >>> entries, token = logger.list_entries(order_by=logging.DESCENDING)  # API call
@@ -132,7 +132,7 @@ Delete all entries for a logger
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> logger = client.logger('log_name')
    >>> logger.delete()  # API call
@@ -148,7 +148,7 @@ Create a metric:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> metric = client.metric(
    ...     "robots", "Robots all up in your server",
@@ -163,7 +163,7 @@ List all metrics for a project:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> metrics, token = client.list_metrics()
    >>> len(metrics)
@@ -176,7 +176,7 @@ Refresh local information about a metric:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> metric = client.metric("robots")
    >>> metric.reload()  # API call
@@ -189,7 +189,7 @@ Update a metric:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> metric = client.metric("robots")
    >>> metric.exists()  # API call
@@ -202,7 +202,7 @@ Delete a metric:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> metric = client.metric("robots")
    >>> metric.exists()  # API call
@@ -227,7 +227,7 @@ Add ``cloud-logs@google.com`` as the owner of ``my-bucket-name``:
 
 .. doctest::
 
-    >>> from gcloud import storage
+    >>> from google.cloud import storage
     >>> client = storage.Client()
     >>> bucket = client.get_bucket('my-bucket-name')
     >>> bucket.acl.reload()
@@ -248,8 +248,8 @@ See: `Setting permissions for BigQuery`_
 
 .. doctest::
 
-    >>> from gcloud import bigquery
-    >>> from gcloud.bigquery.dataset import AccessGrant
+    >>> from google.cloud import bigquery
+    >>> from google.cloud.bigquery.dataset import AccessGrant
     >>> bigquery_client = bigquery.Client()
     >>> dataset = bigquery_client.dataset('my-dataset-name')
     >>> dataset.create()
@@ -272,7 +272,7 @@ See: `Setting permissions for Pub/Sub`_
 
 .. doctest::
 
-    >>> from gcloud import pubsub
+    >>> from google.cloud import pubsub
     >>> client = pubsub.Client()
     >>> topic = client.topic('your-topic-name')
     >>> policy = top.get_iam_policy()
@@ -285,7 +285,7 @@ Create a Cloud Storage sink:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> sink = client.sink(
    ...     "robots-storage",
@@ -301,7 +301,7 @@ Create a BigQuery sink:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> sink = client.sink(
    ...     "robots-bq",
@@ -317,7 +317,7 @@ Create a Cloud Pub/Sub sink:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
 
    >>> sink = client.sink(
@@ -334,7 +334,7 @@ List all sinks for a project:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> sinks, token = client.list_sinks()
    >>> for sink in sinks:
@@ -347,7 +347,7 @@ Refresh local information about a sink:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> sink = client.sink('robots-storage')
    >>> sink.filter is None
@@ -362,7 +362,7 @@ Update a sink:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> sink = client.sink("robots")
    >>> sink.reload()  # API call
@@ -373,7 +373,7 @@ Delete a sink:
 
 .. doctest::
 
-   >>> from gcloud import logging
+   >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> sink = client.sink(
    ...     "robots",
@@ -389,15 +389,15 @@ Integration with Python logging module
 
 
 It's possible to tie the Python :mod:`logging` module directly into Google Cloud Logging. To use it,
-create a :class:`CloudLoggingHandler <gcloud.logging.CloudLoggingHandler>` instance from your
+create a :class:`CloudLoggingHandler <google.cloud.logging.CloudLoggingHandler>` instance from your
 Logging client.
 
 .. doctest::
 
     >>> import logging
-    >>> import gcloud.logging # Don't conflict with standard logging
-    >>> from gcloud.logging.handlers import CloudLoggingHandler
-    >>> client = gcloud.logging.Client()
+    >>> import google.cloud.logging # Don't conflict with standard logging
+    >>> from google.cloud.logging.handlers import CloudLoggingHandler
+    >>> client = google.cloud.logging.Client()
     >>> handler = CloudLoggingHandler(client)
     >>> cloud_logger = logging.getLogger('cloudLogger')
     >>> cloud_logger.setLevel(logging.INFO) # defaults to WARN
@@ -421,15 +421,15 @@ change it by providing a name to the handler:
 It is also possible to attach the handler to the root Python logger, so that for example a plain
 `logging.warn` call would be sent to Cloud Logging, as well as any other loggers created. However,
 you must avoid infinite recursion from the logging calls the client itself makes. A helper
-method :meth:`setup_logging <gcloud.logging.handlers.setup_logging>` is provided to configure
+method :meth:`setup_logging <google.cloud.logging.handlers.setup_logging>` is provided to configure
 this automatically:
 
 .. doctest::
 
     >>> import logging
-    >>> import gcloud.logging # Don't conflict with standard logging
-    >>> from gcloud.logging.handlers import CloudLoggingHandler, setup_logging
-    >>> client = gcloud.logging.Client()
+    >>> import google.cloud.logging # Don't conflict with standard logging
+    >>> from google.cloud.logging.handlers import CloudLoggingHandler, setup_logging
+    >>> client = google.cloud.logging.Client()
     >>> handler = CloudLoggingHandler(client)
     >>> logging.getLogger().setLevel(logging.INFO) # defaults to WARN
     >>> setup_logging(handler)
@@ -447,10 +447,10 @@ Python logging handler transports
 ==================================
 
 The Python logging handler can use different transports. The default is
-:class:`gcloud.logging.handlers.BackgroundThreadTransport`.
+:class:`google.cloud.logging.handlers.BackgroundThreadTransport`.
 
- 1. :class:`gcloud.logging.handlers.BackgroundThreadTransport` this is the default. It writes
+ 1. :class:`google.cloud.logging.handlers.BackgroundThreadTransport` this is the default. It writes
  entries on a background :class:`python.threading.Thread`.
 
- 1. :class:`gcloud.logging.handlers.SyncTransport` this handler does a direct API call on each
+ 1. :class:`google.cloud.logging.handlers.SyncTransport` this handler does a direct API call on each
  logging statement to write the entry.

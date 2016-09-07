@@ -17,8 +17,8 @@ import os
 import sys
 import time
 
-from gcloud.environment_vars import CREDENTIALS as TEST_CREDENTIALS
-from gcloud.environment_vars import TESTS_PROJECT
+from google.cloud.environment_vars import CREDENTIALS as TEST_CREDENTIALS
+from google.cloud.environment_vars import TESTS_PROJECT
 
 
 # From shell environ. May be None.

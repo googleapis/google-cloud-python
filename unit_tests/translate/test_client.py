@@ -20,15 +20,15 @@ class TestClient(unittest.TestCase):
     KEY = 'abc-123-my-key'
 
     def _getTargetClass(self):
-        from gcloud.translate.client import Client
+        from google.cloud.translate.client import Client
         return Client
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor(self):
-        from gcloud.translate.connection import Connection
-        from gcloud.translate.client import ENGLISH_ISO_639
+        from google.cloud.translate.connection import Connection
+        from google.cloud.translate.client import ENGLISH_ISO_639
 
         http = object()
         client = self._makeOne(self.KEY, http=http)
@@ -38,7 +38,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.target_language, ENGLISH_ISO_639)
 
     def test_ctor_non_default(self):
-        from gcloud.translate.connection import Connection
+        from google.cloud.translate.connection import Connection
 
         http = object()
         target = 'es'
@@ -49,7 +49,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.target_language, target)
 
     def test_get_languages(self):
-        from gcloud.translate.client import ENGLISH_ISO_639
+        from google.cloud.translate.client import ENGLISH_ISO_639
 
         client = self._makeOne(self.KEY)
         supported = [

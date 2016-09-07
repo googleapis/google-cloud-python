@@ -18,7 +18,7 @@ import unittest
 class TestLabelValueType(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.label import LabelValueType
+        from google.cloud.monitoring.label import LabelValueType
         return LabelValueType
 
     def test_one(self):
@@ -33,7 +33,7 @@ class TestLabelValueType(unittest.TestCase):
 class TestLabelDescriptor(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.label import LabelDescriptor
+        from google.cloud.monitoring.label import LabelDescriptor
         return LabelDescriptor
 
     def _makeOne(self, *args, **kwargs):

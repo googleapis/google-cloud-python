@@ -19,11 +19,11 @@ import unittest
 class TestClient(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.error_reporting.client import Client
+        from google.cloud.error_reporting.client import Client
         return Client
 
     def _getHttpContext(self):
-        from gcloud.error_reporting.client import HTTPContext
+        from google.cloud.error_reporting.client import HTTPContext
         return HTTPContext
 
     def _makeOne(self, *args, **kw):

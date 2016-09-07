@@ -18,7 +18,7 @@ import unittest
 class TestMessage(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.pubsub.message import Message
+        from google.cloud.pubsub.message import Message
         return Message
 
     def _makeOne(self, *args, **kw):
@@ -68,8 +68,8 @@ class TestMessage(unittest.TestCase):
 
     def test_timestamp_w_timestamp_in_attributes(self):
         from datetime import datetime
-        from gcloud._helpers import _RFC3339_MICROS
-        from gcloud._helpers import UTC
+        from google.cloud._helpers import _RFC3339_MICROS
+        from google.cloud._helpers import UTC
         DATA = b'DEADBEEF'
         MESSAGE_ID = b'12345'
         TIMESTAMP = '2015-04-10T18:42:27.131956Z'

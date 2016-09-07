@@ -13,7 +13,6 @@ script:
   - tox -e system-tests
   - tox -e system-tests3
   - tox -e docs
-  - tox -e json-docs
 
 after_success:
   - tox -e coveralls
@@ -25,7 +24,7 @@ deploy:
     secure: keSFPLzVj/yAAJ8kw4m+U5kpIiGqubpDqhcHPlGAvMohFMIO4D8ffgCqJdbhQshTtb/wiS5ajK1KNpEzq4BKD/5oRXuj/sIRTMENzX/azUXkT/bADLEGocyfE4/NAGQ9mcDOmHntjt7UUhYN6H87rgex22er4V1vD5tGf5Kc1HU=
   on:
     tags: true
-    repo: GoogleCloudPlatform/gcloud-python
+    repo: GoogleCloudPlatform/google-cloud-python
     # until this is fixed: https://github.com/travis-ci/travis-ci/issues/1675
     all_branches: true
   # 'bdist_wheel' builds disabled until #1879 et al. are resolved.

@@ -18,14 +18,14 @@ import unittest
 class TestTransaction(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.datastore.transaction import Transaction
+        from google.cloud.datastore.transaction import Transaction
         return Transaction
 
     def _makeOne(self, client, **kw):
         return self._getTargetClass()(client, **kw)
 
     def test_ctor_defaults(self):
-        from gcloud.datastore._generated import datastore_pb2
+        from google.cloud.datastore._generated import datastore_pb2
 
         _PROJECT = 'PROJECT'
         connection = _Connection()
@@ -164,7 +164,7 @@ class TestTransaction(unittest.TestCase):
 
 
 def _make_key(kind, id_, project):
-    from gcloud.datastore._generated import entity_pb2
+    from google.cloud.datastore._generated import entity_pb2
 
     key = entity_pb2.Key()
     key.partition_id.project_id = project
@@ -199,7 +199,7 @@ class _Entity(dict):
 
     def __init__(self):
         super(_Entity, self).__init__()
-        from gcloud.datastore.key import Key
+        from google.cloud.datastore.key import Key
         self.key = Key('KIND', project='PROJECT')
 
 
@@ -225,7 +225,7 @@ class _Client(object):
 class _NoCommitBatch(object):
 
     def __init__(self, client):
-        from gcloud.datastore.batch import Batch
+        from google.cloud.datastore.batch import Batch
         self._client = client
         self._batch = Batch(client)
 

@@ -27,7 +27,7 @@ class TestClient(unittest.TestCase):
     DESCRIPTION = 'DESCRIPTION'
 
     def _getTargetClass(self):
-        from gcloud.logging.client import Client
+        from google.cloud.logging.client import Client
         return Client
 
     def _makeOne(self, *args, **kw):
@@ -39,8 +39,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, self.PROJECT)
 
     def test_logging_api_wo_gax(self):
-        from gcloud.logging.connection import _LoggingAPI
-        from gcloud.logging import client as MUT
+        from google.cloud.logging.connection import _LoggingAPI
+        from google.cloud.logging import client as MUT
         from unit_tests._testing import _Monkey
         client = self._makeOne(self.PROJECT, credentials=_Credentials())
         conn = client.connection = object()
@@ -55,7 +55,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_logging_api_w_gax(self):
-        from gcloud.logging import client as MUT
+        from google.cloud.logging import client as MUT
         from unit_tests._testing import _Monkey
 
         wrapped = object()
@@ -86,8 +86,8 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_sinks_api_wo_gax(self):
-        from gcloud.logging.connection import _SinksAPI
-        from gcloud.logging import client as MUT
+        from google.cloud.logging.connection import _SinksAPI
+        from google.cloud.logging import client as MUT
         from unit_tests._testing import _Monkey
         client = self._makeOne(self.PROJECT, credentials=_Credentials())
         conn = client.connection = object()
@@ -102,7 +102,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_sinks_api_w_gax(self):
-        from gcloud.logging import client as MUT
+        from google.cloud.logging import client as MUT
         from unit_tests._testing import _Monkey
 
         wrapped = object()
@@ -133,8 +133,8 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_metrics_api_wo_gax(self):
-        from gcloud.logging.connection import _MetricsAPI
-        from gcloud.logging import client as MUT
+        from google.cloud.logging.connection import _MetricsAPI
+        from google.cloud.logging import client as MUT
         from unit_tests._testing import _Monkey
         client = self._makeOne(self.PROJECT, credentials=_Credentials())
         conn = client.connection = object()
@@ -149,7 +149,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_metrics_api_w_gax(self):
-        from gcloud.logging import client as MUT
+        from google.cloud.logging import client as MUT
         from unit_tests._testing import _Monkey
 
         wrapped = object()
@@ -180,7 +180,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(again is api)
 
     def test_logger(self):
-        from gcloud.logging.logger import Logger
+        from google.cloud.logging.logger import Logger
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         logger = client.logger(self.LOGGER_NAME)
@@ -198,7 +198,7 @@ class TestClient(unittest.TestCase):
             client._entry_from_resource({'unknownPayload': {}}, loggers)
 
     def test_list_entries_defaults(self):
-        from gcloud.logging.entries import TextEntry
+        from google.cloud.logging.entries import TextEntry
         IID = 'IID'
         TEXT = 'TEXT'
         TOKEN = 'TOKEN'
@@ -234,10 +234,10 @@ class TestClient(unittest.TestCase):
             ([self.PROJECT], None, None, None, None))
 
     def test_list_entries_explicit(self):
-        from gcloud.logging import DESCENDING
-        from gcloud.logging.entries import ProtobufEntry
-        from gcloud.logging.entries import StructEntry
-        from gcloud.logging.logger import Logger
+        from google.cloud.logging.client import DESCENDING
+        from google.cloud.logging.entries import ProtobufEntry
+        from google.cloud.logging.entries import StructEntry
+        from google.cloud.logging.logger import Logger
         PROJECT1 = 'PROJECT1'
         PROJECT2 = 'PROJECT2'
         FILTER = 'logName:LOGNAME'
@@ -301,7 +301,7 @@ class TestClient(unittest.TestCase):
             ([PROJECT1, PROJECT2], FILTER, DESCENDING, PAGE_SIZE, TOKEN))
 
     def test_sink_defaults(self):
-        from gcloud.logging.sink import Sink
+        from google.cloud.logging.sink import Sink
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         sink = client.sink(self.SINK_NAME)
@@ -313,7 +313,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(sink.project, self.PROJECT)
 
     def test_sink_explicit(self):
-        from gcloud.logging.sink import Sink
+        from google.cloud.logging.sink import Sink
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         sink = client.sink(self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
@@ -325,7 +325,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(sink.project, self.PROJECT)
 
     def test_list_sinks_no_paging(self):
-        from gcloud.logging.sink import Sink
+        from google.cloud.logging.sink import Sink
         PROJECT = 'PROJECT'
         TOKEN = 'TOKEN'
         SINK_NAME = 'sink_name'
@@ -353,7 +353,7 @@ class TestClient(unittest.TestCase):
                          (PROJECT, None, None))
 
     def test_list_sinks_with_paging(self):
-        from gcloud.logging.sink import Sink
+        from google.cloud.logging.sink import Sink
         PROJECT = 'PROJECT'
         SINK_NAME = 'sink_name'
         FILTER = 'logName:syslog AND severity>=ERROR'
@@ -381,7 +381,7 @@ class TestClient(unittest.TestCase):
                          (PROJECT, PAGE_SIZE, TOKEN))
 
     def test_metric_defaults(self):
-        from gcloud.logging.metric import Metric
+        from google.cloud.logging.metric import Metric
         creds = _Credentials()
 
         client_obj = self._makeOne(project=self.PROJECT, credentials=creds)
@@ -394,7 +394,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(metric.project, self.PROJECT)
 
     def test_metric_explicit(self):
-        from gcloud.logging.metric import Metric
+        from google.cloud.logging.metric import Metric
         creds = _Credentials()
 
         client_obj = self._makeOne(project=self.PROJECT, credentials=creds)
@@ -408,7 +408,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(metric.project, self.PROJECT)
 
     def test_list_metrics_no_paging(self):
-        from gcloud.logging.metric import Metric
+        from google.cloud.logging.metric import Metric
         PROJECT = 'PROJECT'
         TOKEN = 'TOKEN'
         METRICS = [{
@@ -433,7 +433,7 @@ class TestClient(unittest.TestCase):
                          (PROJECT, None, None))
 
     def test_list_metrics_with_paging(self):
-        from gcloud.logging.metric import Metric
+        from google.cloud.logging.metric import Metric
         PROJECT = 'PROJECT'
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42

@@ -20,7 +20,7 @@ PROJECT = 'my-project'
 class TestClient(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.monitoring.client import Client
+        from google.cloud.monitoring.client import Client
         return Client
 
     def _makeOne(self, *args, **kwargs):
@@ -28,8 +28,8 @@ class TestClient(unittest.TestCase):
 
     def test_query(self):
         import datetime
-        from gcloud._helpers import _datetime_to_rfc3339
-        from gcloud.exceptions import NotFound
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud.exceptions import NotFound
 
         START_TIME = datetime.datetime(2016, 4, 6, 22, 5, 0)
         END_TIME = datetime.datetime(2016, 4, 6, 22, 10, 0)
@@ -185,7 +185,7 @@ class TestClient(unittest.TestCase):
     def test_timeseries_factory_gauge(self):
         import datetime
         from unit_tests._testing import _Monkey
-        import gcloud.monitoring.client
+        import google.cloud.monitoring.client
         METRIC_TYPE = 'custom.googleapis.com/my_metric'
         METRIC_LABELS = {
             'status': 'successful'
@@ -218,7 +218,7 @@ class TestClient(unittest.TestCase):
         TIME2 = datetime.datetime.utcnow()
         # Construct a time series assuming a gauge metric using the current
         # time
-        with _Monkey(gcloud.monitoring.client, _UTCNOW=lambda: TIME2):
+        with _Monkey(google.cloud.monitoring.client, _UTCNOW=lambda: TIME2):
             timeseries_no_end = client.time_series(metric, resource, VALUE)
 
         self.assertEqual(timeseries_no_end.points[0].end_time, TIME2)
@@ -562,7 +562,7 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kwargs):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)

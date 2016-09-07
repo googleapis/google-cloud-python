@@ -4,7 +4,7 @@ import unittest
 class Test_BufferedStream(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.streaming.buffered_stream import BufferedStream
+        from google.cloud.streaming.buffered_stream import BufferedStream
         return BufferedStream
 
     def _makeOne(self, *args, **kw):

@@ -2,12 +2,12 @@
 branch = True
 
 [report]
-fail_under = 100
-show_missing = True
-
-[report]
 omit =
     */_generated/*.py
+    # Packages in the "google.cloud" package that we don't own.
+    */google/cloud/logging/v2/*
+    */google/cloud/pubsub/v1/*
+fail_under = 100
 show_missing = True
 exclude_lines =
     # Re-enable the standard pragma

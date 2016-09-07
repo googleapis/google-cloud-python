@@ -18,7 +18,7 @@ import unittest
 class TestEntity(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.language.entity import Entity
+        from google.cloud.language.entity import Entity
         return Entity
 
     def _makeOne(self, *args, **kw):

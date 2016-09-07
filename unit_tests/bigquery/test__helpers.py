@@ -18,7 +18,7 @@ import unittest
 class Test_ConfigurationProperty(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigquery._helpers import _ConfigurationProperty
+        from google.cloud.bigquery._helpers import _ConfigurationProperty
         return _ConfigurationProperty
 
     def _makeOne(self, *args, **kw):
@@ -53,7 +53,7 @@ class Test_ConfigurationProperty(unittest.TestCase):
 class Test_TypedProperty(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigquery._helpers import _TypedProperty
+        from google.cloud.bigquery._helpers import _TypedProperty
         return _TypedProperty
 
     def _makeOne(self, *args, **kw):
@@ -86,7 +86,7 @@ class Test_TypedProperty(unittest.TestCase):
 class Test_EnumProperty(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigquery._helpers import _EnumProperty
+        from google.cloud.bigquery._helpers import _EnumProperty
         return _EnumProperty
 
     def test_it(self):

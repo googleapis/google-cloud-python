@@ -18,7 +18,7 @@ import unittest
 class TestConnection(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.connection import Connection
+        from google.cloud.connection import Connection
         return Connection
 
     def _makeOne(self, *args, **kw):
@@ -69,8 +69,8 @@ class TestConnection(unittest.TestCase):
 
     def test_user_agent_format(self):
         from pkg_resources import get_distribution
-        expected_ua = 'gcloud-python/{0}'.format(
-            get_distribution('gcloud').version)
+        expected_ua = 'google-cloud-python/{0}'.format(
+            get_distribution('google-cloud').version)
         conn = self._makeOne()
         self.assertEqual(conn.USER_AGENT, expected_ua)
 
@@ -78,7 +78,7 @@ class TestConnection(unittest.TestCase):
 class TestJSONConnection(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.connection import JSONConnection
+        from google.cloud.connection import JSONConnection
         return JSONConnection
 
     def _makeOne(self, *args, **kw):
@@ -316,7 +316,7 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test_api_request_w_404(self):
-        from gcloud.exceptions import NotFound
+        from google.cloud.exceptions import NotFound
         conn = self._makeMockOne()
         conn._http = _Http(
             {'status': '404', 'content-type': 'text/plain'},
@@ -325,7 +325,7 @@ class TestJSONConnection(unittest.TestCase):
         self.assertRaises(NotFound, conn.api_request, 'GET', '/')
 
     def test_api_request_w_500(self):
-        from gcloud.exceptions import InternalServerError
+        from google.cloud.exceptions import InternalServerError
         conn = self._makeMockOne()
         conn._http = _Http(
             {'status': '500', 'content-type': 'text/plain'},

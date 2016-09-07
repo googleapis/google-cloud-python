@@ -18,7 +18,7 @@ import unittest
 class TestSentiment(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.language.sentiment import Sentiment
+        from google.cloud.language.sentiment import Sentiment
         return Sentiment
 
     def _makeOne(self, *args, **kw):

@@ -18,7 +18,7 @@ import unittest
 class Test_ACLEntity(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage.acl import _ACLEntity
+        from google.cloud.storage.acl import _ACLEntity
         return _ACLEntity
 
     def _makeOne(self, *args, **kw):
@@ -127,7 +127,7 @@ class Test_ACLEntity(unittest.TestCase):
 class Test_ACL(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage.acl import ACL
+        from google.cloud.storage.acl import ACL
         return ACL
 
     def _makeOne(self, *args, **kw):
@@ -267,7 +267,7 @@ class Test_ACL(unittest.TestCase):
         self.assertTrue(acl.loaded)
 
     def test_has_entity_miss_entity(self):
-        from gcloud.storage.acl import _ACLEntity
+        from google.cloud.storage.acl import _ACLEntity
         TYPE = 'type'
         ID = 'id'
         entity = _ACLEntity(TYPE, ID)
@@ -307,7 +307,7 @@ class Test_ACL(unittest.TestCase):
         self.assertTrue(acl.loaded)
 
     def test_get_entity_miss_entity_no_default(self):
-        from gcloud.storage.acl import _ACLEntity
+        from google.cloud.storage.acl import _ACLEntity
         TYPE = 'type'
         ID = 'id'
         entity = _ACLEntity(TYPE, ID)
@@ -322,7 +322,7 @@ class Test_ACL(unittest.TestCase):
         self.assertTrue(acl.get_entity('nonesuch', DEFAULT) is DEFAULT)
 
     def test_get_entity_miss_entity_w_default(self):
-        from gcloud.storage.acl import _ACLEntity
+        from google.cloud.storage.acl import _ACLEntity
         DEFAULT = object()
         TYPE = 'type'
         ID = 'id'
@@ -348,7 +348,7 @@ class Test_ACL(unittest.TestCase):
         self.assertTrue(acl.has_entity(entity))
 
     def test_add_entity_miss_eager(self):
-        from gcloud.storage.acl import _ACLEntity
+        from google.cloud.storage.acl import _ACLEntity
         TYPE = 'type'
         ID = 'id'
         ROLE = 'role'
@@ -363,7 +363,7 @@ class Test_ACL(unittest.TestCase):
         self.assertEqual(list(acl.get_entities()), [entity])
 
     def test_add_entity_miss_lazy(self):
-        from gcloud.storage.acl import _ACLEntity
+        from google.cloud.storage.acl import _ACLEntity
         TYPE = 'type'
         ID = 'id'
         ROLE = 'role'
@@ -383,7 +383,7 @@ class Test_ACL(unittest.TestCase):
         self.assertTrue(acl.loaded)
 
     def test_add_entity_hit(self):
-        from gcloud.storage.acl import _ACLEntity
+        from google.cloud.storage.acl import _ACLEntity
         TYPE = 'type'
         ID = 'id'
         ENTITY_VAL = '%s-%s' % (TYPE, ID)
@@ -510,7 +510,7 @@ class Test_ACL(unittest.TestCase):
         self.assertEqual(acl.get_entities(), [entity])
 
     def test_reload_missing(self):
-        # https://github.com/GoogleCloudPlatform/gcloud-python/issues/652
+        # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/652
         ROLE = 'role'
         connection = _Connection({})
         client = _Client(connection)
@@ -711,7 +711,7 @@ class Test_ACL(unittest.TestCase):
 class Test_BucketACL(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage.acl import BucketACL
+        from google.cloud.storage.acl import BucketACL
         return BucketACL
 
     def _makeOne(self, *args, **kw):
@@ -731,7 +731,7 @@ class Test_BucketACL(unittest.TestCase):
 class Test_DefaultObjectACL(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage.acl import DefaultObjectACL
+        from google.cloud.storage.acl import DefaultObjectACL
         return DefaultObjectACL
 
     def _makeOne(self, *args, **kw):
@@ -751,7 +751,7 @@ class Test_DefaultObjectACL(unittest.TestCase):
 class Test_ObjectACL(unittest.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage.acl import ObjectACL
+        from google.cloud.storage.acl import ObjectACL
         return ObjectACL
 
     def _makeOne(self, *args, **kw):

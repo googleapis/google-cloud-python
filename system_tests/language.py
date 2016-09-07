@@ -14,11 +14,11 @@
 
 import unittest
 
-from gcloud import _helpers
-from gcloud.environment_vars import TESTS_PROJECT
-from gcloud import exceptions
-from gcloud import language
-from gcloud import storage
+from google.cloud import _helpers
+from google.cloud.environment_vars import TESTS_PROJECT
+from google.cloud import exceptions
+from google.cloud import language
+from google.cloud import storage
 
 from system_test_utils import unique_resource_id
 from retry import RetryErrors
@@ -67,7 +67,7 @@ class TestLanguage(unittest.TestCase):
             value.delete()
 
     def _check_analyze_entities_result(self, entities):
-        from gcloud.language.entity import EntityType
+        from google.cloud.language.entity import EntityType
 
         self.assertEqual(len(entities), 3)
         entity1, entity2, entity3 = entities
