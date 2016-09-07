@@ -24,6 +24,7 @@ from grpc import StatusCode
 # pylint: disable=ungrouped-imports
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import exc_to_code
+from google.cloud._helpers import _pb_timestamp_to_rfc3339
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 # pylint: enable=ungrouped-imports
@@ -482,6 +483,7 @@ def _message_pb_to_mapping(message_pb):
         'messageId': message_pb.message_id,
         'data': message_pb.data,
         'attributes': message_pb.attributes,
+        'publishTime': _pb_timestamp_to_rfc3339(message_pb.publish_time),
     }
 
 
