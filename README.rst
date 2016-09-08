@@ -11,7 +11,7 @@ Google Cloud Python Client
 -  `API Documentation`_
 
 .. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/#/docs/master/google-cloud
+.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
 
 This client supports the following Google Cloud Platform services:
 

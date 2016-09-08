@@ -12,7 +12,7 @@ script:
   - tox -e cover
   - tox -e system-tests
   - tox -e system-tests3
-  - tox -e docs
+  - scripts/update_docs.sh
 
 after_success:
   - tox -e coveralls
