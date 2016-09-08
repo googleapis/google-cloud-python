@@ -22,7 +22,7 @@ class Test__make_data_stub(unittest.TestCase):
         from google.cloud.bigtable.client import _make_data_stub
         return _make_data_stub(client)
 
-    def test_it(self):
+    def test_without_emulator(self):
         from unit_tests._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
@@ -50,6 +50,31 @@ class Test__make_data_stub(unittest.TestCase):
             ),
         ])
 
+    def test_with_emulator(self):
+        from unit_tests._testing import _Monkey
+        from google.cloud.bigtable import client as MUT
+
+        emulator_host = object()
+        client = _Client(None, None, emulator_host=emulator_host)
+
+        fake_stub = object()
+        make_insecure_stub_args = []
+
+        def mock_make_insecure_stub(*args):
+            make_insecure_stub_args.append(args)
+            return fake_stub
+
+        with _Monkey(MUT, make_insecure_stub=mock_make_insecure_stub):
+            result = self._callFUT(client)
+
+        self.assertIs(result, fake_stub)
+        self.assertEqual(make_insecure_stub_args, [
+            (
+                MUT.bigtable_pb2.BigtableStub,
+                emulator_host,
+            ),
+        ])
+
 
 class Test__make_instance_stub(unittest.TestCase):
 
@@ -57,7 +82,7 @@ class Test__make_instance_stub(unittest.TestCase):
         from google.cloud.bigtable.client import _make_instance_stub
         return _make_instance_stub(client)
 
-    def test_it(self):
+    def test_without_emulator(self):
         from unit_tests._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
@@ -85,6 +110,31 @@ class Test__make_instance_stub(unittest.TestCase):
             ),
         ])
 
+    def test_with_emulator(self):
+        from unit_tests._testing import _Monkey
+        from google.cloud.bigtable import client as MUT
+
+        emulator_host = object()
+        client = _Client(None, None, emulator_host=emulator_host)
+
+        fake_stub = object()
+        make_insecure_stub_args = []
+
+        def mock_make_insecure_stub(*args):
+            make_insecure_stub_args.append(args)
+            return fake_stub
+
+        with _Monkey(MUT, make_insecure_stub=mock_make_insecure_stub):
+            result = self._callFUT(client)
+
+        self.assertIs(result, fake_stub)
+        self.assertEqual(make_insecure_stub_args, [
+            (
+                MUT.bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
+                emulator_host,
+            ),
+        ])
+
 
 class Test__make_operations_stub(unittest.TestCase):
 
@@ -92,7 +142,7 @@ class Test__make_operations_stub(unittest.TestCase):
         from google.cloud.bigtable.client import _make_operations_stub
         return _make_operations_stub(client)
 
-    def test_it(self):
+    def test_without_emulator(self):
         from unit_tests._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
@@ -120,6 +170,31 @@ class Test__make_operations_stub(unittest.TestCase):
             ),
         ])
 
+    def test_with_emulator(self):
+        from unit_tests._testing import _Monkey
+        from google.cloud.bigtable import client as MUT
+
+        emulator_host = object()
+        client = _Client(None, None, emulator_host=emulator_host)
+
+        fake_stub = object()
+        make_insecure_stub_args = []
+
+        def mock_make_insecure_stub(*args):
+            make_insecure_stub_args.append(args)
+            return fake_stub
+
+        with _Monkey(MUT, make_insecure_stub=mock_make_insecure_stub):
+            result = self._callFUT(client)
+
+        self.assertIs(result, fake_stub)
+        self.assertEqual(make_insecure_stub_args, [
+            (
+                MUT.operations_grpc_pb2.OperationsStub,
+                emulator_host,
+            ),
+        ])
+
 
 class Test__make_table_stub(unittest.TestCase):
 
@@ -127,7 +202,7 @@ class Test__make_table_stub(unittest.TestCase):
         from google.cloud.bigtable.client import _make_table_stub
         return _make_table_stub(client)
 
-    def test_it(self):
+    def test_without_emulator(self):
         from unit_tests._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
@@ -152,6 +227,31 @@ class Test__make_table_stub(unittest.TestCase):
                 client.user_agent,
                 MUT.bigtable_table_admin_pb2.BigtableTableAdminStub,
                 MUT.TABLE_ADMIN_HOST,
+            ),
+        ])
+
+    def test_with_emulator(self):
+        from unit_tests._testing import _Monkey
+        from google.cloud.bigtable import client as MUT
+
+        emulator_host = object()
+        client = _Client(None, None, emulator_host=emulator_host)
+
+        fake_stub = object()
+        make_insecure_stub_args = []
+
+        def mock_make_insecure_stub(*args):
+            make_insecure_stub_args.append(args)
+            return fake_stub
+
+        with _Monkey(MUT, make_insecure_stub=mock_make_insecure_stub):
+            result = self._callFUT(client)
+
+        self.assertIs(result, fake_stub)
+        self.assertEqual(make_insecure_stub_args, [
+            (
+                MUT.bigtable_table_admin_pb2.BigtableTableAdminStub,
+                emulator_host,
             ),
         ])
 
@@ -532,9 +632,10 @@ class _Credentials(object):
 
 class _Client(object):
 
-    def __init__(self, credentials, user_agent):
+    def __init__(self, credentials, user_agent, emulator_host=None):
         self.credentials = credentials
         self.user_agent = user_agent
+        self.emulator_host = emulator_host
 
 
 class _MakeStubMock(object):
