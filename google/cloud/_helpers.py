@@ -379,6 +379,19 @@ def _millis_from_datetime(value):
         return _millis(value)
 
 
+def _date_from_iso8601_date(value):
+    """Convert a ISO8601 date string to native datetime date
+
+    :type value: str
+    :param value: The date string to convert
+
+    :rtype: :class:`datetime.date`
+    :returns: A datetime date object created from the string
+
+    """
+    return datetime.datetime.strptime(value, '%Y-%m-%d').date()
+
+
 def _rfc3339_to_datetime(dt_str):
     """Convert a microsecond-precision timetamp to a native datetime.
 

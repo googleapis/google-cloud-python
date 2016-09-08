@@ -15,6 +15,7 @@
 """Shared helper functions for BigQuery API classes."""
 
 from google.cloud._helpers import _datetime_from_microseconds
+from google.cloud._helpers import _date_from_iso8601_date
 
 
 def _not_null(value, field):
@@ -47,6 +48,12 @@ def _datetime_from_json(value, field):
         return _datetime_from_microseconds(1e6 * float(value))
 
 
+def _date_from_json(value, field):
+    """Coerce 'value' to a datetime date, if set or not nullable"""
+    if _not_null(value, field):
+        return _date_from_iso8601_date(value)
+
+
 def _record_from_json(value, field):
     """Coerce 'value' to a mapping, if set or not nullable."""
     if _not_null(value, field):
@@ -71,6 +78,7 @@ _CELLDATA_FROM_JSON = {
     'FLOAT': _float_from_json,
     'BOOLEAN': _bool_from_json,
     'TIMESTAMP': _datetime_from_json,
+    'DATE': _date_from_json,
     'RECORD': _record_from_json,
     'STRING': _string_from_json,
 }
