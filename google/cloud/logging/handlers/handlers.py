@@ -31,7 +31,7 @@ class CloudLoggingHandler(logging.StreamHandler):
     """Python standard ``logging`` handler.
 
     This handler can be used to route Python standard logging messages
-    directly to the Google Cloud Logging API.
+    directly to the Stackdriver Logging API.
 
     Note that this handler currently only supports a synchronous API call,
     which means each logging statement that uses this handler will require
