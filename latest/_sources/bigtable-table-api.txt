@@ -1,13 +1,7 @@
 Table Admin API
 ===============
 
-.. warning::
-
-    gRPC is required for using the Cloud Bigtable API. As of May 2016,
-    ``grpcio`` is only supported in Python 2.7, so importing
-    :mod:`gcloud.bigtable` in other versions of Python will fail.
-
-After creating a :class:`Instance <gcloud.bigtable.instance.Instance>`, you can
+After creating a :class:`Instance <google.cloud.bigtable.instance.Instance>`, you can
 interact with individual tables, groups of tables or column families within
 a table.
 
@@ -16,33 +10,33 @@ List Tables
 
 If you want a comprehensive list of all existing tables in a instance, make a
 `ListTables`_ API request with
-:meth:`Instance.list_tables() <gcloud.bigtable.instance.Instance.list_tables>`:
+:meth:`Instance.list_tables() <google.cloud.bigtable.instance.Instance.list_tables>`:
 
 .. code:: python
 
     >>> instance.list_tables()
-    [<gcloud.bigtable.table.Table at 0x7ff6a1de8f50>,
-     <gcloud.bigtable.table.Table at 0x7ff6a1de8350>]
+    [<google.cloud.bigtable.table.Table at 0x7ff6a1de8f50>,
+     <google.cloud.bigtable.table.Table at 0x7ff6a1de8350>]
 
 Table Factory
 -------------
 
-To create a :class:`Table <gcloud.bigtable.table.Table>` object:
+To create a :class:`Table <google.cloud.bigtable.table.Table>` object:
 
 .. code:: python
 
     table = instance.table(table_id)
 
-Even if this :class:`Table <gcloud.bigtable.table.Table>` already
+Even if this :class:`Table <google.cloud.bigtable.table.Table>` already
 has been created with the API, you'll want this object to use as a
-parent of a :class:`ColumnFamily <gcloud.bigtable.column_family.ColumnFamily>`
-or :class:`Row <gcloud.bigtable.row.Row>`.
+parent of a :class:`ColumnFamily <google.cloud.bigtable.column_family.ColumnFamily>`
+or :class:`Row <google.cloud.bigtable.row.Row>`.
 
 Create a new Table
 ------------------
 
 After creating the table object, make a `CreateTable`_ API request
-with :meth:`create() <gcloud.bigtable.table.Table.create>`:
+with :meth:`create() <google.cloud.bigtable.table.Table.create>`:
 
 .. code:: python
 
@@ -59,7 +53,7 @@ Delete an existing Table
 ------------------------
 
 Make a `DeleteTable`_ API request with
-:meth:`delete() <gcloud.bigtable.table.Table.delete>`:
+:meth:`delete() <google.cloud.bigtable.table.Table.delete>`:
 
 .. code:: python
 
@@ -73,7 +67,7 @@ associated with a table, the `GetTable`_ API method returns a
 table object with the names of the column families.
 
 To retrieve the list of column families use
-:meth:`list_column_families() <gcloud.bigtable.table.Table.list_column_families>`:
+:meth:`list_column_families() <google.cloud.bigtable.table.Table.list_column_families>`:
 
 .. code:: python
 
@@ -83,7 +77,7 @@ Column Family Factory
 ---------------------
 
 To create a
-:class:`ColumnFamily <gcloud.bigtable.column_family.ColumnFamily>` object:
+:class:`ColumnFamily <google.cloud.bigtable.column_family.ColumnFamily>` object:
 
 .. code:: python
 
@@ -93,7 +87,7 @@ There is no real reason to use this factory unless you intend to
 create or delete a column family.
 
 In addition, you can specify an optional ``gc_rule`` (a
-:class:`GarbageCollectionRule <gcloud.bigtable.column_family.GarbageCollectionRule>`
+:class:`GarbageCollectionRule <google.cloud.bigtable.column_family.GarbageCollectionRule>`
 or similar):
 
 .. code:: python
@@ -105,7 +99,7 @@ This rule helps the backend determine when and how to clean up old cells
 in the column family.
 
 See :doc:`bigtable-column-family` for more information about
-:class:`GarbageCollectionRule <gcloud.bigtable.column_family.GarbageCollectionRule>`
+:class:`GarbageCollectionRule <google.cloud.bigtable.column_family.GarbageCollectionRule>`
 and related classes.
 
 Create a new Column Family
@@ -113,7 +107,7 @@ Create a new Column Family
 
 After creating the column family object, make a `CreateColumnFamily`_ API
 request with
-:meth:`ColumnFamily.create() <gcloud.bigtable.column_family.ColumnFamily.create>`
+:meth:`ColumnFamily.create() <google.cloud.bigtable.column_family.ColumnFamily.create>`
 
 .. code:: python
 
@@ -123,7 +117,7 @@ Delete an existing Column Family
 --------------------------------
 
 Make a `DeleteColumnFamily`_ API request with
-:meth:`ColumnFamily.delete() <gcloud.bigtable.column_family.ColumnFamily.delete>`
+:meth:`ColumnFamily.delete() <google.cloud.bigtable.column_family.ColumnFamily.delete>`
 
 .. code:: python
 
@@ -133,7 +127,7 @@ Update an existing Column Family
 --------------------------------
 
 Make an `UpdateColumnFamily`_ API request with
-:meth:`ColumnFamily.delete() <gcloud.bigtable.column_family.ColumnFamily.update>`
+:meth:`ColumnFamily.delete() <google.cloud.bigtable.column_family.ColumnFamily.update>`
 
 .. code:: python
 
@@ -143,9 +137,9 @@ Next Step
 ---------
 
 Now we go down the final step of the hierarchy from
-:class:`Table <gcloud.bigtable.table.Table>` to
-:class:`Row <gcloud.bigtable.row.Row>` as well as streaming
-data directly via a :class:`Table <gcloud.bigtable.table.Table>`.
+:class:`Table <google.cloud.bigtable.table.Table>` to
+:class:`Row <google.cloud.bigtable.row.Row>` as well as streaming
+data directly via a :class:`Table <google.cloud.bigtable.table.Table>`.
 
 Head next to learn about the :doc:`bigtable-data-api`.
 

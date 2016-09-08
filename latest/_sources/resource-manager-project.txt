@@ -1,6 +1,6 @@
 Projects
 ~~~~~~~~
 
-.. automodule:: gcloud.resource_manager.project
+.. automodule:: google.cloud.resource_manager.project
   :members:
   :show-inheritance:

@@ -1,118 +1,284 @@
+
+
 <!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Using the API &mdash; google-cloud e553ddd documentation</title>
+  
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Using the API &mdash; gcloud a609621 documentation</title>
-    
-    <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/css/normalize.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     'a609621',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
+  
+  
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud a609621 documentation" href="index.html" />
-    <link rel="next" title="Pub/Sub Client" href="pubsub-client.html" />
-    <link rel="prev" title="Batches" href="storage-batch.html" /> 
-  </head>
-  <body role="document">
-    <header class="page-header fixed" role="banner">
-      <h1 class="logo">
-        <a href="index.html" title="back to home">
-          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
-          <span class="gcloud">gcloud</span>
-        </a>
-      </h1>
-      <nav class="main-nav">
-        <div class="nav-current">Python</div>
-        <ul class="menu">
-          <li>
-            <a href="http://googlecloudplatform.github.io/google-cloud-dotnet" title=".NET docs page">
-              <img src="_static/images/icon-lang-dotnet.svg" alt=".NET icon" class="menu-icon" />
-              .NET
-            </a>
-          </li>
-          <li>
-            <a href="
-https://googlecloudplatform.github.io/gcloud-java/" title="gcloud-java page">
-              <img src="_static/images/icon-lang-java-duke.svg" alt="Duke icon" class="menu-icon" />
-              Java
-            </a>
-          </li>
-          <li>
-            <a href="
-https://googlecloudplatform.github.io/gcloud-node/#/docs" title="Node.js docs page">
-              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
-              Node.js
-            </a>
-          </li>
-          <li>
-            <a href="
-https://googlecloudplatform.github.io/gcloud-php/" title="PHP docs page">
-                <img src="_static/images/icon-lang-php.svg" alt="PHP icon" class="menu-icon" />
-                PHP
-            </a>
-          </li>
-          <li>
-            <a href="#" title="Python docs page">
-              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
-              Python
-            </a>
-          </li>
-          <li>
-            <a href="
-http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs page">
-              <img src="_static/images/icon-lang-ruby.svg" alt="Ruby icon" class="menu-icon" />
-              Ruby
-            </a>
-          </li>
-        </ul>
-      </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-usage%0ARelease%3A%20a609621" target="_blank" class="v-btn" id="file-issue">
-        <img src="_static/images/icon-link-github.svg" />
-        Report an Issue
-      </a>
-    </header><!-- end of .page-header -->
+  
+
+  
+
+  
+  
     
-      <article class="main lang-page" role="main">
 
-      <header class="docs-header">
-          <div class="versions">
-            <a href="/gcloud-python/versions.html" class="v-btn">
-              <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a609621)
-            </a>
-          </div><!-- end of .versions -->
-          <div>
-            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+" target="_blank" class="v-btn" id="file-issue-secondary">
-              <img src="_static/images/icon-link-github.svg" />
-              Report an Issue
-            </a>
-          </div>
-      </header>
+  
 
-      <section class="content">
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="google-cloud e553ddd documentation" href="index.html"/>
+        <link rel="next" title="Pub/Sub Client" href="pubsub-client.html"/>
+        <link rel="prev" title="Batches" href="storage-batch.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> google-cloud
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">google-cloud</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-auth.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operation-api.html">Long-Running Operations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Datastore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-helpers.html">Helpers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Storage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="storage-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-batch.html">Batches</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Pub/Sub</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using the API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#authentication-configuration">Authentication / Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manage-topics-for-a-project">Manage topics for a project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#publish-messages-to-a-topic">Publish messages to a topic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manage-subscriptions-to-topics">Manage subscriptions to topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pull-messages-from-a-subscription">Pull messages from a subscription</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-iam.html">IAM Policy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">BigQuery</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-job.html">Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-table.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-query.html">Query</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-schema.html">Schemas</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Cloud Bigtable</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-client-intro.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-instance-api.html">Instance Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-table-api.html">Table Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-data-api.html">Data API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-instance.html">Instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-cluster.html">Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-table.html">Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-column-family.html">Column Families</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row.html">Bigtable Row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row-filters.html">Bigtable Row Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row-data.html">Row Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Resource Manager</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-api.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-project.html">Projects</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DNS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dns-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-zone.html">Managed Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-resource-record-set.html">Resource Record Sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html#python-logging-handler-transports">Python logging handler transports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-logger.html">Logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-entries.html">Entries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-metric.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-sink.html">Sinks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-handlers.html">Python Logging Module Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-sync.html">Python Logging Handler Sync Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-thread.html">Python Logging Handler Threaded Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-base.html">Python Logging Handler Sync Transport</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Error Reporting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="error-reporting-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="error-reporting-client.html">Client</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Monitoring</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-metric.html">Metric Descriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-resource.html">Monitored Resource Descriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-group.html">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-query.html">Time Series Query</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-timeseries.html">Time Series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-label.html">Label Descriptors</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Translate</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="translate-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translate-client.html">Client</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Vision</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="vision-usage.html">Using the Vision API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Natural Language</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="language-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-document.html">Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-responses.html">Natural Language Response Classes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/issues">Issues</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/google-cloud-python">Stack Overflow</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/google-cloud">PyPI</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">google-cloud</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Using the API</li>
+      <li class="wy-breadcrumbs-aside">
         
+          
+            <a href="_sources/pubsub-usage.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
   <div class="section" id="using-the-api">
 <h1>Using the API<a class="headerlink" href="#using-the-api" title="Permalink to this headline">#</a></h1>
 <div class="section" id="authentication-configuration">
 <h2>Authentication / Configuration<a class="headerlink" href="#authentication-configuration" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p class="first">Use <a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects to configure
+<li><p class="first">Use <a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects to configure
 your applications.</p>
 </li>
-<li><p class="first"><a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects hold both a <code class="docutils literal"><span class="pre">project</span></code>
+<li><p class="first">In addition to any authentication configuration, you should also set the
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you&#8217;d like
+to interact with. If you are Google App Engine or Google Compute Engine
+this will be detected automatically.</p>
+</li>
+<li><p class="first">The library now enables the <code class="docutils literal"><span class="pre">gRPC</span></code> transport for the pubsub API by
+default, assuming that the required dependencies are installed and
+importable.  To <em>disable</em> this transport, set the
+<span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_DISABLE_GRPC</span></code> environment variable to a
+non-empty string, e.g.:  <code class="docutils literal"><span class="pre">$</span> <span class="pre">export</span> <span class="pre">GOOGLE_CLOUD_DISABLE_GRPC=true</span></code>.</p>
+</li>
+<li><p class="first"><a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects hold both a <code class="docutils literal"><span class="pre">project</span></code>
 and an authenticated connection to the PubSub service.</p>
 </li>
 <li><p class="first">The authentication credentials can be implicitly determined from the
@@ -121,9 +287,9 @@ environment or directly via
 and
 <code class="xref py py-meth docutils literal"><span class="pre">from_service_account_p12</span></code>.</p>
 </li>
-<li><p class="first">After setting <code class="docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> and <code class="docutils literal"><span class="pre">GCLOUD_PROJECT</span></code>
-environment variables, create a <a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
+<li><p class="first">After setting <code class="docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> and <code class="docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code>
+environment variables, create a <a class="reference internal" href="pubsub-client.html#google.cloud.pubsub.client.Client" title="google.cloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">pubsub</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -172,7 +338,7 @@ environment variables, create a <a class="reference internal" href="pubsub-clien
 </pre></div>
 </div>
 <p>Test permissions allowed by the current IAM policy on a topic:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
     <span class="n">TO_CHECK</span> <span class="o">=</span> <span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span><span class="p">]</span>
     <span class="n">ALLOWED</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
     <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">ALLOWED</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
@@ -269,7 +435,7 @@ an exception.</p>
 </pre></div>
 </div>
 <p>Test permissions allowed by the current IAM policy on a subscription:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
     <span class="n">TO_CHECK</span> <span class="o">=</span> <span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span><span class="p">]</span>
     <span class="n">ALLOWED</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
     <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">ALLOWED</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
@@ -308,7 +474,7 @@ will re-send them later:</p>
 </div>
 <p>Fetch pending messages, acknowledging those whose processing doesn&#8217;t raise an
 error:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">gcloud.pubsub.subscription</span> <span class="k">import</span> <span class="n">AutoAck</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.pubsub.subscription</span> <span class="k">import</span> <span class="n">AutoAck</span>
     <span class="k">with</span> <span class="n">AutoAck</span><span class="p">(</span><span class="n">subscription</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">ack</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ack</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="k">try</span><span class="p">:</span>
@@ -327,123 +493,71 @@ which haven&#8217;t been deleted from <code class="docutils literal"><span class
 </div>
 
 
-      </section><!-- end of .content -->
-      <nav class="side-nav">
-        <p class="caption"><span class="caption-text">gcloud</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gcloud-config.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gcloud-auth.html">Authentication</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Datastore</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-helpers.html">Helpers</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Storage</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="storage-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-batch.html">Batches</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Pub/Sub</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pubsub-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pubsub-message.html">Message</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pubsub-iam.html">IAM Policy</a></li>
-</ul>
-<p class="caption"><span class="caption-text">BigQuery</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigquery-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigquery-dataset.html">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigquery-job.html">Jobs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigquery-table.html">Tables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigquery-query.html">Query</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Cloud Bigtable</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="happybase-package.html">HappyBase</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-client-intro.html">Base for Everything</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-instance-api.html">Instance Admin API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-table-api.html">Table Admin API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-data-api.html">Data API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-instance.html">Instance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-cluster.html">Cluster</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-table.html">Table</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-column-family.html">Column Families</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-row.html">Bigtable Row</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-row-filters.html">Bigtable Row Filters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-row-data.html">Row Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="happybase-connection.html">HappyBase Connection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="happybase-pool.html">HappyBase Connection Pool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="happybase-table.html">HappyBase Table</a></li>
-<li class="toctree-l1"><a class="reference internal" href="happybase-batch.html">HappyBase Batch</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Resource Manager</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="resource-manager-api.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resource-manager-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resource-manager-project.html">Projects</a></li>
-</ul>
-<p class="caption"><span class="caption-text">DNS</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="dns-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dns-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dns-zone.html">Managed Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dns-resource-record-set.html">Resource Record Sets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="logging-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="logging-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="logging-logger.html">Logger</a></li>
-<li class="toctree-l1"><a class="reference internal" href="logging-entries.html">Entries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="logging-metric.html">Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="logging-sink.html">Sinks</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Stackdriver Monitoring</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="monitoring-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monitoring-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monitoring-metric.html">Metric Descriptors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monitoring-resource.html">Monitored Resource Descriptors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monitoring-query.html">Time Series Query</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monitoring-timeseries.html">Time Series</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monitoring-label.html">Label Descriptors</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Translate</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="translate-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="translate-client.html">Client</a></li>
-</ul>
-<p class="caption"><span class="caption-text">External Links</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/">GitHub</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues">Issues</a></li>
-<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/gcloud-python">Stack Overflow</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/gcloud">PyPI</a></li>
-</ul>
-
-      </nav><!-- end of .side-nav -->
-    </article><!-- end of .main -->
-
-    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
-    <script src="_static/js/plugins.js"></script>
-    <script src="_static/js/main.js"></script>
+           </div>
+          </div>
+          <footer>
   
-  </body>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pubsub-client.html" class="btn btn-neutral float-right" title="Pub/Sub Client" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="storage-batch.html" class="btn btn-neutral" title="Batches" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Google.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'e553ddd',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

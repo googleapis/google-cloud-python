@@ -1,6 +1,6 @@
 Label Descriptors
 =================
 
-.. automodule:: gcloud.monitoring.label
+.. automodule:: google.cloud.monitoring.label
   :members:
   :show-inheritance:

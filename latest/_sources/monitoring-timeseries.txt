@@ -1,6 +1,6 @@
 Time Series
 ===========
 
-.. automodule:: gcloud.monitoring.timeseries
+.. automodule:: google.cloud.monitoring.timeseries
   :members:
   :show-inheritance:

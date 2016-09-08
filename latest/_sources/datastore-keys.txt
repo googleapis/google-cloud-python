@@ -1,6 +1,6 @@
 Keys
 ~~~~
 
-.. automodule:: gcloud.datastore.key
+.. automodule:: google.cloud.datastore.key
   :members:
   :show-inheritance:

@@ -1,6 +1,6 @@
 Queries
 ~~~~~~~
 
-.. automodule:: gcloud.datastore.query
+.. automodule:: google.cloud.datastore.query
   :members:
   :show-inheritance:

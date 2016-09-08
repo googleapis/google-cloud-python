@@ -4,18 +4,18 @@ Using the API
 Client
 ------
 
-:class:`Client <gcloud.dns.client.Client>` objects provide a means to
-configure your DNS applications.  Eash instance holds both a ``project``
+:class:`Client <google.cloud.dns.client.Client>` objects provide a means to
+configure your DNS applications.  Each instance holds both a ``project``
 and an authenticated connection to the DNS service.
 
-For an overview of authentication in ``gcloud-python``, see :doc:`gcloud-auth`.
+For an overview of authentication in ``google-cloud-python``, see :doc:`gcloud-auth`.
 
 Assuming your environment is set up as described in that document,
-create an instance of :class:`Client <gcloud.dns.client.Client>`.
+create an instance of :class:`Client <google.cloud.dns.client.Client>`.
 
   .. doctest::
 
-     >>> from gcloud import dns
+     >>> from google.cloud import dns
      >>> client = dns.Client()
 
 Projects
@@ -33,7 +33,7 @@ To override the project inferred from the environment, pass an explicit
 
   .. doctest::
 
-     >>> from gcloud import dns
+     >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
 
 Project Quotas
@@ -43,7 +43,7 @@ Query the quotas for a given project:
 
   .. doctest::
 
-     >>> from gcloud import dns
+     >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
      >>> quotas = client.quotas()  # API request
      >>> for key, value in sorted(quotas.items()):
@@ -72,7 +72,7 @@ suffix and has a set of name servers that accept and responds to queries:
 
   .. doctest::
 
-     >>> from gcloud import dns
+     >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
      >>> zone = client.zone('acme-co', 'example.com',
      ...                    description='Acme Company zone')
@@ -87,7 +87,7 @@ List the zones for a given project:
 
   .. doctest::
 
-     >>> from gcloud import dns
+     >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
      >>> zones = client.list_zones()  # API request
      >>> [zone.name for zone in zones]
@@ -101,7 +101,7 @@ Each managed zone exposes a read-only set of resource records:
 
   .. doctest::
 
-     >>> from gcloud import dns
+     >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
      >>> zone = client.zone('acme-co', 'example.com')
      >>> records, page_token = zone.list_resource_record_sets()  # API request
@@ -135,7 +135,7 @@ bundling additions to or deletions from the set.
   .. doctest::
 
      >>> import time
-     >>> from gcloud import dns
+     >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
      >>> zone = client.zone('acme-co', 'example.com')
      >>> TWO_HOURS = 2 * 60 * 60  # seconds
@@ -154,7 +154,7 @@ List changes made to the resource record set for a given zone:
 
   .. doctest::
 
-     >>> from gcloud import dns
+     >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
      >>> zone = client.zone('acme-co', 'example.com')
      >>> changes = []

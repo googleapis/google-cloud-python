@@ -1,6 +1,6 @@
 Monitored Resource Descriptors
 ==============================
 
-.. automodule:: gcloud.monitoring.resource
+.. automodule:: google.cloud.monitoring.resource
   :members:
   :show-inheritance:

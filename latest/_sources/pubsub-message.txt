@@ -1,6 +1,6 @@
 Message
 ~~~~~~~
 
-.. automodule:: gcloud.pubsub.message
+.. automodule:: google.cloud.pubsub.message
   :members:
   :show-inheritance:

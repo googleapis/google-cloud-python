@@ -1,6 +1,6 @@
 Time Series Query
 =================
 
-.. automodule:: gcloud.monitoring.query
+.. automodule:: google.cloud.monitoring.query
   :members:
   :show-inheritance:

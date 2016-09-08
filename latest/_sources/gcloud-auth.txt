@@ -22,7 +22,9 @@ Overview
 
         $ gcloud auth login
 
-    Previously, `gcloud auth login` was used for both use cases. If your gcloud installation does not support the new command, please update it:
+    Previously, ``gcloud auth login`` was used for both use cases. If
+    your ``gcloud`` installation does not support the new command,
+    please update it:
 
     .. code-block:: bash
 
@@ -44,13 +46,13 @@ Overview
 Client-Provided Authentication
 ==============================
 
-Every package uses a :class:`Client <gcloud.client.Client>`
+Every package uses a :class:`Client <google.cloud.client.Client>`
 as a base for interacting with an API.
 For example:
 
 .. code-block:: python
 
-    from gcloud import datastore
+    from google.cloud import datastore
     client = datastore.Client()
 
 Passing no arguments at all will "just work" if you've followed the
@@ -94,7 +96,7 @@ In these situations, you can create an explicit
 :class:`Credentials <oauth2client.client.Credentials>` object suited to your
 environment.
 After creation,
-you can pass it directly to a :class:`Client <gcloud.client.Client>`:
+you can pass it directly to a :class:`Client <google.cloud.client.Client>`:
 
 .. code:: python
 
@@ -133,10 +135,10 @@ a PKCS12/P12 keyfile.
 Directly creating ``credentials`` in `oauth2client`_ for a service
 account is a rather complex process,
 so as a convenience, the
-:meth:`from_service_account_json() <gcloud.client.Client.from_service_account_json>`
+:meth:`from_service_account_json() <google.cloud.client.Client.from_service_account_json>`
 and
-:meth:`from_service_account_p12() <gcloud.client.Client.from_service_account_p12>`
-factories are provided to create a :class:`Client <gcloud.client.Client>` with
+:meth:`from_service_account_p12() <google.cloud.client.Client.from_service_account_p12>`
+factories are provided to create a :class:`Client <google.cloud.client.Client>` with
 service account credentials.
 
 .. _oauth2client: http://oauth2client.readthedocs.org/en/latest/
@@ -167,7 +169,7 @@ possible to call Google Cloud APIs with a user account via
 
     A production application should **use a service account**,
     but you may wish to use your own personal user account when first
-    getting started with the ``gcloud-python`` library.
+    getting started with the ``google-cloud-python`` library.
 
 The simplest way to use credentials from a user account is via
 Application Default Credentials using ``gcloud auth login``
@@ -305,11 +307,11 @@ you add the correct scopes for the APIs you want to access:
 Advanced Customization
 ======================
 
-Though the ``gcloud-python`` library defaults to using `oauth2client`_
+Though the ``google-cloud-python`` library defaults to using `oauth2client`_
 to sign requests and ``httplib2`` for sending requests,
 it is not a strict requirement.
 
-The :class:`Client <gcloud.client.Client>` constructor accepts an optional
+The :class:`Client <google.cloud.client.Client>` constructor accepts an optional
 ``http`` argument in place of a ``credentials`` object.
 If passed, all HTTP requests made by the client will use your
 custom HTTP object.
@@ -329,10 +331,10 @@ we only use it as
     http.request(uri, method=method_name, body=body, headers=headers)
 
 For an example of such an implementation,
-a ``gcloud-python`` user created a `custom HTTP class`_
+a ``google-cloud-python`` user created a `custom HTTP class`_
 using the `requests`_ library.
 
-.. _custom HTTP class: https://github.com/GoogleCloudPlatform/gcloud-python/issues/908#issuecomment-110811556
+.. _custom HTTP class: https://github.com/GoogleCloudPlatform/google-cloud-python/issues/908#issuecomment-110811556
 .. _requests: http://www.python-requests.org/en/latest/
 
 As for handling authentication on your own,

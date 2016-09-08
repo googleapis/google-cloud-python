@@ -1,59 +1,51 @@
 Base for Everything
 ===================
 
-.. warning::
-
-    gRPC is required for using the Cloud Bigtable API. As of May 2016,
-    ``grpcio`` is only supported in Python 2.7, so importing
-    :mod:`gcloud.bigtable` in other versions of Python will fail.
-
-To use the API, the :class:`Client <gcloud.bigtable.client.Client>`
+To use the API, the :class:`Client <google.cloud.bigtable.client.Client>`
 class defines a high-level interface which handles authorization
 and creating other objects:
 
 .. code:: python
 
-    from gcloud.bigtable.client import Client
+    from google.cloud.bigtable.client import Client
     client = Client()
 
 Long-lived Defaults
 -------------------
 
-When creating a :class:`Client <gcloud.bigtable.client.Client>`, the
-``user_agent`` and ``timeout_seconds`` arguments have sensible
-defaults
-(:data:`DEFAULT_USER_AGENT <gcloud.bigtable.client.DEFAULT_USER_AGENT>` and
-:data:`DEFAULT_TIMEOUT_SECONDS <gcloud.bigtable.client.DEFAULT_TIMEOUT_SECONDS>`).
-However, you may over-ride them and these will be used throughout all API
+When creating a :class:`Client <google.cloud.bigtable.client.Client>`, the
+``user_agent`` argument has sensible a default
+(:data:`DEFAULT_USER_AGENT <google.cloud.bigtable.client.DEFAULT_USER_AGENT>`).
+However, you may over-ride it and the value will be used throughout all API
 requests made with the ``client`` you create.
 
 Configuration
 -------------
 
-- For an overview of authentication in ``gcloud-python``,
+- For an overview of authentication in ``google-cloud-python``,
   see :doc:`gcloud-auth`.
 
 - In addition to any authentication configuration, you can also set the
-  :envvar:`GCLOUD_PROJECT` environment variable for the Google Cloud Console
+  :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the Google Cloud Console
   project you'd like to interact with. If your code is running in Google App
   Engine or Google Compute Engine the project will be detected automatically.
   (Setting this environment variable is not required, you may instead pass the
   ``project`` explicitly when constructing a
-  :class:`Client <gcloud.storage.client.Client>`).
+  :class:`Client <google.cloud.storage.client.Client>`).
 
 - After configuring your environment, create a
-  :class:`Client <gcloud.storage.client.Client>`
+  :class:`Client <google.cloud.storage.client.Client>`
 
   .. code::
 
-     >>> from gcloud import bigtable
+     >>> from google.cloud import bigtable
      >>> client = bigtable.Client()
 
   or pass in ``credentials`` and ``project`` explicitly
 
   .. code::
 
-     >>> from gcloud import bigtable
+     >>> from google.cloud import bigtable
      >>> client = bigtable.Client(project='my-project', credentials=creds)
 
 .. tip::
@@ -81,15 +73,15 @@ you can pass the ``read_only`` argument:
     client = bigtable.Client(read_only=True)
 
 This will ensure that the
-:data:`READ_ONLY_SCOPE <gcloud.bigtable.client.READ_ONLY_SCOPE>` is used
+:data:`READ_ONLY_SCOPE <google.cloud.bigtable.client.READ_ONLY_SCOPE>` is used
 for API requests (so any accidental requests that would modify data will
 fail).
 
 Next Step
 ---------
 
-After a :class:`Client <gcloud.bigtable.client.Client>`, the next highest-level
-object is a :class:`Instance <gcloud.bigtable.instance.Instance>`. You'll need
+After a :class:`Client <google.cloud.bigtable.client.Client>`, the next highest-level
+object is a :class:`Instance <google.cloud.bigtable.instance.Instance>`. You'll need
 one before you can interact with tables or data.
 
 Head next to learn about the :doc:`bigtable-instance-api`.

@@ -1,13 +1,13 @@
 Storage Client
 ==============
 
-.. automodule:: gcloud.storage.client
+.. automodule:: google.cloud.storage.client
   :members:
   :show-inheritance:
 
 Connection
 ~~~~~~~~~~
 
-.. automodule:: gcloud.storage.connection
+.. automodule:: google.cloud.storage.connection
   :members:
   :show-inheritance:

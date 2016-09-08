@@ -1,6 +1,6 @@
 Tables
 ~~~~~~
 
-.. automodule:: gcloud.bigquery.table
+.. automodule:: google.cloud.bigquery.table
   :members:
   :show-inheritance:

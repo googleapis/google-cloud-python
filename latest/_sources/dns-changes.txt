@@ -1,6 +1,6 @@
 Change Sets
 ~~~~~~~~~~~
 
-.. automodule:: gcloud.dns.changes
+.. automodule:: google.cloud.dns.changes
   :members:
   :show-inheritance:
