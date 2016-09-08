@@ -54,7 +54,7 @@ class Client(BaseClient):
         Use :meth:`Project.reload() \
         <google.cloud.resource_manager.project.Project.reload>` to retrieve
         project metadata after creating a
-        :class:`~gcloud.resource_manager.project.Project` instance.
+        :class:`~google.cloud.resource_manager.project.Project` instance.
 
         .. note:
 
@@ -69,9 +69,9 @@ class Client(BaseClient):
         :type labels: dict
         :param labels: A list of labels associated with the project.
 
-        :rtype: :class:`~gcloud.resource_manager.project.Project`
+        :rtype: :class:`~google.cloud.resource_manager.project.Project`
         :returns: A new instance of a
-                  :class:`~gcloud.resource_manager.project.Project`
+                  :class:`~google.cloud.resource_manager.project.Project`
                   **without** any metadata loaded.
         """
         return Project(project_id=project_id,
@@ -88,9 +88,9 @@ class Client(BaseClient):
         :type project_id: str
         :param project_id: The ID for this project.
 
-        :rtype: :class:`~gcloud.resource_manager.project.Project`
-        :returns: A :class:`~gcloud.resource_manager.project.Project` with
-                  metadata fetched from the API.
+        :rtype: :class:`~google.cloud.resource_manager.project.Project`
+        :returns: A :class:`~google.cloud.resource_manager.project.Project`
+                  with metadata fetched from the API.
         """
         project = self.new_project(project_id)
         project.reload()
@@ -145,7 +145,7 @@ class Client(BaseClient):
         :returns: A project iterator. The iterator will make multiple API
                   requests if you continue iterating and there are more
                   pages of results. Each item returned will be a.
-                  :class:`~gcloud.resource_manager.project.Project`.
+                  :class:`~google.cloud.resource_manager.project.Project`.
         """
         extra_params = {}
 
@@ -162,10 +162,10 @@ class _ProjectIterator(Iterator):
     """An iterator over a list of Project resources.
 
     You shouldn't have to use this directly, but instead should use the
-    helper methods on :class:`google.cloud.resource_manager.client.Client`
+    helper methods on :class:`~google.cloud.resource_manager.client.Client`
     objects.
 
-    :type client: :class:`google.cloud.resource_manager.client.Client`
+    :type client: :class:`~google.cloud.resource_manager.client.Client`
     :param client: The client to use for making connections.
 
     :type extra_params: dict
