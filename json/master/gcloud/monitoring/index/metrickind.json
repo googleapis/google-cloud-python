@@ -1,8 +1,0 @@
-{
-  "description": "\n Google Stackdriver Monitoring API wrapper.", 
-  "examples": [], 
-  "id": "gcloud.monitoring.__init__.metrickind", 
-  "methods": [], 
-  "name": "Metrickind", 
-  "source": "gcloud/monitoring/__init__.py"
-}

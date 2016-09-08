@@ -1,8 +1,0 @@
-{
-  "description": "\n Define API Jobs.", 
-  "examples": [], 
-  "id": "gcloud.bigquery.job.udfresourcesproperty", 
-  "methods": [], 
-  "name": "Udfresourcesproperty", 
-  "source": "gcloud/bigquery/job.py"
-}

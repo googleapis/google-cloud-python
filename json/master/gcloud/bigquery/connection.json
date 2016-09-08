@@ -1,8 +1,0 @@
-{
-  "description": "\n Create / interact with gcloud bigquery connections.", 
-  "examples": [], 
-  "id": "gcloud.bigquery.connection", 
-  "methods": [], 
-  "name": "Connection", 
-  "source": "gcloud/bigquery/connection.py"
-}

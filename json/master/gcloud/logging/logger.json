@@ -1,8 +1,0 @@
-{
-  "description": "\n Define API Loggers.", 
-  "examples": [], 
-  "id": "gcloud.logging.logger", 
-  "methods": [], 
-  "name": "Logger", 
-  "source": "gcloud/logging/logger.py"
-}

@@ -1,8 +1,0 @@
-{
-  "description": "\n Define Stackdriver Logging API Metrics.", 
-  "examples": [], 
-  "id": "gcloud.logging.metric", 
-  "methods": [], 
-  "name": "Metric", 
-  "source": "gcloud/logging/metric.py"
-}

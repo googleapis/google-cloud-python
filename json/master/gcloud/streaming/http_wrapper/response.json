@@ -1,8 +1,0 @@
-{
-  "description": "\n HTTP wrapper for apitools.\n This library wraps the underlying http library we use, which is currently httplib2.", 
-  "examples": [], 
-  "id": "gcloud.streaming.http_wrapper.response", 
-  "methods": [], 
-  "name": "Response", 
-  "source": "gcloud/streaming/http_wrapper.py"
-}

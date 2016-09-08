@@ -1,8 +1,0 @@
-{
-  "description": "\n Python logging handlers for Google Cloud Logging.", 
-  "examples": [], 
-  "id": "gcloud.logging.handlers.__init__", 
-  "methods": [], 
-  "name": "__Init__", 
-  "source": "gcloud/logging/handlers/__init__.py"
-}

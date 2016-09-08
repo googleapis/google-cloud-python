@@ -1,8 +1,0 @@
-{
-  "description": "\n Client for interacting with the Google Stackdriver Logging API.", 
-  "examples": [], 
-  "id": "gcloud.logging.client", 
-  "methods": [], 
-  "name": "Client", 
-  "source": "gcloud/logging/client.py"
-}

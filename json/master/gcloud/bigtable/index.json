@@ -1,8 +1,0 @@
-{
-  "description": "\n Google Cloud Bigtable API package.", 
-  "examples": [], 
-  "id": "gcloud.bigtable.__init__", 
-  "methods": [], 
-  "name": "__Init__", 
-  "source": "gcloud/bigtable/__init__.py"
-}

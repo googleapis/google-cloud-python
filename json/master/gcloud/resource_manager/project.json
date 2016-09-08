@@ -1,8 +1,0 @@
-{
-  "description": "\n Utility for managing projects via the Cloud Resource Manager API.", 
-  "examples": [], 
-  "id": "gcloud.resource_manager.project", 
-  "methods": [], 
-  "name": "Project", 
-  "source": "gcloud/resource_manager/project.py"
-}

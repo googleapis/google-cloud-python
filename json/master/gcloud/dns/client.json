@@ -1,8 +1,0 @@
-{
-  "description": "\n Client for interacting with the Google Cloud DNS API.", 
-  "examples": [], 
-  "id": "gcloud.dns.client", 
-  "methods": [], 
-  "name": "Client", 
-  "source": "gcloud/dns/client.py"
-}

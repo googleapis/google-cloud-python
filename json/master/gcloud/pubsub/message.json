@@ -1,8 +1,0 @@
-{
-  "description": "\n Define API Topics.", 
-  "examples": [], 
-  "id": "gcloud.pubsub.message", 
-  "methods": [], 
-  "name": "Message", 
-  "source": "gcloud/pubsub/message.py"
-}

@@ -1,8 +1,0 @@
-{
-  "description": "\n Monitored Resource Descriptors for the Google Stackdriver Monitoring API (V3)_.\n .. _Google Stackdriver Monitoring API (V3): <a href=\"https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\">https://cloud.google.com/monitoring/api/ref_v3/rest/v3/</a> projects.monitoredResourceDescriptors", 
-  "examples": [], 
-  "id": "gcloud.monitoring.resource.resource", 
-  "methods": [], 
-  "name": "Resource", 
-  "source": "gcloud/monitoring/resource.py"
-}

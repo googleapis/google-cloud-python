@@ -1,8 +1,0 @@
-{
-  "description": "\n Client library for Stackdriver Error Reporting", 
-  "examples": [], 
-  "id": "gcloud.error_reporting.__init__", 
-  "methods": [], 
-  "name": "__Init__", 
-  "source": "gcloud/error_reporting/__init__.py"
-}

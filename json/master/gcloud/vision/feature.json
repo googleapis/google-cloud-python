@@ -1,8 +1,0 @@
-{
-  "description": "\n Feature represenging various types of annotating.", 
-  "examples": [], 
-  "id": "gcloud.vision.feature", 
-  "methods": [], 
-  "name": "Feature", 
-  "source": "gcloud/vision/feature.py"
-}

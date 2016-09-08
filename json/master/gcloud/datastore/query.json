@@ -1,8 +1,0 @@
-{
-  "description": "\n Create / interact with gcloud datastore queries.", 
-  "examples": [], 
-  "id": "gcloud.datastore.query", 
-  "methods": [], 
-  "name": "Query", 
-  "source": "gcloud/datastore/query.py"
-}

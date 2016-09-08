@@ -1,8 +1,0 @@
-{
-  "description": "\n Create / interact with Stackdriver Monitoring connections.", 
-  "examples": [], 
-  "id": "gcloud.monitoring.connection", 
-  "methods": [], 
-  "name": "Connection", 
-  "source": "gcloud/monitoring/connection.py"
-}

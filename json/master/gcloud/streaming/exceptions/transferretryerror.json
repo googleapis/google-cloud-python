@@ -1,8 +1,0 @@
-{
-  "description": "\n Exceptions for generated client libraries.", 
-  "examples": [], 
-  "id": "gcloud.streaming.exceptions.transferretryerror", 
-  "methods": [], 
-  "name": "Transferretryerror", 
-  "source": "gcloud/streaming/exceptions.py"
-}

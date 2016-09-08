@@ -1,8 +1,0 @@
-{
-  "description": "\n Transport classes for Python logging integration.\n Currently two options are provided, a synchronous transport that makes an API call for each log statement, and an asynchronous handler that sends the API using a ~gcloud.logging.logger.Batch object in the background.", 
-  "examples": [], 
-  "id": "gcloud.logging.handlers.transports.__init__", 
-  "methods": [], 
-  "name": "__Init__", 
-  "source": "gcloud/logging/handlers/transports/__init__.py"
-}

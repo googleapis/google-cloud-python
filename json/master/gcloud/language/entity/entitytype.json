@@ -1,8 +1,0 @@
-{
-  "description": "\n Definition for Google Cloud Natural Language API entities.\n An entity is used to describe a proper name extracted from text.", 
-  "examples": [], 
-  "id": "gcloud.language.entity.entitytype", 
-  "methods": [], 
-  "name": "Entitytype", 
-  "source": "gcloud/language/entity.py"
-}

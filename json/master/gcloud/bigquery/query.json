@@ -1,8 +1,0 @@
-{
-  "description": "\n Define API Queries.", 
-  "examples": [], 
-  "id": "gcloud.bigquery.query", 
-  "methods": [], 
-  "name": "Query", 
-  "source": "gcloud/bigquery/query.py"
-}
