@@ -141,7 +141,7 @@ and
 factories are provided to create a :class:`Client <google.cloud.client.Client>` with
 service account credentials.
 
-.. _oauth2client: http://oauth2client.readthedocs.org/en/latest/
+.. _oauth2client: http://oauth2client.readthedocs.io/en/latest/
 
 For example, with a JSON keyfile:
 
