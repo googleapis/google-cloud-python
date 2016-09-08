@@ -273,10 +273,9 @@ def _check_response(response):
     :param response: the response to validate
 
     :raises: :exc:`google.cloud.streaming.exceptions.RequestError` if response
-             is None, :exc:`~.streaming.exceptions.BadStatusCodeError` if
-             response status code indicates an error, or
-             :exc:`~.streaming.exceptions.RetryAfterError` if response
-             indicates a retry interval.
+             is None, :exc:`~.exceptions.BadStatusCodeError` if response status
+             code indicates an error, or :exc:`~.exceptions.RetryAfterError`
+             if response indicates a retry interval.
     """
     if response is None:
         # Caller shouldn't call us if the response is None, but handle anyway.

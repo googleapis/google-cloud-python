@@ -78,7 +78,7 @@ def _extended_lookup(connection, project, key_pbs,
     :type project: string
     :param project: The project to make the request for.
 
-    :type key_pbs: list of :class:`.datastore._generated.entity_pb2.Key`
+    :type key_pbs: list of :class:`._generated.entity_pb2.Key`
     :param key_pbs: The keys to retrieve from the datastore.
 
     :type missing: list
@@ -100,7 +100,7 @@ def _extended_lookup(connection, project, key_pbs,
                            the given transaction.  Incompatible with
                            ``eventual==True``.
 
-    :rtype: list of :class:`.datastore._generated.entity_pb2.Entity`
+    :rtype: list of :class:`._generated.entity_pb2.Entity`
     :returns: The requested entities.
     :raises: :class:`ValueError` if missing / deferred are not null or
              empty list.
@@ -245,7 +245,7 @@ class Client(_BaseClient, _ClientProjectMixin):
         :param deferred: (Optional) If a list is passed, the keys returned
                          by the backend as "deferred" will be copied into it.
 
-        :type transaction: :class:`~.datastore.transaction.Transaction`
+        :type transaction: :class:`~.transaction.Transaction`
         :param transaction: (Optional) Transaction to use for read consistency.
                             If not passed, uses current transaction, if set.
 
@@ -273,7 +273,7 @@ class Client(_BaseClient, _ClientProjectMixin):
                          by the backend as "deferred" will be copied into it.
                          If the list is not empty, an error will occur.
 
-        :type transaction: :class:`~.datastore.transaction.Transaction`
+        :type transaction: :class:`~.transaction.Transaction`
         :param transaction: (Optional) Transaction to use for read consistency.
                             If not passed, uses current transaction, if set.
 
