@@ -25,6 +25,30 @@ from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.query import QueryResults
 
 
+class Project(object):
+    """Wrapper for resource describing a BigQuery project.
+
+    :type project_id: str
+    :param project_id: Opaque ID of the project
+
+    :type numeric_id: int
+    :param numeric_id: Numeric ID of the project
+
+    :type friendly_name: str
+    :param friendly_name: Display name of the project
+    """
+    def __init__(self, project_id, numeric_id, friendly_name):
+        self.project_id = project_id
+        self.numeric_id = numeric_id
+        self.friendly_name = friendly_name
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct an instance from a resource dict."""
+        return cls(
+            resource['id'], resource['numericId'], resource['friendlyName'])
+
+
 class Client(JSONClient):
     """Client to bundle configuration needed for API requests.
 
@@ -47,6 +71,42 @@ class Client(JSONClient):
     """
 
     _connection_class = Connection
+
+    def list_projects(self, max_results=None, page_token=None):
+        """List projects for the project associated with this client.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/projects/list
+
+        :type max_results: int
+        :param max_results: maximum number of projects to return, If not
+                            passed, defaults to a value set by the API.
+
+        :type page_token: str
+        :param page_token: opaque marker for the next "page" of projects. If
+                           not passed, the API will return the first page of
+                           projects.
+
+        :rtype: tuple, (list, str)
+        :returns: list of :class:`gcloud.bigquery.client.Project`, plus a
+                  "next page token" string:  if the token is not None,
+                  indicates that more projects can be retrieved with another
+                  call (pass that value as ``page_token``).
+        """
+        params = {}
+
+        if max_results is not None:
+            params['maxResults'] = max_results
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/projects'
+        resp = self.connection.api_request(method='GET', path=path,
+                                           query_params=params)
+        projects = [Project.from_api_repr(resource)
+                    for resource in resp.get('projects', ())]
+        return projects, resp.get('nextPageToken')
 
     def list_datasets(self, include_all=False, max_results=None,
                       page_token=None):

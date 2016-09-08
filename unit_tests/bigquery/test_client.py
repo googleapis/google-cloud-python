@@ -34,6 +34,67 @@ class TestClient(unittest.TestCase):
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
 
+    def test_list_projects_defaults(self):
+        from google.cloud.bigquery.client import Project
+        PROJECT_1 = 'PROJECT_ONE'
+        PROJECT_2 = 'PROJECT_TWO'
+        PATH = 'projects'
+        TOKEN = 'TOKEN'
+        DATA = {
+            'nextPageToken': TOKEN,
+            'projects': [
+                {'kind': 'bigquery#project',
+                 'id': PROJECT_1,
+                 'numericId': 1,
+                 'projectReference': {'projectId': PROJECT_1},
+                 'friendlyName': 'One'},
+                {'kind': 'bigquery#project',
+                 'id': PROJECT_2,
+                 'numericId': 2,
+                 'projectReference': {'projectId': PROJECT_2},
+                 'friendlyName': 'Two'},
+            ]
+        }
+        creds = _Credentials()
+        client = self._makeOne(PROJECT_1, creds)
+        conn = client.connection = _Connection(DATA)
+
+        projects, token = client.list_projects()
+
+        self.assertEqual(len(projects), len(DATA['projects']))
+        for found, expected in zip(projects, DATA['projects']):
+            self.assertTrue(isinstance(found, Project))
+            self.assertEqual(found.project_id, expected['id'])
+            self.assertEqual(found.numeric_id, expected['numericId'])
+            self.assertEqual(found.friendly_name, expected['friendlyName'])
+        self.assertEqual(token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_list_projects_explicit_response_missing_projects_key(self):
+        PROJECT = 'PROJECT'
+        PATH = 'projects'
+        TOKEN = 'TOKEN'
+        DATA = {}
+        creds = _Credentials()
+        client = self._makeOne(PROJECT, creds)
+        conn = client.connection = _Connection(DATA)
+
+        projects, token = client.list_projects(max_results=3, page_token=TOKEN)
+
+        self.assertEqual(len(projects), 0)
+        self.assertEqual(token, None)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'],
+                         {'maxResults': 3, 'pageToken': TOKEN})
+
     def test_list_datasets_defaults(self):
         from google.cloud.bigquery.dataset import Dataset
         PROJECT = 'PROJECT'
