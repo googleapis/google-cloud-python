@@ -27,7 +27,7 @@ TESTS_PROJECT = 'GOOGLE_CLOUD_TESTS_PROJECT_ID'
 GCD_DATASET = 'DATASTORE_DATASET'
 """Environment variable defining default dataset ID under GCD."""
 
-GCD_HOST = 'DATASTORE_HOST'
+GCD_HOST = 'DATASTORE_EMULATOR_HOST'
 """Environment variable defining host for GCD dataset server."""
 
 PUBSUB_EMULATOR = 'PUBSUB_EMULATOR_HOST'
@@ -35,3 +35,10 @@ PUBSUB_EMULATOR = 'PUBSUB_EMULATOR_HOST'
 
 CREDENTIALS = 'GOOGLE_APPLICATION_CREDENTIALS'
 """Environment variable defining location of Google credentials."""
+
+DISABLE_GRPC = 'GOOGLE_CLOUD_DISABLE_GRPC'
+"""Environment variable acting as flag to disable gRPC.
+
+To be used for APIs where both an HTTP and gRPC implementation
+exist.
+"""

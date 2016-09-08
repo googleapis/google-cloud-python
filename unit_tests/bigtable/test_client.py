@@ -31,23 +31,22 @@ class Test__make_data_stub(unittest.TestCase):
         client = _Client(credentials, user_agent)
 
         fake_stub = object()
-        make_stub_args = []
+        make_secure_stub_args = []
 
-        def mock_make_stub(*args):
-            make_stub_args.append(args)
+        def mock_make_secure_stub(*args):
+            make_secure_stub_args.append(args)
             return fake_stub
 
-        with _Monkey(MUT, make_stub=mock_make_stub):
+        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
             result = self._callFUT(client)
 
         self.assertIs(result, fake_stub)
-        self.assertEqual(make_stub_args, [
+        self.assertEqual(make_secure_stub_args, [
             (
                 client.credentials,
                 client.user_agent,
                 MUT.bigtable_pb2.BigtableStub,
                 MUT.DATA_API_HOST,
-                MUT.DATA_API_PORT,
             ),
         ])
 
@@ -67,23 +66,22 @@ class Test__make_instance_stub(unittest.TestCase):
         client = _Client(credentials, user_agent)
 
         fake_stub = object()
-        make_stub_args = []
+        make_secure_stub_args = []
 
-        def mock_make_stub(*args):
-            make_stub_args.append(args)
+        def mock_make_secure_stub(*args):
+            make_secure_stub_args.append(args)
             return fake_stub
 
-        with _Monkey(MUT, make_stub=mock_make_stub):
+        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
             result = self._callFUT(client)
 
         self.assertIs(result, fake_stub)
-        self.assertEqual(make_stub_args, [
+        self.assertEqual(make_secure_stub_args, [
             (
                 client.credentials,
                 client.user_agent,
                 MUT.bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
                 MUT.INSTANCE_ADMIN_HOST,
-                MUT.INSTANCE_ADMIN_PORT,
             ),
         ])
 
@@ -103,23 +101,22 @@ class Test__make_operations_stub(unittest.TestCase):
         client = _Client(credentials, user_agent)
 
         fake_stub = object()
-        make_stub_args = []
+        make_secure_stub_args = []
 
-        def mock_make_stub(*args):
-            make_stub_args.append(args)
+        def mock_make_secure_stub(*args):
+            make_secure_stub_args.append(args)
             return fake_stub
 
-        with _Monkey(MUT, make_stub=mock_make_stub):
+        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
             result = self._callFUT(client)
 
         self.assertIs(result, fake_stub)
-        self.assertEqual(make_stub_args, [
+        self.assertEqual(make_secure_stub_args, [
             (
                 client.credentials,
                 client.user_agent,
                 MUT.operations_grpc_pb2.OperationsStub,
                 MUT.OPERATIONS_API_HOST,
-                MUT.OPERATIONS_API_PORT,
             ),
         ])
 
@@ -139,23 +136,22 @@ class Test__make_table_stub(unittest.TestCase):
         client = _Client(credentials, user_agent)
 
         fake_stub = object()
-        make_stub_args = []
+        make_secure_stub_args = []
 
-        def mock_make_stub(*args):
-            make_stub_args.append(args)
+        def mock_make_secure_stub(*args):
+            make_secure_stub_args.append(args)
             return fake_stub
 
-        with _Monkey(MUT, make_stub=mock_make_stub):
+        with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
             result = self._callFUT(client)
 
         self.assertIs(result, fake_stub)
-        self.assertEqual(make_stub_args, [
+        self.assertEqual(make_secure_stub_args, [
             (
                 client.credentials,
                 client.user_agent,
                 MUT.bigtable_table_admin_pb2.BigtableTableAdminStub,
                 MUT.TABLE_ADMIN_HOST,
-                MUT.TABLE_ADMIN_PORT,
             ),
         ])
 

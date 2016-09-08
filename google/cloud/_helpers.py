@@ -39,7 +39,7 @@ except ImportError:  # pragma: NO COVER
     grpc = None
     _Rendezvous = Exception
 import six
-from six.moves.http_client import HTTPConnection
+from six.moves import http_client
 from six.moves import configparser
 
 # pylint: disable=ungrouped-imports
@@ -269,7 +269,7 @@ def _compute_engine_id():
     host = '169.254.169.254'
     uri_path = '/computeMetadata/v1/project/project-id'
     headers = {'Metadata-Flavor': 'Google'}
-    connection = HTTPConnection(host, timeout=0.1)
+    connection = http_client.HTTPConnection(host, timeout=0.1)
 
     try:
         connection.request('GET', uri_path, headers=headers)
@@ -612,8 +612,8 @@ class MetadataPlugin(object):
         callback(headers, None)
 
 
-def make_stub(credentials, user_agent, stub_class, host, port):
-    """Makes a stub for an RPC service.
+def make_secure_stub(credentials, user_agent, stub_class, host):
+    """Makes a secure stub for an RPC service.
 
     Uses / depends on gRPC.
 
@@ -630,22 +630,46 @@ def make_stub(credentials, user_agent, stub_class, host, port):
     :type host: str
     :param host: The host for the service.
 
-    :type port: int
-    :param port: The port for the service.
-
     :rtype: object, instance of ``stub_class``
     :returns: The stub object used to make gRPC requests to a given API.
     """
-    # Leaving the first argument to ssl_channel_credentials() as None
-    # loads root certificates from `grpc/_adapter/credentials/roots.pem`.
+    # ssl_channel_credentials() loads root certificates from
+    # `grpc/_adapter/credentials/roots.pem`.
     transport_creds = grpc.ssl_channel_credentials()
     custom_metadata_plugin = MetadataPlugin(credentials, user_agent)
     auth_creds = grpc.metadata_call_credentials(
         custom_metadata_plugin, name='google_creds')
     channel_creds = grpc.composite_channel_credentials(
         transport_creds, auth_creds)
-    target = '%s:%d' % (host, port)
+    target = '%s:%d' % (host, http_client.HTTPS_PORT)
     channel = grpc.secure_channel(target, channel_creds)
+    return stub_class(channel)
+
+
+def make_insecure_stub(stub_class, host, port=None):
+    """Makes an insecure stub for an RPC service.
+
+    Uses / depends on gRPC.
+
+    :type stub_class: type
+    :param stub_class: A gRPC stub type for a given service.
+
+    :type host: str
+    :param host: The host for the service. May also include the port
+                 if ``port`` is unspecified.
+
+    :type port: int
+    :param port: (Optional) The port for the service.
+
+    :rtype: object, instance of ``stub_class``
+    :returns: The stub object used to make gRPC requests to a given API.
+    """
+    if port is None:
+        target = host
+    else:
+        # NOTE: This assumes port != http_client.HTTPS_PORT:
+        target = '%s:%d' % (host, port)
+    channel = grpc.insecure_channel(target)
     return stub_class(channel)
 
 

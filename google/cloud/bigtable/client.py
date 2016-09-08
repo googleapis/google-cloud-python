@@ -29,7 +29,7 @@ In the hierarchy of API concepts
 
 from pkg_resources import get_distribution
 
-from google.cloud._helpers import make_stub
+from google.cloud._helpers import make_secure_stub
 from google.cloud.bigtable._generated import bigtable_instance_admin_pb2
 from google.cloud.bigtable._generated import bigtable_pb2
 from google.cloud.bigtable._generated import bigtable_table_admin_pb2
@@ -44,21 +44,14 @@ from google.cloud.credentials import get_credentials
 
 TABLE_ADMIN_HOST = 'bigtableadmin.googleapis.com'
 """Table Admin API request host."""
-TABLE_ADMIN_PORT = 443
-"""Table Admin API request port."""
 
 INSTANCE_ADMIN_HOST = 'bigtableadmin.googleapis.com'
 """Cluster Admin API request host."""
-INSTANCE_ADMIN_PORT = 443
-"""Cluster Admin API request port."""
 
 DATA_API_HOST = 'bigtable.googleapis.com'
 """Data API request host."""
-DATA_API_PORT = 443
-"""Data API request port."""
 
 OPERATIONS_API_HOST = INSTANCE_ADMIN_HOST
-OPERATIONS_API_PORT = INSTANCE_ADMIN_PORT
 
 ADMIN_SCOPE = 'https://www.googleapis.com/auth/bigtable.admin'
 """Scope for interacting with the Cluster Admin and Table Admin APIs."""
@@ -81,9 +74,8 @@ def _make_data_stub(client):
     :rtype: :class:`._generated.bigtable_pb2.BigtableStub`
     :returns: A gRPC stub object.
     """
-    return make_stub(client.credentials, client.user_agent,
-                     bigtable_pb2.BigtableStub,
-                     DATA_API_HOST, DATA_API_PORT)
+    return make_secure_stub(client.credentials, client.user_agent,
+                            bigtable_pb2.BigtableStub, DATA_API_HOST)
 
 
 def _make_instance_stub(client):
@@ -95,9 +87,10 @@ def _make_instance_stub(client):
     :rtype: :class:`.bigtable_instance_admin_pb2.BigtableInstanceAdminStub`
     :returns: A gRPC stub object.
     """
-    return make_stub(client.credentials, client.user_agent,
-                     bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
-                     INSTANCE_ADMIN_HOST, INSTANCE_ADMIN_PORT)
+    return make_secure_stub(
+        client.credentials, client.user_agent,
+        bigtable_instance_admin_pb2.BigtableInstanceAdminStub,
+        INSTANCE_ADMIN_HOST)
 
 
 def _make_operations_stub(client):
@@ -112,9 +105,9 @@ def _make_operations_stub(client):
     :rtype: :class:`._generated.operations_grpc_pb2.OperationsStub`
     :returns: A gRPC stub object.
     """
-    return make_stub(client.credentials, client.user_agent,
-                     operations_grpc_pb2.OperationsStub,
-                     OPERATIONS_API_HOST, OPERATIONS_API_PORT)
+    return make_secure_stub(client.credentials, client.user_agent,
+                            operations_grpc_pb2.OperationsStub,
+                            OPERATIONS_API_HOST)
 
 
 def _make_table_stub(client):
@@ -126,9 +119,9 @@ def _make_table_stub(client):
     :rtype: :class:`.bigtable_instance_admin_pb2.BigtableTableAdminStub`
     :returns: A gRPC stub object.
     """
-    return make_stub(client.credentials, client.user_agent,
-                     bigtable_table_admin_pb2.BigtableTableAdminStub,
-                     TABLE_ADMIN_HOST, TABLE_ADMIN_PORT)
+    return make_secure_stub(client.credentials, client.user_agent,
+                            bigtable_table_admin_pb2.BigtableTableAdminStub,
+                            TABLE_ADMIN_HOST)
 
 
 class Client(_ClientFactoryMixin, _ClientProjectMixin):

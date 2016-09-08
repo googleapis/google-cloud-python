@@ -35,6 +35,7 @@ else:
     _HAVE_GAX = True
 
 from google.cloud.client import JSONClient
+from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.logging.connection import Connection
 from google.cloud.logging.connection import _LoggingAPI as JSONLoggingAPI
 from google.cloud.logging.connection import _MetricsAPI as JSONMetricsAPI
@@ -47,7 +48,7 @@ from google.cloud.logging.metric import Metric
 from google.cloud.logging.sink import Sink
 
 
-_DISABLE_GAX = os.getenv('GOOGLE_CLOUD_DISABLE_GAX', False)
+_DISABLE_GAX = os.getenv(DISABLE_GRPC, False)
 _USE_GAX = _HAVE_GAX and not _DISABLE_GAX
 ASCENDING = 'timestamp asc'
 """Query string to order by ascending timestamps."""
