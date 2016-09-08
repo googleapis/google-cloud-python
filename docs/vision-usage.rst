@@ -42,7 +42,7 @@ Annotate a single image
     >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> with io.open('./image.png', 'rb') as image_file:
-    >>>     image = client.image(image_file.read())
+    ...     image = client.image(image_file.read())
     >>> faces = image.detect_faces(limit=10)
     >>> faces[0].landmarks.left_eye.position.x_coordinate
     ... 1004.8003
@@ -56,7 +56,7 @@ Annotate multiple images
      >>> from gcloud import vision
      >>> client = vision.Client()
      >>> with io.open('./image.png', 'rb') as image_file:
-     >>>     first_image = client.image(image_file.read())
+     ...     first_image = client.image(image_file.read())
      >>> second_image = client.image('gs://my-storage-bucket/image2.jpg')
      >>> with client.batch():
      ...     labels = first_image.detect_labels()
@@ -90,7 +90,7 @@ You can call the detection method manually.
     >>> client = vision.Client()
     >>> image = client.image('gs://my-test-bucket/image.jpg')
     >>> features = [Feature(FeatureTypes.FACE_DETECTION, 5),
-                   Feature(FeatureTypes.LOGO_DETECTION, 3)]
+    ...             Feature(FeatureTypes.LOGO_DETECTION, 3)]
     >>> annotations = image.detect(features)
 
 Face Detection
