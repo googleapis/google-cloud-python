@@ -933,6 +933,8 @@ class _AsyncQueryConfiguration(object):
     _use_query_cache = None
     _use_legacy_sql = None
     _write_disposition = None
+    _maximum_billing_tier = None
+    _maximum_bytes_billed = None
 
 
 class QueryJob(_AsyncJob):
@@ -1010,6 +1012,16 @@ class QueryJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition
     """
 
+    maximum_billing_tier = _TypedProperty('maximum_billing_tier', int)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.maximumBillingTier
+    """
+
+    maximum_bytes_billed = _TypedProperty('maximum_bytes_billed', int)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.maximumBytesBilled
+    """
+
     def _destination_table_resource(self):
         """Create a JSON resource for the destination table.
 
@@ -1047,6 +1059,10 @@ class QueryJob(_AsyncJob):
             configuration['useLegacySql'] = self.use_legacy_sql
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
+        if self.maximum_billing_tier is not None:
+            configuration['maximumBillingTier'] = self.maximum_billing_tier
+        if self.maximum_bytes_billed is not None:
+            configuration['maximumBytesBilled'] = self.maximum_bytes_billed
         if len(self._udf_resources) > 0:
             configuration[self._UDF_KEY] = _build_udf_resources(
                 self._udf_resources)
