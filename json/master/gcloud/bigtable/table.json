@@ -1,8 +1,0 @@
-{
-  "description": "\n User friendly container for Google Cloud Bigtable Table.", 
-  "examples": [], 
-  "id": "gcloud.bigtable.table", 
-  "methods": [], 
-  "name": "Table", 
-  "source": "gcloud/bigtable/table.py"
-}

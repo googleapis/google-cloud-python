@@ -1,8 +1,0 @@
-{
-  "description": "\n Create / interact with Google Cloud Translate connections.", 
-  "examples": [], 
-  "id": "gcloud.translate.connection", 
-  "methods": [], 
-  "name": "Connection", 
-  "source": "gcloud/translate/connection.py"
-}

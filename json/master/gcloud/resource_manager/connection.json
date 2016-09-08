@@ -1,8 +1,0 @@
-{
-  "description": "\n Create / interact with gcloud.resource_manager connections.", 
-  "examples": [], 
-  "id": "gcloud.resource_manager.connection", 
-  "methods": [], 
-  "name": "Connection", 
-  "source": "gcloud/resource_manager/connection.py"
-}

@@ -1,8 +1,0 @@
-{
-  "description": "\n Define Stackdriver Logging API Sinks.", 
-  "examples": [], 
-  "id": "gcloud.logging.sink", 
-  "methods": [], 
-  "name": "Sink", 
-  "source": "gcloud/logging/sink.py"
-}

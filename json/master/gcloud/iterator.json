@@ -1,8 +1,0 @@
-{
-  "description": "\n Iterators for paging through API responses.\n These iterators simplify the process of paging through API responses where the response is a list of results with a <code>nextPageToken</code>.\n To make an iterator work, just override the <code>get_items_from_response</code> method so that given a response (containing a page of results) it parses those results into an iterable of the actual objects you want\n<pre><code>  class MyIterator(Iterator):\n      def get_items_from_response(self, response):\n          items = response.get('items', [])\n          for item in items:\n              my_item = MyItemClass(other_arg=True)\n              my_item._set_properties(item)\n              yield my_item\n</code></pre>\n You then can use this to get <b>all</b> the results from a resource\n<pre><code>    >>> iterator = MyIterator(...)\n    >>> list(iterator)  # Convert to a list (consumes all values).\n</code></pre>\n Or you can walk your way through items and call off the search early if you find what you're looking for (resulting in possibly fewer requests)\n<pre><code>    >>> for item in MyIterator(...):\n    >>>     print item.name\n    >>>     if not item.is_valid:\n    >>>         break</code></pre>", 
-  "examples": [], 
-  "id": "gcloud.iterator", 
-  "methods": [], 
-  "name": "Iterator", 
-  "source": "gcloud/iterator.py"
-}

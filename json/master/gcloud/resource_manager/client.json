@@ -1,8 +1,0 @@
-{
-  "description": "\n A Client for interacting with the Resource Manager API.", 
-  "examples": [], 
-  "id": "gcloud.resource_manager.client", 
-  "methods": [], 
-  "name": "Client", 
-  "source": "gcloud/resource_manager/client.py"
-}

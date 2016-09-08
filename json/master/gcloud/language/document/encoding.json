@@ -1,8 +1,0 @@
-{
-  "description": "\n Definition for Google Cloud Natural Language API documents.\n A document is used to hold text to be analyzed and annotated.", 
-  "examples": [], 
-  "id": "gcloud.language.document.encoding", 
-  "methods": [], 
-  "name": "Encoding", 
-  "source": "gcloud/language/document.py"
-}

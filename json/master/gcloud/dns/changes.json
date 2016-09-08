@@ -1,8 +1,0 @@
-{
-  "description": "\n Define API ResourceRecordSets.", 
-  "examples": [], 
-  "id": "gcloud.dns.changes", 
-  "methods": [], 
-  "name": "Changes", 
-  "source": "gcloud/dns/changes.py"
-}

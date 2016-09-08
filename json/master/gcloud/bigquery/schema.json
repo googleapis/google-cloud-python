@@ -1,8 +1,0 @@
-{
-  "description": "\n Scheamas for BigQuery tables / queries.", 
-  "examples": [], 
-  "id": "gcloud.bigquery.schema", 
-  "methods": [], 
-  "name": "Schema", 
-  "source": "gcloud/bigquery/schema.py"
-}

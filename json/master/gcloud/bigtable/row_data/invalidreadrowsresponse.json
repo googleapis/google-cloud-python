@@ -1,8 +1,0 @@
-{
-  "description": "\n Container for Google Cloud Bigtable Cells and Streaming Row Contents.", 
-  "examples": [], 
-  "id": "gcloud.bigtable.row_data.invalidreadrowsresponse", 
-  "methods": [], 
-  "name": "Invalidreadrowsresponse", 
-  "source": "gcloud/bigtable/row_data.py"
-}

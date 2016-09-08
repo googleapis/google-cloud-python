@@ -1,8 +1,0 @@
-{
-  "description": "\n Create / interact with gcloud storage connections.", 
-  "examples": [], 
-  "id": "gcloud.storage.connection", 
-  "methods": [], 
-  "name": "Connection", 
-  "source": "gcloud/storage/connection.py"
-}

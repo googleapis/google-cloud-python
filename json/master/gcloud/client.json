@@ -1,8 +1,0 @@
-{
-  "description": "\n Base classes for client used to interact with Google Cloud APIs.", 
-  "examples": [], 
-  "id": "gcloud.client", 
-  "methods": [], 
-  "name": "Client", 
-  "source": "gcloud/client.py"
-}

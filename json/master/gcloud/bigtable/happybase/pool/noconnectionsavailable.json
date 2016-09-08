@@ -1,8 +1,0 @@
-{
-  "description": "\n Google Cloud Bigtable HappyBase pool module.", 
-  "examples": [], 
-  "id": "gcloud.bigtable.happybase.pool.noconnectionsavailable", 
-  "methods": [], 
-  "name": "Noconnectionsavailable", 
-  "source": "gcloud/bigtable/happybase/pool.py"
-}

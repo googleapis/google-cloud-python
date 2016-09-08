@@ -1,8 +1,0 @@
-{
-  "description": "\n Create / interact with gcloud dns connections.", 
-  "examples": [], 
-  "id": "gcloud.dns.connection", 
-  "methods": [], 
-  "name": "Connection", 
-  "source": "gcloud/dns/connection.py"
-}

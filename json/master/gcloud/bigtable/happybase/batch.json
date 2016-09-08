@@ -1,8 +1,0 @@
-{
-  "description": "\n Google Cloud Bigtable HappyBase batch module.", 
-  "examples": [], 
-  "id": "gcloud.bigtable.happybase.batch", 
-  "methods": [], 
-  "name": "Batch", 
-  "source": "gcloud/bigtable/happybase/batch.py"
-}

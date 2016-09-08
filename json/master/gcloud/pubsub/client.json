@@ -1,8 +1,0 @@
-{
-  "description": "\n Client for interacting with the Google Cloud Pub/Sub API.", 
-  "examples": [], 
-  "id": "gcloud.pubsub.client", 
-  "methods": [], 
-  "name": "Client", 
-  "source": "gcloud/pubsub/client.py"
-}

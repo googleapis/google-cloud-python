@@ -1,8 +1,0 @@
-{
-  "description": "\n Create / interact with Stackdriver Logging connections.", 
-  "examples": [], 
-  "id": "gcloud.logging.connection", 
-  "methods": [], 
-  "name": "Connection", 
-  "source": "gcloud/logging/connection.py"
-}

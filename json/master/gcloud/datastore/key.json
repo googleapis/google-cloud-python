@@ -1,8 +1,0 @@
-{
-  "description": "\n Create / interact with gcloud datastore keys.", 
-  "examples": [], 
-  "id": "gcloud.datastore.key", 
-  "methods": [], 
-  "name": "Key", 
-  "source": "gcloud/datastore/key.py"
-}

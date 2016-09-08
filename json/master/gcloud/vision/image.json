@@ -1,8 +1,0 @@
-{
-  "description": "\n Image represented by either a URI or byte stream.", 
-  "examples": [], 
-  "id": "gcloud.vision.image", 
-  "methods": [], 
-  "name": "Image", 
-  "source": "gcloud/vision/image.py"
-}

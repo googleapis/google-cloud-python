@@ -1,8 +1,0 @@
-{
-  "description": "\n Google Cloud Translate API wrapper.", 
-  "examples": [], 
-  "id": "gcloud.translate.__init__", 
-  "methods": [], 
-  "name": "__Init__", 
-  "source": "gcloud/translate/__init__.py"
-}

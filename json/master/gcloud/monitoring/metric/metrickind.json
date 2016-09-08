@@ -1,8 +1,0 @@
-{
-  "description": "\n Metric Descriptors for the Google Stackdriver Monitoring API (V3)_.\n .. _Google Stackdriver Monitoring API (V3): <a href=\"https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\">https://cloud.google.com/monitoring/api/ref_v3/rest/v3/</a> projects.metricDescriptors", 
-  "examples": [], 
-  "id": "gcloud.monitoring.metric.metrickind", 
-  "methods": [], 
-  "name": "Metrickind", 
-  "source": "gcloud/monitoring/metric.py"
-}

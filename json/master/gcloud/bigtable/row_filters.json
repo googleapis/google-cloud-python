@@ -1,8 +1,0 @@
-{
-  "description": "\n Filters for Google Cloud Bigtable Row classes.", 
-  "examples": [], 
-  "id": "gcloud.bigtable.row_filters", 
-  "methods": [], 
-  "name": "Row_Filters", 
-  "source": "gcloud/bigtable/row_filters.py"
-}

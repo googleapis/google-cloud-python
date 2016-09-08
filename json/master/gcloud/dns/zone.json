@@ -1,8 +1,0 @@
-{
-  "description": "\n Define API ManagedZones.", 
-  "examples": [], 
-  "id": "gcloud.dns.zone", 
-  "methods": [], 
-  "name": "Zone", 
-  "source": "gcloud/dns/zone.py"
-}
