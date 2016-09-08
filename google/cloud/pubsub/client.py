@@ -27,16 +27,16 @@ from google.cloud.pubsub.topic import Topic
 
 # pylint: disable=ungrouped-imports
 try:
-    from google.cloud.pubsub.v1.publisher_api import (
-        PublisherApi as GeneratedPublisherAPI)
-    from google.cloud.pubsub.v1.subscriber_api import (
-        SubscriberApi as GeneratedSubscriberAPI)
     from google.cloud.pubsub._gax import _PublisherAPI as GAXPublisherAPI
     from google.cloud.pubsub._gax import _SubscriberAPI as GAXSubscriberAPI
+    from google.cloud.pubsub._gax import make_gax_publisher_api
+    from google.cloud.pubsub._gax import make_gax_subscriber_api
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False
-    GeneratedPublisherAPI = GAXPublisherAPI = None
-    GeneratedSubscriberAPI = GAXSubscriberAPI = None
+    GAXPublisherAPI = None
+    GAXSubscriberAPI = None
+    make_gax_publisher_api = None
+    make_gax_subscriber_api = None
 else:
     _HAVE_GAX = True
 # pylint: enable=ungrouped-imports
@@ -75,7 +75,7 @@ class Client(JSONClient):
         """Helper for publisher-related API calls."""
         if self._publisher_api is None:
             if _USE_GAX:
-                generated = GeneratedPublisherAPI()
+                generated = make_gax_publisher_api(self.connection)
                 self._publisher_api = GAXPublisherAPI(generated)
             else:
                 self._publisher_api = JSONPublisherAPI(self.connection)
@@ -86,7 +86,7 @@ class Client(JSONClient):
         """Helper for subscriber-related API calls."""
         if self._subscriber_api is None:
             if _USE_GAX:
-                generated = GeneratedSubscriberAPI()
+                generated = make_gax_subscriber_api(self.connection)
                 self._subscriber_api = GAXSubscriberAPI(generated)
             else:
                 self._subscriber_api = JSONSubscriberAPI(self.connection)

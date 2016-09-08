@@ -20,6 +20,10 @@ from google.cloud import connection as base_connection
 from google.cloud.environment_vars import PUBSUB_EMULATOR
 
 
+PUBSUB_API_HOST = 'pubsub.googleapis.com'
+"""Pub / Sub API request host."""
+
+
 class Connection(base_connection.JSONConnection):
     """A connection to Google Cloud Pub/Sub via the JSON REST API.
 
@@ -29,13 +33,9 @@ class Connection(base_connection.JSONConnection):
 
     :type http: :class:`httplib2.Http` or class that defines ``request()``.
     :param http: (Optional) HTTP object to make requests.
-
-    :type api_base_url: string
-    :param api_base_url: The base of the API call URL. Defaults to the value
-                         :attr:`Connection.API_BASE_URL`.
     """
 
-    API_BASE_URL = 'https://pubsub.googleapis.com'
+    API_BASE_URL = 'https://' + PUBSUB_API_HOST
     """The base of the API call URL."""
 
     API_VERSION = 'v1'
@@ -48,15 +48,17 @@ class Connection(base_connection.JSONConnection):
              'https://www.googleapis.com/auth/cloud-platform')
     """The scopes required for authenticating as a Cloud Pub/Sub consumer."""
 
-    def __init__(self, credentials=None, http=None, api_base_url=None):
+    def __init__(self, credentials=None, http=None):
         super(Connection, self).__init__(credentials=credentials, http=http)
-        if api_base_url is None:
-            emulator_host = os.getenv(PUBSUB_EMULATOR)
-            if emulator_host is None:
-                api_base_url = self.__class__.API_BASE_URL
-            else:
-                api_base_url = 'http://' + emulator_host
-        self.api_base_url = api_base_url
+        emulator_host = os.getenv(PUBSUB_EMULATOR)
+        if emulator_host is None:
+            self.host = self.__class__.API_BASE_URL
+            self.api_base_url = self.__class__.API_BASE_URL
+            self.in_emulator = False
+        else:
+            self.host = emulator_host
+            self.api_base_url = 'http://' + emulator_host
+            self.in_emulator = True
 
     def build_api_url(self, path, query_params=None,
                       api_base_url=None, api_version=None):

@@ -67,7 +67,7 @@ class TestClient(unittest.TestCase):
 
         with _Monkey(MUT,
                      _USE_GAX=True,
-                     GeneratedPublisherAPI=_generated_api,
+                     make_gax_publisher_api=_generated_api,
                      GAXPublisherAPI=_GaxPublisherAPI):
             api = client.publisher_api
 
@@ -76,6 +76,8 @@ class TestClient(unittest.TestCase):
         # API instance is cached
         again = client.publisher_api
         self.assertTrue(again is api)
+        args = (client.connection,)
+        self.assertEqual(_called_with, [(args, {})])
 
     def test_subscriber_api_wo_gax(self):
         from google.cloud.pubsub.connection import _SubscriberAPI
@@ -115,7 +117,7 @@ class TestClient(unittest.TestCase):
 
         with _Monkey(MUT,
                      _USE_GAX=True,
-                     GeneratedSubscriberAPI=_generated_api,
+                     make_gax_subscriber_api=_generated_api,
                      GAXSubscriberAPI=_GaxSubscriberAPI):
             api = client.subscriber_api
 
@@ -124,6 +126,8 @@ class TestClient(unittest.TestCase):
         # API instance is cached
         again = client.subscriber_api
         self.assertTrue(again is api)
+        args = (client.connection,)
+        self.assertEqual(_called_with, [(args, {})])
 
     def test_iam_policy_api(self):
         from google.cloud.pubsub.connection import _IAMPolicyAPI

@@ -55,31 +55,6 @@ class TestConnection(_Base):
         self.assertNotEqual(conn.api_base_url, klass.API_BASE_URL)
         self.assertEqual(conn.api_base_url, 'http://' + HOST)
 
-    def test_custom_url_from_constructor(self):
-        HOST = object()
-        conn = self._makeOne(api_base_url=HOST)
-
-        klass = self._getTargetClass()
-        self.assertNotEqual(conn.api_base_url, klass.API_BASE_URL)
-        self.assertEqual(conn.api_base_url, HOST)
-
-    def test_custom_url_constructor_and_env(self):
-        import os
-        from unit_tests._testing import _Monkey
-        from google.cloud.environment_vars import PUBSUB_EMULATOR
-
-        HOST1 = object()
-        HOST2 = object()
-        fake_environ = {PUBSUB_EMULATOR: HOST1}
-
-        with _Monkey(os, getenv=fake_environ.get):
-            conn = self._makeOne(api_base_url=HOST2)
-
-        klass = self._getTargetClass()
-        self.assertNotEqual(conn.api_base_url, klass.API_BASE_URL)
-        self.assertNotEqual(conn.api_base_url, HOST1)
-        self.assertEqual(conn.api_base_url, HOST2)
-
     def test_build_api_url_no_extra_query_params(self):
         conn = self._makeOne()
         URI = '/'.join([
@@ -104,7 +79,8 @@ class TestConnection(_Base):
     def test_build_api_url_w_base_url_override(self):
         base_url1 = 'api-base-url1'
         base_url2 = 'api-base-url2'
-        conn = self._makeOne(api_base_url=base_url1)
+        conn = self._makeOne()
+        conn.api_base_url = base_url1
         URI = '/'.join([
             base_url2,
             conn.API_VERSION,

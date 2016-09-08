@@ -749,6 +749,112 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
 
+@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_make_gax_publisher_api(_Base, unittest.TestCase):
+
+    def _callFUT(self, connection):
+        from google.cloud.pubsub._gax import make_gax_publisher_api
+        return make_gax_publisher_api(connection)
+
+    def test_live_api(self):
+        from unit_tests._testing import _Monkey
+        from google.cloud.pubsub import _gax as MUT
+
+        channels = []
+        mock_result = object()
+
+        def mock_publisher_api(channel):
+            channels.append(channel)
+            return mock_result
+
+        connection = _Connection(in_emulator=False)
+        with _Monkey(MUT, PublisherApi=mock_publisher_api):
+            result = self._callFUT(connection)
+
+        self.assertIs(result, mock_result)
+        self.assertEqual(channels, [None])
+
+    def test_emulator(self):
+        from unit_tests._testing import _Monkey
+        from google.cloud.pubsub import _gax as MUT
+
+        channels = []
+        mock_result = object()
+        insecure_args = []
+        mock_channel = object()
+
+        def mock_publisher_api(channel):
+            channels.append(channel)
+            return mock_result
+
+        def mock_insecure_channel(host, port):
+            insecure_args.append((host, port))
+            return mock_channel
+
+        host = 'CURR_HOST:1234'
+        connection = _Connection(in_emulator=True, host=host)
+        with _Monkey(MUT, PublisherApi=mock_publisher_api,
+                     insecure_channel=mock_insecure_channel):
+            result = self._callFUT(connection)
+
+        self.assertIs(result, mock_result)
+        self.assertEqual(channels, [mock_channel])
+        self.assertEqual(insecure_args, [(host, None)])
+
+
+@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
+
+    def _callFUT(self, connection):
+        from google.cloud.pubsub._gax import make_gax_subscriber_api
+        return make_gax_subscriber_api(connection)
+
+    def test_live_api(self):
+        from unit_tests._testing import _Monkey
+        from google.cloud.pubsub import _gax as MUT
+
+        channels = []
+        mock_result = object()
+
+        def mock_subscriber_api(channel):
+            channels.append(channel)
+            return mock_result
+
+        connection = _Connection(in_emulator=False)
+        with _Monkey(MUT, SubscriberApi=mock_subscriber_api):
+            result = self._callFUT(connection)
+
+        self.assertIs(result, mock_result)
+        self.assertEqual(channels, [None])
+
+    def test_emulator(self):
+        from unit_tests._testing import _Monkey
+        from google.cloud.pubsub import _gax as MUT
+
+        channels = []
+        mock_result = object()
+        insecure_args = []
+        mock_channel = object()
+
+        def mock_subscriber_api(channel):
+            channels.append(channel)
+            return mock_result
+
+        def mock_insecure_channel(host, port):
+            insecure_args.append((host, port))
+            return mock_channel
+
+        host = 'CURR_HOST:1234'
+        connection = _Connection(in_emulator=True, host=host)
+        with _Monkey(MUT, SubscriberApi=mock_subscriber_api,
+                     insecure_channel=mock_insecure_channel):
+            result = self._callFUT(connection)
+
+        self.assertIs(result, mock_result)
+        self.assertEqual(channels, [mock_channel])
+        self.assertEqual(insecure_args, [(host, None)])
+
+
 class _GAXPublisherAPI(_GAXBaseAPI):
 
     _create_topic_conflict = False
@@ -930,3 +1036,10 @@ class _SubscriptionPB(object):
         self.topic = topic
         self.push_config = _PushConfigPB(push_endpoint)
         self.ack_deadline_seconds = ack_deadline_seconds
+
+
+class _Connection(object):
+
+    def __init__(self, in_emulator=False, host=None):
+        self.in_emulator = in_emulator
+        self.host = host
