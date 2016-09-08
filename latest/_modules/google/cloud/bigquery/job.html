@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.job &mdash; google-cloud a8338fd documentation</title>
+  <title>google.cloud.bigquery.job &mdash; google-cloud dc6e6d5 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud a8338fd documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud dc6e6d5 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -1187,6 +1187,8 @@
     <span class="n">_use_query_cache</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_use_legacy_sql</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_write_disposition</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_maximum_billing_tier</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_maximum_bytes_billed</span> <span class="o">=</span> <span class="kc">None</span>
 
 
 <div class="viewcode-block" id="QueryJob"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.QueryJob">[docs]</a><span class="k">class</span> <span class="nc">QueryJob</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">):</span>
@@ -1264,6 +1266,16 @@
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">maximum_billing_tier</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;maximum_billing_tier&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See:</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.maximumBillingTier</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">maximum_bytes_billed</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;maximum_bytes_billed&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See:</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.maximumBytesBilled</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">_destination_table_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a JSON resource for the destination table.</span>
 
@@ -1301,6 +1313,10 @@
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_legacy_sql</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_disposition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;writeDisposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_disposition</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum_billing_tier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;maximumBillingTier&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum_billing_tier</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum_bytes_billed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;maximumBytesBilled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum_bytes_billed</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_udf_resources</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">configuration</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_UDF_KEY</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_udf_resources</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_udf_resources</span><span class="p">)</span>
@@ -1396,7 +1412,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'a8338fd',
+            VERSION:'dc6e6d5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
