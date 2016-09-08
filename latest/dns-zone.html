@@ -1,465 +1,90 @@
+
+
 <!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Managed Zones &mdash; google-cloud 92219b8 documentation</title>
+  
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Managed Zones &mdash; gcloud 47bfd0a documentation</title>
-    
-    <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/css/normalize.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '47bfd0a',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
+  
+  
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 47bfd0a documentation" href="index.html" />
-    <link rel="next" title="Resource Record Sets" href="dns-resource-record-set.html" />
-    <link rel="prev" title="DNS Client" href="dns-client.html" /> 
-  </head>
-  <body role="document">
-    <header class="page-header fixed" role="banner">
-      <h1 class="logo">
-        <a href="index.html" title="back to home">
-          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
-          <span class="gcloud">gcloud</span>
-        </a>
-      </h1>
-      <nav class="main-nav">
-        <div class="nav-current">Python</div>
-        <ul class="menu">
-          <li>
-            <a href="
-https://googlecloudplatform.github.io/gcloud-java/" title="gcloud-java page">
-              <img src="_static/images/icon-lang-java-duke.svg" alt="Duke icon" class="menu-icon" />
-              Java
-            </a>
-          </li>
-          <li>
-            <a href="
-https://googlecloudplatform.github.io/gcloud-node/#/docs" title="Node.js docs page">
-              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
-              Node.js
-            </a>
-          </li>
-          <li>
-            <a href="#" title="Python docs page">
-              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
-              Python
-            </a>
-          </li>
-          <li>
-            <a href="
-http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs page">
-              <img src="_static/images/icon-lang-ruby.svg" alt="Ruby icon" class="menu-icon" />
-              Ruby
-            </a>
-          </li>
-          <li>
-            <a href="http://googlecloudplatform.github.io/google-cloud-dotnet" title=".NET docs page">
-                <img src="_static/images/icon-lang-dotnet.svg" alt=".NET icon" class="menu-icon" />
-                    .NET
-            </a>
-          </li>
-        </ul>
-      </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+dns-zone%0ARelease%3A%2047bfd0a" target="_blank" class="v-btn" id="file-issue">
-        <img src="_static/images/icon-link-github.svg" />
-        Report an Issue
-      </a>
-    </header><!-- end of .page-header -->
+  
+
+  
+
+  
+  
     
-      <article class="main lang-page" role="main">
 
-      <header class="docs-header">
-          <div class="versions">
-            <a href="/gcloud-python/versions.html" class="v-btn">
-              <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (47bfd0a)
-            </a>
-          </div><!-- end of .versions -->
-          <div>
-            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+" target="_blank" class="v-btn" id="file-issue-secondary">
-              <img src="_static/images/icon-link-github.svg" />
-              Report an Issue
-            </a>
-          </div>
-      </header>
+  
 
-      <section class="content">
-        
-  <div class="section" id="module-gcloud.dns.zone">
-<span id="managed-zones"></span><h1>Managed Zones<a class="headerlink" href="#module-gcloud.dns.zone" title="Permalink to this headline">#</a></h1>
-<p>Define API ManagedZones.</p>
-<dl class="class">
-<dt id="gcloud.dns.zone.ManagedZone">
-<em class="property">class </em><code class="descclassname">gcloud.dns.zone.</code><code class="descname">ManagedZone</code><span class="sig-paren">(</span><em>name</em>, <em>dns_name=None</em>, <em>client=None</em>, <em>description=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/dns/zone.html#ManagedZone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.dns.zone.ManagedZone" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>ManagedZones are containers for DNS resource records.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones">https://cloud.google.com/dns/api/v1/managedZones</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the zone</li>
-<li><strong>dns_name</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; the DNS name of the zone.  If not passed, then calls
-to <a class="reference internal" href="#gcloud.dns.zone.ManagedZone.create" title="gcloud.dns.zone.ManagedZone.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> will fail.</li>
-<li><strong>client</strong> (<a class="reference internal" href="dns-client.html#gcloud.dns.client.Client" title="gcloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
-for the zone (which requires a project).</li>
-<li><strong>description</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; the description for the zone.  If not passed, defaults
-to the value of &#8216;dns_name&#8217;.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="gcloud.dns.zone.ManagedZone.changes">
-<code class="descname">changes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/dns/zone.html#ManagedZone.changes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.changes" title="Permalink to this definition">#</a></dt>
-<dd><p>Construct a change set bound to this zone.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="dns-changes.html#gcloud.dns.changes.Changes" title="gcloud.dns.changes.Changes"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.changes.Changes</span></code></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a new <code class="docutils literal"><span class="pre">Changes</span></code> instance</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
 
-<dl class="method">
-<dt id="gcloud.dns.zone.ManagedZone.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/dns/zone.html#ManagedZone.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.create" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  create the zone via a PUT request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones/create">https://cloud.google.com/dns/api/v1/managedZones/create</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#gcloud.dns.client.Client" title="gcloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+  
 
-<dl class="attribute">
-<dt id="gcloud.dns.zone.ManagedZone.created">
-<code class="descname">created</code><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.created" title="Permalink to this definition">#</a></dt>
-<dd><p>Datetime at which the zone was created.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">datetime.datetime</span></code>, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the creation time (None until set from the server).</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+  
+    <link rel="top" title="google-cloud 92219b8 documentation" href="index.html"/>
+        <link rel="next" title="Resource Record Sets" href="dns-resource-record-set.html"/>
+        <link rel="prev" title="DNS Client" href="dns-client.html"/> 
 
-<dl class="method">
-<dt id="gcloud.dns.zone.ManagedZone.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/dns/zone.html#ManagedZone.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  delete the zone via a DELETE request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones/delete">https://cloud.google.com/dns/api/v1/managedZones/delete</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#gcloud.dns.client.Client" title="gcloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+  
+  <script src="_static/js/modernizr.min.js"></script>
 
-<dl class="attribute">
-<dt id="gcloud.dns.zone.ManagedZone.description">
-<code class="descname">description</code><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.description" title="Permalink to this definition">#</a></dt>
-<dd><p>Description of the zone.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The description as set by the user, or None (the default).</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+</head>
 
-<dl class="method">
-<dt id="gcloud.dns.zone.ManagedZone.exists">
-<code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/dns/zone.html#ManagedZone.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.exists" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  test for the existence of the zone via a GET request</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones/get">https://cloud.google.com/dns/api/v1/managedZones/get</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#gcloud.dns.client.Client" title="gcloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean indicating existence of the managed zone.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<body class="wy-body-for-nav" role="document">
 
-<dl class="classmethod">
-<dt id="gcloud.dns.zone.ManagedZone.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/dns/zone.html#ManagedZone.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.from_api_repr" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory:  construct a zone given its API representation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; zone resource representation returned from the API</li>
-<li><strong>client</strong> (<a class="reference internal" href="dns-client.html#gcloud.dns.client.Client" title="gcloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.client.Client</span></code></a>) &#8211; Client which holds credentials and project
-configuration for the zone.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.dns.zone.ManagedZone" title="gcloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.zone.ManagedZone</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Zone parsed from <code class="docutils literal"><span class="pre">resource</span></code>.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+  <div class="wy-grid-for-nav">
 
-<dl class="method">
-<dt id="gcloud.dns.zone.ManagedZone.list_changes">
-<code class="descname">list_changes</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/dns/zone.html#ManagedZone.list_changes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.list_changes" title="Permalink to this definition">#</a></dt>
-<dd><p>List change sets for this zone.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/dns/api/v1/resourceRecordSets/list">https://cloud.google.com/dns/api/v1/resourceRecordSets/list</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of zones to return, If not
-passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of zones. If
-not passed, the API will return the first page of
-zones.</li>
-<li><strong>client</strong> (<a class="reference internal" href="dns-client.html#gcloud.dns.client.Client" title="gcloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of
-<a class="reference internal" href="dns-resource-record-set.html#gcloud.dns.resource_record_set.ResourceRecordSet" title="gcloud.dns.resource_record_set.ResourceRecordSet"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.resource_record_set.ResourceRecordSet</span></code></a>,
-plus a &#8220;next page token&#8221; string:  if the token is not None,
-indicates that more zones can be retrieved with another
-call (pass that value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-<dl class="method">
-<dt id="gcloud.dns.zone.ManagedZone.list_resource_record_sets">
-<code class="descname">list_resource_record_sets</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/dns/zone.html#ManagedZone.list_resource_record_sets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.list_resource_record_sets" title="Permalink to this definition">#</a></dt>
-<dd><p>List resource record sets for this zone.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/dns/api/v1/resourceRecordSets/list">https://cloud.google.com/dns/api/v1/resourceRecordSets/list</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of zones to return, If not
-passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of zones. If
-not passed, the API will return the first page of
-zones.</li>
-<li><strong>client</strong> (<a class="reference internal" href="dns-client.html#gcloud.dns.client.Client" title="gcloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of
-<a class="reference internal" href="dns-resource-record-set.html#gcloud.dns.resource_record_set.ResourceRecordSet" title="gcloud.dns.resource_record_set.ResourceRecordSet"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.resource_record_set.ResourceRecordSet</span></code></a>,
-plus a &#8220;next page token&#8221; string:  if the token is not None,
-indicates that more zones can be retrieved with another
-call (pass that value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+          
+            <a href="index.html" class="icon icon-home"> google-cloud
+          
 
-<dl class="attribute">
-<dt id="gcloud.dns.zone.ManagedZone.name_server_set">
-<code class="descname">name_server_set</code><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.name_server_set" title="Permalink to this definition">#</a></dt>
-<dd><p>Named set of DNS name servers that all host the same ManagedZones.</p>
-<p>Most users will leave this blank.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones#nameServerSet">https://cloud.google.com/dns/api/v1/managedZones#nameServerSet</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The name as set by the user, or None (the default).</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+          
+          </a>
 
-<dl class="attribute">
-<dt id="gcloud.dns.zone.ManagedZone.name_servers">
-<code class="descname">name_servers</code><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.name_servers" title="Permalink to this definition">#</a></dt>
-<dd><p>Datetime at which the zone was created.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of strings, or <code class="docutils literal"><span class="pre">NoneType</span></code>.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the assigned name servers (None until set from the server).</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+          
+            
+            
+          
 
-<dl class="attribute">
-<dt id="gcloud.dns.zone.ManagedZone.path">
-<code class="descname">path</code><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.path" title="Permalink to this definition">#</a></dt>
-<dd><p>URL path for the zone&#8217;s APIs.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)">string</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the path based on project and dataste name.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="gcloud.dns.zone.ManagedZone.project">
-<code class="descname">project</code><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.project" title="Permalink to this definition">#</a></dt>
-<dd><p>Project bound to the zone.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)">string</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the project (derived from the client).</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.dns.zone.ManagedZone.reload">
-<code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/dns/zone.html#ManagedZone.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.reload" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  refresh zone properties via a GET request</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones/get">https://cloud.google.com/dns/api/v1/managedZones/get</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#gcloud.dns.client.Client" title="gcloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.dns.zone.ManagedZone.resource_record_set">
-<code class="descname">resource_record_set</code><span class="sig-paren">(</span><em>name</em>, <em>record_type</em>, <em>ttl</em>, <em>rrdatas</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/dns/zone.html#ManagedZone.resource_record_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.resource_record_set" title="Permalink to this definition">#</a></dt>
-<dd><p>Construct a resource record set bound to this zone.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of the record set.</li>
-<li><strong>record_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; RR type</li>
-<li><strong>ttl</strong> (<em>integer</em>) &#8211; TTL for the RR, in seconds</li>
-<li><strong>rrdatas</strong> (<em>list of string</em>) &#8211; resource data for the RR</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="dns-resource-record-set.html#gcloud.dns.resource_record_set.ResourceRecordSet" title="gcloud.dns.resource_record_set.ResourceRecordSet"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.resource_record_set.ResourceRecordSet</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <code class="docutils literal"><span class="pre">ResourceRecordSet</span></code> instance</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="gcloud.dns.zone.ManagedZone.zone_id">
-<code class="descname">zone_id</code><a class="headerlink" href="#gcloud.dns.zone.ManagedZone.zone_id" title="Permalink to this definition">#</a></dt>
-<dd><p>ID for the zone resource.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the ID (None until set from the server).</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
 </div>
 
+          
+        </div>
 
-      </section><!-- end of .content -->
-      <nav class="side-nav">
-        <p class="caption"><span class="caption-text">gcloud</span></p>
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">google-cloud</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcloud-config.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcloud-auth.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operation-api.html">Long-Running Operations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
 <ul>
@@ -496,11 +121,11 @@ call (pass that value as <code class="docutils literal"><span class="pre">page_t
 <li class="toctree-l1"><a class="reference internal" href="bigquery-job.html">Jobs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigquery-table.html">Tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigquery-query.html">Query</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-schema.html">Schemas</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Cloud Bigtable</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="happybase-package.html">HappyBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-client-intro.html">Base for Everything</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-instance-api.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-table-api.html">Table Admin API</a></li>
@@ -513,10 +138,6 @@ call (pass that value as <code class="docutils literal"><span class="pre">page_t
 <li class="toctree-l1"><a class="reference internal" href="bigtable-row.html">Bigtable Row</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-row-filters.html">Bigtable Row Filters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-row-data.html">Row Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="happybase-connection.html">HappyBase Connection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="happybase-pool.html">HappyBase Connection Pool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="happybase-table.html">HappyBase Table</a></li>
-<li class="toctree-l1"><a class="reference internal" href="happybase-batch.html">HappyBase Batch</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Resource Manager</span></p>
 <ul>
@@ -535,11 +156,21 @@ call (pass that value as <code class="docutils literal"><span class="pre">page_t
 <p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="logging-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html#python-logging-handler-transports">Python logging handler transports</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-logger.html">Logger</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-entries.html">Entries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-metric.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-sink.html">Sinks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-handlers.html">Python Logging Module Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-sync.html">Python Logging Handler Sync Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-thread.html">Python Logging Handler Threaded Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-base.html">Python Logging Handler Sync Transport</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Stackdriver Error Reporting</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="error-reporting-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="error-reporting-client.html">Client</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Stackdriver Monitoring</span></p>
 <ul>
@@ -547,6 +178,7 @@ call (pass that value as <code class="docutils literal"><span class="pre">page_t
 <li class="toctree-l1"><a class="reference internal" href="monitoring-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-metric.html">Metric Descriptors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-resource.html">Monitored Resource Descriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-group.html">Groups</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-query.html">Time Series Query</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-timeseries.html">Time Series</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-label.html">Label Descriptors</a></li>
@@ -556,20 +188,491 @@ call (pass that value as <code class="docutils literal"><span class="pre">page_t
 <li class="toctree-l1"><a class="reference internal" href="translate-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="translate-client.html">Client</a></li>
 </ul>
+<p class="caption"><span class="caption-text">Vision</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="vision-usage.html">Using the Vision API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Natural Language</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="language-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-document.html">Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-responses.html">Natural Language Response Classes</a></li>
+</ul>
 <p class="caption"><span class="caption-text">External Links</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/">GitHub</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues">Issues</a></li>
-<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/gcloud-python">Stack Overflow</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/gcloud">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/issues">Issues</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/google-cloud-python">Stack Overflow</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/google-cloud">PyPI</a></li>
 </ul>
 
-      </nav><!-- end of .side-nav -->
-    </article><!-- end of .main -->
+            
+          
+        </div>
+      </div>
+    </nav>
 
-    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
-    <script src="_static/js/plugins.js"></script>
-    <script src="_static/js/main.js"></script>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">google-cloud</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Managed Zones</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/dns-zone.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-google.cloud.dns.zone">
+<span id="managed-zones"></span><h1>Managed Zones<a class="headerlink" href="#module-google.cloud.dns.zone" title="Permalink to this headline">#</a></h1>
+<p>Define API ManagedZones.</p>
+<dl class="class">
+<dt id="google.cloud.dns.zone.ManagedZone">
+<em class="property">class </em><code class="descclassname">google.cloud.dns.zone.</code><code class="descname">ManagedZone</code><span class="sig-paren">(</span><em>name</em>, <em>dns_name=None</em>, <em>client=None</em>, <em>description=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/zone.html#ManagedZone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>ManagedZones are containers for DNS resource records.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones">https://cloud.google.com/dns/api/v1/managedZones</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the zone</li>
+<li><strong>dns_name</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; the DNS name of the zone.  If not passed, then calls
+to <a class="reference internal" href="#google.cloud.dns.zone.ManagedZone.create" title="google.cloud.dns.zone.ManagedZone.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> will fail.</li>
+<li><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+for the zone (which requires a project).</li>
+<li><strong>description</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; the description for the zone.  If not passed, defaults
+to the value of &#8216;dns_name&#8217;.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.dns.zone.ManagedZone.changes">
+<code class="descname">changes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/zone.html#ManagedZone.changes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.changes" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a change set bound to this zone.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="dns-changes.html#google.cloud.dns.changes.Changes" title="google.cloud.dns.changes.Changes"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.changes.Changes</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a new <code class="docutils literal"><span class="pre">Changes</span></code> instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.dns.zone.ManagedZone.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/zone.html#ManagedZone.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.create" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  create the zone via a PUT request</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones/create">https://cloud.google.com/dns/api/v1/managedZones/create</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dns.zone.ManagedZone.created">
+<code class="descname">created</code><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.created" title="Permalink to this definition">#</a></dt>
+<dd><p>Datetime at which the zone was created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal"><span class="pre">datetime.datetime</span></code>, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the creation time (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.dns.zone.ManagedZone.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/zone.html#ManagedZone.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  delete the zone via a DELETE request</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones/delete">https://cloud.google.com/dns/api/v1/managedZones/delete</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dns.zone.ManagedZone.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.description" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of the zone.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The description as set by the user, or None (the default).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.dns.zone.ManagedZone.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/zone.html#ManagedZone.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.exists" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  test for the existence of the zone via a GET request</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones/get">https://cloud.google.com/dns/api/v1/managedZones/get</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean indicating existence of the managed zone.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.dns.zone.ManagedZone.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/zone.html#ManagedZone.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory:  construct a zone given its API representation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; zone resource representation returned from the API</li>
+<li><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a>) &#8211; Client which holds credentials and project
+configuration for the zone.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.dns.zone.ManagedZone" title="google.cloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.zone.ManagedZone</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Zone parsed from <code class="docutils literal"><span class="pre">resource</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.dns.zone.ManagedZone.list_changes">
+<code class="descname">list_changes</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/zone.html#ManagedZone.list_changes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.list_changes" title="Permalink to this definition">#</a></dt>
+<dd><p>List change sets for this zone.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/dns/api/v1/resourceRecordSets/list">https://cloud.google.com/dns/api/v1/resourceRecordSets/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of zones to return, If not
+passed, defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of zones. If
+not passed, the API will return the first page of
+zones.</li>
+<li><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of
+<a class="reference internal" href="dns-resource-record-set.html#google.cloud.dns.resource_record_set.ResourceRecordSet" title="google.cloud.dns.resource_record_set.ResourceRecordSet"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.resource_record_set.ResourceRecordSet</span></code></a>,
+plus a &#8220;next page token&#8221; string:  if the token is not None,
+indicates that more zones can be retrieved with another
+call (pass that value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.dns.zone.ManagedZone.list_resource_record_sets">
+<code class="descname">list_resource_record_sets</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/zone.html#ManagedZone.list_resource_record_sets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.list_resource_record_sets" title="Permalink to this definition">#</a></dt>
+<dd><p>List resource record sets for this zone.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/dns/api/v1/resourceRecordSets/list">https://cloud.google.com/dns/api/v1/resourceRecordSets/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of zones to return, If not
+passed, defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of zones. If
+not passed, the API will return the first page of
+zones.</li>
+<li><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of
+<a class="reference internal" href="dns-resource-record-set.html#google.cloud.dns.resource_record_set.ResourceRecordSet" title="google.cloud.dns.resource_record_set.ResourceRecordSet"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.resource_record_set.ResourceRecordSet</span></code></a>,
+plus a &#8220;next page token&#8221; string:  if the token is not None,
+indicates that more zones can be retrieved with another
+call (pass that value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dns.zone.ManagedZone.name_server_set">
+<code class="descname">name_server_set</code><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.name_server_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Named set of DNS name servers that all host the same ManagedZones.</p>
+<p>Most users will leave this blank.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones#nameServerSet">https://cloud.google.com/dns/api/v1/managedZones#nameServerSet</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The name as set by the user, or None (the default).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dns.zone.ManagedZone.name_servers">
+<code class="descname">name_servers</code><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.name_servers" title="Permalink to this definition">#</a></dt>
+<dd><p>Datetime at which the zone was created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of strings, or <code class="docutils literal"><span class="pre">NoneType</span></code>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the assigned name servers (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dns.zone.ManagedZone.path">
+<code class="descname">path</code><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.path" title="Permalink to this definition">#</a></dt>
+<dd><p>URL path for the zone&#8217;s APIs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)">string</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the path based on project and dataste name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dns.zone.ManagedZone.project">
+<code class="descname">project</code><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.project" title="Permalink to this definition">#</a></dt>
+<dd><p>Project bound to the zone.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)">string</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the project (derived from the client).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.dns.zone.ManagedZone.reload">
+<code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/zone.html#ManagedZone.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.reload" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  refresh zone properties via a GET request</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones/get">https://cloud.google.com/dns/api/v1/managedZones/get</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="dns-client.html#google.cloud.dns.client.Client" title="google.cloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current zone.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.dns.zone.ManagedZone.resource_record_set">
+<code class="descname">resource_record_set</code><span class="sig-paren">(</span><em>name</em>, <em>record_type</em>, <em>ttl</em>, <em>rrdatas</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/zone.html#ManagedZone.resource_record_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.resource_record_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a resource record set bound to this zone.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of the record set.</li>
+<li><strong>record_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; RR type</li>
+<li><strong>ttl</strong> (<em>integer</em>) &#8211; TTL for the RR, in seconds</li>
+<li><strong>rrdatas</strong> (<em>list of string</em>) &#8211; resource data for the RR</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="dns-resource-record-set.html#google.cloud.dns.resource_record_set.ResourceRecordSet" title="google.cloud.dns.resource_record_set.ResourceRecordSet"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.resource_record_set.ResourceRecordSet</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <code class="docutils literal"><span class="pre">ResourceRecordSet</span></code> instance</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.dns.zone.ManagedZone.zone_id">
+<code class="descname">zone_id</code><a class="headerlink" href="#google.cloud.dns.zone.ManagedZone.zone_id" title="Permalink to this definition">#</a></dt>
+<dd><p>ID for the zone resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the ID (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
   
-  </body>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dns-resource-record-set.html" class="btn btn-neutral float-right" title="Resource Record Sets" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dns-client.html" class="btn btn-neutral" title="DNS Client" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Google.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'92219b8',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

@@ -1,13 +1,7 @@
 Instance Admin API
 ==================
 
-.. warning::
-
-    gRPC is required for using the Cloud Bigtable API. As of May 2016,
-    ``grpcio`` is only supported in Python 2.7, so importing
-    :mod:`gcloud.bigtable` in other versions of Python will fail.
-
-After creating a :class:`Client <gcloud.bigtable.client.Client>`, you can
+After creating a :class:`Client <google.cloud.bigtable.client.Client>`, you can
 interact with individual instances for a project.
 
 List Instances
@@ -15,7 +9,7 @@ List Instances
 
 If you want a comprehensive list of all existing instances, make a
 `ListInstances`_ API request with
-:meth:`Client.list_instances() <gcloud.bigtable.client.Client.list_instances>`:
+:meth:`Client.list_instances() <google.cloud.bigtable.client.Client.list_instances>`:
 
 .. code:: python
 
@@ -24,7 +18,7 @@ If you want a comprehensive list of all existing instances, make a
 Instance Factory
 ----------------
 
-To create a :class:`Instance <gcloud.bigtable.instance.Instance>` object:
+To create a :class:`Instance <google.cloud.bigtable.instance.Instance>` object:
 
 .. code:: python
 
@@ -51,7 +45,7 @@ Create a new Instance
 ---------------------
 
 After creating the instance object, make a `CreateInstance`_ API request
-with :meth:`create() <gcloud.bigtable.instance.Instance.create>`:
+with :meth:`create() <google.cloud.bigtable.instance.Instance.create>`:
 
 .. code:: python
 
@@ -65,14 +59,14 @@ Check on Current Operation
 
     When modifying a instance (via a `CreateInstance`_ request), the Bigtable
     API will return a `long-running operation`_ and a corresponding
-    :class:`Operation <gcloud.bigtable.instance.Operation>` object
+    :class:`Operation <google.cloud.bigtable.instance.Operation>` object
     will be returned by
-    :meth:`create() <gcloud.bigtable.instance.Instance.create>`.
+    :meth:`create() <google.cloud.bigtable.instance.Instance.create>`.
 
 You can check if a long-running operation (for a
-:meth:`create() <gcloud.bigtable.instance.Instance.create>` has finished
+:meth:`create() <google.cloud.bigtable.instance.Instance.create>` has finished
 by making a `GetOperation`_ request with
-:meth:`Operation.finished() <gcloud.bigtable.instance.Operation.finished>`:
+:meth:`Operation.finished() <google.cloud.bigtable.instance.Operation.finished>`:
 
 .. code:: python
 
@@ -82,18 +76,18 @@ by making a `GetOperation`_ request with
 
 .. note::
 
-    Once an :class:`Operation <gcloud.bigtable.instance.Operation>` object
+    Once an :class:`Operation <google.cloud.bigtable.instance.Operation>` object
     has returned :data:`True` from
-    :meth:`finished() <gcloud.bigtable.instance.Operation.finished>`, the
+    :meth:`finished() <google.cloud.bigtable.instance.Operation.finished>`, the
     object should not be re-used. Subsequent calls to
-    :meth:`finished() <gcloud.bigtable.instance.Operation.finished>`
+    :meth:`finished() <google.cloud.bigtable.instance.Operation.finished>`
     will result in a :class:`ValueError <exceptions.ValueError>`.
 
 Get metadata for an existing Instance
 -------------------------------------
 
 After creating the instance object, make a `GetInstance`_ API request
-with :meth:`reload() <gcloud.bigtable.instance.Instance.reload>`:
+with :meth:`reload() <google.cloud.bigtable.instance.Instance.reload>`:
 
 .. code:: python
 
@@ -105,7 +99,7 @@ Update an existing Instance
 ---------------------------
 
 After creating the instance object, make an `UpdateInstance`_ API request
-with :meth:`update() <gcloud.bigtable.instance.Instance.update>`:
+with :meth:`update() <google.cloud.bigtable.instance.Instance.update>`:
 
 .. code:: python
 
@@ -116,7 +110,7 @@ Delete an existing Instance
 ---------------------------
 
 Make a `DeleteInstance`_ API request with
-:meth:`delete() <gcloud.bigtable.instance.Instance.delete>`:
+:meth:`delete() <google.cloud.bigtable.instance.Instance.delete>`:
 
 .. code:: python
 
@@ -126,8 +120,8 @@ Next Step
 ---------
 
 Now we go down the hierarchy from
-:class:`Instance <gcloud.bigtable.instance.Instance>` to a
-:class:`Table <gcloud.bigtable.table.Table>`.
+:class:`Instance <google.cloud.bigtable.instance.Instance>` to a
+:class:`Table <google.cloud.bigtable.table.Table>`.
 
 Head next to learn about the :doc:`bigtable-table-api`.
 

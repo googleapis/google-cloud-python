@@ -20,7 +20,7 @@ Here's a quick example of the full life-cycle:
 
 .. code-block:: python
 
-    >>> from gcloud import resource_manager
+    >>> from google.cloud import resource_manager
     >>> client = resource_manager.Client()
 
     >>> # List all projects you have access to
@@ -69,7 +69,7 @@ provided by the `Google Cloud SDK`_, which you can get by running
 
 .. _Google Cloud SDK: http://cloud.google.com/sdk
 
-Once you run that command, ``gcloud-python`` will automatically pick up the
+Once you run that command, ``google-cloud-python`` will automatically pick up the
 credentials, and you can use the "automatic discovery" feature of the library.
 
 Start by authenticating:
@@ -82,5 +82,5 @@ And then simply create a client:
 
 .. code-block:: python
 
-    >>> from gcloud import resource_manager
+    >>> from google.cloud import resource_manager
     >>> client = resource_manager.Client()

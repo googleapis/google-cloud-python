@@ -1,6 +1,6 @@
 Query
 ~~~~~
 
-.. automodule:: gcloud.bigquery.query
+.. automodule:: google.cloud.bigquery.query
   :members:
   :show-inheritance:

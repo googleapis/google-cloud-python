@@ -1,7 +1,7 @@
 Logger
 ======
 
-.. automodule:: gcloud.logging.logger
+.. automodule:: google.cloud.logging.logger
   :members:
   :show-inheritance:
 

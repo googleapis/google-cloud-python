@@ -1,13 +1,13 @@
 BigQuery Client
 ===============
 
-.. automodule:: gcloud.bigquery.client
+.. automodule:: google.cloud.bigquery.client
   :members:
   :show-inheritance:
 
 Connection
 ~~~~~~~~~~
 
-.. automodule:: gcloud.bigquery.connection
+.. automodule:: google.cloud.bigquery.connection
   :members:
   :show-inheritance:

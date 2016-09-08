@@ -1,7 +1,7 @@
 Transactions
 ~~~~~~~~~~~~
 
-.. automodule:: gcloud.datastore.transaction
+.. automodule:: google.cloud.datastore.transaction
   :members:
   :show-inheritance:
   :inherited-members:

@@ -1,13 +1,13 @@
 Stackdriver Monitoring Client
 =============================
 
-.. automodule:: gcloud.monitoring.client
+.. automodule:: google.cloud.monitoring.client
   :members:
   :show-inheritance:
 
 Connection
 ~~~~~~~~~~
 
-.. automodule:: gcloud.monitoring.connection
+.. automodule:: google.cloud.monitoring.connection
   :members:
   :show-inheritance:

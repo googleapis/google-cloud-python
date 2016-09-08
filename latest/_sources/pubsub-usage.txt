@@ -4,24 +4,35 @@ Using the API
 Authentication / Configuration
 ------------------------------
 
-- Use :class:`Client <gcloud.pubsub.client.Client>` objects to configure
+- Use :class:`Client <google.cloud.pubsub.client.Client>` objects to configure
   your applications.
 
-- :class:`Client <gcloud.pubsub.client.Client>` objects hold both a ``project``
+- In addition to any authentication configuration, you should also set the
+  :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the project you'd like
+  to interact with. If you are Google App Engine or Google Compute Engine
+  this will be detected automatically.
+
+- The library now enables the ``gRPC`` transport for the pubsub API by
+  default, assuming that the required dependencies are installed and
+  importable.  To *disable* this transport, set the
+  :envvar:`GOOGLE_CLOUD_DISABLE_GRPC` environment variable to a
+  non-empty string, e.g.:  ``$ export GOOGLE_CLOUD_DISABLE_GRPC=true``.
+
+- :class:`Client <google.cloud.pubsub.client.Client>` objects hold both a ``project``
   and an authenticated connection to the PubSub service.
 
 - The authentication credentials can be implicitly determined from the
   environment or directly via
-  :meth:`from_service_account_json <gcloud.pubsub.client.Client.from_service_account_json>`
+  :meth:`from_service_account_json <google.cloud.pubsub.client.Client.from_service_account_json>`
   and
-  :meth:`from_service_account_p12 <gcloud.pubsub.client.Client.from_service_account_p12>`.
+  :meth:`from_service_account_p12 <google.cloud.pubsub.client.Client.from_service_account_p12>`.
 
-- After setting ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GCLOUD_PROJECT``
-  environment variables, create a :class:`Client <gcloud.pubsub.client.Client>`
+- After setting ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GOOGLE_CLOUD_PROJECT``
+  environment variables, create a :class:`Client <google.cloud.pubsub.client.Client>`
 
   .. doctest::
 
-     >>> from gcloud import pubsub
+     >>> from google.cloud import pubsub
      >>> client = pubsub.Client()
 
 
