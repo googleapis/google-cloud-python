@@ -41,7 +41,6 @@ Quick Start
 
 ::
 
-    $ pip install --upgrade google-cloud
 
 Example Applications
 --------------------
