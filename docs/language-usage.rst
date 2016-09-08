@@ -26,7 +26,7 @@ means to configure your application. Each instance holds
 an authenticated connection to the Natural Language service.
 
 For an overview of authentication in ``google-cloud-python``, see
-:doc:`gcloud-auth`.
+:doc:`google-cloud-auth`.
 
 Assuming your environment is set up as described in that document,
 create an instance of :class:`~google.cloud.language.client.Client`.

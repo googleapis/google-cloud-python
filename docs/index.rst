@@ -3,9 +3,9 @@
   :hidden:
   :caption: google-cloud
 
-  gcloud-api
-  gcloud-config
-  gcloud-auth
+  google-cloud-api
+  google-cloud-config
+  google-cloud-auth
   operation-api
 
 .. toctree::
