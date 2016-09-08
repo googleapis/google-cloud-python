@@ -1324,11 +1324,24 @@ class TestQueryJob(unittest.TestCase, _Base):
         else:
             self.assertTrue(job.use_legacy_sql is None)
 
+    def _verifyIntegerResourceProperties(self, job, config):
+        if 'maximumBillingTier' in config:
+            self.assertEqual(job.maximum_billing_tier,
+                             config['maximumBillingTier'])
+        else:
+            self.assertTrue(job.maximum_billing_tier is None)
+        if 'maximumBytesBilled' in config:
+            self.assertEqual(job.maximum_bytes_billed,
+                             config['maximumBytesBilled'])
+        else:
+            self.assertTrue(job.maximum_bytes_billed is None)
+
     def _verifyResourceProperties(self, job, resource):
         self._verifyReadonlyResourceProperties(job, resource)
 
         config = resource.get('configuration', {}).get('query')
         self._verifyBooleanResourceProperties(job, config)
+        self._verifyIntegerResourceProperties(job, config)
 
         if 'createDisposition' in config:
             self.assertEqual(job.create_disposition,
@@ -1387,6 +1400,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertTrue(job.use_query_cache is None)
         self.assertTrue(job.use_legacy_sql is None)
         self.assertTrue(job.write_disposition is None)
+        self.assertTrue(job.maximum_billing_tier is None)
+        self.assertTrue(job.maximum_bytes_billed is None)
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
@@ -1498,6 +1513,8 @@ class TestQueryJob(unittest.TestCase, _Base):
             'useQueryCache': True,
             'useLegacySql': True,
             'writeDisposition': 'WRITE_TRUNCATE',
+            'maximumBillingTier': 4,
+            'maximumBytesBilled': 123456
         }
         RESOURCE['configuration']['query'] = QUERY_CONFIGURATION
         conn1 = _Connection()
@@ -1518,6 +1535,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         job.use_query_cache = True
         job.use_legacy_sql = True
         job.write_disposition = 'WRITE_TRUNCATE'
+        job.maximum_billing_tier = 4
+        job.maximum_bytes_billed = 123456
 
         job.begin(client=client2)
 
