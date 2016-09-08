@@ -54,9 +54,9 @@ def _record_from_json(value, field):
         for subfield, cell in zip(field.fields, value['f']):
             converter = _CELLDATA_FROM_JSON[subfield.field_type]
             if field.mode == 'REPEATED':
-                value = [converter(item, field) for item in cell['v']]
+                value = [converter(item, subfield) for item in cell['v']]
             else:
-                value = converter(cell['v'], field)
+                value = converter(cell['v'], subfield)
             record[subfield.name] = value
         return record
 
