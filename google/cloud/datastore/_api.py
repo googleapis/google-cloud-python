@@ -46,6 +46,13 @@ else:
 
 USE_GRPC = HAVE_GRPC and not os.getenv(DISABLE_GRPC, False)
 
+API_URL_TEMPLATE = ('{api_base}/{api_version}/projects'
+                    '/{project}:{method}')
+"""A template for the URL of a particular API call."""
+
+API_VERSION = 'v1'
+"""The version of the API, used in building the API call's URL."""
+
 
 class _DatastoreAPIOverHttp(object):
     """Helper mapping datastore API methods.
@@ -87,9 +94,10 @@ class _DatastoreAPIOverHttp(object):
             'Content-Length': str(len(data)),
             'User-Agent': self.connection.USER_AGENT,
         }
+        base_url = self.connection.api_base_url
+        api_url = build_api_url(project, method, base_url)
         headers, content = self.connection.http.request(
-            uri=self.connection.build_api_url(project=project, method=method),
-            method='POST', headers=headers, body=data)
+            uri=api_url, method='POST', headers=headers, body=data)
 
         status = headers['status']
         if status != '200':
@@ -348,3 +356,27 @@ class _DatastoreAPIOverGRPC(object):
         """
         request_pb.project_id = project
         return self._stub.AllocateIds(request_pb)
+
+
+def build_api_url(project, method, base_url):
+    """Construct the URL for a particular API call.
+
+    This method is used internally to come up with the URL to use when
+    making RPCs to the Cloud Datastore API.
+
+    :type project: string
+    :param project: The project to connect to. This is
+                    usually your project name in the cloud console.
+
+    :type method: string
+    :param method: The API method to call (e.g. 'runQuery', 'lookup').
+
+    :type base_url: string
+    :param base_url: The base URL where the API lives.
+
+    :rtype: str
+    :returns: The API URL created.
+    """
+    return API_URL_TEMPLATE.format(
+        api_base=base_url, api_version=API_VERSION,
+        project=project, method=method)

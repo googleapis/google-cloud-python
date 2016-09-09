@@ -70,36 +70,6 @@ class Connection(connection_module.Connection):
         else:
             self._datastore_api = _DatastoreAPIOverHttp(self)
 
-    def build_api_url(self, project, method, base_url=None,
-                      api_version=None):
-        """Construct the URL for a particular API call.
-
-        This method is used internally to come up with the URL to use when
-        making RPCs to the Cloud Datastore API.
-
-        :type project: string
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
-
-        :type method: string
-        :param method: The API method to call (e.g. 'runQuery', 'lookup').
-
-        :type base_url: string
-        :param base_url: The base URL where the API lives.
-                         You shouldn't have to provide this.
-
-        :type api_version: string
-        :param api_version: The version of the API to connect to.
-                            You shouldn't have to provide this.
-
-        :rtype: str
-        :returns: The API URL created.
-        """
-        return self.API_URL_TEMPLATE.format(
-            api_base=(base_url or self.api_base_url),
-            api_version=(api_version or self.API_VERSION),
-            project=project, method=method)
-
     def lookup(self, project, key_pbs,
                eventual=False, transaction_id=None):
         """Lookup keys from a project in the Cloud Datastore.

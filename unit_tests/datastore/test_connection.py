@@ -149,33 +149,6 @@ class TestConnection(unittest.TestCase):
         self.assertTrue(conn.http is authorized)
         self.assertTrue(isinstance(creds._called_with, httplib2.Http))
 
-    def test_build_api_url_w_default_base_version(self):
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            PROJECT + ':' + METHOD,
-        ])
-        self.assertEqual(conn.build_api_url(PROJECT, METHOD), URI)
-
-    def test_build_api_url_w_explicit_base_version(self):
-        BASE = 'http://example.com/'
-        VER = '3.1415926'
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        conn = self._makeOne()
-        URI = '/'.join([
-            BASE,
-            VER,
-            'projects',
-            PROJECT + ':' + METHOD,
-        ])
-        self.assertEqual(conn.build_api_url(PROJECT, METHOD, BASE, VER),
-                         URI)
-
     def test_lookup_single_key_empty_response(self):
         from google.cloud.datastore._generated import datastore_pb2
 

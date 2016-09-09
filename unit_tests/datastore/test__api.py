@@ -27,6 +27,8 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test__rpc(self):
+        from google.cloud.datastore._api import build_api_url
+
         class ReqPB(object):
 
             def SerializeToString(self):
@@ -44,8 +46,9 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         REQPB = b'REQPB'
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
-        URI = 'http://api-url'
-        conn = _Connection(URI)
+        BASE_URI = 'http://api-url'
+        conn = _Connection(BASE_URI)
+        URI = build_api_url(PROJECT, METHOD, BASE_URI)
         datastore_api = self._makeOne(conn)
         http = conn.http = Http({'status': '200'}, 'CONTENT')
         response = datastore_api._rpc(PROJECT, METHOD, ReqPB(), RspPB)
@@ -59,15 +62,17 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         self.assertEqual(called_with['headers']['User-Agent'],
                          conn.USER_AGENT)
         self.assertEqual(called_with['body'], REQPB)
-        self.assertEqual(conn.build_kwargs,
-                         [{'method': METHOD, 'project': PROJECT}])
 
     def test__request_w_200(self):
+        from google.cloud.datastore._api import build_api_url
+
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
         DATA = b'DATA'
         URI = 'http://api-url'
-        conn = _Connection(URI)
+        BASE_URI = 'http://api-url'
+        conn = _Connection(BASE_URI)
+        URI = build_api_url(PROJECT, METHOD, BASE_URI)
         datastore_api = self._makeOne(conn)
         http = conn.http = Http({'status': '200'}, 'CONTENT')
         self.assertEqual(datastore_api._request(PROJECT, METHOD, DATA),
@@ -80,10 +85,9 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         self.assertEqual(called_with['headers']['User-Agent'],
                          conn.USER_AGENT)
         self.assertEqual(called_with['body'], DATA)
-        self.assertEqual(conn.build_kwargs,
-                         [{'method': METHOD, 'project': PROJECT}])
 
     def test__request_not_200(self):
+        from google.cloud.datastore._api import build_api_url
         from google.cloud.exceptions import BadRequest
         from google.rpc import status_pb2
 
@@ -94,16 +98,24 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
         DATA = 'DATA'
-        URI = 'http://api-url'
-        conn = _Connection(URI)
+        BASE_URI = 'http://api-url'
+        conn = _Connection(BASE_URI)
+        URI = build_api_url(PROJECT, METHOD, BASE_URI)
         datastore_api = self._makeOne(conn)
         conn.http = Http({'status': '400'}, error.SerializeToString())
         with self.assertRaises(BadRequest) as exc:
             datastore_api._request(PROJECT, METHOD, DATA)
         expected_message = '400 Entity value is indexed.'
         self.assertEqual(str(exc.exception), expected_message)
-        self.assertEqual(conn.build_kwargs,
-                         [{'method': METHOD, 'project': PROJECT}])
+        # Verify the API call.
+        called_with = conn.http._called_with
+        self.assertEqual(called_with['uri'], URI)
+        self.assertEqual(called_with['method'], 'POST')
+        self.assertEqual(called_with['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(called_with['headers']['User-Agent'],
+                         conn.USER_AGENT)
+        self.assertEqual(called_with['body'], DATA)
 
 
 class Test_DatastoreAPIOverGRPC(unittest.TestCase):
@@ -295,18 +307,35 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
             [(request_pb, 'AllocateIds')])
 
 
+class Test_build_api_url(unittest.TestCase):
+
+    def _callFUT(self, project, method, base_url):
+        from google.cloud.datastore._api import build_api_url
+        return build_api_url(project, method, base_url)
+
+    def test_it(self):
+        from google.cloud.datastore import _api as MUT
+
+        PROJECT = 'PROJECT'
+        METHOD = 'METHOD'
+        BASE_URL = 'http://example.com'
+        URI = '/'.join([
+            BASE_URL,
+            MUT.API_VERSION,
+            'projects',
+            PROJECT + ':' + METHOD,
+        ])
+        result = self._callFUT(PROJECT, METHOD, BASE_URL)
+        self.assertEqual(result, URI)
+
+
 class _Connection(object):
 
     host = None
     USER_AGENT = 'you-sir-age-int'
 
-    def __init__(self, api_url):
-        self.api_url = api_url
-        self.build_kwargs = []
-
-    def build_api_url(self, **kwargs):
-        self.build_kwargs.append(kwargs)
-        return self.api_url
+    def __init__(self, api_base_url):
+        self.api_base_url = api_base_url
 
 
 class _GRPCStub(object):
