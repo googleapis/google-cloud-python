@@ -866,25 +866,21 @@ class TestMetadataPlugin(unittest.TestCase):
 
     def test_constructor(self):
         credentials = object()
-        user_agent = object()
-        plugin = self._makeOne(credentials, user_agent)
+        plugin = self._makeOne(credentials)
         self.assertIs(plugin._credentials, credentials)
-        self.assertIs(plugin._user_agent, user_agent)
 
     def test___call__(self):
         access_token_expected = 'FOOBARBAZ'
         credentials = _Credentials(access_token=access_token_expected)
-        user_agent = 'USER_AGENT'
         callback_args = []
 
         def callback(*args):
             callback_args.append(args)
 
-        transformer = self._makeOne(credentials, user_agent)
+        transformer = self._makeOne(credentials)
         result = transformer(None, callback)
         cb_headers = [
             ('authorization', 'Bearer ' + access_token_expected),
-            ('user-agent', user_agent),
         ]
         self.assertEqual(result, None)
         self.assertEqual(callback_args, [(cb_headers, None)])
@@ -930,8 +926,8 @@ class Test_make_secure_stub(unittest.TestCase):
                 self.composite_channel_credentials_args = args
                 return COMPOSITE_CREDS
 
-            def secure_channel(self, *args):
-                self.secure_channel_args = args
+            def secure_channel(self, *args, **kwargs):
+                self.secure_channel_args = (args, kwargs)
                 return CHANNEL
 
         grpc_mod = _GRPCModule()
@@ -957,7 +953,7 @@ class Test_make_secure_stub(unittest.TestCase):
 
         self.assertTrue(result is mock_result)
         self.assertEqual(stub_inputs, [CHANNEL])
-        self.assertEqual(plugin_args, [(credentials, user_agent)])
+        self.assertEqual(plugin_args, [(credentials,)])
         self.assertEqual(grpc_mod.ssl_channel_credentials_args, ())
         self.assertEqual(grpc_mod.metadata_call_credentials_args,
                          ((metadata_plugin,), {'name': 'google_creds'}))
@@ -965,8 +961,12 @@ class Test_make_secure_stub(unittest.TestCase):
             grpc_mod.composite_channel_credentials_args,
             (SSL_CREDS, METADATA_CREDS))
         target = '%s:%d' % (host, http_client.HTTPS_PORT)
+        secure_args = (target, COMPOSITE_CREDS)
+        secure_kwargs = {
+            'options': (('grpc.secondary_user_agent', user_agent),)
+        }
         self.assertEqual(grpc_mod.secure_channel_args,
-                         (target, COMPOSITE_CREDS))
+                         (secure_args, secure_kwargs))
 
 
 class Test_make_insecure_stub(unittest.TestCase):

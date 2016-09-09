@@ -585,14 +585,10 @@ class MetadataPlugin(object):
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
     :param credentials: The OAuth2 Credentials to use for creating
                         access tokens.
-
-    :type user_agent: str
-    :param user_agent: The user agent to be used with API requests.
     """
 
-    def __init__(self, credentials, user_agent):
+    def __init__(self, credentials):
         self._credentials = credentials
-        self._user_agent = user_agent
 
     def __call__(self, unused_context, callback):
         """Adds authorization header to request metadata.
@@ -607,7 +603,6 @@ class MetadataPlugin(object):
         access_token = self._credentials.get_access_token().access_token
         headers = [
             ('authorization', 'Bearer ' + access_token),
-            ('user-agent', self._user_agent),
         ]
         callback(headers, None)
 
@@ -636,13 +631,17 @@ def make_secure_stub(credentials, user_agent, stub_class, host):
     # ssl_channel_credentials() loads root certificates from
     # `grpc/_adapter/credentials/roots.pem`.
     transport_creds = grpc.ssl_channel_credentials()
-    custom_metadata_plugin = MetadataPlugin(credentials, user_agent)
+    custom_metadata_plugin = MetadataPlugin(credentials)
     auth_creds = grpc.metadata_call_credentials(
         custom_metadata_plugin, name='google_creds')
     channel_creds = grpc.composite_channel_credentials(
         transport_creds, auth_creds)
     target = '%s:%d' % (host, http_client.HTTPS_PORT)
-    channel = grpc.secure_channel(target, channel_creds)
+    channel_args = (
+        ('grpc.secondary_user_agent', user_agent),
+    )
+    channel = grpc.secure_channel(target, channel_creds,
+                                  options=channel_args)
     return stub_class(channel)
 
 
