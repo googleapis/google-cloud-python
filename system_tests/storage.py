@@ -26,7 +26,6 @@ from google.cloud.storage._helpers import _base64_md5hash
 
 from system_test_utils import unique_resource_id
 from retry import RetryErrors
-from retry import RetryResult
 
 
 HTTP = httplib2.Http()
@@ -42,6 +41,19 @@ def _bad_copy(bad_request):
 retry_429 = RetryErrors(exceptions.TooManyRequests)
 retry_bad_copy = RetryErrors(exceptions.BadRequest,
                              error_predicate=_bad_copy)
+
+
+def _empty_bucket(bucket):
+    """Empty a bucket of all existing blobs.
+
+    This accounts (partially) for the eventual consistency of the
+    list blobs API call.
+    """
+    for blob in bucket.list_blobs():
+        try:
+            blob.delete()
+        except exceptions.NotFound:  # eventual consistency
+            pass
 
 
 class Config(object):
@@ -216,8 +228,7 @@ class TestStorageListFiles(TestStorageFiles):
     def setUpClass(cls):
         super(TestStorageListFiles, cls).setUpClass()
         # Make sure bucket empty before beginning.
-        for blob in cls.bucket.list_blobs():
-            blob.delete()
+        _empty_bucket(cls.bucket)
 
         logo_path = cls.FILES['logo']['path']
         blob = storage.Blob(cls.FILENAMES[0], bucket=cls.bucket)
@@ -235,18 +246,13 @@ class TestStorageListFiles(TestStorageFiles):
         for blob in cls.suite_blobs_to_delete:
             blob.delete()
 
+    @RetryErrors(unittest.TestCase.failureException)
     def test_list_files(self):
-        def _all_in_list(blobs):
-            return len(blobs) == len(self.FILENAMES)
-
-        def _all_blobs():
-            return list(self.bucket.list_blobs())
-
-        retry = RetryResult(_all_in_list)
-        all_blobs = retry(_all_blobs)()
+        all_blobs = list(self.bucket.list_blobs())
         self.assertEqual(sorted(blob.name for blob in all_blobs),
                          sorted(self.FILENAMES))
 
+    @RetryErrors(unittest.TestCase.failureException)
     def test_paginate_files(self):
         truncation_size = 1
         count = len(self.FILENAMES) - truncation_size
@@ -277,11 +283,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
     def setUpClass(cls):
         super(TestStoragePseudoHierarchy, cls).setUpClass()
         # Make sure bucket empty before beginning.
-        for blob in cls.bucket.list_blobs():
-            try:
-                blob.delete()
-            except exceptions.NotFound:  # eventual consistency
-                pass
+        _empty_bucket(cls.bucket)
 
         simple_path = cls.FILES['simple']['path']
         blob = storage.Blob(cls.FILENAMES[0], bucket=cls.bucket)
@@ -297,6 +299,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         for blob in cls.suite_blobs_to_delete:
             blob.delete()
 
+    @RetryErrors(unittest.TestCase.failureException)
     def test_root_level_w_delimiter(self):
         iterator = self.bucket.list_blobs(delimiter='/')
         response = iterator.get_next_page_response()
@@ -306,6 +309,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertTrue(iterator.next_page_token is None)
         self.assertEqual(iterator.prefixes, set(['parent/']))
 
+    @RetryErrors(unittest.TestCase.failureException)
     def test_first_level(self):
         iterator = self.bucket.list_blobs(delimiter='/', prefix='parent/')
         response = iterator.get_next_page_response()
@@ -315,30 +319,25 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertTrue(iterator.next_page_token is None)
         self.assertEqual(iterator.prefixes, set(['parent/child/']))
 
+    @RetryErrors(unittest.TestCase.failureException)
     def test_second_level(self):
         expected_names = [
             'parent/child/file21.txt',
             'parent/child/file22.txt',
         ]
 
-        def _all_in_list(pair):
-            _, blobs = pair
-            return [blob.name for blob in blobs] == expected_names
-
-        def _all_blobs():
-            iterator = self.bucket.list_blobs(delimiter='/',
-                                              prefix='parent/child/')
-            response = iterator.get_next_page_response()
-            blobs = list(iterator.get_items_from_response(response))
-            return iterator, blobs
-
-        retry = RetryResult(_all_in_list)
-        iterator, _ = retry(_all_blobs)()
+        iterator = self.bucket.list_blobs(delimiter='/',
+                                          prefix='parent/child/')
+        response = iterator.get_next_page_response()
+        blobs = list(iterator.get_items_from_response(response))
+        self.assertEqual([blob.name for blob in blobs],
+                         expected_names)
         self.assertEqual(iterator.page_number, 1)
         self.assertTrue(iterator.next_page_token is None)
         self.assertEqual(iterator.prefixes,
                          set(['parent/child/grand/', 'parent/child/other/']))
 
+    @RetryErrors(unittest.TestCase.failureException)
     def test_third_level(self):
         # Pseudo-hierarchy can be arbitrarily deep, subject to the limit
         # of 1024 characters in the UTF-8 encoded name:
