@@ -121,7 +121,7 @@ class DatastoreAPIBase(object):
         """
         lookup_request = datastore_pb2.LookupRequest()
         set_read_options(lookup_request, eventual, transaction_id)
-        _add_keys_to_request(lookup_request.keys, key_pbs)
+        add_keys_to_request(lookup_request.keys, key_pbs)
 
         lookup_response = self._lookup(project, lookup_request)
 
@@ -312,6 +312,42 @@ class DatastoreAPIBase(object):
         # Nothing to do with this response, so just execute the method.
         self._rollback(project, request)
 
+    def _allocate_ids(self, project, request_pb):
+        """Perform an ``allocateIds`` request.
+
+        This method is virtual and should be implemented by subclasses.
+
+        :type project: string
+        :param project: The project to connect to.
+
+        :type request_pb: :class:`._generated.datastore_pb2.AllocateIdsRequest`
+        :param request_pb: The request protobuf object.
+
+        :raises: :exc:`NotImplementedError` always
+        """
+        raise NotImplementedError
+
+    def allocate_ids(self, project, key_pbs):
+        """Obtain backend-generated IDs for a set of keys.
+
+        Maps the ``DatastoreService.AllocateIds`` protobuf RPC.
+
+        :type project: string
+        :param project: The project to which the transaction belongs.
+
+        :type key_pbs: list of
+                       :class:`google.cloud.datastore._generated.entity_pb2.Key`
+        :param key_pbs: The keys for which the backend should allocate IDs.
+
+        :rtype: list of :class:`.datastore._generated.entity_pb2.Key`
+        :returns: An equal number of keys,  with IDs filled in by the backend.
+        """
+        request = datastore_pb2.AllocateIdsRequest()
+        add_keys_to_request(request.keys, key_pbs)
+        # Nothing to do with this response, so just execute the method.
+        response = self._allocate_ids(project, request)
+        return list(response.keys)
+
 
 class _DatastoreAPIOverHttp(DatastoreAPIBase):
     """Helper mapping datastore API methods.
@@ -471,7 +507,7 @@ class _DatastoreAPIOverHttp(DatastoreAPIBase):
         return self._rpc(project, 'rollback', request_pb,
                          datastore_pb2.RollbackResponse)
 
-    def allocate_ids(self, project, request_pb):
+    def _allocate_ids(self, project, request_pb):
         """Perform an ``allocateIds`` request.
 
         :type project: string
@@ -600,7 +636,7 @@ class _DatastoreAPIOverGRPC(DatastoreAPIBase):
         request_pb.project_id = project
         return self._stub.Rollback(request_pb)
 
-    def allocate_ids(self, project, request_pb):
+    def _allocate_ids(self, project, request_pb):
         """Perform an ``allocateIds`` request.
 
         :type project: string
@@ -659,7 +695,7 @@ def set_read_options(request, eventual, transaction_id):
         opts.transaction = transaction_id
 
 
-def _add_keys_to_request(request_field_pb, key_pbs):
+def add_keys_to_request(request_field_pb, key_pbs):
     """Add protobuf keys to a request object.
 
     :type request_field_pb: `RepeatedCompositeFieldContainer`

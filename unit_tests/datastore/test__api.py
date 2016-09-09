@@ -51,6 +51,11 @@ class TestDatastoreAPIBase(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             api_base._rollback(None, None)
 
+    def test__allocate_ids_virtual(self):
+        api_base = self._makeOne()
+        with self.assertRaises(NotImplementedError):
+            api_base._allocate_ids(None, None)
+
 
 class Test_DatastoreAPIOverHttp(unittest.TestCase):
 
@@ -327,14 +332,14 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertEqual(stub.method_calls,
                          [(request_pb, 'Rollback')])
 
-    def test_allocate_ids(self):
+    def test_internal_allocate_ids(self):
         return_val = object()
         stub = _GRPCStub(return_val)
         datastore_api = self._makeOne(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
-        result = datastore_api.allocate_ids(project, request_pb)
+        result = datastore_api._allocate_ids(project, request_pb)
         self.assertIs(result, return_val)
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(

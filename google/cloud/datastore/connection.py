@@ -18,8 +18,6 @@ import os
 
 from google.cloud import connection as connection_module
 from google.cloud.environment_vars import GCD_HOST
-from google.cloud.datastore._generated import datastore_pb2 as _datastore_pb2
-from google.cloud.datastore._api import _add_keys_to_request
 from google.cloud.datastore._api import _DatastoreAPIOverGRPC
 from google.cloud.datastore._api import _DatastoreAPIOverHttp
 from google.cloud.datastore._api import USE_GRPC as _USE_GRPC
@@ -234,8 +232,4 @@ class Connection(connection_module.Connection):
         :rtype: list of :class:`.datastore._generated.entity_pb2.Key`
         :returns: An equal number of keys,  with IDs filled in by the backend.
         """
-        request = _datastore_pb2.AllocateIdsRequest()
-        _add_keys_to_request(request.keys, key_pbs)
-        # Nothing to do with this response, so just execute the method.
-        response = self._datastore_api.allocate_ids(project, request)
-        return list(response.keys)
+        return self._datastore_api.allocate_ids(project, key_pbs)
