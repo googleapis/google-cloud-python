@@ -18,7 +18,6 @@
 from base64 import b64encode
 
 from google.cloud._helpers import _to_bytes
-from google.cloud._helpers import _bytes_to_unicode
 from google.cloud.vision.face import Face
 from google.cloud.vision.feature import Feature
 from google.cloud.vision.feature import FeatureTypes
@@ -27,23 +26,25 @@ from google.cloud.vision.feature import FeatureTypes
 class Image(object):
     """Image representation containing information to be annotate.
 
-    :type image_source: str
-    :param image_source: A string which can a Google Cloud Storage URI, or
-                         a byte stream of the image.
+    :type content: bytes
+    :param content: Byte stream of an image.
 
-    :type client: :class:`Client`
+    :type source_uri: str
+    :param source_uri: Google Cloud Storage URI of image.
+
+    :type client: :class:`~google.cloud.vision.client.Client`
     :param client: Instance of Vision client.
     """
 
-    def __init__(self, image_source, client):
+    def __init__(self, client, content=None, source_uri=None):
         self.client = client
         self._content = None
         self._source = None
 
-        if _bytes_to_unicode(image_source).startswith('gs://'):
-            self._source = image_source
+        if source_uri:
+            self._source = source_uri
         else:
-            self._content = b64encode(_to_bytes(image_source))
+            self._content = b64encode(_to_bytes(content))
 
     def as_dict(self):
         """Generate dictionary structure for request.
@@ -87,7 +88,7 @@ class Image(object):
         :param limit: The number of faces to try and detect.
 
         :rtype: list
-        :returns: List of :class:`google.cloud.vision.face.Face`.
+        :returns: List of :class:`~google.cloud.vision.face.Face`.
         """
         faces = []
         face_detection_feature = Feature(FeatureTypes.FACE_DETECTION, limit)

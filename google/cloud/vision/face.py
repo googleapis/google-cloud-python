@@ -31,7 +31,7 @@ class Angles(object):
     def from_api_repr(cls, response):
         """Factory: construct the angles from an Vision API response.
 
-        :rtype: :class:`google.cloud.vision.face.Angles`
+        :rtype: :class:`~google.cloud.vision.face.Angles`
         :returns: An `Angles` instance with data parsed from `response`.
         """
         roll = response['rollAngle']
@@ -88,7 +88,7 @@ class Emotions(object):
         :type response: dict
         :param response: Response dictionary representing a face.
 
-        :rtype: :class:`google.cloud.vision.face.Emotions`
+        :rtype: :class:`~google.cloud.vision.face.Emotions`
         :returns: Populated instance of `Emotions`.
         """
         joy_likelihood = getattr(Likelihood, response['joyLikelihood'])
@@ -106,7 +106,7 @@ class Emotions(object):
 
         :rtype: str
         :returns: String derived from
-                  :class:`google.cloud.vision.face.Likelihood`.
+                  :class:`~google.cloud.vision.face.Likelihood`.
         """
         return self._joy_likelihood
 
@@ -116,7 +116,7 @@ class Emotions(object):
 
         :rtype: str
         :returns: String derived from
-                  :class:`google.cloud.vision.face.Likelihood`.
+                  :class:`~google.cloud.vision.face.Likelihood`.
         """
         return self._sorrow_likelihood
 
@@ -126,7 +126,7 @@ class Emotions(object):
 
         :rtype: str
         :returns: String derived from
-                  :class:`google.cloud.vision.face.Likelihood`.
+                  :class:`~google.cloud.vision.face.Likelihood`.
         """
         return self._surprise_likelihood
 
@@ -136,7 +136,7 @@ class Emotions(object):
 
         :rtype: str
         :returns: String derived from
-                  :class:`google.cloud.vision.face.Likelihood`.
+                  :class:`~google.cloud.vision.face.Likelihood`.
         """
         return self._anger_likelihood
 
@@ -164,7 +164,7 @@ class Face(object):
         :type response: dict
         :param response: Face annotation dict returned from the Vision API.
 
-        :rtype: :class:`google.cloud.vision.face.Face`
+        :rtype: :class:`~google.cloud.vision.face.Face`
         :returns: A instance of `Face` with data parsed from `response`.
         """
         angles = Angles.from_api_repr(response)
@@ -186,7 +186,7 @@ class Face(object):
     def angles(self):
         """Accessor to the pan, tilt and roll angles of a Face.
 
-        :rtype: :class:`google.cloud.vision.face.Angles`
+        :rtype: :class:`~google.cloud.vision.face.Angles`
         :returns: Pan, tilt and roll angles of the detected face.
         """
 
@@ -196,7 +196,7 @@ class Face(object):
     def bounds(self):
         """Accessor to the bounding poly information of the detected face.
 
-        :rtype: :class:`google.cloud.vision.face.Bounds`
+        :rtype: :class:`~google.cloud.vision.face.Bounds`
         :returns: An instance of ``Bounds`` which has a list of vertices.
         """
         return self._bounds
@@ -214,7 +214,7 @@ class Face(object):
     def emotions(self):
         """Accessor to the possible emotions expressed in the detected face.
 
-        :rtype: :class:`google.cloud.vision.face.Emotions`
+        :rtype: :class:`~google.cloud.vision.face.Emotions`
         :returns: An instance of ``Emotions`` with joy, sorrow, anger, surprise
                   likelihood.
         """
@@ -224,7 +224,7 @@ class Face(object):
     def fd_bounds(self):
         """Accessor to the skin area bounding poly of the detected face.
 
-        :rtype: :class:`google.cloud.vision.image.FDBounds`
+        :rtype: :class:`~google.cloud.vision.image.FDBounds`
         :returns: An instance of ``FDBounds`` which has a list of vertices.
         """
         return self._fd_bounds
@@ -233,9 +233,9 @@ class Face(object):
     def headwear_likelihood(self):
         """Headwear likelihood.
 
-        :rtype: :class:`google.cloud.vision.face.Likelihood`
+        :rtype: :class:`~google.cloud.vision.face.Likelihood`
         :returns: String representing the likelihood based on
-                  :class:`google.cloud.vision.face.Likelihood`
+                  :class:`~google.cloud.vision.face.Likelihood`
         """
         return self._headwear_likelihood
 
@@ -243,7 +243,7 @@ class Face(object):
     def image_properties(self):
         """Image properties from imaged used in face detection.
 
-        :rtype: :class:`google.cloud.vision.face.FaceImageProperties`
+        :rtype: :class:`~google.cloud.vision.face.FaceImageProperties`
         :returns: ``FaceImageProperties`` object with image properties.
         """
         return self._image_properties
@@ -252,7 +252,7 @@ class Face(object):
     def landmarks(self):
         """Accessor to the facial landmarks detected in a face.
 
-        :rtype: :class:`google.cloud.vision.face.Landmarks`
+        :rtype: :class:`~google.cloud.vision.face.Landmarks`
         :returns: ``Landmarks`` object with facial landmarks as properies.
         """
         return self._landmarks
@@ -278,7 +278,7 @@ class FaceImageProperties(object):
     def from_api_repr(cls, response):
         """Factory: construct image properties from image.
 
-        :rtype: :class:`google.cloud.vision.face.FaceImageProperties`
+        :rtype: :class:`~google.cloud.vision.face.FaceImageProperties`
         :returns: Instance populated with image property data.
         """
         blurred_likelihood = getattr(Likelihood,
@@ -294,7 +294,7 @@ class FaceImageProperties(object):
 
         :rtype: str
         :returns: String representation derived from
-                  :class:`google.cloud.vision.face.Position`.
+                  :class:`~google.cloud.vision.face.Position`.
         """
         return self._blurred_likelihood
 
@@ -304,7 +304,7 @@ class FaceImageProperties(object):
 
         :rtype: str
         :returns: String representation derived from
-                  :class:`google.cloud.vision.face.Position`.
+                  :class:`~google.cloud.vision.face.Position`.
         """
         return self._underexposed_likelihood
 
@@ -369,7 +369,7 @@ class Landmark(object):
         :type response_landmark: dict
         :param response_landmark: Landmark representation from Vision API.
 
-        :rtype: :class:`google.cloud.vision.face.Landmark`
+        :rtype: :class:`~google.cloud.vision.face.Landmark`
         :returns: Populated instance of `Landmark`.
         """
         position = Position.from_api_repr(response_landmark['position'])
@@ -380,7 +380,7 @@ class Landmark(object):
     def position(self):
         """Landmark position on face.
 
-        :rtype: :class:`google.cloud.vision.face.Position`
+        :rtype: :class:`~google.cloud.vision.face.Position`
         :returns: Instance of `Position` with landmark coordinates.
         """
         return self._position

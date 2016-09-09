@@ -42,7 +42,7 @@ Annotate a single image
     >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> with io.open('./image.png', 'rb') as image_file:
-    ...     image = client.image(image_file.read())
+    ...     image = client.image(content=image_file.read())
     >>> faces = image.detect_faces(limit=10)
     >>> faces[0].landmarks.left_eye.position.x_coordinate
     ... 1004.8003
@@ -52,15 +52,15 @@ Annotate multiple images
 
 .. code-block:: python
 
-     >>> import io
-     >>> from gcloud import vision
-     >>> client = vision.Client()
+    >>> import io
+    >>> from gcloud import vision
+    >>> client = vision.Client()
      >>> with io.open('./image.png', 'rb') as image_file:
-     ...     first_image = client.image(image_file.read())
-     >>> second_image = client.image('gs://my-storage-bucket/image2.jpg')
-     >>> with client.batch():
-     ...     labels = first_image.detect_labels()
-     ...     faces = second_image.detect_faces(limit=10)
+    ...     image_one = client.image(content=image_file.read())
+    >>> image_two = client.image(source_uri='gs://my-storage-bucket/image.jpg')
+    >>> with client.batch():
+    ...     labels = image_one.detect_labels()
+    ...     faces = image_two.detect_faces(limit=10)
 
 No results returned
 ~~~~~~~~~~~~~~~~~~~
@@ -71,7 +71,7 @@ Failing annotations return no results for the feature type requested.
 
     >>> from google.cloud import vision
     >>> client = vision.Client()
-    >>> image = client.image('./image.jpg')
+    >>> image = client.image(source_uri='gs://my-storage-bucket/image.jpg')
     >>> logos = image.detect_logos(limit=10)
     >>> logos
     []
@@ -88,7 +88,7 @@ You can call the detection method manually.
     >>> from google.cloud.vision.image import Feature
     >>> from google.cloud.vision.image import FeatureTypes
     >>> client = vision.Client()
-    >>> image = client.image('gs://my-test-bucket/image.jpg')
+    >>> image = client.image(source_uri='gs://my-test-bucket/image.jpg')
     >>> features = [Feature(FeatureTypes.FACE_DETECTION, 5),
     ...             Feature(FeatureTypes.LOGO_DETECTION, 3)]
     >>> annotations = image.detect(features)
@@ -105,7 +105,7 @@ see: https://cloud.google.com/vision/reference/rest/v1/images/annotate#type_1
 
     >>> from google.cloud import vision
     >>> client = vision.Client()
-    >>> image = client.image('gs://my-test-bucket/image.jpg')
+    >>> image = client.image(source_uri='gs://my-test-bucket/image.jpg')
     >>> faces = image.detect_faces(limit=10)
     >>> faces[0].landmarks.left_eye.landmark_type
     'LEFT_EYE'
@@ -131,7 +131,7 @@ attempt to identify those objects.
 
     >>> from google.cloud import vision
     >>> client = vision.Client()
-    >>> image = client.image('./image.jpg')
+    >>> image = client.image(source_uri='gs://my-storage-bucket/image.jpg')
     >>> labels = image.detect_labels(limit=3)
     >>> labels[0].description
     'automobile'

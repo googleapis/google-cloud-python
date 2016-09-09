@@ -64,7 +64,7 @@ class TestClient(unittest.TestCase):
 
         features = [Feature(feature_type=FeatureTypes.FACE_DETECTION,
                             max_results=3)]
-        image = client.image(_IMAGE_CONTENT)
+        image = client.image(content=_IMAGE_CONTENT)
         response = client.annotate(image, features)
 
         self.assertEqual(REQUEST,
@@ -77,7 +77,7 @@ class TestClient(unittest.TestCase):
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT,
                                credentials=credentials)
-        image = client.image(_IMAGE_SOURCE)
+        image = client.image(source_uri=_IMAGE_SOURCE)
         self.assertTrue(isinstance(image, Image))
 
     def test_face_detection_from_source(self):
@@ -88,7 +88,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
-        image = client.image(_IMAGE_SOURCE)
+        image = client.image(source_uri=_IMAGE_SOURCE)
         faces = image.detect_faces(limit=3)
         self.assertEqual(5, len(faces))
         self.assertTrue(isinstance(faces[0], Face))
@@ -105,7 +105,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
-        image = client.image(_IMAGE_CONTENT)
+        image = client.image(content=_IMAGE_CONTENT)
         faces = image.detect_faces(limit=5)
         self.assertEqual(5, len(faces))
         self.assertTrue(isinstance(faces[0], Face))
