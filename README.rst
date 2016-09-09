@@ -61,7 +61,7 @@ Check out the `Authentication section`_ in our documentation to learn more.
 You may also find the `authentication document`_ shared by all the
 ``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: http://google-cloud-python.readthedocs.org/en/latest/gcloud-auth.html
+.. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Google Cloud Datastore

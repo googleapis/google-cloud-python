@@ -310,13 +310,6 @@ can build the docs via::
 
    $ tox -e docs
 
-In addition, to build a preview of the `readthedocs`_ theme, you can
-build via::
-
-   $ tox -e docs-rtd
-
-.. _readthedocs: http://google-cloud-python.readthedocs.org/
-
 Note About ``README`` as it pertains to PyPI
 --------------------------------------------
 

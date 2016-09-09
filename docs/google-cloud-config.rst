@@ -43,7 +43,7 @@ Authentication
 ==============
 
 The authentication credentials can be implicitly determined from the
-environment or directly. See :doc:`gcloud-auth`.
+environment or directly. See :doc:`google-cloud-auth`.
 
 Logging in via ``gcloud beta auth application-default login`` will
 automatically configure a JSON key file with your default project ID and
