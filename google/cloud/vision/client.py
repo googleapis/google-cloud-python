@@ -24,7 +24,7 @@ from google.cloud.vision.image import Image
 class VisionRequest(object):
     """Request container with image and features information to annotate.
 
-    :type features: list of :class:`gcoud.vision.feature.Feature`.
+    :type features: list of :class:`~gcoud.vision.feature.Feature`.
     :param features: The features that dictate which annotations to run.
 
     :type image: bytes
@@ -89,7 +89,7 @@ class Client(JSONClient):
         :param image: A string which can be a URL, a Google Cloud Storage path,
                       or a byte stream of the image.
 
-        :type features:  list of :class:`google.cloud.vision.feature.Feature`
+        :type features:  list of :class:`~google.cloud.vision.feature.Feature`
         :param features: The type of detection that the Vision API should
                          use to determine image attributes. Pricing is
                          based on the number of Feature Types.
@@ -98,8 +98,7 @@ class Client(JSONClient):
         :rtype: dict
         :returns: List of annotations.
         """
-        img = Image(image, self)
-        request = VisionRequest(img, features)
+        request = VisionRequest(image, features)
 
         data = {'requests': [request.as_dict()]}
         response = self.connection.api_request(method='POST',
@@ -107,3 +106,17 @@ class Client(JSONClient):
                                                data=data)
 
         return response['responses'][0]
+
+    def image(self, content=None, source_uri=None):
+        """Get instance of Image using current client.
+
+        :type content: bytes
+        :param content: Byte stream of an image.
+
+        :type source_uri: str
+        :param source_uri: Google Cloud Storage URI of image.
+
+        :rtype: :class:`~google.cloud.vision.image.Image`
+        :returns: Image instance with the current client attached.
+        """
+        return Image(client=self, content=content, source_uri=source_uri)

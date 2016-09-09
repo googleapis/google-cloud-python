@@ -32,7 +32,7 @@ class TestVisionImage(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_image_source_type_content(self):
-        image = self._makeOne(self._IMAGE_CONTENT, self._CLIENT_MOCK)
+        image = self._makeOne(self._CLIENT_MOCK, content=self._IMAGE_CONTENT)
 
         _AS_DICT = {
             'content': self._B64_IMAGE_CONTENT
@@ -43,7 +43,7 @@ class TestVisionImage(unittest.TestCase):
         self.assertEqual(_AS_DICT, image.as_dict())
 
     def test_image_source_type_google_cloud_storage(self):
-        image = self._makeOne(self._IMAGE_SOURCE, self._CLIENT_MOCK)
+        image = self._makeOne(self._CLIENT_MOCK, source_uri=self._IMAGE_SOURCE)
 
         _AS_DICT = {
             'source': {
@@ -56,13 +56,13 @@ class TestVisionImage(unittest.TestCase):
         self.assertEqual(_AS_DICT, image.as_dict())
 
     def test_cannot_set_both_source_and_content(self):
-        image = self._makeOne(self._IMAGE_CONTENT, self._CLIENT_MOCK)
+        image = self._makeOne(self._CLIENT_MOCK, content=self._IMAGE_CONTENT)
 
         self.assertEqual(self._B64_IMAGE_CONTENT, image.content)
         with self.assertRaises(AttributeError):
             image.source = self._IMAGE_SOURCE
 
-        image = self._makeOne(self._IMAGE_SOURCE, self._CLIENT_MOCK)
+        image = self._makeOne(self._CLIENT_MOCK, source_uri=self._IMAGE_SOURCE)
         self.assertEqual(self._IMAGE_SOURCE, image.source)
         with self.assertRaises(AttributeError):
             image.content = self._IMAGE_CONTENT
