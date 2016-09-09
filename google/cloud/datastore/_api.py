@@ -200,6 +200,37 @@ class DatastoreAPIBase(object):
             response.batch.skipped_results,
         )
 
+    def _begin_transaction(self, project, request_pb):
+        """Perform a ``beginTransaction`` request.
+
+        This method is virtual and should be implemented by subclasses.
+
+        :type project: string
+        :param project: The project to connect to.
+
+        :type request_pb:
+            :class:`._generated.datastore_pb2.BeginTransactionRequest`
+        :param request_pb: The request protobuf object.
+
+        :raises: :exc:`NotImplementedError` always
+        """
+        raise NotImplementedError
+
+    def begin_transaction(self, project):
+        """Begin a transaction.
+
+        Maps the ``DatastoreService.BeginTransaction`` protobuf RPC.
+
+        :type project: string
+        :param project: The project to which the transaction applies.
+
+        :rtype: bytes
+        :returns: The serialized transaction that was begun.
+        """
+        request = datastore_pb2.BeginTransactionRequest()
+        response = self._begin_transaction(project, request)
+        return response.transaction
+
 
 class _DatastoreAPIOverHttp(DatastoreAPIBase):
     """Helper mapping datastore API methods.
@@ -310,7 +341,7 @@ class _DatastoreAPIOverHttp(DatastoreAPIBase):
         return self._rpc(project, 'runQuery', request_pb,
                          datastore_pb2.RunQueryResponse)
 
-    def begin_transaction(self, project, request_pb):
+    def _begin_transaction(self, project, request_pb):
         """Perform a ``beginTransaction`` request.
 
         :type project: string
@@ -434,7 +465,7 @@ class _DatastoreAPIOverGRPC(DatastoreAPIBase):
         request_pb.project_id = project
         return self._stub.RunQuery(request_pb)
 
-    def begin_transaction(self, project, request_pb):
+    def _begin_transaction(self, project, request_pb):
         """Perform a ``beginTransaction`` request.
 
         :type project: string

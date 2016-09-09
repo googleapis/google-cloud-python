@@ -36,6 +36,11 @@ class TestDatastoreAPIBase(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             api_base._run_query(None, None)
 
+    def test__begin_transaction_virtual(self):
+        api_base = self._makeOne()
+        with self.assertRaises(NotImplementedError):
+            api_base._begin_transaction(None, None)
+
 
 class Test_DatastoreAPIOverHttp(unittest.TestCase):
 
@@ -232,14 +237,14 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertEqual(stub.method_calls,
                          [(request_pb, 'RunQuery')])
 
-    def test_begin_transaction(self):
+    def test_internal_begin_transaction(self):
         return_val = object()
         stub = _GRPCStub(return_val)
         datastore_api = self._makeOne(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
-        result = datastore_api.begin_transaction(project, request_pb)
+        result = datastore_api._begin_transaction(project, request_pb)
         self.assertIs(result, return_val)
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(

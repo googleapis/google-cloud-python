@@ -176,9 +176,7 @@ class Connection(connection_module.Connection):
         :rtype: bytes
         :returns: The serialized transaction that was begun.
         """
-        request = _datastore_pb2.BeginTransactionRequest()
-        response = self._datastore_api.begin_transaction(project, request)
-        return response.transaction
+        return self._datastore_api.begin_transaction(project)
 
     def commit(self, project, request, transaction_id):
         """Commit mutations in context of current transaction (if any).
