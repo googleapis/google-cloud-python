@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the Vision API &mdash; google-cloud 891b060 documentation</title>
+  <title>Using the Vision API &mdash; google-cloud d42b020 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 891b060 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud d42b020 documentation" href="index.html"/>
         <link rel="next" title="Vision Client" href="vision-client.html"/>
         <link rel="prev" title="Translate Client" href="translate-client.html"/> 
 
@@ -211,6 +211,7 @@
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -302,27 +303,28 @@ this will be detected automatically.</p>
 <h2>Annotating an Image<a class="headerlink" href="#annotating-an-image" title="Permalink to this headline">#</a></h2>
 <div class="section" id="annotate-a-single-image">
 <h3>Annotate a single image<a class="headerlink" href="#annotate-a-single-image" title="Permalink to this headline">#</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">io</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;./image.png&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_faces</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">landmarks</span><span class="o">.</span><span class="n">left_eye</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x_coordinate</span>
+<span class="gp">... </span><span class="mf">1004.8003</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="annotate-multiple-images">
 <h3>Annotate multiple images<a class="headerlink" href="#annotate-multiple-images" title="Permalink to this headline">#</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">first_image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">second_image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;gs://my-storage-bucket/image2.jpg&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">io</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">vision</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="go"> &gt;&gt;&gt; with io.open(&#39;./image.png&#39;, &#39;rb&#39;) as image_file:</span>
+<span class="gp">... </span>    <span class="n">image_one</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_two</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-storage-bucket/image.jpg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">batch</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="n">labels</span> <span class="o">=</span> <span class="n">first_image</span><span class="o">.</span><span class="n">detect_labels</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="n">faces</span> <span class="o">=</span> <span class="n">second_image</span><span class="o">.</span><span class="n">detect_faces</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>or</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;gs://my-storage-bucket/image2.jpg&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">detect_faces_multi</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">labels</span> <span class="o">=</span> <span class="n">image_one</span><span class="o">.</span><span class="n">detect_labels</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">faces</span> <span class="o">=</span> <span class="n">image_two</span><span class="o">.</span><span class="n">detect_faces</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -331,7 +333,7 @@ this will be detected automatically.</p>
 <p>Failing annotations return no results for the feature type requested.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-storage-bucket/image.jpg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_logos</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span>
 <span class="go">[]</span>
@@ -342,9 +344,13 @@ this will be detected automatically.</p>
 <h3>Manual Detection<a class="headerlink" href="#manual-detection" title="Permalink to this headline">#</a></h3>
 <p>You can call the detection method manually.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.vision.image</span> <span class="kn">import</span> <span class="n">Feature</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.vision.image</span> <span class="kn">import</span> <span class="n">FeatureTypes</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;gs://my-test-bucket/image.jpg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">vision</span><span class="o">.</span><span class="n">FACE_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-test-bucket/image.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">FACE_DETECTION</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LOGO_DETECTION</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">annotations</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -355,11 +361,11 @@ For a list of the possible facial landmarks
 see: <a class="reference external" href="https://cloud.google.com/vision/reference/rest/v1/images/annotate#type_1">https://cloud.google.com/vision/reference/rest/v1/images/annotate#type_1</a></p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-test-bucket/image.jpg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_faces</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">landmarks</span><span class="o">.</span><span class="n">left_eye</span><span class="o">.</span><span class="n">landmark_type</span>
 <span class="go">&#39;LEFT_EYE&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">landmarks</span><span class="o">.</span><span class="n">left_eye</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x_coordinate</span>
 <span class="go">1301.2404</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detection_confidence</span>
 <span class="go">0.9863683</span>
@@ -377,7 +383,7 @@ If you have an image with a car, person and a dog it, label detection will
 attempt to identify those objects.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-storage-bucket/image.jpg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_labels</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
 <span class="go">&#39;automobile&#39;</span>
@@ -401,9 +407,9 @@ locations if available.</p>
 <span class="go">-33.857123</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span>
 <span class="go">151.213921</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x_coordinate</span>
 <span class="go">78</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y_coordinate</span>
 <span class="go">162</span>
 </pre></div>
 </div>
@@ -419,9 +425,9 @@ locations if available.</p>
 <span class="go">&#39;Google&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">score</span>
 <span class="go">0.9795432</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x_coordinate</span>
 <span class="go">78</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y_coordinate</span>
 <span class="go">62</span>
 </pre></div>
 </div>
@@ -516,7 +522,7 @@ locations if available.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'891b060',
+            VERSION:'d42b020',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

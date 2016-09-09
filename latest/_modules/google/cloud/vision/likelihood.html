@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.message &mdash; google-cloud d42b020 documentation</title>
+  <title>google.cloud.vision.likelihood &mdash; google-cloud d42b020 documentation</title>
   
 
   
@@ -240,7 +240,7 @@
       
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
       
-    <li>google.cloud.pubsub.message</li>
+    <li>google.cloud.vision.likelihood</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -252,8 +252,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for google.cloud.pubsub.message</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2015 Google Inc. All rights reserved.</span>
+  <h1>Source code for google.cloud.vision.likelihood</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -267,85 +267,21 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Define API Topics.&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">base64</span>
-
-<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_to_datetime</span>
+<span class="sd">&quot;&quot;&quot;Likelihood constants returned from Vision API.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../../../pubsub-message.html#google.cloud.pubsub.message.Message">[docs]</a><span class="k">class</span> <span class="nc">Message</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Messages can be published to a topic and received by subscribers.</span>
+<div class="viewcode-block" id="Likelihood"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.likelihood.Likelihood">[docs]</a><span class="k">class</span> <span class="nc">Likelihood</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A representation of likelihood to give stable results across upgrades.</span>
 
 <span class="sd">    See:</span>
-<span class="sd">    https://cloud.google.com/pubsub/reference/rest/v1/PubsubMessage</span>
-
-<span class="sd">    :type data: bytes</span>
-<span class="sd">    :param data: the payload of the message.</span>
-
-<span class="sd">    :type message_id: string</span>
-<span class="sd">    :param message_id: An ID assigned to the message by the API.</span>
-
-<span class="sd">    :type attributes: dict or None</span>
-<span class="sd">    :param attributes: Extra metadata associated by the publisher with the</span>
-<span class="sd">                       message.</span>
+<span class="sd">    https://cloud.google.com/vision/reference/rest/v1/images/annotate#likelihood</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">_service_timestamp</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">message_id</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">message_id</span> <span class="o">=</span> <span class="n">message_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_attributes</span> <span class="o">=</span> <span class="n">attributes</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Lazily-constructed attribute dictionary.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_attributes</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attributes</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return sortable timestamp from attributes, if passed.</span>
-
-<span class="sd">        Allows sorting messages in publication order (assuming consistent</span>
-<span class="sd">        clocks across all publishers).</span>
-
-<span class="sd">        :rtype: :class:`datetime.datetime`</span>
-<span class="sd">        :returns: timestamp (in UTC timezone) parsed from RFC 3339 timestamp</span>
-<span class="sd">        :raises: ValueError if timestamp not in ``attributes``, or if it does</span>
-<span class="sd">                 not match the RFC 3339 format.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">stamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timestamp&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">stamp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No timestamp&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">stamp</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">service_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return server-set timestamp.</span>
-
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: timestamp (in UTC timezone) in RFC 3339 format</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_timestamp</span>
-
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Message.from_api_repr"><a class="viewcode-back" href="../../../../pubsub-message.html#google.cloud.pubsub.message.Message.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">api_repr</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory:  construct message from API representation.</span>
-
-<span class="sd">        :type api_repr: dict or None</span>
-<span class="sd">        :param api_repr: The API representation of the message</span>
-
-<span class="sd">        :rtype: :class:`Message`</span>
-<span class="sd">        :returns: The message created from the response.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">b</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span>
-            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">message_id</span><span class="o">=</span><span class="n">api_repr</span><span class="p">[</span><span class="s1">&#39;messageId&#39;</span><span class="p">],</span>
-            <span class="n">attributes</span><span class="o">=</span><span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attributes&#39;</span><span class="p">))</span>
-        <span class="n">instance</span><span class="o">.</span><span class="n">_service_timestamp</span> <span class="o">=</span> <span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;publishTimestamp&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">instance</span></div></div>
+    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="s1">&#39;UNKNOWN&#39;</span>
+    <span class="n">VERY_UNLIKELY</span> <span class="o">=</span> <span class="s1">&#39;VERY_UNLIKELY&#39;</span>
+    <span class="n">UNLIKELY</span> <span class="o">=</span> <span class="s1">&#39;UNLIKELY&#39;</span>
+    <span class="n">POSSIBLE</span> <span class="o">=</span> <span class="s1">&#39;POSSIBLE&#39;</span>
+    <span class="n">LIKELY</span> <span class="o">=</span> <span class="s1">&#39;LIKELY&#39;</span>
+    <span class="n">VERY_LIKELY</span> <span class="o">=</span> <span class="s1">&#39;VERY_LIKELY&#39;</span></div>
 </pre></div>
 
            </div>
