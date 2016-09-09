@@ -49,7 +49,7 @@ GCP projects and AWS accounts. It can also simply be the ID of
 a monitored project.
 
 Most often the authentication credentials will be determined
-implicitly from your environment. See :doc:`gcloud-auth` for
+implicitly from your environment. See :doc:`google-cloud-auth` for
 more information.
 
 It is thus typical to create a client object as follows::

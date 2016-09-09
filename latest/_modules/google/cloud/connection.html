@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.connection &mdash; google-cloud a2afc69 documentation</title>
+  <title>google.cloud.connection &mdash; google-cloud 52c5872 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud a2afc69 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 52c5872 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -80,9 +80,9 @@
             
                 <p class="caption"><span class="caption-text">google-cloud</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-api.html">Shared Core Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-config.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-auth.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../google-cloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../google-cloud-config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../google-cloud-auth.html">Authentication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../operation-api.html">Long-Running Operations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
@@ -282,7 +282,7 @@
 <span class="sd">&quot;&quot;&quot;The base of the API call URL.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A generic connection to Google Cloud Platform.</span>
 
 <span class="sd">    Subclasses should understand only the basic types in method arguments,</span>
@@ -379,7 +379,7 @@
         <span class="k">return</span> <span class="n">credentials</span></div>
 
 
-<div class="viewcode-block" id="JSONConnection"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.connection.JSONConnection">[docs]</a><span class="k">class</span> <span class="nc">JSONConnection</span><span class="p">(</span><span class="n">Connection</span><span class="p">):</span>
+<div class="viewcode-block" id="JSONConnection"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.connection.JSONConnection">[docs]</a><span class="k">class</span> <span class="nc">JSONConnection</span><span class="p">(</span><span class="n">Connection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A connection to a Google JSON-based API.</span>
 
 <span class="sd">    These APIs are discovery based. For reference:</span>
@@ -408,7 +408,7 @@
     <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="JSONConnection.build_api_url"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.connection.JSONConnection.build_api_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="JSONConnection.build_api_url"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.connection.JSONConnection.build_api_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">api_base_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_version</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct an API url given a few components, some optional.</span>
 
@@ -524,7 +524,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                                  <span class="n">body</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 
-<div class="viewcode-block" id="JSONConnection.api_request"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.connection.JSONConnection.api_request">[docs]</a>    <span class="k">def</span> <span class="nf">api_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="JSONConnection.api_request"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.connection.JSONConnection.api_request">[docs]</a>    <span class="k">def</span> <span class="nf">api_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">api_base_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">expect_json</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -644,7 +644,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'a2afc69',
+            VERSION:'52c5872',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

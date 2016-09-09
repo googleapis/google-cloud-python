@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.exceptions &mdash; google-cloud a2afc69 documentation</title>
+  <title>google.cloud.exceptions &mdash; google-cloud 52c5872 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud a2afc69 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 52c5872 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -80,9 +80,9 @@
             
                 <p class="caption"><span class="caption-text">google-cloud</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-api.html">Shared Core Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-config.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-auth.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../google-cloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../google-cloud-config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../google-cloud-auth.html">Authentication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../operation-api.html">Long-Running Operations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
@@ -278,7 +278,7 @@
 <span class="n">_HTTP_CODE_TO_EXCEPTION</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># populated at end of module</span>
 
 
-<div class="viewcode-block" id="GoogleCloudError"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.GoogleCloudError">[docs]</a><span class="k">class</span> <span class="nc">GoogleCloudError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="GoogleCloudError"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.GoogleCloudError">[docs]</a><span class="k">class</span> <span class="nc">GoogleCloudError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base error class for Google Cloud errors (abstract).</span>
 
 <span class="sd">    Each subclass represents a single type of HTTP error response.</span>
@@ -307,115 +307,115 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="Redirection"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.Redirection">[docs]</a><span class="k">class</span> <span class="nc">Redirection</span><span class="p">(</span><span class="n">GoogleCloudError</span><span class="p">):</span>
+<div class="viewcode-block" id="Redirection"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.Redirection">[docs]</a><span class="k">class</span> <span class="nc">Redirection</span><span class="p">(</span><span class="n">GoogleCloudError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base for 3xx responses</span>
 
 <span class="sd">    This class is abstract.</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="MovedPermanently"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.MovedPermanently">[docs]</a><span class="k">class</span> <span class="nc">MovedPermanently</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
+<div class="viewcode-block" id="MovedPermanently"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.MovedPermanently">[docs]</a><span class="k">class</span> <span class="nc">MovedPermanently</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;301 Moved Permanently&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">301</span></div>
 
 
-<div class="viewcode-block" id="NotModified"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.NotModified">[docs]</a><span class="k">class</span> <span class="nc">NotModified</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
+<div class="viewcode-block" id="NotModified"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.NotModified">[docs]</a><span class="k">class</span> <span class="nc">NotModified</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;304 Not Modified&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">304</span></div>
 
 
-<div class="viewcode-block" id="TemporaryRedirect"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.TemporaryRedirect">[docs]</a><span class="k">class</span> <span class="nc">TemporaryRedirect</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
+<div class="viewcode-block" id="TemporaryRedirect"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.TemporaryRedirect">[docs]</a><span class="k">class</span> <span class="nc">TemporaryRedirect</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;307 Temporary Redirect&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">307</span></div>
 
 
-<div class="viewcode-block" id="ResumeIncomplete"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.ResumeIncomplete">[docs]</a><span class="k">class</span> <span class="nc">ResumeIncomplete</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
+<div class="viewcode-block" id="ResumeIncomplete"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.ResumeIncomplete">[docs]</a><span class="k">class</span> <span class="nc">ResumeIncomplete</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;308 Resume Incomplete&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">308</span></div>
 
 
-<div class="viewcode-block" id="ClientError"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.ClientError">[docs]</a><span class="k">class</span> <span class="nc">ClientError</span><span class="p">(</span><span class="n">GoogleCloudError</span><span class="p">):</span>
+<div class="viewcode-block" id="ClientError"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.ClientError">[docs]</a><span class="k">class</span> <span class="nc">ClientError</span><span class="p">(</span><span class="n">GoogleCloudError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base for 4xx responses</span>
 
 <span class="sd">    This class is abstract</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="BadRequest"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.BadRequest">[docs]</a><span class="k">class</span> <span class="nc">BadRequest</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="BadRequest"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.BadRequest">[docs]</a><span class="k">class</span> <span class="nc">BadRequest</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;400 Bad Request&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">400</span></div>
 
 
-<div class="viewcode-block" id="Unauthorized"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.Unauthorized">[docs]</a><span class="k">class</span> <span class="nc">Unauthorized</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="Unauthorized"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.Unauthorized">[docs]</a><span class="k">class</span> <span class="nc">Unauthorized</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;401 Unauthorized&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">401</span></div>
 
 
-<div class="viewcode-block" id="Forbidden"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.Forbidden">[docs]</a><span class="k">class</span> <span class="nc">Forbidden</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="Forbidden"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.Forbidden">[docs]</a><span class="k">class</span> <span class="nc">Forbidden</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;403 Forbidden&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">403</span></div>
 
 
-<div class="viewcode-block" id="NotFound"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.NotFound">[docs]</a><span class="k">class</span> <span class="nc">NotFound</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="NotFound"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.NotFound">[docs]</a><span class="k">class</span> <span class="nc">NotFound</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;404 Not Found&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">404</span></div>
 
 
-<div class="viewcode-block" id="MethodNotAllowed"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.MethodNotAllowed">[docs]</a><span class="k">class</span> <span class="nc">MethodNotAllowed</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="MethodNotAllowed"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.MethodNotAllowed">[docs]</a><span class="k">class</span> <span class="nc">MethodNotAllowed</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;405 Method Not Allowed&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">405</span></div>
 
 
-<div class="viewcode-block" id="Conflict"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.Conflict">[docs]</a><span class="k">class</span> <span class="nc">Conflict</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="Conflict"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.Conflict">[docs]</a><span class="k">class</span> <span class="nc">Conflict</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;409 Conflict&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">409</span></div>
 
 
-<div class="viewcode-block" id="LengthRequired"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.LengthRequired">[docs]</a><span class="k">class</span> <span class="nc">LengthRequired</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="LengthRequired"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.LengthRequired">[docs]</a><span class="k">class</span> <span class="nc">LengthRequired</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;411 Length Required&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">411</span></div>
 
 
-<div class="viewcode-block" id="PreconditionFailed"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.PreconditionFailed">[docs]</a><span class="k">class</span> <span class="nc">PreconditionFailed</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="PreconditionFailed"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.PreconditionFailed">[docs]</a><span class="k">class</span> <span class="nc">PreconditionFailed</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;412 Precondition Failed&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">412</span></div>
 
 
-<div class="viewcode-block" id="RequestRangeNotSatisfiable"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.RequestRangeNotSatisfiable">[docs]</a><span class="k">class</span> <span class="nc">RequestRangeNotSatisfiable</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="RequestRangeNotSatisfiable"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.RequestRangeNotSatisfiable">[docs]</a><span class="k">class</span> <span class="nc">RequestRangeNotSatisfiable</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;416 Request Range Not Satisfiable&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">416</span></div>
 
 
-<div class="viewcode-block" id="TooManyRequests"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.TooManyRequests">[docs]</a><span class="k">class</span> <span class="nc">TooManyRequests</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
+<div class="viewcode-block" id="TooManyRequests"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.TooManyRequests">[docs]</a><span class="k">class</span> <span class="nc">TooManyRequests</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;429 Too Many Requests&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">429</span></div>
 
 
-<div class="viewcode-block" id="ServerError"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.ServerError">[docs]</a><span class="k">class</span> <span class="nc">ServerError</span><span class="p">(</span><span class="n">GoogleCloudError</span><span class="p">):</span>
+<div class="viewcode-block" id="ServerError"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.ServerError">[docs]</a><span class="k">class</span> <span class="nc">ServerError</span><span class="p">(</span><span class="n">GoogleCloudError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base for 5xx responses:  (abstract)&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="InternalServerError"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.InternalServerError">[docs]</a><span class="k">class</span> <span class="nc">InternalServerError</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="InternalServerError"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.InternalServerError">[docs]</a><span class="k">class</span> <span class="nc">InternalServerError</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;500 Internal Server Error&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">500</span></div>
 
 
-<div class="viewcode-block" id="MethodNotImplemented"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.MethodNotImplemented">[docs]</a><span class="k">class</span> <span class="nc">MethodNotImplemented</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="MethodNotImplemented"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.MethodNotImplemented">[docs]</a><span class="k">class</span> <span class="nc">MethodNotImplemented</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;501 Not Implemented&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">501</span></div>
 
 
-<div class="viewcode-block" id="BadGateway"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.BadGateway">[docs]</a><span class="k">class</span> <span class="nc">BadGateway</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="BadGateway"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.BadGateway">[docs]</a><span class="k">class</span> <span class="nc">BadGateway</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;502 Bad Gateway&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">502</span></div>
 
 
-<div class="viewcode-block" id="ServiceUnavailable"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.ServiceUnavailable">[docs]</a><span class="k">class</span> <span class="nc">ServiceUnavailable</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
+<div class="viewcode-block" id="ServiceUnavailable"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.ServiceUnavailable">[docs]</a><span class="k">class</span> <span class="nc">ServiceUnavailable</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;503 Service Unavailable&#39; response.&quot;&quot;&quot;</span>
     <span class="n">code</span> <span class="o">=</span> <span class="mi">503</span></div>
 
 
-<div class="viewcode-block" id="make_exception"><a class="viewcode-back" href="../../../gcloud-api.html#google.cloud.exceptions.make_exception">[docs]</a><span class="k">def</span> <span class="nf">make_exception</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">error_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="make_exception"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.make_exception">[docs]</a><span class="k">def</span> <span class="nf">make_exception</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">error_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Factory:  create exception based on HTTP response code.</span>
 
 <span class="sd">    :type response: :class:`httplib2.Response` or other HTTP response object</span>
@@ -513,7 +513,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'a2afc69',
+            VERSION:'52c5872',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

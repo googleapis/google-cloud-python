@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Authentication &mdash; google-cloud a2afc69 documentation</title>
+  <title>Authentication &mdash; google-cloud 52c5872 documentation</title>
   
 
   
@@ -32,9 +32,9 @@
   
 
   
-    <link rel="top" title="google-cloud a2afc69 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 52c5872 documentation" href="index.html"/>
         <link rel="next" title="Long-Running Operations" href="operation-api.html"/>
-        <link rel="prev" title="Configuration" href="gcloud-config.html"/> 
+        <link rel="prev" title="Configuration" href="google-cloud-config.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -81,8 +81,8 @@
             
                 <p class="caption"><span class="caption-text">google-cloud</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gcloud-config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-cloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-cloud-config.html">Configuration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Authentication</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#client-provided-authentication">Client-Provided Authentication</a><ul>
@@ -262,7 +262,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/gcloud-auth.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/google-cloud-auth.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -309,7 +309,7 @@ and point to it using an environment variable:</p>
 </div>
 <div class="section" id="client-provided-authentication">
 <h2>Client-Provided Authentication<a class="headerlink" href="#client-provided-authentication" title="Permalink to this headline">#</a></h2>
-<p>Every package uses a <a class="reference internal" href="gcloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>
+<p>Every package uses a <a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>
 as a base for interacting with an API.
 For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">datastore</span>
@@ -351,7 +351,7 @@ from different projects</li>
 <a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials" title="(in oauth2client v3.0.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a> object suited to your
 environment.
 After creation,
-you can pass it directly to a <a class="reference internal" href="gcloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>:</p>
+you can pass it directly to a <a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -379,13 +379,13 @@ just for Google Compute Engine:</p>
 <h3>Service Accounts<a class="headerlink" href="#service-accounts" title="Permalink to this headline">#</a></h3>
 <p>A <a class="reference external" href="https://cloud.google.com/storage/docs/authentication#generating-a-private-key">service account</a> can be used with both a JSON keyfile and
 a PKCS12/P12 keyfile.</p>
-<p>Directly creating <code class="docutils literal"><span class="pre">credentials</span></code> in <a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/">oauth2client</a> for a service
+<p>Directly creating <code class="docutils literal"><span class="pre">credentials</span></code> in <a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/">oauth2client</a> for a service
 account is a rather complex process,
 so as a convenience, the
-<a class="reference internal" href="gcloud-api.html#google.cloud.client.Client.from_service_account_json" title="google.cloud.client.Client.from_service_account_json"><code class="xref py py-meth docutils literal"><span class="pre">from_service_account_json()</span></code></a>
+<a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client.from_service_account_json" title="google.cloud.client.Client.from_service_account_json"><code class="xref py py-meth docutils literal"><span class="pre">from_service_account_json()</span></code></a>
 and
-<a class="reference internal" href="gcloud-api.html#google.cloud.client.Client.from_service_account_p12" title="google.cloud.client.Client.from_service_account_p12"><code class="xref py py-meth docutils literal"><span class="pre">from_service_account_p12()</span></code></a>
-factories are provided to create a <a class="reference internal" href="gcloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> with
+<a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client.from_service_account_p12" title="google.cloud.client.Client.from_service_account_p12"><code class="xref py py-meth docutils literal"><span class="pre">from_service_account_p12()</span></code></a>
+factories are provided to create a <a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> with
 service account credentials.</p>
 <p>For example, with a JSON keyfile:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="s1">&#39;/path/to/keyfile.json&#39;</span><span class="p">)</span>
@@ -421,7 +421,7 @@ Application Default Credentials using <code class="docutils literal"><span class
 described above,
 so be sure none of the other possible environments conflict
 with your user provided credentials.</p>
-<p>Advanced users of <a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/">oauth2client</a> can also use custom flows to
+<p>Advanced users of <a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/">oauth2client</a> can also use custom flows to
 create credentials using <a class="reference external" href="https://developers.google.com/api-client-library/python/guide/aaa_oauth#flow_from_clientsecrets">client secrets</a> or using a
 <a class="reference external" href="https://developers.google.com/api-client-library/python/guide/aaa_oauth#OAuth2WebServerFlow">webserver flow</a>.
 After creation, <a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials" title="(in oauth2client v3.0.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>
@@ -542,10 +542,10 @@ you add the correct scopes for the APIs you want to access:</p>
 </div>
 <div class="section" id="advanced-customization">
 <h2>Advanced Customization<a class="headerlink" href="#advanced-customization" title="Permalink to this headline">#</a></h2>
-<p>Though the <code class="docutils literal"><span class="pre">google-cloud-python</span></code> library defaults to using <a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/">oauth2client</a>
+<p>Though the <code class="docutils literal"><span class="pre">google-cloud-python</span></code> library defaults to using <a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/">oauth2client</a>
 to sign requests and <code class="docutils literal"><span class="pre">httplib2</span></code> for sending requests,
 it is not a strict requirement.</p>
-<p>The <a class="reference internal" href="gcloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> constructor accepts an optional
+<p>The <a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> constructor accepts an optional
 <code class="docutils literal"><span class="pre">http</span></code> argument in place of a <code class="docutils literal"><span class="pre">credentials</span></code> object.
 If passed, all HTTP requests made by the client will use your
 custom HTTP object.</p>
@@ -582,7 +582,7 @@ some point.</p>
         <a href="operation-api.html" class="btn btn-neutral float-right" title="Long-Running Operations" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="gcloud-config.html" class="btn btn-neutral" title="Configuration" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="google-cloud-config.html" class="btn btn-neutral" title="Configuration" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -613,7 +613,7 @@ some point.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'a2afc69',
+            VERSION:'52c5872',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

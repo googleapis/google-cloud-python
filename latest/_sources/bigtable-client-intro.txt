@@ -23,7 +23,7 @@ Configuration
 -------------
 
 - For an overview of authentication in ``google-cloud-python``,
-  see :doc:`gcloud-auth`.
+  see :doc:`google-cloud-auth`.
 
 - In addition to any authentication configuration, you can also set the
   :envvar:`GOOGLE_CLOUD_PROJECT` environment variable for the Google Cloud Console
