@@ -16,8 +16,6 @@ import operator
 
 import unittest
 
-from google.cloud import _helpers
-from google.cloud.environment_vars import TESTS_PROJECT
 from google.cloud import bigquery
 from google.cloud.exceptions import Forbidden
 
@@ -52,7 +50,6 @@ class Config(object):
 
 
 def setUpModule():
-    _helpers.PROJECT = TESTS_PROJECT
     Config.CLIENT = bigquery.Client()
 
 

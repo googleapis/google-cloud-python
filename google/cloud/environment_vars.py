@@ -21,9 +21,6 @@ and tests.
 PROJECT = 'GOOGLE_CLOUD_PROJECT'
 """Environment variable defining default project."""
 
-TESTS_PROJECT = 'GOOGLE_CLOUD_TESTS_PROJECT_ID'
-"""Environment variable defining project for tests."""
-
 GCD_DATASET = 'DATASTORE_DATASET'
 """Environment variable defining default dataset ID under GCD."""
 

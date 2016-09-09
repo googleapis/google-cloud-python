@@ -14,8 +14,6 @@
 
 import unittest
 
-from google.cloud import _helpers
-from google.cloud.environment_vars import TESTS_PROJECT
 from google.cloud.exceptions import InternalServerError
 from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import ServiceUnavailable
@@ -28,10 +26,6 @@ retry_404 = RetryErrors(NotFound)
 retry_404_500 = RetryErrors((NotFound, InternalServerError))
 retry_500 = RetryErrors(InternalServerError)
 retry_503 = RetryErrors(ServiceUnavailable)
-
-
-def setUpModule():
-    _helpers.PROJECT = TESTS_PROJECT
 
 
 class TestMonitoring(unittest.TestCase):

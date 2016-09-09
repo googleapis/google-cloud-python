@@ -23,7 +23,6 @@ import httplib2
 # pylint: disable=ungrouped-imports
 from google.cloud import _helpers
 from google.cloud.environment_vars import PUBSUB_EMULATOR
-from google.cloud.environment_vars import TESTS_PROJECT
 from google.cloud.pubsub import client
 # pylint: enable=ungrouped-imports
 
@@ -51,7 +50,6 @@ class Config(object):
 
 
 def setUpModule():
-    _helpers.PROJECT = TESTS_PROJECT
     if os.getenv(PUBSUB_EMULATOR) is None:
         Config.CLIENT = client.Client()
     else:

@@ -14,8 +14,6 @@
 
 import unittest
 
-from google.cloud import _helpers
-from google.cloud.environment_vars import TESTS_PROJECT
 from google.cloud import exceptions
 from google.cloud import language
 from google.cloud import storage
@@ -39,7 +37,6 @@ class Config(object):
 
 
 def setUpModule():
-    _helpers.PROJECT = TESTS_PROJECT
     Config.CLIENT = language.Client()
     # Now create a bucket for GCS stored content.
     storage_client = storage.Client()

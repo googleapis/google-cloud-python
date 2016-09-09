@@ -18,12 +18,10 @@ import unittest
 
 import httplib2
 
-from google.cloud import _helpers
 from google.cloud._helpers import UTC
 from google.cloud import datastore
 from google.cloud.datastore.helpers import GeoPoint
 from google.cloud.environment_vars import GCD_DATASET
-from google.cloud.environment_vars import TESTS_PROJECT
 from google.cloud.exceptions import Conflict
 
 import clear_datastore
@@ -55,7 +53,6 @@ def setUpModule():
     # Isolated namespace so concurrent test runs don't collide.
     test_namespace = 'ns' + unique_resource_id()
     if emulator_dataset is None:
-        _helpers.PROJECT = TESTS_PROJECT
         Config.CLIENT = datastore.Client(namespace=test_namespace)
     else:
         credentials = EmulatorCreds()

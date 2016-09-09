@@ -153,8 +153,6 @@ Running System Tests
   so you'll need to provide some environment variables to facilitate
   authentication to your project:
 
-  - ``GOOGLE_CLOUD_TESTS_PROJECT_ID``: Developers Console project ID (e.g.
-    bamboo-shift-455).
   - ``GOOGLE_APPLICATION_CREDENTIALS``: The path to a JSON key file;
     see ``system_tests/app_credentials.json.sample`` as an example. Such a file
     can be downloaded directly from the developer's console by clicking
@@ -182,12 +180,12 @@ Running System Tests
    $ export CLOUDSDK_PYTHON_SITEPACKAGES=1
 
    # Authenticate the gcloud tool with your account.
-   $ JSON_CREDENTIALS_FILE="path/to/app_credentials.json"
-   $ gcloud auth activate-service-account --key-file=$JSON_CREDENTIALS_FILE
+   $ GOOGLE_APPLICATION_CREDENTIALS="path/to/app_credentials.json"
+   $ gcloud auth activate-service-account \
+   > --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
 
    # Create the indexes
-   $ gcloud preview datastore create-indexes system_tests/data/index.yaml \
-   > --project=$GOOGLE_CLOUD_TESTS_PROJECT_ID
+   $ gcloud preview datastore create-indexes system_tests/data/index.yaml
 
    # Restore your environment to its previous state.
    $ unset CLOUDSDK_PYTHON_SITEPACKAGES

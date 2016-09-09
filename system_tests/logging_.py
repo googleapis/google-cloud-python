@@ -20,8 +20,6 @@ import google.cloud.logging.handlers.handlers
 from google.cloud.logging.handlers.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers.transports import SyncTransport
 from google.cloud.logging import client
-from google.cloud import _helpers
-from google.cloud.environment_vars import TESTS_PROJECT
 
 from retry import RetryErrors
 from retry import RetryResult
@@ -52,7 +50,6 @@ class Config(object):
 
 
 def setUpModule():
-    _helpers.PROJECT = TESTS_PROJECT
     Config.CLIENT = client.Client()
 
 
