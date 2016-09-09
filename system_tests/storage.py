@@ -29,8 +29,19 @@ from retry import RetryErrors
 from retry import RetryResult
 
 
-retry_429 = RetryErrors(exceptions.TooManyRequests)
 HTTP = httplib2.Http()
+
+
+def _bad_copy(bad_request):
+    """Predicate: pass only exceptions for a failed copyTo."""
+    err_msg = bad_request.message
+    return (err_msg.startswith('No file found in request. (POST') and
+            'copyTo' in err_msg)
+
+
+retry_429 = RetryErrors(exceptions.TooManyRequests)
+retry_bad_copy = RetryErrors(exceptions.BadRequest,
+                             error_predicate=_bad_copy)
 
 
 class Config(object):
@@ -188,7 +199,8 @@ class TestStorageWriteFiles(TestStorageFiles):
         blob.upload_from_filename(filename)
         self.case_blobs_to_delete.append(blob)
 
-        new_blob = self.bucket.copy_blob(blob, self.bucket, 'CloudLogoCopy')
+        new_blob = retry_bad_copy(self.bucket.copy_blob)(
+            blob, self.bucket, 'CloudLogoCopy')
         self.case_blobs_to_delete.append(new_blob)
 
         base_contents = blob.download_as_string()
@@ -214,7 +226,8 @@ class TestStorageListFiles(TestStorageFiles):
 
         # Copy main blob onto remaining in FILENAMES.
         for filename in cls.FILENAMES[1:]:
-            new_blob = cls.bucket.copy_blob(blob, cls.bucket, filename)
+            new_blob = retry_bad_copy(cls.bucket.copy_blob)(
+                blob, cls.bucket, filename)
             cls.suite_blobs_to_delete.append(new_blob)
 
     @classmethod
@@ -275,7 +288,8 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         blob.upload_from_filename(simple_path)
         cls.suite_blobs_to_delete = [blob]
         for filename in cls.FILENAMES[1:]:
-            new_blob = cls.bucket.copy_blob(blob, cls.bucket, filename)
+            new_blob = retry_bad_copy(cls.bucket.copy_blob)(
+                blob, cls.bucket, filename)
             cls.suite_blobs_to_delete.append(new_blob)
 
     @classmethod
