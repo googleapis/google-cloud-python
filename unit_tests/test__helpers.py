@@ -975,7 +975,7 @@ class Test_make_secure_stub(unittest.TestCase):
         target = '%s:%d' % (host, http_client.HTTPS_PORT)
         secure_args = (target, COMPOSITE_CREDS)
         secure_kwargs = {
-            'options': (('grpc.secondary_user_agent', user_agent),)
+            'options': (('grpc.primary_user_agent', user_agent),)
         }
         self.assertEqual(grpc_mod.secure_channel_args,
                          (secure_args, secure_kwargs))
