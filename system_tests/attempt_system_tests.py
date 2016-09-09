@@ -19,12 +19,36 @@ the build is for a PR and not a merged commit.
 
 If being run as part of a Travis build for a merged commit, the
 encrypted `key.json` file need be decrypted before running tests.
+
+Before encrypting:
+
+* Visit ``https://github.com/settings/tokens/new``, get a token,
+  and store the token in travis.token file.
+* Visit
+  ``https://console.cloud.google.com/apis/credentials?project={PROJ}``
+* Click "Create credentials >> Service account key", select your
+  service account and create a JSON key (we'll call it ``key.json``)
+
+Encrypt the file via::
+
+$ travis login --github-token=$(cat travis.token)
+$ travis encrypt-file --repo=GoogleCloudPlatform/google-cloud-python key.json
+
+After running ``travis encrypt-file``, take note of the ``openssl`` command
+printed out. In particular, it'll give the name of the key and
+IV (initialization vector) environment variables added to the Travis
+project.
+
+See:
+https://docs.travis-ci.com/user/encrypting-files/
 """
 
 
 import os
 import subprocess
 import sys
+
+from google.cloud.environment_vars import CREDENTIALS
 
 from run_system_test import FailedSystemTestModule
 from run_system_test import run_module_tests
@@ -46,6 +70,8 @@ if sys.version_info[:2] == (2, 7):
 SCRIPTS_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.abspath(os.path.join(SCRIPTS_DIR, '..'))
 ENCRYPTED_KEYFILE = os.path.join(ROOT_DIR, 'system_tests', 'key.json.enc')
+ENCRYPTED_KEY_ENV = 'encrypted_c16407eb06cc_key'
+ENCRYPTED_INIT_VECTOR_ENV = 'encrypted_c16407eb06cc_iv'
 
 
 def check_environment():
@@ -73,9 +99,9 @@ def decrypt_keyfile():
     print('Running in Travis during merge, decrypting stored '
           'key file.')
 
-    encrypted_key = os.getenv('encrypted_a1b222e8c14d_key')
-    encrypted_iv = os.getenv('encrypted_a1b222e8c14d_iv')
-    out_file = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+    encrypted_key = os.getenv(ENCRYPTED_KEY_ENV)
+    encrypted_iv = os.getenv(ENCRYPTED_INIT_VECTOR_ENV)
+    out_file = os.getenv(CREDENTIALS)
     # Convert encrypted key file into decrypted file to be used.
     subprocess.call([
         'openssl', 'aes-256-cbc',
