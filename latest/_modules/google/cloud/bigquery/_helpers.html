@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery._helpers &mdash; google-cloud 83914b9 documentation</title>
+  <title>google.cloud.bigquery._helpers &mdash; google-cloud 298b28a documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 83914b9 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 298b28a documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -269,6 +269,7 @@
 <span class="sd">&quot;&quot;&quot;Shared helper functions for BigQuery API classes.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_date_from_iso8601_date</span>
 
 
 <span class="k">def</span> <span class="nf">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
@@ -301,6 +302,12 @@
         <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="mi">1</span><span class="n">e6</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
 
 
+<span class="k">def</span> <span class="nf">_date_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to a datetime date, if set or not nullable&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_date_from_iso8601_date</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
 <span class="k">def</span> <span class="nf">_record_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to a mapping, if set or not nullable.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
@@ -325,6 +332,7 @@
     <span class="s1">&#39;FLOAT&#39;</span><span class="p">:</span> <span class="n">_float_from_json</span><span class="p">,</span>
     <span class="s1">&#39;BOOLEAN&#39;</span><span class="p">:</span> <span class="n">_bool_from_json</span><span class="p">,</span>
     <span class="s1">&#39;TIMESTAMP&#39;</span><span class="p">:</span> <span class="n">_datetime_from_json</span><span class="p">,</span>
+    <span class="s1">&#39;DATE&#39;</span><span class="p">:</span> <span class="n">_date_from_json</span><span class="p">,</span>
     <span class="s1">&#39;RECORD&#39;</span><span class="p">:</span> <span class="n">_record_from_json</span><span class="p">,</span>
     <span class="s1">&#39;STRING&#39;</span><span class="p">:</span> <span class="n">_string_from_json</span><span class="p">,</span>
 <span class="p">}</span>
@@ -451,7 +459,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'83914b9',
+            VERSION:'298b28a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
