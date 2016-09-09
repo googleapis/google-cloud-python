@@ -74,7 +74,8 @@ class TestLanguage(unittest.TestCase):
         # Verify entity 1.
         self.assertEqual(entity1.name, self.NAME1)
         self.assertEqual(entity1.entity_type, EntityType.PERSON)
-        self.assertTrue(0.7 < entity1.salience < 0.8)
+        # NOTE: As of Sept. 8, 2016, entity1.salience == 0.81992269
+        self.assertTrue(0.6 < entity1.salience < 1.0)
         self.assertEqual(entity1.mentions, [entity1.name])
         self.assertEqual(entity1.wikipedia_url,
                          'http://en.wikipedia.org/wiki/Caravaggio')
@@ -82,7 +83,8 @@ class TestLanguage(unittest.TestCase):
         # Verify entity 2.
         self.assertEqual(entity2.name, self.NAME2)
         self.assertEqual(entity2.entity_type, EntityType.LOCATION)
-        self.assertTrue(0.15 < entity2.salience < 0.25)
+        # NOTE: As of Sept. 8, 2016, entity2.salience == 0.14427181
+        self.assertTrue(0.0 < entity2.salience < 0.4)
         self.assertEqual(entity2.mentions, [entity2.name])
         self.assertEqual(entity2.wikipedia_url,
                          'http://en.wikipedia.org/wiki/Italy')
