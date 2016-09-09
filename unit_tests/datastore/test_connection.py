@@ -50,9 +50,10 @@ class TestConnection(unittest.TestCase):
                          conn.USER_AGENT)
 
     def test_default_url(self):
-        klass = self._getTargetClass()
+        from google.cloud.datastore.connection import DATASTORE_API_HOST
+
         conn = self._makeOne()
-        self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
+        self.assertEqual(conn.api_base_url, 'https://' + DATASTORE_API_HOST)
 
     def test_custom_url_from_env(self):
         import os
@@ -150,6 +151,7 @@ class TestConnection(unittest.TestCase):
         self.assertTrue(isinstance(creds._called_with, httplib2.Http))
 
     def test_lookup_single_key_empty_response(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -158,7 +160,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -177,6 +179,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb, keys[0])
 
     def test_lookup_single_key_empty_response_w_eventual(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -185,7 +188,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -216,6 +219,7 @@ class TestConnection(unittest.TestCase):
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_lookup_single_key_empty_response_w_transaction(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -225,7 +229,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -246,6 +250,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.read_options.transaction, TRANSACTION)
 
     def test_lookup_single_key_nonempty_response(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore._generated import entity_pb2
 
@@ -258,7 +263,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -278,6 +283,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb, keys[0])
 
     def test_lookup_multiple_keys_empty_response(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -287,7 +293,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -307,6 +313,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_missing(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -320,7 +327,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -341,6 +348,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_deferred(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -352,7 +360,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -377,6 +385,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb2, keys[1])
 
     def test_run_query_w_eventual_no_transaction(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore._generated import query_pb2
 
@@ -392,7 +401,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':runQuery',
         ])
@@ -415,6 +424,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.read_options.transaction, b'')
 
     def test_run_query_wo_eventual_w_transaction(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore._generated import query_pb2
 
@@ -431,7 +441,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':runQuery',
         ])
@@ -473,6 +483,7 @@ class TestConnection(unittest.TestCase):
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_run_query_wo_namespace_empty_result(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore._generated import query_pb2
 
@@ -488,7 +499,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':runQuery',
         ])
@@ -507,6 +518,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.query, q_pb)
 
     def test_run_query_w_namespace_nonempty_result(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore._generated import entity_pb2
 
@@ -521,7 +533,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':runQuery',
         ])
@@ -537,6 +549,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.query, q_pb)
 
     def test_begin_transaction(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -546,7 +559,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':beginTransaction',
         ])
@@ -559,10 +572,11 @@ class TestConnection(unittest.TestCase):
         request.ParseFromString(cw['body'])
 
     def test_commit_wo_transaction(self):
-        from unit_tests._testing import _Monkey
-        from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore import _api as API_MOD
+        from google.cloud.datastore._api import API_VERSION
+        from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
+        from unit_tests._testing import _Monkey
 
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
@@ -576,7 +590,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':commit',
         ])
@@ -605,10 +619,11 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(_parsed, [rsp_pb])
 
     def test_commit_w_transaction(self):
-        from unit_tests._testing import _Monkey
-        from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore import _api as API_MOD
+        from google.cloud.datastore._api import API_VERSION
+        from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
+        from unit_tests._testing import _Monkey
 
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
@@ -622,7 +637,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':commit',
         ])
@@ -651,7 +666,9 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(_parsed, [rsp_pb])
 
     def test_rollback_ok(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
+
         PROJECT = 'PROJECT'
         TRANSACTION = b'xact'
 
@@ -659,7 +676,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':rollback',
         ])
@@ -673,6 +690,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.transaction, TRANSACTION)
 
     def test_allocate_ids_empty(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -680,7 +698,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':allocateIds',
         ])
@@ -694,6 +712,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(list(request.keys), [])
 
     def test_allocate_ids_non_empty(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -711,7 +730,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':allocateIds',
         ])

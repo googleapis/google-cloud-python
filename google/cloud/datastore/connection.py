@@ -41,16 +41,6 @@ class Connection(connection_module.Connection):
     :param http: An optional HTTP object to make requests.
     """
 
-    API_BASE_URL = 'https://' + DATASTORE_API_HOST
-    """The base of the API call URL."""
-
-    API_VERSION = 'v1'
-    """The version of the API, used in building the API call's URL."""
-
-    API_URL_TEMPLATE = ('{api_base}/{api_version}/projects'
-                        '/{project}:{method}')
-    """A template for the URL of a particular API call."""
-
     SCOPE = ('https://www.googleapis.com/auth/datastore',)
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
@@ -62,7 +52,7 @@ class Connection(connection_module.Connection):
             secure = False
         except KeyError:
             self.host = DATASTORE_API_HOST
-            self.api_base_url = self.__class__.API_BASE_URL
+            self.api_base_url = 'https://' + self.host
             secure = True
         if _USE_GRPC:
             self._datastore_api = _DatastoreAPIOverGRPC(self, secure=secure)
