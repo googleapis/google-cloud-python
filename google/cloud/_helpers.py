@@ -651,7 +651,7 @@ def make_secure_stub(credentials, user_agent, stub_class, host):
         transport_creds, auth_creds)
     target = '%s:%d' % (host, http_client.HTTPS_PORT)
     channel_args = (
-        ('grpc.secondary_user_agent', user_agent),
+        ('grpc.primary_user_agent', user_agent),
     )
     channel = grpc.secure_channel(target, channel_creds,
                                   options=channel_args)
