@@ -135,6 +135,27 @@ class Test_datetime_from_json(unittest.TestCase):
             _EPOCH + datetime.timedelta(seconds=1, microseconds=234567))
 
 
+class Test_date_from_json(unittest.TestCase):
+
+    def _callFUT(self, value, field):
+        from google.cloud.bigquery._helpers import _date_from_json
+        return _date_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._callFUT(None, _Field('NULLABLE')))
+
+    def test_w_none_required(self):
+        with self.assertRaises(TypeError):
+            self._callFUT(None, _Field('REQUIRED'))
+
+    def test_w_string_value(self):
+        import datetime
+        coerced = self._callFUT('1987-09-22', object())
+        self.assertEqual(
+            coerced,
+            datetime.date(1987, 9, 22))
+
+
 class Test_record_from_json(unittest.TestCase):
 
     def _callFUT(self, value, field):

@@ -532,6 +532,18 @@ class Test__datetime_from_microseconds(unittest.TestCase):
         self.assertEqual(self._callFUT(NOW_MICROS), NOW)
 
 
+class Test___date_from_iso8601_date(unittest.TestCase):
+
+    def _callFUT(self, value):
+        from google.cloud._helpers import _date_from_iso8601_date
+        return _date_from_iso8601_date(value)
+
+    def test_todays_date(self):
+        import datetime
+        TODAY = datetime.date.today()
+        self.assertEqual(self._callFUT(TODAY.strftime("%Y-%m-%d")), TODAY)
+
+
 class Test__rfc3339_to_datetime(unittest.TestCase):
 
     def _callFUT(self, dt_str):
