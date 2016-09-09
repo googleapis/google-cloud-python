@@ -280,6 +280,38 @@ class DatastoreAPIBase(object):
         response = self._commit(project, request)
         return parse_commit_response(response)
 
+    def _rollback(self, project, request_pb):
+        """Perform a ``rollback`` request.
+
+        This method is virtual and should be implemented by subclasses.
+
+        :type project: string
+        :param project: The project to connect to.
+
+        :type request_pb: :class:`._generated.datastore_pb2.RollbackRequest`
+        :param request_pb: The request protobuf object.
+
+        :raises: :exc:`NotImplementedError` always
+        """
+        raise NotImplementedError
+
+    def rollback(self, project, transaction_id):
+        """Rollback the connection's existing transaction.
+
+        Maps the ``DatastoreService.Rollback`` protobuf RPC.
+
+        :type project: string
+        :param project: The project to which the transaction belongs.
+
+        :type transaction_id: string
+        :param transaction_id: The transaction ID returned from
+                               :meth:`begin_transaction`.
+        """
+        request = datastore_pb2.RollbackRequest()
+        request.transaction = transaction_id
+        # Nothing to do with this response, so just execute the method.
+        self._rollback(project, request)
+
 
 class _DatastoreAPIOverHttp(DatastoreAPIBase):
     """Helper mapping datastore API methods.
@@ -423,7 +455,7 @@ class _DatastoreAPIOverHttp(DatastoreAPIBase):
         return self._rpc(project, 'commit', request_pb,
                          datastore_pb2.CommitResponse)
 
-    def rollback(self, project, request_pb):
+    def _rollback(self, project, request_pb):
         """Perform a ``rollback`` request.
 
         :type project: string
@@ -552,7 +584,7 @@ class _DatastoreAPIOverGRPC(DatastoreAPIBase):
                 raise Conflict(exc.details())
             raise
 
-    def rollback(self, project, request_pb):
+    def _rollback(self, project, request_pb):
         """Perform a ``rollback`` request.
 
         :type project: string

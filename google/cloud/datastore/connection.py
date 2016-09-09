@@ -217,10 +217,7 @@ class Connection(connection_module.Connection):
         :param transaction_id: The transaction ID returned from
                                :meth:`begin_transaction`.
         """
-        request = _datastore_pb2.RollbackRequest()
-        request.transaction = transaction_id
-        # Nothing to do with this response, so just execute the method.
-        self._datastore_api.rollback(project, request)
+        self._datastore_api.rollback(project, transaction_id)
 
     def allocate_ids(self, project, key_pbs):
         """Obtain backend-generated IDs for a set of keys.

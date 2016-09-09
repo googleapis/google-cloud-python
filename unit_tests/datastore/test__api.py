@@ -46,6 +46,11 @@ class TestDatastoreAPIBase(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             api_base._commit(None, None)
 
+    def test__rollback_virtual(self):
+        api_base = self._makeOne()
+        with self.assertRaises(NotImplementedError):
+            api_base._rollback(None, None)
+
 
 class Test_DatastoreAPIOverHttp(unittest.TestCase):
 
@@ -309,14 +314,14 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         exc = RuntimeError('Not a gRPC error')
         self._internal_commit_failure_helper(exc, RuntimeError)
 
-    def test_rollback(self):
+    def test_internal_rollback(self):
         return_val = object()
         stub = _GRPCStub(return_val)
         datastore_api = self._makeOne(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
-        result = datastore_api.rollback(project, request_pb)
+        result = datastore_api._rollback(project, request_pb)
         self.assertIs(result, return_val)
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(stub.method_calls,
