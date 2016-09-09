@@ -38,30 +38,29 @@ Annotate a single image
 
 .. code-block:: python
 
+    >>> import io
     >>> from google.cloud import vision
     >>> client = vision.Client()
-    >>> image = client.image('./image.png')
+    >>> with io.open('./image.png', 'rb') as image_file:
+    ...     image = client.image(content=image_file.read())
     >>> faces = image.detect_faces(limit=10)
+    >>> faces[0].landmarks.left_eye.position.x_coordinate
+    ... 1004.8003
 
 Annotate multiple images
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
-     >>> first_image = client.image('./image.jpg')
-     >>> second_image = client.image('gs://my-storage-bucket/image2.jpg')
-     >>> with client.batch():
-     ...     labels = first_image.detect_labels()
-     ...     faces = second_image.detect_faces(limit=10)
-
-or
-
-.. code-block:: python
-
-     >>> images = []
-     >>> images.append(client.image('./image.jpg'))
-     >>> images.append(client.image('gs://my-storage-bucket/image2.jpg'))
-     >>> faces = client.detect_faces_multi(images, limit=10)
+    >>> import io
+    >>> from gcloud import vision
+    >>> client = vision.Client()
+     >>> with io.open('./image.png', 'rb') as image_file:
+    ...     image_one = client.image(content=image_file.read())
+    >>> image_two = client.image(source_uri='gs://my-storage-bucket/image.jpg')
+    >>> with client.batch():
+    ...     labels = image_one.detect_labels()
+    ...     faces = image_two.detect_faces(limit=10)
 
 No results returned
 ~~~~~~~~~~~~~~~~~~~
@@ -72,7 +71,7 @@ Failing annotations return no results for the feature type requested.
 
     >>> from google.cloud import vision
     >>> client = vision.Client()
-    >>> image = client.image('./image.jpg')
+    >>> image = client.image(source_uri='gs://my-storage-bucket/image.jpg')
     >>> logos = image.detect_logos(limit=10)
     >>> logos
     []
@@ -86,9 +85,13 @@ You can call the detection method manually.
 .. code-block:: python
 
     >>> from google.cloud import vision
+    >>> from google.cloud.vision.image import Feature
+    >>> from google.cloud.vision.image import FeatureTypes
     >>> client = vision.Client()
-    >>> image = client.image('gs://my-test-bucket/image.jpg')
-    >>> faces = image.detect(type=vision.FACE_DETECTION, limit=10)
+    >>> image = client.image(source_uri='gs://my-test-bucket/image.jpg')
+    >>> features = [Feature(FeatureTypes.FACE_DETECTION, 5),
+    ...             Feature(FeatureTypes.LOGO_DETECTION, 3)]
+    >>> annotations = image.detect(features)
 
 Face Detection
 ~~~~~~~~~~~~~~
@@ -102,11 +105,11 @@ see: https://cloud.google.com/vision/reference/rest/v1/images/annotate#type_1
 
     >>> from google.cloud import vision
     >>> client = vision.Client()
-    >>> image = client.image('./image.jpg')
+    >>> image = client.image(source_uri='gs://my-test-bucket/image.jpg')
     >>> faces = image.detect_faces(limit=10)
-    >>> faces[0].landmarks[0].type
+    >>> faces[0].landmarks.left_eye.landmark_type
     'LEFT_EYE'
-    >>> faces[0].landmarks[0].position.x
+    >>> faces[0].landmarks.left_eye.position.x_coordinate
     1301.2404
     >>> faces[0].detection_confidence
     0.9863683
@@ -128,7 +131,7 @@ attempt to identify those objects.
 
     >>> from google.cloud import vision
     >>> client = vision.Client()
-    >>> image = client.image('./image.jpg')
+    >>> image = client.image(source_uri='gs://my-storage-bucket/image.jpg')
     >>> labels = image.detect_labels(limit=3)
     >>> labels[0].description
     'automobile'
@@ -155,9 +158,9 @@ locations if available.
     -33.857123
     >>> landmarks[0].locations[0].longitude
     151.213921
-    >>> landmarks[0].bounding_poly.vertices[0].x
+    >>> landmarks[0].bounding_poly.vertices[0].x_coordinate
     78
-    >>> landmarks[0].bounding_poly.vertices[0].y
+    >>> landmarks[0].bounding_poly.vertices[0].y_coordinate
     162
 
 Logo Detection
@@ -175,9 +178,9 @@ Google Vision can also attempt to detect company and brand logos in images.
     'Google'
     >>> logos[0].score
     0.9795432
-    >>> logos[0].bounding_poly.vertices[0].x
+    >>> logos[0].bounding_poly.vertices[0].x_coordinate
     78
-    >>> logos[0].bounding_poly.vertices[0].y
+    >>> logos[0].bounding_poly.vertices[0].y_coordinate
     62
 
 Safe Search Detection

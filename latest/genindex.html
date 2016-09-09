@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; google-cloud 298b28a documentation</title>
+  <title>Index &mdash; google-cloud 4f74c7d documentation</title>
   
 
   
@@ -33,7 +33,7 @@
   
 
   
-    <link rel="top" title="google-cloud 298b28a documentation" href="index.html"/> 
+    <link rel="top" title="google-cloud 4f74c7d documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -193,6 +193,7 @@
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -276,6 +277,8 @@
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
+ | <a href="#X"><strong>X</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
  | <a href="#Z"><strong>Z</strong></a>
  
 </div>
@@ -382,8 +385,6 @@
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.QueryJob.allow_large_results">allow_large_results (google.cloud.bigquery.job.QueryJob attribute)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.allow_quoted_newlines">allow_quoted_newlines (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
   </dt>
@@ -392,12 +393,26 @@
   <dt><a href="language-document.html#google.cloud.language.document.Document.analyze_entities">analyze_entities() (google.cloud.language.document.Document method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="language-document.html#google.cloud.language.document.Document.analyze_sentiment">analyze_sentiment() (google.cloud.language.document.Document method)</a>
   </dt>
 
       
   <dt><a href="datastore-queries.html#google.cloud.datastore.query.Query.ancestor">ancestor (google.cloud.datastore.query.Query attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Emotions.anger_likelihood">anger_likelihood (google.cloud.vision.face.Emotions attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Angles">Angles (class in google.cloud.vision.face)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Face.angles">angles (google.cloud.vision.face.Face attribute)</a>
   </dt>
 
       
@@ -696,8 +711,6 @@
   <dt><a href="google-cloud-api.html#google.cloud.environment_vars.BIGTABLE_EMULATOR">BIGTABLE_EMULATOR (in module google.cloud.environment_vars)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="storage-blobs.html#google.cloud.storage.blob.Blob">Blob (class in google.cloud.storage.blob)</a>
   </dt>
@@ -706,8 +719,26 @@
   <dt><a href="storage-buckets.html#google.cloud.storage.bucket.Bucket.blob">blob() (google.cloud.storage.bucket.Bucket method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigtable-row-filters.html#google.cloud.bigtable.row_filters.BlockAllFilter">BlockAllFilter (class in google.cloud.bigtable.row_filters)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceImageProperties.blurred_likelihood">blurred_likelihood (google.cloud.vision.face.FaceImageProperties attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Bounds">Bounds (class in google.cloud.vision.face)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Face.bounds">bounds (google.cloud.vision.face.Face attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-image.html#google.cloud.vision.geometry.BoundsBase">BoundsBase (class in google.cloud.vision.geometry)</a>
   </dt>
 
       
@@ -796,6 +827,18 @@
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.CHIN_GNATHION">CHIN_GNATHION (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.CHIN_LEFT_GONION">CHIN_LEFT_GONION (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.CHIN_RIGHT_GONION">CHIN_RIGHT_GONION (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
       
   <dt><a href="storage-blobs.html#google.cloud.storage.blob.Blob.chunk_size">chunk_size (google.cloud.storage.blob.Blob attribute)</a>
   </dt>
@@ -1002,12 +1045,12 @@
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.Compression">Compression (class in google.cloud.bigquery.job)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.ExtractTableToStorageJob.compression">compression (google.cloud.bigquery.job.ExtractTableToStorageJob attribute)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigtable-row.html#google.cloud.bigtable.row.ConditionalRow">ConditionalRow (class in google.cloud.bigtable.row)</a>
   </dt>
@@ -1367,7 +1410,7 @@
   </dt>
 
       
-  <dt><a href="bigtable-client.html#google.cloud.bigtable.client.DEFAULT_USER_AGENT">DEFAULT_USER_AGENT (in module google.cloud.bigtable.client)</a>
+  <dt><a href="google-cloud-api.html#google.cloud.connection.DEFAULT_USER_AGENT">DEFAULT_USER_AGENT (in module google.cloud.connection)</a>
   </dt>
 
       
@@ -1504,12 +1547,12 @@
   <dt><a href="dns-changes.html#google.cloud.dns.changes.Changes.deletions">deletions (google.cloud.dns.changes.Changes attribute)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="logging-client.html#google.cloud.logging.client.DESCENDING">DESCENDING (in module google.cloud.logging.client)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset.description">description (google.cloud.bigquery.dataset.Dataset attribute)</a>
   </dt>
@@ -1537,7 +1580,15 @@
   </dt>
 
       
+  <dt><a href="vision-image.html#google.cloud.vision.image.Image.detect_faces">detect_faces() (google.cloud.vision.image.Image method)</a>
+  </dt>
+
+      
   <dt><a href="translate-client.html#google.cloud.translate.client.Client.detect_language">detect_language() (google.cloud.translate.client.Client method)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Face.detection_confidence">detection_confidence (google.cloud.vision.face.Face attribute)</a>
   </dt>
 
       
@@ -1621,6 +1672,14 @@
   </dt>
 
       
+  <dt><a href="vision-face.html#google.cloud.vision.face.Emotions">Emotions (class in google.cloud.vision.face)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Face.emotions">emotions (google.cloud.vision.face.Face attribute)</a>
+  </dt>
+
+      
   <dt><a href="storage-buckets.html#google.cloud.storage.bucket.Bucket.enable_logging">enable_logging() (google.cloud.storage.bucket.Bucket method)</a>
   </dt>
 
@@ -1664,12 +1723,12 @@
   <dt><a href="storage-acl.html#google.cloud.storage.acl.ACL.entity_from_dict">entity_from_dict() (google.cloud.storage.acl.ACL method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="datastore-helpers.html#google.cloud.datastore.helpers.entity_from_protobuf">entity_from_protobuf() (in module google.cloud.datastore.helpers)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-dataset.html#google.cloud.bigquery.dataset.AccessGrant.ENTITY_TYPES">ENTITY_TYPES (google.cloud.bigquery.dataset.AccessGrant attribute)</a>
   </dt>
@@ -1802,11 +1861,31 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="vision-face.html#google.cloud.vision.face.Face">Face (class in google.cloud.vision.face)</a>
+  </dt>
+
+      
   <dt><a href="vision-feature.html#google.cloud.vision.feature.FeatureTypes.FACE_DETECTION">FACE_DETECTION (google.cloud.vision.feature.FeatureTypes attribute)</a>
   </dt>
 
       
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceImageProperties">FaceImageProperties (class in google.cloud.vision.face)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes">FaceLandmarkTypes (class in google.cloud.vision.face)</a>
+  </dt>
+
+      
   <dt><a href="bigtable-row-filters.html#google.cloud.bigtable.row_filters.FamilyNameRegexFilter">FamilyNameRegexFilter (class in google.cloud.bigtable.row_filters)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Face.fd_bounds">fd_bounds (google.cloud.vision.face.Face attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FDBounds">FDBounds (class in google.cloud.vision.face)</a>
   </dt>
 
       
@@ -1851,6 +1930,8 @@
   <dt><a href="monitoring-group.html#google.cloud.monitoring.group.Group.fetch_parent">fetch_parent() (google.cloud.monitoring.group.Group method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="resource-manager-client.html#google.cloud.resource_manager.client.Client.fetch_project">fetch_project() (google.cloud.resource_manager.client.Client method)</a>
   </dt>
@@ -1859,8 +1940,6 @@
   <dt><a href="monitoring-client.html#google.cloud.monitoring.client.Client.fetch_resource_descriptor">fetch_resource_descriptor() (google.cloud.monitoring.client.Client method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.ExtractTableToStorageJob.field_delimiter">field_delimiter (google.cloud.bigquery.job.ExtractTableToStorageJob attribute)</a>
   </dt>
@@ -1893,6 +1972,10 @@
 
       
   <dt><a href="google-cloud-api.html#google.cloud.exceptions.Forbidden">Forbidden</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.FOREHEAD_GLABELLA">FOREHEAD_GLABELLA (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
   </dt>
 
       
@@ -1988,6 +2071,34 @@
 
         
   <dt><a href="resource-manager-project.html#google.cloud.resource_manager.project.Project.from_api_repr">(google.cloud.resource_manager.project.Project class method)</a>
+  </dt>
+
+        
+  <dt><a href="vision-face.html#google.cloud.vision.face.Angles.from_api_repr">(google.cloud.vision.face.Angles class method)</a>
+  </dt>
+
+        
+  <dt><a href="vision-face.html#google.cloud.vision.face.Emotions.from_api_repr">(google.cloud.vision.face.Emotions class method)</a>
+  </dt>
+
+        
+  <dt><a href="vision-face.html#google.cloud.vision.face.Face.from_api_repr">(google.cloud.vision.face.Face class method)</a>
+  </dt>
+
+        
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceImageProperties.from_api_repr">(google.cloud.vision.face.FaceImageProperties class method)</a>
+  </dt>
+
+        
+  <dt><a href="vision-face.html#google.cloud.vision.face.Landmark.from_api_repr">(google.cloud.vision.face.Landmark class method)</a>
+  </dt>
+
+        
+  <dt><a href="vision-image.html#google.cloud.vision.geometry.BoundsBase.from_api_repr">(google.cloud.vision.geometry.BoundsBase class method)</a>
+  </dt>
+
+        
+  <dt><a href="vision-image.html#google.cloud.vision.geometry.Position.from_api_repr">(google.cloud.vision.geometry.Position class method)</a>
   </dt>
 
       </dl></dd>
@@ -2281,12 +2392,12 @@
   <dt><a href="language-client.html#module-google.cloud.language.client">google.cloud.language.client (module)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="language-client.html#module-google.cloud.language.connection">google.cloud.language.connection (module)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="language-document.html#module-google.cloud.language.document">google.cloud.language.document (module)</a>
   </dt>
@@ -2456,11 +2567,23 @@
   </dt>
 
       
+  <dt><a href="vision-face.html#module-google.cloud.vision.face">google.cloud.vision.face (module)</a>
+  </dt>
+
+      
   <dt><a href="vision-feature.html#module-google.cloud.vision.feature">google.cloud.vision.feature (module)</a>
   </dt>
 
       
+  <dt><a href="vision-image.html#module-google.cloud.vision.geometry">google.cloud.vision.geometry (module)</a>
+  </dt>
+
+      
   <dt><a href="vision-image.html#module-google.cloud.vision.image">google.cloud.vision.image (module)</a>
+  </dt>
+
+      
+  <dt><a href="vision-image.html#module-google.cloud.vision.likelihood">google.cloud.vision.likelihood (module)</a>
   </dt>
 
       
@@ -2512,11 +2635,15 @@
   </dt>
 
       
-  <dt><a href="language-document.html#google.cloud.language.document.Document.HTML">HTML (google.cloud.language.document.Document attribute)</a>
+  <dt><a href="vision-face.html#google.cloud.vision.face.Face.headwear_likelihood">headwear_likelihood (google.cloud.vision.face.Face attribute)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="language-document.html#google.cloud.language.document.Document.HTML">HTML (google.cloud.language.document.Document attribute)</a>
+  </dt>
+
       
   <dt><a href="google-cloud-api.html#google.cloud.connection.Connection.http">http (google.cloud.connection.Connection attribute)</a>
   </dt>
@@ -2574,6 +2701,14 @@
   </dt>
 
       
+  <dt><a href="vision-client.html#google.cloud.vision.client.Client.image">image() (google.cloud.vision.client.Client method)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Face.image_properties">image_properties (google.cloud.vision.face.Face attribute)</a>
+  </dt>
+
+      
   <dt><a href="bigtable-row.html#google.cloud.bigtable.row.AppendRow.increment_cell_value">increment_cell_value() (google.cloud.bigtable.row.AppendRow method)</a>
   </dt>
 
@@ -2585,12 +2720,12 @@
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.input_files">input_files (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-table.html#google.cloud.bigquery.table.Table.insert_data">insert_data() (google.cloud.bigquery.table.Table method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigtable-instance.html#google.cloud.bigtable.instance.Instance">Instance (class in google.cloud.bigtable.instance)</a>
   </dt>
@@ -2639,6 +2774,10 @@
 
       
   <dt><a href="bigquery-client.html#google.cloud.bigquery.client.Client.job_from_resource">job_from_resource() (google.cloud.bigquery.client.Client method)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Emotions.joy_likelihood">joy_likelihood (google.cloud.vision.face.Emotions attribute)</a>
   </dt>
 
   </dl></td>
@@ -2716,7 +2855,67 @@
   </dt>
 
       
+  <dt><a href="vision-face.html#google.cloud.vision.face.Landmark">Landmark (class in google.cloud.vision.face)</a>
+  </dt>
+
+      
   <dt><a href="vision-feature.html#google.cloud.vision.feature.FeatureTypes.LANDMARK_DETECTION">LANDMARK_DETECTION (google.cloud.vision.feature.FeatureTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Landmark.landmark_type">landmark_type (google.cloud.vision.face.Landmark attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Face.landmarking_confidence">landmarking_confidence (google.cloud.vision.face.Face attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Landmarks">Landmarks (class in google.cloud.vision.face)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Face.landmarks">landmarks (google.cloud.vision.face.Face attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.LEFT_EAR_TRAGION">LEFT_EAR_TRAGION (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.LEFT_EYE">LEFT_EYE (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.LEFT_EYE_BOTTOM_BOUNDARY">LEFT_EYE_BOTTOM_BOUNDARY (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.LEFT_EYE_LEFT_CORNER">LEFT_EYE_LEFT_CORNER (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.LEFT_EYE_PUPIL">LEFT_EYE_PUPIL (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.LEFT_EYE_RIGHT_CORNER">LEFT_EYE_RIGHT_CORNER (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.LEFT_EYE_TOP_BOUNDARY">LEFT_EYE_TOP_BOUNDARY (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.LEFT_EYEBROW_UPPER_MIDPOINT">LEFT_EYEBROW_UPPER_MIDPOINT (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.LEFT_OF_LEFT_EYEBROW">LEFT_OF_LEFT_EYEBROW (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.LEFT_OF_RIGHT_EYEBROW">LEFT_OF_RIGHT_EYEBROW (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
   </dt>
 
       
@@ -2725,6 +2924,14 @@
 
       
   <dt><a href="storage-buckets.html#google.cloud.storage.bucket.Bucket.lifecycle_rules">lifecycle_rules (google.cloud.storage.bucket.Bucket attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-image.html#google.cloud.vision.likelihood.Likelihood">Likelihood (class in google.cloud.vision.likelihood)</a>
+  </dt>
+
+      
+  <dt><a href="vision-image.html#google.cloud.vision.likelihood.Likelihood.LIKELY">LIKELY (google.cloud.vision.likelihood.Likelihood attribute)</a>
   </dt>
 
       
@@ -2763,6 +2970,8 @@
   <dt><a href="monitoring-group.html#google.cloud.monitoring.group.Group.list_descendants">list_descendants() (google.cloud.monitoring.group.Group method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="logging-client.html#google.cloud.logging.client.Client.list_entries">list_entries() (google.cloud.logging.client.Client method)</a>
   </dt>
@@ -2801,8 +3010,6 @@
   <dt><a href="bigquery-table.html#google.cloud.bigquery.table.Table.list_partitions">list_partitions() (google.cloud.bigquery.table.Table method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-client.html#google.cloud.bigquery.client.Client.list_projects">list_projects() (google.cloud.bigquery.client.Client method)</a>
   </dt>
@@ -2937,6 +3144,10 @@
   <dt><a href="storage-client.html#google.cloud.storage.client.Client.lookup_bucket">lookup_bucket() (google.cloud.storage.client.Client method)</a>
   </dt>
 
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.LOWER_LIP">LOWER_LIP (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -3025,8 +3236,6 @@
   <dt><a href="google-cloud-api.html#google.cloud.exceptions.MethodNotAllowed">MethodNotAllowed</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="google-cloud-api.html#google.cloud.exceptions.MethodNotImplemented">MethodNotImplemented</a>
   </dt>
@@ -3041,6 +3250,8 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="logging-client.html#google.cloud.logging.client.Client.metric">metric() (google.cloud.logging.client.Client method)</a>
   </dt>
@@ -3076,6 +3287,10 @@
   </dt>
 
       
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.MIDPOINT_BETWEEN_EYES">MIDPOINT_BETWEEN_EYES (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
   <dt><a href="storage-batch.html#google.cloud.storage.batch.MIMEApplicationHTTP">MIMEApplicationHTTP (class in google.cloud.storage.batch)</a>
   </dt>
 
@@ -3095,6 +3310,18 @@
 
       
   <dt><a href="pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.modify_push_configuration">modify_push_configuration() (google.cloud.pubsub.subscription.Subscription method)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.MOUTH_CENTER">MOUTH_CENTER (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.MOUTH_LEFT">MOUTH_LEFT (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.MOUTH_RIGHT">MOUTH_RIGHT (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
   </dt>
 
       
@@ -3189,10 +3416,26 @@
   <dt><a href="storage-batch.html#google.cloud.storage.batch.NoContent">NoContent (class in google.cloud.storage.batch)</a>
   </dt>
 
+      
+  <dt><a href="language-document.html#google.cloud.language.document.Encoding.NONE">NONE (google.cloud.language.document.Encoding attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.NOSE_BOTTOM_CENTER">NOSE_BOTTOM_CENTER (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="language-document.html#google.cloud.language.document.Encoding.NONE">NONE (google.cloud.language.document.Encoding attribute)</a>
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.NOSE_BOTTOM_LEFT">NOSE_BOTTOM_LEFT (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.NOSE_BOTTOM_RIGHT">NOSE_BOTTOM_RIGHT (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.NOSE_TIP">NOSE_TIP (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
   </dt>
 
       
@@ -3283,6 +3526,10 @@
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-query.html#google.cloud.bigquery.query.QueryResults.page_token">page_token (google.cloud.bigquery.query.QueryResults attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Angles.pan">pan (google.cloud.vision.face.Angles attribute)</a>
   </dt>
 
       
@@ -3424,6 +3671,18 @@
   </dt>
 
       
+  <dt><a href="vision-image.html#google.cloud.vision.geometry.Position">Position (class in google.cloud.vision.geometry)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Landmark.position">position (google.cloud.vision.face.Landmark attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-image.html#google.cloud.vision.likelihood.Likelihood.POSSIBLE">POSSIBLE (google.cloud.vision.likelihood.Likelihood attribute)</a>
+  </dt>
+
+      
   <dt><a href="google-cloud-api.html#google.cloud.exceptions.PreconditionFailed">PreconditionFailed</a>
   </dt>
 
@@ -3515,6 +3774,8 @@
   <dt><a href="bigtable-client.html#google.cloud.bigtable.client.Client.project_name">project_name (google.cloud.bigtable.client.Client attribute)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="storage-buckets.html#google.cloud.storage.bucket.Bucket.project_number">project_number (google.cloud.storage.bucket.Bucket attribute)</a>
   </dt>
@@ -3523,8 +3784,6 @@
   <dt><a href="datastore-queries.html#google.cloud.datastore.query.Query.projection">projection (google.cloud.datastore.query.Query attribute)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="language-responses.html#google.cloud.language.syntax.PartOfSpeech.PRONOUN">PRONOUN (google.cloud.language.syntax.PartOfSpeech attribute)</a>
   </dt>
@@ -3839,8 +4098,6 @@
   <dt><a href="monitoring-resource.html#google.cloud.monitoring.resource.ResourceDescriptor">ResourceDescriptor (class in google.cloud.monitoring.resource)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="dns-resource-record-set.html#google.cloud.dns.resource_record_set.ResourceRecordSet">ResourceRecordSet (class in google.cloud.dns.resource_record_set)</a>
   </dt>
@@ -3851,6 +4108,52 @@
 
       
   <dt><a href="language-responses.html#google.cloud.language.syntax.PartOfSpeech.reverse">reverse() (google.cloud.language.syntax.PartOfSpeech class method)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_EAR_TRAGION">RIGHT_EAR_TRAGION (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_EYE">RIGHT_EYE (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_EYE_BOTTOM_BOUNDARY">RIGHT_EYE_BOTTOM_BOUNDARY (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_EYE_LEFT_CORNER">RIGHT_EYE_LEFT_CORNER (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_EYE_PUPIL">RIGHT_EYE_PUPIL (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_EYE_RIGHT_CORNER">RIGHT_EYE_RIGHT_CORNER (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_EYE_TOP_BOUNDARY">RIGHT_EYE_TOP_BOUNDARY (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_EYEBROW_UPPER_MIDPOINT">RIGHT_EYEBROW_UPPER_MIDPOINT (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_OF_LEFT_EYEBROW">RIGHT_OF_LEFT_EYEBROW (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_OF_RIGHT_EYEBROW">RIGHT_OF_RIGHT_EYEBROW (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Angles.roll">roll (google.cloud.vision.face.Angles attribute)</a>
   </dt>
 
       
@@ -4105,8 +4408,6 @@
   <dt><a href="google-cloud-api.html#google.cloud.exceptions.ServiceUnavailable">ServiceUnavailable</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigtable-row.html#google.cloud.bigtable.row.ConditionalRow.set_cell">set_cell() (google.cloud.bigtable.row.ConditionalRow method)</a>
   </dt>
@@ -4117,6 +4418,8 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.set_iam_policy">set_iam_policy() (google.cloud.pubsub.subscription.Subscription method)</a>
   </dt>
@@ -4157,6 +4460,10 @@
 
       
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.skip_leading_rows">skip_leading_rows (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Emotions.sorrow_likelihood">sorrow_likelihood (google.cloud.vision.face.Emotions attribute)</a>
   </dt>
 
       
@@ -4211,6 +4518,10 @@
 
       
   <dt><a href="pubsub-topic.html#google.cloud.pubsub.topic.Topic.subscription">subscription() (google.cloud.pubsub.topic.Topic method)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Emotions.surprise_likelihood">surprise_likelihood (google.cloud.vision.face.Emotions attribute)</a>
   </dt>
 
       
@@ -4273,6 +4584,10 @@
 
       
   <dt><a href="logging-entries.html#google.cloud.logging.entries.TextEntry">TextEntry (class in google.cloud.logging.entries)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.Angles.tilt">tilt (google.cloud.vision.face.Angles attribute)</a>
   </dt>
 
       
@@ -4494,6 +4809,10 @@
   </dt>
 
       
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceImageProperties.underexposed_likelihood">underexposed_likelihood (google.cloud.vision.face.FaceImageProperties attribute)</a>
+  </dt>
+
+      
   <dt><a href="language-responses.html#google.cloud.language.entity.EntityType.UNKNOWN">UNKNOWN (google.cloud.language.entity.EntityType attribute)</a>
   </dt>
 
@@ -4502,7 +4821,19 @@
   <dt><a href="language-responses.html#google.cloud.language.syntax.PartOfSpeech.UNKNOWN">(google.cloud.language.syntax.PartOfSpeech attribute)</a>
   </dt>
 
+        
+  <dt><a href="vision-image.html#google.cloud.vision.likelihood.Likelihood.UNKNOWN">(google.cloud.vision.likelihood.Likelihood attribute)</a>
+  </dt>
+
       </dl></dd>
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.UNKNOWN_LANDMARK">UNKNOWN_LANDMARK (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-image.html#google.cloud.vision.likelihood.Likelihood.UNLIKELY">UNLIKELY (google.cloud.vision.likelihood.Likelihood attribute)</a>
+  </dt>
+
       
   <dt><a href="bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset.update">update() (google.cloud.bigquery.dataset.Dataset method)</a>
   </dt>
@@ -4545,6 +4876,8 @@
   <dt><a href="storage-blobs.html#google.cloud.storage.blob.Blob.updated">updated (google.cloud.storage.blob.Blob attribute)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-table.html#google.cloud.bigquery.table.Table.upload_from_file">upload_from_file() (google.cloud.bigquery.table.Table method)</a>
   </dt>
@@ -4559,10 +4892,12 @@
   <dt><a href="storage-blobs.html#google.cloud.storage.blob.Blob.upload_from_filename">upload_from_filename() (google.cloud.storage.blob.Blob method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="storage-blobs.html#google.cloud.storage.blob.Blob.upload_from_string">upload_from_string() (google.cloud.storage.blob.Blob method)</a>
+  </dt>
+
+      
+  <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.UPPER_LIP">UPPER_LIP (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
   </dt>
 
       
@@ -4595,10 +4930,6 @@
   </dt>
 
       </dl></dd>
-      
-  <dt><a href="google-cloud-api.html#google.cloud.connection.Connection.USER_AGENT">USER_AGENT (google.cloud.connection.Connection attribute)</a>
-  </dt>
-
       
   <dt><a href="language-document.html#google.cloud.language.document.Encoding.UTF16">UTF16 (google.cloud.language.document.Encoding attribute)</a>
   </dt>
@@ -4637,10 +4968,26 @@
   <dt><a href="language-responses.html#google.cloud.language.syntax.PartOfSpeech.VERB">VERB (google.cloud.language.syntax.PartOfSpeech attribute)</a>
   </dt>
 
+      
+  <dt><a href="storage-buckets.html#google.cloud.storage.bucket.Bucket.versioning_enabled">versioning_enabled (google.cloud.storage.bucket.Bucket attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-image.html#google.cloud.vision.geometry.Vertex">Vertex (class in google.cloud.vision.geometry)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="storage-buckets.html#google.cloud.storage.bucket.Bucket.versioning_enabled">versioning_enabled (google.cloud.storage.bucket.Bucket attribute)</a>
+  <dt><a href="vision-image.html#google.cloud.vision.geometry.BoundsBase.vertices">vertices (google.cloud.vision.geometry.BoundsBase attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-image.html#google.cloud.vision.likelihood.Likelihood.VERY_LIKELY">VERY_LIKELY (google.cloud.vision.likelihood.Likelihood attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-image.html#google.cloud.vision.likelihood.Likelihood.VERY_UNLIKELY">VERY_UNLIKELY (google.cloud.vision.likelihood.Likelihood attribute)</a>
   </dt>
 
       
@@ -4688,9 +5035,45 @@
   </dl></td>
 </tr></table>
 
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="vision-image.html#google.cloud.vision.geometry.Position.x_coordinate">x_coordinate (google.cloud.vision.geometry.Position attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="vision-image.html#google.cloud.vision.geometry.Vertex.x_coordinate">(google.cloud.vision.geometry.Vertex attribute)</a>
+  </dt>
+
+      </dl></dd>
+  </dl></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="vision-image.html#google.cloud.vision.geometry.Position.y_coordinate">y_coordinate (google.cloud.vision.geometry.Position attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="vision-image.html#google.cloud.vision.geometry.Vertex.y_coordinate">(google.cloud.vision.geometry.Vertex attribute)</a>
+  </dt>
+
+      </dl></dd>
+  </dl></td>
+</tr></table>
+
 <h2 id="Z">Z</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="vision-image.html#google.cloud.vision.geometry.Position.z_coordinate">z_coordinate (google.cloud.vision.geometry.Position attribute)</a>
+  </dt>
+
       
   <dt><a href="dns-client.html#google.cloud.dns.client.Client.zone">zone() (google.cloud.dns.client.Client method)</a>
   </dt>
@@ -4737,7 +5120,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'298b28a',
+            VERSION:'4f74c7d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

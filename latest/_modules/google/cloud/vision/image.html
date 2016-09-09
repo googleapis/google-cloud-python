@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.image &mdash; google-cloud 298b28a documentation</title>
+  <title>google.cloud.vision.image &mdash; google-cloud 4f74c7d documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 298b28a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 4f74c7d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -193,6 +193,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-image.html">Vision Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-feature.html">Vision Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-face.html">Vision Face</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -272,32 +273,40 @@
 <span class="kn">from</span> <span class="nn">base64</span> <span class="k">import</span> <span class="n">b64encode</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
-<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_bytes_to_unicode</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.face</span> <span class="k">import</span> <span class="n">Face</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.feature</span> <span class="k">import</span> <span class="n">Feature</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.feature</span> <span class="k">import</span> <span class="n">FeatureTypes</span>
 
 
 <div class="viewcode-block" id="Image"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image">[docs]</a><span class="k">class</span> <span class="nc">Image</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Image representation containing information to be annotate.</span>
 
-<span class="sd">    :type image_source: str</span>
-<span class="sd">    :param image_source: A string which can a Google Cloud Storage URI, or</span>
-<span class="sd">                         a byte stream of the image.</span>
+<span class="sd">    :type content: bytes</span>
+<span class="sd">    :param content: Byte stream of an image.</span>
 
-<span class="sd">    :type client: :class:`Client`</span>
+<span class="sd">    :type source_uri: str</span>
+<span class="sd">    :param source_uri: Google Cloud Storage URI of image.</span>
+
+<span class="sd">    :type client: :class:`~google.cloud.vision.client.Client`</span>
 <span class="sd">    :param client: Instance of Vision client.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_source</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_uri</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_content</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_source</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">image_source</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;gs://&#39;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_source</span> <span class="o">=</span> <span class="n">image_source</span>
+        <span class="k">if</span> <span class="n">source_uri</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_source</span> <span class="o">=</span> <span class="n">source_uri</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_content</span> <span class="o">=</span> <span class="n">b64encode</span><span class="p">(</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">image_source</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_content</span> <span class="o">=</span> <span class="n">b64encode</span><span class="p">(</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Image.as_dict"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate dictionary structure for request&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Generate dictionary structure for request.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: Dictionary with source information for image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span>
                 <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span>
@@ -311,13 +320,39 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Base64 encoded image content&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Base64 encoded image content.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: Base64 encoded image bytes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">source</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Google Cloud Storage URI&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source</span></div>
+        <span class="sd">&quot;&quot;&quot;Google Cloud Storage URI.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: String of Google Cloud Storage URI.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source</span>
+
+<div class="viewcode-block" id="Image.detect_faces"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_faces">[docs]</a>    <span class="k">def</span> <span class="nf">detect_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Detect faces in image.</span>
+
+<span class="sd">        :type limit: int</span>
+<span class="sd">        :param limit: The number of faces to try and detect.</span>
+
+<span class="sd">        :rtype: list</span>
+<span class="sd">        :returns: List of :class:`~google.cloud.vision.face.Face`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">face_detection_feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">FACE_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">face_detection_feature</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">face_response</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;faceAnnotations&#39;</span><span class="p">]:</span>
+            <span class="n">face</span> <span class="o">=</span> <span class="n">Face</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face_response</span><span class="p">)</span>
+            <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">faces</span></div></div>
 </pre></div>
 
            </div>
@@ -351,7 +386,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'298b28a',
+            VERSION:'4f74c7d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

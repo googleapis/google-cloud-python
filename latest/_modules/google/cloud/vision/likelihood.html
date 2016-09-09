@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.schema &mdash; google-cloud 4f74c7d documentation</title>
+  <title>google.cloud.vision.likelihood &mdash; google-cloud 4f74c7d documentation</title>
   
 
   
@@ -240,7 +240,7 @@
       
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
       
-    <li>google.cloud.bigquery.schema</li>
+    <li>google.cloud.vision.likelihood</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -252,8 +252,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for google.cloud.bigquery.schema</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2015 Google Inc. All rights reserved.</span>
+  <h1>Source code for google.cloud.vision.likelihood</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -267,44 +267,21 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Scheamas for BigQuery tables / queries.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Likelihood constants returned from Vision API.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="SchemaField"><a class="viewcode-back" href="../../../../bigquery-schema.html#google.cloud.bigquery.schema.SchemaField">[docs]</a><span class="k">class</span> <span class="nc">SchemaField</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Describe a single field within a table schema.</span>
+<div class="viewcode-block" id="Likelihood"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.likelihood.Likelihood">[docs]</a><span class="k">class</span> <span class="nc">Likelihood</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A representation of likelihood to give stable results across upgrades.</span>
 
-<span class="sd">    :type name: str</span>
-<span class="sd">    :param name: the name of the field.</span>
-
-<span class="sd">    :type field_type: str</span>
-<span class="sd">    :param field_type: the type of the field (one of &#39;STRING&#39;, &#39;INTEGER&#39;,</span>
-<span class="sd">                       &#39;FLOAT&#39;, &#39;BOOLEAN&#39;, &#39;TIMESTAMP&#39; or &#39;RECORD&#39;).</span>
-
-<span class="sd">    :type mode: str</span>
-<span class="sd">    :param mode: the type of the field (one of &#39;NULLABLE&#39;, &#39;REQUIRED&#39;,</span>
-<span class="sd">                 or &#39;REPEATED&#39;).</span>
-
-<span class="sd">    :type description: str</span>
-<span class="sd">    :param description: optional description for the field.</span>
-
-<span class="sd">    :type fields: list of :class:`SchemaField`, or None</span>
-<span class="sd">    :param fields: subfields (requires ``field_type`` of &#39;RECORD&#39;).</span>
+<span class="sd">    See:</span>
+<span class="sd">    https://cloud.google.com/vision/reference/rest/v1/images/annotate#likelihood</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;NULLABLE&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span> <span class="o">=</span> <span class="n">field_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fields</span> <span class="o">=</span> <span class="n">fields</span>
-
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">field_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">mode</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">description</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fields</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span></div>
+    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="s1">&#39;UNKNOWN&#39;</span>
+    <span class="n">VERY_UNLIKELY</span> <span class="o">=</span> <span class="s1">&#39;VERY_UNLIKELY&#39;</span>
+    <span class="n">UNLIKELY</span> <span class="o">=</span> <span class="s1">&#39;UNLIKELY&#39;</span>
+    <span class="n">POSSIBLE</span> <span class="o">=</span> <span class="s1">&#39;POSSIBLE&#39;</span>
+    <span class="n">LIKELY</span> <span class="o">=</span> <span class="s1">&#39;LIKELY&#39;</span>
+    <span class="n">VERY_LIKELY</span> <span class="o">=</span> <span class="s1">&#39;VERY_LIKELY&#39;</span></div>
 </pre></div>
 
            </div>
