@@ -561,7 +561,7 @@ class TestConnection(unittest.TestCase):
     def test_commit_wo_transaction(self):
         from unit_tests._testing import _Monkey
         from google.cloud.datastore._generated import datastore_pb2
-        from google.cloud.datastore import connection as MUT
+        from google.cloud.datastore import _api as API_MOD
         from google.cloud.datastore.helpers import _new_value_pb
 
         PROJECT = 'PROJECT'
@@ -590,7 +590,7 @@ class TestConnection(unittest.TestCase):
             _parsed.append(response)
             return expected_result
 
-        with _Monkey(MUT, _parse_commit_response=mock_parse):
+        with _Monkey(API_MOD, parse_commit_response=mock_parse):
             result = conn.commit(PROJECT, req_pb, None)
 
         self.assertTrue(result is expected_result)
@@ -607,7 +607,7 @@ class TestConnection(unittest.TestCase):
     def test_commit_w_transaction(self):
         from unit_tests._testing import _Monkey
         from google.cloud.datastore._generated import datastore_pb2
-        from google.cloud.datastore import connection as MUT
+        from google.cloud.datastore import _api as API_MOD
         from google.cloud.datastore.helpers import _new_value_pb
 
         PROJECT = 'PROJECT'
@@ -636,7 +636,7 @@ class TestConnection(unittest.TestCase):
             _parsed.append(response)
             return expected_result
 
-        with _Monkey(MUT, _parse_commit_response=mock_parse):
+        with _Monkey(API_MOD, parse_commit_response=mock_parse):
             result = conn.commit(PROJECT, req_pb, b'xact')
 
         self.assertTrue(result is expected_result)
@@ -726,45 +726,6 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(len(request.keys), len(before_key_pbs))
         for key_before, key_after in zip(before_key_pbs, request.keys):
             self.assertEqual(key_before, key_after)
-
-
-class Test__parse_commit_response(unittest.TestCase):
-
-    def _callFUT(self, commit_response_pb):
-        from google.cloud.datastore.connection import _parse_commit_response
-        return _parse_commit_response(commit_response_pb)
-
-    def test_it(self):
-        from google.cloud.datastore._generated import datastore_pb2
-        from google.cloud.datastore._generated import entity_pb2
-
-        index_updates = 1337
-        keys = [
-            entity_pb2.Key(
-                path=[
-                    entity_pb2.Key.PathElement(
-                        kind='Foo',
-                        id=1234,
-                    ),
-                ],
-            ),
-            entity_pb2.Key(
-                path=[
-                    entity_pb2.Key.PathElement(
-                        kind='Bar',
-                        name='baz',
-                    ),
-                ],
-            ),
-        ]
-        response = datastore_pb2.CommitResponse(
-            mutation_results=[
-                datastore_pb2.MutationResult(key=key) for key in keys
-            ],
-            index_updates=index_updates,
-        )
-        result = self._callFUT(response)
-        self.assertEqual(result, (index_updates, keys))
 
 
 class Http(object):

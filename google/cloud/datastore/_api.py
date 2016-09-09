@@ -231,6 +231,55 @@ class DatastoreAPIBase(object):
         response = self._begin_transaction(project, request)
         return response.transaction
 
+    def _commit(self, project, request_pb):
+        """Perform a ``commit`` request.
+
+        This method is virtual and should be implemented by subclasses.
+
+        :type project: string
+        :param project: The project to connect to.
+
+        :type request_pb: :class:`._generated.datastore_pb2.CommitRequest`
+        :param request_pb: The request protobuf object.
+
+        :raises: :exc:`NotImplementedError` always
+        """
+        raise NotImplementedError
+
+    def commit(self, project, request, transaction_id):
+        """Commit mutations in context of current transaction (if any).
+
+        Maps the ``DatastoreService.Commit`` protobuf RPC.
+
+        :type project: string
+        :param project: The project to which the transaction applies.
+
+        :type request: :class:`._generated.datastore_pb2.CommitRequest`
+        :param request: The protobuf with the mutations being committed.
+
+        :type transaction_id: string or None
+        :param transaction_id: The transaction ID returned from
+                               :meth:`begin_transaction`.  Non-transactional
+                               batches must pass ``None``.
+
+        .. note::
+
+            This method will mutate ``request`` before using it.
+
+        :rtype: tuple
+        :returns: The pair of the number of index updates and a list of
+                  :class:`._generated.entity_pb2.Key` for each incomplete key
+                  that was completed in the commit.
+        """
+        if transaction_id:
+            request.mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+            request.transaction = transaction_id
+        else:
+            request.mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+
+        response = self._commit(project, request)
+        return parse_commit_response(response)
+
 
 class _DatastoreAPIOverHttp(DatastoreAPIBase):
     """Helper mapping datastore API methods.
@@ -358,7 +407,7 @@ class _DatastoreAPIOverHttp(DatastoreAPIBase):
         return self._rpc(project, 'beginTransaction', request_pb,
                          datastore_pb2.BeginTransactionResponse)
 
-    def commit(self, project, request_pb):
+    def _commit(self, project, request_pb):
         """Perform a ``commit`` request.
 
         :type project: string
@@ -482,7 +531,7 @@ class _DatastoreAPIOverGRPC(DatastoreAPIBase):
         request_pb.project_id = project
         return self._stub.BeginTransaction(request_pb)
 
-    def commit(self, project, request_pb):
+    def _commit(self, project, request_pb):
         """Perform a ``commit`` request.
 
         :type project: string
@@ -589,3 +638,21 @@ def _add_keys_to_request(request_field_pb, key_pbs):
     """
     for key_pb in key_pbs:
         request_field_pb.add().CopyFrom(key_pb)
+
+
+def parse_commit_response(commit_response_pb):
+    """Extract response data from a commit response.
+
+    :type commit_response_pb: :class:`._generated.datastore_pb2.CommitResponse`
+    :param commit_response_pb: The protobuf response from a commit request.
+
+    :rtype: tuple
+    :returns: The pair of the number of index updates and a list of
+              :class:`._generated.entity_pb2.Key` for each incomplete key
+              that was completed in the commit.
+    """
+    mut_results = commit_response_pb.mutation_results
+    index_updates = commit_response_pb.index_updates
+    completed_keys = [mut_result.key for mut_result in mut_results
+                      if mut_result.HasField('key')]  # Message field (Key)
+    return index_updates, completed_keys

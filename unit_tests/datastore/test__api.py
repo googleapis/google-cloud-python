@@ -41,6 +41,11 @@ class TestDatastoreAPIBase(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             api_base._begin_transaction(None, None)
 
+    def test__commit_virtual(self):
+        api_base = self._makeOne()
+        with self.assertRaises(NotImplementedError):
+            api_base._commit(None, None)
+
 
 class Test_DatastoreAPIOverHttp(unittest.TestCase):
 
@@ -251,34 +256,34 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
             stub.method_calls,
             [(request_pb, 'BeginTransaction')])
 
-    def test_commit_success(self):
+    def test_internal_commit_success(self):
         return_val = object()
         stub = _GRPCStub(return_val)
         datastore_api = self._makeOne(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
-        result = datastore_api.commit(project, request_pb)
+        result = datastore_api._commit(project, request_pb)
         self.assertIs(result, return_val)
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(stub.method_calls,
                          [(request_pb, 'Commit')])
 
-    def _commit_failure_helper(self, exc, err_class):
+    def _internal_commit_failure_helper(self, exc, err_class):
         stub = _GRPCStub(side_effect=exc)
         datastore_api = self._makeOne(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
         with self.assertRaises(err_class):
-            datastore_api.commit(project, request_pb)
+            datastore_api._commit(project, request_pb)
 
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(stub.method_calls,
                          [(request_pb, 'Commit')])
 
     @unittest.skipUnless(HAVE_GRPC, 'No gRPC')
-    def test_commit_failure_aborted(self):
+    def test_internal_commit_failure_aborted(self):
         from grpc import StatusCode
         from grpc._channel import _Rendezvous
         from grpc._channel import _RPCState
@@ -287,22 +292,22 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         details = 'Bad things.'
         exc_state = _RPCState((), None, None, StatusCode.ABORTED, details)
         exc = _Rendezvous(exc_state, None, None, None)
-        self._commit_failure_helper(exc, Conflict)
+        self._internal_commit_failure_helper(exc, Conflict)
 
     @unittest.skipUnless(HAVE_GRPC, 'No gRPC')
-    def test_commit_failure_cancelled(self):
+    def test_internal_commit_failure_cancelled(self):
         from grpc import StatusCode
         from grpc._channel import _Rendezvous
         from grpc._channel import _RPCState
 
         exc_state = _RPCState((), None, None, StatusCode.CANCELLED, None)
         exc = _Rendezvous(exc_state, None, None, None)
-        self._commit_failure_helper(exc, _Rendezvous)
+        self._internal_commit_failure_helper(exc, _Rendezvous)
 
     @unittest.skipUnless(HAVE_GRPC, 'No gRPC')
-    def test_commit_failure_non_grpc_err(self):
+    def test_internal_commit_failure_non_grpc_err(self):
         exc = RuntimeError('Not a gRPC error')
-        self._commit_failure_helper(exc, RuntimeError)
+        self._internal_commit_failure_helper(exc, RuntimeError)
 
     def test_rollback(self):
         return_val = object()
@@ -352,6 +357,45 @@ class Test_build_api_url(unittest.TestCase):
         ])
         result = self._callFUT(PROJECT, METHOD, BASE_URL)
         self.assertEqual(result, URI)
+
+
+class Test_parse_commit_response(unittest.TestCase):
+
+    def _callFUT(self, commit_response_pb):
+        from google.cloud.datastore._api import parse_commit_response
+        return parse_commit_response(commit_response_pb)
+
+    def test_it(self):
+        from google.cloud.datastore._generated import datastore_pb2
+        from google.cloud.datastore._generated import entity_pb2
+
+        index_updates = 1337
+        keys = [
+            entity_pb2.Key(
+                path=[
+                    entity_pb2.Key.PathElement(
+                        kind='Foo',
+                        id=1234,
+                    ),
+                ],
+            ),
+            entity_pb2.Key(
+                path=[
+                    entity_pb2.Key.PathElement(
+                        kind='Bar',
+                        name='baz',
+                    ),
+                ],
+            ),
+        ]
+        response = datastore_pb2.CommitResponse(
+            mutation_results=[
+                datastore_pb2.MutationResult(key=key) for key in keys
+            ],
+            index_updates=index_updates,
+        )
+        result = self._callFUT(response)
+        self.assertEqual(result, (index_updates, keys))
 
 
 class _Connection(object):
