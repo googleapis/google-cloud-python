@@ -17,6 +17,21 @@ import unittest
 from google.cloud.datastore._api import HAVE_GRPC
 
 
+class TestDatastoreAPIBase(unittest.TestCase):
+
+    def _getTargetClass(self):
+        from google.cloud.datastore._api import DatastoreAPIBase
+        return DatastoreAPIBase
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test__lookup_virtual(self):
+        api_base = self._makeOne()
+        with self.assertRaises(NotImplementedError):
+            api_base._lookup(None, None)
+
+
 class Test_DatastoreAPIOverHttp(unittest.TestCase):
 
     def _getTargetClass(self):
@@ -186,14 +201,14 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
             conn.host,
         )])
 
-    def test_lookup(self):
+    def test_internal_lookup(self):
         return_val = object()
         stub = _GRPCStub(return_val)
         datastore_api = self._makeOne(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
-        result = datastore_api.lookup(project, request_pb)
+        result = datastore_api._lookup(project, request_pb)
         self.assertIs(result, return_val)
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(stub.method_calls,

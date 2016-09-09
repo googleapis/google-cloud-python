@@ -19,8 +19,10 @@ import os
 from google.cloud import connection as connection_module
 from google.cloud.environment_vars import GCD_HOST
 from google.cloud.datastore._generated import datastore_pb2 as _datastore_pb2
+from google.cloud.datastore._api import _add_keys_to_request
 from google.cloud.datastore._api import _DatastoreAPIOverGRPC
 from google.cloud.datastore._api import _DatastoreAPIOverHttp
+from google.cloud.datastore._api import _set_read_options
 from google.cloud.datastore._api import USE_GRPC as _USE_GRPC
 
 
@@ -117,16 +119,8 @@ class Connection(connection_module.Connection):
                   and ``deferred`` is a list of
                   :class:`google.cloud.datastore._generated.entity_pb2.Key`.
         """
-        lookup_request = _datastore_pb2.LookupRequest()
-        _set_read_options(lookup_request, eventual, transaction_id)
-        _add_keys_to_request(lookup_request.keys, key_pbs)
-
-        lookup_response = self._datastore_api.lookup(project, lookup_request)
-
-        results = [result.entity for result in lookup_response.found]
-        missing = [result.entity for result in lookup_response.missing]
-
-        return results, missing, list(lookup_response.deferred)
+        return self._datastore_api.lookup(project, key_pbs, eventual=eventual,
+                                          transaction_id=transaction_id)
 
     def run_query(self, project, query_pb, namespace=None,
                   eventual=False, transaction_id=None):
@@ -269,37 +263,6 @@ class Connection(connection_module.Connection):
         # Nothing to do with this response, so just execute the method.
         response = self._datastore_api.allocate_ids(project, request)
         return list(response.keys)
-
-
-def _set_read_options(request, eventual, transaction_id):
-    """Validate rules for read options, and assign to the request.
-
-    Helper method for ``lookup()`` and ``run_query``.
-
-    :raises: :class:`ValueError` if ``eventual`` is ``True`` and the
-             ``transaction_id`` is not ``None``.
-    """
-    if eventual and (transaction_id is not None):
-        raise ValueError('eventual must be False when in a transaction')
-
-    opts = request.read_options
-    if eventual:
-        opts.read_consistency = _datastore_pb2.ReadOptions.EVENTUAL
-    elif transaction_id:
-        opts.transaction = transaction_id
-
-
-def _add_keys_to_request(request_field_pb, key_pbs):
-    """Add protobuf keys to a request object.
-
-    :type request_field_pb: `RepeatedCompositeFieldContainer`
-    :param request_field_pb: A repeated proto field that contains keys.
-
-    :type key_pbs: list of :class:`.datastore._generated.entity_pb2.Key`
-    :param key_pbs: The keys to add to a request.
-    """
-    for key_pb in key_pbs:
-        request_field_pb.add().CopyFrom(key_pb)
 
 
 def _parse_commit_response(commit_response_pb):
