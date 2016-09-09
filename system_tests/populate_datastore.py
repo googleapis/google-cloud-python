@@ -22,7 +22,6 @@ import os
 import six
 
 from google.cloud import datastore
-from google.cloud.environment_vars import TESTS_PROJECT
 
 
 ANCESTOR = ('Book', 'GoT')
@@ -91,7 +90,7 @@ def print_func(message):
 def add_characters(client=None):
     if client is None:
         # Get a client that uses the test dataset.
-        client = datastore.Client(project=os.getenv(TESTS_PROJECT))
+        client = datastore.Client()
     with client.transaction() as xact:
         for key_path, character in six.moves.zip(KEY_PATHS, CHARACTERS):
             if key_path[-1] != character['name']:

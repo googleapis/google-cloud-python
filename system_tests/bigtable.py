@@ -17,7 +17,6 @@ import operator
 
 import unittest
 
-from google.cloud import _helpers
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import UTC
@@ -29,7 +28,6 @@ from google.cloud.bigtable.row_filters import RowFilterChain
 from google.cloud.bigtable.row_filters import RowFilterUnion
 from google.cloud.bigtable.row_data import Cell
 from google.cloud.bigtable.row_data import PartialRowData
-from google.cloud.environment_vars import TESTS_PROJECT
 
 from retry import RetryErrors
 from retry import RetryResult
@@ -92,7 +90,6 @@ def _retry_on_unavailable(exc):
 
 def setUpModule():
     from grpc._channel import _Rendezvous
-    _helpers.PROJECT = TESTS_PROJECT
     Config.CLIENT = Client(admin=True)
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
     retry = RetryErrors(_Rendezvous, error_predicate=_retry_on_unavailable)

@@ -18,11 +18,9 @@ import sys
 import time
 
 from google.cloud.environment_vars import CREDENTIALS as TEST_CREDENTIALS
-from google.cloud.environment_vars import TESTS_PROJECT
 
 
 # From shell environ. May be None.
-PROJECT_ID = os.getenv(TESTS_PROJECT)
 CREDENTIALS = os.getenv(TEST_CREDENTIALS)
 
 ENVIRON_ERROR_MSG = """\
@@ -44,24 +42,15 @@ class EmulatorCreds(object):
 
 
 def check_environ():
-    missing = []
-    extra = ''
-
-    if PROJECT_ID is None:
-        missing.append(TESTS_PROJECT)
-
+    err_msg = None
     if CREDENTIALS is None:
-        missing.append(TEST_CREDENTIALS)
+        err_msg = '\nMissing variables: ' + TEST_CREDENTIALS
     elif not os.path.isfile(CREDENTIALS):
-        extra = '\nThe %s path %r is not a file.' % (TEST_CREDENTIALS,
-                                                     CREDENTIALS)
+        err_msg = '\nThe %s path %r is not a file.' % (TEST_CREDENTIALS,
+                                                       CREDENTIALS)
 
-    if missing or extra:
-        msg = ENVIRON_ERROR_MSG
-        if missing:
-            msg += '\nMissing variables: ' + ', '.join(missing)
-        if extra:
-            msg += extra
+    if err_msg is not None:
+        msg = ENVIRON_ERROR_MSG + err_msg
         print(msg, file=sys.stderr)
         sys.exit(1)
 

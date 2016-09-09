@@ -20,8 +20,6 @@ import unittest
 import httplib2
 import six
 
-from google.cloud import _helpers
-from google.cloud.environment_vars import TESTS_PROJECT
 from google.cloud import exceptions
 from google.cloud import storage
 from google.cloud.storage._helpers import _base64_md5hash
@@ -33,7 +31,6 @@ from retry import RetryResult
 
 retry_429 = RetryErrors(exceptions.TooManyRequests)
 HTTP = httplib2.Http()
-_helpers.PROJECT = TESTS_PROJECT
 
 
 class Config(object):
