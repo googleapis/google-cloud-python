@@ -27,6 +27,10 @@ from google.cloud.exceptions import make_exception
 API_BASE_URL = 'https://www.googleapis.com'
 """The base of the API call URL."""
 
+DEFAULT_USER_AGENT = 'gcloud-python/{0}'.format(
+    get_distribution('google-cloud').version)
+"""The user agent for google-cloud-python requests."""
+
 
 class Connection(object):
     """A generic connection to Google Cloud Platform.
@@ -63,9 +67,7 @@ class Connection(object):
     :param http: An optional HTTP object to make requests.
     """
 
-    USER_AGENT = "google-cloud-python/{0}".format(
-        get_distribution('google-cloud').version)
-    """The user agent for google-cloud-python requests."""
+    USER_AGENT = DEFAULT_USER_AGENT
 
     SCOPE = None
     """The scopes required for authenticating with a service.

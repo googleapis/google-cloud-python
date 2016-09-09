@@ -29,8 +29,6 @@ In the hierarchy of API concepts
 
 import os
 
-from pkg_resources import get_distribution
-
 from google.cloud._helpers import make_insecure_stub
 from google.cloud._helpers import make_secure_stub
 from google.cloud.bigtable._generated import bigtable_instance_admin_pb2
@@ -42,6 +40,7 @@ from google.cloud.bigtable.instance import Instance
 from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
 from google.cloud.client import _ClientFactoryMixin
 from google.cloud.client import _ClientProjectMixin
+from google.cloud.connection import DEFAULT_USER_AGENT
 from google.cloud.credentials import get_credentials
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
@@ -63,10 +62,6 @@ DATA_SCOPE = 'https://www.googleapis.com/auth/bigtable.data'
 """Scope for reading and writing table data."""
 READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
 """Scope for reading table data."""
-
-DEFAULT_USER_AGENT = 'google-cloud-python/{0}'.format(
-    get_distribution('google-cloud').version)
-"""The default user agent for API requests."""
 
 
 def _make_data_stub(client):

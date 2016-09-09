@@ -69,7 +69,7 @@ class TestConnection(unittest.TestCase):
 
     def test_user_agent_format(self):
         from pkg_resources import get_distribution
-        expected_ua = 'google-cloud-python/{0}'.format(
+        expected_ua = 'gcloud-python/{0}'.format(
             get_distribution('google-cloud').version)
         conn = self._makeOne()
         self.assertEqual(conn.USER_AGENT, expected_ua)
