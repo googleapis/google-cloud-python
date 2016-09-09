@@ -120,7 +120,7 @@ class DatastoreAPIBase(object):
                   :class:`google.cloud.datastore._generated.entity_pb2.Key`.
         """
         lookup_request = datastore_pb2.LookupRequest()
-        _set_read_options(lookup_request, eventual, transaction_id)
+        set_read_options(lookup_request, eventual, transaction_id)
         _add_keys_to_request(lookup_request.keys, key_pbs)
 
         lookup_response = self._lookup(project, lookup_request)
@@ -129,6 +129,76 @@ class DatastoreAPIBase(object):
         missing = [result.entity for result in lookup_response.missing]
 
         return results, missing, list(lookup_response.deferred)
+
+    def _run_query(self, project, request_pb):
+        """Perform a ``runQuery`` request.
+
+        This method is virtual and should be implemented by subclasses.
+
+        :type project: string
+        :param project: The project to connect to.
+
+        :type request_pb: :class:`._generated.datastore_pb2.RunQueryRequest`
+        :param request_pb: The request protobuf object.
+
+        :raises: :exc:`NotImplementedError` always
+        """
+        raise NotImplementedError
+
+    def run_query(self, project, query_pb, namespace=None,
+                  eventual=False, transaction_id=None):
+        """Run a query on the Cloud Datastore.
+
+        Maps the ``DatastoreService.RunQuery`` protobuf RPC.
+
+        Given a Query protobuf, sends a ``runQuery`` request to the
+        Cloud Datastore API and returns a list of entity protobufs
+        matching the query.
+
+        You typically wouldn't use this method directly, in favor of
+        :meth:`~google.cloud.datastore.query.Query.fetch`.
+
+        Under the hood, :class:`~google.cloud.datastore.query.Query`
+        uses this method to fetch data.
+
+        :type project: string
+        :param project: The project over which to run the query.
+
+        :type query_pb: :class:`.datastore._generated.query_pb2.Query`
+        :param query_pb: The Protobuf representing the query to run.
+
+        :type namespace: string
+        :param namespace: The namespace over which to run the query.
+
+        :type eventual: bool
+        :param eventual: If False (the default), request ``STRONG`` read
+                         consistency.  If True, request ``EVENTUAL`` read
+                         consistency.
+
+        :type transaction_id: string
+        :param transaction_id: If passed, make the request in the scope of
+                               the given transaction.  Incompatible with
+                               ``eventual==True``.
+
+        :rtype: tuple
+        :returns: Four-tuple containing the entities returned,
+                  the end cursor of the query, a ``more_results``
+                  enum and a count of the number of skipped results.
+        """
+        request = datastore_pb2.RunQueryRequest()
+        set_read_options(request, eventual, transaction_id)
+
+        if namespace:
+            request.partition_id.namespace_id = namespace
+
+        request.query.CopyFrom(query_pb)
+        response = self._run_query(project, request)
+        return (
+            [result.entity for result in response.batch.entity_results],
+            response.batch.end_cursor,  # Assume response always has cursor.
+            response.batch.more_results,
+            response.batch.skipped_results,
+        )
 
 
 class _DatastoreAPIOverHttp(DatastoreAPIBase):
@@ -224,7 +294,7 @@ class _DatastoreAPIOverHttp(DatastoreAPIBase):
         return self._rpc(project, 'lookup', request_pb,
                          datastore_pb2.LookupResponse)
 
-    def run_query(self, project, request_pb):
+    def _run_query(self, project, request_pb):
         """Perform a ``runQuery`` request.
 
         :type project: string
@@ -348,7 +418,7 @@ class _DatastoreAPIOverGRPC(DatastoreAPIBase):
         request_pb.project_id = project
         return self._stub.Lookup(request_pb)
 
-    def run_query(self, project, request_pb):
+    def _run_query(self, project, request_pb):
         """Perform a ``runQuery`` request.
 
         :type project: string
@@ -459,7 +529,7 @@ def build_api_url(project, method, base_url):
         project=project, method=method)
 
 
-def _set_read_options(request, eventual, transaction_id):
+def set_read_options(request, eventual, transaction_id):
     """Validate rules for read options, and assign to the request.
 
     Helper method for ``lookup()`` and ``run_query``.

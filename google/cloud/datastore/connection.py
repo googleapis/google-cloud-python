@@ -22,7 +22,6 @@ from google.cloud.datastore._generated import datastore_pb2 as _datastore_pb2
 from google.cloud.datastore._api import _add_keys_to_request
 from google.cloud.datastore._api import _DatastoreAPIOverGRPC
 from google.cloud.datastore._api import _DatastoreAPIOverHttp
-from google.cloud.datastore._api import _set_read_options
 from google.cloud.datastore._api import USE_GRPC as _USE_GRPC
 
 
@@ -162,20 +161,9 @@ class Connection(connection_module.Connection):
                   the end cursor of the query, a ``more_results``
                   enum and a count of the number of skipped results.
         """
-        request = _datastore_pb2.RunQueryRequest()
-        _set_read_options(request, eventual, transaction_id)
-
-        if namespace:
-            request.partition_id.namespace_id = namespace
-
-        request.query.CopyFrom(query_pb)
-        response = self._datastore_api.run_query(project, request)
-        return (
-            [e.entity for e in response.batch.entity_results],
-            response.batch.end_cursor,  # Assume response always has cursor.
-            response.batch.more_results,
-            response.batch.skipped_results,
-        )
+        return self._datastore_api.run_query(
+            project, query_pb, namespace=namespace,
+            eventual=eventual, transaction_id=transaction_id)
 
     def begin_transaction(self, project):
         """Begin a transaction.
