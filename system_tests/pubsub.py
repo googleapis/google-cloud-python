@@ -290,6 +290,7 @@ class TestPubsub(unittest.TestCase):
                    if subscription.name == ORPHANED]
         self.assertEqual(len(created), 1)
         orphaned = created[0]
+        self.to_delete.append(orphaned)
 
         def _no_topic(instance):
             return instance.topic is None
@@ -298,4 +299,3 @@ class TestPubsub(unittest.TestCase):
         retry_until_no_topic(orphaned.reload)()
 
         self.assertTrue(orphaned.topic is None)
-        orphaned.delete()
