@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Image &mdash; google-cloud 49b3f1b documentation</title>
+  <title>Vision Image &mdash; google-cloud f834020 documentation</title>
   
 
   
@@ -32,8 +32,8 @@
   
 
   
-    <link rel="top" title="google-cloud 49b3f1b documentation" href="index.html"/>
-        <link rel="next" title="Vision Feature" href="vision-feature.html"/>
+    <link rel="top" title="google-cloud f834020 documentation" href="index.html"/>
+        <link rel="next" title="Vision Entity" href="vision-entity.html"/>
         <link rel="prev" title="Vision Client" href="vision-client.html"/> 
 
   
@@ -198,6 +198,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.vision.likelihood">Likelihood</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 </ul>
@@ -331,6 +332,25 @@
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="google.cloud.vision.image.Image.detect_logos">
+<code class="descname">detect_logos</code><span class="sig-paren">(</span><em>limit=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/image.html#Image.detect_logos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.image.Image.detect_logos" title="Permalink to this definition">#</a></dt>
+<dd><p>Detect logos in an image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The maximum number of logos to find.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of
+<a class="reference internal" href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation" title="google.cloud.vision.entity.EntityAnnotation"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.vision.image.Image.source">
 <code class="descname">source</code><a class="headerlink" href="#google.cloud.vision.image.Image.source" title="Permalink to this definition">#</a></dt>
@@ -354,10 +374,25 @@
 <span id="geometry"></span><h2>Geometry<a class="headerlink" href="#module-google.cloud.vision.geometry" title="Permalink to this headline">#</a></h2>
 <p>Geometry and other generic classes used by the Vision API.</p>
 <dl class="class">
+<dt id="google.cloud.vision.geometry.Bounds">
+<em class="property">class </em><code class="descclassname">google.cloud.vision.geometry.</code><code class="descname">Bounds</code><span class="sig-paren">(</span><em>vertices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#Bounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.Bounds" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.vision.geometry.BoundsBase" title="google.cloud.vision.geometry.BoundsBase"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.vision.geometry.BoundsBase</span></code></a></p>
+<p>A polygon boundry of the detected feature.</p>
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.vision.geometry.BoundsBase">
 <em class="property">class </em><code class="descclassname">google.cloud.vision.geometry.</code><code class="descname">BoundsBase</code><span class="sig-paren">(</span><em>vertices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#BoundsBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.BoundsBase" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Base class for handling bounds with vertices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vertices</strong> (list of <a class="reference internal" href="#google.cloud.vision.geometry.Vertex" title="google.cloud.vision.geometry.Vertex"><code class="xref py py-class docutils literal"><span class="pre">Vertex</span></code></a>) &#8211; List of vertcies describing points on an image.</td>
+</tr>
+</tbody>
+</table>
 <dl class="classmethod">
 <dt id="google.cloud.vision.geometry.BoundsBase.from_api_repr">
 <em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response_vertices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#BoundsBase.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.BoundsBase.from_api_repr" title="Permalink to this definition">#</a></dt>
@@ -384,7 +419,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="#google.cloud.vision.geometry.Vertex" title="google.cloud.vision.geometry.Vertex"><code class="xref py py-class docutils literal"><span class="pre">Vertex</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of populated vertices.</td>
 </tr>
@@ -395,12 +430,32 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.vision.geometry.FDBounds">
+<em class="property">class </em><code class="descclassname">google.cloud.vision.geometry.</code><code class="descname">FDBounds</code><span class="sig-paren">(</span><em>vertices</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#FDBounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.FDBounds" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.vision.geometry.BoundsBase" title="google.cloud.vision.geometry.BoundsBase"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.vision.geometry.BoundsBase</span></code></a></p>
+<p>The bounding polygon of just the skin portion of the face.</p>
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.vision.geometry.Position">
 <em class="property">class </em><code class="descclassname">google.cloud.vision.geometry.</code><code class="descname">Position</code><span class="sig-paren">(</span><em>x_coordinate</em>, <em>y_coordinate</em>, <em>z_coordinate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#Position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.Position" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A 3D position in the image.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/vision/reference/rest/v1/images/annotate#Position">https://cloud.google.com/vision/reference/rest/v1/images/annotate#Position</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x_coordinate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; X position coordinate.</li>
+<li><strong>y_coordinate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Y position coordinate.</li>
+<li><strong>z_coordinate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Z position coordinate.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="classmethod">
 <dt id="google.cloud.vision.geometry.Position.from_api_repr">
 <em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response_position</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/geometry.html#Position.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.geometry.Position.from_api_repr" title="Permalink to this definition">#</a></dt>
@@ -474,6 +529,18 @@
 <p>A vertex represents a 2D point in the image.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/vision/reference/rest/v1/images/annotate#Vertex">https://cloud.google.com/vision/reference/rest/v1/images/annotate#Vertex</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x_coordinate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; X position coordinate.</li>
+<li><strong>y_coordinate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Y position coordinate.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="attribute">
 <dt id="google.cloud.vision.geometry.Vertex.x_coordinate">
 <code class="descname">x_coordinate</code><a class="headerlink" href="#google.cloud.vision.geometry.Vertex.x_coordinate" title="Permalink to this definition">#</a></dt>
@@ -561,7 +628,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="vision-feature.html" class="btn btn-neutral float-right" title="Vision Feature" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="vision-entity.html" class="btn btn-neutral float-right" title="Vision Entity" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="vision-client.html" class="btn btn-neutral" title="Vision Client" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -595,7 +662,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'49b3f1b',
+            VERSION:'f834020',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

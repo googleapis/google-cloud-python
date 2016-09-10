@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.image &mdash; google-cloud 49b3f1b documentation</title>
+  <title>google.cloud.vision.image &mdash; google-cloud f834020 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 49b3f1b documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud f834020 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -192,6 +192,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-usage.html">Using the Vision API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-image.html">Vision Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-face.html">Vision Face</a></li>
 </ul>
@@ -273,6 +274,7 @@
 <span class="kn">from</span> <span class="nn">base64</span> <span class="k">import</span> <span class="n">b64encode</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.entity</span> <span class="k">import</span> <span class="n">EntityAnnotation</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.face</span> <span class="k">import</span> <span class="n">Face</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.feature</span> <span class="k">import</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.feature</span> <span class="k">import</span> <span class="n">FeatureTypes</span>
@@ -352,7 +354,26 @@
             <span class="n">face</span> <span class="o">=</span> <span class="n">Face</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face_response</span><span class="p">)</span>
             <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">faces</span></div></div>
+        <span class="k">return</span> <span class="n">faces</span></div>
+
+<div class="viewcode-block" id="Image.detect_logos"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_logos">[docs]</a>    <span class="k">def</span> <span class="nf">detect_logos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Detect logos in an image.</span>
+
+<span class="sd">        :type limit: int</span>
+<span class="sd">        :param limit: The maximum number of logos to find.</span>
+
+<span class="sd">        :rtype: list</span>
+<span class="sd">        :returns: List of</span>
+<span class="sd">                  :class:`~google.cloud.vision.entity.EntityAnnotation`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logos</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">logo_detection_feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LOGO_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">logo_detection_feature</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">logo_response</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;logoAnnotations&#39;</span><span class="p">]:</span>
+            <span class="n">logo</span> <span class="o">=</span> <span class="n">EntityAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">logo_response</span><span class="p">)</span>
+            <span class="n">logos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">logo</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">logos</span></div></div>
 </pre></div>
 
            </div>
@@ -386,7 +407,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'49b3f1b',
+            VERSION:'f834020',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

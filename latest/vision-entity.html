@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>DNS Client &mdash; google-cloud f834020 documentation</title>
+  <title>Vision Entity &mdash; google-cloud f834020 documentation</title>
   
 
   
@@ -33,8 +33,8 @@
 
   
     <link rel="top" title="google-cloud f834020 documentation" href="index.html"/>
-        <link rel="next" title="Managed Zones" href="dns-zone.html"/>
-        <link rel="prev" title="Using the API" href="dns-usage.html"/> 
+        <link rel="next" title="Vision Feature" href="vision-feature.html"/>
+        <link rel="prev" title="Vision Image" href="vision-image.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -146,12 +146,9 @@
 <li class="toctree-l1"><a class="reference internal" href="resource-manager-project.html">Projects</a></li>
 </ul>
 <p class="caption"><span class="caption-text">DNS</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="dns-usage.html">Using the API</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Client</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.dns.connection">Connection</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="dns-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dns-zone.html">Managed Zones</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dns-resource-record-set.html">Resource Record Sets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
@@ -192,11 +189,14 @@
 <li class="toctree-l1"><a class="reference internal" href="translate-client.html">Client</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Vision</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="vision-usage.html">Using the Vision API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Vision Entity</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.vision.entity">Entity</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 </ul>
@@ -243,11 +243,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>DNS Client</li>
+    <li>Vision Entity</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/dns-client.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/vision-entity.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -257,145 +257,110 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-google.cloud.dns.client">
-<span id="dns-client"></span><h1>DNS Client<a class="headerlink" href="#module-google.cloud.dns.client" title="Permalink to this headline">#</a></h1>
-<p>Client for interacting with the Google Cloud DNS API.</p>
+  <div class="section" id="vision-entity">
+<h1>Vision Entity<a class="headerlink" href="#vision-entity" title="Permalink to this headline">#</a></h1>
+<div class="section" id="module-google.cloud.vision.entity">
+<span id="entity"></span><h2>Entity<a class="headerlink" href="#module-google.cloud.vision.entity" title="Permalink to this headline">#</a></h2>
+<p>Entity class for holding information returned from annotating an image.</p>
 <dl class="class">
-<dt id="google.cloud.dns.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.dns.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.client.Client" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="google-cloud-api.html#google.cloud.client.JSONClient" title="google.cloud.client.JSONClient"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.JSONClient</span></code></a></p>
-<p>Client to bundle configuration needed for API requests.</p>
+<dt id="google.cloud.vision.entity.EntityAnnotation">
+<em class="property">class </em><code class="descclassname">google.cloud.vision.entity.</code><code class="descname">EntityAnnotation</code><span class="sig-paren">(</span><em>bounds</em>, <em>description</em>, <em>mid</em>, <em>score</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/entity.html#EntityAnnotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.entity.EntityAnnotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Representation of an entity returned from the Vision API.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the project which the client acts on behalf of. Will be
-passed when creating a zone.  If not passed,
-falls back to the default inferred from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v3.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
-<code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
-owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
-object is passed), falls back to the default inferred
-from the environment.</li>
-<li><strong>http</strong> (<a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
-<code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
-<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
+<li><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary of bounary information of detected entity.</li>
+<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Description of entity detected in an image.</li>
+<li><strong>mid</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Opaque entity ID.</li>
+<li><strong>score</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Overall score of the result. Range [0, 1].</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="google.cloud.dns.client.Client.list_zones">
-<code class="descname">list_zones</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/client.html#Client.list_zones"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.client.Client.list_zones" title="Permalink to this definition">#</a></dt>
-<dd><p>List zones for the project associated with this client.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/dns/api/v1/managedZones/list">https://cloud.google.com/dns/api/v1/managedZones/list</a></p>
+<dl class="attribute">
+<dt id="google.cloud.vision.entity.EntityAnnotation.bounds">
+<code class="descname">bounds</code><a class="headerlink" href="#google.cloud.vision.entity.EntityAnnotation.bounds" title="Permalink to this definition">#</a></dt>
+<dd><p>Bounding polygon of detected image feature.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of zones to return, If not
-passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of zones. If
-not passed, the API will return the first page of
-zones.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="vision-image.html#google.cloud.vision.geometry.Bounds" title="google.cloud.vision.geometry.Bounds"><code class="xref py py-class docutils literal"><span class="pre">Bounds</span></code></a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="dns-zone.html#google.cloud.dns.zone.ManagedZone" title="google.cloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.zone.ManagedZone</span></code></a>, plus a
-&#8220;next page token&#8221; string:  if the token is not None,
-indicates that more zones can be retrieved with another
-call (pass that value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">Bounds</span></code> with populated vertices.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="google.cloud.dns.client.Client.quotas">
-<code class="descname">quotas</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/client.html#Client.quotas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.client.Client.quotas" title="Permalink to this definition">#</a></dt>
-<dd><p>Return DNS quotas for the project associated with this client.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/dns/api/v1/projects/get">https://cloud.google.com/dns/api/v1/projects/get</a></p>
+<dl class="attribute">
+<dt id="google.cloud.vision.entity.EntityAnnotation.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.vision.entity.EntityAnnotation.description" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of feature detected in image.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">mapping</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">keys for the mapping correspond to those of the <code class="docutils literal"><span class="pre">quota</span></code>
-sub-mapping of the project resource.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">String description of feature detected in image.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="google.cloud.dns.client.Client.zone">
-<code class="descname">zone</code><span class="sig-paren">(</span><em>name</em>, <em>dns_name=None</em>, <em>description=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/client.html#Client.zone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.client.Client.zone" title="Permalink to this definition">#</a></dt>
-<dd><p>Construct a zone bound to this client.</p>
+<dl class="classmethod">
+<dt id="google.cloud.vision.entity.EntityAnnotation.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/entity.html#EntityAnnotation.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.entity.EntityAnnotation.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct entity from Vision API response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of the zone.</li>
-<li><strong>dns_name</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; DNS name of the zone.  If not passed, then calls
-to <code class="xref py py-meth docutils literal"><span class="pre">zone.create()</span></code> will fail.</li>
-<li><strong>description</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; the description for the zone.  If not passed,
-defaults to the value of &#8216;dns_name&#8217;.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary response from Vision API with entity data.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="dns-zone.html#google.cloud.dns.zone.ManagedZone" title="google.cloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.dns.zone.ManagedZone</span></code></a></p>
-</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <code class="docutils literal"><span class="pre">ManagedZone</span></code> instance.</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">EntityAnnotation</span></code>.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</dd></dl>
-
-<div class="section" id="module-google.cloud.dns.connection">
-<span id="connection"></span><h2>Connection<a class="headerlink" href="#module-google.cloud.dns.connection" title="Permalink to this headline">#</a></h2>
-<p>Create / interact with Google Cloud DNS connections.</p>
-<dl class="class">
-<dt id="google.cloud.dns.connection.Connection">
-<em class="property">class </em><code class="descclassname">google.cloud.dns.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/dns/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.dns.connection.Connection" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="google-cloud-api.html#google.cloud.connection.JSONConnection" title="google.cloud.connection.JSONConnection"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.connection.JSONConnection</span></code></a></p>
-<p>A connection to Google Cloud DNS via the JSON REST API.</p>
 <dl class="attribute">
-<dt id="google.cloud.dns.connection.Connection.API_BASE_URL">
-<code class="descname">API_BASE_URL</code><em class="property"> = 'https://www.googleapis.com'</em><a class="headerlink" href="#google.cloud.dns.connection.Connection.API_BASE_URL" title="Permalink to this definition">#</a></dt>
-<dd><p>The base of the API call URL.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dns.connection.Connection.API_URL_TEMPLATE">
-<code class="descname">API_URL_TEMPLATE</code><em class="property"> = '{api_base_url}/dns/{api_version}{path}'</em><a class="headerlink" href="#google.cloud.dns.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
-<dd><p>A template for the URL of a particular API call.</p>
+<dt id="google.cloud.vision.entity.EntityAnnotation.mid">
+<code class="descname">mid</code><a class="headerlink" href="#google.cloud.vision.entity.EntityAnnotation.mid" title="Permalink to this definition">#</a></dt>
+<dd><p>MID of feature detected in image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">String MID of feature detected in image.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.dns.connection.Connection.API_VERSION">
-<code class="descname">API_VERSION</code><em class="property"> = 'v1'</em><a class="headerlink" href="#google.cloud.dns.connection.Connection.API_VERSION" title="Permalink to this definition">#</a></dt>
-<dd><p>The version of the API, used in building the API call&#8217;s URL.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.dns.connection.Connection.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/ndev.clouddns.readwrite',)</em><a class="headerlink" href="#google.cloud.dns.connection.Connection.SCOPE" title="Permalink to this definition">#</a></dt>
-<dd><p>The scopes required for authenticating as a Cloud DNS consumer.</p>
+<dt id="google.cloud.vision.entity.EntityAnnotation.score">
+<code class="descname">score</code><a class="headerlink" href="#google.cloud.vision.entity.EntityAnnotation.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Overall score of the result. Range [0, 1].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Overall score of the result. Range [0, 1].</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -410,10 +375,10 @@ defaults to the value of &#8216;dns_name&#8217;.</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="dns-zone.html" class="btn btn-neutral float-right" title="Managed Zones" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="vision-feature.html" class="btn btn-neutral float-right" title="Vision Feature" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="dns-usage.html" class="btn btn-neutral" title="Using the API" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="vision-image.html" class="btn btn-neutral" title="Vision Image" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

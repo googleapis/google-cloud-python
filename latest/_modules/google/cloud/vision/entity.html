@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.feature &mdash; google-cloud f834020 documentation</title>
+  <title>google.cloud.vision.entity &mdash; google-cloud f834020 documentation</title>
   
 
   
@@ -241,7 +241,7 @@
       
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
       
-    <li>google.cloud.vision.feature</li>
+    <li>google.cloud.vision.entity</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -253,7 +253,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for google.cloud.vision.feature</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.vision.entity</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -268,74 +268,85 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Feature represenging various types of annotating.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Entity class for holding information returned from annotating an image.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="FeatureTypes"><a class="viewcode-back" href="../../../../vision-feature.html#google.cloud.vision.feature.FeatureTypes">[docs]</a><span class="k">class</span> <span class="nc">FeatureTypes</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Feature Types to indication which annotations to perform.</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.geometry</span> <span class="k">import</span> <span class="n">Bounds</span>
 
-<span class="sd">    See:</span>
-<span class="sd">    https://cloud.google.com/vision/reference/rest/v1/images/annotate#Type</span>
+
+<div class="viewcode-block" id="EntityAnnotation"><a class="viewcode-back" href="../../../../vision-entity.html#google.cloud.vision.entity.EntityAnnotation">[docs]</a><span class="k">class</span> <span class="nc">EntityAnnotation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of an entity returned from the Vision API.</span>
+
+<span class="sd">    :type bounds: dict</span>
+<span class="sd">    :param bounds: Dictionary of bounary information of detected entity.</span>
+
+<span class="sd">    :type description: str</span>
+<span class="sd">    :param description: Description of entity detected in an image.</span>
+
+<span class="sd">    :type mid: str</span>
+<span class="sd">    :param mid: Opaque entity ID.</span>
+
+<span class="sd">    :type score: float</span>
+<span class="sd">    :param score: Overall score of the result. Range [0, 1].</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">FACE_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;FACE_DETECTION&#39;</span>
-    <span class="n">LANDMARK_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;LANDMARK_DETECTION&#39;</span>
-    <span class="n">LOGO_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;LOGO_DETECTION&#39;</span>
-    <span class="n">LABEL_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;LABEL_DETECTION&#39;</span>
-    <span class="n">TEXT_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;TEXT_DETECTION&#39;</span>
-    <span class="n">SAFE_SEARCH_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;SAFE_SEARCH_DETECTION&#39;</span></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span> <span class="o">=</span> <span class="n">bounds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mid</span> <span class="o">=</span> <span class="n">mid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_score</span> <span class="o">=</span> <span class="n">score</span>
 
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="EntityAnnotation.from_api_repr"><a class="viewcode-back" href="../../../../vision-entity.html#google.cloud.vision.entity.EntityAnnotation.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct entity from Vision API response.</span>
 
-<div class="viewcode-block" id="Feature"><a class="viewcode-back" href="../../../../vision-feature.html#google.cloud.vision.feature.Feature">[docs]</a><span class="k">class</span> <span class="nc">Feature</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Feature object specifying the annotation type and maximum results.</span>
+<span class="sd">        :type response: dict</span>
+<span class="sd">        :param response: Dictionary response from Vision API with entity data.</span>
 
-<span class="sd">    :type feature_type: str</span>
-<span class="sd">    :param feature_type: String representation of</span>
-<span class="sd">                         :class:`~google.cloud.vision.feature.FeatureType`.</span>
-
-<span class="sd">    :type max_results: int</span>
-<span class="sd">    :param max_results: Number of results to return for the specified</span>
-<span class="sd">                        feature type.</span>
-
-<span class="sd">    See:</span>
-<span class="sd">    https://cloud.google.com/vision/reference/rest/v1/images/annotate#Feature</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature_type</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_feature_type</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="p">,</span> <span class="n">feature_type</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;Feature type passed in cannot be found.&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_max_results</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_results</span><span class="p">)</span>
-
-<div class="viewcode-block" id="Feature.as_dict"><a class="viewcode-back" href="../../../../vision-feature.html#google.cloud.vision.feature.Feature.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate dictionary for Feature request format.</span>
-
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: Dictionary representation of a</span>
-<span class="sd">                  :class:`~google.cloud.vision.feature.FeatureType`.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.vision.entiy.EntityAnnotation`</span>
+<span class="sd">        :returns: Instance of ``EntityAnnotation``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_type</span><span class="p">,</span>
-            <span class="s1">&#39;maxResults&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span>
-        <span class="p">}</span></div>
+        <span class="n">bounds</span> <span class="o">=</span> <span class="n">Bounds</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;boundingPoly&#39;</span><span class="p">])</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;mid&#39;</span><span class="p">]</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">feature_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;&quot;Feature type string.</span>
+    <span class="k">def</span> <span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Bounding polygon of detected image feature.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.vision.feature.FeatureTypes`</span>
-<span class="sd">        :returns: Instance of</span>
-<span class="sd">                  :class:`~google.cloud.vision.feature.FeatureTypes`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.vision.geometry.Bounds`</span>
+<span class="sd">        :returns: Instance of ``Bounds`` with populated vertices.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_feature_type</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">max_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Maximum number of results for feature type.</span>
+    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Description of feature detected in image.</span>
 
-<span class="sd">        :rtype: int</span>
-<span class="sd">        :returns: Maxium results to be returned.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: String description of feature detected in image.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_results</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;MID of feature detected in image.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: String MID of feature detected in image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mid</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Overall score of the result. Range [0, 1].</span>
+
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :returns: Overall score of the result. Range [0, 1].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span></div>
 </pre></div>
 
            </div>

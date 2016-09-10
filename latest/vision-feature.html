@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Feature &mdash; google-cloud 49b3f1b documentation</title>
+  <title>Vision Feature &mdash; google-cloud f834020 documentation</title>
   
 
   
@@ -32,9 +32,9 @@
   
 
   
-    <link rel="top" title="google-cloud 49b3f1b documentation" href="index.html"/>
+    <link rel="top" title="google-cloud f834020 documentation" href="index.html"/>
         <link rel="next" title="Vision Face" href="vision-face.html"/>
-        <link rel="prev" title="Vision Image" href="vision-image.html"/> 
+        <link rel="prev" title="Vision Entity" href="vision-entity.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -193,6 +193,7 @@
 <li class="toctree-l1"><a class="reference internal" href="vision-usage.html">Using the Vision API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Vision Feature</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.vision.feature">Feature</a></li>
 </ul>
@@ -286,18 +287,50 @@ feature type.</li>
 <dt id="google.cloud.vision.feature.Feature.as_dict">
 <code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/feature.html#Feature.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.feature.Feature.as_dict" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate dictionary for Feature request format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionary representation of a
+<code class="xref py py-class docutils literal"><span class="pre">FeatureType</span></code>.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.feature.Feature.feature_type">
 <code class="descname">feature_type</code><a class="headerlink" href="#google.cloud.vision.feature.Feature.feature_type" title="Permalink to this definition">#</a></dt>
 <dd><p>&#8220;Feature type string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.feature.FeatureTypes" title="google.cloud.vision.feature.FeatureTypes"><code class="xref py py-class docutils literal"><span class="pre">FeatureTypes</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Instance of
+<a class="reference internal" href="#google.cloud.vision.feature.FeatureTypes" title="google.cloud.vision.feature.FeatureTypes"><code class="xref py py-class docutils literal"><span class="pre">FeatureTypes</span></code></a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="google.cloud.vision.feature.Feature.max_results">
 <code class="descname">max_results</code><a class="headerlink" href="#google.cloud.vision.feature.Feature.max_results" title="Permalink to this definition">#</a></dt>
 <dd><p>Maximum number of results for feature type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)">int</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Maxium results to be returned.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -354,7 +387,7 @@ feature type.</li>
         <a href="vision-face.html" class="btn btn-neutral float-right" title="Vision Face" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="vision-image.html" class="btn btn-neutral" title="Vision Image" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="vision-entity.html" class="btn btn-neutral" title="Vision Entity" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -385,7 +418,7 @@ feature type.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'49b3f1b',
+            VERSION:'f834020',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
