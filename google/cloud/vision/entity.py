@@ -16,6 +16,7 @@
 
 
 from google.cloud.vision.geometry import Bounds
+from google.cloud.vision.geometry import LocationInformation
 
 
 class EntityAnnotation(object):
@@ -27,15 +28,20 @@ class EntityAnnotation(object):
     :type description: str
     :param description: Description of entity detected in an image.
 
+    :type locations: list of
+                     :class:`~google.cloud.vision.geometry.LocationInformation`.
+    :param locations: List of ``LocationInformation`` instances.
+
     :type mid: str
     :param mid: Opaque entity ID.
 
     :type score: float
     :param score: Overall score of the result. Range [0, 1].
     """
-    def __init__(self, bounds, description, mid, score):
+    def __init__(self, bounds, description, locations, mid, score):
         self._bounds = bounds
         self._description = description
+        self._locations = locations
         self._mid = mid
         self._score = score
 
@@ -51,10 +57,12 @@ class EntityAnnotation(object):
         """
         bounds = Bounds.from_api_repr(response['boundingPoly'])
         description = response['description']
+        locations = [LocationInformation.from_api_repr(location)
+                     for location in response.get('locations', [])]
         mid = response['mid']
         score = response['score']
 
-        return cls(bounds, description, mid, score)
+        return cls(bounds, description, locations, mid, score)
 
     @property
     def bounds(self):
@@ -73,6 +81,16 @@ class EntityAnnotation(object):
         :returns: String description of feature detected in image.
         """
         return self._description
+
+    @property
+    def locations(self):
+        """Location coordinates landmarks detected.
+
+        :rtype: :class:`~google.cloud.vision.geometry.LocationInformation`
+        :returns: ``LocationInformation`` populated with latitude and longitude
+                  of object detected in an image.
+        """
+        return self._locations
 
     @property
     def mid(self):

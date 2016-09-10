@@ -1,3 +1,78 @@
+LANDMARK_DETECTION_RESPONSE = {
+    'responses': [
+        {
+            'landmarkAnnotations': [
+                {
+                    'mid': '/m/04gdr',
+                    'description': 'Louvre',
+                    'score': 0.67257267,
+                    'boundingPoly': {
+                        'vertices': [
+                            {
+                                'x': 1075,
+                                'y': 49
+                            },
+                            {
+                                'x': 1494,
+                                'y': 49
+                            },
+                            {
+                                'x': 1494,
+                                'y': 307
+                            },
+                            {
+                                'x': 1075,
+                                'y': 307
+                            }
+                        ]
+                    },
+                    'locations': [
+                        {
+                            'latLng': {
+                                'latitude': 48.861013,
+                                'longitude': 2.335818
+                            }
+                        }
+                    ]
+                },
+                {
+                    'mid': '/m/094llg',
+                    'description': 'Louvre Pyramid',
+                    'score': 0.53734678,
+                    'boundingPoly': {
+                        'vertices': [
+                            {
+                                'x': 227,
+                                'y': 274
+                            },
+                            {
+                                'x': 1471,
+                                'y': 274
+                            },
+                            {
+                                'x': 1471,
+                                'y': 624
+                            },
+                            {
+                                'x': 227,
+                                'y': 624
+                            }
+                        ]
+                    },
+                    'locations': [
+                        {
+                            'latLng': {
+                                'latitude': 48.860749,
+                                'longitude': 2.336312
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
 LOGO_DETECTION_RESPONSE = {
     'responses': [
         {
