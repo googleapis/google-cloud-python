@@ -51,7 +51,12 @@ class Feature(object):
         self._max_results = int(max_results)
 
     def as_dict(self):
-        """Generate dictionary for Feature request format."""
+        """Generate dictionary for Feature request format.
+
+        :rtype: dict
+        :returns: Dictionary representation of a
+                  :class:`~google.cloud.vision.feature.FeatureType`.
+        """
         return {
             'type': self.feature_type,
             'maxResults': self.max_results
@@ -59,10 +64,19 @@ class Feature(object):
 
     @property
     def feature_type(self):
-        """"Feature type string."""
+        """"Feature type string.
+
+        :rtype: :class:`~google.cloud.vision.feature.FeatureTypes`
+        :returns: Instance of
+                  :class:`~google.cloud.vision.feature.FeatureTypes`
+        """
         return self._feature_type
 
     @property
     def max_results(self):
-        """Maximum number of results for feature type."""
+        """Maximum number of results for feature type.
+
+        :rtype: int
+        :returns: Maxium results to be returned.
+        """
         return self._max_results

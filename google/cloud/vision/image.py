@@ -18,6 +18,7 @@
 from base64 import b64encode
 
 from google.cloud._helpers import _to_bytes
+from google.cloud.vision.entity import EntityAnnotation
 from google.cloud.vision.face import Face
 from google.cloud.vision.feature import Feature
 from google.cloud.vision.feature import FeatureTypes
@@ -98,3 +99,22 @@ class Image(object):
             faces.append(face)
 
         return faces
+
+    def detect_logos(self, limit=10):
+        """Detect logos in an image.
+
+        :type limit: int
+        :param limit: The maximum number of logos to find.
+
+        :rtype: list
+        :returns: List of
+                  :class:`~google.cloud.vision.entity.EntityAnnotation`.
+        """
+        logos = []
+        logo_detection_feature = Feature(FeatureTypes.LOGO_DETECTION, limit)
+        result = self.client.annotate(self, [logo_detection_feature])
+        for logo_response in result['logoAnnotations']:
+            logo = EntityAnnotation.from_api_repr(logo_response)
+            logos.append(logo)
+
+        return logos
