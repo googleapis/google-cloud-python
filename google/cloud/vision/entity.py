@@ -62,7 +62,6 @@ class EntityAnnotation(object):
         """
         bounds = Bounds.from_api_repr(response.get('boundingPoly'))
         description = response['description']
-
         locale = response.get('locale', None)
         locations = [LocationInformation.from_api_repr(location)
                      for location in response.get('locations', [])]

@@ -248,6 +248,30 @@ class TestClient(unittest.TestCase):
         self.assertEqual('POSSIBLE', safe_search.medical)
         self.assertEqual('VERY_UNLIKELY', safe_search.violence)
 
+    def test_image_properties_detection_from_source(self):
+        from google.cloud.vision.color import ImagePropertiesAnnotation
+        from unit_tests.vision._fixtures import IMAGE_PROPERTIES_RESPONSE
+
+        RETURNED = IMAGE_PROPERTIES_RESPONSE
+        credentials = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client.connection = _Connection(RETURNED)
+
+        image = client.image(source_uri=_IMAGE_SOURCE)
+        image_properties = image.detect_properties()
+        self.assertTrue(isinstance(image_properties,
+                                   ImagePropertiesAnnotation))
+        image_request = client.connection._requested[0]['data']['requests'][0]
+        self.assertEqual(_IMAGE_SOURCE,
+                         image_request['image']['source']['gcs_image_uri'])
+        self.assertEqual(0.42258179, image_properties.colors[0].score)
+        self.assertEqual(0.025376344,
+                         image_properties.colors[0].pixel_fraction)
+        self.assertEqual(253, image_properties.colors[0].color.red)
+        self.assertEqual(203, image_properties.colors[0].color.green)
+        self.assertEqual(65, image_properties.colors[0].color.blue)
+        self.assertEqual(0.0, image_properties.colors[0].color.alpha)
+
 
 class TestVisionRequest(unittest.TestCase):
     def _getTargetClass(self):

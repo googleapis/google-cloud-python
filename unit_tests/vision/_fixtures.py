@@ -1,3 +1,107 @@
+IMAGE_PROPERTIES_RESPONSE = {
+    'responses': [
+        {
+            'imagePropertiesAnnotation': {
+                'dominantColors': {
+                    'colors': [
+                        {
+                            'color': {
+                                'red': 253,
+                                'green': 203,
+                                'blue': 65,
+                                'alpha': 0.0
+                            },
+                            'score': 0.42258179,
+                            'pixelFraction': 0.025376344
+                        },
+                        {
+                            'color': {
+                                'red': 216,
+                                'green': 69,
+                                'blue': 56
+                            },
+                            'score': 0.34945792,
+                            'pixelFraction': 0.026093191
+                        },
+                        {
+                            'color': {
+                                'red': 79,
+                                'green': 142,
+                                'blue': 245
+                            },
+                            'score': 0.050921876,
+                            'pixelFraction': 0.014193549
+                        },
+                        {
+                            'color': {
+                                'red': 249,
+                                'green': 246,
+                                'blue': 246
+                            },
+                            'score': 0.0059412993,
+                            'pixelFraction': 0.86896056
+                        },
+                        {
+                            'color': {
+                                'red': 222,
+                                'green': 119,
+                                'blue': 51
+                            },
+                            'score': 0.0043299114,
+                            'pixelFraction': 0.00021505376
+                        },
+                        {
+                            'color': {
+                                'red': 226,
+                                'green': 138,
+                                'blue': 130
+                            },
+                            'score': 0.0038594988,
+                            'pixelFraction': 0.00086021505
+                        },
+                        {
+                            'color': {
+                                'red': 165,
+                                'green': 194,
+                                'blue': 243
+                            },
+                            'score': 0.0029492097,
+                            'pixelFraction': 0.0015053763
+                        },
+                        {
+                            'color': {
+                                'red': 231,
+                                'green': 169,
+                                'blue': 164
+                            },
+                            'score': 0.0017002203,
+                            'pixelFraction': 0.00043010752
+                        },
+                        {
+                            'color': {
+                                'red': 137,
+                                'green': 98,
+                                'blue': 142
+                            },
+                            'score': 0.0013974205,
+                            'pixelFraction': 0.00071684585
+                        },
+                        {
+                            'color': {
+                                'red': 239,
+                                'green': 179,
+                                'blue': 56
+                            },
+                            'score': 0.050473157,
+                            'pixelFraction': 0.0022222223
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+
 LABEL_DETECTION_RESPONSE = {
     'responses': [
         {
