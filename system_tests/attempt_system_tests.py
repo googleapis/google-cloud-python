@@ -44,6 +44,8 @@ https://docs.travis-ci.com/user/encrypting-files/
 """
 
 
+from __future__ import print_function
+import argparse
 import os
 import subprocess
 import sys
@@ -54,6 +56,7 @@ from run_system_test import FailedSystemTestModule
 from run_system_test import run_module_tests
 
 
+BIGTABLE_API = 'bigtable'
 MODULES = (  # ordered from most to least stable
     'datastore',
     'storage',
@@ -63,15 +66,15 @@ MODULES = (  # ordered from most to least stable
     'logging',
     'translate',
     'monitoring',
+    BIGTABLE_API,
 )
-if sys.version_info[:2] == (2, 7):
-    MODULES += ('bigtable',)
 
 SCRIPTS_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.abspath(os.path.join(SCRIPTS_DIR, '..'))
 ENCRYPTED_KEYFILE = os.path.join(ROOT_DIR, 'system_tests', 'key.json.enc')
 ENCRYPTED_KEY_ENV = 'encrypted_c16407eb06cc_key'
 ENCRYPTED_INIT_VECTOR_ENV = 'encrypted_c16407eb06cc_iv'
+ALL_MODULES = object()  # Sentinel for argparser
 
 
 def check_environment():
@@ -136,11 +139,49 @@ def prepare_to_run():
     decrypt_keyfile()
 
 
+def get_parser():
+    """Get an argument parser to determine a list of packages."""
+    parser = argparse.ArgumentParser(
+        description='google-cloud tests runner.')
+    help_msg = ('List of packages to be tested. '
+                'If left blank, tests all packages.')
+    parser.add_argument('packages', nargs='*',
+                        default=ALL_MODULES, help=help_msg)
+    return parser
+
+
+def get_modules():
+    """Get the list of modules names to run system tests for."""
+    parser = get_parser()
+    args = parser.parse_args()
+    if args.packages is ALL_MODULES:
+        result = list(MODULES)
+        if sys.version_info[:2] != (2, 7):
+            result.remove(BIGTABLE_API)
+    else:
+        result = []
+        invalid = []
+        for package in args.packages:
+            if package in MODULES:
+                result.append(package)
+            else:
+                invalid.append(package)
+
+        if invalid:
+            msg = 'No system test for packages: ' + ', '.join(invalid)
+            print(msg, file=sys.stderr)
+            sys.exit(1)
+
+    return result
+
+
 def main():
     """Run all the system tests if necessary."""
     prepare_to_run()
+
     failed_modules = 0
-    for module in MODULES:
+    modules = get_modules()
+    for module in modules:
         try:
             run_module_tests(module)
         except FailedSystemTestModule:

@@ -140,10 +140,17 @@ Running System Tests
 - To run system tests you can execute::
 
    $ tox -e system-tests
+   $ tox -e system-tests3
 
   or run only system tests for a particular package via::
 
    $ python system_tests/run_system_test.py --package {package}
+   $ python3 system_tests/run_system_test.py --package {package}
+
+  To run a subset of the system tests::
+
+   $ tox -e system-tests -- datastore storage
+   $ python system_tests/attempt_system_tests.py datastore storage
 
   This alone will not run the tests. You'll need to change some local
   auth settings and change some configuration in your project to
@@ -243,6 +250,7 @@ Running System Tests
 - To run the system tests with the ``pubsub`` emulator::
 
    $ tox -e pubsub-emulator
+   $ GOOGLE_CLOUD_DISABLE_GRPC=true tox -e pubsub-emulator
 
   If you'd like to run them directly (outside of a ``tox`` environment), first
   start the emulator and take note of the process ID::
