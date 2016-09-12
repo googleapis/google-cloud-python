@@ -56,7 +56,6 @@ from run_system_test import FailedSystemTestModule
 from run_system_test import run_module_tests
 
 
-BIGTABLE_API = 'bigtable'
 MODULES = (  # ordered from most to least stable
     'datastore',
     'storage',
@@ -66,7 +65,7 @@ MODULES = (  # ordered from most to least stable
     'logging',
     'translate',
     'monitoring',
-    BIGTABLE_API,
+    'bigtable',
 )
 
 SCRIPTS_DIR = os.path.dirname(__file__)
@@ -156,8 +155,6 @@ def get_modules():
     args = parser.parse_args()
     if args.packages is ALL_MODULES:
         result = list(MODULES)
-        if sys.version_info[:2] != (2, 7):
-            result.remove(BIGTABLE_API)
     else:
         result = []
         invalid = []
@@ -188,6 +185,7 @@ def main():
             failed_modules += 1
 
     sys.exit(failed_modules)
+
 
 if __name__ == '__main__':
     main()

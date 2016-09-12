@@ -3,11 +3,4 @@
 # pip will build them from source using the MSVC compiler matching the
 # target Python version and architecture
 wheel
-pytest
 tox
-cryptography
-grpcio >= 1.0rc1
-grpc-google-pubsub-v1
-grpc-google-logging-v2
-gax-google-pubsub-v1
-gax-google-logging-v2
