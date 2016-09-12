@@ -22,6 +22,7 @@ from google.cloud.vision.entity import EntityAnnotation
 from google.cloud.vision.face import Face
 from google.cloud.vision.feature import Feature
 from google.cloud.vision.feature import FeatureTypes
+from google.cloud.vision.safe import SafeSearchAnnotation
 
 
 class Image(object):
@@ -161,6 +162,22 @@ class Image(object):
         """
         feature = Feature(FeatureTypes.LOGO_DETECTION, limit)
         return self._detect_annotation(feature)
+
+    def detect_safe_search(self, limit=10):
+        """Retreive safe search properties from an image.
+
+        :type limit: int
+        :param limit: The number of faces to try and detect.
+
+        :rtype: list
+        :returns: List of
+                  :class:`~google.cloud.vision.sage.SafeSearchAnnotation`.
+        """
+        safe_detection_feature = Feature(FeatureTypes.SAFE_SEARCH_DETECTION,
+                                         limit)
+        result = self.client.annotate(self, [safe_detection_feature])
+        safe_search_response = result['safeSearchAnnotation']
+        return SafeSearchAnnotation.from_api_repr(safe_search_response)
 
     def detect_text(self, limit=10):
         """Detect text in an image.

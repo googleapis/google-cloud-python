@@ -1570,6 +1570,20 @@ FACE_DETECTION_RESPONSE = {
 }
 
 
+SAFE_SEARCH_DETECTION_RESPONSE = {
+    'responses': [
+        {
+            'safeSearchAnnotation': {
+                'adult': 'VERY_UNLIKELY',
+                'spoof': 'UNLIKELY',
+                'medical': 'POSSIBLE',
+                'violence': 'VERY_UNLIKELY'
+            }
+        }
+    ]
+}
+
+
 TEXT_DETECTION_RESPONSE = {
     'responses': [
         {

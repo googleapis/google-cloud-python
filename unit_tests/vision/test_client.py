@@ -228,6 +228,26 @@ class TestClient(unittest.TestCase):
         self.assertEqual('Google', text[1].description)
         self.assertEqual(694, text[0].bounds.vertices[0].y_coordinate)
 
+    def test_safe_search_detection_from_source(self):
+        from google.cloud.vision.safe import SafeSearchAnnotation
+        from unit_tests.vision._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
+
+        RETURNED = SAFE_SEARCH_DETECTION_RESPONSE
+        credentials = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client.connection = _Connection(RETURNED)
+
+        image = client.image(source_uri=_IMAGE_SOURCE)
+        safe_search = image.detect_safe_search()
+        self.assertTrue(isinstance(safe_search, SafeSearchAnnotation))
+        image_request = client.connection._requested[0]['data']['requests'][0]
+        self.assertEqual(_IMAGE_SOURCE,
+                         image_request['image']['source']['gcs_image_uri'])
+        self.assertEqual('VERY_UNLIKELY', safe_search.adult)
+        self.assertEqual('UNLIKELY', safe_search.spoof)
+        self.assertEqual('POSSIBLE', safe_search.medical)
+        self.assertEqual('VERY_UNLIKELY', safe_search.violence)
+
 
 class TestVisionRequest(unittest.TestCase):
     def _getTargetClass(self):

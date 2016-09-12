@@ -149,10 +149,11 @@
 
   vision-usage
   vision-client
-  vision-image
   vision-entity
   vision-feature
   vision-face
+  vision-image
+  vision-safe-search
 
 .. toctree::
   :maxdepth: 0
