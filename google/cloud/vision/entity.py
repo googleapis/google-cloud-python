@@ -55,7 +55,7 @@ class EntityAnnotation(object):
         :rtype: :class:`~google.cloud.vision.entiy.EntityAnnotation`
         :returns: Instance of ``EntityAnnotation``.
         """
-        bounds = Bounds.from_api_repr(response['boundingPoly'])
+        bounds = Bounds.from_api_repr(response.get('boundingPoly'))
         description = response['description']
         locations = [LocationInformation.from_api_repr(location)
                      for location in response.get('locations', [])]

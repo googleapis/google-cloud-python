@@ -94,6 +94,7 @@ class Image(object):
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
         reverse_types = {
+            'LABEL_DETECTION': 'labelAnnotations',
             'LANDMARK_DETECTION': 'landmarkAnnotations',
             'LOGO_DETECTION': 'logoAnnotations',
         }
@@ -121,6 +122,18 @@ class Image(object):
             faces.append(face)
 
         return faces
+
+    def detect_labels(self, limit=10):
+        """Detect labels that describe objects in an image.
+
+        :type limit: int
+        :param limit: The maximum number of labels to try and detect.
+
+        :rtype: list
+        :returns: List of :class:`~google.cloud.vision.entity.EntityAnnotation`
+        """
+        feature = Feature(FeatureTypes.LABEL_DETECTION, limit)
+        return self._detect_annotation(feature)
 
     def detect_landmarks(self, limit=10):
         """Detect landmarks in an image.

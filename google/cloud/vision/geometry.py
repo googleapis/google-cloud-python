@@ -31,13 +31,14 @@ class BoundsBase(object):
         :type response_vertices: dict
         :param response_vertices: List of vertices.
 
-        :rtype: :class:`~google.cloud.vision.geometry.BoundsBase`
-        :returns: Instance of BoundsBase with populated verticies.
+        :rtype: :class:`~google.cloud.vision.geometry.BoundsBase` or None
+        :returns: Instance of BoundsBase with populated verticies or None.
         """
-        vertices = []
-        for vertex in response_vertices['vertices']:
-            vertices.append(Vertex(vertex.get('x', None),
-                                   vertex.get('y', None)))
+        if not response_vertices:
+            return None
+
+        vertices = [Vertex(vertex.get('x', None), vertex.get('y', None)) for
+                    vertex in response_vertices.get('vertices', [])]
         return cls(vertices)
 
     @property

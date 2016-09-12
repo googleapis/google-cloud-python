@@ -114,6 +114,27 @@ class TestClient(unittest.TestCase):
                          image_request['image']['content'])
         self.assertEqual(5, image_request['features'][0]['maxResults'])
 
+    def test_label_detection_from_source(self):
+        from google.cloud.vision.entity import EntityAnnotation
+        from unit_tests.vision._fixtures import (LABEL_DETECTION_RESPONSE as
+                                                 RETURNED)
+        credentials = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client.connection = _Connection(RETURNED)
+
+        image = client.image(source_uri=_IMAGE_SOURCE)
+        labels = image.detect_labels(limit=3)
+        self.assertEqual(3, len(labels))
+        self.assertTrue(isinstance(labels[0], EntityAnnotation))
+        image_request = client.connection._requested[0]['data']['requests'][0]
+        self.assertEqual(_IMAGE_SOURCE,
+                         image_request['image']['source']['gcs_image_uri'])
+        self.assertEqual(3, image_request['features'][0]['maxResults'])
+        self.assertEqual('automobile', labels[0].description)
+        self.assertEqual('vehicle', labels[1].description)
+        self.assertEqual('/m/0k4j', labels[0].mid)
+        self.assertEqual('/m/07yv9', labels[1].mid)
+
     def test_landmark_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
         from unit_tests.vision._fixtures import (LANDMARK_DETECTION_RESPONSE as
