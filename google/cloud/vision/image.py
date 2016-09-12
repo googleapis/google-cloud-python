@@ -82,6 +82,28 @@ class Image(object):
         """
         return self._source
 
+    def _detect_annotation(self, feature):
+        """Generic method for detecting a single annotation.
+
+        :type feature: :class:`~google.cloud.vision.feature.Feature`
+        :param feature: The ``Feature`` indication the type of annotation to
+                        perform.
+
+        :rtype: list
+        :returns: List of
+                  :class:`~google.cloud.vision.entity.EntityAnnotation`.
+        """
+        reverse_types = {
+            'LANDMARK_DETECTION': 'landmarkAnnotations',
+            'LOGO_DETECTION': 'logoAnnotations',
+        }
+        detected_objects = []
+        result = self.client.annotate(self, [feature])
+        for response in result[reverse_types[feature.feature_type]]:
+            detected_object = EntityAnnotation.from_api_repr(response)
+            detected_objects.append(detected_object)
+        return detected_objects
+
     def detect_faces(self, limit=10):
         """Detect faces in image.
 
@@ -100,6 +122,19 @@ class Image(object):
 
         return faces
 
+    def detect_landmarks(self, limit=10):
+        """Detect landmarks in an image.
+
+        :type limit: int
+        :param limit: The maximum number of landmarks to find.
+
+        :rtype: list
+        :returns: List of
+                  :class:`~google.cloud.vision.entity.EntityAnnotation`.
+        """
+        feature = Feature(FeatureTypes.LANDMARK_DETECTION, limit)
+        return self._detect_annotation(feature)
+
     def detect_logos(self, limit=10):
         """Detect logos in an image.
 
@@ -110,11 +145,5 @@ class Image(object):
         :returns: List of
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
-        logos = []
-        logo_detection_feature = Feature(FeatureTypes.LOGO_DETECTION, limit)
-        result = self.client.annotate(self, [logo_detection_feature])
-        for logo_response in result['logoAnnotations']:
-            logo = EntityAnnotation.from_api_repr(logo_response)
-            logos.append(logo)
-
-        return logos
+        feature = Feature(FeatureTypes.LOGO_DETECTION, limit)
+        return self._detect_annotation(feature)

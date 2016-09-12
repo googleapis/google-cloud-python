@@ -58,6 +58,53 @@ class FDBounds(BoundsBase):
     """The bounding polygon of just the skin portion of the face."""
 
 
+class LocationInformation(object):
+    """Representation of location information returned by the Vision API.
+
+    :type latitude: float
+    :param latitude: Latitude coordinate of geographical location.
+
+    :type longitude: float
+    :param longitude: Longitude coordinate of geographical location.
+    """
+    def __init__(self, latitude, longitude):
+        self._latitude = latitude
+        self._longitude = longitude
+
+    @classmethod
+    def from_api_repr(cls, response):
+        """Factory: construct location information from Vision API response.
+
+        :type response: dict
+        :param response: Dictionary response of locations.
+
+        :rtype: :class:`~google.cloud.vision.geometry.LocationInformation`
+        :returns: ``LocationInformation`` with populated latitude and
+                  longitude.
+        """
+        latitude = response['latLng']['latitude']
+        longitude = response['latLng']['longitude']
+        return cls(latitude, longitude)
+
+    @property
+    def latitude(self):
+        """Latitude coordinate.
+
+        :rtype: float
+        :returns: Latitude coordinate of location.
+        """
+        return self._latitude
+
+    @property
+    def longitude(self):
+        """Longitude coordinate.
+
+        :rtype: float
+        :returns: Longitude coordinate of location.
+        """
+        return self._longitude
+
+
 class Position(object):
     """A 3D position in the image.
 

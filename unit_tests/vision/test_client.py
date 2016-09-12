@@ -114,6 +114,44 @@ class TestClient(unittest.TestCase):
                          image_request['image']['content'])
         self.assertEqual(5, image_request['features'][0]['maxResults'])
 
+    def test_landmark_detection_from_source(self):
+        from google.cloud.vision.entity import EntityAnnotation
+        from unit_tests.vision._fixtures import (LANDMARK_DETECTION_RESPONSE as
+                                                 RETURNED)
+        credentials = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client.connection = _Connection(RETURNED)
+
+        image = client.image(source_uri=_IMAGE_SOURCE)
+        landmarks = image.detect_landmarks(limit=3)
+        self.assertEqual(2, len(landmarks))
+        self.assertTrue(isinstance(landmarks[0], EntityAnnotation))
+        image_request = client.connection._requested[0]['data']['requests'][0]
+        self.assertEqual(_IMAGE_SOURCE,
+                         image_request['image']['source']['gcs_image_uri'])
+        self.assertEqual(3, image_request['features'][0]['maxResults'])
+        self.assertEqual(48.861013, landmarks[0].locations[0].latitude)
+        self.assertEqual(2.335818, landmarks[0].locations[0].longitude)
+        self.assertEqual('/m/04gdr', landmarks[0].mid)
+        self.assertEqual('/m/094llg', landmarks[1].mid)
+
+    def test_landmark_detection_from_content(self):
+        from google.cloud.vision.entity import EntityAnnotation
+        from unit_tests.vision._fixtures import (LANDMARK_DETECTION_RESPONSE as
+                                                 RETURNED)
+        credentials = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client.connection = _Connection(RETURNED)
+
+        image = client.image(content=_IMAGE_CONTENT)
+        landmarks = image.detect_landmarks(limit=5)
+        self.assertEqual(2, len(landmarks))
+        self.assertTrue(isinstance(landmarks[0], EntityAnnotation))
+        image_request = client.connection._requested[0]['data']['requests'][0]
+        self.assertEqual(self.B64_IMAGE_CONTENT,
+                         image_request['image']['content'])
+        self.assertEqual(5, image_request['features'][0]['maxResults'])
+
     def test_logo_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
         from unit_tests.vision._fixtures import LOGO_DETECTION_RESPONSE
