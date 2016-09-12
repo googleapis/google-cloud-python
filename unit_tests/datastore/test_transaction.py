@@ -88,6 +88,19 @@ class TestTransaction(unittest.TestCase):
 
         self.assertRaises(ValueError, xact.begin)
 
+    def test_begin_w_begin_transaction_failure(self):
+        _PROJECT = 'PROJECT'
+        connection = _Connection(234)
+        client = _Client(_PROJECT, connection)
+        xact = self._makeOne(client)
+
+        connection._side_effect = RuntimeError
+        with self.assertRaises(RuntimeError):
+            xact.begin()
+
+        self.assertIsNone(xact.id)
+        self.assertEqual(connection._begun, _PROJECT)
+
     def test_rollback(self):
         _PROJECT = 'PROJECT'
         connection = _Connection(234)
@@ -118,10 +131,10 @@ class TestTransaction(unittest.TestCase):
         connection._completed_keys = [_make_key(_KIND, _ID, _PROJECT)]
         client = _Client(_PROJECT, connection)
         xact = self._makeOne(client)
+        xact.begin()
         entity = _Entity()
         xact.put(entity)
         xact._commit_request = commit_request = object()
-        xact.begin()
         xact.commit()
         self.assertEqual(connection._committed,
                          (_PROJECT, commit_request, 234))
@@ -176,7 +189,10 @@ def _make_key(kind, id_, project):
 
 class _Connection(object):
     _marker = object()
-    _begun = _rolled_back = _committed = None
+    _begun = None
+    _rolled_back = None
+    _committed = None
+    _side_effect = None
 
     def __init__(self, xact_id=123):
         self._xact_id = xact_id
@@ -185,7 +201,10 @@ class _Connection(object):
 
     def begin_transaction(self, project):
         self._begun = project
-        return self._xact_id
+        if self._side_effect is None:
+            return self._xact_id
+        else:
+            raise self._side_effect
 
     def rollback(self, project, transaction_id):
         self._rolled_back = project, transaction_id

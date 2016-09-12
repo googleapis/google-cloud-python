@@ -960,6 +960,7 @@ class _NoCommitBatch(object):
         from google.cloud.datastore.batch import Batch
         self._client = client
         self._batch = Batch(client)
+        self._batch.begin()
 
     def __enter__(self):
         self._client._push_batch(self._batch)
@@ -972,10 +973,12 @@ class _NoCommitBatch(object):
 class _NoCommitTransaction(object):
 
     def __init__(self, client, transaction_id='TRANSACTION'):
+        from google.cloud.datastore.batch import Batch
         from google.cloud.datastore.transaction import Transaction
         self._client = client
         xact = self._transaction = Transaction(client)
         xact._id = transaction_id
+        Batch.begin(xact)
 
     def __enter__(self):
         self._client._push_batch(self._transaction)

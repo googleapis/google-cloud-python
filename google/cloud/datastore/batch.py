@@ -183,9 +183,13 @@ class Batch(object):
         :type entity: :class:`google.cloud.datastore.entity.Entity`
         :param entity: the entity to be saved.
 
-        :raises: ValueError if entity has no key assigned, or if the key's
+        :raises: :class:`~exceptions.ValueError` if the batch is not in
+                 progress, if entity has no key assigned, or if the key's
                  ``project`` does not match ours.
         """
+        if self._status != self._IN_PROGRESS:
+            raise ValueError('Batch must be in progress to put()')
+
         if entity.key is None:
             raise ValueError("Entity must have a key")
 
@@ -206,9 +210,13 @@ class Batch(object):
         :type key: :class:`google.cloud.datastore.key.Key`
         :param key: the key to be deleted.
 
-        :raises: ValueError if key is not complete, or if the key's
+        :raises: :class:`~exceptions.ValueError` if the batch is not in
+                 progress, if key is not complete, or if the key's
                  ``project`` does not match ours.
         """
+        if self._status != self._IN_PROGRESS:
+            raise ValueError('Batch must be in progress to delete()')
+
         if key.is_partial:
             raise ValueError("Key must be complete")
 
@@ -255,7 +263,13 @@ class Batch(object):
         This is called automatically upon exiting a with statement,
         however it can be called explicitly if you don't want to use a
         context manager.
+
+        :raises: :class:`~exceptions.ValueError` if the batch is not
+                 in progress.
         """
+        if self._status != self._IN_PROGRESS:
+            raise ValueError('Batch must be in progress to commit()')
+
         try:
             self._commit()
         finally:
@@ -267,12 +281,19 @@ class Batch(object):
         Marks the batch as aborted (can't be used again).
 
         Overridden by :class:`google.cloud.datastore.transaction.Transaction`.
+
+        :raises: :class:`~exceptions.ValueError` if the batch is not
+                 in progress.
         """
+        if self._status != self._IN_PROGRESS:
+            raise ValueError('Batch must be in progress to rollback()')
+
         self._status = self._ABORTED
 
     def __enter__(self):
-        self._client._push_batch(self)
         self.begin()
+        # NOTE: We make sure begin() succeeds before pushing onto the stack.
+        self._client._push_batch(self)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
