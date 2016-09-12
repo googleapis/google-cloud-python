@@ -28,6 +28,10 @@ class EntityAnnotation(object):
     :type description: str
     :param description: Description of entity detected in an image.
 
+    :type locale: str
+    :param locale: The language code for the locale in which the entity textual
+                   description (next field) is expressed.
+
     :type locations: list of
                      :class:`~google.cloud.vision.geometry.LocationInformation`.
     :param locations: List of ``LocationInformation`` instances.
@@ -38,9 +42,10 @@ class EntityAnnotation(object):
     :type score: float
     :param score: Overall score of the result. Range [0, 1].
     """
-    def __init__(self, bounds, description, locations, mid, score):
+    def __init__(self, bounds, description, locale, locations, mid, score):
         self._bounds = bounds
         self._description = description
+        self._locale = locale
         self._locations = locations
         self._mid = mid
         self._score = score
@@ -52,17 +57,19 @@ class EntityAnnotation(object):
         :type response: dict
         :param response: Dictionary response from Vision API with entity data.
 
-        :rtype: :class:`~google.cloud.vision.entiy.EntityAnnotation`
+        :rtype: :class:`~google.cloud.vision.entity.EntityAnnotation`
         :returns: Instance of ``EntityAnnotation``.
         """
         bounds = Bounds.from_api_repr(response.get('boundingPoly'))
         description = response['description']
+
+        locale = response.get('locale', None)
         locations = [LocationInformation.from_api_repr(location)
                      for location in response.get('locations', [])]
-        mid = response['mid']
-        score = response['score']
+        mid = response.get('mid', None)
+        score = response.get('score', None)
 
-        return cls(bounds, description, locations, mid, score)
+        return cls(bounds, description, locale, locations, mid, score)
 
     @property
     def bounds(self):
@@ -81,6 +88,15 @@ class EntityAnnotation(object):
         :returns: String description of feature detected in image.
         """
         return self._description
+
+    @property
+    def locale(self):
+        """The language code for text discovered in an image.
+
+        :rtype: str
+        :returns: String language code of text found in the image.
+        """
+        return self._locale
 
     @property
     def locations(self):

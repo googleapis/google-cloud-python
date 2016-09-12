@@ -209,11 +209,13 @@ Detecting text with ORC from an image.
     >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> image = client.image('./image.jpg')
-    >>> text = image.detect_text()
-    >>> text.locale
+    >>> texts = image.detect_text()
+    >>> texts[0].locale
     'en'
-    >>> text.description
-    'the full text of the image.'
+    >>> texts[0].description
+    'some text in the image'
+    >>> texts[1].description
+    'some other text in the image'
 
 Image Properties
 ~~~~~~~~~~~~~~~~

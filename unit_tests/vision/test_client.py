@@ -207,6 +207,27 @@ class TestClient(unittest.TestCase):
                          image_request['image']['content'])
         self.assertEqual(5, image_request['features'][0]['maxResults'])
 
+    def test_text_detection_from_source(self):
+        from google.cloud.vision.entity import EntityAnnotation
+        from unit_tests.vision._fixtures import (TEXT_DETECTION_RESPONSE as
+                                                 RETURNED)
+        credentials = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=credentials)
+        client.connection = _Connection(RETURNED)
+
+        image = client.image(source_uri=_IMAGE_SOURCE)
+        text = image.detect_text(limit=3)
+        self.assertEqual(3, len(text))
+        self.assertTrue(isinstance(text[0], EntityAnnotation))
+        image_request = client.connection._requested[0]['data']['requests'][0]
+        self.assertEqual(_IMAGE_SOURCE,
+                         image_request['image']['source']['gcs_image_uri'])
+        self.assertEqual(3, image_request['features'][0]['maxResults'])
+        self.assertEqual('en', text[0].locale)
+        self.assertEqual('Google CloudPlatform\n', text[0].description)
+        self.assertEqual('Google', text[1].description)
+        self.assertEqual(694, text[0].bounds.vertices[0].y_coordinate)
+
 
 class TestVisionRequest(unittest.TestCase):
     def _getTargetClass(self):

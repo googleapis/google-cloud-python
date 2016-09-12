@@ -97,6 +97,7 @@ class Image(object):
             'LABEL_DETECTION': 'labelAnnotations',
             'LANDMARK_DETECTION': 'landmarkAnnotations',
             'LOGO_DETECTION': 'logoAnnotations',
+            'TEXT_DETECTION': 'textAnnotations',
         }
         detected_objects = []
         result = self.client.annotate(self, [feature])
@@ -159,4 +160,17 @@ class Image(object):
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
         feature = Feature(FeatureTypes.LOGO_DETECTION, limit)
+        return self._detect_annotation(feature)
+
+    def detect_text(self, limit=10):
+        """Detect text in an image.
+
+        :type limit: int
+        :param limit: The maximum instances of text to find.
+
+        :rtype: list
+        :returns: List of
+                  :class:`~google.cloud.vision.entity.EntityAnnotation`.
+        """
+        feature = Feature(FeatureTypes.TEXT_DETECTION, limit)
         return self._detect_annotation(feature)
