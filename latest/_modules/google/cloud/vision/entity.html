@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.entity &mdash; google-cloud 15e8aec documentation</title>
+  <title>google.cloud.vision.entity &mdash; google-cloud 71228f7 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 15e8aec documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 71228f7 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -272,6 +272,7 @@
 
 
 <span class="kn">from</span> <span class="nn">google.cloud.vision.geometry</span> <span class="k">import</span> <span class="n">Bounds</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.geometry</span> <span class="k">import</span> <span class="n">LocationInformation</span>
 
 
 <div class="viewcode-block" id="EntityAnnotation"><a class="viewcode-back" href="../../../../vision-entity.html#google.cloud.vision.entity.EntityAnnotation">[docs]</a><span class="k">class</span> <span class="nc">EntityAnnotation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -283,15 +284,20 @@
 <span class="sd">    :type description: str</span>
 <span class="sd">    :param description: Description of entity detected in an image.</span>
 
+<span class="sd">    :type locations: list of</span>
+<span class="sd">                     :class:`~google.cloud.vision.geometry.LocationInformation`.</span>
+<span class="sd">    :param locations: List of ``LocationInformation`` instances.</span>
+
 <span class="sd">    :type mid: str</span>
 <span class="sd">    :param mid: Opaque entity ID.</span>
 
 <span class="sd">    :type score: float</span>
 <span class="sd">    :param score: Overall score of the result. Range [0, 1].</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span> <span class="o">=</span> <span class="n">bounds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_locations</span> <span class="o">=</span> <span class="n">locations</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mid</span> <span class="o">=</span> <span class="n">mid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_score</span> <span class="o">=</span> <span class="n">score</span>
 
@@ -307,10 +313,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bounds</span> <span class="o">=</span> <span class="n">Bounds</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;boundingPoly&#39;</span><span class="p">])</span>
         <span class="n">description</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span>
+        <span class="n">locations</span> <span class="o">=</span> <span class="p">[</span><span class="n">LocationInformation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+                     <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;locations&#39;</span><span class="p">,</span> <span class="p">[])]</span>
         <span class="n">mid</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;mid&#39;</span><span class="p">]</span>
         <span class="n">score</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -329,6 +337,16 @@
 <span class="sd">        :returns: String description of feature detected in image.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Location coordinates landmarks detected.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.geometry.LocationInformation`</span>
+<span class="sd">        :returns: ``LocationInformation`` populated with latitude and longitude</span>
+<span class="sd">                  of object detected in an image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_locations</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -380,7 +398,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'15e8aec',
+            VERSION:'71228f7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.geometry &mdash; google-cloud 15e8aec documentation</title>
+  <title>google.cloud.vision.geometry &mdash; google-cloud 71228f7 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 15e8aec documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 71228f7 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -314,6 +314,53 @@
     <span class="sd">&quot;&quot;&quot;The bounding polygon of just the skin portion of the face.&quot;&quot;&quot;</span></div>
 
 
+<div class="viewcode-block" id="LocationInformation"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.geometry.LocationInformation">[docs]</a><span class="k">class</span> <span class="nc">LocationInformation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of location information returned by the Vision API.</span>
+
+<span class="sd">    :type latitude: float</span>
+<span class="sd">    :param latitude: Latitude coordinate of geographical location.</span>
+
+<span class="sd">    :type longitude: float</span>
+<span class="sd">    :param longitude: Longitude coordinate of geographical location.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_latitude</span> <span class="o">=</span> <span class="n">latitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_longitude</span> <span class="o">=</span> <span class="n">longitude</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="LocationInformation.from_api_repr"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.geometry.LocationInformation.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct location information from Vision API response.</span>
+
+<span class="sd">        :type response: dict</span>
+<span class="sd">        :param response: Dictionary response of locations.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.geometry.LocationInformation`</span>
+<span class="sd">        :returns: ``LocationInformation`` with populated latitude and</span>
+<span class="sd">                  longitude.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;latLng&#39;</span><span class="p">][</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;latLng&#39;</span><span class="p">][</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">latitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Latitude coordinate.</span>
+
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :returns: Latitude coordinate of location.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_latitude</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">longitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Longitude coordinate.</span>
+
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :returns: Longitude coordinate of location.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_longitude</span></div>
+
+
 <div class="viewcode-block" id="Position"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.geometry.Position">[docs]</a><span class="k">class</span> <span class="nc">Position</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A 3D position in the image.</span>
 
@@ -440,7 +487,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'15e8aec',
+            VERSION:'71228f7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

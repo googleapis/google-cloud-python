@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Entity &mdash; google-cloud 15e8aec documentation</title>
+  <title>Vision Entity &mdash; google-cloud 71228f7 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 15e8aec documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 71228f7 documentation" href="index.html"/>
         <link rel="next" title="Vision Feature" href="vision-feature.html"/>
         <link rel="prev" title="Vision Image" href="vision-image.html"/> 
 
@@ -264,7 +264,7 @@
 <p>Entity class for holding information returned from annotating an image.</p>
 <dl class="class">
 <dt id="google.cloud.vision.entity.EntityAnnotation">
-<em class="property">class </em><code class="descclassname">google.cloud.vision.entity.</code><code class="descname">EntityAnnotation</code><span class="sig-paren">(</span><em>bounds</em>, <em>description</em>, <em>mid</em>, <em>score</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/entity.html#EntityAnnotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.entity.EntityAnnotation" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.vision.entity.</code><code class="descname">EntityAnnotation</code><span class="sig-paren">(</span><em>bounds</em>, <em>description</em>, <em>locations</em>, <em>mid</em>, <em>score</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/entity.html#EntityAnnotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.entity.EntityAnnotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Representation of an entity returned from the Vision API.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -274,6 +274,8 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary of bounary information of detected entity.</li>
 <li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Description of entity detected in an image.</li>
+<li><strong>locations</strong> (list of
+<a class="reference internal" href="vision-image.html#google.cloud.vision.geometry.LocationInformation" title="google.cloud.vision.geometry.LocationInformation"><code class="xref py py-class docutils literal"><span class="pre">LocationInformation</span></code></a>.) &#8211; List of <code class="docutils literal"><span class="pre">LocationInformation</span></code> instances.</li>
 <li><strong>mid</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Opaque entity ID.</li>
 <li><strong>score</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Overall score of the result. Range [0, 1].</li>
 </ul>
@@ -326,6 +328,23 @@
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">EntityAnnotation</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision.entity.EntityAnnotation.locations">
+<code class="descname">locations</code><a class="headerlink" href="#google.cloud.vision.entity.EntityAnnotation.locations" title="Permalink to this definition">#</a></dt>
+<dd><p>Location coordinates landmarks detected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="vision-image.html#google.cloud.vision.geometry.LocationInformation" title="google.cloud.vision.geometry.LocationInformation"><code class="xref py py-class docutils literal"><span class="pre">LocationInformation</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">LocationInformation</span></code> populated with latitude and longitude
+of object detected in an image.</td>
 </tr>
 </tbody>
 </table>
@@ -409,7 +428,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'15e8aec',
+            VERSION:'71228f7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
