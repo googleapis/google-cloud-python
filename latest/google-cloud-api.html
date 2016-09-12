@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Shared Core Modules &mdash; google-cloud c55eb51 documentation</title>
+  <title>Shared Core Modules &mdash; google-cloud 15e8aec documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud c55eb51 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 15e8aec documentation" href="index.html"/>
         <link rel="next" title="Configuration" href="google-cloud-config.html"/>
         <link rel="prev" title="Getting started" href="index.html"/> 
 
@@ -283,7 +283,7 @@
 owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
 object is passed), falls back to the default inferred
 from the environment.</li>
-<li><strong>http</strong> (<a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
+<li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
 <code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
 <code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
 </ul>
@@ -384,7 +384,7 @@ environment.</li>
 owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
 object is passed), falls back to the default inferred
 from the environment.</li>
-<li><strong>http</strong> (<a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
+<li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
 <code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
 <code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
 </ul>
@@ -613,7 +613,7 @@ environment.</td>
 <p>A generic connection to Google Cloud Platform.</p>
 <p>Subclasses should understand only the basic types in method arguments,
 however they should be capable of returning advanced types.</p>
-<p>If no value is passed in for <code class="docutils literal"><span class="pre">http</span></code>, a <a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> object
+<p>If no value is passed in for <code class="docutils literal"><span class="pre">http</span></code>, a <a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> object
 will be created and authorized with the <code class="docutils literal"><span class="pre">credentials</span></code>. If not, the
 <code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">http</span></code> need not be related.</p>
 <p>Subclasses may seek to use the private key from <code class="docutils literal"><span class="pre">credentials</span></code> to sign
@@ -637,7 +637,7 @@ requests and handle token refresh on 401 errors.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v3.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for this connection.</li>
-<li><strong>http</strong> (<a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests.</li>
+<li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests.</li>
 </ul>
 </td>
 </tr>
@@ -675,7 +675,7 @@ requests and handle token refresh on 401 errors.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A Http object used to transport data.</td>
 </tr>
@@ -1009,7 +1009,7 @@ use the default for the library.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>response</strong> (<a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Response" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Response</span></code></a> or other HTTP response object) &#8211; A response object that defines a status code as the
+<li><strong>response</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Response" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Response</span></code></a> or other HTTP response object) &#8211; A response object that defines a status code as the
 status attribute.</li>
 <li><strong>content</strong> (<em>string or dictionary</em>) &#8211; The body of the HTTP error response.</li>
 <li><strong>error_info</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Optional string giving extra information about the
@@ -1122,7 +1122,7 @@ exist.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'c55eb51',
+            VERSION:'15e8aec',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
