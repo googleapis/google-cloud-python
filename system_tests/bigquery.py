@@ -288,6 +288,59 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(rows, key=by_age),
                          sorted(ROWS, key=by_age))
 
+    def test_load_table_from_local_file_then_dump_table(self):
+        import csv
+        import tempfile
+        ROWS = [
+            ('Phred Phlyntstone', 32),
+            ('Bharney Rhubble', 33),
+            ('Wylma Phlyntstone', 29),
+            ('Bhettye Rhubble', 27),
+        ]
+        TABLE_NAME = 'test_table'
+
+        dataset = Config.CLIENT.dataset(DATASET_NAME)
+
+        retry_403(dataset.create)()
+        self.to_delete.append(dataset)
+
+        full_name = bigquery.SchemaField('full_name', 'STRING',
+                                         mode='REQUIRED')
+        age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = dataset.table(TABLE_NAME, schema=[full_name, age])
+        table.create()
+        self.to_delete.insert(0, table)
+
+        with tempfile.NamedTemporaryFile(mode='w+') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerow(('Full Name', 'Age'))
+            writer.writerows(ROWS)
+            csv_file.flush()
+
+            with open(csv_file.name, 'rb') as csv_read:
+                job = table.upload_from_file(
+                    csv_read,
+                    source_format='CSV',
+                    skip_leading_rows=1,
+                    create_disposition='CREATE_NEVER',
+                    write_disposition='WRITE_EMPTY',
+                )
+
+        def _job_done(instance):
+            return instance.state.lower() == 'done'
+
+        # Retry until done.
+        retry = RetryInstanceState(_job_done, max_tries=8)
+        retry(job.reload)()
+
+        self.assertTrue(_job_done(job))
+        self.assertEqual(job.output_rows, len(ROWS))
+
+        rows, _, _ = table.fetch_data()
+        by_age = operator.itemgetter(1)
+        self.assertEqual(sorted(rows, key=by_age),
+                         sorted(ROWS, key=by_age))
+
     def test_load_table_from_storage_then_dump_table(self):
         import csv
         import tempfile
