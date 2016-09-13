@@ -39,9 +39,11 @@ pip-log.txt
 .project
 .pydevproject
 
+# JetBrains
+.idea
+
 # Built documentation
 docs/_build
-docs/_build_rtd
 
 # Virtual environment
 env/
