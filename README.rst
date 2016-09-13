@@ -41,7 +41,7 @@ Quick Start
 
 ::
 
-    $ pip install -U gcloud
+    $ pip install --upgrade gcloud
 
 Example Applications
 --------------------
