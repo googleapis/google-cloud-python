@@ -17,6 +17,7 @@ import operator
 import unittest
 
 from google.cloud import bigquery
+from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import Forbidden
 
 from retry import RetryErrors
@@ -59,8 +60,13 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete = []
 
     def tearDown(self):
+        from google.cloud.storage import Bucket
         for doomed in self.to_delete:
-            doomed.delete()
+            if isinstance(doomed, Bucket):
+                retry = RetryErrors(Conflict)
+                retry(doomed.delete)(force=True)
+            else:
+                doomed.delete()
 
     def test_create_dataset(self):
         dataset = Config.CLIENT.dataset(DATASET_NAME)
