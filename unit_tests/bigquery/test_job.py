@@ -484,6 +484,16 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertTrue(dataset._client is client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
+    def test_begin_w_already_running(self):
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        table = _Table()
+        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+        job._properties['status'] = {'state': 'RUNNING'}
+
+        with self.assertRaises(ValueError):
+            job.begin()
+
     def test_begin_w_bound_client(self):
         PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource()
