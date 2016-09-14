@@ -1,0 +1,726 @@
+# Copyright 2016 Google Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""Implementations for HTTP and gRPC
+
+These are connections to Google Cloud Datastore API servers for
+each datastore API method.
+"""
+
+
+import os
+
+from google.rpc import status_pb2
+
+from google.cloud._helpers import make_insecure_stub
+from google.cloud._helpers import make_secure_stub
+from google.cloud.environment_vars import DISABLE_GRPC
+from google.cloud.exceptions import Conflict
+from google.cloud.exceptions import make_exception
+from google.cloud.datastore._generated import datastore_pb2
+# pylint: disable=ungrouped-imports
+try:
+    from grpc import StatusCode
+    from grpc._channel import _Rendezvous
+    from google.cloud.datastore._generated import datastore_grpc_pb2
+except ImportError:  # pragma: NO COVER
+    HAVE_GRPC = False
+    datastore_grpc_pb2 = None
+    StatusCode = None
+    _Rendezvous = Exception
+else:
+    HAVE_GRPC = True
+# pylint: enable=ungrouped-imports
+
+
+USE_GRPC = HAVE_GRPC and not os.getenv(DISABLE_GRPC, False)
+
+API_URL_TEMPLATE = ('{api_base}/{api_version}/projects'
+                    '/{project}:{method}')
+"""A template for the URL of a particular API call."""
+
+API_VERSION = 'v1'
+"""The version of the API, used in building the API call's URL."""
+
+
+class DatastoreAPIBase(object):
+    """Base class for datastore API Implementations."""
+
+    def _lookup(self, project, request_pb):
+        """Perform a ``lookup`` request.
+
+        This method is virtual and should be implemented by subclasses.
+
+        :type project: string
+        :param project: The project to connect to.
+
+        :type request_pb: :class:`._generated.datastore_pb2.LookupRequest`
+        :param request_pb: The request protobuf object.
+
+        :raises: :exc:`NotImplementedError` always
+        """
+        raise NotImplementedError
+
+    def lookup(self, project, key_pbs,
+               eventual=False, transaction_id=None):
+        """Lookup keys from a project in the Cloud Datastore.
+
+        Maps the ``DatastoreService.Lookup`` protobuf RPC.
+
+        This uses mostly protobufs
+        (:class:`google.cloud.datastore._generated.entity_pb2.Key` as input
+        and :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+        as output). It is used under the hood in
+        :meth:`Client.get() <.datastore.client.Client.get>`:
+
+        >>> from google.cloud import datastore
+        >>> client = datastore.Client(project='project')
+        >>> key = client.key('MyKind', 1234)
+        >>> client.get(key)
+        [<Entity object>]
+
+        Using a :class:`Connection` directly:
+
+        >>> connection.lookup('project', [key.to_protobuf()])
+        [<Entity protobuf>]
+
+        :type project: string
+        :param project: The project to look up the keys in.
+
+        :type key_pbs: list of
+                       :class:`google.cloud.datastore._generated.entity_pb2.Key`
+        :param key_pbs: The keys to retrieve from the datastore.
+
+        :type eventual: bool
+        :param eventual: If False (the default), request ``STRONG`` read
+                         consistency.  If True, request ``EVENTUAL`` read
+                         consistency.
+
+        :type transaction_id: string
+        :param transaction_id: If passed, make the request in the scope of
+                               the given transaction.  Incompatible with
+                               ``eventual==True``.
+
+        :rtype: tuple
+        :returns: A triple of (``results``, ``missing``, ``deferred``) where
+                  both ``results`` and ``missing`` are lists of
+                  :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+                  and ``deferred`` is a list of
+                  :class:`google.cloud.datastore._generated.entity_pb2.Key`.
+        """
+        lookup_request = datastore_pb2.LookupRequest()
+        set_read_options(lookup_request, eventual, transaction_id)
+        add_keys_to_request(lookup_request.keys, key_pbs)
+
+        lookup_response = self._lookup(project, lookup_request)
+
+        results = [result.entity for result in lookup_response.found]
+        missing = [result.entity for result in lookup_response.missing]
+
+        return results, missing, list(lookup_response.deferred)
+
+    def _run_query(self, project, request_pb):
+        """Perform a ``runQuery`` request.
+
+        This method is virtual and should be implemented by subclasses.
+
+        :type project: string
+        :param project: The project to connect to.
+
+        :type request_pb: :class:`._generated.datastore_pb2.RunQueryRequest`
+        :param request_pb: The request protobuf object.
+
+        :raises: :exc:`NotImplementedError` always
+        """
+        raise NotImplementedError
+
+    def run_query(self, project, query_pb, namespace=None,
+                  eventual=False, transaction_id=None):
+        """Run a query on the Cloud Datastore.
+
+        Maps the ``DatastoreService.RunQuery`` protobuf RPC.
+
+        Given a Query protobuf, sends a ``runQuery`` request to the
+        Cloud Datastore API and returns a list of entity protobufs
+        matching the query.
+
+        You typically wouldn't use this method directly, in favor of
+        :meth:`~google.cloud.datastore.query.Query.fetch`.
+
+        Under the hood, :class:`~google.cloud.datastore.query.Query`
+        uses this method to fetch data.
+
+        :type project: string
+        :param project: The project over which to run the query.
+
+        :type query_pb: :class:`.datastore._generated.query_pb2.Query`
+        :param query_pb: The Protobuf representing the query to run.
+
+        :type namespace: string
+        :param namespace: The namespace over which to run the query.
+
+        :type eventual: bool
+        :param eventual: If False (the default), request ``STRONG`` read
+                         consistency.  If True, request ``EVENTUAL`` read
+                         consistency.
+
+        :type transaction_id: string
+        :param transaction_id: If passed, make the request in the scope of
+                               the given transaction.  Incompatible with
+                               ``eventual==True``.
+
+        :rtype: tuple
+        :returns: Four-tuple containing the entities returned,
+                  the end cursor of the query, a ``more_results``
+                  enum and a count of the number of skipped results.
+        """
+        request = datastore_pb2.RunQueryRequest()
+        set_read_options(request, eventual, transaction_id)
+
+        if namespace:
+            request.partition_id.namespace_id = namespace
+
+        request.query.CopyFrom(query_pb)
+        response = self._run_query(project, request)
+        return (
+            [result.entity for result in response.batch.entity_results],
+            response.batch.end_cursor,  # Assume response always has cursor.
+            response.batch.more_results,
+            response.batch.skipped_results,
+        )
+
+    def _begin_transaction(self, project, request_pb):
+        """Perform a ``beginTransaction`` request.
+
+        This method is virtual and should be implemented by subclasses.
+
+        :type project: string
+        :param project: The project to connect to.
+
+        :type request_pb:
+            :class:`._generated.datastore_pb2.BeginTransactionRequest`
+        :param request_pb: The request protobuf object.
+
+        :raises: :exc:`NotImplementedError` always
+        """
+        raise NotImplementedError
+
+    def begin_transaction(self, project):
+        """Begin a transaction.
+
+        Maps the ``DatastoreService.BeginTransaction`` protobuf RPC.
+
+        :type project: string
+        :param project: The project to which the transaction applies.
+
+        :rtype: bytes
+        :returns: The serialized transaction that was begun.
+        """
+        request = datastore_pb2.BeginTransactionRequest()
+        response = self._begin_transaction(project, request)
+        return response.transaction
+
+    def _commit(self, project, request_pb):
+        """Perform a ``commit`` request.
+
+        This method is virtual and should be implemented by subclasses.
+
+        :type project: string
+        :param project: The project to connect to.
+
+        :type request_pb: :class:`._generated.datastore_pb2.CommitRequest`
+        :param request_pb: The request protobuf object.
+
+        :raises: :exc:`NotImplementedError` always
+        """
+        raise NotImplementedError
+
+    def commit(self, project, request, transaction_id):
+        """Commit mutations in context of current transaction (if any).
+
+        Maps the ``DatastoreService.Commit`` protobuf RPC.
+
+        :type project: string
+        :param project: The project to which the transaction applies.
+
+        :type request: :class:`._generated.datastore_pb2.CommitRequest`
+        :param request: The protobuf with the mutations being committed.
+
+        :type transaction_id: string or None
+        :param transaction_id: The transaction ID returned from
+                               :meth:`begin_transaction`.  Non-transactional
+                               batches must pass ``None``.
+
+        .. note::
+
+            This method will mutate ``request`` before using it.
+
+        :rtype: tuple
+        :returns: The pair of the number of index updates and a list of
+                  :class:`._generated.entity_pb2.Key` for each incomplete key
+                  that was completed in the commit.
+        """
+        if transaction_id:
+            request.mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+            request.transaction = transaction_id
+        else:
+            request.mode = datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+
+        response = self._commit(project, request)
+        return parse_commit_response(response)
+
+    def _rollback(self, project, request_pb):
+        """Perform a ``rollback`` request.
+
+        This method is virtual and should be implemented by subclasses.
+
+        :type project: string
+        :param project: The project to connect to.
+
+        :type request_pb: :class:`._generated.datastore_pb2.RollbackRequest`
+        :param request_pb: The request protobuf object.
+
+        :raises: :exc:`NotImplementedError` always
+        """
+        raise NotImplementedError
+
+    def rollback(self, project, transaction_id):
+        """Rollback the connection's existing transaction.
+
+        Maps the ``DatastoreService.Rollback`` protobuf RPC.
+
+        :type project: string
+        :param project: The project to which the transaction belongs.
+
+        :type transaction_id: string
+        :param transaction_id: The transaction ID returned from
+                               :meth:`begin_transaction`.
+        """
+        request = datastore_pb2.RollbackRequest()
+        request.transaction = transaction_id
+        # Nothing to do with this response, so just execute the method.
+        self._rollback(project, request)
+
+    def _allocate_ids(self, project, request_pb):
+        """Perform an ``allocateIds`` request.
+
+        This method is virtual and should be implemented by subclasses.
+
+        :type project: string
+        :param project: The project to connect to.
+
+        :type request_pb: :class:`._generated.datastore_pb2.AllocateIdsRequest`
+        :param request_pb: The request protobuf object.
+
+        :raises: :exc:`NotImplementedError` always
+        """
+        raise NotImplementedError
+
+    def allocate_ids(self, project, key_pbs):
+        """Obtain backend-generated IDs for a set of keys.
+
+        Maps the ``DatastoreService.AllocateIds`` protobuf RPC.
+
+        :type project: string
+        :param project: The project to which the transaction belongs.
+
+        :type key_pbs: list of
+                       :class:`google.cloud.datastore._generated.entity_pb2.Key`
+        :param key_pbs: The keys for which the backend should allocate IDs.
+
+        :rtype: list of :class:`.datastore._generated.entity_pb2.Key`
+        :returns: An equal number of keys,  with IDs filled in by the backend.
+        """
+        request = datastore_pb2.AllocateIdsRequest()
+        add_keys_to_request(request.keys, key_pbs)
+        # Nothing to do with this response, so just execute the method.
+        response = self._allocate_ids(project, request)
+        return list(response.keys)
+
+
+class _DatastoreAPIOverHttp(DatastoreAPIBase):
+    """Helper mapping datastore API methods.
+
+    Makes requests to send / receive protobuf content over HTTP/1.1.
+
+    Methods make bare API requests without any helpers for constructing
+    the requests or parsing the responses.
+
+    :type connection: :class:`google.cloud.datastore.connection.Connection`
+    :param connection: A connection object that contains helpful
+                       information for making requests.
+    """
+
+    def __init__(self, connection):
+        self.connection = connection
+
+    def _request(self, project, method, data):
+        """Make a request over the Http transport to the Cloud Datastore API.
+
+        :type project: string
+        :param project: The project to make the request for.
+
+        :type method: string
+        :param method: The API call method name (ie, ``runQuery``,
+                       ``lookup``, etc)
+
+        :type data: string
+        :param data: The data to send with the API call.
+                     Typically this is a serialized Protobuf string.
+
+        :rtype: string
+        :returns: The string response content from the API call.
+        :raises: :class:`google.cloud.exceptions.GoogleCloudError` if the
+                 response code is not 200 OK.
+        """
+        headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': str(len(data)),
+            'User-Agent': self.connection.USER_AGENT,
+        }
+        base_url = self.connection.api_base_url
+        api_url = build_api_url(project, method, base_url)
+        headers, content = self.connection.http.request(
+            uri=api_url, method='POST', headers=headers, body=data)
+
+        status = headers['status']
+        if status != '200':
+            error_status = status_pb2.Status.FromString(content)
+            raise make_exception(headers, error_status.message, use_json=False)
+
+        return content
+
+    def _rpc(self, project, method, request_pb, response_pb_cls):
+        """Make a protobuf RPC request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type method: string
+        :param method: The name of the method to invoke.
+
+        :type request_pb: :class:`google.protobuf.message.Message` instance
+        :param request_pb: the protobuf instance representing the request.
+
+        :type response_pb_cls: A :class:`google.protobuf.message.Message`
+                               subclass.
+        :param response_pb_cls: The class used to unmarshall the response
+                                protobuf.
+
+        :rtype: :class:`google.protobuf.message.Message`
+        :returns: The RPC message parsed from the response.
+        """
+        response = self._request(project=project, method=method,
+                                 data=request_pb.SerializeToString())
+        return response_pb_cls.FromString(response)
+
+    def _lookup(self, project, request_pb):
+        """Perform a ``lookup`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.LookupRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.LookupResponse`
+        :returns: The returned protobuf response object.
+        """
+        return self._rpc(project, 'lookup', request_pb,
+                         datastore_pb2.LookupResponse)
+
+    def _run_query(self, project, request_pb):
+        """Perform a ``runQuery`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.RunQueryRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.RunQueryResponse`
+        :returns: The returned protobuf response object.
+        """
+        return self._rpc(project, 'runQuery', request_pb,
+                         datastore_pb2.RunQueryResponse)
+
+    def _begin_transaction(self, project, request_pb):
+        """Perform a ``beginTransaction`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb:
+            :class:`._generated.datastore_pb2.BeginTransactionRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.BeginTransactionResponse`
+        :returns: The returned protobuf response object.
+        """
+        return self._rpc(project, 'beginTransaction', request_pb,
+                         datastore_pb2.BeginTransactionResponse)
+
+    def _commit(self, project, request_pb):
+        """Perform a ``commit`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.CommitRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.CommitResponse`
+        :returns: The returned protobuf response object.
+        """
+        return self._rpc(project, 'commit', request_pb,
+                         datastore_pb2.CommitResponse)
+
+    def _rollback(self, project, request_pb):
+        """Perform a ``rollback`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.RollbackRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.RollbackResponse`
+        :returns: The returned protobuf response object.
+        """
+        return self._rpc(project, 'rollback', request_pb,
+                         datastore_pb2.RollbackResponse)
+
+    def _allocate_ids(self, project, request_pb):
+        """Perform an ``allocateIds`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.AllocateIdsRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.AllocateIdsResponse`
+        :returns: The returned protobuf response object.
+        """
+        return self._rpc(project, 'allocateIds', request_pb,
+                         datastore_pb2.AllocateIdsResponse)
+
+
+class _DatastoreAPIOverGRPC(DatastoreAPIBase):
+    """Helper mapping datastore API methods.
+
+    Makes requests to send / receive protobuf content over gRPC.
+
+    Methods make bare API requests without any helpers for constructing
+    the requests or parsing the responses.
+
+    :type connection: :class:`google.cloud.datastore.connection.Connection`
+    :param connection: A connection object that contains helpful
+                       information for making requests.
+
+    :type secure: bool
+    :param secure: Flag indicating if a secure stub connection is needed.
+    """
+
+    def __init__(self, connection, secure):
+        if secure:
+            self._stub = make_secure_stub(connection.credentials,
+                                          connection.USER_AGENT,
+                                          datastore_grpc_pb2.DatastoreStub,
+                                          connection.host)
+        else:
+            self._stub = make_insecure_stub(datastore_grpc_pb2.DatastoreStub,
+                                            connection.host)
+
+    def _lookup(self, project, request_pb):
+        """Perform a ``lookup`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.LookupRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.LookupResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb.project_id = project
+        return self._stub.Lookup(request_pb)
+
+    def _run_query(self, project, request_pb):
+        """Perform a ``runQuery`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.RunQueryRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.RunQueryResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb.project_id = project
+        return self._stub.RunQuery(request_pb)
+
+    def _begin_transaction(self, project, request_pb):
+        """Perform a ``beginTransaction`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb:
+            :class:`._generated.datastore_pb2.BeginTransactionRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.BeginTransactionResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb.project_id = project
+        return self._stub.BeginTransaction(request_pb)
+
+    def _commit(self, project, request_pb):
+        """Perform a ``commit`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.CommitRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.CommitResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb.project_id = project
+        try:
+            return self._stub.Commit(request_pb)
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.ABORTED:
+                raise Conflict(exc.details())
+            raise
+
+    def _rollback(self, project, request_pb):
+        """Perform a ``rollback`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.RollbackRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.RollbackResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb.project_id = project
+        return self._stub.Rollback(request_pb)
+
+    def _allocate_ids(self, project, request_pb):
+        """Perform an ``allocateIds`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.AllocateIdsRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.AllocateIdsResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb.project_id = project
+        return self._stub.AllocateIds(request_pb)
+
+
+def build_api_url(project, method, base_url):
+    """Construct the URL for a particular API call.
+
+    This method is used internally to come up with the URL to use when
+    making RPCs to the Cloud Datastore API.
+
+    :type project: string
+    :param project: The project to connect to. This is
+                    usually your project name in the cloud console.
+
+    :type method: string
+    :param method: The API method to call (e.g. 'runQuery', 'lookup').
+
+    :type base_url: string
+    :param base_url: The base URL where the API lives.
+
+    :rtype: str
+    :returns: The API URL created.
+    """
+    return API_URL_TEMPLATE.format(
+        api_base=base_url, api_version=API_VERSION,
+        project=project, method=method)
+
+
+def set_read_options(request, eventual, transaction_id):
+    """Validate rules for read options, and assign to the request.
+
+    Helper method for ``lookup()`` and ``run_query``.
+
+    :raises: :class:`ValueError` if ``eventual`` is ``True`` and the
+             ``transaction_id`` is not ``None``.
+    """
+    if eventual and (transaction_id is not None):
+        raise ValueError('eventual must be False when in a transaction')
+
+    opts = request.read_options
+    if eventual:
+        opts.read_consistency = datastore_pb2.ReadOptions.EVENTUAL
+    elif transaction_id:
+        opts.transaction = transaction_id
+
+
+def add_keys_to_request(request_field_pb, key_pbs):
+    """Add protobuf keys to a request object.
+
+    :type request_field_pb: `RepeatedCompositeFieldContainer`
+    :param request_field_pb: A repeated proto field that contains keys.
+
+    :type key_pbs: list of :class:`.datastore._generated.entity_pb2.Key`
+    :param key_pbs: The keys to add to a request.
+    """
+    for key_pb in key_pbs:
+        request_field_pb.add().CopyFrom(key_pb)
+
+
+def parse_commit_response(commit_response_pb):
+    """Extract response data from a commit response.
+
+    :type commit_response_pb: :class:`._generated.datastore_pb2.CommitResponse`
+    :param commit_response_pb: The protobuf response from a commit request.
+
+    :rtype: tuple
+    :returns: The pair of the number of index updates and a list of
+              :class:`._generated.entity_pb2.Key` for each incomplete key
+              that was completed in the commit.
+    """
+    mut_results = commit_response_pb.mutation_results
+    index_updates = commit_response_pb.index_updates
+    completed_keys = [mut_result.key for mut_result in mut_results
+                      if mut_result.HasField('key')]  # Message field (Key)
+    return index_updates, completed_keys

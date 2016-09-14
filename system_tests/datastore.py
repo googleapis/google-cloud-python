@@ -487,4 +487,6 @@ class TestDatastoreTransaction(TestDatastore):
                 # Try to update the entity which we already updated outside the
                 # transaction.
                 entity_in_txn[contention_prop_name] = u'inside'
+                # NOTE: This doesn't get rolled-back since the
+                #       error happens in __exit__.
                 txn.put(entity_in_txn)

@@ -14,286 +14,6 @@
 
 import unittest
 
-from google.cloud.datastore.connection import _HAVE_GRPC
-
-
-class Test_DatastoreAPIOverHttp(unittest.TestCase):
-
-    def _getTargetClass(self):
-        from google.cloud.datastore.connection import _DatastoreAPIOverHttp
-        return _DatastoreAPIOverHttp
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
-
-    def test__rpc(self):
-        class ReqPB(object):
-
-            def SerializeToString(self):
-                return REQPB
-
-        class RspPB(object):
-
-            def __init__(self, pb):
-                self._pb = pb
-
-            @classmethod
-            def FromString(cls, pb):
-                return cls(pb)
-
-        REQPB = b'REQPB'
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        URI = 'http://api-url'
-        conn = _Connection(URI)
-        datastore_api = self._makeOne(conn)
-        http = conn.http = Http({'status': '200'}, 'CONTENT')
-        response = datastore_api._rpc(PROJECT, METHOD, ReqPB(), RspPB)
-        self.assertTrue(isinstance(response, RspPB))
-        self.assertEqual(response._pb, 'CONTENT')
-        called_with = http._called_with
-        self.assertEqual(called_with['uri'], URI)
-        self.assertEqual(called_with['method'], 'POST')
-        self.assertEqual(called_with['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
-        self.assertEqual(called_with['body'], REQPB)
-        self.assertEqual(conn.build_kwargs,
-                         [{'method': METHOD, 'project': PROJECT}])
-
-    def test__request_w_200(self):
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        DATA = b'DATA'
-        URI = 'http://api-url'
-        conn = _Connection(URI)
-        datastore_api = self._makeOne(conn)
-        http = conn.http = Http({'status': '200'}, 'CONTENT')
-        self.assertEqual(datastore_api._request(PROJECT, METHOD, DATA),
-                         'CONTENT')
-        called_with = http._called_with
-        self.assertEqual(called_with['uri'], URI)
-        self.assertEqual(called_with['method'], 'POST')
-        self.assertEqual(called_with['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
-        self.assertEqual(called_with['body'], DATA)
-        self.assertEqual(conn.build_kwargs,
-                         [{'method': METHOD, 'project': PROJECT}])
-
-    def test__request_not_200(self):
-        from google.cloud.exceptions import BadRequest
-        from google.rpc import status_pb2
-
-        error = status_pb2.Status()
-        error.message = 'Entity value is indexed.'
-        error.code = 9  # FAILED_PRECONDITION
-
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        DATA = 'DATA'
-        URI = 'http://api-url'
-        conn = _Connection(URI)
-        datastore_api = self._makeOne(conn)
-        conn.http = Http({'status': '400'}, error.SerializeToString())
-        with self.assertRaises(BadRequest) as exc:
-            datastore_api._request(PROJECT, METHOD, DATA)
-        expected_message = '400 Entity value is indexed.'
-        self.assertEqual(str(exc.exception), expected_message)
-        self.assertEqual(conn.build_kwargs,
-                         [{'method': METHOD, 'project': PROJECT}])
-
-
-class Test_DatastoreAPIOverGRPC(unittest.TestCase):
-
-    def _getTargetClass(self):
-        from google.cloud.datastore.connection import _DatastoreAPIOverGRPC
-        return _DatastoreAPIOverGRPC
-
-    def _makeOne(self, stub, connection=None, secure=True, mock_args=None):
-        from unit_tests._testing import _Monkey
-        from google.cloud.datastore import connection as MUT
-
-        if connection is None:
-            connection = _Connection(None)
-            connection.credentials = object()
-            connection.host = 'CURR_HOST'
-
-        if mock_args is None:
-            mock_args = []
-
-        def mock_make_stub(*args):
-            mock_args.append(args)
-            return stub
-
-        if secure:
-            to_monkey = {'make_secure_stub': mock_make_stub}
-        else:
-            to_monkey = {'make_insecure_stub': mock_make_stub}
-        with _Monkey(MUT, **to_monkey):
-            return self._getTargetClass()(connection, secure)
-
-    def test_constructor(self):
-        from google.cloud.datastore import connection as MUT
-
-        conn = _Connection(None)
-        conn.credentials = object()
-        conn.host = 'CURR_HOST'
-
-        stub = _GRPCStub()
-        mock_args = []
-        datastore_api = self._makeOne(stub, connection=conn,
-                                      mock_args=mock_args)
-        self.assertIs(datastore_api._stub, stub)
-
-        self.assertEqual(mock_args, [(
-            conn.credentials,
-            conn.USER_AGENT,
-            MUT.datastore_grpc_pb2.DatastoreStub,
-            conn.host,
-        )])
-
-    def test_constructor_insecure(self):
-        from google.cloud.datastore import connection as MUT
-
-        conn = _Connection(None)
-        conn.credentials = object()
-        conn.host = 'CURR_HOST:1234'
-
-        stub = _GRPCStub()
-        mock_args = []
-        datastore_api = self._makeOne(stub, connection=conn,
-                                      secure=False,
-                                      mock_args=mock_args)
-        self.assertIs(datastore_api._stub, stub)
-
-        self.assertEqual(mock_args, [(
-            MUT.datastore_grpc_pb2.DatastoreStub,
-            conn.host,
-        )])
-
-    def test_lookup(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api = self._makeOne(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        result = datastore_api.lookup(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'Lookup')])
-
-    def test_run_query(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api = self._makeOne(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        result = datastore_api.run_query(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'RunQuery')])
-
-    def test_begin_transaction(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api = self._makeOne(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        result = datastore_api.begin_transaction(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(
-            stub.method_calls,
-            [(request_pb, 'BeginTransaction')])
-
-    def test_commit_success(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api = self._makeOne(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        result = datastore_api.commit(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'Commit')])
-
-    def _commit_failure_helper(self, exc, err_class):
-        stub = _GRPCStub(side_effect=exc)
-        datastore_api = self._makeOne(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        with self.assertRaises(err_class):
-            datastore_api.commit(project, request_pb)
-
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'Commit')])
-
-    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
-    def test_commit_failure_aborted(self):
-        from grpc import StatusCode
-        from grpc._channel import _Rendezvous
-        from grpc._channel import _RPCState
-        from google.cloud.exceptions import Conflict
-
-        details = 'Bad things.'
-        exc_state = _RPCState((), None, None, StatusCode.ABORTED, details)
-        exc = _Rendezvous(exc_state, None, None, None)
-        self._commit_failure_helper(exc, Conflict)
-
-    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
-    def test_commit_failure_cancelled(self):
-        from grpc import StatusCode
-        from grpc._channel import _Rendezvous
-        from grpc._channel import _RPCState
-
-        exc_state = _RPCState((), None, None, StatusCode.CANCELLED, None)
-        exc = _Rendezvous(exc_state, None, None, None)
-        self._commit_failure_helper(exc, _Rendezvous)
-
-    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
-    def test_commit_failure_non_grpc_err(self):
-        exc = RuntimeError('Not a gRPC error')
-        self._commit_failure_helper(exc, RuntimeError)
-
-    def test_rollback(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api = self._makeOne(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        result = datastore_api.rollback(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'Rollback')])
-
-    def test_allocate_ids(self):
-        return_val = object()
-        stub = _GRPCStub(return_val)
-        datastore_api = self._makeOne(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        result = datastore_api.allocate_ids(project, request_pb)
-        self.assertIs(result, return_val)
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(
-            stub.method_calls,
-            [(request_pb, 'AllocateIds')])
-
 
 class TestConnection(unittest.TestCase):
 
@@ -330,9 +50,10 @@ class TestConnection(unittest.TestCase):
                          conn.USER_AGENT)
 
     def test_default_url(self):
-        klass = self._getTargetClass()
+        from google.cloud.datastore.connection import DATASTORE_API_HOST
+
         conn = self._makeOne()
-        self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
+        self.assertEqual(conn.api_base_url, 'https://' + DATASTORE_API_HOST)
 
     def test_custom_url_from_env(self):
         import os
@@ -429,34 +150,8 @@ class TestConnection(unittest.TestCase):
         self.assertTrue(conn.http is authorized)
         self.assertTrue(isinstance(creds._called_with, httplib2.Http))
 
-    def test_build_api_url_w_default_base_version(self):
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            PROJECT + ':' + METHOD,
-        ])
-        self.assertEqual(conn.build_api_url(PROJECT, METHOD), URI)
-
-    def test_build_api_url_w_explicit_base_version(self):
-        BASE = 'http://example.com/'
-        VER = '3.1415926'
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        conn = self._makeOne()
-        URI = '/'.join([
-            BASE,
-            VER,
-            'projects',
-            PROJECT + ':' + METHOD,
-        ])
-        self.assertEqual(conn.build_api_url(PROJECT, METHOD, BASE, VER),
-                         URI)
-
     def test_lookup_single_key_empty_response(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -465,7 +160,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -484,6 +179,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb, keys[0])
 
     def test_lookup_single_key_empty_response_w_eventual(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -492,7 +188,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -523,6 +219,7 @@ class TestConnection(unittest.TestCase):
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_lookup_single_key_empty_response_w_transaction(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -532,7 +229,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -553,6 +250,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.read_options.transaction, TRANSACTION)
 
     def test_lookup_single_key_nonempty_response(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore._generated import entity_pb2
 
@@ -565,7 +263,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -585,6 +283,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb, keys[0])
 
     def test_lookup_multiple_keys_empty_response(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -594,7 +293,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -614,6 +313,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_missing(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -627,7 +327,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -648,6 +348,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_deferred(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -659,7 +360,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':lookup',
         ])
@@ -684,6 +385,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(key_pb2, keys[1])
 
     def test_run_query_w_eventual_no_transaction(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore._generated import query_pb2
 
@@ -699,7 +401,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':runQuery',
         ])
@@ -722,6 +424,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.read_options.transaction, b'')
 
     def test_run_query_wo_eventual_w_transaction(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore._generated import query_pb2
 
@@ -738,7 +441,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':runQuery',
         ])
@@ -780,6 +483,7 @@ class TestConnection(unittest.TestCase):
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_run_query_wo_namespace_empty_result(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore._generated import query_pb2
 
@@ -795,7 +499,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':runQuery',
         ])
@@ -814,6 +518,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.query, q_pb)
 
     def test_run_query_w_namespace_nonempty_result(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore._generated import entity_pb2
 
@@ -828,7 +533,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':runQuery',
         ])
@@ -844,6 +549,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.query, q_pb)
 
     def test_begin_transaction(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -853,7 +559,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':beginTransaction',
         ])
@@ -866,10 +572,11 @@ class TestConnection(unittest.TestCase):
         request.ParseFromString(cw['body'])
 
     def test_commit_wo_transaction(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud.datastore import _api as API_MOD
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
-        from google.cloud.datastore import connection as MUT
         from google.cloud.datastore.helpers import _new_value_pb
+        from unit_tests._testing import _Monkey
 
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
@@ -883,7 +590,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':commit',
         ])
@@ -897,7 +604,7 @@ class TestConnection(unittest.TestCase):
             _parsed.append(response)
             return expected_result
 
-        with _Monkey(MUT, _parse_commit_response=mock_parse):
+        with _Monkey(API_MOD, parse_commit_response=mock_parse):
             result = conn.commit(PROJECT, req_pb, None)
 
         self.assertTrue(result is expected_result)
@@ -912,10 +619,11 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(_parsed, [rsp_pb])
 
     def test_commit_w_transaction(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud.datastore import _api as API_MOD
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
-        from google.cloud.datastore import connection as MUT
         from google.cloud.datastore.helpers import _new_value_pb
+        from unit_tests._testing import _Monkey
 
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
@@ -929,7 +637,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':commit',
         ])
@@ -943,7 +651,7 @@ class TestConnection(unittest.TestCase):
             _parsed.append(response)
             return expected_result
 
-        with _Monkey(MUT, _parse_commit_response=mock_parse):
+        with _Monkey(API_MOD, parse_commit_response=mock_parse):
             result = conn.commit(PROJECT, req_pb, b'xact')
 
         self.assertTrue(result is expected_result)
@@ -958,7 +666,9 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(_parsed, [rsp_pb])
 
     def test_rollback_ok(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
+
         PROJECT = 'PROJECT'
         TRANSACTION = b'xact'
 
@@ -966,7 +676,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':rollback',
         ])
@@ -980,6 +690,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(request.transaction, TRANSACTION)
 
     def test_allocate_ids_empty(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -987,7 +698,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':allocateIds',
         ])
@@ -1001,6 +712,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(list(request.keys), [])
 
     def test_allocate_ids_non_empty(self):
+        from google.cloud.datastore._api import API_VERSION
         from google.cloud.datastore._generated import datastore_pb2
 
         PROJECT = 'PROJECT'
@@ -1018,7 +730,7 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            conn.API_VERSION,
+            API_VERSION,
             'projects',
             PROJECT + ':allocateIds',
         ])
@@ -1035,45 +747,6 @@ class TestConnection(unittest.TestCase):
             self.assertEqual(key_before, key_after)
 
 
-class Test__parse_commit_response(unittest.TestCase):
-
-    def _callFUT(self, commit_response_pb):
-        from google.cloud.datastore.connection import _parse_commit_response
-        return _parse_commit_response(commit_response_pb)
-
-    def test_it(self):
-        from google.cloud.datastore._generated import datastore_pb2
-        from google.cloud.datastore._generated import entity_pb2
-
-        index_updates = 1337
-        keys = [
-            entity_pb2.Key(
-                path=[
-                    entity_pb2.Key.PathElement(
-                        kind='Foo',
-                        id=1234,
-                    ),
-                ],
-            ),
-            entity_pb2.Key(
-                path=[
-                    entity_pb2.Key.PathElement(
-                        kind='Bar',
-                        name='baz',
-                    ),
-                ],
-            ),
-        ]
-        response = datastore_pb2.CommitResponse(
-            mutation_results=[
-                datastore_pb2.MutationResult(key=key) for key in keys
-            ],
-            index_updates=index_updates,
-        )
-        result = self._callFUT(response)
-        self.assertEqual(result, (index_updates, keys))
-
-
 class Http(object):
 
     _called_with = None
@@ -1086,55 +759,3 @@ class Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._response, self._content
-
-
-class _Connection(object):
-
-    host = None
-    USER_AGENT = 'you-sir-age-int'
-
-    def __init__(self, api_url):
-        self.api_url = api_url
-        self.build_kwargs = []
-
-    def build_api_url(self, **kwargs):
-        self.build_kwargs.append(kwargs)
-        return self.api_url
-
-
-class _GRPCStub(object):
-
-    def __init__(self, return_val=None, side_effect=Exception):
-        self.return_val = return_val
-        self.side_effect = side_effect
-        self.method_calls = []
-
-    def _method(self, request_pb, name):
-        self.method_calls.append((request_pb, name))
-        return self.return_val
-
-    def Lookup(self, request_pb):
-        return self._method(request_pb, 'Lookup')
-
-    def RunQuery(self, request_pb):
-        return self._method(request_pb, 'RunQuery')
-
-    def BeginTransaction(self, request_pb):
-        return self._method(request_pb, 'BeginTransaction')
-
-    def Commit(self, request_pb):
-        result = self._method(request_pb, 'Commit')
-        if self.side_effect is Exception:
-            return result
-        else:
-            raise self.side_effect
-
-    def Rollback(self, request_pb):
-        return self._method(request_pb, 'Rollback')
-
-    def AllocateIds(self, request_pb):
-        return self._method(request_pb, 'AllocateIds')
-
-
-class _RequestPB(object):
-    project_id = None
