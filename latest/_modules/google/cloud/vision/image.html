@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.image &mdash; google-cloud 143b0a1 documentation</title>
+  <title>google.cloud.vision.image &mdash; google-cloud 51d11da documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 143b0a1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 51d11da documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -353,6 +353,7 @@
             <span class="s1">&#39;LABEL_DETECTION&#39;</span><span class="p">:</span> <span class="s1">&#39;labelAnnotations&#39;</span><span class="p">,</span>
             <span class="s1">&#39;LANDMARK_DETECTION&#39;</span><span class="p">:</span> <span class="s1">&#39;landmarkAnnotations&#39;</span><span class="p">,</span>
             <span class="s1">&#39;LOGO_DETECTION&#39;</span><span class="p">:</span> <span class="s1">&#39;logoAnnotations&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;TEXT_DETECTION&#39;</span><span class="p">:</span> <span class="s1">&#39;textAnnotations&#39;</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">detected_objects</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">feature</span><span class="p">])</span>
@@ -415,6 +416,19 @@
 <span class="sd">                  :class:`~google.cloud.vision.entity.EntityAnnotation`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LOGO_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Image.detect_text"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_text">[docs]</a>    <span class="k">def</span> <span class="nf">detect_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Detect text in an image.</span>
+
+<span class="sd">        :type limit: int</span>
+<span class="sd">        :param limit: The maximum instances of text to find.</span>
+
+<span class="sd">        :rtype: list</span>
+<span class="sd">        :returns: List of</span>
+<span class="sd">                  :class:`~google.cloud.vision.entity.EntityAnnotation`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">TEXT_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span></div></div>
 </pre></div>
 
@@ -449,7 +463,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'143b0a1',
+            VERSION:'51d11da',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

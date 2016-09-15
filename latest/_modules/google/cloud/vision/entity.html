@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.entity &mdash; google-cloud 143b0a1 documentation</title>
+  <title>google.cloud.vision.entity &mdash; google-cloud 51d11da documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 143b0a1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 51d11da documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -284,6 +284,10 @@
 <span class="sd">    :type description: str</span>
 <span class="sd">    :param description: Description of entity detected in an image.</span>
 
+<span class="sd">    :type locale: str</span>
+<span class="sd">    :param locale: The language code for the locale in which the entity textual</span>
+<span class="sd">                   description (next field) is expressed.</span>
+
 <span class="sd">    :type locations: list of</span>
 <span class="sd">                     :class:`~google.cloud.vision.geometry.LocationInformation`.</span>
 <span class="sd">    :param locations: List of ``LocationInformation`` instances.</span>
@@ -294,9 +298,10 @@
 <span class="sd">    :type score: float</span>
 <span class="sd">    :param score: Overall score of the result. Range [0, 1].</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">locale</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span> <span class="o">=</span> <span class="n">bounds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_locale</span> <span class="o">=</span> <span class="n">locale</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_locations</span> <span class="o">=</span> <span class="n">locations</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mid</span> <span class="o">=</span> <span class="n">mid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_score</span> <span class="o">=</span> <span class="n">score</span>
@@ -308,17 +313,19 @@
 <span class="sd">        :type response: dict</span>
 <span class="sd">        :param response: Dictionary response from Vision API with entity data.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.vision.entiy.EntityAnnotation`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.vision.entity.EntityAnnotation`</span>
 <span class="sd">        :returns: Instance of ``EntityAnnotation``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bounds</span> <span class="o">=</span> <span class="n">Bounds</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;boundingPoly&#39;</span><span class="p">))</span>
         <span class="n">description</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span>
+
+        <span class="n">locale</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;locale&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">locations</span> <span class="o">=</span> <span class="p">[</span><span class="n">LocationInformation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
                      <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;locations&#39;</span><span class="p">,</span> <span class="p">[])]</span>
-        <span class="n">mid</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;mid&#39;</span><span class="p">]</span>
-        <span class="n">score</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mid&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">locale</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -337,6 +344,15 @@
 <span class="sd">        :returns: String description of feature detected in image.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">locale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The language code for text discovered in an image.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: String language code of text found in the image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_locale</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">locations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -398,7 +414,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'143b0a1',
+            VERSION:'51d11da',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the Vision API &mdash; google-cloud 143b0a1 documentation</title>
+  <title>Using the Vision API &mdash; google-cloud 51d11da documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 143b0a1 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 51d11da documentation" href="index.html"/>
         <link rel="next" title="Vision Client" href="vision-client.html"/>
         <link rel="prev" title="Translate Client" href="translate-client.html"/> 
 
@@ -453,11 +453,13 @@ locations if available.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">text</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_text</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">text</span><span class="o">.</span><span class="n">locale</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">texts</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_text</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">texts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">locale</span>
 <span class="go">&#39;en&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">text</span><span class="o">.</span><span class="n">description</span>
-<span class="go">&#39;the full text of the image.&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">texts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
+<span class="go">&#39;some text in the image&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">texts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
+<span class="go">&#39;some other text in the image&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -523,7 +525,7 @@ locations if available.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'143b0a1',
+            VERSION:'51d11da',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
