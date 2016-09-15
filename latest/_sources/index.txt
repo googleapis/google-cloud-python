@@ -149,6 +149,7 @@
 
   vision-usage
   vision-client
+  vision-color
   vision-entity
   vision-feature
   vision-face

@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; google-cloud a92d69f documentation</title>
+  <title>Index &mdash; google-cloud 0f5d982 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
   
 
   
-    <link rel="top" title="google-cloud a92d69f documentation" href="index.html"/> 
+    <link rel="top" title="google-cloud 0f5d982 documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -191,6 +191,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="vision-usage.html">Using the Vision API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
@@ -393,6 +394,10 @@
 
       
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.allow_quoted_newlines">allow_quoted_newlines (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-color.html#google.cloud.vision.color.Color.alpha">alpha (google.cloud.vision.color.Color attribute)</a>
   </dt>
 
   </dl></td>
@@ -732,6 +737,10 @@
   </dt>
 
       
+  <dt><a href="vision-color.html#google.cloud.vision.color.Color.blue">blue (google.cloud.vision.color.Color attribute)</a>
+  </dt>
+
+      
   <dt><a href="vision-face.html#google.cloud.vision.face.FaceImageProperties.blurred_likelihood">blurred_likelihood (google.cloud.vision.face.FaceImageProperties attribute)</a>
   </dt>
 
@@ -992,6 +1001,22 @@
   </dt>
 
       
+  <dt><a href="vision-color.html#google.cloud.vision.color.Color">Color (class in google.cloud.vision.color)</a>
+  </dt>
+
+      
+  <dt><a href="vision-color.html#google.cloud.vision.color.ColorInformation.color">color (google.cloud.vision.color.ColorInformation attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-color.html#google.cloud.vision.color.ColorInformation">ColorInformation (class in google.cloud.vision.color)</a>
+  </dt>
+
+      
+  <dt><a href="vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation.colors">colors (google.cloud.vision.color.ImagePropertiesAnnotation attribute)</a>
+  </dt>
+
+      
   <dt><a href="bigtable-table.html#google.cloud.bigtable.table.Table.column_family">column_family() (google.cloud.bigtable.table.Table method)</a>
   </dt>
 
@@ -1055,6 +1080,8 @@
   <dt><a href="datastore-keys.html#google.cloud.datastore.key.Key.completed_key">completed_key() (google.cloud.datastore.key.Key method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="storage-blobs.html#google.cloud.storage.blob.Blob.component_count">component_count (google.cloud.storage.blob.Blob attribute)</a>
   </dt>
@@ -1063,8 +1090,6 @@
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.Compression">Compression (class in google.cloud.bigquery.job)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.ExtractTableToStorageJob.compression">compression (google.cloud.bigquery.job.ExtractTableToStorageJob attribute)</a>
   </dt>
@@ -1591,12 +1616,12 @@
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.QueryJob.destination">destination (google.cloud.bigquery.job.QueryJob attribute)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.ExtractTableToStorageJob.destination_format">destination_format (google.cloud.bigquery.job.ExtractTableToStorageJob attribute)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.DestinationFormat">DestinationFormat (class in google.cloud.bigquery.job)</a>
   </dt>
@@ -1619,6 +1644,10 @@
 
       
   <dt><a href="vision-image.html#google.cloud.vision.image.Image.detect_logos">detect_logos() (google.cloud.vision.image.Image method)</a>
+  </dt>
+
+      
+  <dt><a href="vision-image.html#google.cloud.vision.image.Image.detect_properties">detect_properties() (google.cloud.vision.image.Image method)</a>
   </dt>
 
       
@@ -2126,6 +2155,18 @@
   </dt>
 
         
+  <dt><a href="vision-color.html#google.cloud.vision.color.Color.from_api_repr">(google.cloud.vision.color.Color class method)</a>
+  </dt>
+
+        
+  <dt><a href="vision-color.html#google.cloud.vision.color.ColorInformation.from_api_repr">(google.cloud.vision.color.ColorInformation class method)</a>
+  </dt>
+
+        
+  <dt><a href="vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation.from_api_repr">(google.cloud.vision.color.ImagePropertiesAnnotation class method)</a>
+  </dt>
+
+        
   <dt><a href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation.from_api_repr">(google.cloud.vision.entity.EntityAnnotation class method)</a>
   </dt>
 
@@ -2468,12 +2509,12 @@
   <dt><a href="language-document.html#module-google.cloud.language.document">google.cloud.language.document (module)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="language-responses.html#module-google.cloud.language.entity">google.cloud.language.entity (module)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="language-responses.html#module-google.cloud.language.sentiment">google.cloud.language.sentiment (module)</a>
   </dt>
@@ -2631,6 +2672,10 @@
   </dt>
 
       
+  <dt><a href="vision-color.html#module-google.cloud.vision.color">google.cloud.vision.color (module)</a>
+  </dt>
+
+      
   <dt><a href="vision-client.html#module-google.cloud.vision.connection">google.cloud.vision.connection (module)</a>
   </dt>
 
@@ -2676,6 +2721,10 @@
 
       
   <dt><a href="google-cloud-api.html#google.cloud.exceptions.GoogleCloudError">GoogleCloudError</a>
+  </dt>
+
+      
+  <dt><a href="vision-color.html#google.cloud.vision.color.Color.green">green (google.cloud.vision.color.Color attribute)</a>
   </dt>
 
       
@@ -2785,6 +2834,14 @@
   </dt>
 
       
+  <dt><a href="vision-feature.html#google.cloud.vision.feature.FeatureTypes.IMAGE_PROPERTIES">IMAGE_PROPERTIES (google.cloud.vision.feature.FeatureTypes attribute)</a>
+  </dt>
+
+      
+  <dt><a href="vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation">ImagePropertiesAnnotation (class in google.cloud.vision.color)</a>
+  </dt>
+
+      
   <dt><a href="bigtable-row.html#google.cloud.bigtable.row.AppendRow.increment_cell_value">increment_cell_value() (google.cloud.bigtable.row.AppendRow method)</a>
   </dt>
 
@@ -2792,12 +2849,12 @@
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.input_file_bytes">input_file_bytes (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.input_files">input_files (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigquery-table.html#google.cloud.bigquery.table.Table.insert_data">insert_data() (google.cloud.bigquery.table.Table method)</a>
   </dt>
@@ -3759,6 +3816,10 @@
   </dt>
 
       
+  <dt><a href="vision-color.html#google.cloud.vision.color.ColorInformation.pixel_fraction">pixel_fraction (google.cloud.vision.color.ColorInformation attribute)</a>
+  </dt>
+
+      
   <dt><a href="language-document.html#google.cloud.language.document.Document.PLAIN_TEXT">PLAIN_TEXT (google.cloud.language.document.Document attribute)</a>
   </dt>
 
@@ -4092,6 +4153,10 @@
 
       
   <dt><a href="bigtable-table.html#google.cloud.bigtable.table.Table.read_rows">read_rows() (google.cloud.bigtable.table.Table method)</a>
+  </dt>
+
+      
+  <dt><a href="vision-color.html#google.cloud.vision.color.Color.red">red (google.cloud.vision.color.Color attribute)</a>
   </dt>
 
       
@@ -4437,9 +4502,15 @@
 
       </dl></dd>
       
-  <dt><a href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation.score">score (google.cloud.vision.entity.EntityAnnotation attribute)</a>
+  <dt><a href="vision-color.html#google.cloud.vision.color.ColorInformation.score">score (google.cloud.vision.color.ColorInformation attribute)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation.score">(google.cloud.vision.entity.EntityAnnotation attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="monitoring-query.html#google.cloud.monitoring.query.Query.select_group">select_group() (google.cloud.monitoring.query.Query method)</a>
   </dt>
@@ -5232,7 +5303,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'a92d69f',
+            VERSION:'0f5d982',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.connection &mdash; google-cloud 0f5d982 documentation</title>
+  <title>google.cloud.vision.color &mdash; google-cloud 0f5d982 documentation</title>
   
 
   
@@ -243,7 +243,7 @@
       
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
       
-    <li>google.cloud.monitoring.connection</li>
+    <li>google.cloud.vision.color</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -255,7 +255,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for google.cloud.monitoring.connection</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.vision.color</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -270,39 +270,183 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Create / interact with Stackdriver Monitoring connections.&quot;&quot;&quot;</span>
-
-<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
+<span class="sd">&quot;&quot;&quot;Image properties class representation derived from Vision API response.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../../monitoring-client.html#google.cloud.monitoring.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A connection to Google Stackdriver Monitoring via the JSON REST API.</span>
+<div class="viewcode-block" id="ImagePropertiesAnnotation"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation">[docs]</a><span class="k">class</span> <span class="nc">ImagePropertiesAnnotation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of image properties</span>
 
-<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials`</span>
-<span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
-<span class="sd">                        connection.</span>
-
-<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``</span>
-<span class="sd">    :param http: (Optional) HTTP object to make requests.</span>
-
-<span class="sd">    :type api_base_url: string</span>
-<span class="sd">    :param api_base_url: The base of the API call URL. Defaults to the value</span>
-<span class="sd">                         :attr:`Connection.API_BASE_URL`.</span>
+<span class="sd">    :type colors: list</span>
+<span class="sd">    :param colors: List of</span>
+<span class="sd">                   :class:`~google.cloud.vision.color.ColorInformation`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span> <span class="o">=</span> <span class="n">colors</span>
 
-    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://monitoring.googleapis.com&#39;</span>
-    <span class="sd">&quot;&quot;&quot;The base of the API call URL.&quot;&quot;&quot;</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ImagePropertiesAnnotation.from_api_repr"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.ImagePropertiesAnnotation.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct ``ImagePropertiesAnnotation`` from a response.</span>
 
-    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s1">&#39;v3&#39;</span>
-    <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
+<span class="sd">        :type response: dict</span>
+<span class="sd">        :param response: Dictionary response from Vision API with image</span>
+<span class="sd">                         properties data.</span>
 
-    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{api_base_url}</span><span class="s1">/</span><span class="si">{api_version}{path}</span><span class="s1">&#39;</span>
-    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
+<span class="sd">        :rtype: :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`.</span>
+<span class="sd">        :returns: Populated instance of ``ImagePropertiesAnnotation``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">ColorInformation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="k">for</span> <span class="n">color</span> <span class="ow">in</span>
+                  <span class="n">response</span><span class="p">[</span><span class="s1">&#39;dominantColors&#39;</span><span class="p">][</span><span class="s1">&#39;colors&#39;</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span></div>
 
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/monitoring.read&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;https://www.googleapis.com/auth/monitoring&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Monitoring consumer.&quot;&quot;&quot;</span></div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">colors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Colors in an image.</span>
+
+<span class="sd">        :rtype: list of :class:`~google.cloud.vision.color.ColorInformation`</span>
+<span class="sd">        :returns: Populated list of ``ColorInformation``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colors</span></div>
+
+
+<div class="viewcode-block" id="Color"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.Color">[docs]</a><span class="k">class</span> <span class="nc">Color</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of RGBA color information.</span>
+
+<span class="sd">    :type red: int</span>
+<span class="sd">    :param red: The amount of red in the color as a value in the interval</span>
+<span class="sd">                [0, 255].</span>
+
+<span class="sd">    :type green: int</span>
+<span class="sd">    :param green: The amount of green in the color as a value in the interval</span>
+<span class="sd">                  [0, 255].</span>
+
+<span class="sd">    :type blue: int</span>
+<span class="sd">    :param blue: The amount of blue in the color as a value in the interval</span>
+<span class="sd">                 [0, 255].</span>
+
+<span class="sd">    :type alpha: float</span>
+<span class="sd">    :param alpha: The fraction of this color that should be applied to the</span>
+<span class="sd">                  pixel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_red</span> <span class="o">=</span> <span class="n">red</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_green</span> <span class="o">=</span> <span class="n">green</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blue</span> <span class="o">=</span> <span class="n">blue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Color.from_api_repr"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.Color.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct a ``Color`` from a Vision API response.</span>
+
+<span class="sd">        :type response: dict</span>
+<span class="sd">        :param response: Color from API Response.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.color.Color`</span>
+<span class="sd">        :returns: Instance of :class:`~google.cloud.vision.color.Color`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">red</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">]</span>
+        <span class="n">green</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;green&#39;</span><span class="p">]</span>
+        <span class="n">blue</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">]</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">red</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Red component of the color.</span>
+
+<span class="sd">        :rtype: int</span>
+<span class="sd">        :returns: Red RGB value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_red</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">green</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Green component of the color.</span>
+
+<span class="sd">        :rtype: int</span>
+<span class="sd">        :returns: Green RGB value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_green</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Blue component of the color.</span>
+
+<span class="sd">        :rtype: int</span>
+<span class="sd">        :returns: Blue RGB value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blue</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">alpha</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Alpha transparency level.</span>
+
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :returns: Alpha transparency level.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alpha</span></div>
+
+
+<div class="viewcode-block" id="ColorInformation"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.ColorInformation">[docs]</a><span class="k">class</span> <span class="nc">ColorInformation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of color information from API response.</span>
+
+<span class="sd">    :type color: :class:`~google.cloud.vision.color.Color`</span>
+<span class="sd">    :param color: RGB components of the color.</span>
+
+<span class="sd">    :type score: float</span>
+<span class="sd">    :param score: Image-specific score for this color. Value in range [0, 1].</span>
+
+<span class="sd">    :type pixel_fraction: float</span>
+<span class="sd">    :param pixel_fraction: Stores the fraction of pixels the color occupies in</span>
+<span class="sd">                           the image. Value in range [0, 1].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">pixel_fraction</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_score</span> <span class="o">=</span> <span class="n">score</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pixel_fraction</span> <span class="o">=</span> <span class="n">pixel_fraction</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ColorInformation.from_api_repr"><a class="viewcode-back" href="../../../../vision-color.html#google.cloud.vision.color.ColorInformation.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct ``ColorInformation`` for a color found.</span>
+
+<span class="sd">        :type response: dict</span>
+<span class="sd">        :param response: Color data with extra meta information.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision.color.ColorInformation`</span>
+<span class="sd">        :returns: Instance of ``ColorInformation``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">])</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span>
+        <span class="n">pixel_fraction</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;pixelFraction&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">pixel_fraction</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;RGB components of the color.</span>
+
+<span class="sd">        :rtype: :class:`~google.vision.color.Color`</span>
+<span class="sd">        :returns: Instance of ``Color``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Image-specific score for this color. Value in range [0, 1].</span>
+
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :returns: Image score for this color.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pixel_fraction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Stores the fraction of pixels the color occupies in the image.</span>
+
+<span class="sd">        :rtype: float</span>
+<span class="sd">        :returns: Pixel fraction value in range [0, 1].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixel_fraction</span></div>
 </pre></div>
 
            </div>
