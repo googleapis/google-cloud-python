@@ -1568,3 +1568,83 @@ FACE_DETECTION_RESPONSE = {
         }]
     }]
 }
+
+
+TEXT_DETECTION_RESPONSE = {
+    'responses': [
+        {
+            'textAnnotations': [
+                {
+                    'locale': 'en',
+                    'description': 'Google CloudPlatform\n',
+                    'boundingPoly': {
+                        'vertices': [
+                            {
+                                'x': 129,
+                                'y': 694
+                            },
+                            {
+                                'x': 1375,
+                                'y': 694
+                            },
+                            {
+                                'x': 1375,
+                                'y': 835
+                            },
+                            {
+                                'x': 129,
+                                'y': 835
+                            }
+                        ]
+                    }
+                },
+                {
+                    'description': 'Google',
+                    'boundingPoly': {
+                        'vertices': [
+                            {
+                                'x': 129,
+                                'y': 694
+                            },
+                            {
+                                'x': 535,
+                                'y': 694
+                            },
+                            {
+                                'x': 535,
+                                'y': 835
+                            },
+                            {
+                                'x': 129,
+                                'y': 835
+                            }
+                        ]
+                    }
+                },
+                {
+                    'description': 'CloudPlatform',
+                    'boundingPoly': {
+                        'vertices': [
+                            {
+                                'x': 567,
+                                'y': 694
+                            },
+                            {
+                                'x': 1375,
+                                'y': 694
+                            },
+                            {
+                                'x': 1375,
+                                'y': 835
+                            },
+                            {
+                                'x': 567,
+                                'y': 835
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
