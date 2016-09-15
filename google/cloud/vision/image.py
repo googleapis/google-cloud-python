@@ -22,6 +22,7 @@ from google.cloud.vision.entity import EntityAnnotation
 from google.cloud.vision.face import Face
 from google.cloud.vision.feature import Feature
 from google.cloud.vision.feature import FeatureTypes
+from google.cloud.vision.color import ImagePropertiesAnnotation
 from google.cloud.vision.safe import SafeSearchAnnotation
 
 
@@ -162,6 +163,21 @@ class Image(object):
         """
         feature = Feature(FeatureTypes.LOGO_DETECTION, limit)
         return self._detect_annotation(feature)
+
+    def detect_properties(self, limit=10):
+        """Detect the color properties of an image.
+
+        :type limit: int
+        :param limit: The maximum number of image properties to find.
+
+        :rtype: list
+        :returns: List of
+                  :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`.
+        """
+        feature = Feature(FeatureTypes.IMAGE_PROPERTIES, limit)
+        result = self.client.annotate(self, [feature])
+        response = result['imagePropertiesAnnotation']
+        return ImagePropertiesAnnotation.from_api_repr(response)
 
     def detect_safe_search(self, limit=10):
         """Retreive safe search properties from an image.
