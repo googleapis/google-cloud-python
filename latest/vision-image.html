@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Image &mdash; google-cloud 6f09ebd documentation</title>
+  <title>Vision Image &mdash; google-cloud 731a2cc documentation</title>
   
 
   
@@ -32,9 +32,9 @@
   
 
   
-    <link rel="top" title="google-cloud 6f09ebd documentation" href="index.html"/>
-        <link rel="next" title="Vision Entity" href="vision-entity.html"/>
-        <link rel="prev" title="Vision Client" href="vision-client.html"/> 
+    <link rel="top" title="google-cloud 731a2cc documentation" href="index.html"/>
+        <link rel="next" title="Vision Safe Search" href="vision-safe-search.html"/>
+        <link rel="prev" title="Vision Face" href="vision-face.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -192,15 +192,16 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="vision-usage.html">Using the Vision API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Vision Image</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.vision.image">Image</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.vision.geometry">Geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.vision.likelihood">Likelihood</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-safe-search.html">Vision Safe Search</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -383,6 +384,25 @@
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of
 <a class="reference internal" href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation" title="google.cloud.vision.entity.EntityAnnotation"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision.image.Image.detect_safe_search">
+<code class="descname">detect_safe_search</code><span class="sig-paren">(</span><em>limit=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/image.html#Image.detect_safe_search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.image.Image.detect_safe_search" title="Permalink to this definition">#</a></dt>
+<dd><p>Retreive safe search properties from an image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of faces to try and detect.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of
+<code class="xref py py-class docutils literal"><span class="pre">SafeSearchAnnotation</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -754,10 +774,10 @@ longitude.</td>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="vision-entity.html" class="btn btn-neutral float-right" title="Vision Entity" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="vision-safe-search.html" class="btn btn-neutral float-right" title="Vision Safe Search" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="vision-client.html" class="btn btn-neutral" title="Vision Client" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="vision-face.html" class="btn btn-neutral" title="Vision Face" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -788,7 +808,7 @@ longitude.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'6f09ebd',
+            VERSION:'731a2cc',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

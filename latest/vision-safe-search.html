@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting started &mdash; google-cloud 731a2cc documentation</title>
+  <title>Vision Safe Search &mdash; google-cloud 731a2cc documentation</title>
   
 
   
@@ -32,8 +32,9 @@
   
 
   
-    <link rel="top" title="google-cloud 731a2cc documentation" href="#"/>
-        <link rel="next" title="Shared Core Modules" href="google-cloud-api.html"/> 
+    <link rel="top" title="google-cloud 731a2cc documentation" href="index.html"/>
+        <link rel="next" title="Using the API" href="language-usage.html"/>
+        <link rel="prev" title="Vision Image" href="vision-image.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -51,7 +52,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> google-cloud
+            <a href="index.html" class="icon icon-home"> google-cloud
           
 
           
@@ -188,14 +189,17 @@
 <li class="toctree-l1"><a class="reference internal" href="translate-client.html">Client</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Vision</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="vision-usage.html">Using the Vision API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-feature.html">Vision Feature</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-face.html">Vision Face</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-image.html">Vision Image</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vision-safe-search.html">Vision Safe Search</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Vision Safe Search</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.vision.safe">Safe Search Annotation</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Natural Language</span></p>
 <ul>
@@ -223,7 +227,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="#">google-cloud</a>
+        <a href="index.html">google-cloud</a>
       </nav>
 
 
@@ -238,13 +242,13 @@
 
 <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="#">Docs</a> &raquo;</li>
+    <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Getting started</li>
+    <li>Vision Safe Search</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/vision-safe-search.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -254,76 +258,117 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="toctree-wrapper compound" id="google-cloud">
-</div>
-<div class="toctree-wrapper compound" id="datastore">
-</div>
-<div class="toctree-wrapper compound" id="storage">
-</div>
-<div class="toctree-wrapper compound" id="pub-sub">
-</div>
-<div class="toctree-wrapper compound" id="bigquery">
-</div>
-<div class="toctree-wrapper compound" id="cloud-bigtable">
-</div>
-<div class="toctree-wrapper compound" id="resource-manager">
-</div>
-<div class="toctree-wrapper compound" id="dns">
-</div>
-<div class="toctree-wrapper compound" id="stackdriver-logging">
-</div>
-<div class="toctree-wrapper compound" id="stackdriver-error-reporting">
-</div>
-<div class="toctree-wrapper compound" id="stackdriver-monitoring">
-</div>
-<div class="toctree-wrapper compound" id="translate">
-</div>
-<div class="toctree-wrapper compound" id="vision">
-</div>
-<div class="toctree-wrapper compound" id="natural-language">
-</div>
-<div class="toctree-wrapper compound" id="external-links">
-</div>
-<div class="section" id="getting-started">
-<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h1>
-<p>The <code class="docutils literal"><span class="pre">google-cloud</span></code> library is <code class="docutils literal"><span class="pre">pip</span></code> install-able:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install google-cloud
-</pre></div>
-</div>
-<p>If you want to install <code class="docutils literal"><span class="pre">google-cloud-python</span></code> from source,
-you can clone the repository from GitHub:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone git://github.com/GoogleCloudPlatform/google-cloud-python.git
-<span class="gp">$</span> <span class="nb">cd</span> google-cloud-python
-<span class="gp">$</span> python setup.py install
-</pre></div>
-</div>
-<hr class="docutils" />
-<div class="section" id="cloud-datastore">
-<h2>Cloud Datastore<a class="headerlink" href="#cloud-datastore" title="Permalink to this headline">#</a></h2>
-<p><a class="reference external" href="https://developers.google.com/datastore/">Google Cloud Datastore</a> is a fully managed, schemaless database for storing non-relational data.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+  <div class="section" id="vision-safe-search">
+<h1>Vision Safe Search<a class="headerlink" href="#vision-safe-search" title="Permalink to this headline">#</a></h1>
+<div class="section" id="module-google.cloud.vision.safe">
+<span id="safe-search-annotation"></span><h2>Safe Search Annotation<a class="headerlink" href="#module-google.cloud.vision.safe" title="Permalink to this headline">#</a></h2>
+<p>Safe search class for information returned from annotating an image.</p>
+<dl class="class">
+<dt id="google.cloud.vision.safe.SafeSearchAnnotation">
+<em class="property">class </em><code class="descclassname">google.cloud.vision.safe.</code><code class="descname">SafeSearchAnnotation</code><span class="sig-paren">(</span><em>adult_likelihood</em>, <em>spoof_likelihood</em>, <em>medical_likelihood</em>, <em>violence_likelihood</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/safe.html#SafeSearchAnnotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.safe.SafeSearchAnnotation" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Representation of a SafeSearchAnnotation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>adult_likelihood</strong> (<a class="reference internal" href="vision-image.html#google.cloud.vision.likelihood.Likelihood" title="google.cloud.vision.likelihood.Likelihood"><code class="xref py py-class docutils literal"><span class="pre">Likelihood</span></code></a>) &#8211; Likelihood that image contains adult material.</li>
+<li><strong>spoof_likelihood</strong> (<a class="reference internal" href="vision-image.html#google.cloud.vision.likelihood.Likelihood" title="google.cloud.vision.likelihood.Likelihood"><code class="xref py py-class docutils literal"><span class="pre">Likelihood</span></code></a>) &#8211; Likelihood that image is a spoof.</li>
+<li><strong>medical_likelihood</strong> (<a class="reference internal" href="vision-image.html#google.cloud.vision.likelihood.Likelihood" title="google.cloud.vision.likelihood.Likelihood"><code class="xref py py-class docutils literal"><span class="pre">Likelihood</span></code></a>) &#8211; Likelihood that image contains medical material.</li>
+<li><strong>violence_likelihood</strong> (<a class="reference internal" href="vision-image.html#google.cloud.vision.likelihood.Likelihood" title="google.cloud.vision.likelihood.Likelihood"><code class="xref py py-class docutils literal"><span class="pre">Likelihood</span></code></a>) &#8211; Likelihood that image contains violence.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="google.cloud.vision.safe.SafeSearchAnnotation.adult">
+<code class="descname">adult</code><a class="headerlink" href="#google.cloud.vision.safe.SafeSearchAnnotation.adult" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents the adult contents likelihood for the image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="vision-image.html#google.cloud.vision.likelihood.Likelihood" title="google.cloud.vision.likelihood.Likelihood"><code class="xref py py-class docutils literal"><span class="pre">Likelihood</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">Likelihood</span></code> of the image containing adult content.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="n">key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">)</span>
+<dl class="classmethod">
+<dt id="google.cloud.vision.safe.SafeSearchAnnotation.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/safe.html#SafeSearchAnnotation.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.safe.SafeSearchAnnotation.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct SafeSearchAnnotation from Vision API response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary response from Vision API with safe search
+data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.safe.SafeSearchAnnotation" title="google.cloud.vision.safe.SafeSearchAnnotation"><code class="xref py py-class docutils literal"><span class="pre">SafeSearchAnnotation</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">SafeSearchAnnotation</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-<span class="n">entity</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
-<span class="n">entity</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Your name&#39;</span>
-<span class="n">entity</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
-<span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="cloud-storage">
-<h2>Cloud Storage<a class="headerlink" href="#cloud-storage" title="Permalink to this headline">#</a></h2>
-<p><a class="reference external" href="https://developers.google.com/storage/">Google Cloud Storage</a> allows you to store data on Google infrastructure.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">storage</span>
+<dl class="attribute">
+<dt id="google.cloud.vision.safe.SafeSearchAnnotation.medical">
+<code class="descname">medical</code><a class="headerlink" href="#google.cloud.vision.safe.SafeSearchAnnotation.medical" title="Permalink to this definition">#</a></dt>
+<dd><p>Likelihood this is a medical image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="vision-image.html#google.cloud.vision.likelihood.Likelihood" title="google.cloud.vision.likelihood.Likelihood"><code class="xref py py-class docutils literal"><span class="pre">Likelihood</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The <code class="docutils literal"><span class="pre">Likelihood</span></code> that the image is medical in origin.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;&lt;your-bucket-name&gt;&#39;</span><span class="p">)</span>
-<span class="n">blob</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">blob</span><span class="p">(</span><span class="s1">&#39;my-test-file.txt&#39;</span><span class="p">)</span>
-<span class="n">blob</span><span class="o">.</span><span class="n">upload_from_string</span><span class="p">(</span><span class="s1">&#39;this is test content!&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
+<dl class="attribute">
+<dt id="google.cloud.vision.safe.SafeSearchAnnotation.spoof">
+<code class="descname">spoof</code><a class="headerlink" href="#google.cloud.vision.safe.SafeSearchAnnotation.spoof" title="Permalink to this definition">#</a></dt>
+<dd><p>The likelihood that an obvious modification was made to the image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="vision-image.html#google.cloud.vision.likelihood.Likelihood" title="google.cloud.vision.likelihood.Likelihood"><code class="xref py py-class docutils literal"><span class="pre">Likelihood</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The <code class="docutils literal"><span class="pre">Likelihood</span></code> that an obvious modification was made to
+the image&#8217;s canonical version to make it appear funny or
+offensive.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision.safe.SafeSearchAnnotation.violence">
+<code class="descname">violence</code><a class="headerlink" href="#google.cloud.vision.safe.SafeSearchAnnotation.violence" title="Permalink to this definition">#</a></dt>
+<dd><p>Likeliehood that this image contains violence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="vision-image.html#google.cloud.vision.likelihood.Likelihood" title="google.cloud.vision.likelihood.Likelihood"><code class="xref py py-class docutils literal"><span class="pre">Likelihood</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The <code class="docutils literal"><span class="pre">Likelihood</span></code> that the image contains violence.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
@@ -334,8 +379,10 @@ you can clone the repository from GitHub:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="google-cloud-api.html" class="btn btn-neutral float-right" title="Shared Core Modules" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="language-usage.html" class="btn btn-neutral float-right" title="Using the API" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="vision-image.html" class="btn btn-neutral" title="Vision Image" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
