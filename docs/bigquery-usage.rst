@@ -284,6 +284,19 @@ Poll until the job is complete:
    >>> job.ended
    datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=<UTC>)
 
+Retrieve the results:
+
+.. doctest::
+
+   >>> results = job.results()
+   >>> rows, total_count, token = query.fetch_data()  # API requet
+   >>> while True:
+   ...     do_something_with(rows)
+   ...     if token is None:
+   ...         break
+   ...     rows, total_count, token = query.fetch_data(
+   ...         page_token=token)       # API request
+
 
 Inserting data (asynchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
