@@ -15,6 +15,7 @@
 import logging
 import unittest
 
+from google.cloud.exceptions import TooManyRequests
 import google.cloud.logging
 import google.cloud.logging.handlers.handlers
 from google.cloud.logging.handlers.handlers import CloudLoggingHandler
@@ -28,6 +29,7 @@ from system_test_utils import unique_resource_id
 _RESOURCE_ID = unique_resource_id('-')
 DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
 DEFAULT_DESCRIPTION = 'System testing'
+retry_429 = RetryErrors(TooManyRequests)
 
 
 def _retry_on_unavailable(exc):
@@ -291,7 +293,8 @@ class TestLogging(unittest.TestCase):
         # Create the destination bucket, and set up the ACL to allow
         # Stackdriver Logging to write into it.
         storage_client = storage.Client()
-        bucket = storage_client.create_bucket(BUCKET_NAME)
+        bucket = storage_client.bucket(BUCKET_NAME)
+        retry_429(bucket.create)()
         self.to_delete.append(bucket)
         bucket.acl.reload()
         logs_group = bucket.acl.group('cloud-logs@google.com')
