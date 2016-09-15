@@ -325,7 +325,8 @@ However, ``DELTA`` is not supported for custom metrics.
 ``GAUGE`` metrics represent only a single point in time, so only the ``end_time`` should be
 specified::
 
-    >>> client.write_point(metric=metric, resource=resource, 3.14, end_time=end) # API call
+    >>> client.write_point(metric=metric, resource=resource,
+    ... value=3.14, end_time=end_time) # API call
 
 By default, ``end_time`` defaults to :meth:`~datetime.datetime.utcnow()`, so metrics can be written
 to the current time as follows::

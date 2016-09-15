@@ -207,6 +207,7 @@ class TestMonitoring(unittest.TestCase):
                 return len(list(result)) > 0
             retry_result = RetryResult(_has_timeseries, max_tries=7)(
                 client.query)
+            return retry_result
             return RetryErrors(BadRequest)(retry_result)
 
         query = _query_timeseries_with_retries()(METRIC_TYPE, minutes=5)
@@ -214,11 +215,11 @@ class TestMonitoring(unittest.TestCase):
         self.assertEqual(len(timeseries_list), 1)
         timeseries = timeseries_list[0]
         self.assertEqual(timeseries.metric, metric)
-        # resource labels will not be equal.
-        self.assertEqual(timeseries.resource.type, resource.type)
-        self.assertEqual(timeseries.points[0].value, VALUE)
+        # project_id label only exists on output.
+        del timeseries.resource.labels['project_id']
+        self.assertEqual(timeseries.resource, resource)
 
-        retry_404(descriptor.delete)()
+        descriptor.delete()
 
         with self.assertRaises(NotFound):
             descriptor.delete()
