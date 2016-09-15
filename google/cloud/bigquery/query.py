@@ -20,9 +20,9 @@ from google.cloud.bigquery._helpers import _TypedProperty
 from google.cloud.bigquery._helpers import _rows_from_json
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.job import QueryJob
-from google.cloud.bigquery.job import UDFResourcesProperty
-from google.cloud.bigquery.job import _build_udf_resources
 from google.cloud.bigquery.table import _parse_schema_resource
+from google.cloud.bigquery._helpers import _build_udf_resources
+from google.cloud.bigquery._helpers import UDFResourcesProperty
 
 
 class _SyncQueryConfiguration(object):
@@ -64,6 +64,26 @@ class QueryResults(object):
         self._configuration = _SyncQueryConfiguration()
         self.udf_resources = udf_resources
         self._job = None
+
+    @classmethod
+    def from_query_job(cls, job):
+        """Factory: construct from an existing job.
+
+        :type job: :class:`~google.cloud.bigquery.job.QueryJob`
+        :param job: existing job
+
+        :rtype: :class:`QueryResults`
+        :returns: the instance, bound to the job
+        """
+        instance = cls(job.query, job._client, job.udf_resources)
+        instance._job = job
+        if job.default_dataset is not None:
+            instance.default_dataset = job.default_dataset
+        if job.use_query_cache is not None:
+            instance.use_query_cache = job.use_query_cache
+        if job.use_legacy_sql is not None:
+            instance.use_legacy_sql = job.use_legacy_sql
+        return instance
 
     @property
     def project(self):
@@ -307,6 +327,9 @@ class QueryResults(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
+        if self._job is not None:
+            raise ValueError("Query job is already running.")
+
         client = self._require_client(client)
         path = '/projects/%s/queries' % (self.project,)
         api_response = client.connection.api_request(
