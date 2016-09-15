@@ -1,3 +1,28 @@
+LABEL_DETECTION_RESPONSE = {
+    'responses': [
+        {
+            'labelAnnotations': [
+                {
+                    'mid': '/m/0k4j',
+                    'description': 'automobile',
+                    'score': 0.9776855
+                },
+                {
+                    'mid': '/m/07yv9',
+                    'description': 'vehicle',
+                    'score': 0.947987
+                },
+                {
+                    'mid': '/m/07r04',
+                    'description': 'truck',
+                    'score': 0.88429511
+                }
+            ]
+        }
+    ]
+}
+
+
 LANDMARK_DETECTION_RESPONSE = {
     'responses': [
         {
