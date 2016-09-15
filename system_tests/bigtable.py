@@ -14,6 +14,7 @@
 
 import datetime
 import operator
+import os
 
 import unittest
 
@@ -28,9 +29,11 @@ from google.cloud.bigtable.row_filters import RowFilterChain
 from google.cloud.bigtable.row_filters import RowFilterUnion
 from google.cloud.bigtable.row_data import Cell
 from google.cloud.bigtable.row_data import PartialRowData
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 from retry import RetryErrors
 from retry import RetryResult
+from system_test_utils import EmulatorCreds
 from system_test_utils import unique_resource_id
 
 
@@ -59,6 +62,7 @@ class Config(object):
     """
     CLIENT = None
     INSTANCE = None
+    IN_EMULATOR = False
 
 
 def _wait_until_complete(operation, max_attempts=5):
@@ -91,29 +95,43 @@ def _retry_on_unavailable(exc):
 def setUpModule():
     from google.cloud.exceptions import GrpcRendezvous
 
-    Config.CLIENT = Client(admin=True)
+    Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
+
+    if Config.IN_EMULATOR:
+        credentials = EmulatorCreds()
+        Config.CLIENT = Client(admin=True, credentials=credentials)
+    else:
+        Config.CLIENT = Client(admin=True)
+
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
-    retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
-    instances, failed_locations = retry(Config.CLIENT.list_instances)()
 
-    if len(failed_locations) != 0:
-        raise ValueError('List instances failed in module set up.')
+    if not Config.IN_EMULATOR:
+        retry = RetryErrors(GrpcRendezvous,
+                            error_predicate=_retry_on_unavailable)
+        instances, failed_locations = retry(Config.CLIENT.list_instances)()
 
-    EXISTING_INSTANCES[:] = instances
+        if len(failed_locations) != 0:
+            raise ValueError('List instances failed in module set up.')
 
-    # After listing, create the test instance.
-    created_op = Config.INSTANCE.create()
-    if not _wait_until_complete(created_op):
-        raise RuntimeError('Instance creation exceed 5 seconds.')
+        EXISTING_INSTANCES[:] = instances
+
+        # After listing, create the test instance.
+        created_op = Config.INSTANCE.create()
+        if not _wait_until_complete(created_op):
+            raise RuntimeError('Instance creation exceed 5 seconds.')
 
 
 def tearDownModule():
-    Config.INSTANCE.delete()
+    if not Config.IN_EMULATOR:
+        Config.INSTANCE.delete()
 
 
 class TestInstanceAdminAPI(unittest.TestCase):
 
     def setUp(self):
+        if Config.IN_EMULATOR is not None:
+            self.skipTest(
+                'Instance Admin API not supported in Bigtable emulator')
         self.instances_to_delete = []
 
     def tearDown(self):
@@ -292,6 +310,13 @@ class TestDataAPI(unittest.TestCase):
         # Will also delete any data contained in the table.
         cls._table.delete()
 
+    def _maybe_emulator_skip(self, message):
+        # NOTE: This method is necessary because ``Config.IN_EMULATOR``
+        #       is set at runtime rather than import time, which means we
+        #       can't use the @unittest.skipIf decorator.
+        if Config.IN_EMULATOR is not None:
+            self.skipTest(message)
+
     def setUp(self):
         self.rows_to_delete = []
 
@@ -401,6 +426,7 @@ class TestDataAPI(unittest.TestCase):
         self.assertEqual(rows_data.rows, expected_rows)
 
     def test_read_with_label_applied(self):
+        self._maybe_emulator_skip('Labels not supported by Bigtable emulator')
         row = self._table.row(ROW_KEY)
         self.rows_to_delete.append(row)
 
