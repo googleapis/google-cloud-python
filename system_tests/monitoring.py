@@ -207,7 +207,6 @@ class TestMonitoring(unittest.TestCase):
                 return len(list(result)) > 0
             retry_result = RetryResult(_has_timeseries, max_tries=7)(
                 client.query)
-            return retry_result
             return RetryErrors(BadRequest)(retry_result)
 
         query = _query_timeseries_with_retries()(METRIC_TYPE, minutes=5)

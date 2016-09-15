@@ -102,7 +102,7 @@ class TimeSeries(collections.namedtuple(
         info = {
             'metric': self.metric._to_dict(),
             'resource': self.resource._to_dict(),
-            'points': [point._to_dict() for point in self.points]
+            'points': [point._to_dict() for point in self.points],
         }
 
         return info

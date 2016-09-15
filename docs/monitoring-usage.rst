@@ -287,22 +287,22 @@ The Stackdriver Monitoring API can be used to write data points to custom metric
 the documentation on `Custom Metrics`_ for more information.
 
 To write a data point to a custom metric, you must provide an instance of
-:class:`~gcloud.monitoring.metric.Metric` specifying the metric type as well as the values for
+:class:`~google.cloud.monitoring.metric.Metric` specifying the metric type as well as the values for
 the metric labels. You will need to have either created the metric descriptor earlier (see the
 `Metric Descriptors`_ section) or rely on metric type auto-creation (see `Auto-creation of
 custom metrics`_).
 
-You will also need to provide a :class:`~gcloud.monitoring.resource.Resource` instance specifying a
-monitored resource type as well as values for all of the monitored resource labels, except for
-``project_id``, which is ignored when it's included in writes to the API. A good choice is to use
-the underlying physical resource where your application code runs – e.g., a monitored resource
-type of ``gce_instance`` or ``aws_ec2_instance``. In some limited circumstances, such as when
-only a single process writes to the custom metric, you may choose to use the ``global`` monitored
-resource type.
+You will also need to provide a :class:`~google.cloud.monitoring.resource.Resource` instance
+specifying a monitored resource type as well as values for all of the monitored resource labels,
+except for ``project_id``, which is ignored when it's included in writes to the API. A good
+choice is to use the underlying physical resource where your application code runs – e.g., a
+monitored resource type of ``gce_instance`` or ``aws_ec2_instance``. In some limited
+circumstances, such as when only a single process writes to the custom metric, you may choose to
+use the ``global`` monitored resource type.
 
-See `Monitored resource types`_ for more information about parcitular monitored resource types.
+See `Monitored resource types`_ for more information about particular monitored resource types.
 
->>> from gcloud import monitoring
+>>> from google.cloud import monitoring
 >>> # Create a Resource object for the desired monitored resource type.
 >>> resource = client.resource('gce_instance', labels={
 ...     'instance_id': '1234567890123456789',
@@ -313,8 +313,8 @@ See `Monitored resource types`_ for more information about parcitular monitored 
 ...      'status': 'successful'
 ... })
 
-With a ``Metric`` and ``Resource`` in hand, the :class:`~gcloud.monitoring.client.Client`
-can be used to write :class:`~gcloud.monitoring.timeseries.Point` values.
+With a ``Metric`` and ``Resource`` in hand, the :class:`~google.cloud.monitoring.client.Client`
+can be used to write :class:`~google.cloud.monitoring.timeseries.Point` values.
 
 When writing points, the Python type of the value must match the *value type* of the metric
 descriptor associated with the metric. For example, a Python float will map to ``ValueType.DOUBLE``.
@@ -345,7 +345,7 @@ In the examples below, the ``end_time`` again defaults to the current time::
     >>> client.write_point(metric, resource, 6, start_time=RESET) # API call
 
 To write multiple ``TimeSeries`` in a single batch, you can use
-:meth:`~gcloud.monitoring.client.write_time_series`::
+:meth:`~google.cloud.monitoring.client.write_time_series`::
 
     >>> ts1 = client.time_series(metric1, resource, 3.14, end_time=end_time)
     >>> ts2 = client.time_series(metric2, resource, 42, end_time=end_time)
