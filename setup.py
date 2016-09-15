@@ -15,17 +15,17 @@ REQUIREMENTS = [
     'httplib2 >= 0.9.1',
     'googleapis-common-protos',
     'oauth2client >= 2.0.1',
-    'protobuf >= 3.0.0b2, != 3.0.0.b2.post1',
+    'protobuf >= 3.0.0',
     'six',
 ]
 
 GRPC_PACKAGES = [
-    'grpcio >= 1.0rc1',
-    'google-gax >= 0.12.3, < 0.13dev',
-    'gax-google-pubsub-v1 >= 0.8.0, < 0.9dev',
-    'grpc-google-pubsub-v1 >= 0.8.0, < 0.9dev',
-    'gax-google-logging-v2 >= 0.8.0, < 0.9dev',
-    'grpc-google-logging-v2 >= 0.8.0, < 0.9dev',
+    'grpcio >= 1.0.0',
+    'google-gax >= 0.13.0, < 0.14dev',
+    'gapic-google-pubsub-v1 >= 0.9.0, < 0.10dev',
+    'grpc-google-pubsub-v1 >= 0.9.0, < 0.10dev',
+    'gapic-google-logging-v2 >= 0.9.0, < 0.10dev',
+    'grpc-google-logging-v2 >= 0.9.0, < 0.10dev',
 ]
 
 RTD_ENV_VAR = 'READTHEDOCS'
