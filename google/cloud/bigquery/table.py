@@ -868,7 +868,8 @@ class Table(object):
 
         :rtype: :class:`google.cloud.bigquery.jobs.LoadTableFromStorageJob`
         :returns: the job instance used to load the data (e.g., for
-                  querying status).
+                  querying status). Note that the job is already started:
+                  do not call ``job.begin()``.
         :raises: :class:`ValueError` if ``size`` is not passed in and can not
                  be determined, or if the ``file_obj`` can be detected to be
                  a file opened in text mode.

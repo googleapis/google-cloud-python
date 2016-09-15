@@ -359,7 +359,12 @@ class _AsyncJob(_BaseJob):
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
+
+        :raises: :exc:`ValueError` if the job has already begin.
         """
+        if self.state is not None:
+            raise ValueError("Job already begun.")
+
         client = self._require_client(client)
         path = '/projects/%s/jobs' % (self.project,)
         api_response = client.connection.api_request(
