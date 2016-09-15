@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.job &mdash; google-cloud 9239c3c documentation</title>
+  <title>google.cloud.bigquery.job &mdash; google-cloud a92d69f documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 9239c3c documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a92d69f documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -280,62 +280,10 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">Table</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_build_schema_resource</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_parse_schema_resource</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">UDFResourcesProperty</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_EnumProperty</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_TypedProperty</span>
-
-
-<div class="viewcode-block" id="UDFResource"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.UDFResource">[docs]</a><span class="k">class</span> <span class="nc">UDFResource</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Describe a single user-defined function (UDF) resource.</span>
-<span class="sd">    :type udf_type: str</span>
-<span class="sd">    :param udf_type: the type of the resource (&#39;inlineCode&#39; or &#39;resourceUri&#39;)</span>
-
-<span class="sd">    :type value: str</span>
-<span class="sd">    :param value: the inline code or resource URI.</span>
-
-<span class="sd">    See</span>
-<span class="sd">    https://cloud.google.com/bigquery/user-defined-functions#api</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_type</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">udf_type</span> <span class="o">=</span> <span class="n">udf_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">udf_type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">udf_type</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
-
-
-<span class="k">def</span> <span class="nf">_build_udf_resources</span><span class="p">(</span><span class="n">resources</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    :type resources: sequence of :class:`UDFResource`</span>
-<span class="sd">    :param resources: fields to be appended.</span>
-
-<span class="sd">    :rtype: mapping</span>
-<span class="sd">    :returns: a mapping describing userDefinedFunctionResources for the query.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">udfs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">:</span>
-        <span class="n">udf</span> <span class="o">=</span> <span class="p">{</span><span class="n">resource</span><span class="o">.</span><span class="n">udf_type</span><span class="p">:</span> <span class="n">resource</span><span class="o">.</span><span class="n">value</span><span class="p">}</span>
-        <span class="n">udfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">udf</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">udfs</span>
-
-
-<div class="viewcode-block" id="UDFResourcesProperty"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.UDFResourcesProperty">[docs]</a><span class="k">class</span> <span class="nc">UDFResourcesProperty</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Custom property type for :class:`QueryJob`.</span>
-
-<span class="sd">    Also used by :class:`~google.cloud.bigquery.query.Query`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Descriptor protocol:  accessor&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">_udf_resources</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Descriptor protocol:  mutator&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">UDFResource</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;udf items must be UDFResource&quot;</span><span class="p">)</span>
-        <span class="n">instance</span><span class="o">.</span><span class="n">_udf_resources</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_build_udf_resources</span>
 
 
 <div class="viewcode-block" id="Compression"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.Compression">[docs]</a><span class="k">class</span> <span class="nc">Compression</span><span class="p">(</span><span class="n">_EnumProperty</span><span class="p">):</span>
@@ -1214,7 +1162,7 @@
 
 <span class="sd">    :type udf_resources: tuple</span>
 <span class="sd">    :param udf_resources: An iterable of</span>
-<span class="sd">                        :class:`google.cloud.bigquery.job.UDFResource`</span>
+<span class="sd">                        :class:`google.cloud.bigquery._helpers.UDFResource`</span>
 <span class="sd">                        (empty by default)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;query&#39;</span>
@@ -1386,7 +1334,16 @@
         <span class="n">query</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">]</span>
         <span class="n">job</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">job</span></div></div>
+        <span class="k">return</span> <span class="n">job</span></div>
+
+<div class="viewcode-block" id="QueryJob.results"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.QueryJob.results">[docs]</a>    <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a QueryResults instance, bound to this job.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.query.QueryResults`</span>
+<span class="sd">        :returns: results instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">QueryResults</span>
+        <span class="k">return</span> <span class="n">QueryResults</span><span class="o">.</span><span class="n">from_query_job</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -1420,7 +1377,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'9239c3c',
+            VERSION:'a92d69f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

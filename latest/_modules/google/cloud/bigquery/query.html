@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.query &mdash; google-cloud 9239c3c documentation</title>
+  <title>google.cloud.bigquery.query &mdash; google-cloud a92d69f documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 9239c3c documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a92d69f documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -277,9 +277,9 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_rows_from_json</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">Dataset</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">QueryJob</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">UDFResourcesProperty</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">_build_udf_resources</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_parse_schema_resource</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_build_udf_resources</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">UDFResourcesProperty</span>
 
 
 <span class="k">class</span> <span class="nc">_SyncQueryConfiguration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -321,6 +321,26 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span> <span class="o">=</span> <span class="n">_SyncQueryConfiguration</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">udf_resources</span> <span class="o">=</span> <span class="n">udf_resources</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_job</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="QueryResults.from_query_job"><a class="viewcode-back" href="../../../../bigquery-query.html#google.cloud.bigquery.query.QueryResults.from_query_job">[docs]</a>    <span class="k">def</span> <span class="nf">from_query_job</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">job</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct from an existing job.</span>
+
+<span class="sd">        :type job: :class:`~google.cloud.bigquery.job.QueryJob`</span>
+<span class="sd">        :param job: existing job</span>
+
+<span class="sd">        :rtype: :class:`QueryResults`</span>
+<span class="sd">        :returns: the instance, bound to the job</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">udf_resources</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_job</span> <span class="o">=</span> <span class="n">job</span>
+        <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">default_dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">default_dataset</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">default_dataset</span>
+        <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">use_query_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">use_query_cache</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">use_query_cache</span>
+        <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">use_legacy_sql</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -564,6 +584,9 @@
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Query job is already running.&quot;</span><span class="p">)</span>
+
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/queries&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
@@ -668,7 +691,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'9239c3c',
+            VERSION:'a92d69f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

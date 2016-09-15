@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 9239c3c documentation</title>
+  <title>Using the API &mdash; google-cloud a92d69f documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 9239c3c documentation" href="index.html"/>
+    <link rel="top" title="google-cloud a92d69f documentation" href="index.html"/>
         <link rel="next" title="BigQuery Client" href="bigquery-client.html"/>
         <link rel="prev" title="IAM Policy" href="pubsub-iam.html"/> 
 
@@ -634,6 +634,17 @@ is submitted to the BigQuery back-end.</li>
 <span class="go">datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=&lt;UTC&gt;)</span>
 </pre></div>
 </div>
+<p>Retrieve the results:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rows</span><span class="p">,</span> <span class="n">total_count</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">()</span>  <span class="c1"># API requet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">do_something_with</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">break</span>
+<span class="gp">... </span>    <span class="n">rows</span><span class="p">,</span> <span class="n">total_count</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>       <span class="c1"># API request</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="inserting-data-asynchronous">
 <h3>Inserting data (asynchronous)<a class="headerlink" href="#inserting-data-asynchronous" title="Permalink to this headline">#</a></h3>
@@ -838,7 +849,7 @@ is submitted to the BigQuery back-end.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'9239c3c',
+            VERSION:'a92d69f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
