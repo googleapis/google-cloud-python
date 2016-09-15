@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.geometry &mdash; google-cloud 1f7ed9d documentation</title>
+  <title>google.cloud.vision.geometry &mdash; google-cloud 143b0a1 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 1f7ed9d documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 143b0a1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -287,13 +287,14 @@
 <span class="sd">        :type response_vertices: dict</span>
 <span class="sd">        :param response_vertices: List of vertices.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.vision.geometry.BoundsBase`</span>
-<span class="sd">        :returns: Instance of BoundsBase with populated verticies.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.vision.geometry.BoundsBase` or None</span>
+<span class="sd">        :returns: Instance of BoundsBase with populated verticies or None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">response_vertices</span><span class="p">[</span><span class="s1">&#39;vertices&#39;</span><span class="p">]:</span>
-            <span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vertex</span><span class="p">(</span><span class="n">vertex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-                                   <span class="n">vertex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">response_vertices</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">Vertex</span><span class="p">(</span><span class="n">vertex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">vertex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="k">for</span>
+                    <span class="n">vertex</span> <span class="ow">in</span> <span class="n">response_vertices</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;vertices&#39;</span><span class="p">,</span> <span class="p">[])]</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
@@ -487,7 +488,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'1f7ed9d',
+            VERSION:'143b0a1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

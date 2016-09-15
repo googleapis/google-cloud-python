@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.image &mdash; google-cloud 1f7ed9d documentation</title>
+  <title>google.cloud.vision.image &mdash; google-cloud 143b0a1 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 1f7ed9d documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 143b0a1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -350,6 +350,7 @@
 <span class="sd">                  :class:`~google.cloud.vision.entity.EntityAnnotation`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">reverse_types</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;LABEL_DETECTION&#39;</span><span class="p">:</span> <span class="s1">&#39;labelAnnotations&#39;</span><span class="p">,</span>
             <span class="s1">&#39;LANDMARK_DETECTION&#39;</span><span class="p">:</span> <span class="s1">&#39;landmarkAnnotations&#39;</span><span class="p">,</span>
             <span class="s1">&#39;LOGO_DETECTION&#39;</span><span class="p">:</span> <span class="s1">&#39;logoAnnotations&#39;</span><span class="p">,</span>
         <span class="p">}</span>
@@ -377,6 +378,18 @@
             <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">faces</span></div>
+
+<div class="viewcode-block" id="Image.detect_labels"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_labels">[docs]</a>    <span class="k">def</span> <span class="nf">detect_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Detect labels that describe objects in an image.</span>
+
+<span class="sd">        :type limit: int</span>
+<span class="sd">        :param limit: The maximum number of labels to try and detect.</span>
+
+<span class="sd">        :rtype: list</span>
+<span class="sd">        :returns: List of :class:`~google.cloud.vision.entity.EntityAnnotation`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LABEL_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Image.detect_landmarks"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_landmarks">[docs]</a>    <span class="k">def</span> <span class="nf">detect_landmarks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect landmarks in an image.</span>
@@ -436,7 +449,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'1f7ed9d',
+            VERSION:'143b0a1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
