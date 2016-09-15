@@ -4,11 +4,11 @@ import sys
 from setuptools import setup
 from setuptools import find_packages
 
-here = os.path.abspath(os.path.dirname(__file__))
 
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-with open(os.path.join(here, 'README.rst')) as f:
-    README = f.read()
+with open(os.path.join(PROJECT_ROOT, 'README.rst')) as file_obj:
+    README = file_obj.read()
 
 
 REQUIREMENTS = [
@@ -19,7 +19,7 @@ REQUIREMENTS = [
     'six',
 ]
 
-GRPC_EXTRAS = [
+GRPC_PACKAGES = [
     'grpcio >= 1.0rc1',
     'google-gax >= 0.12.3, < 0.13dev',
     'gax-google-pubsub-v1 >= 0.8.0, < 0.9dev',
@@ -28,8 +28,9 @@ GRPC_EXTRAS = [
     'grpc-google-logging-v2 >= 0.8.0, < 0.9dev',
 ]
 
-if sys.version_info[:2] == (2, 7) and 'READTHEDOCS' not in os.environ:
-    REQUIREMENTS.extend(GRPC_EXTRAS)
+RTD_ENV_VAR = 'READTHEDOCS'
+if RTD_ENV_VAR not in os.environ:
+    REQUIREMENTS.extend(GRPC_PACKAGES)
 
 setup(
     name='google-cloud',
@@ -52,7 +53,6 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=REQUIREMENTS,
-    extras_require={'grpc': GRPC_EXTRAS},
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
