@@ -15,76 +15,6 @@
 import unittest
 
 
-class Test_UDFResourcesProperty(unittest.TestCase):
-
-    def _getTargetClass(self):
-        from google.cloud.bigquery.job import UDFResourcesProperty
-        return UDFResourcesProperty
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
-
-    def _descriptor_and_klass(self):
-        descriptor = self._makeOne()
-
-        class _Test(object):
-            _udf_resources = ()
-            udf_resources = descriptor
-
-        return descriptor, _Test
-
-    def test_class_getter(self):
-        descriptor, klass = self._descriptor_and_klass()
-        self.assertTrue(klass.udf_resources is descriptor)
-
-    def test_instance_getter_empty(self):
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        self.assertEqual(instance.udf_resources, [])
-
-    def test_instance_getter_w_non_empty_list(self):
-        from google.cloud.bigquery.job import UDFResource
-        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
-        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        instance._udf_resources = tuple(udf_resources)
-
-        self.assertEqual(instance.udf_resources, udf_resources)
-
-    def test_instance_setter_w_empty_list(self):
-        from google.cloud.bigquery.job import UDFResource
-        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
-        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        instance._udf_resources = udf_resources
-
-        instance.udf_resources = []
-
-        self.assertEqual(instance.udf_resources, [])
-
-    def test_instance_setter_w_valid_udf(self):
-        from google.cloud.bigquery.job import UDFResource
-        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
-        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-
-        instance.udf_resources = udf_resources
-
-        self.assertEqual(instance.udf_resources, udf_resources)
-
-    def test_instance_setter_w_bad_udfs(self):
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-
-        with self.assertRaises(ValueError):
-            instance.udf_resources = ["foo"]
-
-        self.assertEqual(instance.udf_resources, [])
-
-
 class _Base(object):
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
@@ -1558,7 +1488,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_bound_client_and_udf(self):
-        from google.cloud.bigquery.job import UDFResource
+        from google.cloud.bigquery._helpers import UDFResource
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource()

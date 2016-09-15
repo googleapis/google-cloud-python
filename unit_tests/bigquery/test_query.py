@@ -141,7 +141,7 @@ class TestQueryResults(unittest.TestCase):
     def test_from_query_job(self):
         from google.cloud.bigquery.dataset import Dataset
         from google.cloud.bigquery.job import QueryJob
-        from google.cloud.bigquery.job import UDFResource
+        from google.cloud.bigquery._helpers import UDFResource
         DS_NAME = 'DATASET'
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         client = _Client(self.PROJECT)
@@ -287,7 +287,7 @@ class TestQueryResults(unittest.TestCase):
         self._verifyResourceProperties(query, RESOURCE)
 
     def test_run_w_inline_udf(self):
-        from google.cloud.bigquery.job import UDFResource
+        from google.cloud.bigquery._helpers import UDFResource
         INLINE_UDF_CODE = 'var someCode = "here";'
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
@@ -309,7 +309,7 @@ class TestQueryResults(unittest.TestCase):
         self._verifyResourceProperties(query, RESOURCE)
 
     def test_run_w_udf_resource_uri(self):
-        from google.cloud.bigquery.job import UDFResource
+        from google.cloud.bigquery._helpers import UDFResource
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
@@ -331,7 +331,7 @@ class TestQueryResults(unittest.TestCase):
         self._verifyResourceProperties(query, RESOURCE)
 
     def test_run_w_mixed_udfs(self):
-        from google.cloud.bigquery.job import UDFResource
+        from google.cloud.bigquery._helpers import UDFResource
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         INLINE_UDF_CODE = 'var someCode = "here";'
         PATH = 'projects/%s/queries' % self.PROJECT

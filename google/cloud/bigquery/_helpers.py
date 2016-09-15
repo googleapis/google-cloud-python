@@ -172,3 +172,55 @@ class _EnumProperty(_ConfigurationProperty):
         """
         if value not in self.ALLOWED:
             raise ValueError('Pass one of: %s' ', '.join(self.ALLOWED))
+
+
+class UDFResource(object):
+    """Describe a single user-defined function (UDF) resource.
+    :type udf_type: str
+    :param udf_type: the type of the resource ('inlineCode' or 'resourceUri')
+
+    :type value: str
+    :param value: the inline code or resource URI.
+
+    See
+    https://cloud.google.com/bigquery/user-defined-functions#api
+    """
+    def __init__(self, udf_type, value):
+        self.udf_type = udf_type
+        self.value = value
+
+    def __eq__(self, other):
+        return(
+            self.udf_type == other.udf_type and
+            self.value == other.value)
+
+
+class UDFResourcesProperty(object):
+    """Custom property type, holding :class:`UDFResource` instances."""
+
+    def __get__(self, instance, owner):
+        """Descriptor protocol:  accessor"""
+        if instance is None:
+            return self
+        return list(instance._udf_resources)
+
+    def __set__(self, instance, value):
+        """Descriptor protocol:  mutator"""
+        if not all(isinstance(u, UDFResource) for u in value):
+            raise ValueError("udf items must be UDFResource")
+        instance._udf_resources = tuple(value)
+
+
+def _build_udf_resources(resources):
+    """
+    :type resources: sequence of :class:`UDFResource`
+    :param resources: fields to be appended.
+
+    :rtype: mapping
+    :returns: a mapping describing userDefinedFunctionResources for the query.
+    """
+    udfs = []
+    for resource in resources:
+        udf = {resource.udf_type: resource.value}
+        udfs.append(udf)
+    return udfs

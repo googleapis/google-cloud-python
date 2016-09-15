@@ -20,9 +20,9 @@ from google.cloud.bigquery._helpers import _TypedProperty
 from google.cloud.bigquery._helpers import _rows_from_json
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.job import QueryJob
-from google.cloud.bigquery.job import UDFResourcesProperty
-from google.cloud.bigquery.job import _build_udf_resources
 from google.cloud.bigquery.table import _parse_schema_resource
+from google.cloud.bigquery._helpers import _build_udf_resources
+from google.cloud.bigquery._helpers import UDFResourcesProperty
 
 
 class _SyncQueryConfiguration(object):
