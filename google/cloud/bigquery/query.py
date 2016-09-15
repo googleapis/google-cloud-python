@@ -307,6 +307,9 @@ class QueryResults(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
         """
+        if self._job is not None:
+            raise ValueError("Query job is already running.")
+
         client = self._require_client(client)
         path = '/projects/%s/queries' % (self.project,)
         api_response = client.connection.api_request(

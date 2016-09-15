@@ -175,6 +175,14 @@ class TestQueryResults(unittest.TestCase):
         query._set_properties(resource)
         self._verifyResourceProperties(query, resource)
 
+    def test_run_w_already_has_job(self):
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        query = self._makeOne(self.QUERY, client)
+        query._job = object()  # simulate already running
+        with self.assertRaises(ValueError):
+            query.run()
+
     def test_run_w_bound_client(self):
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
