@@ -142,7 +142,7 @@ class TimeSeries(collections.namedtuple(
 
 
 def _make_typed_value(value):
-    """Creates a dict representing a TypeValue API object from a value.
+    """Creates a dict representing a TypedValue API object from a value.
 
     Typed values are objects with the value itself as the value, keyed by the
     type of the value. They are used when writing points to time series. This
