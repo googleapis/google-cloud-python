@@ -325,7 +325,7 @@ class TestResource(unittest.TestCase):
         resource = self._makeOne(TYPE, LABELS)
         expected_dict = {
             'type': TYPE,
-            'labels': LABELS
+            'labels': LABELS,
         }
         self.assertEquals(resource._to_dict(), expected_dict)
 

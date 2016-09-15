@@ -536,7 +536,7 @@ class TestMetric(unittest.TestCase):
         metric = self._makeOne(TYPE, LABELS)
         expected_dict = {
             'type': TYPE,
-            'labels': LABELS
+            'labels': LABELS,
         }
         self.assertEquals(metric._to_dict(), expected_dict)
 

@@ -548,7 +548,8 @@ class Client(JSONClient):
             >>> client.write_point(metric, resource, 3.14)
 
         :type metric: :class:`~google.cloud.monitoring.metric.Metric`
-        :param metric: A :class:`~google.cloud.monitoring.metric.Metric` object.
+        :param metric: A :class:`~google.cloud.monitoring.metric.Metric`
+                       object.
 
         :type resource: :class:`~google.cloud.monitoring.resource.Resource`
         :param resource: A :class:`~google.cloud.monitoring.resource.Resource`
