@@ -1073,3 +1073,12 @@ class QueryJob(_AsyncJob):
         job = cls(name, query, client=client)
         job._set_properties(resource)
         return job
+
+    def results(self):
+        """Construct a QueryResults instance, bound to this job.
+
+        :rtype: :class:`~google.cloud.bigquery.query.QueryResults`
+        :returns: results instance
+        """
+        from google.cloud.bigquery.query import QueryResults
+        return QueryResults.from_query_job(self)

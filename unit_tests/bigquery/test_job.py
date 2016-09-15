@@ -1386,6 +1386,14 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertTrue(dataset._client is client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
+    def test_results(self):
+        from google.cloud.bigquery.query import QueryResults
+        client = _Client(self.PROJECT)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+        results = job.results()
+        self.assertIsInstance(results, QueryResults)
+        self.assertTrue(results._job is job)
+
     def test_begin_w_bound_client(self):
         PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource()
