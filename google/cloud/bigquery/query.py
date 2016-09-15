@@ -65,6 +65,26 @@ class QueryResults(object):
         self.udf_resources = udf_resources
         self._job = None
 
+    @classmethod
+    def from_query_job(cls, job):
+        """Factory: construct from an existing job.
+
+        :type job: :class:`~google.cloud.bigquery.job.QueryJob`
+        :param job: existing job
+
+        :rtype: :class:`QueryResults`
+        :returns: the instance, bound to the job
+        """
+        instance = cls(job.query, job._client, job.udf_resources)
+        instance._job = job
+        if job.default_dataset is not None:
+            instance.default_dataset = job.default_dataset
+        if job.use_query_cache is not None:
+            instance.use_query_cache = job.use_query_cache
+        if job.use_legacy_sql is not None:
+            instance.use_legacy_sql = job.use_legacy_sql
+        return instance
+
     @property
     def project(self):
         """Project bound to the job.

@@ -138,6 +138,51 @@ class TestQueryResults(unittest.TestCase):
         self.assertTrue(query.use_query_cache is None)
         self.assertTrue(query.use_legacy_sql is None)
 
+    def test_from_query_job(self):
+        from google.cloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.job import QueryJob
+        from google.cloud.bigquery.job import UDFResource
+        DS_NAME = 'DATASET'
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        client = _Client(self.PROJECT)
+        job = QueryJob(
+            self.JOB_NAME, self.QUERY, client,
+            udf_resources=[UDFResource("resourceUri", RESOURCE_URI)])
+        dataset = job.default_dataset = Dataset(DS_NAME, client)
+        job.use_query_cache = True
+        job.use_legacy_sql = True
+        klass = self._getTargetClass()
+
+        query = klass.from_query_job(job)
+
+        self.assertEqual(query.query, self.QUERY)
+        self.assertTrue(query._client is client)
+        self.assertTrue(query._job is job)
+        self.assertEqual(query.udf_resources, job.udf_resources)
+        self.assertTrue(query.default_dataset is dataset)
+        self.assertTrue(query.use_query_cache)
+        self.assertTrue(query.use_legacy_sql)
+
+    def test_from_query_job_wo_default_dataset(self):
+        from google.cloud.bigquery.job import QueryJob
+        from google.cloud.bigquery._helpers import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        client = _Client(self.PROJECT)
+        job = QueryJob(
+            self.JOB_NAME, self.QUERY, client,
+            udf_resources=[UDFResource("resourceUri", RESOURCE_URI)])
+        klass = self._getTargetClass()
+
+        query = klass.from_query_job(job)
+
+        self.assertEqual(query.query, self.QUERY)
+        self.assertTrue(query._client is client)
+        self.assertTrue(query._job is job)
+        self.assertEqual(query.udf_resources, job.udf_resources)
+        self.assertIsNone(query.default_dataset)
+        self.assertIsNone(query.use_query_cache)
+        self.assertIsNone(query.use_legacy_sql)
+
     def test_job_wo_jobid(self):
         client = _Client(self.PROJECT)
         query = self._makeOne(self.QUERY, client)
