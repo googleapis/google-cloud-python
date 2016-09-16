@@ -14,9 +14,13 @@
 
 """Google Stackdriver Logging API wrapper."""
 
-try:
-    import pkg_resources
-    pkg_resources.declare_namespace(__name__)
-except ImportError:
-    import pkgutil
-    __path__ = pkgutil.extend_path(__path__, __name__)
+
+from google.cloud.logging.client import Client
+from google.cloud.logging.connection import Connection
+
+
+SCOPE = Connection.SCOPE
+ASCENDING = 'timestamp asc'
+"""Query string to order by ascending timestamps."""
+DESCENDING = 'timestamp desc'
+"""Query string to order by decending timestamps."""

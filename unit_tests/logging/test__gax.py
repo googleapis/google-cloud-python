@@ -51,8 +51,9 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
     def test_list_entries_no_paging(self):
         from google.gax import INITIAL_PAGE
-        from google.cloud.logging.client import DESCENDING
+        from google.cloud.logging import DESCENDING
         from unit_tests._testing import _GAXPageIterator
+
         TOKEN = 'TOKEN'
         TEXT = 'TEXT'
         response = _GAXPageIterator(
