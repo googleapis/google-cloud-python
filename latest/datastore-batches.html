@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Batches &mdash; google-cloud 227da50 documentation</title>
+  <title>Batches &mdash; google-cloud 089138e documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 227da50 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 089138e documentation" href="index.html"/>
         <link rel="next" title="Helpers" href="datastore-helpers.html"/>
         <link rel="prev" title="Transactions" href="datastore-transactions.html"/> 
 
@@ -329,6 +329,15 @@ to use a context manager.</p>
 <p>This is called automatically upon exiting a with statement,
 however it can be called explicitly if you don&#8217;t want to use a
 context manager.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the batch is not
+in progress.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -363,7 +372,8 @@ context manager.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) &#8211; the key to be deleted.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ValueError if key is not complete, or if the key&#8217;s
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the batch is not in
+progress, if key is not complete, or if the key&#8217;s
 <code class="docutils literal"><span class="pre">project</span></code> does not match ours.</td>
 </tr>
 </tbody>
@@ -451,7 +461,8 @@ assigned by the server.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a>) &#8211; the entity to be saved.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ValueError if entity has no key assigned, or if the key&#8217;s
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the batch is not in
+progress, if entity has no key assigned, or if the key&#8217;s
 <code class="docutils literal"><span class="pre">project</span></code> does not match ours.</td>
 </tr>
 </tbody>
@@ -464,6 +475,15 @@ assigned by the server.</p>
 <dd><p>Rolls back the current batch.</p>
 <p>Marks the batch as aborted (can&#8217;t be used again).</p>
 <p>Overridden by <a class="reference internal" href="datastore-transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.transaction.Transaction</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the batch is not
+in progress.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -511,7 +531,7 @@ assigned by the server.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'227da50',
+            VERSION:'089138e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

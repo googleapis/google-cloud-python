@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.batch &mdash; google-cloud 227da50 documentation</title>
+  <title>google.cloud.datastore.batch &mdash; google-cloud 089138e documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 227da50 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 089138e documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -441,9 +441,13 @@
 <span class="sd">        :type entity: :class:`google.cloud.datastore.entity.Entity`</span>
 <span class="sd">        :param entity: the entity to be saved.</span>
 
-<span class="sd">        :raises: ValueError if entity has no key assigned, or if the key&#39;s</span>
+<span class="sd">        :raises: :class:`~exceptions.ValueError` if the batch is not in</span>
+<span class="sd">                 progress, if entity has no key assigned, or if the key&#39;s</span>
 <span class="sd">                 ``project`` does not match ours.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_IN_PROGRESS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Batch must be in progress to put()&#39;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Entity must have a key&quot;</span><span class="p">)</span>
 
@@ -464,9 +468,13 @@
 <span class="sd">        :type key: :class:`google.cloud.datastore.key.Key`</span>
 <span class="sd">        :param key: the key to be deleted.</span>
 
-<span class="sd">        :raises: ValueError if key is not complete, or if the key&#39;s</span>
+<span class="sd">        :raises: :class:`~exceptions.ValueError` if the batch is not in</span>
+<span class="sd">                 progress, if key is not complete, or if the key&#39;s</span>
 <span class="sd">                 ``project`` does not match ours.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_IN_PROGRESS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Batch must be in progress to delete()&#39;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Key must be complete&quot;</span><span class="p">)</span>
 
@@ -513,7 +521,13 @@
 <span class="sd">        This is called automatically upon exiting a with statement,</span>
 <span class="sd">        however it can be called explicitly if you don&#39;t want to use a</span>
 <span class="sd">        context manager.</span>
+
+<span class="sd">        :raises: :class:`~exceptions.ValueError` if the batch is not</span>
+<span class="sd">                 in progress.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_IN_PROGRESS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Batch must be in progress to commit()&#39;</span><span class="p">)</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_commit</span><span class="p">()</span>
         <span class="k">finally</span><span class="p">:</span>
@@ -525,12 +539,19 @@
 <span class="sd">        Marks the batch as aborted (can&#39;t be used again).</span>
 
 <span class="sd">        Overridden by :class:`google.cloud.datastore.transaction.Transaction`.</span>
+
+<span class="sd">        :raises: :class:`~exceptions.ValueError` if the batch is not</span>
+<span class="sd">                 in progress.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_IN_PROGRESS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Batch must be in progress to rollback()&#39;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ABORTED</span></div>
 
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_push_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+        <span class="c1"># NOTE: We make sure begin() succeeds before pushing onto the stack.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_push_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
@@ -590,7 +611,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'227da50',
+            VERSION:'089138e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
