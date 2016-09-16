@@ -65,13 +65,18 @@ class TestBigQuery(unittest.TestCase):
         from google.cloud.storage import Bucket
         from google.cloud.exceptions import BadRequest
         from google.cloud.exceptions import Conflict
-        retry_400 = RetryErrors(BadRequest)
+
+        def _still_in_use(bad_request):
+            return any(error['reason'] == 'resourceInUse'
+                       for error in bad_request._errors)
+
+        retry_in_use = RetryErrors(BadRequest, error_predicate=_still_in_use)
         retry_409 = RetryErrors(Conflict)
         for doomed in self.to_delete:
             if isinstance(doomed, Bucket):
                 retry_409(doomed.delete)(force=True)
             elif isinstance(doomed, Dataset):
-                retry_400(doomed.delete)()
+                retry_in_use(doomed.delete)()
             else:
                 doomed.delete()
 
