@@ -1,3 +1,4 @@
 export GOOGLE_APPLICATION_CREDENTIALS="app_credentials.json.sample"
 export GOOGLE_CLOUD_REMOTE_FOR_LINT="upstream"
 export GOOGLE_CLOUD_BRANCH_FOR_LINT="master"
+export GOOGLE_CLOUD_TESTS_API_KEY="abcd1234"
