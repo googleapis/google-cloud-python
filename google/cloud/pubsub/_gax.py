@@ -14,8 +14,8 @@
 
 """GAX wrapper for Pubsub API requests."""
 
-from google.cloud.pubsub.v1.publisher_api import PublisherApi
-from google.cloud.pubsub.v1.subscriber_api import SubscriberApi
+from google.cloud.gapic.pubsub.v1.publisher_api import PublisherApi
+from google.cloud.gapic.pubsub.v1.subscriber_api import SubscriberApi
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError

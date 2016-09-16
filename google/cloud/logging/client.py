@@ -17,11 +17,11 @@
 import os
 
 try:
-    from google.cloud.logging.v2.config_service_v2_api import (
+    from google.cloud.gapic.logging.v2.config_service_v2_api import (
         ConfigServiceV2Api as GeneratedSinksAPI)
-    from google.cloud.logging.v2.logging_service_v2_api import (
+    from google.cloud.gapic.logging.v2.logging_service_v2_api import (
         LoggingServiceV2Api as GeneratedLoggingAPI)
-    from google.cloud.logging.v2.metrics_service_v2_api import (
+    from google.cloud.gapic.logging.v2.metrics_service_v2_api import (
         MetricsServiceV2Api as GeneratedMetricsAPI)
     from google.cloud.logging._gax import _LoggingAPI as GAXLoggingAPI
     from google.cloud.logging._gax import _MetricsAPI as GAXMetricsAPI
