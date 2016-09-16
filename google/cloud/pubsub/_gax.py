@@ -18,15 +18,14 @@ from google.cloud.gapic.pubsub.v1.publisher_api import PublisherApi
 from google.cloud.gapic.pubsub.v1.subscriber_api import SubscriberApi
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
-from google.gax.errors import GaxError
 from google.pubsub.v1.pubsub_pb2 import PubsubMessage
 from google.pubsub.v1.pubsub_pb2 import PushConfig
-from grpc.beta.implementations import insecure_channel
+from grpc import insecure_channel
 from grpc import StatusCode
+from grpc._channel import _Rendezvous
 
 # pylint: disable=ungrouped-imports
 from google.cloud._helpers import _to_bytes
-from google.cloud._helpers import exc_to_code
 from google.cloud._helpers import _pb_timestamp_to_rfc3339
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
@@ -93,8 +92,8 @@ class _PublisherAPI(object):
         """
         try:
             topic_pb = self._gax_api.create_topic(topic_path)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.FAILED_PRECONDITION:
                 raise Conflict(topic_path)
             raise
         return {'name': topic_pb.name}
@@ -116,8 +115,8 @@ class _PublisherAPI(object):
         """
         try:
             topic_pb = self._gax_api.get_topic(topic_path)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(topic_path)
             raise
         return {'name': topic_pb.name}
@@ -134,8 +133,8 @@ class _PublisherAPI(object):
         """
         try:
             self._gax_api.delete_topic(topic_path)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(topic_path)
             raise
 
@@ -163,8 +162,8 @@ class _PublisherAPI(object):
         try:
             result = self._gax_api.publish(topic_path, message_pbs,
                                            options=options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(topic_path)
             raise
         return result.message_ids
@@ -201,8 +200,8 @@ class _PublisherAPI(object):
         try:
             page_iter = self._gax_api.list_topic_subscriptions(
                 topic_path, page_size=page_size, options=options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(topic_path)
             raise
         subs = page_iter.next()
@@ -294,8 +293,8 @@ class _SubscriberAPI(object):
         try:
             sub_pb = self._gax_api.create_subscription(
                 subscription_path, topic_path, push_config, ack_deadline)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.FAILED_PRECONDITION:
                 raise Conflict(topic_path)
             raise
         return _subscription_pb_to_mapping(sub_pb)
@@ -316,8 +315,8 @@ class _SubscriberAPI(object):
         """
         try:
             sub_pb = self._gax_api.get_subscription(subscription_path)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
             raise
         return _subscription_pb_to_mapping(sub_pb)
@@ -335,8 +334,8 @@ class _SubscriberAPI(object):
         """
         try:
             self._gax_api.delete_subscription(subscription_path)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
             raise
 
@@ -360,8 +359,8 @@ class _SubscriberAPI(object):
         push_config = PushConfig(push_endpoint=push_endpoint)
         try:
             self._gax_api.modify_push_config(subscription_path, push_config)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
             raise
 
@@ -392,8 +391,8 @@ class _SubscriberAPI(object):
         try:
             response_pb = self._gax_api.pull(
                 subscription_path, max_messages, return_immediately)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
             raise
         return [_received_message_pb_to_mapping(rmpb)
@@ -415,8 +414,8 @@ class _SubscriberAPI(object):
         """
         try:
             self._gax_api.acknowledge(subscription_path, ack_ids)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
             raise
 
@@ -442,8 +441,8 @@ class _SubscriberAPI(object):
         try:
             self._gax_api.modify_ack_deadline(
                 subscription_path, ack_ids, ack_deadline)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except _Rendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
             raise
 
@@ -520,7 +519,7 @@ def make_gax_publisher_api(connection):
     """
     channel = None
     if connection.in_emulator:
-        channel = insecure_channel(connection.host, None)
+        channel = insecure_channel(connection.host)
     return PublisherApi(channel=channel)
 
 
@@ -540,5 +539,5 @@ def make_gax_subscriber_api(connection):
     """
     channel = None
     if connection.in_emulator:
-        channel = insecure_channel(connection.host, None)
+        channel = insecure_channel(connection.host)
     return SubscriberApi(channel=channel)
