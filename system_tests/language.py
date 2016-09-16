@@ -73,8 +73,7 @@ class TestLanguage(unittest.TestCase):
         # Verify entity 1.
         self.assertEqual(entity1.name, self.NAME1)
         self.assertEqual(entity1.entity_type, EntityType.PERSON)
-        # NOTE: As of Sept. 8, 2016, entity1.salience == 0.81992269
-        self.assertTrue(0.6 < entity1.salience < 1.0)
+        self.assertGreater(entity1.salience, 0.0)
         self.assertEqual(entity1.mentions, [entity1.name])
         self.assertEqual(entity1.wikipedia_url,
                          'http://en.wikipedia.org/wiki/Caravaggio')
@@ -82,8 +81,7 @@ class TestLanguage(unittest.TestCase):
         # Verify entity 2.
         self.assertEqual(entity2.name, self.NAME2)
         self.assertEqual(entity2.entity_type, EntityType.LOCATION)
-        # NOTE: As of Sept. 8, 2016, entity2.salience == 0.14427181
-        self.assertTrue(0.0 < entity2.salience < 0.4)
+        self.assertGreater(entity2.salience, 0.0)
         self.assertEqual(entity2.mentions, [entity2.name])
         self.assertEqual(entity2.wikipedia_url,
                          'http://en.wikipedia.org/wiki/Italy')
@@ -91,7 +89,7 @@ class TestLanguage(unittest.TestCase):
         # Verify entity 3.
         self.assertEqual(entity3.name, self.NAME3)
         self.assertEqual(entity3.entity_type, EntityType.EVENT)
-        self.assertTrue(0 < entity3.salience < 0.1)
+        self.assertGreater(entity3.salience, 0.0)
         self.assertEqual(entity3.mentions, [entity3.name])
         wiki_url = ('http://en.wikipedia.org/wiki/'
                     'The_Calling_of_St_Matthew_(Caravaggio)')
