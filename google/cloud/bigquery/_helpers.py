@@ -176,6 +176,7 @@ class _EnumProperty(_ConfigurationProperty):
 
 class UDFResource(object):
     """Describe a single user-defined function (UDF) resource.
+
     :type udf_type: str
     :param udf_type: the type of the resource ('inlineCode' or 'resourceUri')
 
