@@ -263,7 +263,7 @@ Then, begin executing the job on the server:
 
 .. doctest::
 
-   >>> job.submit()  # API call
+   >>> job.begin()  # API call
    >>> job.created
    datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
    >>> job.state
