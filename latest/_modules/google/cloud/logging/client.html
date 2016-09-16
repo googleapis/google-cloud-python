@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.client &mdash; google-cloud 2e47d81 documentation</title>
+  <title>google.cloud.logging.client &mdash; google-cloud e5e7ab8 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 2e47d81 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud e5e7ab8 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -308,10 +308,6 @@
 
 <span class="n">_DISABLE_GAX</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 <span class="n">_USE_GAX</span> <span class="o">=</span> <span class="n">_HAVE_GAX</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_DISABLE_GAX</span>
-<span class="n">ASCENDING</span> <span class="o">=</span> <span class="s1">&#39;timestamp asc&#39;</span>
-<span class="sd">&quot;&quot;&quot;Query string to order by ascending timestamps.&quot;&quot;&quot;</span>
-<span class="n">DESCENDING</span> <span class="o">=</span> <span class="s1">&#39;timestamp desc&#39;</span>
-<span class="sd">&quot;&quot;&quot;Query string to order by decending timestamps.&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../logging-client.html#google.cloud.logging.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
@@ -435,8 +431,8 @@
 <span class="sd">                        https://cloud.google.com/logging/docs/view/advanced_filters</span>
 
 <span class="sd">        :type order_by: str</span>
-<span class="sd">        :param order_by: One of :data:`~google.cloud.logging.client.ASCENDING`</span>
-<span class="sd">                         or :data:`~google.cloud.logging.client.DESCENDING`.</span>
+<span class="sd">        :param order_by: One of :data:`~google.cloud.logging.ASCENDING`</span>
+<span class="sd">                         or :data:`~google.cloud.logging.DESCENDING`.</span>
 
 <span class="sd">        :type page_size: int</span>
 <span class="sd">        :param page_size: maximum number of entries to return, If not passed,</span>
@@ -595,7 +591,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'2e47d81',
+            VERSION:'e5e7ab8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

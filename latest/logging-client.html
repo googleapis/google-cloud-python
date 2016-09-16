@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stackdriver Logging Client &mdash; google-cloud 2e47d81 documentation</title>
+  <title>Stackdriver Logging Client &mdash; google-cloud e5e7ab8 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 2e47d81 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud e5e7ab8 documentation" href="index.html"/>
         <link rel="next" title="Logger" href="logging-logger.html"/>
         <link rel="prev" title="Using the API" href="logging-usage.html"/> 
 
@@ -262,12 +262,6 @@
   <div class="section" id="module-google.cloud.logging.client">
 <span id="stackdriver-logging-client"></span><h1>Stackdriver Logging Client<a class="headerlink" href="#module-google.cloud.logging.client" title="Permalink to this headline">#</a></h1>
 <p>Client for interacting with the Google Stackdriver Logging API.</p>
-<dl class="data">
-<dt id="google.cloud.logging.client.ASCENDING">
-<code class="descclassname">google.cloud.logging.client.</code><code class="descname">ASCENDING</code><em class="property"> = 'timestamp asc'</em><a class="headerlink" href="#google.cloud.logging.client.ASCENDING" title="Permalink to this definition">#</a></dt>
-<dd><p>Query string to order by ascending timestamps.</p>
-</dd></dl>
-
 <dl class="class">
 <dt id="google.cloud.logging.client.Client">
 <em class="property">class </em><code class="descclassname">google.cloud.logging.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.client.Client" title="Permalink to this definition">#</a></dt>
@@ -309,8 +303,8 @@ from the environment.</li>
 defaults to the project bound to the client.</li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; a filter expression. See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">https://cloud.google.com/logging/docs/view/advanced_filters</a></li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; One of <a class="reference internal" href="#google.cloud.logging.client.ASCENDING" title="google.cloud.logging.client.ASCENDING"><code class="xref py py-data docutils literal"><span class="pre">ASCENDING</span></code></a>
-or <a class="reference internal" href="#google.cloud.logging.client.DESCENDING" title="google.cloud.logging.client.DESCENDING"><code class="xref py py-data docutils literal"><span class="pre">DESCENDING</span></code></a>.</li>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; One of <code class="xref py py-data docutils literal"><span class="pre">ASCENDING</span></code>
+or <code class="xref py py-data docutils literal"><span class="pre">DESCENDING</span></code>.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of entries to return, If not passed,
 defaults to a value set by the API.</li>
 <li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of entries. If not
@@ -502,12 +496,6 @@ already exist, to be refreshed via
 
 </dd></dl>
 
-<dl class="data">
-<dt id="google.cloud.logging.client.DESCENDING">
-<code class="descclassname">google.cloud.logging.client.</code><code class="descname">DESCENDING</code><em class="property"> = 'timestamp desc'</em><a class="headerlink" href="#google.cloud.logging.client.DESCENDING" title="Permalink to this definition">#</a></dt>
-<dd><p>Query string to order by decending timestamps.</p>
-</dd></dl>
-
 <div class="section" id="module-google.cloud.logging.connection">
 <span id="connection"></span><h2>Connection<a class="headerlink" href="#module-google.cloud.logging.connection" title="Permalink to this headline">#</a></h2>
 <p>Create / interact with Stackdriver Logging connections.</p>
@@ -601,7 +589,7 @@ connection.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2e47d81',
+            VERSION:'e5e7ab8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
