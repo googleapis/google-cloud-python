@@ -23,9 +23,11 @@ The main concepts with this API are:
   subscription (either pull or push) to a topic.
 """
 
-try:
-    import pkg_resources
-    pkg_resources.declare_namespace(__name__)
-except ImportError:
-    import pkgutil
-    __path__ = pkgutil.extend_path(__path__, __name__)
+
+from google.cloud.pubsub.client import Client
+from google.cloud.pubsub.connection import Connection
+from google.cloud.pubsub.subscription import Subscription
+from google.cloud.pubsub.topic import Topic
+
+
+SCOPE = Connection.SCOPE

@@ -44,8 +44,6 @@ setup(
     namespace_packages=[
         'google',
         'google.cloud',
-        'google.cloud.logging',
-        'google.cloud.pubsub',
     ],
     packages=find_packages(),
     license='Apache 2.0',

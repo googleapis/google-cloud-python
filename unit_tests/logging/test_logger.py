@@ -364,7 +364,8 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(client._listed, LISTED)
 
     def test_list_entries_explicit(self):
-        from google.cloud.logging.client import DESCENDING
+        from google.cloud.logging import DESCENDING
+
         PROJECT1 = 'PROJECT1'
         PROJECT2 = 'PROJECT2'
         FILTER = 'resource.type:global'
