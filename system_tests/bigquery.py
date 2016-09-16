@@ -17,7 +17,6 @@ import operator
 import unittest
 
 from google.cloud import bigquery
-from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import Forbidden
 
 from retry import RetryErrors
@@ -34,6 +33,7 @@ def _rate_limit_exceeded(forbidden):
     """Predicate: pass only exceptions with 'rateLimitExceeded' as reason."""
     return any(error['reason'] == 'rateLimitExceeded'
                for error in forbidden._errors)
+
 
 # We need to wait to stay within the rate limits.
 # The alternative outcome is a 403 Forbidden response from upstream, which
@@ -61,11 +61,17 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete = []
 
     def tearDown(self):
+        from google.cloud.bigquery.dataset import Dataset
         from google.cloud.storage import Bucket
+        from google.cloud.exceptions import BadRequest
+        from google.cloud.exceptions import Conflict
+        retry_400 = RetryErrors(BadRequest)
+        retry_409 = RetryErrors(Conflict)
         for doomed in self.to_delete:
             if isinstance(doomed, Bucket):
-                retry = RetryErrors(Conflict)
-                retry(doomed.delete)(force=True)
+                retry_409(doomed.delete)(force=True)
+            elif isinstance(doomed, Dataset):
+                retry_400(doomed.delete)()
             else:
                 doomed.delete()
 
