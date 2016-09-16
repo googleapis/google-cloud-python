@@ -68,7 +68,19 @@ class TestBatch(unittest.TestCase):
         client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
 
+        batch.begin()
         self.assertRaises(ValueError, batch.put, _Entity())
+
+    def test_put_entity_wrong_status(self):
+        _PROJECT = 'PROJECT'
+        connection = _Connection()
+        client = _Client(_PROJECT, connection)
+        batch = self._makeOne(client)
+        entity = _Entity()
+        entity.key = _Key('OTHER')
+
+        self.assertEqual(batch._status, batch._INITIAL)
+        self.assertRaises(ValueError, batch.put, entity)
 
     def test_put_entity_w_key_wrong_project(self):
         _PROJECT = 'PROJECT'
@@ -78,6 +90,7 @@ class TestBatch(unittest.TestCase):
         entity = _Entity()
         entity.key = _Key('OTHER')
 
+        batch.begin()
         self.assertRaises(ValueError, batch.put, entity)
 
     def test_put_entity_w_partial_key(self):
@@ -90,6 +103,7 @@ class TestBatch(unittest.TestCase):
         key = entity.key = _Key(_PROJECT)
         key._id = None
 
+        batch.begin()
         batch.put(entity)
 
         mutated_entity = _mutated_pb(self, batch.mutations, 'insert')
@@ -113,6 +127,7 @@ class TestBatch(unittest.TestCase):
         entity.exclude_from_indexes = ('baz', 'spam')
         key = entity.key = _Key(_PROJECT)
 
+        batch.begin()
         batch.put(entity)
 
         mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
@@ -129,6 +144,17 @@ class TestBatch(unittest.TestCase):
         self.assertTrue(spam_values[2].exclude_from_indexes)
         self.assertFalse('frotz' in prop_dict)
 
+    def test_delete_wrong_status(self):
+        _PROJECT = 'PROJECT'
+        connection = _Connection()
+        client = _Client(_PROJECT, connection)
+        batch = self._makeOne(client)
+        key = _Key(_PROJECT)
+        key._id = None
+
+        self.assertEqual(batch._status, batch._INITIAL)
+        self.assertRaises(ValueError, batch.delete, key)
+
     def test_delete_w_partial_key(self):
         _PROJECT = 'PROJECT'
         connection = _Connection()
@@ -137,6 +163,7 @@ class TestBatch(unittest.TestCase):
         key = _Key(_PROJECT)
         key._id = None
 
+        batch.begin()
         self.assertRaises(ValueError, batch.delete, key)
 
     def test_delete_w_key_wrong_project(self):
@@ -146,6 +173,7 @@ class TestBatch(unittest.TestCase):
         batch = self._makeOne(client)
         key = _Key('OTHER')
 
+        batch.begin()
         self.assertRaises(ValueError, batch.delete, key)
 
     def test_delete_w_completed_key(self):
@@ -155,6 +183,7 @@ class TestBatch(unittest.TestCase):
         batch = self._makeOne(client)
         key = _Key(_PROJECT)
 
+        batch.begin()
         batch.delete(key)
 
         mutated_key = _mutated_pb(self, batch.mutations, 'delete')
@@ -180,9 +209,18 @@ class TestBatch(unittest.TestCase):
         _PROJECT = 'PROJECT'
         client = _Client(_PROJECT, None)
         batch = self._makeOne(client)
-        self.assertEqual(batch._status, batch._INITIAL)
+        batch.begin()
+        self.assertEqual(batch._status, batch._IN_PROGRESS)
         batch.rollback()
         self.assertEqual(batch._status, batch._ABORTED)
+
+    def test_rollback_wrong_status(self):
+        _PROJECT = 'PROJECT'
+        client = _Client(_PROJECT, None)
+        batch = self._makeOne(client)
+
+        self.assertEqual(batch._status, batch._INITIAL)
+        self.assertRaises(ValueError, batch.rollback)
 
     def test_commit(self):
         _PROJECT = 'PROJECT'
@@ -191,11 +229,22 @@ class TestBatch(unittest.TestCase):
         batch = self._makeOne(client)
 
         self.assertEqual(batch._status, batch._INITIAL)
+        batch.begin()
+        self.assertEqual(batch._status, batch._IN_PROGRESS)
         batch.commit()
         self.assertEqual(batch._status, batch._FINISHED)
 
         self.assertEqual(connection._committed,
                          [(_PROJECT, batch._commit_request, None)])
+
+    def test_commit_wrong_status(self):
+        _PROJECT = 'PROJECT'
+        connection = _Connection()
+        client = _Client(_PROJECT, connection)
+        batch = self._makeOne(client)
+
+        self.assertEqual(batch._status, batch._INITIAL)
+        self.assertRaises(ValueError, batch.commit)
 
     def test_commit_w_partial_key_entities(self):
         _PROJECT = 'PROJECT'
@@ -209,6 +258,8 @@ class TestBatch(unittest.TestCase):
         batch._partial_key_entities.append(entity)
 
         self.assertEqual(batch._status, batch._INITIAL)
+        batch.begin()
+        self.assertEqual(batch._status, batch._IN_PROGRESS)
         batch.commit()
         self.assertEqual(batch._status, batch._FINISHED)
 
@@ -294,6 +345,26 @@ class TestBatch(unittest.TestCase):
         mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
         self.assertEqual(mutated_entity.key, key._key)
         self.assertEqual(connection._committed, [])
+
+    def test_as_context_mgr_enter_fails(self):
+        klass = self._getTargetClass()
+
+        class FailedBegin(klass):
+
+            def begin(self):
+                raise RuntimeError
+
+        client = _Client(None, None)
+        self.assertEqual(client._batches, [])
+
+        batch = FailedBegin(client)
+        with self.assertRaises(RuntimeError):
+            # The context manager will never be entered because
+            # of the failure.
+            with batch:  # pragma: NO COVER
+                pass
+        # Make sure no batch was added.
+        self.assertEqual(client._batches, [])
 
 
 class _PathElementPB(object):

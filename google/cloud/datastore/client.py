@@ -348,6 +348,7 @@ class Client(_BaseClient, _ClientProjectMixin):
 
         if not in_batch:
             current = self.batch()
+            current.begin()
 
         for entity in entities:
             current.put(entity)
@@ -384,6 +385,7 @@ class Client(_BaseClient, _ClientProjectMixin):
 
         if not in_batch:
             current = self.batch()
+            current.begin()
 
         for key in keys:
             current.delete(key)

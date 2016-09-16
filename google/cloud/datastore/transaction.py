@@ -90,6 +90,8 @@ class Transaction(Batch):
     :param client: the client used to connect to datastore.
     """
 
+    _status = None
+
     def __init__(self, client):
         super(Transaction, self).__init__(client)
         self._id = None
@@ -125,10 +127,15 @@ class Transaction(Batch):
         statement, however it can be called explicitly if you don't want
         to use a context manager.
 
-        :raises: :class:`ValueError` if the transaction has already begun.
+        :raises: :class:`~exceptions.ValueError` if the transaction has
+                 already begun.
         """
         super(Transaction, self).begin()
-        self._id = self.connection.begin_transaction(self.project)
+        try:
+            self._id = self.connection.begin_transaction(self.project)
+        except:
+            self._status = self._ABORTED
+            raise
 
     def rollback(self):
         """Rolls back the current transaction.
