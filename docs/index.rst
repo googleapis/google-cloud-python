@@ -169,6 +169,14 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: Speech
+
+  speech-usage
+  Client <speech-client>
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: External Links
 
   GitHub <https://github.com/GoogleCloudPlatform/google-cloud-python/>
@@ -230,3 +238,4 @@ Cloud Storage
   bucket = client.get_bucket('<your-bucket-name>')
   blob = bucket.blob('my-test-file.txt')
   blob.upload_from_string('this is test content!')
+

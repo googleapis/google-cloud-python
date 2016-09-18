@@ -66,9 +66,11 @@ class Client(client_module.Client):
                       speech_context=None):
         """Synchronous Speech Recognition.
 
-        See: https://cloud.google.com/speech/reference/\
-        rest/v1beta1/speech/syncrecognize
+        .. _syncrecognize: https://cloud.google.com/speech/reference/\
+                             rest/v1beta1/speech/syncrecognize
 
+        See `syncrecognize`_.
+        
         :type content: str
         :param content: The content string containing the audio
                       data bytes encoded as specified in RecognitionConfig.
