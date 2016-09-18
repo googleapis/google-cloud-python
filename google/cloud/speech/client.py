@@ -13,7 +13,9 @@
 # limitations under the License.
 
 """Basic client for Google Cloud Speech API."""
+from base64 import b64encode
 
+from google.cloud._helpers import _to_bytes
 from google.cloud import client as client_module
 from google.cloud.speech.connection import Connection
 
@@ -60,28 +62,19 @@ class Client(client_module.Client):
 
     _connection_class = Connection
 
-    def syncrecognize(self, content, uri, encoding, sample_rate,
-                      language_code=None, max_alternatives=None,
-                      profanity_filter=None,
-                      speech_context=None):
+    def sync_recognize(self, content, encoding, sample_rate,
+                       language_code=None, max_alternatives=None,
+                       profanity_filter=None,
+                       speech_context=None):
         """Synchronous Speech Recognition.
 
-        .. _syncrecognize: https://cloud.google.com/speech/reference/\
+        .. _sync_recognize: https://cloud.google.com/speech/reference/\
                              rest/v1beta1/speech/syncrecognize
 
-        See `syncrecognize`_.
+        See `sync_recognize`_.
 
-        :type content: str
-        :param content: The content string containing the audio
-                      data bytes encoded as specified in RecognitionConfig.
-                      This is a base64-encoded string
-
-        :type uri: str
-        :param uri: URI that points to a file that contains audio
-                      data bytes as specified in RecognitionConfig.
-                      Currently, only Google Cloud Storage URIs are
-                      supported, which must be specified in the following
-                      format: gs://bucket_name/object_name
+        :type content: bytes
+        :param content: Byte stream of audio.
 
         :type encoding: str
         :param encoding: encoding of audio data sent in all RecognitionAudio
@@ -125,36 +118,31 @@ class Client(client_module.Client):
                               words to the vocabulary of the recognizer.
 
         :rtype: list
-        :returns: A list of tuples. One tuple for each alternative. Each tuple
-                  contains a transcript text and a confidence value (between
-                  0.0 and 1.0)
+        :returns: A list of dictionaries. One dict for each alternative. Each
+                  dictionary typically contains two keys (though not
+                  all will be present in all cases)
+
+                  * ``transcript``: The detected text from the audio recording.
+                  * ``confidence``: The confidence in language detection, float
+                    between 0 and 1.
         """
 
-        if (content is None) and (uri is None):
-            message = 'content and uri cannot be both equal to None'
-            raise ValueError(message)
+        if content is None:
+            raise ValueError("content cannot be None")
+        if encoding is None:
+            raise ValueError('encoding cannot be None')
+        if sample_rate is None:
+            raise ValueError('sample_rate cannot be None')
 
-        if (content is not None) and (uri is not None):
-            message = 'content and uri cannot be both different from None'
-            raise ValueError(message)
+        audio = {'content': b64encode(_to_bytes(content))}
+        config = {'encoding': encoding, 'sampleRate': sample_rate}
 
-        if content is not None:
-            audio = {'content': content}
-        else:
-            audio = {'uri': uri}
-
-        required_params = [('encoding', encoding), ('sampleRate', sample_rate)]
-        for param_name, param in required_params:
-            if param is None:
-                message = '%r cannot be None' % (param_name)
-                raise ValueError(message)
-        config = dict(required_params)
-        for param_name, param in [
-                ('languageCode', language_code),
-                ('maxAlternatives', max_alternatives),
-                ('profanityFilter', profanity_filter)]:
-            if param is not None:
-                config[param_name] = param
+        if language_code is not None:
+            config['languageCode'] = language_code
+        if max_alternatives is not None:
+            config['maxAlternatives'] = max_alternatives
+        if profanity_filter is not None:
+            config['profanityFilter'] = profanity_filter
         if speech_context is not None:
             config["speechContext"] = {"phrases": speech_context}
 
@@ -162,6 +150,7 @@ class Client(client_module.Client):
             'audio': audio,
             'config': config
         }
+
         api_response = self.connection.api_request(
             method='POST', path='syncrecognize', data=data)
 

@@ -13,9 +13,17 @@
 # limitations under the License.
 
 import unittest
+import base64
+
+from google.cloud._helpers import _to_bytes
+
+_AUDIO_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
+_B64_AUDIO_CONTENT = base64.b64encode(_AUDIO_CONTENT)
 
 
 class TestClient(unittest.TestCase):
+    SAMPLE_RATE = 16000
+    HINTS = ["hi"]
 
     def _getTargetClass(self):
         from google.cloud.speech.client import Client
@@ -34,50 +42,98 @@ class TestClient(unittest.TestCase):
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
 
-    def test_syncrecognize(self):
+    def test_sync_recognize(self):
+        from google.cloud.speech.client import Encoding
+        from unit_tests.speech._fixtures import SYNC_RECOGNIZE_RESPONSE
+
+        RETURNED = SYNC_RECOGNIZE_RESPONSE
+        REQUEST = {
+            "config": {
+                "encoding": "FLAC",
+                "maxAlternatives": 2,
+                "sampleRate": 16000,
+                "speechContext": {
+                    "phrases": [
+                        "hi"
+                    ]
+                },
+                "languageCode": "EN",
+                "profanityFilter": True
+            },
+            "audio": {
+                "content": _B64_AUDIO_CONTENT
+            }
+        }
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+        client.connection = _Connection(RETURNED)
+
+        encoding = Encoding.FLAC
+
+        response = client.sync_recognize(_AUDIO_CONTENT,
+                                         encoding,
+                                         self.SAMPLE_RATE,
+                                         language_code="EN",
+                                         max_alternatives=2,
+                                         profanity_filter=True,
+                                         speech_context=self.HINTS)
+
+        self.assertEqual(REQUEST,
+                         client.connection._requested[0]['data'])
+        self.assertEqual(response[0]["transcript"], 'hello')
+
+    def test_sync_recognize_without_optional_parameters(self):
+        from google.cloud.speech.client import Encoding
+        from unit_tests.speech._fixtures import SYNC_RECOGNIZE_RESPONSE
+
+        RETURNED = SYNC_RECOGNIZE_RESPONSE
+        REQUEST = {
+            "config": {
+                "encoding": "FLAC",
+                "sampleRate": 16000
+            },
+            "audio": {
+                "content": _B64_AUDIO_CONTENT
+            }
+        }
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+        client.connection = _Connection(RETURNED)
+
+        encoding = Encoding.FLAC
+
+        response = client.sync_recognize(_AUDIO_CONTENT,
+                                         encoding,
+                                         self.SAMPLE_RATE)
+
+        self.assertEqual(REQUEST,
+                         client.connection._requested[0]['data'])
+        self.assertEqual(response[0]["transcript"], 'hello')
+
+    def test_sync_recognize_without_content(self):
         from google.cloud.speech.client import Encoding
 
-        creds = _Credentials(object())
-        http = _Http(headers={},
-                     content={
-                         "results": [
-                             {
-                                 "alternatives": [
-                                     {"transcript": "hello",
-                                      "confidence": 0.784919}
-                                     ]
-                             }
-                         ]
-                     })
-        client = self._makeOne(credentials=creds, http=http)
-
-        uri = 'gs://a-bucket/rec_sample.flac'
-        encoding = Encoding.FLAC
-        sample_rate = 16000
-        hints = ["test"]
-        speechrecognition_result = client.syncrecognize(None, uri, encoding,
-                                                        sample_rate,
-                                                        max_alternatives=2,
-                                                        speech_context=hints)
-        self.assertEqual(speechrecognition_result[0]["transcript"], 'hello')
-
-        b64_speech = "binarycontent"
-        speechrecognition_result = client.syncrecognize(b64_speech, None,
-                                                        encoding,
-                                                        sample_rate,
-                                                        max_alternatives=2)
-        self.assertEqual(speechrecognition_result[0]["transcript"], 'hello')
-
-    def test_syncrecognize_failure(self):
-        creds = _Credentials()
-        client = self._makeOne(credentials=creds)
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
 
         with self.assertRaises(ValueError):
-            client.syncrecognize("content", "uri", None, None)
+            client.sync_recognize(None, Encoding.FLAC, self.SAMPLE_RATE)
+
+    def test_sync_recognize_without_encoding(self):
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+
         with self.assertRaises(ValueError):
-            client.syncrecognize(None, None, None, None)
+            client.sync_recognize(_AUDIO_CONTENT, None, self.SAMPLE_RATE)
+
+    def test_sync_recognize_without_samplerate(self):
+        from google.cloud.speech.client import Encoding
+
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+
         with self.assertRaises(ValueError):
-            client.syncrecognize(None, "uri", None, None)
+            client.sync_recognize(_AUDIO_CONTENT, Encoding.FLAC, None)
 
 
 class _Credentials(object):
@@ -97,15 +153,13 @@ class _Credentials(object):
         return self
 
 
-class _Http(object):
+class _Connection(object):
 
-    _called_with = None
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
 
-    def __init__(self, headers, content):
-        from httplib2 import Response
-        self._response = Response(headers)
-        self._content = content
-
-    def request(self, **kw):
-        self._called_with = kw
-        return self._response, self._content
+    def api_request(self, **kw):
+        self._requested.append(kw)
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response

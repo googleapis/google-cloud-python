@@ -29,23 +29,16 @@ create an instance of :class:`~google.cloud.speech.client.Client`.
      >>> from google.cloud import speech
      >>> client = speech.Client()
 
-Methods
--------
 
-At this moment we only support one method of the Speech API:
+Synchronous Recognition
+-----------------------
 
-- `syncrecognize`_
-
-Synchronous Recognize
----------------------
-
-The :meth:`~google.cloud.speech.Client.syncrecognize` method
-does speech to text on a file and returns the text
-as a :class:`list` of tuples dicts (each containing a transcript an a confidence value).
+The :meth:`~google.cloud.speech.Client.sync_recognize` method converts speech data to text
+and returns alternative text transcriptons.
 
   .. code-block:: python
 
-     >>> alternatives = client.syncrecognize(None,"gs://my-bucket/recording.flac",
+     >>> alternatives = client.sync_recognize(None,"gs://my-bucket/recording.flac",
      ...                 "FLAC", 16000, max_alternatives=2):
      >>> for alternative in alternatives:
      ...     print('=' * 20)
@@ -58,4 +51,4 @@ as a :class:`list` of tuples dicts (each containing a transcript an a confidence
               transcript: Hello, this is one test
               confidence: 0
 
-.. _syncrecognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize
+.. _sync_recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize
