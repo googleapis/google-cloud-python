@@ -70,7 +70,7 @@ class Client(client_module.Client):
                              rest/v1beta1/speech/syncrecognize
 
         See `syncrecognize`_.
-        
+
         :type content: str
         :param content: The content string containing the audio
                       data bytes encoded as specified in RecognitionConfig.

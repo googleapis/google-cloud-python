@@ -13,8 +13,6 @@
 # limitations under the License.
 
 import unittest
-import base64
-import httplib2
 
 
 class TestClient(unittest.TestCase):
@@ -39,9 +37,21 @@ class TestClient(unittest.TestCase):
     def test_syncrecognize(self):
         from google.cloud.speech.client import Encoding
 
-        client = self._makeOne()
+        creds = _Credentials(object())
+        http = _Http(headers={},
+                     content={
+                         "results": [
+                             {
+                                 "alternatives": [
+                                     {"transcript": "hello",
+                                      "confidence": 0.784919}
+                                     ]
+                             }
+                         ]
+                     })
+        client = self._makeOne(credentials=creds, http=http)
 
-        uri = 'gs://datatonic-sandbox-shared/rec_sample.flac'
+        uri = 'gs://a-bucket/rec_sample.flac'
         encoding = Encoding.FLAC
         sample_rate = 16000
         hints = ["test"]
@@ -51,11 +61,7 @@ class TestClient(unittest.TestCase):
                                                         speech_context=hints)
         self.assertEqual(speechrecognition_result[0]["transcript"], 'hello')
 
-        h = httplib2.Http()
-        _, content = h.request('https://storage.googleapis.com/' +
-                               'datatonic-sandbox-shared/rec_sample.flac',
-                               'GET')
-        b64_speech = base64.b64encode(content).decode('UTF-8')
+        b64_speech = "binarycontent"
         speechrecognition_result = client.syncrecognize(b64_speech, None,
                                                         encoding,
                                                         sample_rate,
@@ -76,7 +82,11 @@ class TestClient(unittest.TestCase):
 
 class _Credentials(object):
 
-    _scopes = None
+    _scopes = ('https://www.googleapis.com/auth/cloud-platform')
+
+    def __init__(self, authorized=None):
+        self._authorized = authorized
+        self._create_scoped_calls = 0
 
     @staticmethod
     def create_scoped_required():
@@ -85,3 +95,17 @@ class _Credentials(object):
     def create_scoped(self, scope):
         self._scopes = scope
         return self
+
+
+class _Http(object):
+
+    _called_with = None
+
+    def __init__(self, headers, content):
+        from httplib2 import Response
+        self._response = Response(headers)
+        self._content = content
+
+    def request(self, **kw):
+        self._called_with = kw
+        return self._response, self._content
