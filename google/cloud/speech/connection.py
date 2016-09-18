@@ -16,6 +16,7 @@
 
 from google.cloud import connection as base_connection
 
+
 class Connection(base_connection.JSONConnection):
     """A connection to Google Cloud Speech JSON REST API."""
 

@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import unittest
+import base64
+import httplib2
 
 
 class TestClient(unittest.TestCase):
@@ -30,29 +32,47 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         http = object()
         client = self._makeOne(credentials=creds, http=http)
-        self.assertIsInstance(client.connection, Connection)
+        self.assertTrue(isinstance(client.connection, Connection))
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
 
     def test_syncrecognize(self):
-        from google.cloud.speech.Client import Encoding
+        from google.cloud.speech.client import Encoding
 
-        creds = _Credentials()
-        client = self._makeOne(credentials=creds, http=object())
+        client = self._makeOne()
 
-        audio = 'gs://my-bucket/audio-sample.flac'
+        uri = 'gs://datatonic-sandbox-shared/rec_sample.flac'
         encoding = Encoding.FLAC
-        sampleRate = 16000
-        speechRecognitionResult = client.syncrecognize(audio, encoding, sampleRate)
+        sample_rate = 16000
+        hints = ["test"]
+        speechrecognition_result = client.syncrecognize(None, uri, encoding,
+                                                        sample_rate,
+                                                        max_alternatives=2,
+                                                        speech_context=hints)
+        self.assertEqual(speechrecognition_result[0]["transcript"], 'hello')
 
-        self.assertEqual(speechRecognitionResult[0][0], 'hello')
+        h = httplib2.Http()
+        _, content = h.request('https://storage.googleapis.com/' +
+                               'datatonic-sandbox-shared/rec_sample.flac',
+                               'GET')
+        b64_speech = base64.b64encode(content).decode('UTF-8')
+        speechrecognition_result = client.syncrecognize(b64_speech, None,
+                                                        encoding,
+                                                        sample_rate,
+                                                        max_alternatives=2)
+        self.assertEqual(speechrecognition_result[0]["transcript"], 'hello')
 
     def test_syncrecognize_failure(self):
         creds = _Credentials()
-        client = self._makeOne(credentials=creds, http=object())
+        client = self._makeOne(credentials=creds)
 
         with self.assertRaises(ValueError):
-            client.syncrecognize(None, None, None)
+            client.syncrecognize("content", "uri", None, None)
+        with self.assertRaises(ValueError):
+            client.syncrecognize(None, None, None, None)
+        with self.assertRaises(ValueError):
+            client.syncrecognize(None, "uri", None, None)
+
 
 class _Credentials(object):
 
