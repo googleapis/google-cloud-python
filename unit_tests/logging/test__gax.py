@@ -423,13 +423,13 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_logger_delete_error(self):
-        from grpc._channel import _Rendezvous
+        from google.cloud.exceptions import GrpcRendezvous
 
         LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
         gax_api = _GAXLoggingAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(_Rendezvous):
+        with self.assertRaises(GrpcRendezvous):
             api.logger_delete(self.PROJECT, self.LOG_NAME)
 
         log_name, options = gax_api._delete_log_called_with
@@ -504,12 +504,12 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, TOKEN)
 
     def test_sink_create_error(self):
-        from grpc._channel import _Rendezvous
+        from google.cloud.exceptions import GrpcRendezvous
 
         gax_api = _GAXSinksAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(_Rendezvous):
+        with self.assertRaises(GrpcRendezvous):
             api.sink_create(
                 self.PROJECT, self.SINK_NAME, self.FILTER,
                 self.DESTINATION_URI)
@@ -550,12 +550,12 @@ class Test_SinksAPI(_Base, unittest.TestCase):
             api.sink_get(self.PROJECT, self.SINK_NAME)
 
     def test_sink_get_miss(self):
-        from grpc._channel import _Rendezvous
+        from google.cloud.exceptions import GrpcRendezvous
 
         gax_api = _GAXSinksAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(_Rendezvous):
+        with self.assertRaises(GrpcRendezvous):
             api.sink_get(self.PROJECT, self.SINK_NAME)
 
     def test_sink_get_hit(self):
@@ -578,12 +578,12 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_sink_update_error(self):
-        from grpc._channel import _Rendezvous
+        from google.cloud.exceptions import GrpcRendezvous
 
         gax_api = _GAXSinksAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(_Rendezvous):
+        with self.assertRaises(GrpcRendezvous):
             api.sink_update(
                 self.PROJECT, self.SINK_NAME, self.FILTER,
                 self.DESTINATION_URI)
@@ -618,12 +618,12 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_sink_delete_error(self):
-        from grpc._channel import _Rendezvous
+        from google.cloud.exceptions import GrpcRendezvous
 
         gax_api = _GAXSinksAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(_Rendezvous):
+        with self.assertRaises(GrpcRendezvous):
             api.sink_delete(self.PROJECT, self.SINK_NAME)
 
     def test_sink_delete_miss(self):
@@ -712,12 +712,12 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, TOKEN)
 
     def test_metric_create_error(self):
-        from grpc._channel import _Rendezvous
+        from google.cloud.exceptions import GrpcRendezvous
 
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(_Rendezvous):
+        with self.assertRaises(GrpcRendezvous):
             api.metric_create(
                 self.PROJECT, self.METRIC_NAME, self.FILTER,
                 self.DESCRIPTION)
@@ -758,12 +758,12 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
             api.metric_get(self.PROJECT, self.METRIC_NAME)
 
     def test_metric_get_miss(self):
-        from grpc._channel import _Rendezvous
+        from google.cloud.exceptions import GrpcRendezvous
 
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(_Rendezvous):
+        with self.assertRaises(GrpcRendezvous):
             api.metric_get(self.PROJECT, self.METRIC_NAME)
 
     def test_metric_get_hit(self):
@@ -786,12 +786,12 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_metric_update_error(self):
-        from grpc._channel import _Rendezvous
+        from google.cloud.exceptions import GrpcRendezvous
 
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(_Rendezvous):
+        with self.assertRaises(GrpcRendezvous):
             api.metric_update(
                 self.PROJECT, self.METRIC_NAME, self.FILTER,
                 self.DESCRIPTION)
@@ -826,12 +826,12 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_metric_delete_error(self):
-        from grpc._channel import _Rendezvous
+        from google.cloud.exceptions import GrpcRendezvous
 
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(_Rendezvous):
+        with self.assertRaises(GrpcRendezvous):
             api.metric_delete(self.PROJECT, self.METRIC_NAME)
 
     def test_metric_delete_miss(self):

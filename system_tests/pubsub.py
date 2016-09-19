@@ -16,11 +16,11 @@ import os
 import unittest
 
 from grpc import StatusCode
-from grpc._channel import _Rendezvous
 import httplib2
 
 # pylint: disable=ungrouped-imports
 from google.cloud.environment_vars import PUBSUB_EMULATOR
+from google.cloud.exceptions import GrpcRendezvous
 from google.cloud.pubsub import client
 # pylint: enable=ungrouped-imports
 
@@ -35,7 +35,7 @@ def _unavailable(exc):
     return exc.code() == StatusCode.UNAVAILABLE
 
 
-retry_unavailable = RetryErrors(_Rendezvous, _unavailable)
+retry_unavailable = RetryErrors(GrpcRendezvous, _unavailable)
 
 
 class Config(object):

@@ -23,6 +23,17 @@ import six
 
 _HTTP_CODE_TO_EXCEPTION = {}  # populated at end of module
 
+try:
+    from grpc._channel import _Rendezvous
+except ImportError:  # pragma: NO COVER
+    _Rendezvous = None
+
+
+# pylint: disable=invalid-name
+GrpcRendezvous = _Rendezvous
+"""Exception class raised by gRPC stable."""
+# pylint: enable=invalid-name
+
 
 class GoogleCloudError(Exception):
     """Base error class for Google Cloud errors (abstract).
