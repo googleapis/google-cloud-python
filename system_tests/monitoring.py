@@ -195,12 +195,11 @@ class TestMonitoring(unittest.TestCase):
         )
 
         descriptor.create()
-        retry_404(descriptor._fetch)(client, METRIC_TYPE)
 
         metric = client.metric(METRIC_TYPE, {})
         resource = client.resource('global', {})
 
-        client.write_point(metric, resource, VALUE)
+        retry_500(client.write_point)(metric, resource, VALUE)
 
         def _query_timeseries_with_retries():
             def _has_timeseries(result):
