@@ -284,6 +284,37 @@ class Test_rows_from_json(unittest.TestCase):
         coerced = self._callFUT(rows, schema)
         self.assertEqual(coerced, expected)
 
+    def test_w_int64_float64(self):
+        # "Standard" SQL dialect uses 'INT64', 'FLOAT64'.
+        candidate = _Field('REQUIRED', 'candidate', 'STRING')
+        votes = _Field('REQUIRED', 'votes', 'INT64')
+        percentage = _Field('REQUIRED', 'percentage', 'FLOAT64')
+        schema = [candidate, votes, percentage]
+        rows = [
+            {'f': [
+                {'v': 'Phred Phlyntstone'},
+                {'v': 8},
+                {'v': 0.25},
+            ]},
+            {'f': [
+                {'v': 'Bharney Rhubble'},
+                {'v': 4},
+                {'v': 0.125},
+            ]},
+            {'f': [
+                {'v': 'Wylma Phlyntstone'},
+                {'v': 20},
+                {'v': 0.625},
+            ]},
+        ]
+        expected = [
+            ('Phred Phlyntstone', 8, 0.25),
+            ('Bharney Rhubble', 4, 0.125),
+            ('Wylma Phlyntstone', 20, 0.625),
+        ]
+        coerced = self._callFUT(rows, schema)
+        self.assertEqual(coerced, expected)
+
 
 class Test_ConfigurationProperty(unittest.TestCase):
 
