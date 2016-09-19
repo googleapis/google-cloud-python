@@ -90,6 +90,23 @@ class TimeSeries(collections.namedtuple(
         points = list(points) if points else []
         return self._replace(points=points)
 
+    def _to_dict(self):
+        """Build a dictionary ready to be serialized to the JSON wire format.
+
+        Since this method is used when writing to the API, it excludes
+        output-only fields.
+
+        :rtype: dict
+        :returns: The dictionary representation of the time series object.
+        """
+        info = {
+            'metric': self.metric._to_dict(),
+            'resource': self.resource._to_dict(),
+            'points': [point._to_dict() for point in self.points],
+        }
+
+        return info
+
     @classmethod
     def _from_dict(cls, info):
         """Construct a time series from the parsed JSON representation.
@@ -124,6 +141,38 @@ class TimeSeries(collections.namedtuple(
         )
 
 
+def _make_typed_value(value):
+    """Create a dict representing a TypedValue API object.
+
+    Typed values are objects with the value itself as the value, keyed by the
+    type of the value. They are used when writing points to time series. This
+    method returns the dict representation for the TypedValue.
+
+    This method uses the Python type of the object to infer the correct
+    type to send to the API. For example, a Python float will be sent to the
+    API with "doubleValue" as its key.
+
+    See: https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TypedValue
+
+    :type value: bool, int, float, str, or dict
+    :param value: value to infer the typed value of.
+
+    :rtype: dict
+    :returns: A dict
+    """
+    typed_value_map = {
+        bool: "boolValue",
+        int: "int64Value",
+        float: "doubleValue",
+        str: "stringValue",
+        dict: "distributionValue",
+    }
+    type_ = typed_value_map[type(value)]
+    if type_ == "int64Value":
+        value = str(value)
+    return {type_: value}
+
+
 class Point(collections.namedtuple('Point', 'end_time start_time value')):
     """A single point in a time series.
 
@@ -156,3 +205,24 @@ class Point(collections.namedtuple('Point', 'end_time start_time value')):
             value = int(value)  # Convert from string.
 
         return cls(end_time, start_time, value)
+
+    def _to_dict(self):
+        """Build a dictionary ready to be serialized to the JSON wire format.
+
+        This method serializes a point in JSON format to be written
+        to the API.
+
+        :rtype: dict
+        :returns: The dictionary representation of the point object.
+        """
+        info = {
+            'interval': {
+                'endTime': self.end_time
+            },
+            'value': _make_typed_value(self.value)
+        }
+
+        if self.start_time is not None:
+            info['interval']['startTime'] = self.start_time
+
+        return info
