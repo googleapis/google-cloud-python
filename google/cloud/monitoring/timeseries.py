@@ -161,14 +161,14 @@ def _make_typed_value(value):
     :returns: A dict
     """
     typed_value_map = {
-        bool: "boolValue",
-        int: "int64Value",
-        float: "doubleValue",
-        str: "stringValue",
-        dict: "distributionValue",
+        bool: 'boolValue',
+        int: 'int64Value',
+        float: 'doubleValue',
+        str: 'stringValue',
+        dict: 'distributionValue',
     }
     type_ = typed_value_map[type(value)]
-    if type_ == "int64Value":
+    if type_ == 'int64Value':
         value = str(value)
     return {type_: value}
 
@@ -217,9 +217,9 @@ class Point(collections.namedtuple('Point', 'end_time start_time value')):
         """
         info = {
             'interval': {
-                'endTime': self.end_time
+                'endTime': self.end_time,
             },
-            'value': _make_typed_value(self.value)
+            'value': _make_typed_value(self.value),
         }
 
         if self.start_time is not None:
