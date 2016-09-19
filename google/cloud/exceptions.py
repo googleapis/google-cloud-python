@@ -21,6 +21,8 @@ import copy
 import json
 import six
 
+from google.cloud._helpers import _to_bytes
+
 _HTTP_CODE_TO_EXCEPTION = {}  # populated at end of module
 
 
@@ -41,7 +43,10 @@ class GoogleCloudError(Exception):
         self._errors = errors
 
     def __str__(self):
-        return '%d %s' % (self.code, self.message)
+        result = u'%d %s' % (self.code, self.message)
+        if six.PY2:
+            result = _to_bytes(result, 'utf-8')
+        return result
 
     @property
     def errors(self):
