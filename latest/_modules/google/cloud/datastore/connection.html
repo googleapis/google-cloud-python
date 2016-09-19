@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.connection &mdash; google-cloud 5f1cda9 documentation</title>
+  <title>google.cloud.datastore.connection &mdash; google-cloud 6fb2d73 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 5f1cda9 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6fb2d73 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -282,18 +282,17 @@
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">GCD_HOST</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">Conflict</span>
+<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">GrpcRendezvous</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">make_exception</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore._generated</span> <span class="k">import</span> <span class="n">datastore_pb2</span> <span class="k">as</span> <span class="n">_datastore_pb2</span>
 <span class="c1"># pylint: disable=ungrouped-imports</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">grpc</span> <span class="k">import</span> <span class="n">StatusCode</span>
-    <span class="kn">from</span> <span class="nn">grpc._channel</span> <span class="k">import</span> <span class="n">_Rendezvous</span>
     <span class="kn">from</span> <span class="nn">google.cloud.datastore._generated</span> <span class="k">import</span> <span class="n">datastore_grpc_pb2</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
     <span class="n">_HAVE_GRPC</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">datastore_grpc_pb2</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">StatusCode</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">_Rendezvous</span> <span class="o">=</span> <span class="ne">Exception</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">_HAVE_GRPC</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="c1"># pylint: enable=ungrouped-imports</span>
@@ -571,7 +570,7 @@
         <span class="n">request_pb</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">Commit</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">_Rendezvous</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">except</span> <span class="n">GrpcRendezvous</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">exc</span><span class="o">.</span><span class="n">code</span><span class="p">()</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">ABORTED</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">Conflict</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">details</span><span class="p">())</span>
             <span class="k">raise</span>
@@ -962,7 +961,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5f1cda9',
+            VERSION:'6fb2d73',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

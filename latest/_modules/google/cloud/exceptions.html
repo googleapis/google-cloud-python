@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.exceptions &mdash; google-cloud 5f1cda9 documentation</title>
+  <title>google.cloud.exceptions &mdash; google-cloud 6fb2d73 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 5f1cda9 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 6fb2d73 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -281,6 +281,17 @@
 
 <span class="n">_HTTP_CODE_TO_EXCEPTION</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># populated at end of module</span>
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">grpc._channel</span> <span class="k">import</span> <span class="n">_Rendezvous</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
+    <span class="n">_Rendezvous</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">GrpcRendezvous</span> <span class="o">=</span> <span class="n">_Rendezvous</span>
+<span class="sd">&quot;&quot;&quot;Exception class raised by gRPC stable.&quot;&quot;&quot;</span>
+<span class="c1"># pylint: enable=invalid-name</span>
+
 
 <div class="viewcode-block" id="GoogleCloudError"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.exceptions.GoogleCloudError">[docs]</a><span class="k">class</span> <span class="nc">GoogleCloudError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base error class for Google Cloud errors (abstract).</span>
@@ -517,7 +528,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'5f1cda9',
+            VERSION:'6fb2d73',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
