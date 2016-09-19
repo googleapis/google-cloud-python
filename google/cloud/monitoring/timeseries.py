@@ -142,7 +142,7 @@ class TimeSeries(collections.namedtuple(
 
 
 def _make_typed_value(value):
-    """Creates a dict representing a TypedValue API object from a value.
+    """Create a dict representing a TypedValue API object.
 
     Typed values are objects with the value itself as the value, keyed by the
     type of the value. They are used when writing points to time series. This
@@ -170,9 +170,7 @@ def _make_typed_value(value):
     type_ = typed_value_map[type(value)]
     if type_ == "int64Value":
         value = str(value)
-    return {
-        type_: value
-    }
+    return { type_: value }
 
 
 class Point(collections.namedtuple('Point', 'end_time start_time value')):

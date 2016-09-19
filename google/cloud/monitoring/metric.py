@@ -356,8 +356,7 @@ class Metric(collections.namedtuple('Metric', 'type labels')):
         :returns: A dict representation of the object that can be written to
                   the API.
         """
-        info = {
+        return {
             'type': self.type,
             'labels': self.labels,
         }
-        return info
