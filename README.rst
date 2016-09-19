@@ -23,7 +23,7 @@ This client supports the following Google Cloud Platform services:
 -  `Google Stackdriver Logging`_
 -  `Google Stackdriver Monitoring`_
 
-.. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-datastore
+.. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
 .. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-storage
 .. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-pubsub
 .. _Google BigQuery: https://github.com/GoogleCloudPlatform/google-cloud-python#google-bigquery
@@ -63,43 +63,6 @@ You may also find the `authentication document`_ shared by all the
 
 .. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
-
-Google Cloud Datastore
-----------------------
-
-Google `Cloud Datastore`_ (`Datastore API docs`_) is a fully managed, schemaless
-database for storing non-relational data. Cloud Datastore automatically scales
-with your users and supports ACID transactions, high availability of reads and
-writes, strong consistency for reads and ancestor queries, and eventual
-consistency for all other queries.
-
-.. _Cloud Datastore: https://cloud.google.com/datastore/docs
-.. _Datastore API docs: https://cloud.google.com/datastore/docs/
-
-See the ``google-cloud-python`` API `datastore documentation`_ to learn how to
-interact with the Cloud Datastore using this Client Library.
-
-.. _datastore documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/datastore-client.html
-
-See the `official Google Cloud Datastore documentation`_ for more details on how
-to activate Cloud Datastore for your project.
-
-.. _official Google Cloud Datastore documentation: https://cloud.google.com/datastore/docs/activate
-
-.. code:: python
-
-    from google.cloud import datastore
-    # Create, populate and persist an entity
-    entity = datastore.Entity(key=datastore.Key('EntityKind'))
-    entity.update({
-        'foo': u'bar',
-        'baz': 1337,
-        'qux': False,
-    })
-    # Then query for entities
-    query = datastore.Query(kind='EntityKind')
-    for result in query.fetch():
-        print result
 
 Google Cloud Storage
 --------------------
