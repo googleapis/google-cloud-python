@@ -123,11 +123,12 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_topic_create_error(self):
-        from google.gax.errors import GaxError
+        from google.cloud.exceptions import GrpcRendezvous
+
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GrpcRendezvous):
             api.topic_create(self.TOPIC_PATH)
 
         topic_path, options = gax_api._create_topic_called_with
@@ -159,11 +160,12 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_topic_get_error(self):
-        from google.gax.errors import GaxError
+        from google.cloud.exceptions import GrpcRendezvous
+
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GrpcRendezvous):
             api.topic_get(self.TOPIC_PATH)
 
         topic_path, options = gax_api._get_topic_called_with
@@ -193,11 +195,12 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_topic_delete_error(self):
-        from google.gax.errors import GaxError
+        from google.cloud.exceptions import GrpcRendezvous
+
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GrpcRendezvous):
             api.topic_delete(self.TOPIC_PATH)
 
         topic_path, options = gax_api._delete_topic_called_with
@@ -245,14 +248,15 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_publish_error(self):
         import base64
-        from google.gax.errors import GaxError
+        from google.cloud.exceptions import GrpcRendezvous
+
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MESSAGE = {'data': B64, 'attributes': {}}
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GrpcRendezvous):
             api.topic_publish(self.TOPIC_PATH, [MESSAGE])
 
         topic_path, message_pbs, options = gax_api._publish_called_with
@@ -329,11 +333,12 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_list_subscriptions_error(self):
         from google.gax import INITIAL_PAGE
-        from google.gax.errors import GaxError
+        from google.cloud.exceptions import GrpcRendezvous
+
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GrpcRendezvous):
             api.topic_list_subscriptions(self.TOPIC_PATH)
 
         topic_path, page_size, options = (
@@ -450,11 +455,12 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_create_error(self):
-        from google.gax.errors import GaxError
+        from google.cloud.exceptions import GrpcRendezvous
+
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GrpcRendezvous):
             api.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
 
         name, topic, push_config, ack_deadline, options = (
@@ -499,11 +505,12 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_get_error(self):
-        from google.gax.errors import GaxError
+        from google.cloud.exceptions import GrpcRendezvous
+
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GrpcRendezvous):
             api.subscription_get(self.SUB_PATH)
 
         sub_path, options = gax_api._get_subscription_called_with
@@ -533,11 +540,12 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_delete_error(self):
-        from google.gax.errors import GaxError
+        from google.cloud.exceptions import GrpcRendezvous
+
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GrpcRendezvous):
             api.subscription_delete(self.TOPIC_PATH)
 
         sub_path, options = gax_api._delete_subscription_called_with
@@ -570,11 +578,12 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_modify_push_config_error(self):
-        from google.gax.errors import GaxError
+        from google.cloud.exceptions import GrpcRendezvous
+
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GrpcRendezvous):
             api.subscription_modify_push_config(
                 self.SUB_PATH, self.PUSH_ENDPOINT)
 
@@ -636,11 +645,12 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_pull_defaults_error(self):
-        from google.gax.errors import GaxError
+        from google.cloud.exceptions import GrpcRendezvous
+
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GrpcRendezvous):
             api.subscription_pull(self.SUB_PATH)
 
         sub_path, max_messages, return_immediately, options = (
@@ -679,13 +689,14 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_acknowledge_error(self):
-        from google.gax.errors import GaxError
+        from google.cloud.exceptions import GrpcRendezvous
+
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GrpcRendezvous):
             api.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
 
         sub_path, ack_ids, options = gax_api._acknowledge_called_with
@@ -730,14 +741,15 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_modify_ack_deadline_error(self):
-        from google.gax.errors import GaxError
+        from google.cloud.exceptions import GrpcRendezvous
+
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         NEW_DEADLINE = 90
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GrpcRendezvous):
             api.subscription_modify_ack_deadline(
                 self.SUB_PATH, [ACK_ID1, ACK_ID2], NEW_DEADLINE)
 
@@ -787,8 +799,8 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
             channels.append(channel)
             return mock_result
 
-        def mock_insecure_channel(host, port):
-            insecure_args.append((host, port))
+        def mock_insecure_channel(host):
+            insecure_args.append(host)
             return mock_channel
 
         host = 'CURR_HOST:1234'
@@ -799,7 +811,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [mock_channel])
-        self.assertEqual(insecure_args, [(host, None)])
+        self.assertEqual(insecure_args, [host])
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
@@ -840,8 +852,8 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
             channels.append(channel)
             return mock_result
 
-        def mock_insecure_channel(host, port):
-            insecure_args.append((host, port))
+        def mock_insecure_channel(host):
+            insecure_args.append(host)
             return mock_channel
 
         host = 'CURR_HOST:1234'
@@ -852,7 +864,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [mock_channel])
-        self.assertEqual(insecure_args, [(host, None)])
+        self.assertEqual(insecure_args, [host])
 
 
 class _GAXPublisherAPI(_GAXBaseAPI):
@@ -864,51 +876,46 @@ class _GAXPublisherAPI(_GAXBaseAPI):
         return self._list_topics_response
 
     def create_topic(self, name, options=None):
-        from google.gax.errors import GaxError
         self._create_topic_called_with = name, options
         if self._random_gax_error:
-            raise GaxError('error')
+            raise self._make_grpc_error()
         if self._create_topic_conflict:
-            raise GaxError('conflict', self._make_grpc_failed_precondition())
+            raise self._make_grpc_failed_precondition()
         return self._create_topic_response
 
     def get_topic(self, name, options=None):
-        from google.gax.errors import GaxError
         self._get_topic_called_with = name, options
         if self._random_gax_error:
-            raise GaxError('error')
+            raise self._make_grpc_error()
         try:
             return self._get_topic_response
         except AttributeError:
-            raise GaxError('miss', self._make_grpc_not_found())
+            raise self._make_grpc_not_found()
 
     def delete_topic(self, name, options=None):
-        from google.gax.errors import GaxError
         self._delete_topic_called_with = name, options
         if self._random_gax_error:
-            raise GaxError('error')
+            raise self._make_grpc_error()
         if not self._delete_topic_ok:
-            raise GaxError('miss', self._make_grpc_not_found())
+            raise self._make_grpc_not_found()
 
     def publish(self, topic, messages, options=None):
-        from google.gax.errors import GaxError
         self._publish_called_with = topic, messages, options
         if self._random_gax_error:
-            raise GaxError('error')
+            raise self._make_grpc_error()
         try:
             return self._publish_response
         except AttributeError:
-            raise GaxError('miss', self._make_grpc_not_found())
+            raise self._make_grpc_not_found()
 
     def list_topic_subscriptions(self, topic, page_size, options=None):
-        from google.gax.errors import GaxError
         self._list_topic_subscriptions_called_with = topic, page_size, options
         if self._random_gax_error:
-            raise GaxError('error')
+            raise self._make_grpc_error()
         try:
             return self._list_topic_subscriptions_response
         except AttributeError:
-            raise GaxError('miss', self._make_grpc_not_found())
+            raise self._make_grpc_not_found()
 
 
 class _GAXSubscriberAPI(_GAXBaseAPI):
@@ -925,68 +932,61 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
     def create_subscription(self, name, topic,
                             push_config, ack_deadline_seconds,
                             options=None):
-        from google.gax.errors import GaxError
         self._create_subscription_called_with = (
             name, topic, push_config, ack_deadline_seconds, options)
         if self._random_gax_error:
-            raise GaxError('error')
+            raise self._make_grpc_error()
         if self._create_subscription_conflict:
-            raise GaxError('conflict', self._make_grpc_failed_precondition())
+            raise self._make_grpc_failed_precondition()
         return self._create_subscription_response
 
     def get_subscription(self, name, options=None):
-        from google.gax.errors import GaxError
         self._get_subscription_called_with = name, options
         if self._random_gax_error:
-            raise GaxError('error')
+            raise self._make_grpc_error()
         try:
             return self._get_subscription_response
         except AttributeError:
-            raise GaxError('miss', self._make_grpc_not_found())
+            raise self._make_grpc_not_found()
 
     def delete_subscription(self, name, options=None):
-        from google.gax.errors import GaxError
         self._delete_subscription_called_with = name, options
         if self._random_gax_error:
-            raise GaxError('error')
+            raise self._make_grpc_error()
         if not self._delete_subscription_ok:
-            raise GaxError('miss', self._make_grpc_not_found())
+            raise self._make_grpc_not_found()
 
     def modify_push_config(self, name, push_config, options=None):
-        from google.gax.errors import GaxError
         self._modify_push_config_called_with = name, push_config, options
         if self._random_gax_error:
-            raise GaxError('error')
+            raise self._make_grpc_error()
         if not self._modify_push_config_ok:
-            raise GaxError('miss', self._make_grpc_not_found())
+            raise self._make_grpc_not_found()
 
     def pull(self, name, max_messages, return_immediately, options=None):
-        from google.gax.errors import GaxError
         self._pull_called_with = (
             name, max_messages, return_immediately, options)
         if self._random_gax_error:
-            raise GaxError('error')
+            raise self._make_grpc_error()
         try:
             return self._pull_response
         except AttributeError:
-            raise GaxError('miss', self._make_grpc_not_found())
+            raise self._make_grpc_not_found()
 
     def acknowledge(self, name, ack_ids, options=None):
-        from google.gax.errors import GaxError
         self._acknowledge_called_with = name, ack_ids, options
         if self._random_gax_error:
-            raise GaxError('error')
+            raise self._make_grpc_error()
         if not self._acknowledge_ok:
-            raise GaxError('miss', self._make_grpc_not_found())
+            raise self._make_grpc_not_found()
 
     def modify_ack_deadline(self, name, ack_ids, deadline, options=None):
-        from google.gax.errors import GaxError
         self._modify_ack_deadline_called_with = (
             name, ack_ids, deadline, options)
         if self._random_gax_error:
-            raise GaxError('error')
+            raise self._make_grpc_error()
         if not self._modify_ack_deadline_ok:
-            raise GaxError('miss', self._make_grpc_not_found())
+            raise self._make_grpc_not_found()
 
 
 class _TopicPB(object):

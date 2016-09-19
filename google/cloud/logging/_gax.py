@@ -18,7 +18,6 @@ import json
 
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
-from google.gax.errors import GaxError
 from google.logging.type.log_severity_pb2 import LogSeverity
 from google.logging.v2.logging_config_pb2 import LogSink
 from google.logging.v2.logging_metrics_pb2 import LogMetric
@@ -29,8 +28,8 @@ from grpc import StatusCode
 # pylint: disable=ungrouped-imports
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_rfc3339
-from google.cloud._helpers import exc_to_code
 from google.cloud.exceptions import Conflict
+from google.cloud.exceptions import GrpcRendezvous
 from google.cloud.exceptions import NotFound
 # pylint: enable=ungrouped-imports
 
@@ -123,8 +122,8 @@ class _LoggingAPI(object):
         path = 'projects/%s/logs/%s' % (project, logger_name)
         try:
             self._gax_api.delete_log(path, options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except GrpcRendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
 
@@ -195,8 +194,8 @@ class _SinksAPI(object):
                           destination=destination)
         try:
             self._gax_api.create_sink(parent, sink_pb, options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+        except GrpcRendezvous as exc:
+            if exc.code() == StatusCode.FAILED_PRECONDITION:
                 path = 'projects/%s/sinks/%s' % (project, sink_name)
                 raise Conflict(path)
             raise
@@ -218,8 +217,8 @@ class _SinksAPI(object):
         path = 'projects/%s/sinks/%s' % (project, sink_name)
         try:
             sink_pb = self._gax_api.get_sink(path, options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except GrpcRendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
         return _log_sink_pb_to_mapping(sink_pb)
@@ -250,8 +249,8 @@ class _SinksAPI(object):
         sink_pb = LogSink(name=path, filter=filter_, destination=destination)
         try:
             self._gax_api.update_sink(path, sink_pb, options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except GrpcRendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
         return _log_sink_pb_to_mapping(sink_pb)
@@ -269,8 +268,8 @@ class _SinksAPI(object):
         path = 'projects/%s/sinks/%s' % (project, sink_name)
         try:
             self._gax_api.delete_sink(path, options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except GrpcRendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
 
@@ -340,8 +339,8 @@ class _MetricsAPI(object):
                               description=description)
         try:
             self._gax_api.create_log_metric(parent, metric_pb, options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+        except GrpcRendezvous as exc:
+            if exc.code() == StatusCode.FAILED_PRECONDITION:
                 path = 'projects/%s/metrics/%s' % (project, metric_name)
                 raise Conflict(path)
             raise
@@ -363,8 +362,8 @@ class _MetricsAPI(object):
         path = 'projects/%s/metrics/%s' % (project, metric_name)
         try:
             metric_pb = self._gax_api.get_log_metric(path, options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except GrpcRendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
         return _log_metric_pb_to_mapping(metric_pb)
@@ -395,8 +394,8 @@ class _MetricsAPI(object):
                               description=description)
         try:
             self._gax_api.update_log_metric(path, metric_pb, options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except GrpcRendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
         return _log_metric_pb_to_mapping(metric_pb)
@@ -414,8 +413,8 @@ class _MetricsAPI(object):
         path = 'projects/%s/metrics/%s' % (project, metric_name)
         try:
             self._gax_api.delete_log_metric(path, options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+        except GrpcRendezvous as exc:
+            if exc.code() == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
 

@@ -31,13 +31,9 @@ try:
 except ImportError:
     app_identity = None
 try:
-    from google.gax.grpc import exc_to_code as beta_exc_to_code
     import grpc
-    from grpc._channel import _Rendezvous
 except ImportError:  # pragma: NO COVER
-    beta_exc_to_code = None
     grpc = None
-    _Rendezvous = Exception
 import six
 from six.moves import http_client
 from six.moves import configparser
@@ -683,21 +679,6 @@ def make_insecure_stub(stub_class, host, port=None):
         target = '%s:%d' % (host, port)
     channel = grpc.insecure_channel(target)
     return stub_class(channel)
-
-
-def exc_to_code(exc):
-    """Retrieves the status code from a gRPC exception.
-
-    :type exc: :class:`Exception`
-    :param exc: An exception from gRPC beta or stable.
-
-    :rtype: :class:`grpc.StatusCode`
-    :returns: The status code attached to the exception.
-    """
-    if isinstance(exc, _Rendezvous):
-        return exc.code()
-    else:
-        return beta_exc_to_code(exc)
 
 
 try:

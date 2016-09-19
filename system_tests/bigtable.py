@@ -89,10 +89,11 @@ def _retry_on_unavailable(exc):
 
 
 def setUpModule():
-    from grpc._channel import _Rendezvous
+    from google.cloud.exceptions import GrpcRendezvous
+
     Config.CLIENT = Client(admin=True)
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
-    retry = RetryErrors(_Rendezvous, error_predicate=_retry_on_unavailable)
+    retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
     instances, failed_locations = retry(Config.CLIENT.list_instances)()
 
     if len(failed_locations) != 0:
