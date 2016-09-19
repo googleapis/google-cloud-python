@@ -53,9 +53,9 @@ Annotate multiple images
 .. code-block:: python
 
     >>> import io
-    >>> from gcloud import vision
+    >>> from google.cloud import vision
     >>> client = vision.Client()
-     >>> with io.open('./image.png', 'rb') as image_file:
+    >>> with io.open('./image.png', 'rb') as image_file:
     ...     image_one = client.image(content=image_file.read())
     >>> image_two = client.image(source_uri='gs://my-storage-bucket/image.jpg')
     >>> with client.batch():

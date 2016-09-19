@@ -88,8 +88,8 @@ class Client(JSONClient):
                            projects.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.bigquery.client.Project`, plus a
-                  "next page token" string:  if the token is not None,
+        :returns: list of :class:`~google.cloud.bigquery.client.Project`,
+                  plus a "next page token" string:  if the token is not None,
                   indicates that more projects can be retrieved with another
                   call (pass that value as ``page_token``).
         """

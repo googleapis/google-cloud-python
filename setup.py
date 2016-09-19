@@ -34,7 +34,7 @@ if RTD_ENV_VAR not in os.environ:
 
 setup(
     name='google-cloud',
-    version='0.18.0',
+    version='0.19.0',
     description='API Client library for Google Cloud',
     author='Google Cloud Platform',
     author_email='jjg+google-cloud-python@google.com',
