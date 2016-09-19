@@ -75,7 +75,9 @@ def _string_from_json(value, _):
 
 _CELLDATA_FROM_JSON = {
     'INTEGER': _int_from_json,
+    'INT64': _int_from_json,
     'FLOAT': _float_from_json,
+    'FLOAT64': _float_from_json,
     'BOOLEAN': _bool_from_json,
     'TIMESTAMP': _datetime_from_json,
     'DATE': _date_from_json,
