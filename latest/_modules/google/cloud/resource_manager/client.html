@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.resource_manager.client &mdash; google-cloud 6fb2d73 documentation</title>
+  <title>google.cloud.resource_manager.client &mdash; google-cloud d555320 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 6fb2d73 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud d555320 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -312,7 +312,7 @@
 <span class="sd">        Use :meth:`Project.reload() \</span>
 <span class="sd">        &lt;google.cloud.resource_manager.project.Project.reload&gt;` to retrieve</span>
 <span class="sd">        project metadata after creating a</span>
-<span class="sd">        :class:`~gcloud.resource_manager.project.Project` instance.</span>
+<span class="sd">        :class:`~google.cloud.resource_manager.project.Project` instance.</span>
 
 <span class="sd">        .. note:</span>
 
@@ -327,9 +327,9 @@
 <span class="sd">        :type labels: dict</span>
 <span class="sd">        :param labels: A list of labels associated with the project.</span>
 
-<span class="sd">        :rtype: :class:`~gcloud.resource_manager.project.Project`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.resource_manager.project.Project`</span>
 <span class="sd">        :returns: A new instance of a</span>
-<span class="sd">                  :class:`~gcloud.resource_manager.project.Project`</span>
+<span class="sd">                  :class:`~google.cloud.resource_manager.project.Project`</span>
 <span class="sd">                  **without** any metadata loaded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Project</span><span class="p">(</span><span class="n">project_id</span><span class="o">=</span><span class="n">project_id</span><span class="p">,</span>
@@ -346,9 +346,9 @@
 <span class="sd">        :type project_id: str</span>
 <span class="sd">        :param project_id: The ID for this project.</span>
 
-<span class="sd">        :rtype: :class:`~gcloud.resource_manager.project.Project`</span>
-<span class="sd">        :returns: A :class:`~gcloud.resource_manager.project.Project` with</span>
-<span class="sd">                  metadata fetched from the API.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.resource_manager.project.Project`</span>
+<span class="sd">        :returns: A :class:`~google.cloud.resource_manager.project.Project`</span>
+<span class="sd">                  with metadata fetched from the API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_project</span><span class="p">(</span><span class="n">project_id</span><span class="p">)</span>
         <span class="n">project</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
@@ -403,7 +403,7 @@
 <span class="sd">        :returns: A project iterator. The iterator will make multiple API</span>
 <span class="sd">                  requests if you continue iterating and there are more</span>
 <span class="sd">                  pages of results. Each item returned will be a.</span>
-<span class="sd">                  :class:`~gcloud.resource_manager.project.Project`.</span>
+<span class="sd">                  :class:`~google.cloud.resource_manager.project.Project`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -420,10 +420,10 @@
     <span class="sd">&quot;&quot;&quot;An iterator over a list of Project resources.</span>
 
 <span class="sd">    You shouldn&#39;t have to use this directly, but instead should use the</span>
-<span class="sd">    helper methods on :class:`google.cloud.resource_manager.client.Client`</span>
+<span class="sd">    helper methods on :class:`~google.cloud.resource_manager.client.Client`</span>
 <span class="sd">    objects.</span>
 
-<span class="sd">    :type client: :class:`google.cloud.resource_manager.client.Client`</span>
+<span class="sd">    :type client: :class:`~google.cloud.resource_manager.client.Client`</span>
 <span class="sd">    :param client: The client to use for making connections.</span>
 
 <span class="sd">    :type extra_params: dict</span>
@@ -477,7 +477,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6fb2d73',
+            VERSION:'d555320',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
