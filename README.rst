@@ -24,7 +24,7 @@ This client supports the following Google Cloud Platform services:
 -  `Google Stackdriver Monitoring`_
 
 .. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
-.. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-storage
+.. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
 .. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-pubsub
 .. _Google BigQuery: https://github.com/GoogleCloudPlatform/google-cloud-python#google-bigquery
 .. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-resource-manager
@@ -63,39 +63,6 @@ You may also find the `authentication document`_ shared by all the
 
 .. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
-
-Google Cloud Storage
---------------------
-
-Google `Cloud Storage`_ (`Storage API docs`_) allows you to store data on Google
-infrastructure with very high reliability, performance and availability, and can
-be used to distribute large data objects to users via direct download.
-
-.. _Cloud Storage: https://cloud.google.com/storage/docs
-.. _Storage API docs: https://cloud.google.com/storage/docs/json_api/v1
-
-See the ``google-cloud-python`` API `storage documentation`_ to learn how to connect
-to Cloud Storage using this Client Library.
-
-.. _storage documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/storage-client.html
-
-You need to create a Google Cloud Storage bucket to use this client library.
-Follow along with the `official Google Cloud Storage documentation`_ to learn
-how to create a bucket.
-
-.. _official Google Cloud Storage documentation: https://cloud.google.com/storage/docs/cloud-console#_creatingbuckets
-
-.. code:: python
-
-    from google.cloud import storage
-    client = storage.Client()
-    bucket = client.get_bucket('bucket-id-here')
-    # Then do other things...
-    blob = bucket.get_blob('remote/path/to/file.txt')
-    print blob.download_as_string()
-    blob.upload_from_string('New contents!')
-    blob2 = bucket.blob('remote/path/storage.txt')
-    blob2.upload_from_filename(filename='/local/path.txt')
 
 Google Cloud Pub/Sub
 --------------------
