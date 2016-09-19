@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.metric &mdash; google-cloud d555320 documentation</title>
+  <title>google.cloud.monitoring.metric &mdash; google-cloud d3e28ce documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud d555320 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud d3e28ce documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -605,7 +605,19 @@
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span>
             <span class="nb">type</span><span class="o">=</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">],</span>
             <span class="n">labels</span><span class="o">=</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="p">{}),</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a dictionary ready to be serialized to the JSON format.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: A dict representation of the object that can be written to</span>
+<span class="sd">                  the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+            <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
+        <span class="p">}</span></div>
 </pre></div>
 
            </div>
@@ -639,7 +651,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'d555320',
+            VERSION:'d3e28ce',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

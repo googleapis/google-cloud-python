@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.timeseries &mdash; google-cloud d555320 documentation</title>
+  <title>google.cloud.monitoring.timeseries &mdash; google-cloud d3e28ce documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud d555320 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud d3e28ce documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -348,6 +348,23 @@
         <span class="n">points</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="k">if</span> <span class="n">points</span> <span class="k">else</span> <span class="p">[]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">)</span></div>
 
+    <span class="k">def</span> <span class="nf">_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a dictionary ready to be serialized to the JSON wire format.</span>
+
+<span class="sd">        Since this method is used when writing to the API, it excludes</span>
+<span class="sd">        output-only fields.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: The dictionary representation of the time series object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;metric&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">(),</span>
+            <span class="s1">&#39;resource&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">(),</span>
+            <span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">point</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">],</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">info</span>
+
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a time series from the parsed JSON representation.</span>
@@ -382,6 +399,38 @@
         <span class="p">)</span></div>
 
 
+<span class="k">def</span> <span class="nf">_make_typed_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a dict representing a TypedValue API object.</span>
+
+<span class="sd">    Typed values are objects with the value itself as the value, keyed by the</span>
+<span class="sd">    type of the value. They are used when writing points to time series. This</span>
+<span class="sd">    method returns the dict representation for the TypedValue.</span>
+
+<span class="sd">    This method uses the Python type of the object to infer the correct</span>
+<span class="sd">    type to send to the API. For example, a Python float will be sent to the</span>
+<span class="sd">    API with &quot;doubleValue&quot; as its key.</span>
+
+<span class="sd">    See: https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TypedValue</span>
+
+<span class="sd">    :type value: bool, int, float, str, or dict</span>
+<span class="sd">    :param value: value to infer the typed value of.</span>
+
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :returns: A dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">typed_value_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nb">bool</span><span class="p">:</span> <span class="s2">&quot;boolValue&quot;</span><span class="p">,</span>
+        <span class="nb">int</span><span class="p">:</span> <span class="s2">&quot;int64Value&quot;</span><span class="p">,</span>
+        <span class="nb">float</span><span class="p">:</span> <span class="s2">&quot;doubleValue&quot;</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">:</span> <span class="s2">&quot;stringValue&quot;</span><span class="p">,</span>
+        <span class="nb">dict</span><span class="p">:</span> <span class="s2">&quot;distributionValue&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">type_</span> <span class="o">=</span> <span class="n">typed_value_map</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">type_</span> <span class="o">==</span> <span class="s2">&quot;int64Value&quot;</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">type_</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
+
+
 <div class="viewcode-block" id="Point"><a class="viewcode-back" href="../../../../monitoring-timeseries.html#google.cloud.monitoring.timeseries.Point">[docs]</a><span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Point&#39;</span><span class="p">,</span> <span class="s1">&#39;end_time start_time value&#39;</span><span class="p">)):</span>
     <span class="sd">&quot;&quot;&quot;A single point in a time series.</span>
 
@@ -413,7 +462,28 @@
         <span class="k">if</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;int64Value&#39;</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>  <span class="c1"># Convert from string.</span>
 
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">end_time</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">end_time</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a dictionary ready to be serialized to the JSON wire format.</span>
+
+<span class="sd">        This method serializes a point in JSON format to be written</span>
+<span class="sd">        to the API.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: The dictionary representation of the point object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;interval&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;endTime&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">_make_typed_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;interval&#39;</span><span class="p">][</span><span class="s1">&#39;startTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+
+        <span class="k">return</span> <span class="n">info</span></div>
 </pre></div>
 
            </div>
@@ -447,7 +517,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'d555320',
+            VERSION:'d3e28ce',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

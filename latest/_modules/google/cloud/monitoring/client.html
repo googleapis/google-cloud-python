@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.client &mdash; google-cloud d555320 documentation</title>
+  <title>google.cloud.monitoring.client &mdash; google-cloud d3e28ce documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud d555320 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud d3e28ce documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -288,6 +288,7 @@
 
 <span class="kn">import</span> <span class="nn">datetime</span>
 
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">JSONClient</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring.connection</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.monitoring.group</span> <span class="k">import</span> <span class="n">Group</span>
@@ -570,7 +571,7 @@
 <span class="sd">        :type start_time: :class:`~datetime.datetime`</span>
 <span class="sd">        :param start_time:</span>
 <span class="sd">            The start time for the point to be included in the time series.</span>
-<span class="sd">            Assumed to be UTC if no time zone information is present</span>
+<span class="sd">            Assumed to be UTC if no time zone information is present.</span>
 <span class="sd">            Defaults to None. If the start time is unspecified,</span>
 <span class="sd">            the API interprets the start time to be the same as the end time.</span>
 
@@ -579,6 +580,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">end_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">end_time</span> <span class="o">=</span> <span class="n">_UTCNOW</span><span class="p">()</span>
+
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">end_time</span><span class="p">,</span> <span class="n">ignore_zone</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">start_time</span><span class="p">:</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">ignore_zone</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
         <span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">metric_kind</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">value_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="p">[</span><span class="n">point</span><span class="p">])</span></div>
@@ -752,7 +758,90 @@
 <span class="sd">        :rtype: list of :class:`~google.cloud.monitoring.group.Group`</span>
 <span class="sd">        :returns: A list of group instances.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Group</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">Group</span><span class="o">.</span><span class="n">_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.write_time_series"><a class="viewcode-back" href="../../../../monitoring-client.html#google.cloud.monitoring.client.Client.write_time_series">[docs]</a>    <span class="k">def</span> <span class="nf">write_time_series</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeseries_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write a list of time series objects to the API.</span>
+
+<span class="sd">        The recommended approach to creating time series objects is using</span>
+<span class="sd">        the :meth:`~google.cloud.monitoring.client.Client.time_series` factory</span>
+<span class="sd">        method.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            &gt;&gt;&gt; client.write_time_series([ts1, ts2])</span>
+
+<span class="sd">        If you only need to write a single time series object, consider using</span>
+<span class="sd">        the :meth:`~google.cloud.monitoring.client.Client.write_point` method</span>
+<span class="sd">        instead.</span>
+
+<span class="sd">        :type timeseries_list:</span>
+<span class="sd">            list of :class:`~google.cloud.monitoring.timeseries.TimeSeries`</span>
+<span class="sd">        :param timeseries_list:</span>
+<span class="sd">            A list of time series object to be written</span>
+<span class="sd">            to the API. Each time series must contain exactly one point.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">{project}</span><span class="s1">/timeSeries/&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="n">timeseries_dict</span> <span class="o">=</span> <span class="p">[</span><span class="n">timeseries</span><span class="o">.</span><span class="n">_to_dict</span><span class="p">()</span>
+                           <span class="k">for</span> <span class="n">timeseries</span> <span class="ow">in</span> <span class="n">timeseries_list</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                                    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;timeSeries&#39;</span><span class="p">:</span> <span class="n">timeseries_dict</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="Client.write_point"><a class="viewcode-back" href="../../../../monitoring-client.html#google.cloud.monitoring.client.Client.write_point">[docs]</a>    <span class="k">def</span> <span class="nf">write_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
+                    <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write a single point for a metric to the API.</span>
+
+<span class="sd">        This is a convenience method to write a single time series object to</span>
+<span class="sd">        the API. To write multiple time series objects to the API as a batch</span>
+<span class="sd">        operation, use the</span>
+<span class="sd">        :meth:`~google.cloud.monitoring.client.Client.time_series`</span>
+<span class="sd">        factory method to create time series objects and the</span>
+<span class="sd">        :meth:`~google.cloud.monitoring.client.Client.write_time_series`</span>
+<span class="sd">        method to write the objects.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            &gt;&gt;&gt; client.write_point(metric, resource, 3.14)</span>
+
+<span class="sd">        :type metric: :class:`~google.cloud.monitoring.metric.Metric`</span>
+<span class="sd">        :param metric: A :class:`~google.cloud.monitoring.metric.Metric`</span>
+<span class="sd">                       object.</span>
+
+<span class="sd">        :type resource: :class:`~google.cloud.monitoring.resource.Resource`</span>
+<span class="sd">        :param resource: A :class:`~google.cloud.monitoring.resource.Resource`</span>
+<span class="sd">                         object.</span>
+
+<span class="sd">        :type value: bool, int, string, or float</span>
+<span class="sd">        :param value:</span>
+<span class="sd">            The value of the data point to create for the</span>
+<span class="sd">            :class:`~google.cloud.monitoring.timeseries.TimeSeries`.</span>
+
+<span class="sd">            .. note::</span>
+
+<span class="sd">               The Python type of the value will determine the</span>
+<span class="sd">               :class:`~ValueType` sent to the API, which must match the value</span>
+<span class="sd">               type specified in the metric descriptor. For example, a Python</span>
+<span class="sd">               float will be sent to the API as a :data:`ValueType.DOUBLE`.</span>
+
+<span class="sd">        :type end_time: :class:`~datetime.datetime`</span>
+<span class="sd">        :param end_time:</span>
+<span class="sd">            The end time for the point to be included in the time series.</span>
+<span class="sd">            Assumed to be UTC if no time zone information is present.</span>
+<span class="sd">            Defaults to the current time, as obtained by calling</span>
+<span class="sd">            :meth:`datetime.datetime.utcnow`.</span>
+
+<span class="sd">        :type start_time: :class:`~datetime.datetime`</span>
+<span class="sd">        :param start_time:</span>
+<span class="sd">            The start time for the point to be included in the time series.</span>
+<span class="sd">            Assumed to be UTC if no time zone information is present.</span>
+<span class="sd">            Defaults to None. If the start time is unspecified,</span>
+<span class="sd">            the API interprets the start time to be the same as the end time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">timeseries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span>
+            <span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">start_time</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_time_series</span><span class="p">([</span><span class="n">timeseries</span><span class="p">])</span></div></div>
 </pre></div>
 
            </div>
@@ -786,7 +875,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'d555320',
+            VERSION:'d3e28ce',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

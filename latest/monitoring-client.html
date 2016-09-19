@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stackdriver Monitoring Client &mdash; google-cloud d555320 documentation</title>
+  <title>Stackdriver Monitoring Client &mdash; google-cloud d3e28ce documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud d555320 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud d3e28ce documentation" href="index.html"/>
         <link rel="next" title="Metric Descriptors" href="monitoring-metric.html"/>
         <link rel="prev" title="Using the API" href="monitoring-usage.html"/> 
 
@@ -725,7 +725,7 @@ Assumed to be UTC if no time zone information is present.
 Defaults to the current time, as obtained by calling
 <a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime.utcnow" title="(in Python v2.7)"><code class="xref py py-meth docutils literal"><span class="pre">datetime.datetime.utcnow()</span></code></a>.</li>
 <li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime</span></code></a>) &#8211; The start time for the point to be included in the time series.
-Assumed to be UTC if no time zone information is present
+Assumed to be UTC if no time zone information is present.
 Defaults to None. If the start time is unspecified,
 the API interprets the start time to be the same as the end time.</li>
 </ul>
@@ -736,6 +736,80 @@ the API interprets the start time to be the same as the end time.</li>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A time series object.</p>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.write_point">
+<code class="descname">write_point</code><span class="sig-paren">(</span><em>metric</em>, <em>resource</em>, <em>value</em>, <em>end_time=None</em>, <em>start_time=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/monitoring/client.html#Client.write_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.write_point" title="Permalink to this definition">#</a></dt>
+<dd><p>Write a single point for a metric to the API.</p>
+<p>This is a convenience method to write a single time series object to
+the API. To write multiple time series objects to the API as a batch
+operation, use the
+<a class="reference internal" href="#google.cloud.monitoring.client.Client.time_series" title="google.cloud.monitoring.client.Client.time_series"><code class="xref py py-meth docutils literal"><span class="pre">time_series()</span></code></a>
+factory method to create time series objects and the
+<a class="reference internal" href="#google.cloud.monitoring.client.Client.write_time_series" title="google.cloud.monitoring.client.Client.write_time_series"><code class="xref py py-meth docutils literal"><span class="pre">write_time_series()</span></code></a>
+method to write the objects.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>metric</strong> (<a class="reference internal" href="monitoring-metric.html#google.cloud.monitoring.metric.Metric" title="google.cloud.monitoring.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">Metric</span></code></a>) &#8211; A <a class="reference internal" href="monitoring-metric.html#google.cloud.monitoring.metric.Metric" title="google.cloud.monitoring.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">Metric</span></code></a>
+object.</li>
+<li><strong>resource</strong> (<a class="reference internal" href="monitoring-resource.html#google.cloud.monitoring.resource.Resource" title="google.cloud.monitoring.resource.Resource"><code class="xref py py-class docutils literal"><span class="pre">Resource</span></code></a>) &#8211; A <a class="reference internal" href="monitoring-resource.html#google.cloud.monitoring.resource.Resource" title="google.cloud.monitoring.resource.Resource"><code class="xref py py-class docutils literal"><span class="pre">Resource</span></code></a>
+object.</li>
+<li><strong>value</strong> (<em>bool, int, string, or float</em>) &#8211; <p>The value of the data point to create for the
+<a class="reference internal" href="monitoring-timeseries.html#google.cloud.monitoring.timeseries.TimeSeries" title="google.cloud.monitoring.timeseries.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">TimeSeries</span></code></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Python type of the value will determine the
+<code class="xref py py-class docutils literal"><span class="pre">ValueType</span></code> sent to the API, which must match the value
+type specified in the metric descriptor. For example, a Python
+float will be sent to the API as a <code class="xref py py-data docutils literal"><span class="pre">ValueType.DOUBLE</span></code>.</p>
+</div>
+</li>
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime</span></code></a>) &#8211; The end time for the point to be included in the time series.
+Assumed to be UTC if no time zone information is present.
+Defaults to the current time, as obtained by calling
+<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime.utcnow" title="(in Python v2.7)"><code class="xref py py-meth docutils literal"><span class="pre">datetime.datetime.utcnow()</span></code></a>.</li>
+<li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime</span></code></a>) &#8211; The start time for the point to be included in the time series.
+Assumed to be UTC if no time zone information is present.
+Defaults to None. If the start time is unspecified,
+the API interprets the start time to be the same as the end time.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.monitoring.client.Client.write_time_series">
+<code class="descname">write_time_series</code><span class="sig-paren">(</span><em>timeseries_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/monitoring/client.html#Client.write_time_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.monitoring.client.Client.write_time_series" title="Permalink to this definition">#</a></dt>
+<dd><p>Write a list of time series objects to the API.</p>
+<p>The recommended approach to creating time series objects is using
+the <a class="reference internal" href="#google.cloud.monitoring.client.Client.time_series" title="google.cloud.monitoring.client.Client.time_series"><code class="xref py py-meth docutils literal"><span class="pre">time_series()</span></code></a> factory
+method.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_time_series</span><span class="p">([</span><span class="n">ts1</span><span class="p">,</span> <span class="n">ts2</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>If you only need to write a single time series object, consider using
+the <a class="reference internal" href="#google.cloud.monitoring.client.Client.write_point" title="google.cloud.monitoring.client.Client.write_point"><code class="xref py py-meth docutils literal"><span class="pre">write_point()</span></code></a> method
+instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeseries_list</strong> (list of <a class="reference internal" href="monitoring-timeseries.html#google.cloud.monitoring.timeseries.TimeSeries" title="google.cloud.monitoring.timeseries.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">TimeSeries</span></code></a>) &#8211; A list of time series object to be written
+to the API. Each time series must contain exactly one point.</td>
 </tr>
 </tbody>
 </table>
@@ -836,7 +910,7 @@ connection.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'d555320',
+            VERSION:'d3e28ce',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
