@@ -1,4 +1,4 @@
-Google Cloud Python Client for Datastore
+Python Client for Google Cloud Datastore
 ========================================
 
     Python idiomatic client for `Google Cloud Datastore`_

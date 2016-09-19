@@ -1,5 +1,5 @@
-Google Cloud Python Client for Google Cloud Storage
-===================================================
+Python Client for Google Cloud Storage
+======================================
 
     Python idiomatic client for `Google Cloud Storage`_
 
