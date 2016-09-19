@@ -27,7 +27,7 @@ This client supports the following Google Cloud Platform services:
 .. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
 .. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/pubsub
 .. _Google BigQuery: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery
-.. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-resource-manager
+.. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/resource_manager
 .. _Google Stackdriver Logging: https://github.com/GoogleCloudPlatform/google-cloud-python#google-stackdriver-logging
 .. _Google Stackdriver Monitoring: https://github.com/GoogleCloudPlatform/google-cloud-python#google-stackdriver-monitoring
 
@@ -63,21 +63,6 @@ You may also find the `authentication document`_ shared by all the
 
 .. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
-
-Google Cloud Resource Manager
------------------------------
-
-The Cloud `Resource Manager`_ API (`Resource Manager API docs`_) provides
-methods that you can use to programmatically manage your projects in the
-Google Cloud Platform.
-
-.. _Resource Manager: https://cloud.google.com/resource-manager/
-.. _Resource Manager API docs: https://cloud.google.com/resource-manager/reference/rest/
-
-See the ``google-cloud-python`` API `Resource Manager documentation`_ to learn how to
-manage projects using this Client Library.
-
-.. _Resource Manager documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/resource-manager-api.html
 
 Google Stackdriver Logging
 --------------------------
