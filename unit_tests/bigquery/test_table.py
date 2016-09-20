@@ -1449,6 +1449,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table.upload_from_file(file_obj, 'CSV', size=1234)
 
+    def test_upload_from_file_binary_mode_no_failure(self):
+        self._upload_from_file_helper(input_file_mode='r+b')
+
     def test_upload_from_file_size_failure(self):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
@@ -1480,6 +1483,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             kw['client']._job = expected_job
         else:
             client._job = expected_job
+        input_file_mode = kw.pop('input_file_mode', 'rb')
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
@@ -1499,7 +1503,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 writer.writerow(('full_name', 'age', 'joined'))
                 writer.writerows(ROWS)
 
-            with open(temp.name, 'rb') as file_obj:
+            with open(temp.name, input_file_mode) as file_obj:
                 BODY = file_obj.read()
                 explicit_size = kw.pop('_explicit_size', False)
                 if explicit_size:
