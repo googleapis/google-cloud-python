@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Basic client for Google Cloud Speech API."""
+
 from base64 import b64encode
 
 from google.cloud._helpers import _to_bytes
@@ -21,7 +22,12 @@ from google.cloud.speech.connection import Connection
 
 
 class Encoding(object):
-    """Audio encoding types."""
+    """Audio encoding types.
+
+    See:
+    https://cloud.google.com/speech/reference/rest/v1beta1/\
+    RecognitionConfig#AudioEncoding
+    """
 
     LINEAR16 = 'LINEAR16'
     """LINEAR16 encoding type."""
@@ -43,7 +49,7 @@ class Client(client_module.Client):
     """Client to bundle configuration needed for API requests.
 
     :type project: str
-    :param project: the project which the client acts on behalf of. Will be
+    :param project: The project which the client acts on behalf of. Will be
                     passed when creating a dataset / job.  If not passed,
                     falls back to the default inferred from the environment.
 
@@ -62,19 +68,26 @@ class Client(client_module.Client):
 
     _connection_class = Connection
 
-    def sync_recognize(self, content, encoding, sample_rate,
+    def sync_recognize(self, content, source_uri, encoding, sample_rate,
                        language_code=None, max_alternatives=None,
                        profanity_filter=None,
                        speech_context=None):
         """Synchronous Speech Recognition.
 
         .. _sync_recognize: https://cloud.google.com/speech/reference/\
-                             rest/v1beta1/speech/syncrecognize
+                            rest/v1beta1/speech/syncrecognize
 
         See `sync_recognize`_.
 
         :type content: bytes
         :param content: Byte stream of audio.
+
+        :type source_uri: str
+        :param source_uri: URI that points to a file that contains audio
+                      data bytes as specified in RecognitionConfig.
+                      Currently, only Google Cloud Storage URIs are
+                      supported, which must be specified in the following
+                      format: gs://bucket_name/object_name
 
         :type encoding: str
         :param encoding: encoding of audio data sent in all RecognitionAudio
@@ -84,38 +97,38 @@ class Client(client_module.Client):
 
         :type sample_rate: int
         :param sample_rate: Sample rate in Hertz of the audio data sent in all
-                           RecognitionAudio messages. Valid values are: 8000-
-                           48000. 16000 is optimal. For best results, set the
-                           sampling rate of the audio source to 16000 Hz.
-                           If that's not possible, use the native sample rate
-                           of the audio source (instead of re-sampling).
+                            requests. Valid values are: 8000-48000.
+                            16000 is optimal. For best results, set the
+                            sampling rate of the audio source to 16000 Hz.
+                            If that's not possible, use the native sample rate
+                            of the audio source (instead of re-sampling).
 
         :type language_code: str
         :param language_code: (Optional) The language of the supplied audio as
-                             BCP-47 language tag. Example: "en-GB".
-                             If omitted, defaults to "en-US".
+                              BCP-47 language tag. Example: "en-GB".
+                              If omitted, defaults to "en-US".
 
         :type max_alternatives: int
         :param max_alternatives: (Optional) Maximum number of recognition
-                                hypotheses to be returned. The server may
-                                return fewer than maxAlternatives.
-                                Valid values are 0-30. A value of 0 or 1
-                                will return a maximum of 1. Defaults to 1
+                                 hypotheses to be returned. The server may
+                                 return fewer than maxAlternatives.
+                                 Valid values are 0-30. A value of 0 or 1
+                                 will return a maximum of 1. Defaults to 1
 
         :type profanity_filter: bool
         :param profanity_filter: If True, the server will attempt to filter
-                                out profanities, replacing all but the
-                                initialcharacter in each filtered word with
-                                asterisks, e.g. "f***". If False or omitted,
-                                profanities won't be filtered out.
+                                 out profanities, replacing all but the
+                                 initial character in each filtered word with
+                                 asterisks, e.g. "f***". If False or omitted,
+                                 profanities won't be filtered out.
 
         :type speech_context: list
         :param speech_context: A list of strings (max 50) containing words and
-                              phrases "hints" so that the speech recognition
-                              is more likely to recognize them. This can be
-                              used to improve the accuracy for specific words
-                              and phrases. This can also be used to add new
-                              words to the vocabulary of the recognizer.
+                               phrases "hints" so that the speech recognition
+                               is more likely to recognize them. This can be
+                               used to improve the accuracy for specific words
+                               and phrases. This can also be used to add new
+                               words to the vocabulary of the recognizer.
 
         :rtype: list
         :returns: A list of dictionaries. One dict for each alternative. Each
@@ -127,14 +140,23 @@ class Client(client_module.Client):
                     between 0 and 1.
         """
 
-        if content is None:
-            raise ValueError("content cannot be None")
+        if (content is None) and (source_uri is None):
+            raise ValueError('content and source_uri cannot be both equal to\
+                             None')
+
+        if (content is not None) and (source_uri is not None):
+            raise ValueError('content and source_uri cannot be both different from\
+                             None')
         if encoding is None:
             raise ValueError('encoding cannot be None')
         if sample_rate is None:
             raise ValueError('sample_rate cannot be None')
 
-        audio = {'content': b64encode(_to_bytes(content))}
+        if content is not None:
+            audio = {'content': b64encode(_to_bytes(content))}
+        else:
+            audio = {'uri': source_uri}
+
         config = {'encoding': encoding, 'sampleRate': sample_rate}
 
         if language_code is not None:
@@ -144,14 +166,17 @@ class Client(client_module.Client):
         if profanity_filter is not None:
             config['profanityFilter'] = profanity_filter
         if speech_context is not None:
-            config["speechContext"] = {"phrases": speech_context}
+            config['speechContext'] = {'phrases': speech_context}
 
         data = {
             'audio': audio,
-            'config': config
+            'config': config,
         }
 
         api_response = self.connection.api_request(
             method='POST', path='syncrecognize', data=data)
 
-        return api_response['results'][0]['alternatives']
+        if len(api_response['results']) == 1:
+            return api_response['results'][0]['alternatives']
+        else:
+            raise ValueError('result in api should have length 1')
