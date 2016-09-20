@@ -86,7 +86,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         batch = Batch(client)
         client._push_batch(batch)
-        self.assertIs(client.connection, not client._connection)
+        self.assertIsNot(client.connection, client._connection)
         self.assertIs(client.connection, batch)
         self.assertIs(client.current_batch, batch)
 

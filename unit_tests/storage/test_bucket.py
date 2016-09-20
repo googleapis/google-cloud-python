@@ -704,7 +704,7 @@ class Test_Bucket(unittest.TestCase):
         NAME = 'name'
         before = {'logging': {'logBucket': 'logs', 'logObjectPrefix': 'pfx'}}
         bucket = self._makeOne(name=NAME, properties=before)
-        self.assertIs(bucket.get_logging(), not None)
+        self.assertIsNotNone(bucket.get_logging())
         bucket.disable_logging()
         self.assertIsNone(bucket.get_logging())
 
