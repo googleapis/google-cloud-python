@@ -210,8 +210,8 @@ class TestPartialRowsData(unittest.TestCase):
     def test_constructor(self):
         response_iterator = object()
         partial_rows_data = self._makeOne(response_iterator)
-        self.assertTrue(partial_rows_data._response_iterator
-                        is response_iterator)
+        self.assertIs(partial_rows_data._response_iterator,
+                      response_iterator)
         self.assertEqual(partial_rows_data._rows, {})
 
     def test___eq__(self):

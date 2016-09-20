@@ -81,8 +81,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(client, ServiceAccountCredentials=mock_creds):
             client_obj = KLASS.from_service_account_json(MOCK_FILENAME)
 
-        self.assertTrue(client_obj.connection.credentials is
-                        mock_creds._result)
+        self.assertIs(client_obj.connection.credentials, mock_creds._result)
         self.assertEqual(mock_creds.json_called, [MOCK_FILENAME])
 
     def test_from_service_account_json_fail(self):
@@ -103,8 +102,7 @@ class TestClient(unittest.TestCase):
             client_obj = KLASS.from_service_account_p12(CLIENT_EMAIL,
                                                         MOCK_FILENAME)
 
-        self.assertTrue(client_obj.connection.credentials is
-                        mock_creds._result)
+        self.assertIs(client_obj.connection.credentials, mock_creds._result)
         self.assertEqual(mock_creds.p12_called,
                          [(CLIENT_EMAIL, MOCK_FILENAME)])
 
