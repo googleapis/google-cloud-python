@@ -37,8 +37,8 @@ class TestSubscription(unittest.TestCase):
         subscription = self._makeOne(self.SUB_NAME, topic)
         self.assertEqual(subscription.name, self.SUB_NAME)
         self.assertIs(subscription.topic, topic)
-        self.assertEqual(subscription.ack_deadline, None)
-        self.assertEqual(subscription.push_endpoint, None)
+        self.assertIsNone(subscription.ack_deadline)
+        self.assertIsNone(subscription.push_endpoint)
 
     def test_ctor_explicit(self):
         client = _Client(project=self.PROJECT)
@@ -262,8 +262,8 @@ class TestSubscription(unittest.TestCase):
 
         subscription.reload(client=client2)
 
-        self.assertEqual(subscription.ack_deadline, None)
-        self.assertEqual(subscription.push_endpoint, None)
+        self.assertIsNone(subscription.ack_deadline)
+        self.assertIsNone(subscription.push_endpoint)
         self.assertEqual(api._subscription_got, self.SUB_PATH)
 
     def test_delete_w_bound_client(self):
@@ -317,7 +317,7 @@ class TestSubscription(unittest.TestCase):
         subscription.modify_push_configuration(push_endpoint=None,
                                                client=client2)
 
-        self.assertEqual(subscription.push_endpoint, None)
+        self.assertIsNone(subscription.push_endpoint)
         self.assertEqual(api._subscription_modified_push_config,
                          (self.SUB_PATH, None))
 
@@ -507,7 +507,7 @@ class TestSubscription(unittest.TestCase):
         policy = subscription.get_iam_policy(client=client2)
 
         self.assertEqual(policy.etag, 'ACAB')
-        self.assertEqual(policy.version, None)
+        self.assertIsNone(policy.version)
         self.assertEqual(sorted(policy.owners), [])
         self.assertEqual(sorted(policy.editors), [])
         self.assertEqual(sorted(policy.viewers), [])
@@ -585,7 +585,7 @@ class TestSubscription(unittest.TestCase):
         new_policy = subscription.set_iam_policy(policy, client=client2)
 
         self.assertEqual(new_policy.etag, 'ACAB')
-        self.assertEqual(new_policy.version, None)
+        self.assertIsNone(new_policy.version)
         self.assertEqual(sorted(new_policy.owners), [])
         self.assertEqual(sorted(new_policy.editors), [])
         self.assertEqual(sorted(new_policy.viewers), [])

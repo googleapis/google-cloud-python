@@ -29,7 +29,7 @@ class Test__ProjectIterator(unittest.TestCase):
         iterator = self._makeOne(client)
         self.assertEqual(iterator.path, '/projects')
         self.assertEqual(iterator.page_number, 0)
-        self.assertEqual(iterator.next_page_token, None)
+        self.assertIsNone(iterator.next_page_token)
         self.assertIs(iterator.client, client)
         self.assertEqual(iterator.extra_params, {})
 

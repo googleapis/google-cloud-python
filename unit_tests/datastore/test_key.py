@@ -294,14 +294,14 @@ class TestKey(unittest.TestCase):
         new_key = key.completed_key(_ID)
         self.assertIsNot(key, new_key)
         self.assertEqual(new_key.id, _ID)
-        self.assertEqual(new_key.name, None)
+        self.assertIsNone(new_key.name)
 
     def test_completed_key_on_partial_w_name(self):
         key = self._makeOne('KIND', project=self._DEFAULT_PROJECT)
         _NAME = 'NAME'
         new_key = key.completed_key(_NAME)
         self.assertIsNot(key, new_key)
-        self.assertEqual(new_key.id, None)
+        self.assertIsNone(new_key.id)
         self.assertEqual(new_key.name, _NAME)
 
     def test_completed_key_on_partial_w_invalid(self):
@@ -386,12 +386,12 @@ class TestKey(unittest.TestCase):
 
     def test_id_or_name_no_name_or_id(self):
         key = self._makeOne('KIND', project=self._DEFAULT_PROJECT)
-        self.assertEqual(key.id_or_name, None)
+        self.assertIsNone(key.id_or_name)
 
     def test_id_or_name_no_name_or_id_child(self):
         key = self._makeOne('KIND1', 1234, 'KIND2',
                             project=self._DEFAULT_PROJECT)
-        self.assertEqual(key.id_or_name, None)
+        self.assertIsNone(key.id_or_name)
 
     def test_id_or_name_w_id_only(self):
         _ID = 1234
@@ -405,11 +405,11 @@ class TestKey(unittest.TestCase):
 
     def test_parent_default(self):
         key = self._makeOne('KIND', project=self._DEFAULT_PROJECT)
-        self.assertEqual(key.parent, None)
+        self.assertIsNone(key.parent)
 
     def test_parent_explicit_top_level(self):
         key = self._makeOne('KIND', 1234, project=self._DEFAULT_PROJECT)
-        self.assertEqual(key.parent, None)
+        self.assertIsNone(key.parent)
 
     def test_parent_explicit_nested(self):
         _PARENT_KIND = 'KIND1'

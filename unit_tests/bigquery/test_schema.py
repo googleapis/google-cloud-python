@@ -29,8 +29,8 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.name, 'test')
         self.assertEqual(field.field_type, 'STRING')
         self.assertEqual(field.mode, 'NULLABLE')
-        self.assertEqual(field.description, None)
-        self.assertEqual(field.fields, None)
+        self.assertIsNone(field.description)
+        self.assertIsNone(field.fields)
 
     def test_ctor_explicit(self):
         field = self._makeOne('test', 'STRING', mode='REQUIRED',
@@ -39,7 +39,7 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.field_type, 'STRING')
         self.assertEqual(field.mode, 'REQUIRED')
         self.assertEqual(field.description, 'Testing')
-        self.assertEqual(field.fields, None)
+        self.assertIsNone(field.fields)
 
     def test_ctor_subfields(self):
         field = self._makeOne('phone_number', 'RECORD',
@@ -48,18 +48,18 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.name, 'phone_number')
         self.assertEqual(field.field_type, 'RECORD')
         self.assertEqual(field.mode, 'NULLABLE')
-        self.assertEqual(field.description, None)
+        self.assertIsNone(field.description)
         self.assertEqual(len(field.fields), 2)
         self.assertEqual(field.fields[0].name, 'area_code')
         self.assertEqual(field.fields[0].field_type, 'STRING')
         self.assertEqual(field.fields[0].mode, 'NULLABLE')
-        self.assertEqual(field.fields[0].description, None)
-        self.assertEqual(field.fields[0].fields, None)
+        self.assertIsNone(field.fields[0].description)
+        self.assertIsNone(field.fields[0].fields)
         self.assertEqual(field.fields[1].name, 'local_number')
         self.assertEqual(field.fields[1].field_type, 'STRING')
         self.assertEqual(field.fields[1].mode, 'NULLABLE')
-        self.assertEqual(field.fields[1].description, None)
-        self.assertEqual(field.fields[1].fields, None)
+        self.assertIsNone(field.fields[1].description)
+        self.assertIsNone(field.fields[1].fields)
 
     def test___eq___name_mismatch(self):
         field = self._makeOne('test', 'STRING')

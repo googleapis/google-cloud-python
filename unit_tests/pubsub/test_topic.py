@@ -363,7 +363,7 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(subscriptions[1].name, SUB_NAME_2)
         self.assertIs(subscription.topic, topic)
 
-        self.assertEqual(next_page_token, None)
+        self.assertIsNone(next_page_token)
         self.assertEqual(api._topic_listed,
                          (self.TOPIC_PATH, PAGE_SIZE, TOKEN))
 
@@ -376,7 +376,7 @@ class TestTopic(unittest.TestCase):
         subscriptions, next_page_token = topic.list_subscriptions()
 
         self.assertEqual(len(subscriptions), 0)
-        self.assertEqual(next_page_token, None)
+        self.assertIsNone(next_page_token)
 
         self.assertEqual(api._topic_listed,
                          (self.TOPIC_PATH, None, None))
@@ -439,7 +439,7 @@ class TestTopic(unittest.TestCase):
         policy = topic.get_iam_policy(client=client2)
 
         self.assertEqual(policy.etag, 'ACAB')
-        self.assertEqual(policy.version, None)
+        self.assertIsNone(policy.version)
         self.assertEqual(sorted(policy.owners), [])
         self.assertEqual(sorted(policy.editors), [])
         self.assertEqual(sorted(policy.viewers), [])
@@ -522,7 +522,7 @@ class TestTopic(unittest.TestCase):
         new_policy = topic.set_iam_policy(policy, client=client2)
 
         self.assertEqual(new_policy.etag, 'ACAB')
-        self.assertEqual(new_policy.version, None)
+        self.assertIsNone(new_policy.version)
         self.assertEqual(sorted(new_policy.owners), [])
         self.assertEqual(sorted(new_policy.editors), [])
         self.assertEqual(sorted(new_policy.viewers), [])

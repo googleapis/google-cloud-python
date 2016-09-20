@@ -85,9 +85,9 @@ class TestChanges(unittest.TestCase):
         changes = self._makeOne(zone)
 
         self.assertIs(changes.zone, zone)
-        self.assertEqual(changes.name, None)
-        self.assertEqual(changes.status, None)
-        self.assertEqual(changes.started, None)
+        self.assertIsNone(changes.name)
+        self.assertIsNone(changes.status)
+        self.assertIsNone(changes.started)
         self.assertEqual(list(changes.additions), [])
         self.assertEqual(list(changes.deletions), [])
 

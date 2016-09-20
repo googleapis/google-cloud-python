@@ -351,7 +351,7 @@ class TestConnection(unittest.TestCase):
 
     def test_ctor_defaults(self):
         conn = self._makeOne()
-        self.assertEqual(conn.credentials, None)
+        self.assertIsNone(conn.credentials)
 
     def test_ctor_without_grpc(self):
         from unit_tests._testing import _Monkey
@@ -367,7 +367,7 @@ class TestConnection(unittest.TestCase):
         with _Monkey(MUT, _DatastoreAPIOverHttp=mock_api):
             conn = self._makeOne(use_grpc=False)
 
-        self.assertEqual(conn.credentials, None)
+        self.assertIsNone(conn.credentials)
         self.assertIs(conn._datastore_api, return_val)
         self.assertEqual(connections, [conn])
 
@@ -385,7 +385,7 @@ class TestConnection(unittest.TestCase):
         with _Monkey(MUT, _DatastoreAPIOverGRPC=mock_api):
             conn = self._makeOne(use_grpc=True)
 
-        self.assertEqual(conn.credentials, None)
+        self.assertIsNone(conn.credentials)
         self.assertIs(conn._datastore_api, return_val)
         self.assertEqual(api_args, [(conn, True)])
 
@@ -971,7 +971,7 @@ class TestConnection(unittest.TestCase):
             PROJECT + ':rollback',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.rollback(PROJECT, TRANSACTION), None)
+        self.assertIsNone(conn.rollback(PROJECT, TRANSACTION))
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb2.RollbackRequest

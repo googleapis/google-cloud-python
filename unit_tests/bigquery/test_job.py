@@ -69,19 +69,19 @@ class _Base(object):
 
     def _verifyInitialReadonlyProperties(self, job):
         # root elements of resource
-        self.assertEqual(job.etag, None)
-        self.assertEqual(job.self_link, None)
-        self.assertEqual(job.user_email, None)
+        self.assertIsNone(job.etag)
+        self.assertIsNone(job.self_link)
+        self.assertIsNone(job.user_email)
 
         # derived from resource['statistics']
-        self.assertEqual(job.created, None)
-        self.assertEqual(job.started, None)
-        self.assertEqual(job.ended, None)
+        self.assertIsNone(job.created)
+        self.assertIsNone(job.started)
+        self.assertIsNone(job.ended)
 
         # derived from resource['status']
-        self.assertEqual(job.error_result, None)
-        self.assertEqual(job.errors, None)
-        self.assertEqual(job.state, None)
+        self.assertIsNone(job.error_result)
+        self.assertIsNone(job.errors)
+        self.assertIsNone(job.state)
 
     def _verifyReadonlyResourceProperties(self, job, resource):
         from datetime import timedelta
@@ -91,32 +91,32 @@ class _Base(object):
         if 'creationTime' in statistics:
             self.assertEqual(job.created, self.WHEN)
         else:
-            self.assertEqual(job.created, None)
+            self.assertIsNone(job.created)
 
         if 'startTime' in statistics:
             self.assertEqual(job.started, self.WHEN)
         else:
-            self.assertEqual(job.started, None)
+            self.assertIsNone(job.started)
 
         if 'endTime' in statistics:
             self.assertEqual(job.ended, self.WHEN + timedelta(seconds=1000))
         else:
-            self.assertEqual(job.ended, None)
+            self.assertIsNone(job.ended)
 
         if 'etag' in resource:
             self.assertEqual(job.etag, self.ETAG)
         else:
-            self.assertEqual(job.etag, None)
+            self.assertIsNone(job.etag)
 
         if 'selfLink' in resource:
             self.assertEqual(job.self_link, self.RESOURCE_URL)
         else:
-            self.assertEqual(job.self_link, None)
+            self.assertIsNone(job.self_link)
 
         if 'user_email' in resource:
             self.assertEqual(job.user_email, self.USER_EMAIL)
         else:
-            self.assertEqual(job.user_email, None)
+            self.assertIsNone(job.user_email)
 
 
 class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
@@ -243,10 +243,10 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self._verifyInitialReadonlyProperties(job)
 
         # derived from resource['statistics']['load']
-        self.assertEqual(job.input_file_bytes, None)
-        self.assertEqual(job.input_files, None)
-        self.assertEqual(job.output_bytes, None)
-        self.assertEqual(job.output_rows, None)
+        self.assertIsNone(job.input_file_bytes)
+        self.assertIsNone(job.input_files)
+        self.assertIsNone(job.output_bytes)
+        self.assertIsNone(job.output_rows)
 
         # set/read from resource['configuration']['load']
         self.assertIsNone(job.allow_jagged_rows)
@@ -347,9 +347,9 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
 
         status = job._properties['status'] = {}
 
-        self.assertEqual(job.error_result, None)
-        self.assertEqual(job.errors, None)
-        self.assertEqual(job.state, None)
+        self.assertIsNone(job.error_result)
+        self.assertIsNone(job.errors)
+        self.assertIsNone(job.state)
 
         status['errorResult'] = ERROR_RESULT
         status['errors'] = [ERROR_RESULT]
@@ -1594,7 +1594,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job.reload()
 
-        self.assertEqual(job.destination, None)
+        self.assertIsNone(job.destination)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]

@@ -351,8 +351,8 @@ class TestColumnRangeFilter(unittest.TestCase):
         column_family_id = object()
         row_filter = self._makeOne(column_family_id)
         self.assertIs(row_filter.column_family_id, column_family_id)
-        self.assertEqual(row_filter.start_column, None)
-        self.assertEqual(row_filter.end_column, None)
+        self.assertIsNone(row_filter.start_column)
+        self.assertIsNone(row_filter.end_column)
         self.assertTrue(row_filter.inclusive_start)
         self.assertTrue(row_filter.inclusive_end)
 
@@ -490,8 +490,8 @@ class TestValueRangeFilter(unittest.TestCase):
 
     def test_constructor_defaults(self):
         row_filter = self._makeOne()
-        self.assertEqual(row_filter.start_value, None)
-        self.assertEqual(row_filter.end_value, None)
+        self.assertIsNone(row_filter.start_value)
+        self.assertIsNone(row_filter.end_value)
         self.assertTrue(row_filter.inclusive_start)
         self.assertTrue(row_filter.inclusive_end)
 

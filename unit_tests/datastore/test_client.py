@@ -44,7 +44,7 @@ class Test__get_gcd_project(unittest.TestCase):
         environ = {}
         with _Monkey(os, getenv=environ.get):
             project = self._callFUT()
-            self.assertEqual(project, None)
+            self.assertIsNone(project)
 
     def test_value_set(self):
         import os
@@ -92,7 +92,7 @@ class Test__determine_default_project(unittest.TestCase):
 
     def test_no_value(self):
         project, callers = self._determine_default_helper()
-        self.assertEqual(project, None)
+        self.assertIsNone(project)
         self.assertEqual(callers, ['gcd_mock', ('fallback_mock', None)])
 
     def test_explicit(self):
@@ -168,7 +168,7 @@ class TestClient(unittest.TestCase):
                          get_credentials=lambda: creds):
                 client = klass()
         self.assertEqual(client.project, OTHER)
-        self.assertEqual(client.namespace, None)
+        self.assertIsNone(client.namespace)
         self.assertIsInstance(client.connection, _MockConnection)
         self.assertIs(client.connection.credentials, creds)
         self.assertIsNone(client.connection.http)
@@ -541,7 +541,7 @@ class TestClient(unittest.TestCase):
     def test_put_multi_no_entities(self):
         creds = object()
         client = self._makeOne(credentials=creds)
-        self.assertEqual(client.put_multi([]), None)
+        self.assertIsNone(client.put_multi([]))
 
     def test_put_multi_w_single_empty_entity(self):
         # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/649
@@ -592,7 +592,7 @@ class TestClient(unittest.TestCase):
         with _NoCommitBatch(client) as CURR_BATCH:
             result = client.put_multi([entity])
 
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         mutated_entity = _mutated_pb(self, CURR_BATCH.mutations, 'upsert')
         self.assertEqual(mutated_entity.key, key.to_protobuf())
 
@@ -622,7 +622,7 @@ class TestClient(unittest.TestCase):
         creds = object()
         client = self._makeOne(credentials=creds)
         result = client.delete_multi([])
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         self.assertEqual(len(client.connection._commit_cw), 0)
 
     def test_delete_multi_no_batch(self):
@@ -633,7 +633,7 @@ class TestClient(unittest.TestCase):
         client.connection._commit.append([])
 
         result = client.delete_multi([key])
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         self.assertEqual(len(client.connection._commit_cw), 1)
         (project,
          commit_req, transaction_id) = client.connection._commit_cw[0]
@@ -651,7 +651,7 @@ class TestClient(unittest.TestCase):
         with _NoCommitBatch(client) as CURR_BATCH:
             result = client.delete_multi([key])
 
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         mutated_key = _mutated_pb(self, CURR_BATCH.mutations, 'delete')
         self.assertEqual(mutated_key, key._key)
         self.assertEqual(len(client.connection._commit_cw), 0)
@@ -664,7 +664,7 @@ class TestClient(unittest.TestCase):
         with _NoCommitTransaction(client) as CURR_XACT:
             result = client.delete_multi([key])
 
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         mutated_key = _mutated_pb(self, CURR_XACT.mutations, 'delete')
         self.assertEqual(mutated_key, key._key)
         self.assertEqual(len(client.connection._commit_cw), 0)

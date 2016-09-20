@@ -85,7 +85,7 @@ class TestDatastoreAllocateIDs(TestDatastore):
         unique_ids = set()
         for key in allocated_keys:
             unique_ids.add(key.id)
-            self.assertEqual(key.name, None)
+            self.assertIsNone(key.name)
             self.assertNotEqual(key.id, None)
 
         self.assertEqual(len(unique_ids), num_ids)

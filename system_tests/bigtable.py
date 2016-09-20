@@ -257,7 +257,7 @@ class TestTableAdminAPI(unittest.TestCase):
 
         # Check that the update has propagated.
         col_fams = temp_table.list_column_families()
-        self.assertEqual(col_fams[COLUMN_FAMILY_ID1].gc_rule, None)
+        self.assertIsNone(col_fams[COLUMN_FAMILY_ID1].gc_rule)
 
     def test_delete_column_family(self):
         temp_table_id = 'foo-bar-baz-table'

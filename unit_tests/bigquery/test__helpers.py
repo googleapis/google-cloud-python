@@ -339,7 +339,7 @@ class Test_ConfigurationProperty(unittest.TestCase):
         self.assertEqual(Wrapper.attr.name, 'attr')
 
         wrapper = Wrapper()
-        self.assertEqual(wrapper.attr, None)
+        self.assertIsNone(wrapper.attr)
 
         value = object()
         wrapper.attr = value
@@ -347,8 +347,8 @@ class Test_ConfigurationProperty(unittest.TestCase):
         self.assertIs(wrapper._configuration._attr, value)
 
         del wrapper.attr
-        self.assertEqual(wrapper.attr, None)
-        self.assertEqual(wrapper._configuration._attr, None)
+        self.assertIsNone(wrapper.attr)
+        self.assertIsNone(wrapper._configuration._attr)
 
 
 class Test_TypedProperty(unittest.TestCase):
@@ -380,8 +380,8 @@ class Test_TypedProperty(unittest.TestCase):
         self.assertEqual(wrapper._configuration._attr, 42)
 
         del wrapper.attr
-        self.assertEqual(wrapper.attr, None)
-        self.assertEqual(wrapper._configuration._attr, None)
+        self.assertIsNone(wrapper.attr)
+        self.assertIsNone(wrapper._configuration._attr)
 
 
 class Test_EnumProperty(unittest.TestCase):
@@ -413,8 +413,8 @@ class Test_EnumProperty(unittest.TestCase):
         self.assertEqual(wrapper._configuration._attr, 'FOO')
 
         del wrapper.attr
-        self.assertEqual(wrapper.attr, None)
-        self.assertEqual(wrapper._configuration._attr, None)
+        self.assertIsNone(wrapper.attr)
+        self.assertIsNone(wrapper._configuration._attr)
 
 
 class Test_UDFResourcesProperty(unittest.TestCase):

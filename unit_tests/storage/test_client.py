@@ -181,7 +181,7 @@ class TestClient(unittest.TestCase):
             b'{}',
         )
         bucket = client.lookup_bucket(NONESUCH)
-        self.assertEqual(bucket, None)
+        self.assertIsNone(bucket)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
@@ -278,7 +278,7 @@ class TestClient(unittest.TestCase):
         buckets = list(client.list_buckets())
         self.assertEqual(len(buckets), 0)
         self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['body'], None)
+        self.assertIsNone(http._called_with['body'])
 
         BASE_URI = '/'.join([
             client.connection.API_BASE_URL,
@@ -356,7 +356,7 @@ class TestClient(unittest.TestCase):
         buckets = list(iterator)
         self.assertEqual(buckets, [])
         self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['body'], None)
+        self.assertIsNone(http._called_with['body'])
 
         BASE_URI = '/'.join([
             client.connection.API_BASE_URL,
@@ -385,7 +385,7 @@ class Test__BucketIterator(unittest.TestCase):
         iterator = self._makeOne(client)
         self.assertEqual(iterator.path, '/b')
         self.assertEqual(iterator.page_number, 0)
-        self.assertEqual(iterator.next_page_token, None)
+        self.assertIsNone(iterator.next_page_token)
         self.assertIs(iterator.client, client)
 
     def test_get_items_from_response_empty(self):

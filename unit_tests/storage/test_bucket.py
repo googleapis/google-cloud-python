@@ -33,7 +33,7 @@ class Test__BlobIterator(unittest.TestCase):
         self.assertIs(iterator.client, client)
         self.assertEqual(iterator.path, '%s/o' % bucket.path)
         self.assertEqual(iterator.page_number, 0)
-        self.assertEqual(iterator.next_page_token, None)
+        self.assertIsNone(iterator.next_page_token)
         self.assertEqual(iterator.prefixes, set())
 
     def test_get_items_from_response_empty(self):
@@ -605,7 +605,7 @@ class Test_Bucket(unittest.TestCase):
     def test_location_setter(self):
         NAME = 'name'
         bucket = self._makeOne(name=NAME)
-        self.assertEqual(bucket.location, None)
+        self.assertIsNone(bucket.location)
         bucket.location = 'AS'
         self.assertEqual(bucket.location, 'AS')
         self.assertTrue('location' in bucket._changes)
@@ -716,7 +716,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_metageneration_unset(self):
         bucket = self._makeOne()
-        self.assertEqual(bucket.metageneration, None)
+        self.assertIsNone(bucket.metageneration)
 
     def test_metageneration_string_val(self):
         METAGENERATION = 42
@@ -740,7 +740,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_project_number_unset(self):
         bucket = self._makeOne()
-        self.assertEqual(bucket.project_number, None)
+        self.assertIsNone(bucket.project_number)
 
     def test_project_number_string_val(self):
         PROJECT_NUMBER = 12345
@@ -800,7 +800,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_time_created_unset(self):
         bucket = self._makeOne()
-        self.assertEqual(bucket.time_created, None)
+        self.assertIsNone(bucket.time_created)
 
     def test_versioning_enabled_getter_missing(self):
         NAME = 'name'

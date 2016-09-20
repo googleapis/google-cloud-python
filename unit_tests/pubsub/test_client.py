@@ -154,7 +154,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(topics), 1)
         self.assertIsInstance(topics[0], Topic)
         self.assertEqual(topics[0].name, self.TOPIC_NAME)
-        self.assertEqual(next_page_token, None)
+        self.assertIsNone(next_page_token)
 
         self.assertEqual(api._listed_topics, (self.PROJECT, None, None))
 
@@ -188,7 +188,7 @@ class TestClient(unittest.TestCase):
         topics, next_page_token = client.list_topics()
 
         self.assertEqual(len(topics), 0)
-        self.assertEqual(next_page_token, None)
+        self.assertIsNone(next_page_token)
 
         self.assertEqual(api._listed_topics, (self.PROJECT, None, None))
 
@@ -207,7 +207,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(subscriptions[0], Subscription)
         self.assertEqual(subscriptions[0].name, self.SUB_NAME)
         self.assertEqual(subscriptions[0].topic.name, self.TOPIC_NAME)
-        self.assertEqual(next_page_token, None)
+        self.assertIsNone(next_page_token)
 
         self.assertEqual(api._listed_subscriptions,
                          (self.PROJECT, None, None))
@@ -256,7 +256,7 @@ class TestClient(unittest.TestCase):
         subscriptions, next_page_token = client.list_subscriptions()
 
         self.assertEqual(len(subscriptions), 0)
-        self.assertEqual(next_page_token, None)
+        self.assertIsNone(next_page_token)
 
         self.assertEqual(api._listed_subscriptions,
                          (self.PROJECT, None, None))

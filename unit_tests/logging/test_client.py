@@ -296,7 +296,7 @@ class TestClient(unittest.TestCase):
 
         self.assertIs(entries[0].logger, entries[1].logger)
 
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
         self.assertEqual(
             api._list_entries_called_with,
             ([PROJECT1, PROJECT2], FILTER, DESCENDING, PAGE_SIZE, TOKEN))
@@ -308,8 +308,8 @@ class TestClient(unittest.TestCase):
         sink = client.sink(self.SINK_NAME)
         self.assertIsInstance(sink, Sink)
         self.assertEqual(sink.name, self.SINK_NAME)
-        self.assertEqual(sink.filter_, None)
-        self.assertEqual(sink.destination, None)
+        self.assertIsNone(sink.filter_)
+        self.assertIsNone(sink.destination)
         self.assertIs(sink.client, client)
         self.assertEqual(sink.project, self.PROJECT)
 
@@ -377,7 +377,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(sink.name, SINK_NAME)
         self.assertEqual(sink.filter_, FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
         self.assertEqual(api._list_sinks_called_with,
                          (PROJECT, PAGE_SIZE, TOKEN))
 
@@ -389,7 +389,7 @@ class TestClient(unittest.TestCase):
         metric = client_obj.metric(self.METRIC_NAME)
         self.assertIsInstance(metric, Metric)
         self.assertEqual(metric.name, self.METRIC_NAME)
-        self.assertEqual(metric.filter_, None)
+        self.assertIsNone(metric.filter_)
         self.assertEqual(metric.description, '')
         self.assertIs(metric.client, client_obj)
         self.assertEqual(metric.project, self.PROJECT)
@@ -456,7 +456,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
         self.assertEqual(api._list_metrics_called_with,
                          (PROJECT, PAGE_SIZE, TOKEN))
 

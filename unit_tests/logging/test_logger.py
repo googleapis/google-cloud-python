@@ -38,7 +38,7 @@ class TestLogger(unittest.TestCase):
                          % (self.PROJECT, self.LOGGER_NAME))
         self.assertEqual(logger.path, '/projects/%s/logs/%s'
                          % (self.PROJECT, self.LOGGER_NAME))
-        self.assertEqual(logger.labels, None)
+        self.assertIsNone(logger.labels)
 
     def test_ctor_explicit(self):
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -385,7 +385,7 @@ class TestLogger(unittest.TestCase):
             projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
             page_size=PAGE_SIZE, page_token=TOKEN)
         self.assertEqual(len(entries), 0)
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
         self.assertEqual(client._listed, LISTED)
 
 
@@ -663,7 +663,7 @@ class TestBatch(unittest.TestCase):
             pass
 
         self.assertEqual(list(batch.entries), UNSENT)
-        self.assertEqual(api._write_entries_called_with, None)
+        self.assertIsNone(api._write_entries_called_with)
 
 
 class _Logger(object):

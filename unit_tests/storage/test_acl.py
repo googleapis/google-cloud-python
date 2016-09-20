@@ -28,7 +28,7 @@ class Test_ACLEntity(unittest.TestCase):
         TYPE = 'type'
         entity = self._makeOne(TYPE)
         self.assertEqual(entity.type, TYPE)
-        self.assertEqual(entity.identifier, None)
+        self.assertIsNone(entity.identifier)
         self.assertEqual(entity.get_roles(), set())
 
     def test_ctor_w_identifier(self):
@@ -211,7 +211,7 @@ class Test_ACL(unittest.TestCase):
         acl.loaded = True
         entity = acl.entity_from_dict({'entity': 'allUsers', 'role': ROLE})
         self.assertEqual(entity.type, 'allUsers')
-        self.assertEqual(entity.identifier, None)
+        self.assertIsNone(entity.identifier)
         self.assertEqual(entity.get_roles(), set([ROLE]))
         self.assertEqual(list(acl),
                          [{'entity': 'allUsers', 'role': ROLE}])
@@ -224,7 +224,7 @@ class Test_ACL(unittest.TestCase):
         entity = acl.entity_from_dict({'entity': 'allAuthenticatedUsers',
                                        'role': ROLE})
         self.assertEqual(entity.type, 'allAuthenticatedUsers')
-        self.assertEqual(entity.identifier, None)
+        self.assertIsNone(entity.identifier)
         self.assertEqual(entity.get_roles(), set([ROLE]))
         self.assertEqual(list(acl),
                          [{'entity': 'allAuthenticatedUsers', 'role': ROLE}])
@@ -294,7 +294,7 @@ class Test_ACL(unittest.TestCase):
     def test_get_entity_miss_str_no_default_eager(self):
         acl = self._makeOne()
         acl.loaded = True
-        self.assertEqual(acl.get_entity('nonesuch'), None)
+        self.assertIsNone(acl.get_entity('nonesuch'))
 
     def test_get_entity_miss_str_no_default_lazy(self):
         acl = self._makeOne()
@@ -303,7 +303,7 @@ class Test_ACL(unittest.TestCase):
             acl.loaded = True
 
         acl.reload = _reload
-        self.assertEqual(acl.get_entity('nonesuch'), None)
+        self.assertIsNone(acl.get_entity('nonesuch'))
         self.assertTrue(acl.loaded)
 
     def test_get_entity_miss_entity_no_default(self):
@@ -313,7 +313,7 @@ class Test_ACL(unittest.TestCase):
         entity = _ACLEntity(TYPE, ID)
         acl = self._makeOne()
         acl.loaded = True
-        self.assertEqual(acl.get_entity(entity), None)
+        self.assertIsNone(acl.get_entity(entity))
 
     def test_get_entity_miss_str_w_default(self):
         DEFAULT = object()
@@ -471,7 +471,7 @@ class Test_ACL(unittest.TestCase):
         entity = acl.all()
         entity.grant(ROLE)
         self.assertEqual(entity.type, 'allUsers')
-        self.assertEqual(entity.identifier, None)
+        self.assertIsNone(entity.identifier)
         self.assertEqual(list(acl),
                          [{'entity': 'allUsers', 'role': ROLE}])
 
@@ -482,7 +482,7 @@ class Test_ACL(unittest.TestCase):
         entity = acl.all_authenticated()
         entity.grant(ROLE)
         self.assertEqual(entity.type, 'allAuthenticatedUsers')
-        self.assertEqual(entity.identifier, None)
+        self.assertIsNone(entity.identifier)
         self.assertEqual(list(acl),
                          [{'entity': 'allAuthenticatedUsers', 'role': ROLE}])
 

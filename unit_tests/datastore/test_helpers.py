@@ -104,7 +104,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
         # Also check the key.
         key = entity.key
         self.assertEqual(key.project, _PROJECT)
-        self.assertEqual(key.namespace, None)
+        self.assertIsNone(key.namespace)
         self.assertEqual(key.kind, _KIND)
         self.assertEqual(key.id, _ID)
 
@@ -138,7 +138,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
         entity_pb = entity_pb2.Entity()
         entity = self._callFUT(entity_pb)
 
-        self.assertEqual(entity.key, None)
+        self.assertIsNone(entity.key)
         self.assertEqual(dict(entity), {})
 
     def test_entity_with_meaning(self):
@@ -152,7 +152,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
         value_pb.string_value = val = u'something'
 
         entity = self._callFUT(entity_pb)
-        self.assertEqual(entity.key, None)
+        self.assertIsNone(entity.key)
         self.assertEqual(dict(entity), {name: val})
         self.assertEqual(entity._meanings, {name: (meaning, val)})
 
@@ -184,7 +184,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
         self.assertEqual(len(entity), 1)
 
         inside_entity = entity[OUTSIDE_NAME]
-        self.assertEqual(inside_entity.key, None)
+        self.assertIsNone(inside_entity.key)
         self.assertEqual(len(inside_entity), 1)
         self.assertEqual(inside_entity[INSIDE_NAME], INSIDE_VALUE)
 
@@ -396,7 +396,7 @@ class Test_key_from_protobuf(unittest.TestCase):
         pb = self._makePB(path=[{'kind': 'KIND'}], project=_PROJECT)
         key = self._callFUT(pb)
         self.assertEqual(key.project, _PROJECT)
-        self.assertEqual(key.namespace, None)
+        self.assertIsNone(key.namespace)
 
     def test_w_namespace_in_pb(self):
         _PROJECT = 'PROJECT'
@@ -803,7 +803,7 @@ class Test__get_meaning(unittest.TestCase):
 
         value_pb = entity_pb2.Value()
         result = self._callFUT(value_pb)
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
 
     def test_single(self):
         from google.cloud.datastore._generated import entity_pb2

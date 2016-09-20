@@ -93,7 +93,7 @@ class TestInstance(unittest.TestCase):
         )
 
         instance = self._makeOne(None, None, None, None)
-        self.assertEqual(instance.display_name, None)
+        self.assertIsNone(instance.display_name)
         instance._update_from_pb(instance_pb)
         self.assertEqual(instance.display_name, display_name)
 
@@ -103,10 +103,10 @@ class TestInstance(unittest.TestCase):
 
         instance_pb = data_v2_pb2.Instance()
         instance = self._makeOne(None, None, None, None)
-        self.assertEqual(instance.display_name, None)
+        self.assertIsNone(instance.display_name)
         with self.assertRaises(ValueError):
             instance._update_from_pb(instance_pb)
-        self.assertEqual(instance.display_name, None)
+        self.assertIsNone(instance.display_name)
 
     def test_from_pb_success(self):
         from google.cloud.bigtable.instance import (

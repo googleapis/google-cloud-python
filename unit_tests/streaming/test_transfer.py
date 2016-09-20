@@ -462,7 +462,7 @@ class Test_Download(unittest.TestCase):
         self.assertIs(found, response)
         self.assertEqual(stream._written, ['OK'])
         self.assertEqual(download.progress, 2)
-        self.assertEqual(download.encoding, None)
+        self.assertIsNone(download.encoding)
 
     def test__process_response_w_PARTIAL_CONTENT_w_encoding(self):
         from six.moves import http_client
@@ -486,7 +486,7 @@ class Test_Download(unittest.TestCase):
         self.assertIs(found, response)
         self.assertEqual(stream._written, [])
         self.assertEqual(download.progress, 0)
-        self.assertEqual(download.encoding, None)
+        self.assertIsNone(download.encoding)
 
     def test__process_response_w_NO_CONTENT(self):
         from six.moves import http_client
@@ -497,7 +497,7 @@ class Test_Download(unittest.TestCase):
         self.assertIs(found, response)
         self.assertEqual(stream._written, [''])
         self.assertEqual(download.progress, 0)
-        self.assertEqual(download.encoding, None)
+        self.assertIsNone(download.encoding)
 
     def test_get_range_not_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
@@ -875,7 +875,7 @@ class Test_Upload(unittest.TestCase):
         upload = klass.from_stream(stream, mime_type=self.MIME_TYPE)
         self.assertEqual(upload.mime_type, self.MIME_TYPE)
         self.assertTrue(upload.auto_transfer)
-        self.assertEqual(upload.total_size, None)
+        self.assertIsNone(upload.total_size)
 
     def test_from_stream_explicit(self):
         klass = self._getTargetClass()
@@ -1319,7 +1319,7 @@ class Test_Upload(unittest.TestCase):
         with _Monkey(MUT, make_api_request=requester):
             upload.initialize_upload(request, http=object())
 
-        self.assertEqual(upload._server_chunk_granularity, None)
+        self.assertIsNone(upload._server_chunk_granularity)
         self.assertEqual(upload.url, self.UPLOAD_URL)
         self.assertEqual(requester._responses, [])
         self.assertEqual(len(requester._requested), 1)
@@ -1711,7 +1711,7 @@ class Test_Upload(unittest.TestCase):
         response = object()
         streamer = _MediaStreamer(response)
         upload._send_media_request = streamer
-        self.assertEqual(upload.total_size, None)
+        self.assertIsNone(upload.total_size)
 
         found = upload._send_chunk(0)
 
@@ -1737,12 +1737,12 @@ class Test_Upload(unittest.TestCase):
         response = object()
         streamer = _MediaStreamer(response)
         upload._send_media_request = streamer
-        self.assertEqual(upload.total_size, None)
+        self.assertIsNone(upload.total_size)
 
         found = upload._send_chunk(0)
 
         self.assertIs(found, response)
-        self.assertEqual(upload.total_size, None)
+        self.assertIsNone(upload.total_size)
         request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')

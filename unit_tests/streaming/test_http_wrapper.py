@@ -75,7 +75,7 @@ class Test_Request(unittest.TestCase):
         self.assertEqual(request.http_method, 'GET')
         self.assertEqual(request.headers, {'content-length': '0'})
         self.assertEqual(request.body, '')
-        self.assertEqual(request.loggable_body, None)
+        self.assertIsNone(request.loggable_body)
 
     def test_loggable_body_setter_w_body_None(self):
         from google.cloud.streaming.exceptions import RequestError
@@ -88,7 +88,7 @@ class Test_Request(unittest.TestCase):
         request.loggable_body = 'abc'
         request.body = None
         self.assertEqual(request.headers, {})
-        self.assertEqual(request.body, None)
+        self.assertIsNone(request.body)
         self.assertEqual(request.loggable_body, 'abc')
 
     def test_body_setter_w_non_string(self):
@@ -116,7 +116,7 @@ class Test_Response(unittest.TestCase):
         response = self._makeOne(info, CONTENT, URL)
         self.assertEqual(len(response), len(CONTENT))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.retry_after, None)
+        self.assertIsNone(response.retry_after)
         self.assertFalse(response.is_redirect)
 
     def test_length_w_content_encoding_w_content_range(self):

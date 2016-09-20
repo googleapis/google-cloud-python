@@ -73,7 +73,7 @@ class Test__UTC(unittest.TestCase):
         import datetime
 
         naive_epoch = datetime.datetime.utcfromtimestamp(0)
-        self.assertEqual(naive_epoch.tzinfo, None)
+        self.assertIsNone(naive_epoch.tzinfo)
         tz = self._makeOne()
         epoch = tz.fromutc(naive_epoch)
         self.assertEqual(epoch.tzinfo, tz)
@@ -136,7 +136,7 @@ class Test__app_engine_id(unittest.TestCase):
 
         with _Monkey(_helpers, app_identity=None):
             dataset_id = self._callFUT()
-            self.assertEqual(dataset_id, None)
+            self.assertIsNone(dataset_id)
 
     def test_value_set(self):
         from unit_tests._testing import _Monkey
@@ -309,7 +309,7 @@ class Test__compute_engine_id(unittest.TestCase):
         connection = _HTTPConnection(404, None)
         with self._monkeyConnection(connection):
             dataset_id = self._callFUT()
-            self.assertEqual(dataset_id, None)
+            self.assertIsNone(dataset_id)
 
     def test_success(self):
         COMPUTE_ENGINE_ID = object()
@@ -322,7 +322,7 @@ class Test__compute_engine_id(unittest.TestCase):
         connection = _TimeoutHTTPConnection()
         with self._monkeyConnection(connection):
             dataset_id = self._callFUT()
-            self.assertEqual(dataset_id, None)
+            self.assertIsNone(dataset_id)
 
 
 class Test__get_production_project(unittest.TestCase):
@@ -337,7 +337,7 @@ class Test__get_production_project(unittest.TestCase):
         environ = {}
         with _Monkey(os, getenv=environ.get):
             project = self._callFUT()
-            self.assertEqual(project, None)
+            self.assertIsNone(project)
 
     def test_value_set(self):
         from unit_tests._testing import _Monkey
@@ -398,7 +398,7 @@ class Test__determine_default_project(unittest.TestCase):
 
     def test_no_value(self):
         project, callers = self._determine_default_helper()
-        self.assertEqual(project, None)
+        self.assertIsNone(project)
         self.assertEqual(callers, ['prod_mock', 'file_id_mock', 'srv_id_mock',
                                    'gae_mock', 'gce_mock'])
 
@@ -894,7 +894,7 @@ class TestMetadataPlugin(unittest.TestCase):
         cb_headers = [
             ('authorization', 'Bearer ' + access_token_expected),
         ]
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         self.assertEqual(callback_args, [(cb_headers, None)])
         self.assertEqual(len(credentials._tokens), 1)
 

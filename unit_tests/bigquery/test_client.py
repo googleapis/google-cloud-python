@@ -86,7 +86,7 @@ class TestClient(unittest.TestCase):
         projects, token = client.list_projects(max_results=3, page_token=TOKEN)
 
         self.assertEqual(len(projects), 0)
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -148,7 +148,7 @@ class TestClient(unittest.TestCase):
             include_all=True, max_results=3, page_token=TOKEN)
 
         self.assertEqual(len(datasets), 0)
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -368,7 +368,7 @@ class TestClient(unittest.TestCase):
                                        all_users=True, state_filter='done')
 
         self.assertEqual(len(jobs), 0)
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -463,7 +463,7 @@ class TestClient(unittest.TestCase):
         job = client.run_sync_query(QUERY)
         self.assertIsInstance(job, QueryResults)
         self.assertIs(job._client, client)
-        self.assertEqual(job.name, None)
+        self.assertIsNone(job.name)
         self.assertEqual(job.query, QUERY)
 
 

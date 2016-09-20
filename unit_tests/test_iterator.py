@@ -32,7 +32,7 @@ class TestIterator(unittest.TestCase):
         self.assertIs(iterator.client, client)
         self.assertEqual(iterator.path, PATH)
         self.assertEqual(iterator.page_number, 0)
-        self.assertEqual(iterator.next_page_token, None)
+        self.assertIsNone(iterator.next_page_token)
 
     def test___iter__(self):
         PATH = '/foo'
@@ -161,7 +161,7 @@ class TestIterator(unittest.TestCase):
         iterator.next_page_token = TOKEN
         iterator.reset()
         self.assertEqual(iterator.page_number, 0)
-        self.assertEqual(iterator.next_page_token, None)
+        self.assertIsNone(iterator.next_page_token)
 
     def test_get_items_from_response_raises_NotImplementedError(self):
         PATH = '/foo'
@@ -185,10 +185,10 @@ class TestMethodIterator(unittest.TestCase):
         wlm = _WithListMethod()
         iterator = self._makeOne(wlm.list_foo)
         self.assertEqual(iterator._method, wlm.list_foo)
-        self.assertEqual(iterator._token, None)
-        self.assertEqual(iterator._page_size, None)
+        self.assertIsNone(iterator._token)
+        self.assertIsNone(iterator._page_size)
         self.assertEqual(iterator._kw, {})
-        self.assertEqual(iterator._max_calls, None)
+        self.assertIsNone(iterator._max_calls)
         self.assertEqual(iterator._page_num, 0)
 
     def test_ctor_explicit(self):
@@ -216,10 +216,10 @@ class TestMethodIterator(unittest.TestCase):
         self.assertEqual(len(wlm._called_with), len(found) // 10)
         for i, (token, size, kw) in enumerate(wlm._called_with):
             if i == 0:
-                self.assertEqual(token, None)
+                self.assertIsNone(token)
             else:
                 self.assertEqual(token, string.printable[i * 10:])
-            self.assertEqual(size, None)
+            self.assertIsNone(size)
             self.assertEqual(kw, {})
 
     def test___iter___explicit_size_and_maxcalls_and_kw(self):
@@ -234,7 +234,7 @@ class TestMethodIterator(unittest.TestCase):
         self.assertEqual(len(wlm._called_with), len(found) // 2)
         for i, (token, size, kw) in enumerate(wlm._called_with):
             if i == 0:
-                self.assertEqual(token, None)
+                self.assertIsNone(token)
             else:
                 self.assertEqual(token, string.printable[i * 2:])
             self.assertEqual(size, 2)

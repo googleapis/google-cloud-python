@@ -181,7 +181,7 @@ class TestClient(unittest.TestCase):
             self.assertEqual(found.zone_id, expected['id'])
             self.assertEqual(found.name, expected['name'])
             self.assertEqual(found.dns_name, expected['dnsName'])
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -222,8 +222,8 @@ class TestClient(unittest.TestCase):
         zone = client.zone(self.ZONE_NAME)
         self.assertIsInstance(zone, ManagedZone)
         self.assertEqual(zone.name, self.ZONE_NAME)
-        self.assertEqual(zone.dns_name, None)
-        self.assertEqual(zone.description, None)
+        self.assertIsNone(zone.dns_name)
+        self.assertIsNone(zone.description)
         self.assertIs(zone._client, client)
 
 

@@ -34,7 +34,7 @@ class TestMetric(unittest.TestCase):
         client = _Client(self.PROJECT)
         metric = self._makeOne(self.METRIC_NAME, client=client)
         self.assertEqual(metric.name, self.METRIC_NAME)
-        self.assertEqual(metric.filter_, None)
+        self.assertIsNone(metric.filter_)
         self.assertEqual(metric.description, '')
         self.assertIs(metric.client, client)
         self.assertEqual(metric.project, self.PROJECT)

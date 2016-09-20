@@ -26,7 +26,7 @@ class TestConnection(unittest.TestCase):
 
     def test_ctor_defaults(self):
         conn = self._makeOne()
-        self.assertEqual(conn.credentials, None)
+        self.assertIsNone(conn.credentials)
 
     def test_ctor_explicit(self):
         credentials = _Credentials()
@@ -34,19 +34,19 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne(credentials)
         self.assertEqual(credentials._create_scoped_calls, 1)
         self.assertIs(conn.credentials, credentials)
-        self.assertEqual(conn._http, None)
+        self.assertIsNone(conn._http)
 
     def test_ctor_explicit_http(self):
         http = object()
         conn = self._makeOne(http=http)
-        self.assertEqual(conn.credentials, None)
+        self.assertIsNone(conn.credentials)
         self.assertIs(conn.http, http)
 
     def test_ctor_credentials_wo_create_scoped(self):
         credentials = object()
         conn = self._makeOne(credentials)
         self.assertIs(conn.credentials, credentials)
-        self.assertEqual(conn._http, None)
+        self.assertIsNone(conn._http)
 
     def test_http_w_existing(self):
         conn = self._makeOne()
@@ -99,7 +99,7 @@ class TestJSONConnection(unittest.TestCase):
 
     def test_ctor_defaults(self):
         conn = self._makeOne()
-        self.assertEqual(conn.credentials, None)
+        self.assertIsNone(conn.credentials)
 
     def test_ctor_explicit(self):
         credentials = _Credentials()
@@ -168,7 +168,7 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(content, b'')
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
-        self.assertEqual(http._called_with['body'], None)
+        self.assertIsNone(http._called_with['body'])
         expected_headers = {
             'Accept-Encoding': 'gzip',
             'Content-Length': '0',
@@ -205,7 +205,7 @@ class TestJSONConnection(unittest.TestCase):
         conn._make_request('GET', URI, headers={'X-Foo': 'foo'})
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
-        self.assertEqual(http._called_with['body'], None)
+        self.assertIsNone(http._called_with['body'])
         expected_headers = {
             'Accept-Encoding': 'gzip',
             'Content-Length': '0',
@@ -230,7 +230,7 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(conn.api_request('GET', PATH), {})
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
-        self.assertEqual(http._called_with['body'], None)
+        self.assertIsNone(http._called_with['body'])
         expected_headers = {
             'Accept-Encoding': 'gzip',
             'Content-Length': '0',
@@ -279,7 +279,7 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(path, PATH)
         parms = dict(parse_qsl(qs))
         self.assertEqual(parms['foo'], 'bar')
-        self.assertEqual(http._called_with['body'], None)
+        self.assertIsNone(http._called_with['body'])
         expected_headers = {
             'Accept-Encoding': 'gzip',
             'Content-Length': '0',
@@ -350,7 +350,7 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(result, {})
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
-        self.assertEqual(http._called_with['body'], None)
+        self.assertIsNone(http._called_with['body'])
         expected_headers = {
             'Accept-Encoding': 'gzip',
             'Content-Length': '0',

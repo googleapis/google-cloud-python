@@ -577,7 +577,7 @@ class Test__gc_rule_from_pb(unittest.TestCase):
     def test_empty(self):
 
         gc_rule_pb = _GcRulePB()
-        self.assertEqual(self._callFUT(gc_rule_pb), None)
+        self.assertIsNone(self._callFUT(gc_rule_pb))
 
     def test_max_num_versions(self):
         from google.cloud.bigtable.column_family import MaxVersionsGCRule

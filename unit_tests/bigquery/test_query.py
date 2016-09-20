@@ -384,7 +384,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(rows[1], ('Bharney Rhubble', 33))
         self.assertEqual(rows[2], ('Wylma Phlyntstone', 29))
         self.assertEqual(rows[3], ('Bhettye Rhubble', 27))
-        self.assertEqual(total_rows, None)
+        self.assertIsNone(total_rows)
         self.assertEqual(page_token, AFTER['pageToken'])
 
         self.assertEqual(len(conn._requested), 1)

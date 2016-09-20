@@ -67,12 +67,12 @@ class TestManagedZone(unittest.TestCase):
         if 'creationTime' in resource:
             self.assertEqual(zone.created, self.WHEN)
         else:
-            self.assertEqual(zone.created, None)
+            self.assertIsNone(zone.created)
 
         if 'nameServers' in resource:
             self.assertEqual(zone.name_servers, resource['nameServers'])
         else:
-            self.assertEqual(zone.name_servers, None)
+            self.assertIsNone(zone.name_servers)
 
     def _verifyResourceProperties(self, zone, resource):
 
@@ -87,7 +87,7 @@ class TestManagedZone(unittest.TestCase):
     def test_ctor_defaults(self):
         zone = self._makeOne(self.ZONE_NAME)
         self.assertEqual(zone.name, self.ZONE_NAME)
-        self.assertEqual(zone.dns_name, None)
+        self.assertIsNone(zone.dns_name)
         self.assertIsNone(zone._client)
 
         with self.assertRaises(AttributeError):
@@ -96,9 +96,9 @@ class TestManagedZone(unittest.TestCase):
         with self.assertRaises(AttributeError):
             _ = zone.path
 
-        self.assertEqual(zone.zone_id, None)
-        self.assertEqual(zone.created, None)
-        self.assertEqual(zone.description, None)
+        self.assertIsNone(zone.zone_id)
+        self.assertIsNone(zone.created)
+        self.assertIsNone(zone.description)
 
     def test_ctor_wo_description(self):
         client = _Client(self.PROJECT)
@@ -110,8 +110,8 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(
             zone.path,
             '/projects/%s/managedZones/%s' % (self.PROJECT, self.ZONE_NAME))
-        self.assertEqual(zone.zone_id, None)
-        self.assertEqual(zone.created, None)
+        self.assertIsNone(zone.zone_id)
+        self.assertIsNone(zone.created)
         self.assertEqual(zone.description, self.DNS_NAME)
 
     def test_ctor_explicit(self):
@@ -126,8 +126,8 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(
             zone.path,
             '/projects/%s/managedZones/%s' % (self.PROJECT, self.ZONE_NAME))
-        self.assertEqual(zone.zone_id, None)
-        self.assertEqual(zone.created, None)
+        self.assertIsNone(zone.zone_id)
+        self.assertIsNone(zone.created)
         self.assertEqual(zone.description, DESCRIPTION)
 
     def test_from_api_repr_missing_identity(self):
@@ -499,7 +499,7 @@ class TestManagedZone(unittest.TestCase):
             self.assertEqual(found.record_type, expected['type'])
             self.assertEqual(found.ttl, int(expected['ttl']))
             self.assertEqual(found.rrdatas, expected['rrdatas'])
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
@@ -656,7 +656,7 @@ class TestManagedZone(unittest.TestCase):
                 self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
                 self.assertEqual(found_rr.rrdatas, expected_rr['rrdatas'])
 
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)

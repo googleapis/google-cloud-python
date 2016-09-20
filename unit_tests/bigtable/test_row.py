@@ -369,7 +369,7 @@ class TestDirectRow(unittest.TestCase):
 
         # Perform the method and check the result.
         result = row.commit()
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         # Make sure no request was sent.
         self.assertEqual(stub.method_calls, [])
 
@@ -510,7 +510,7 @@ class TestConditionalRow(unittest.TestCase):
 
         # Perform the method and check the result.
         result = row.commit()
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         # Make sure no request was sent.
         self.assertEqual(stub.method_calls, [])
 

@@ -123,7 +123,7 @@ class TestBatch(unittest.TestCase):
         headers = solo_request[2]
         for key, value in EXPECTED_HEADERS:
             self.assertEqual(headers[key], value)
-        self.assertEqual(solo_request[3], None)
+        self.assertIsNone(solo_request[3])
 
     def test__make_request_POST_normal(self):
         from google.cloud.storage.batch import _FutureDict
@@ -198,7 +198,7 @@ class TestBatch(unittest.TestCase):
         headers = solo_request[2]
         for key, value in EXPECTED_HEADERS:
             self.assertEqual(headers[key], value)
-        self.assertEqual(solo_request[3], None)
+        self.assertIsNone(solo_request[3])
 
     def test__make_request_POST_too_many_requests(self):
         URL = 'http://example.com/api'

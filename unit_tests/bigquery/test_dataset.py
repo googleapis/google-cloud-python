@@ -140,19 +140,19 @@ class TestDataset(unittest.TestCase):
         if 'creationTime' in resource:
             self.assertEqual(dataset.created, self.WHEN)
         else:
-            self.assertEqual(dataset.created, None)
+            self.assertIsNone(dataset.created)
         if 'etag' in resource:
             self.assertEqual(dataset.etag, self.ETAG)
         else:
-            self.assertEqual(dataset.etag, None)
+            self.assertIsNone(dataset.etag)
         if 'lastModifiedTime' in resource:
             self.assertEqual(dataset.modified, self.WHEN)
         else:
-            self.assertEqual(dataset.modified, None)
+            self.assertIsNone(dataset.modified)
         if 'selfLink' in resource:
             self.assertEqual(dataset.self_link, self.RESOURCE_URL)
         else:
-            self.assertEqual(dataset.self_link, None)
+            self.assertIsNone(dataset.self_link)
 
     def _verifyResourceProperties(self, dataset, resource):
 
@@ -162,7 +162,7 @@ class TestDataset(unittest.TestCase):
             self.assertEqual(dataset.default_table_expiration_ms,
                              int(resource.get('defaultTableExpirationMs')))
         else:
-            self.assertEqual(dataset.default_table_expiration_ms, None)
+            self.assertIsNone(dataset.default_table_expiration_ms)
         self.assertEqual(dataset.description, resource.get('description'))
         self.assertEqual(dataset.friendly_name, resource.get('friendlyName'))
         self.assertEqual(dataset.location, resource.get('location'))
@@ -183,16 +183,16 @@ class TestDataset(unittest.TestCase):
             '/projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME))
         self.assertEqual(dataset.access_grants, [])
 
-        self.assertEqual(dataset.created, None)
-        self.assertEqual(dataset.dataset_id, None)
-        self.assertEqual(dataset.etag, None)
-        self.assertEqual(dataset.modified, None)
-        self.assertEqual(dataset.self_link, None)
+        self.assertIsNone(dataset.created)
+        self.assertIsNone(dataset.dataset_id)
+        self.assertIsNone(dataset.etag)
+        self.assertIsNone(dataset.modified)
+        self.assertIsNone(dataset.self_link)
 
-        self.assertEqual(dataset.default_table_expiration_ms, None)
-        self.assertEqual(dataset.description, None)
-        self.assertEqual(dataset.friendly_name, None)
-        self.assertEqual(dataset.location, None)
+        self.assertIsNone(dataset.default_table_expiration_ms)
+        self.assertIsNone(dataset.description)
+        self.assertIsNone(dataset.friendly_name)
+        self.assertIsNone(dataset.location)
 
     def test_access_roles_setter_non_list(self):
         client = _Client(self.PROJECT)
@@ -641,7 +641,7 @@ class TestDataset(unittest.TestCase):
         dataset = self._makeOne(self.DS_NAME, client=client)
         tables, token = dataset.list_tables()
         self.assertEqual(tables, [])
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
@@ -726,7 +726,7 @@ class TestDataset(unittest.TestCase):
             self.assertIsInstance(found, Table)
             self.assertEqual(found.table_id, expected['id'])
             self.assertEqual(found.table_type, expected['type'])
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
