@@ -25,21 +25,27 @@ import subprocess
 
 import psutil
 
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from google.cloud.environment_vars import GCD_DATASET
 from google.cloud.environment_vars import GCD_HOST
 from google.cloud.environment_vars import PUBSUB_EMULATOR
 from run_system_test import run_module_tests
 
 
+BIGTABLE = 'bigtable'
+DATASTORE = 'datastore'
+PUBSUB = 'pubsub'
 PACKAGE_INFO = {
-    'datastore': (GCD_DATASET, GCD_HOST),
-    'pubsub': (PUBSUB_EMULATOR,)
+    BIGTABLE: (BIGTABLE_EMULATOR,),
+    DATASTORE: (GCD_DATASET, GCD_HOST),
+    PUBSUB: (PUBSUB_EMULATOR,),
 }
 EXTRA = {
-    'datastore': ('--no-legacy',),
+    DATASTORE: ('--no-legacy',),
 }
 _DS_READY_LINE = '[datastore] Dev App Server is now running.\n'
 _PS_READY_LINE_PREFIX = '[pubsub] INFO: Server started, listening on '
+_BT_READY_LINE_PREFIX = '[bigtable] Cloud Bigtable emulator running on '
 
 
 def get_parser():
@@ -51,8 +57,8 @@ def get_parser():
     parser = argparse.ArgumentParser(
         description='Run google-cloud system tests against local emulator.')
     parser.add_argument('--package', dest='package',
-                        choices=('datastore', 'pubsub'),
-                        default='datastore', help='Package to be tested.')
+                        choices=sorted(PACKAGE_INFO.keys()),
+                        default=DATASTORE, help='Package to be tested.')
     return parser
 
 
@@ -95,16 +101,18 @@ def datastore_wait_ready(popen):
         emulator_ready = popen.stderr.readline() == _DS_READY_LINE
 
 
-def pubsub_wait_ready(popen):
-    """Wait until the pubsub emulator is ready to use.
+def wait_ready_prefix(popen, prefix):
+    """Wait until the a process encounters a line with matching prefix.
 
     :type popen: :class:`subprocess.Popen`
     :param popen: An open subprocess to interact with.
+
+    :type prefix: str
+    :param prefix: The prefix to match
     """
     emulator_ready = False
     while not emulator_ready:
-        emulator_ready = popen.stderr.readline().startswith(
-            _PS_READY_LINE_PREFIX)
+        emulator_ready = popen.stderr.readline().startswith(prefix)
 
 
 def wait_ready(package, popen):
@@ -117,14 +125,16 @@ def wait_ready(package, popen):
     :param popen: An open subprocess to interact with.
 
     :raises: :class:`KeyError` if the ``package`` is not among
-             ``datastore``, ``pubsub``.
+             ``datastore``, ``pubsub`` or ``bigtable``.
     """
-    if package == 'datastore':
+    if package == DATASTORE:
         datastore_wait_ready(popen)
-    elif package == 'pubsub':
-        pubsub_wait_ready(popen)
+    elif package == PUBSUB:
+        wait_ready_prefix(popen, _PS_READY_LINE_PREFIX)
+    elif package == BIGTABLE:
+        wait_ready_prefix(popen, _BT_READY_LINE_PREFIX)
     else:
-        raise KeyError('')
+        raise KeyError('Package not supported', package)
 
 
 def cleanup(pid):

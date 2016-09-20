@@ -45,16 +45,18 @@ class Config(object):
     global state.
     """
     CLIENT = None
+    IN_EMULATOR = False
 
 
 def setUpModule():
-    if os.getenv(PUBSUB_EMULATOR) is None:
-        Config.CLIENT = client.Client()
-    else:
+    Config.IN_EMULATOR = os.getenv(PUBSUB_EMULATOR) is not None
+    if Config.IN_EMULATOR:
         credentials = EmulatorCreds()
         http = httplib2.Http()  # Un-authorized.
         Config.CLIENT = client.Client(credentials=credentials,
                                       http=http)
+    else:
+        Config.CLIENT = client.Client()
 
 
 class TestPubsub(unittest.TestCase):
@@ -203,11 +205,10 @@ class TestPubsub(unittest.TestCase):
         self.assertEqual(message2.attributes['extra'], EXTRA_2)
 
     def _maybe_emulator_skip(self):
-        # NOTE: We check at run-time rather than using the @unittest.skipIf
-        #       decorator. This matches the philosophy behind using
-        #       setUpModule to determine the environment at run-time
-        #       rather than at import time.
-        if os.getenv(PUBSUB_EMULATOR) is not None:
+        # NOTE: This method is necessary because ``Config.IN_EMULATOR``
+        #       is set at runtime rather than import time, which means we
+        #       can't use the @unittest.skipIf decorator.
+        if Config.IN_EMULATOR:
             self.skipTest('IAM not supported by Pub/Sub emulator')
 
     def test_topic_iam_policy(self):
