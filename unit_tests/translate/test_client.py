@@ -32,7 +32,7 @@ class TestClient(unittest.TestCase):
 
         http = object()
         client = self._makeOne(self.KEY, http=http)
-        self.assertTrue(isinstance(client.connection, Connection))
+        self.assertIsInstance(client.connection, Connection)
         self.assertIsNone(client.connection.credentials)
         self.assertTrue(client.connection.http is http)
         self.assertEqual(client.target_language, ENGLISH_ISO_639)
@@ -43,7 +43,7 @@ class TestClient(unittest.TestCase):
         http = object()
         target = 'es'
         client = self._makeOne(self.KEY, http=http, target_language=target)
-        self.assertTrue(isinstance(client.connection, Connection))
+        self.assertIsInstance(client.connection, Connection)
         self.assertIsNone(client.connection.credentials)
         self.assertTrue(client.connection.http is http)
         self.assertEqual(client.target_language, target)

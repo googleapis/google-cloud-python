@@ -79,7 +79,7 @@ class TestInstance(unittest.TestCase):
         instance = self._makeOne(self.INSTANCE_ID, None, self.LOCATION_ID)
 
         table = instance.table(self.TABLE_ID)
-        self.assertTrue(isinstance(table, Table))
+        self.assertIsInstance(table, Table)
         self.assertEqual(table.table_id, self.TABLE_ID)
         self.assertEqual(table._instance, instance)
 
@@ -123,7 +123,7 @@ class TestInstance(unittest.TestCase):
 
         klass = self._getTargetClass()
         instance = klass.from_pb(instance_pb, client)
-        self.assertTrue(isinstance(instance, klass))
+        self.assertIsInstance(instance, klass)
         self.assertEqual(instance._client, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance._cluster_location_id,
@@ -261,7 +261,7 @@ class TestInstance(unittest.TestCase):
         # Perform the method and check the result.
         result = instance.create()
 
-        self.assertTrue(isinstance(result, Operation))
+        self.assertIsInstance(result, Operation)
         self.assertEqual(result.name, self.OP_NAME)
         self.assertTrue(result.target is instance)
         self.assertTrue(result.client is client)
@@ -305,7 +305,7 @@ class TestInstance(unittest.TestCase):
         # Perform the method and check the result.
         result = instance.create()
 
-        self.assertTrue(isinstance(result, Operation))
+        self.assertIsInstance(result, Operation)
         self.assertEqual(result.name, self.OP_NAME)
         self.assertTrue(result.target is instance)
         self.assertTrue(result.client is client)
@@ -532,13 +532,13 @@ class Test__prepare_create_request(unittest.TestCase):
                                    messages_v2_pb.CreateInstanceRequest))
         self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
         self.assertEqual(request_pb.parent, self.PARENT)
-        self.assertTrue(isinstance(request_pb.instance, data_v2_pb2.Instance))
+        self.assertIsInstance(request_pb.instance, data_v2_pb2.Instance)
         self.assertEqual(request_pb.instance.name, u'')
         self.assertEqual(request_pb.instance.display_name, self.INSTANCE_ID)
 
         # An instance must also define a same-named cluster
         cluster = request_pb.clusters[self.INSTANCE_ID]
-        self.assertTrue(isinstance(cluster, data_v2_pb2.Cluster))
+        self.assertIsInstance(cluster, data_v2_pb2.Cluster)
         self.assertEqual(cluster.name, self.CLUSTER_NAME)
         self.assertEqual(cluster.location, self.LOCATION_NAME)
         self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
@@ -563,11 +563,11 @@ class Test__prepare_create_request(unittest.TestCase):
         self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
         self.assertEqual(request_pb.parent,
                          'projects/' + self.PROJECT)
-        self.assertTrue(isinstance(request_pb.instance, data_v2_pb2.Instance))
+        self.assertIsInstance(request_pb.instance, data_v2_pb2.Instance)
         self.assertEqual(request_pb.instance.display_name, DISPLAY_NAME)
         # An instance must also define a same-named cluster
         cluster = request_pb.clusters[self.INSTANCE_ID]
-        self.assertTrue(isinstance(cluster, data_v2_pb2.Cluster))
+        self.assertIsInstance(cluster, data_v2_pb2.Cluster)
         self.assertEqual(cluster.location, self.LOCATION_NAME)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
 

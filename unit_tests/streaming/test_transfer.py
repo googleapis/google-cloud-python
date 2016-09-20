@@ -85,7 +85,7 @@ class Test__Transfer(unittest.TestCase):
         xfer = self._makeOne(stream)
         xfer._initialize(None, self.URL)
         self.assertTrue(xfer.initialized)
-        self.assertTrue(isinstance(xfer.http, Http))
+        self.assertIsInstance(xfer.http, Http)
         self.assertTrue(xfer.url is self.URL)
 
     def test__initialize_w_existing_http(self):
@@ -1352,7 +1352,7 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(len(requester._requested), 2)
         self.assertTrue(requester._requested[0][0] is request)
         chunk_request = requester._requested[1][0]
-        self.assertTrue(isinstance(chunk_request, _Request))
+        self.assertIsInstance(chunk_request, _Request)
         self.assertEqual(chunk_request.url, self.UPLOAD_URL)
         self.assertEqual(chunk_request.http_method, 'PUT')
         self.assertEqual(chunk_request.body, CONTENT)
@@ -1660,7 +1660,7 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
-        self.assertTrue(isinstance(body_stream, StreamSlice))
+        self.assertIsInstance(body_stream, StreamSlice)
         self.assertTrue(body_stream._stream is stream)
         self.assertEqual(len(body_stream), SIZE)
         self.assertEqual(request.headers,
@@ -1687,7 +1687,7 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
-        self.assertTrue(isinstance(body_stream, StreamSlice))
+        self.assertIsInstance(body_stream, StreamSlice)
         self.assertTrue(body_stream._stream is stream)
         self.assertEqual(len(body_stream), 0)
         self.assertEqual(request.headers,
@@ -1775,7 +1775,7 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
-        self.assertTrue(isinstance(body_stream, StreamSlice))
+        self.assertIsInstance(body_stream, StreamSlice)
         self.assertTrue(body_stream._stream is stream)
         self.assertEqual(len(body_stream), CHUNK_SIZE)
         expected_headers = {
@@ -1806,7 +1806,7 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
-        self.assertTrue(isinstance(body_stream, StreamSlice))
+        self.assertIsInstance(body_stream, StreamSlice)
         self.assertTrue(body_stream._stream is stream)
         self.assertEqual(len(body_stream), 0)
         self.assertEqual(request.headers,

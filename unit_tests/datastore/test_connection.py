@@ -49,7 +49,7 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         datastore_api = self._makeOne(conn)
         http = conn.http = Http({'status': '200'}, 'CONTENT')
         response = datastore_api._rpc(PROJECT, METHOD, ReqPB(), RspPB)
-        self.assertTrue(isinstance(response, RspPB))
+        self.assertIsInstance(response, RspPB)
         self.assertEqual(response._pb, 'CONTENT')
         called_with = http._called_with
         self.assertEqual(called_with['uri'], URI)
@@ -408,7 +408,7 @@ class TestConnection(unittest.TestCase):
         import httplib2
 
         conn = self._makeOne()
-        self.assertTrue(isinstance(conn.http, httplib2.Http))
+        self.assertIsInstance(conn.http, httplib2.Http)
 
     def test_http_w_creds(self):
         import httplib2
@@ -427,7 +427,7 @@ class TestConnection(unittest.TestCase):
         creds = Creds()
         conn = self._makeOne(creds)
         self.assertTrue(conn.http is authorized)
-        self.assertTrue(isinstance(creds._called_with, httplib2.Http))
+        self.assertIsInstance(creds._called_with, httplib2.Http)
 
     def test_build_api_url_w_default_base_version(self):
         PROJECT = 'PROJECT'

@@ -48,7 +48,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=False):
             api = client.logging_api
 
-        self.assertTrue(isinstance(api, _LoggingAPI))
+        self.assertIsInstance(api, _LoggingAPI)
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.logging_api
@@ -95,7 +95,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=False):
             api = client.sinks_api
 
-        self.assertTrue(isinstance(api, _SinksAPI))
+        self.assertIsInstance(api, _SinksAPI)
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.sinks_api
@@ -142,7 +142,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=False):
             api = client.metrics_api
 
-        self.assertTrue(isinstance(api, _MetricsAPI))
+        self.assertIsInstance(api, _MetricsAPI)
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.metrics_api
@@ -184,7 +184,7 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         logger = client.logger(self.LOGGER_NAME)
-        self.assertTrue(isinstance(logger, Logger))
+        self.assertIsInstance(logger, Logger)
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertTrue(logger.client is client)
         self.assertEqual(logger.project, self.PROJECT)
@@ -220,7 +220,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(entries), 1)
         entry = entries[0]
-        self.assertTrue(isinstance(entry, TextEntry))
+        self.assertIsInstance(entry, TextEntry)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.payload, TEXT)
         logger = entry.logger
@@ -276,17 +276,17 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(entries), 2)
 
         entry = entries[0]
-        self.assertTrue(isinstance(entry, StructEntry))
+        self.assertIsInstance(entry, StructEntry)
         self.assertEqual(entry.insert_id, IID1)
         self.assertEqual(entry.payload, PAYLOAD)
         logger = entry.logger
-        self.assertTrue(isinstance(logger, Logger))
+        self.assertIsInstance(logger, Logger)
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertTrue(logger.client is client)
         self.assertEqual(logger.project, self.PROJECT)
 
         entry = entries[1]
-        self.assertTrue(isinstance(entry, ProtobufEntry))
+        self.assertIsInstance(entry, ProtobufEntry)
         self.assertEqual(entry.insert_id, IID2)
         self.assertEqual(entry.payload, PROTO_PAYLOAD)
         logger = entry.logger
@@ -306,7 +306,7 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         sink = client.sink(self.SINK_NAME)
-        self.assertTrue(isinstance(sink, Sink))
+        self.assertIsInstance(sink, Sink)
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter_, None)
         self.assertEqual(sink.destination, None)
@@ -318,7 +318,7 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         sink = client.sink(self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
-        self.assertTrue(isinstance(sink, Sink))
+        self.assertIsInstance(sink, Sink)
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter_, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
@@ -344,7 +344,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(sinks), 1)
         sink = sinks[0]
-        self.assertTrue(isinstance(sink, Sink))
+        self.assertIsInstance(sink, Sink)
         self.assertEqual(sink.name, SINK_NAME)
         self.assertEqual(sink.filter_, FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
@@ -373,7 +373,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(sinks), 1)
         sink = sinks[0]
-        self.assertTrue(isinstance(sink, Sink))
+        self.assertIsInstance(sink, Sink)
         self.assertEqual(sink.name, SINK_NAME)
         self.assertEqual(sink.filter_, FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
@@ -387,7 +387,7 @@ class TestClient(unittest.TestCase):
 
         client_obj = self._makeOne(project=self.PROJECT, credentials=creds)
         metric = client_obj.metric(self.METRIC_NAME)
-        self.assertTrue(isinstance(metric, Metric))
+        self.assertIsInstance(metric, Metric)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, None)
         self.assertEqual(metric.description, '')
@@ -401,7 +401,7 @@ class TestClient(unittest.TestCase):
         client_obj = self._makeOne(project=self.PROJECT, credentials=creds)
         metric = client_obj.metric(self.METRIC_NAME, self.FILTER,
                                    description=self.DESCRIPTION)
-        self.assertTrue(isinstance(metric, Metric))
+        self.assertIsInstance(metric, Metric)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
@@ -425,7 +425,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(metrics), 1)
         metric = metrics[0]
-        self.assertTrue(isinstance(metric, Metric))
+        self.assertIsInstance(metric, Metric)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
@@ -452,7 +452,7 @@ class TestClient(unittest.TestCase):
         # Test values are correct.
         self.assertEqual(len(metrics), 1)
         metric = metrics[0]
-        self.assertTrue(isinstance(metric, Metric))
+        self.assertIsInstance(metric, Metric)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)

@@ -31,7 +31,7 @@ class Test__timedelta_to_duration_pb(unittest.TestCase):
         timedelta_val = datetime.timedelta(seconds=seconds,
                                            microseconds=microseconds)
         result = self._callFUT(timedelta_val)
-        self.assertTrue(isinstance(result, duration_pb2.Duration))
+        self.assertIsInstance(result, duration_pb2.Duration)
         self.assertEqual(result.seconds, seconds)
         self.assertEqual(result.nanos, 1000 * microseconds)
 
@@ -44,7 +44,7 @@ class Test__timedelta_to_duration_pb(unittest.TestCase):
         timedelta_val = datetime.timedelta(seconds=seconds,
                                            microseconds=microseconds)
         result = self._callFUT(timedelta_val)
-        self.assertTrue(isinstance(result, duration_pb2.Duration))
+        self.assertIsInstance(result, duration_pb2.Duration)
         self.assertEqual(result.seconds, seconds - 1)
         self.assertEqual(result.nanos, 10**9 + 1000 * microseconds)
 
@@ -57,7 +57,7 @@ class Test__timedelta_to_duration_pb(unittest.TestCase):
         timedelta_val = datetime.timedelta(seconds=seconds,
                                            microseconds=microseconds)
         result = self._callFUT(timedelta_val)
-        self.assertTrue(isinstance(result, duration_pb2.Duration))
+        self.assertIsInstance(result, duration_pb2.Duration)
         self.assertEqual(result.seconds, seconds + 1)
         self.assertEqual(result.nanos, -(10**9 - 1000 * microseconds))
 
@@ -79,7 +79,7 @@ class Test__duration_pb_to_timedelta(unittest.TestCase):
         timedelta_val = datetime.timedelta(seconds=seconds,
                                            microseconds=microseconds)
         result = self._callFUT(duration_pb)
-        self.assertTrue(isinstance(result, datetime.timedelta))
+        self.assertIsInstance(result, datetime.timedelta)
         self.assertEqual(result, timedelta_val)
 
 
@@ -585,7 +585,7 @@ class Test__gc_rule_from_pb(unittest.TestCase):
         orig_rule = MaxVersionsGCRule(1)
         gc_rule_pb = orig_rule.to_pb()
         result = self._callFUT(gc_rule_pb)
-        self.assertTrue(isinstance(result, MaxVersionsGCRule))
+        self.assertIsInstance(result, MaxVersionsGCRule)
         self.assertEqual(result, orig_rule)
 
     def test_max_age(self):
@@ -595,7 +595,7 @@ class Test__gc_rule_from_pb(unittest.TestCase):
         orig_rule = MaxAgeGCRule(datetime.timedelta(seconds=1))
         gc_rule_pb = orig_rule.to_pb()
         result = self._callFUT(gc_rule_pb)
-        self.assertTrue(isinstance(result, MaxAgeGCRule))
+        self.assertIsInstance(result, MaxAgeGCRule)
         self.assertEqual(result, orig_rule)
 
     def test_union(self):
@@ -609,7 +609,7 @@ class Test__gc_rule_from_pb(unittest.TestCase):
         orig_rule = GCRuleUnion([rule1, rule2])
         gc_rule_pb = orig_rule.to_pb()
         result = self._callFUT(gc_rule_pb)
-        self.assertTrue(isinstance(result, GCRuleUnion))
+        self.assertIsInstance(result, GCRuleUnion)
         self.assertEqual(result, orig_rule)
 
     def test_intersection(self):
@@ -623,7 +623,7 @@ class Test__gc_rule_from_pb(unittest.TestCase):
         orig_rule = GCRuleIntersection([rule1, rule2])
         gc_rule_pb = orig_rule.to_pb()
         result = self._callFUT(gc_rule_pb)
-        self.assertTrue(isinstance(result, GCRuleIntersection))
+        self.assertIsInstance(result, GCRuleIntersection)
         self.assertEqual(result, orig_rule)
 
     def test_unknown_field_name(self):

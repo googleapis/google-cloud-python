@@ -110,7 +110,7 @@ class TestBatch(unittest.TestCase):
         response, content = batch._make_request('GET', URL,
                                                 target_object=target)
         self.assertEqual(response.status, 204)
-        self.assertTrue(isinstance(content, _FutureDict))
+        self.assertIsInstance(content, _FutureDict)
         self.assertTrue(target._properties is content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
@@ -135,7 +135,7 @@ class TestBatch(unittest.TestCase):
         response, content = batch._make_request('POST', URL, data={'foo': 1},
                                                 target_object=target)
         self.assertEqual(response.status, 204)
-        self.assertTrue(isinstance(content, _FutureDict))
+        self.assertIsInstance(content, _FutureDict)
         self.assertTrue(target._properties is content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
@@ -160,7 +160,7 @@ class TestBatch(unittest.TestCase):
         response, content = batch._make_request('PATCH', URL, data={'foo': 1},
                                                 target_object=target)
         self.assertEqual(response.status, 204)
-        self.assertTrue(isinstance(content, _FutureDict))
+        self.assertIsInstance(content, _FutureDict)
         self.assertTrue(target._properties is content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
@@ -185,7 +185,7 @@ class TestBatch(unittest.TestCase):
         response, content = batch._make_request('DELETE', URL,
                                                 target_object=target)
         self.assertEqual(response.status, 204)
-        self.assertTrue(isinstance(content, _FutureDict))
+        self.assertIsInstance(content, _FutureDict)
         self.assertTrue(target._properties is content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
@@ -439,9 +439,9 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch._target_objects, [target1, target2, target3])
         # Since the context manager fails, finish will not get called and
         # the _properties will still be futures.
-        self.assertTrue(isinstance(target1._properties, _FutureDict))
-        self.assertTrue(isinstance(target2._properties, _FutureDict))
-        self.assertTrue(isinstance(target3._properties, _FutureDict))
+        self.assertIsInstance(target1._properties, _FutureDict)
+        self.assertIsInstance(target2._properties, _FutureDict)
+        self.assertIsInstance(target3._properties, _FutureDict)
 
 
 class Test__unpack_batch_response(unittest.TestCase):

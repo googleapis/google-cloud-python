@@ -28,7 +28,7 @@ class Test__new_value_pb(unittest.TestCase):
         name = 'foo'
         result = self._callFUT(entity_pb, name)
 
-        self.assertTrue(isinstance(result, entity_pb2.Value))
+        self.assertIsInstance(result, entity_pb2.Value)
         self.assertEqual(len(entity_pb.properties), 1)
         self.assertEqual(entity_pb.properties[name], result)
 
@@ -51,7 +51,7 @@ class Test__property_tuples(unittest.TestCase):
         val_pb2 = _new_value_pb(entity_pb, name2)
 
         result = self._callFUT(entity_pb)
-        self.assertTrue(isinstance(result, types.GeneratorType))
+        self.assertIsInstance(result, types.GeneratorType)
         self.assertEqual(sorted(result),
                          sorted([(name1, val_pb1), (name2, val_pb2)]))
 
@@ -608,7 +608,7 @@ class Test__get_value_from_value_pb(unittest.TestCase):
         value_pb = _new_value_pb(entity_pb, 'foo')
         value_pb.string_value = 'Foo'
         entity = self._callFUT(pb)
-        self.assertTrue(isinstance(entity, Entity))
+        self.assertIsInstance(entity, Entity)
         self.assertEqual(entity['foo'], 'Foo')
 
     def test_array(self):

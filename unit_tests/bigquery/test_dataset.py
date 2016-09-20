@@ -681,7 +681,7 @@ class TestDataset(unittest.TestCase):
 
         self.assertEqual(len(tables), len(DATA['tables']))
         for found, expected in zip(tables, DATA['tables']):
-            self.assertTrue(isinstance(found, Table))
+            self.assertIsInstance(found, Table)
             self.assertEqual(found.table_id, expected['id'])
             self.assertEqual(found.table_type, expected['type'])
         self.assertEqual(token, TOKEN)
@@ -723,7 +723,7 @@ class TestDataset(unittest.TestCase):
 
         self.assertEqual(len(tables), len(DATA['tables']))
         for found, expected in zip(tables, DATA['tables']):
-            self.assertTrue(isinstance(found, Table))
+            self.assertIsInstance(found, Table)
             self.assertEqual(found.table_id, expected['id'])
             self.assertEqual(found.table_type, expected['type'])
         self.assertEqual(token, None)
@@ -741,7 +741,7 @@ class TestDataset(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = self._makeOne(self.DS_NAME, client=client)
         table = dataset.table('table_name')
-        self.assertTrue(isinstance(table, Table))
+        self.assertIsInstance(table, Table)
         self.assertEqual(table.name, 'table_name')
         self.assertTrue(table._dataset is dataset)
         self.assertEqual(table.schema, [])
@@ -755,7 +755,7 @@ class TestDataset(unittest.TestCase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = dataset.table('table_name', schema=[full_name, age])
-        self.assertTrue(isinstance(table, Table))
+        self.assertIsInstance(table, Table)
         self.assertEqual(table.name, 'table_name')
         self.assertTrue(table._dataset is dataset)
         self.assertEqual(table.schema, [full_name, age])

@@ -192,7 +192,7 @@ class TestManagedZone(unittest.TestCase):
         client = _Client(self.PROJECT)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
         rrs = zone.resource_record_set(RRS_NAME, RRS_TYPE, TTL, RRDATAS)
-        self.assertTrue(isinstance(rrs, ResourceRecordSet))
+        self.assertIsInstance(rrs, ResourceRecordSet)
         self.assertEqual(rrs.name, RRS_NAME)
         self.assertEqual(rrs.record_type, RRS_TYPE)
         self.assertEqual(rrs.ttl, TTL)
@@ -204,7 +204,7 @@ class TestManagedZone(unittest.TestCase):
         client = _Client(self.PROJECT)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
         changes = zone.changes()
-        self.assertTrue(isinstance(changes, Changes))
+        self.assertIsInstance(changes, Changes)
         self.assertTrue(changes.zone is zone)
 
     def test_create_w_bound_client(self):
@@ -444,7 +444,7 @@ class TestManagedZone(unittest.TestCase):
 
         self.assertEqual(len(rrsets), len(DATA['rrsets']))
         for found, expected in zip(rrsets, DATA['rrsets']):
-            self.assertTrue(isinstance(found, ResourceRecordSet))
+            self.assertIsInstance(found, ResourceRecordSet)
             self.assertEqual(found.name, expected['name'])
             self.assertEqual(found.record_type, expected['type'])
             self.assertEqual(found.ttl, int(expected['ttl']))
@@ -494,7 +494,7 @@ class TestManagedZone(unittest.TestCase):
 
         self.assertEqual(len(rrsets), len(DATA['rrsets']))
         for found, expected in zip(rrsets, DATA['rrsets']):
-            self.assertTrue(isinstance(found, ResourceRecordSet))
+            self.assertIsInstance(found, ResourceRecordSet)
             self.assertEqual(found.name, expected['name'])
             self.assertEqual(found.record_type, expected['type'])
             self.assertEqual(found.ttl, int(expected['ttl']))
@@ -555,7 +555,7 @@ class TestManagedZone(unittest.TestCase):
 
         self.assertEqual(len(changes), len(DATA['changes']))
         for found, expected in zip(changes, DATA['changes']):
-            self.assertTrue(isinstance(found, Changes))
+            self.assertIsInstance(found, Changes)
             self.assertEqual(found.name, CHANGES_NAME)
             self.assertEqual(found.status, 'pending')
             self.assertEqual(found.started, self.WHEN)
@@ -563,7 +563,7 @@ class TestManagedZone(unittest.TestCase):
             self.assertEqual(len(found.additions), len(expected['additions']))
             for found_rr, expected_rr in zip(found.additions,
                                              expected['additions']):
-                self.assertTrue(isinstance(found_rr, ResourceRecordSet))
+                self.assertIsInstance(found_rr, ResourceRecordSet)
                 self.assertEqual(found_rr.name, expected_rr['name'])
                 self.assertEqual(found_rr.record_type, expected_rr['type'])
                 self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
@@ -572,7 +572,7 @@ class TestManagedZone(unittest.TestCase):
             self.assertEqual(len(found.deletions), len(expected['deletions']))
             for found_rr, expected_rr in zip(found.deletions,
                                              expected['deletions']):
-                self.assertTrue(isinstance(found_rr, ResourceRecordSet))
+                self.assertIsInstance(found_rr, ResourceRecordSet)
                 self.assertEqual(found_rr.name, expected_rr['name'])
                 self.assertEqual(found_rr.record_type, expected_rr['type'])
                 self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
@@ -633,7 +633,7 @@ class TestManagedZone(unittest.TestCase):
 
         self.assertEqual(len(changes), len(DATA['changes']))
         for found, expected in zip(changes, DATA['changes']):
-            self.assertTrue(isinstance(found, Changes))
+            self.assertIsInstance(found, Changes)
             self.assertEqual(found.name, CHANGES_NAME)
             self.assertEqual(found.status, 'pending')
             self.assertEqual(found.started, self.WHEN)
@@ -641,7 +641,7 @@ class TestManagedZone(unittest.TestCase):
             self.assertEqual(len(found.additions), len(expected['additions']))
             for found_rr, expected_rr in zip(found.additions,
                                              expected['additions']):
-                self.assertTrue(isinstance(found_rr, ResourceRecordSet))
+                self.assertIsInstance(found_rr, ResourceRecordSet)
                 self.assertEqual(found_rr.name, expected_rr['name'])
                 self.assertEqual(found_rr.record_type, expected_rr['type'])
                 self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
@@ -650,7 +650,7 @@ class TestManagedZone(unittest.TestCase):
             self.assertEqual(len(found.deletions), len(expected['deletions']))
             for found_rr, expected_rr in zip(found.deletions,
                                              expected['deletions']):
-                self.assertTrue(isinstance(found_rr, ResourceRecordSet))
+                self.assertIsInstance(found_rr, ResourceRecordSet)
                 self.assertEqual(found_rr.name, expected_rr['name'])
                 self.assertEqual(found_rr.record_type, expected_rr['type'])
                 self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))

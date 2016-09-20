@@ -517,7 +517,7 @@ class TestClient(unittest.TestCase):
 
         instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME)
 
-        self.assertTrue(isinstance(instance, Instance))
+        self.assertIsInstance(instance, Instance)
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
         self.assertEqual(instance._cluster_location_id,
@@ -541,7 +541,7 @@ class TestClient(unittest.TestCase):
             INSTANCE_ID, display_name=DISPLAY_NAME,
             location=LOCATION_ID, serve_nodes=SERVE_NODES)
 
-        self.assertTrue(isinstance(instance, Instance))
+        self.assertIsInstance(instance, Instance)
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
         self.assertEqual(instance._cluster_location_id, LOCATION_ID)

@@ -28,7 +28,7 @@ class Test_get_credentials(unittest.TestCase):
         client = _Client()
         with _Monkey(MUT, client=client):
             found = self._callFUT()
-        self.assertTrue(isinstance(found, _Credentials))
+        self.assertIsInstance(found, _Credentials)
         self.assertTrue(found is client._signed)
         self.assertTrue(client._get_app_default_called)
 

@@ -169,7 +169,7 @@ class TestClient(unittest.TestCase):
                 client = klass()
         self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, None)
-        self.assertTrue(isinstance(client.connection, _MockConnection))
+        self.assertIsInstance(client.connection, _MockConnection)
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is None)
         self.assertTrue(client.current_batch is None)
@@ -187,7 +187,7 @@ class TestClient(unittest.TestCase):
                                http=http)
         self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, NAMESPACE)
-        self.assertTrue(isinstance(client.connection, _MockConnection))
+        self.assertIsInstance(client.connection, _MockConnection)
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
         self.assertTrue(client.current_batch is None)
@@ -363,11 +363,11 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(missing), 0)
 
         # Check the actual contents on the response.
-        self.assertTrue(isinstance(found[0], Entity))
+        self.assertIsInstance(found[0], Entity)
         self.assertEqual(found[0].key.path, key1.path)
         self.assertEqual(found[0].key.project, key1.project)
 
-        self.assertTrue(isinstance(found[1], Entity))
+        self.assertIsInstance(found[1], Entity)
         self.assertEqual(found[1].key.path, key2.path)
         self.assertEqual(found[1].key.project, key2.project)
 
@@ -713,7 +713,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Key=_Dummy):
             key = client.key(KIND, ID)
 
-        self.assertTrue(isinstance(key, _Dummy))
+        self.assertIsInstance(key, _Dummy)
         self.assertEqual(key.args, (KIND, ID))
         expected_kwargs = {
             'project': self.PROJECT,
@@ -735,7 +735,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Key=_Dummy):
             key = client.key(KIND, ID)
 
-        self.assertTrue(isinstance(key, _Dummy))
+        self.assertIsInstance(key, _Dummy)
         expected_kwargs = {
             'project': self.PROJECT,
             'namespace': NAMESPACE,
@@ -757,7 +757,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Key=_Dummy):
             key = client.key(KIND, ID, namespace=NAMESPACE2)
 
-        self.assertTrue(isinstance(key, _Dummy))
+        self.assertIsInstance(key, _Dummy)
         expected_kwargs = {
             'project': self.PROJECT,
             'namespace': NAMESPACE2,
@@ -774,7 +774,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Batch=_Dummy):
             batch = client.batch()
 
-        self.assertTrue(isinstance(batch, _Dummy))
+        self.assertIsInstance(batch, _Dummy)
         self.assertEqual(batch.args, (client,))
         self.assertEqual(batch.kwargs, {})
 
@@ -788,7 +788,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Transaction=_Dummy):
             xact = client.transaction()
 
-        self.assertTrue(isinstance(xact, _Dummy))
+        self.assertIsInstance(xact, _Dummy)
         self.assertEqual(xact.args, (client,))
         self.assertEqual(xact.kwargs, {})
 
@@ -820,7 +820,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Query=_Dummy):
             query = client.query()
 
-        self.assertTrue(isinstance(query, _Dummy))
+        self.assertIsInstance(query, _Dummy)
         self.assertEqual(query.args, (client,))
         expected_kwargs = {
             'project': self.PROJECT,
@@ -854,7 +854,7 @@ class TestClient(unittest.TestCase):
                 distinct_on=DISTINCT_ON,
                 )
 
-        self.assertTrue(isinstance(query, _Dummy))
+        self.assertIsInstance(query, _Dummy)
         self.assertEqual(query.args, (client,))
         kwargs = {
             'project': self.PROJECT,
@@ -881,7 +881,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Query=_Dummy):
             query = client.query(kind=KIND)
 
-        self.assertTrue(isinstance(query, _Dummy))
+        self.assertIsInstance(query, _Dummy)
         self.assertEqual(query.args, (client,))
         expected_kwargs = {
             'project': self.PROJECT,
@@ -904,7 +904,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Query=_Dummy):
             query = client.query(kind=KIND, namespace=NAMESPACE2)
 
-        self.assertTrue(isinstance(query, _Dummy))
+        self.assertIsInstance(query, _Dummy)
         self.assertEqual(query.args, (client,))
         expected_kwargs = {
             'project': self.PROJECT,

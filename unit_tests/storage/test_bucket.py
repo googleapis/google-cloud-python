@@ -56,7 +56,7 @@ class Test__BlobIterator(unittest.TestCase):
         blobs = list(iterator.get_items_from_response(response))
         self.assertEqual(len(blobs), 1)
         blob = blobs[0]
-        self.assertTrue(isinstance(blob, Blob))
+        self.assertIsInstance(blob, Blob)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(iterator.prefixes, set(['foo']))
 
@@ -76,7 +76,7 @@ class Test__BlobIterator(unittest.TestCase):
         blobs = list(iterator.get_items_from_response(response1))
         self.assertEqual(len(blobs), 1)
         blob = blobs[0]
-        self.assertTrue(isinstance(blob, Blob))
+        self.assertIsInstance(blob, Blob)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(iterator.prefixes, set(['foo']))
         # Parse second response.
@@ -116,7 +116,7 @@ class Test_Bucket(unittest.TestCase):
 
         bucket = self._makeOne(name=BUCKET_NAME)
         blob = bucket.blob(BLOB_NAME, chunk_size=CHUNK_SIZE)
-        self.assertTrue(isinstance(blob, Blob))
+        self.assertIsInstance(blob, Blob)
         self.assertTrue(blob.bucket is bucket)
         self.assertTrue(blob.client is bucket.client)
         self.assertEqual(blob.name, BLOB_NAME)
@@ -233,14 +233,14 @@ class Test_Bucket(unittest.TestCase):
         from google.cloud.storage.acl import BucketACL
         bucket = self._makeOne()
         acl = bucket.acl
-        self.assertTrue(isinstance(acl, BucketACL))
+        self.assertIsInstance(acl, BucketACL)
         self.assertTrue(acl is bucket._acl)
 
     def test_default_object_acl_property(self):
         from google.cloud.storage.acl import DefaultObjectACL
         bucket = self._makeOne()
         acl = bucket.default_object_acl
-        self.assertTrue(isinstance(acl, DefaultObjectACL))
+        self.assertIsInstance(acl, DefaultObjectACL)
         self.assertTrue(acl is bucket._default_object_acl)
 
     def test_path_no_name(self):

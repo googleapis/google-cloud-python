@@ -58,7 +58,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(client, get_credentials=mock_get_credentials):
             client_obj = self._makeOne()
 
-        self.assertTrue(isinstance(client_obj.connection, _MockConnection))
+        self.assertIsInstance(client_obj.connection, _MockConnection)
         self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
         self.assertEqual(FUNC_CALLS, ['get_credentials'])
 
@@ -67,7 +67,7 @@ class TestClient(unittest.TestCase):
         HTTP = object()
         client_obj = self._makeOne(credentials=CREDENTIALS, http=HTTP)
 
-        self.assertTrue(isinstance(client_obj.connection, _MockConnection))
+        self.assertIsInstance(client_obj.connection, _MockConnection)
         self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
         self.assertTrue(client_obj.connection.http is HTTP)
 
@@ -154,7 +154,7 @@ class TestJSONClient(unittest.TestCase):
             client_obj = self._makeOne()
 
         self.assertEqual(client_obj.project, PROJECT)
-        self.assertTrue(isinstance(client_obj.connection, _MockConnection))
+        self.assertIsInstance(client_obj.connection, _MockConnection)
         self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
         self.assertEqual(
             FUNC_CALLS,
@@ -194,7 +194,7 @@ class TestJSONClient(unittest.TestCase):
             self.assertEqual(client_obj.project, project.decode('utf-8'))
         else:
             self.assertEqual(client_obj.project, project)
-        self.assertTrue(isinstance(client_obj.connection, _MockConnection))
+        self.assertIsInstance(client_obj.connection, _MockConnection)
         self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
         self.assertTrue(client_obj.connection.http is HTTP)
 

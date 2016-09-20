@@ -33,7 +33,7 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._makeOne(project=self.PROJECT, credentials=creds,
                                http=http)
-        self.assertTrue(isinstance(client.connection, Connection))
+        self.assertIsInstance(client.connection, Connection)
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
 
@@ -136,7 +136,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(zones), len(DATA['managedZones']))
         for found, expected in zip(zones, DATA['managedZones']):
-            self.assertTrue(isinstance(found, ManagedZone))
+            self.assertIsInstance(found, ManagedZone)
             self.assertEqual(found.zone_id, expected['id'])
             self.assertEqual(found.name, expected['name'])
             self.assertEqual(found.dns_name, expected['dnsName'])
@@ -177,7 +177,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(zones), len(DATA['managedZones']))
         for found, expected in zip(zones, DATA['managedZones']):
-            self.assertTrue(isinstance(found, ManagedZone))
+            self.assertIsInstance(found, ManagedZone)
             self.assertEqual(found.zone_id, expected['id'])
             self.assertEqual(found.name, expected['name'])
             self.assertEqual(found.dns_name, expected['dnsName'])
@@ -197,7 +197,7 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         client = self._makeOne(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME, DNS_NAME, DESCRIPTION)
-        self.assertTrue(isinstance(zone, ManagedZone))
+        self.assertIsInstance(zone, ManagedZone)
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, DNS_NAME)
         self.assertEqual(zone.description, DESCRIPTION)
@@ -209,7 +209,7 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         client = self._makeOne(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME, DNS_NAME)
-        self.assertTrue(isinstance(zone, ManagedZone))
+        self.assertIsInstance(zone, ManagedZone)
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, DNS_NAME)
         self.assertEqual(zone.description, DNS_NAME)
@@ -220,7 +220,7 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         client = self._makeOne(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME)
-        self.assertTrue(isinstance(zone, ManagedZone))
+        self.assertIsInstance(zone, ManagedZone)
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, None)
         self.assertEqual(zone.description, None)

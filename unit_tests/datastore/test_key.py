@@ -318,7 +318,7 @@ class TestKey(unittest.TestCase):
         _KIND = 'KIND'
         key = self._makeOne(_KIND, project=self._DEFAULT_PROJECT)
         pb = key.to_protobuf()
-        self.assertTrue(isinstance(pb, entity_pb2.Key))
+        self.assertIsInstance(pb, entity_pb2.Key)
 
         # Check partition ID.
         self.assertEqual(pb.partition_id.project_id, self._DEFAULT_PROJECT)

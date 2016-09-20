@@ -208,7 +208,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(len(entries), 1)
 
         entry = entries[0]
-        self.assertTrue(isinstance(entry, LogEntry))
+        self.assertIsInstance(entry, LogEntry)
         self.assertEqual(entry.log_name, LOG_PATH)
         self.assertEqual(entry.resource.type, 'global')
         self.assertEqual(entry.labels, {})
@@ -282,7 +282,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(len(entries), 1)
 
         entry = entries[0]
-        self.assertTrue(isinstance(entry, LogEntry))
+        self.assertIsInstance(entry, LogEntry)
         self.assertEqual(entry.log_name, LOG_PATH)
         self.assertEqual(entry.resource.type, 'global')
         self.assertEqual(entry.text_payload, TEXT)
@@ -360,7 +360,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(len(entries), len(ENTRIES))
 
         entry = entries[0]
-        self.assertTrue(isinstance(entry, LogEntry))
+        self.assertIsInstance(entry, LogEntry)
         self.assertEqual(entry.log_name, '')
         self.assertEqual(entry.resource.type, '')
         self.assertEqual(entry.labels, {})
@@ -368,12 +368,12 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(entry.severity, WARNING)
 
         entry = entries[1]
-        self.assertTrue(isinstance(entry, LogEntry))
+        self.assertIsInstance(entry, LogEntry)
         self.assertEqual(entry.log_name, '')
         self.assertEqual(entry.resource.type, '')
         self.assertEqual(entry.labels, {})
         json_struct = entry.json_payload
-        self.assertTrue(isinstance(json_struct, Struct))
+        self.assertIsInstance(json_struct, Struct)
         self.assertEqual(json_struct.fields['payload'].string_value,
                          JSON['payload'])
         operation = entry.operation
@@ -381,12 +381,12 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(operation.id, OPID)
 
         entry = entries[2]
-        self.assertTrue(isinstance(entry, LogEntry))
+        self.assertIsInstance(entry, LogEntry)
         self.assertEqual(entry.log_name, '')
         self.assertEqual(entry.resource.type, '')
         self.assertEqual(entry.labels, {})
         proto = entry.proto_payload
-        self.assertTrue(isinstance(proto, Any))
+        self.assertIsInstance(proto, Any)
         self.assertEqual(proto.type_url, TIMESTAMP_TYPE_URL)
         request = entry.http_request
         self.assertEqual(request.request_url, URL)
@@ -535,7 +535,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         parent, sink, options = (
             gax_api._create_sink_called_with)
         self.assertEqual(parent, self.PROJECT_PATH)
-        self.assertTrue(isinstance(sink, LogSink))
+        self.assertIsInstance(sink, LogSink)
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
@@ -611,7 +611,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         sink_name, sink, options = (
             gax_api._update_sink_called_with)
         self.assertEqual(sink_name, self.SINK_PATH)
-        self.assertTrue(isinstance(sink, LogSink))
+        self.assertIsInstance(sink, LogSink)
         self.assertEqual(sink.name, self.SINK_PATH)
         self.assertEqual(sink.filter, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
@@ -743,7 +743,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         parent, metric, options = (
             gax_api._create_log_metric_called_with)
         self.assertEqual(parent, self.PROJECT_PATH)
-        self.assertTrue(isinstance(metric, LogMetric))
+        self.assertIsInstance(metric, LogMetric)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
@@ -819,7 +819,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         metric_name, metric, options = (
             gax_api._update_log_metric_called_with)
         self.assertEqual(metric_name, self.METRIC_PATH)
-        self.assertTrue(isinstance(metric, LogMetric))
+        self.assertIsInstance(metric, LogMetric)
         self.assertEqual(metric.name, self.METRIC_PATH)
         self.assertEqual(metric.filter, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)

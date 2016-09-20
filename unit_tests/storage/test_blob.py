@@ -75,7 +75,7 @@ class Test_Blob(unittest.TestCase):
         FAKE_BUCKET = _Bucket()
         blob = self._makeOne(None, bucket=FAKE_BUCKET)
         acl = blob.acl
-        self.assertTrue(isinstance(acl, ObjectACL))
+        self.assertIsInstance(acl, ObjectACL)
         self.assertTrue(acl is blob._acl)
 
     def test_path_no_bucket(self):

@@ -175,7 +175,7 @@ class OperationTests(unittest.TestCase):
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertTrue(operation.client is client)
         pb_metadata = operation.pb_metadata
-        self.assertTrue(isinstance(pb_metadata, Struct))
+        self.assertIsInstance(pb_metadata, Struct)
         self.assertEqual(list(pb_metadata.fields), ['foo'])
         self.assertEqual(pb_metadata.fields['foo'].string_value, 'Bar')
         self.assertEqual(operation.metadata, {'baz': 'qux'})
@@ -208,7 +208,7 @@ class OperationTests(unittest.TestCase):
         self.assertFalse(operation.poll())
 
         request_pb = stub._get_operation_requested
-        self.assertTrue(isinstance(request_pb, GetOperationRequest))
+        self.assertIsInstance(request_pb, GetOperationRequest)
         self.assertEqual(request_pb.name, self.OPERATION_NAME)
 
     def test_poll_true(self):
@@ -222,7 +222,7 @@ class OperationTests(unittest.TestCase):
         self.assertTrue(operation.poll())
 
         request_pb = stub._get_operation_requested
-        self.assertTrue(isinstance(request_pb, GetOperationRequest))
+        self.assertIsInstance(request_pb, GetOperationRequest)
         self.assertEqual(request_pb.name, self.OPERATION_NAME)
 
 

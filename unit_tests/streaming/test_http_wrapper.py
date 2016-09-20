@@ -282,7 +282,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
                      _check_response=_checked.append):
             response = self._callFUT(_http, _request)
 
-        self.assertTrue(isinstance(response, MUT.Response))
+        self.assertIsInstance(response, MUT.Response)
         self.assertEqual(response.info, INFO)
         self.assertEqual(response.content, CONTENT)
         self.assertEqual(response.request_url, _request.url)
@@ -304,7 +304,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
                      _check_response=_checked.append):
             response = self._callFUT(_http, _request)
 
-        self.assertTrue(isinstance(response, MUT.Response))
+        self.assertIsInstance(response, MUT.Response)
         self.assertEqual(response.info, INFO)
         self.assertEqual(response.content, CONTENT)
         self.assertEqual(response.request_url, _request.url)
@@ -326,7 +326,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
                      _check_response=_checked.append):
             response = self._callFUT(_http, _request)
 
-        self.assertTrue(isinstance(response, MUT.Response))
+        self.assertIsInstance(response, MUT.Response)
         self.assertEqual(response.info, INFO)
         self.assertEqual(response.content, CONTENT)
         self.assertEqual(response.request_url, _request.url)

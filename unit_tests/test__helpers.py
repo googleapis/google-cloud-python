@@ -59,7 +59,7 @@ class Test__UTC(unittest.TestCase):
         try:
             import pytz
         except ImportError:
-            self.assertTrue(isinstance(MUT.UTC, klass))
+            self.assertIsInstance(MUT.UTC, klass)
         else:
             self.assertIs(MUT.UTC, pytz.UTC)  # pragma: NO COVER
 
@@ -479,7 +479,7 @@ class Test__millis_from_datetime(unittest.TestCase):
         NOW_MICROS = _microseconds_from_datetime(NOW)
         MILLIS = NOW_MICROS // 1000
         result = self._callFUT(NOW)
-        self.assertTrue(isinstance(result, six.integer_types))
+        self.assertIsInstance(result, six.integer_types)
         self.assertEqual(result, MILLIS)
 
     def test_w_non_utc_datetime(self):
@@ -497,7 +497,7 @@ class Test__millis_from_datetime(unittest.TestCase):
         NOW_MICROS = _microseconds_from_datetime(NOW)
         MILLIS = NOW_MICROS // 1000
         result = self._callFUT(NOW)
-        self.assertTrue(isinstance(result, six.integer_types))
+        self.assertIsInstance(result, six.integer_types)
         self.assertEqual(result, MILLIS)
 
     def test_w_naive_datetime(self):
@@ -511,7 +511,7 @@ class Test__millis_from_datetime(unittest.TestCase):
         UTC_NOW_MICROS = _microseconds_from_datetime(UTC_NOW)
         MILLIS = UTC_NOW_MICROS // 1000
         result = self._callFUT(NOW)
-        self.assertTrue(isinstance(result, six.integer_types))
+        self.assertIsInstance(result, six.integer_types)
         self.assertEqual(result, MILLIS)
 
 

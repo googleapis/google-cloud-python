@@ -60,7 +60,7 @@ class TestLogger(unittest.TestCase):
         client = _Client(self.PROJECT, conn)
         logger = self._makeOne(self.LOGGER_NAME, client=client)
         batch = logger.batch()
-        self.assertTrue(isinstance(batch, Batch))
+        self.assertIsInstance(batch, Batch)
         self.assertTrue(batch.logger is logger)
         self.assertTrue(batch.client is client)
 
@@ -72,7 +72,7 @@ class TestLogger(unittest.TestCase):
         client2 = _Client(self.PROJECT, conn2)
         logger = self._makeOne(self.LOGGER_NAME, client=client1)
         batch = logger.batch(client2)
-        self.assertTrue(isinstance(batch, Batch))
+        self.assertIsInstance(batch, Batch)
         self.assertTrue(batch.logger is logger)
         self.assertTrue(batch.client is client2)
 

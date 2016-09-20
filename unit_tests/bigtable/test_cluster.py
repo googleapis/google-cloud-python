@@ -109,7 +109,7 @@ class TestCluster(unittest.TestCase):
 
         klass = self._getTargetClass()
         cluster = klass.from_pb(cluster_pb, instance)
-        self.assertTrue(isinstance(cluster, klass))
+        self.assertIsInstance(cluster, klass)
         self.assertTrue(cluster._instance is instance)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
@@ -253,7 +253,7 @@ class TestCluster(unittest.TestCase):
         # Perform the method and check the result.
         result = cluster.create()
 
-        self.assertTrue(isinstance(result, Operation))
+        self.assertIsInstance(result, Operation)
         self.assertEqual(result.name, OP_NAME)
         self.assertTrue(result.target is cluster)
         self.assertTrue(result.client is client)
@@ -319,7 +319,7 @@ class TestCluster(unittest.TestCase):
 
         result = cluster.update()
 
-        self.assertTrue(isinstance(result, Operation))
+        self.assertIsInstance(result, Operation)
         self.assertEqual(result.name, OP_NAME)
         self.assertTrue(result.target is cluster)
         self.assertTrue(result.client is client)

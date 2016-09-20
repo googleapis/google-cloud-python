@@ -112,7 +112,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertTrue(entry.severity is None)
         self.assertTrue(entry.http_request is None)
         logger = entry.logger
-        self.assertTrue(isinstance(logger, _Logger))
+        self.assertIsInstance(logger, _Logger)
         self.assertTrue(logger.client is client)
         self.assertEqual(logger.name, self.LOGGER_NAME)
 
@@ -155,7 +155,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.http_request['requestUrl'], URI)
         self.assertEqual(entry.http_request['status'], STATUS)
         logger = entry.logger
-        self.assertTrue(isinstance(logger, _Logger))
+        self.assertIsInstance(logger, _Logger)
         self.assertTrue(logger.client is client)
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertEqual(loggers, {LOG_NAME: logger})

@@ -78,7 +78,7 @@ class TestQueryResults(unittest.TestCase):
             fields = resource['schema']['fields']
             self.assertEqual(len(query.schema), len(fields))
             for found, expected in zip(query.schema, fields):
-                self.assertTrue(isinstance(found, SchemaField))
+                self.assertIsInstance(found, SchemaField)
                 self.assertEqual(found.name, expected['name'])
                 self.assertEqual(found.field_type, expected['type'])
                 self.assertEqual(found.mode, expected['mode'])
@@ -198,7 +198,7 @@ class TestQueryResults(unittest.TestCase):
             'jobId': SERVER_GENERATED,
         }
         job = query.job
-        self.assertTrue(isinstance(job, QueryJob))
+        self.assertIsInstance(job, QueryJob)
         self.assertEqual(job.query, self.QUERY)
         self.assertTrue(job._client is client)
         self.assertEqual(job.name, SERVER_GENERATED)

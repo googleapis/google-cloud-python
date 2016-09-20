@@ -58,7 +58,7 @@ class Test_make_exception(unittest.TestCase):
         response = _Response(404)
         content = b'{"error": {"message": "Not Found"}}'
         exception = self._callFUT(response, content)
-        self.assertTrue(isinstance(exception, NotFound))
+        self.assertIsInstance(exception, NotFound)
         self.assertEqual(exception.message, 'Not Found')
         self.assertEqual(list(exception.errors), [])
 
@@ -74,7 +74,7 @@ class Test_make_exception(unittest.TestCase):
         response = _Response(600)
         content = {"error": {"message": "Unknown Error", "errors": [ERROR]}}
         exception = self._callFUT(response, content)
-        self.assertTrue(isinstance(exception, GoogleCloudError))
+        self.assertIsInstance(exception, GoogleCloudError)
         self.assertEqual(exception.message, 'Unknown Error')
         self.assertEqual(list(exception.errors), [ERROR])
 
@@ -83,7 +83,7 @@ class Test_make_exception(unittest.TestCase):
         response = _Response(NotFound.code)
         content = '<html><body>404 Not Found</body></html>'
         exception = self._callFUT(response, content, use_json=True)
-        self.assertTrue(isinstance(exception, NotFound))
+        self.assertIsInstance(exception, NotFound)
         self.assertEqual(exception.message, content)
         self.assertEqual(list(exception.errors), [])
 

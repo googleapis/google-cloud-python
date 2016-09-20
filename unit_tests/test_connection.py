@@ -56,7 +56,7 @@ class TestConnection(unittest.TestCase):
     def test_http_wo_creds(self):
         import httplib2
         conn = self._makeOne()
-        self.assertTrue(isinstance(conn.http, httplib2.Http))
+        self.assertIsInstance(conn.http, httplib2.Http)
 
     def test_http_w_creds(self):
         import httplib2
@@ -65,7 +65,7 @@ class TestConnection(unittest.TestCase):
         credentials = _Credentials(authorized)
         conn = self._makeOne(credentials)
         self.assertTrue(conn.http is authorized)
-        self.assertTrue(isinstance(credentials._called_with, httplib2.Http))
+        self.assertIsInstance(credentials._called_with, httplib2.Http)
 
     def test_user_agent_format(self):
         from pkg_resources import get_distribution
@@ -114,7 +114,7 @@ class TestJSONConnection(unittest.TestCase):
     def test_http_wo_creds(self):
         import httplib2
         conn = self._makeOne()
-        self.assertTrue(isinstance(conn.http, httplib2.Http))
+        self.assertIsInstance(conn.http, httplib2.Http)
 
     def test_http_w_creds(self):
         import httplib2
@@ -123,7 +123,7 @@ class TestJSONConnection(unittest.TestCase):
         credentials = _Credentials(authorized)
         conn = self._makeOne(credentials)
         self.assertTrue(conn.http is authorized)
-        self.assertTrue(isinstance(credentials._called_with, httplib2.Http))
+        self.assertIsInstance(credentials._called_with, httplib2.Http)
 
     def test_build_api_url_no_extra_query_params(self):
         conn = self._makeMockOne()

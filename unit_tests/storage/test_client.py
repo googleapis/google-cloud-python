@@ -32,7 +32,7 @@ class TestClient(unittest.TestCase):
 
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         self.assertEqual(client.project, PROJECT)
-        self.assertTrue(isinstance(client.connection, Connection))
+        self.assertIsInstance(client.connection, Connection)
         self.assertTrue(client.connection.credentials is CREDENTIALS)
         self.assertTrue(client.current_batch is None)
         self.assertEqual(list(client._batch_stack), [])
@@ -99,7 +99,7 @@ class TestClient(unittest.TestCase):
 
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         bucket = client.bucket(BUCKET_NAME)
-        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertIsInstance(bucket, Bucket)
         self.assertTrue(bucket.client is client)
         self.assertEqual(bucket.name, BUCKET_NAME)
 
@@ -111,7 +111,7 @@ class TestClient(unittest.TestCase):
 
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         batch = client.batch()
-        self.assertTrue(isinstance(batch, Batch))
+        self.assertIsInstance(batch, Batch)
         self.assertTrue(batch._client is client)
 
     def test_get_bucket_miss(self):
@@ -158,7 +158,7 @@ class TestClient(unittest.TestCase):
         )
 
         bucket = client.get_bucket(BLOB_NAME)
-        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -206,7 +206,7 @@ class TestClient(unittest.TestCase):
         )
 
         bucket = client.lookup_bucket(BLOB_NAME)
-        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -254,7 +254,7 @@ class TestClient(unittest.TestCase):
         )
 
         bucket = client.create_bucket(BLOB_NAME)
-        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'POST')
         self.assertEqual(http._called_with['uri'], URI)
@@ -404,7 +404,7 @@ class Test__BucketIterator(unittest.TestCase):
         buckets = list(iterator.get_items_from_response(response))
         self.assertEqual(len(buckets), 1)
         bucket = buckets[0]
-        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BLOB_NAME)
 
 
