@@ -35,8 +35,8 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(xact.connection, connection)
         self.assertEqual(xact.id, None)
         self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
-        self.assertTrue(isinstance(xact._commit_request,
-                                   datastore_pb2.CommitRequest))
+        self.assertIsInstance(xact._commit_request,
+                              datastore_pb2.CommitRequest)
         self.assertTrue(xact.mutations is xact._commit_request.mutations)
         self.assertEqual(len(xact._partial_key_entities), 0)
 

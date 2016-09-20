@@ -259,8 +259,7 @@ class TestClient(unittest.TestCase):
 
         image = client.image(source_uri=_IMAGE_SOURCE)
         image_properties = image.detect_properties()
-        self.assertTrue(isinstance(image_properties,
-                                   ImagePropertiesAnnotation))
+        self.assertIsInstance(image_properties, ImagePropertiesAnnotation)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(_IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])

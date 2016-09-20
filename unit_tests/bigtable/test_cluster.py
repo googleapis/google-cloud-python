@@ -264,8 +264,8 @@ class TestCluster(unittest.TestCase):
         api_name, args, kwargs = stub.method_calls[0]
         self.assertEqual(api_name, 'CreateCluster')
         request_pb, = args
-        self.assertTrue(
-            isinstance(request_pb, messages_v2_pb2.CreateClusterRequest))
+        self.assertIsInstance(request_pb,
+                              messages_v2_pb2.CreateClusterRequest)
         self.assertEqual(request_pb.parent, instance.name)
         self.assertEqual(request_pb.cluster_id, self.CLUSTER_ID)
         self.assertEqual(request_pb.cluster.serve_nodes, SERVE_NODES)
@@ -332,8 +332,7 @@ class TestCluster(unittest.TestCase):
         api_name, args, kwargs = stub.method_calls[0]
         self.assertEqual(api_name, 'UpdateCluster')
         request_pb, = args
-        self.assertTrue(
-            isinstance(request_pb, data_v2_pb2.Cluster))
+        self.assertIsInstance(request_pb, data_v2_pb2.Cluster)
         self.assertEqual(request_pb.name, self.CLUSTER_NAME)
         self.assertEqual(request_pb.serve_nodes, SERVE_NODES)
         self.assertEqual(kwargs, {})

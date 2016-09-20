@@ -274,8 +274,8 @@ class TestInstance(unittest.TestCase):
         api_name, args, kwargs = stub.method_calls[0]
         self.assertEqual(api_name, 'CreateInstance')
         request_pb, = args
-        self.assertTrue(
-            isinstance(request_pb, messages_v2_pb2.CreateInstanceRequest))
+        self.assertIsInstance(request_pb,
+                              messages_v2_pb2.CreateInstanceRequest)
         self.assertEqual(request_pb.parent, 'projects/%s' % (self.PROJECT,))
         self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
         self.assertEqual(request_pb.instance.display_name, self.DISPLAY_NAME)
@@ -314,8 +314,8 @@ class TestInstance(unittest.TestCase):
         api_name, args, kwargs = stub.method_calls[0]
         self.assertEqual(api_name, 'CreateInstance')
         request_pb, = args
-        self.assertTrue(
-            isinstance(request_pb, messages_v2_pb2.CreateInstanceRequest))
+        self.assertIsInstance(request_pb,
+                              messages_v2_pb2.CreateInstanceRequest)
         self.assertEqual(request_pb.parent, 'projects/%s' % (self.PROJECT,))
         self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
         self.assertEqual(request_pb.instance.display_name, self.INSTANCE_ID)
@@ -528,8 +528,8 @@ class Test__prepare_create_request(unittest.TestCase):
 
         instance = Instance(self.INSTANCE_ID, client, self.LOCATION_ID)
         request_pb = self._callFUT(instance)
-        self.assertTrue(isinstance(request_pb,
-                                   messages_v2_pb.CreateInstanceRequest))
+        self.assertIsInstance(request_pb,
+                              messages_v2_pb.CreateInstanceRequest)
         self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
         self.assertEqual(request_pb.parent, self.PARENT)
         self.assertIsInstance(request_pb.instance, data_v2_pb2.Instance)
@@ -558,8 +558,8 @@ class Test__prepare_create_request(unittest.TestCase):
 
         request_pb = self._callFUT(instance)
 
-        self.assertTrue(isinstance(request_pb,
-                                   messages_v2_pb.CreateInstanceRequest))
+        self.assertIsInstance(request_pb,
+                              messages_v2_pb.CreateInstanceRequest)
         self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
         self.assertEqual(request_pb.parent,
                          'projects/' + self.PROJECT)

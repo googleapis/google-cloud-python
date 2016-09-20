@@ -38,8 +38,8 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch.namespace, _NAMESPACE)
         self.assertTrue(batch._id is None)
         self.assertEqual(batch._status, batch._INITIAL)
-        self.assertTrue(isinstance(batch._commit_request,
-                                   datastore_pb2.CommitRequest))
+        self.assertIsInstance(batch._commit_request,
+                              datastore_pb2.CommitRequest)
         self.assertTrue(batch.mutations is batch._commit_request.mutations)
         self.assertEqual(batch._partial_key_entities, [])
 
