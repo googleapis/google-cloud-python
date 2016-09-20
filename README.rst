@@ -29,7 +29,7 @@ This client supports the following Google Cloud Platform services:
 .. _Google BigQuery: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery
 .. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/resource_manager
 .. _Google Stackdriver Logging: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/logging
-.. _Google Stackdriver Monitoring: https://github.com/GoogleCloudPlatform/google-cloud-python#google-stackdriver-monitoring
+.. _Google Stackdriver Monitoring: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/monitoring
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
@@ -63,44 +63,6 @@ You may also find the `authentication document`_ shared by all the
 
 .. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
-
-Google Stackdriver Monitoring
------------------------------
-
-`Stackdriver Monitoring`_ (`Monitoring API docs`_) collects metrics,
-events, and metadata from Google Cloud Platform, Amazon Web Services (AWS),
-hosted uptime probes, application instrumentation, and a variety of common
-application components including Cassandra, Nginx, Apache Web Server,
-Elasticsearch and many others. Stackdriver ingests that data and generates
-insights via dashboards, charts, and alerts.
-
-This package currently supports all Monitoring API operations other than
-writing custom metrics.
-
-.. _Stackdriver Monitoring: https://cloud.google.com/monitoring/
-.. _Monitoring API docs: https://cloud.google.com/monitoring/api/ref_v3/rest/
-
-List available metric types:
-
-.. code:: python
-
-    from google.cloud import monitoring
-    client = monitoring.Client()
-    for descriptor in client.list_metric_descriptors():
-        print(descriptor.type)
-
-Display CPU utilization across your GCE instances during the last five minutes:
-
-.. code:: python
-
-    metric = 'compute.googleapis.com/instance/cpu/utilization'
-    query = client.query(metric, minutes=5)
-    print(query.as_dataframe())
-
-See the ``google-cloud-python`` API `monitoring documentation`_ to learn how to connect
-to Stackdriver Monitoring using this Client Library.
-
-.. _monitoring documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/monitoring-usage.html
 
 Contributing
 ------------
