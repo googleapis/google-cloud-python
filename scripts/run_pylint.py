@@ -31,12 +31,16 @@ import sys
 
 
 IGNORED_DIRECTORIES = [
-    os.path.join('google', 'cloud', 'bigtable', '_generated'),
-    os.path.join('google', 'cloud', 'datastore', '_generated'),
-    'scripts/verify_included_modules.py',
+    os.path.join('bigtable', 'google', 'cloud', 'bigtable', '_generated'),
+    os.path.join('datastore', 'google', 'cloud', 'datastore', '_generated'),
 ]
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),
+    os.path.join('vision', 'google', 'cloud', 'vision', '_fixtures.py'),
+]
+IGNORED_POSTFIXES = [
+    os.path.join('google', '__init__.py'),
+    os.path.join('google', 'cloud', '__init__.py'),
     'setup.py',
 ]
 SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -113,6 +117,9 @@ def make_test_rc(base_rc_filename, additions_dict,
 
 def valid_filename(filename):
     """Checks if a file is a Python file and is not ignored."""
+    for postfix in IGNORED_POSTFIXES:
+        if filename.endswith(postfix):
+            return False
     for directory in IGNORED_DIRECTORIES:
         if filename.startswith(directory):
             return False

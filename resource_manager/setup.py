@@ -1,12 +1,12 @@
 import os
-import json
 
 from setuptools import setup
+from setuptools import find_packages
 
 
-PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-with open(os.path.join(PROJECT_ROOT, 'README.rst')) as file_obj:
+with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
     README = file_obj.read()
 
 # NOTE: This is duplicated throughout and we should try to
@@ -35,33 +35,20 @@ SETUP_BASE = {
 }
 
 
-MISSING_REQUIREMENTS = [
-    'google-cloud-bigquery',
-    'google-cloud-bigtable',
-    'google-cloud-datastore',
-    'google-cloud-dns',
-    'google-cloud-error-reporting',
-    'google-cloud-happybase',
-    'google-cloud-language',
-    'google-cloud-logging',
-    'google-cloud-monitoring',
-    # 'google-cloud-natural-language',  # Synonym for -language
-    'google-cloud-pubsub',
-    'google-cloud-resource-manager',
-    'google-cloud-speech',
-    'google-cloud-storage',
-    'google-cloud-translate',
-    'google-cloud-vision',
-]
 REQUIREMENTS = [
-    'google-cloud-core',  # Redunant
+    'google-cloud-core >= 0.19.0',
 ]
 
 setup(
-    name='google-cloud',
+    name='google-cloud-resource-manager',
     version='0.19.0',
-    description='API Client library for Google Cloud',
+    description='Python Client for Google Cloud Resource Manager',
     long_description=README,
+    namespace_packages=[
+        'google',
+        'google.cloud',
+    ],
+    packages=find_packages(),
     install_requires=REQUIREMENTS,
     **SETUP_BASE
 )

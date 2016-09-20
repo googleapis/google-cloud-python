@@ -20,16 +20,28 @@ This client supports the following Google Cloud Platform services:
 -  `Google Cloud Pub/Sub`_
 -  `Google BigQuery`_
 -  `Google Cloud Resource Manager`_
--  `Google Stackdriver Logging`_
--  `Google Stackdriver Monitoring`_
+-  `Stackdriver Logging`_
+-  `Stackdriver Monitoring`_
+-  `Google Cloud Bigtable`_
+-  `Google Cloud DNS`_
+-  `Stackdriver Error Reporting`_
+-  `Google Cloud Natural Language`_
+-  `Google Translate`_
+-  `Google Cloud Vision`_
 
-.. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-datastore
-.. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-storage
-.. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-pubsub
-.. _Google BigQuery: https://github.com/GoogleCloudPlatform/google-cloud-python#google-bigquery
-.. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/google-cloud-python#google-cloud-resource-manager
-.. _Google Stackdriver Logging: https://github.com/GoogleCloudPlatform/google-cloud-python#google-stackdriver-logging
-.. _Google Stackdriver Monitoring: https://github.com/GoogleCloudPlatform/google-cloud-python#google-stackdriver-monitoring
+.. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
+.. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
+.. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/pubsub
+.. _Google BigQuery: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery
+.. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/resource_manager
+.. _Stackdriver Logging: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/logging
+.. _Stackdriver Monitoring: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/monitoring
+.. _Google Cloud Bigtable: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigtable
+.. _Google Cloud DNS: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/dns
+.. _Stackdriver Error Reporting: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/error_reporting
+.. _Google Cloud Natural Language: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/language
+.. _Google Translate: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/translate
+.. _Google Cloud Vision: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/vision
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
@@ -63,250 +75,6 @@ You may also find the `authentication document`_ shared by all the
 
 .. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
-
-Google Cloud Datastore
-----------------------
-
-Google `Cloud Datastore`_ (`Datastore API docs`_) is a fully managed, schemaless
-database for storing non-relational data. Cloud Datastore automatically scales
-with your users and supports ACID transactions, high availability of reads and
-writes, strong consistency for reads and ancestor queries, and eventual
-consistency for all other queries.
-
-.. _Cloud Datastore: https://cloud.google.com/datastore/docs
-.. _Datastore API docs: https://cloud.google.com/datastore/docs/
-
-See the ``google-cloud-python`` API `datastore documentation`_ to learn how to
-interact with the Cloud Datastore using this Client Library.
-
-.. _datastore documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/datastore-client.html
-
-See the `official Google Cloud Datastore documentation`_ for more details on how
-to activate Cloud Datastore for your project.
-
-.. _official Google Cloud Datastore documentation: https://cloud.google.com/datastore/docs/activate
-
-.. code:: python
-
-    from google.cloud import datastore
-    # Create, populate and persist an entity
-    entity = datastore.Entity(key=datastore.Key('EntityKind'))
-    entity.update({
-        'foo': u'bar',
-        'baz': 1337,
-        'qux': False,
-    })
-    # Then query for entities
-    query = datastore.Query(kind='EntityKind')
-    for result in query.fetch():
-        print result
-
-Google Cloud Storage
---------------------
-
-Google `Cloud Storage`_ (`Storage API docs`_) allows you to store data on Google
-infrastructure with very high reliability, performance and availability, and can
-be used to distribute large data objects to users via direct download.
-
-.. _Cloud Storage: https://cloud.google.com/storage/docs
-.. _Storage API docs: https://cloud.google.com/storage/docs/json_api/v1
-
-See the ``google-cloud-python`` API `storage documentation`_ to learn how to connect
-to Cloud Storage using this Client Library.
-
-.. _storage documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/storage-client.html
-
-You need to create a Google Cloud Storage bucket to use this client library.
-Follow along with the `official Google Cloud Storage documentation`_ to learn
-how to create a bucket.
-
-.. _official Google Cloud Storage documentation: https://cloud.google.com/storage/docs/cloud-console#_creatingbuckets
-
-.. code:: python
-
-    from google.cloud import storage
-    client = storage.Client()
-    bucket = client.get_bucket('bucket-id-here')
-    # Then do other things...
-    blob = bucket.get_blob('remote/path/to/file.txt')
-    print blob.download_as_string()
-    blob.upload_from_string('New contents!')
-    blob2 = bucket.blob('remote/path/storage.txt')
-    blob2.upload_from_filename(filename='/local/path.txt')
-
-Google Cloud Pub/Sub
---------------------
-
-Google `Cloud Pub/Sub`_ (`Pub/Sub API docs`_) is designed to provide reliable,
-many-to-many, asynchronous messaging between applications. Publisher
-applications can send messages to a ``topic`` and other applications can
-subscribe to that topic to receive the messages. By decoupling senders and
-receivers, Google Cloud Pub/Sub allows developers to communicate between
-independently written applications.
-
-.. _Cloud Pub/Sub: https://cloud.google.com/pubsub/docs
-.. _Pub/Sub API docs: https://cloud.google.com/pubsub/reference/rest/
-
-See the ``google-cloud-python`` API `Pub/Sub documentation`_ to learn how to connect
-to Cloud Pub/Sub using this Client Library.
-
-.. _Pub/Sub documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/pubsub-usage.html
-
-To get started with this API, you'll need to create
-
-.. code:: python
-
-    from google.cloud import pubsub
-
-    client = pubsub.Client()
-    topic = client.topic('topic_name')
-    topic.create()
-
-    topic.publish('this is the message_payload',
-                  attr1='value1', attr2='value2')
-
-Google BigQuery
----------------
-
-Querying massive datasets can be time consuming and expensive without the
-right hardware and infrastructure. Google `BigQuery`_ (`BigQuery API docs`_)
-solves this problem by enabling super-fast, SQL-like queries against
-append-only tables, using the processing power of Google's infrastructure.
-
-.. _BigQuery: https://cloud.google.com/bigquery/what-is-bigquery
-.. _BigQuery API docs: https://cloud.google.com/bigquery/docs/reference/v2/
-
-This package is still being implemented, but it is almost complete!
-
-Load data from CSV
-~~~~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    import csv
-
-    from google.cloud import bigquery
-    from google.cloud.bigquery import SchemaField
-
-    client = bigquery.Client()
-
-    dataset = client.dataset('dataset_name')
-    dataset.create()  # API request
-
-    SCHEMA = [
-        SchemaField('full_name', 'STRING', mode='required'),
-        SchemaField('age', 'INTEGER', mode='required'),
-    ]
-    table = dataset.table('table_name', SCHEMA)
-    table.create()
-
-    with open('csv_file', 'rb') as readable:
-        table.upload_from_file(
-            readable, source_format='CSV', skip_leading_rows=1)
-
-Perform a synchronous query
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    # Perform a synchronous query.
-    QUERY = (
-        'SELECT name FROM [bigquery-public-data:usa_names.usa_1910_2013] '
-        'WHERE state = "TX"')
-    query = client.run_sync_query('%s LIMIT 100' % QUERY)
-    query.timeout_ms = TIMEOUT_MS
-    query.run()
-
-    for row in query.rows:
-        print row
-
-
-See the ``google-cloud-python`` API `BigQuery documentation`_ to learn how to connect
-to BigQuery using this Client Library.
-
-.. _BigQuery documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery-usage.html
-
-Google Cloud Resource Manager
------------------------------
-
-The Cloud `Resource Manager`_ API (`Resource Manager API docs`_) provides
-methods that you can use to programmatically manage your projects in the
-Google Cloud Platform.
-
-.. _Resource Manager: https://cloud.google.com/resource-manager/
-.. _Resource Manager API docs: https://cloud.google.com/resource-manager/reference/rest/
-
-See the ``google-cloud-python`` API `Resource Manager documentation`_ to learn how to
-manage projects using this Client Library.
-
-.. _Resource Manager documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/resource-manager-api.html
-
-Google Stackdriver Logging
---------------------------
-
-`Stackdriver Logging`_ API (`Logging API docs`_) allows you to store, search,
-analyze, monitor, and alert on log data and events from Google Cloud Platform.
-
-.. _Stackdriver Logging: https://cloud.google.com/logging/
-.. _Logging API docs: https://cloud.google.com/logging/docs/
-
-.. code:: python
-
-    from google.cloud import logging
-    client = logging.Client()
-    logger = client.logger('log_name')
-    logger.log_text("A simple entry")  # API call
-
-Example of fetching entries:
-
-.. code:: python
-
-    entries, token = logger.list_entries()
-    for entry in entries:
-        print entry.payload
-
-See the ``google-cloud-python`` API `logging documentation`_ to learn how to connect
-to Stackdriver Logging using this Client Library.
-
-.. _logging documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/logging-usage.html
-
-Google Stackdriver Monitoring
------------------------------
-
-`Stackdriver Monitoring`_ (`Monitoring API docs`_) collects metrics,
-events, and metadata from Google Cloud Platform, Amazon Web Services (AWS),
-hosted uptime probes, application instrumentation, and a variety of common
-application components including Cassandra, Nginx, Apache Web Server,
-Elasticsearch and many others. Stackdriver ingests that data and generates
-insights via dashboards, charts, and alerts.
-
-This package currently supports all Monitoring API operations other than
-writing custom metrics.
-
-.. _Stackdriver Monitoring: https://cloud.google.com/monitoring/
-.. _Monitoring API docs: https://cloud.google.com/monitoring/api/ref_v3/rest/
-
-List available metric types:
-
-.. code:: python
-
-    from google.cloud import monitoring
-    client = monitoring.Client()
-    for descriptor in client.list_metric_descriptors():
-        print(descriptor.type)
-
-Display CPU utilization across your GCE instances during the last five minutes:
-
-.. code:: python
-
-    metric = 'compute.googleapis.com/instance/cpu/utilization'
-    query = client.query(metric, minutes=5)
-    print(query.as_dataframe())
-
-See the ``google-cloud-python`` API `monitoring documentation`_ to learn how to connect
-to Stackdriver Monitoring using this Client Library.
-
-.. _monitoring documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/monitoring-usage.html
 
 Contributing
 ------------

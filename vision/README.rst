@@ -1,0 +1,52 @@
+Python Client for Google Cloud Vision
+=====================================
+
+    Python idiomatic client for `Google Cloud Vision`_
+
+.. _Google Cloud Vision: https://cloud.google.com/vision/
+
+-  `Homepage`_
+-  `API Documentation`_
+
+.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
+.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+
+Quick Start
+-----------
+
+::
+
+    $ pip install --upgrade google-cloud-vision
+
+Authentication
+--------------
+
+With ``google-cloud-python`` we try to make authentication as painless as
+possible. Check out the `Authentication section`_ in our documentation to
+learn more. You may also find the `authentication document`_ shared by all
+the ``google-cloud-*`` libraries to be helpful.
+
+.. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
+
+Using the API
+-------------
+
+The Google Cloud `Vision`_ (`Vision API docs`_) API enables developers to
+understand the content of an image by encapsulating powerful machine
+learning models in an easy to use REST API. It quickly classifies images
+into thousands of categories (e.g., "sailboat", "lion", "Eiffel Tower"),
+detects individual objects and faces within images, and finds and reads
+printed words contained within images. You can build metadata on your
+image catalog, moderate offensive content, or enable new marketing
+scenarios through image sentiment analysis. Analyze images uploaded
+in the request or integrate with your image storage on Google Cloud
+Storage.
+
+.. _Vision: https://cloud.google.com/vision/
+.. _Vision API docs: https://cloud.google.com/vision/reference/rest/
+
+See the ``google-cloud-python`` API `Vision documentation`_ to learn
+how to analyze images using this library.
+
+.. _Vision documentation: https://google-cloud-python.readthedocs.io/en/stable/vision-usage.html
