@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.table &mdash; google-cloud f5fb643 documentation</title>
+  <title>google.cloud.bigquery.table &mdash; google-cloud 52e6263 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud f5fb643 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 52e6263 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -276,12 +276,15 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
+<span class="kn">import</span> <span class="nn">httplib2</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_microseconds_from_datetime</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_millis_from_datetime</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">make_exception</span>
+<span class="kn">from</span> <span class="nn">google.cloud.streaming.exceptions</span> <span class="k">import</span> <span class="n">HttpError</span>
 <span class="kn">from</span> <span class="nn">google.cloud.streaming.http_wrapper</span> <span class="k">import</span> <span class="n">Request</span>
 <span class="kn">from</span> <span class="nn">google.cloud.streaming.http_wrapper</span> <span class="k">import</span> <span class="n">make_api_request</span>
 <span class="kn">from</span> <span class="nn">google.cloud.streaming.transfer</span> <span class="k">import</span> <span class="n">RESUMABLE_UPLOAD</span>
@@ -1034,6 +1037,16 @@
 
         <span class="k">return</span> <span class="n">errors</span></div>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_check_response_error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">http_response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for :meth:`upload_from_file`.&quot;&quot;&quot;</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">http_response</span><span class="o">.</span><span class="n">info</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">200</span> <span class="o">&lt;=</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">:</span>
+            <span class="n">faux_response</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">Response</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="n">status</span><span class="p">})</span>
+            <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">faux_response</span><span class="p">,</span> <span class="n">http_response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
+                                 <span class="n">error_info</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
     <span class="c1"># pylint: disable=too-many-arguments,too-many-locals</span>
 <div class="viewcode-block" id="Table.upload_from_file"><a class="viewcode-back" href="../../../../bigquery-table.html#google.cloud.bigquery.table.Table.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                          <span class="n">file_obj</span><span class="p">,</span>
@@ -1206,13 +1219,21 @@
         <span class="n">request</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">api_base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
                                                <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
                                                <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
-        <span class="n">upload</span><span class="o">.</span><span class="n">initialize_upload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">upload</span><span class="o">.</span><span class="n">initialize_upload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">HttpError</span> <span class="k">as</span> <span class="n">err_response</span><span class="p">:</span>
+            <span class="n">faux_response</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">Response</span><span class="p">(</span><span class="n">err_response</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">faux_response</span><span class="p">,</span> <span class="n">err_response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
+                                 <span class="n">error_info</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">upload</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="n">RESUMABLE_UPLOAD</span><span class="p">:</span>
             <span class="n">http_response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">stream_file</span><span class="p">(</span><span class="n">use_chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">http_response</span> <span class="o">=</span> <span class="n">make_api_request</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
                                              <span class="n">retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_response_error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">http_response</span><span class="p">)</span>
+
         <span class="n">response_content</span> <span class="o">=</span> <span class="n">http_response</span><span class="o">.</span><span class="n">content</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response_content</span><span class="p">,</span>
                           <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>  <span class="c1"># pragma: NO COVER  Python3</span>
@@ -1361,7 +1382,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'f5fb643',
+            VERSION:'52e6263',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
