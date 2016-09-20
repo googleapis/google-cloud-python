@@ -56,6 +56,22 @@ IGNORED_MODULES = frozenset([
     'google.cloud.vision.__init__',
     'google.cloud.vision.fixtures',
 ])
+PACKAGES = (
+    'bigquery',
+    'bigtable',
+    'core',
+    'datastore',
+    'dns',
+    'error_reporting',
+    'language',
+    'logging',
+    'monitoring',
+    'pubsub',
+    'resource_manager',
+    'storage',
+    'translate',
+    'vision',
+)
 
 
 class SphinxApp(object):
@@ -126,6 +142,11 @@ def main(build_root='_build'):
     :param build_root: The root of the directory where docs are built into.
                        Defaults to ``_build``.
     """
+    if build_root is None:
+        parser = get_parser()
+        args = parser.parse_args()
+        build_root = args.build_root
+
     object_inventory_relpath = os.path.join(build_root, 'html', 'objects.inv')
 
     mock_uri = ''
@@ -133,10 +154,12 @@ def main(build_root='_build'):
                                 object_inventory_relpath)
     sphinx_mods = set(inventory['py:module'].keys())
 
-    library_dir = os.path.join(BASE_DIR, 'google', 'cloud')
-    public_mods = get_public_modules(library_dir,
-                                     base_package='google.cloud')
-    public_mods = set(public_mods)
+    public_mods = set()
+    for package in PACKAGES:
+        library_dir = os.path.join(BASE_DIR, package, 'google', 'cloud')
+        package_mods = get_public_modules(library_dir,
+                                          base_package='google.cloud')
+        public_mods.update(package_mods)
 
     if not sphinx_mods <= public_mods:
         unexpected_mods = sphinx_mods - public_mods
@@ -172,6 +195,4 @@ def get_parser():
 
 
 if __name__ == '__main__':
-    parser = get_parser()
-    args = parser.parse_args()
-    main(build_root=args.build_root)
+    main(build_root=None)

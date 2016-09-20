@@ -36,7 +36,6 @@ IGNORED_DIRECTORIES = [
 ]
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),
-    os.path.join('scripts', 'verify_included_modules.py'),
     os.path.join('vision', 'google', 'cloud', 'vision', '_fixtures.py'),
 ]
 IGNORED_POSTFIXES = [
