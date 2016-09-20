@@ -883,7 +883,8 @@ class Table(object):
             file_obj.seek(0, os.SEEK_SET)
 
         mode = getattr(file_obj, 'mode', None)
-        if mode is not None and mode != 'rb':
+
+        if mode is not None and mode.replace('+', '') != 'rb':
             raise ValueError(
                 "Cannot upload files opened in text mode:  use "
                 "open(filename, mode='rb')")
