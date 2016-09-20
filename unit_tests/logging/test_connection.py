@@ -52,7 +52,7 @@ class Test_LoggingAPI(unittest.TestCase):
     def test_ctor(self):
         connection = object()
         api = self._makeOne(connection)
-        self.assertTrue(api._connection is connection)
+        self.assertIs(api._connection, connection)
 
     @staticmethod
     def _make_timestamp():
@@ -237,7 +237,7 @@ class Test_SinksAPI(unittest.TestCase):
     def test_ctor(self):
         connection = object()
         api = self._makeOne(connection)
-        self.assertTrue(api._connection is connection)
+        self.assertIs(api._connection, connection)
 
     def test_list_sinks_no_paging(self):
         TOKEN = 'TOKEN'

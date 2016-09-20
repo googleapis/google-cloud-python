@@ -46,7 +46,7 @@ class TestDirectRow(unittest.TestCase):
 
         row = self._makeOne(row_key, table)
         self.assertEqual(row._row_key, row_key)
-        self.assertTrue(row._table is table)
+        self.assertIs(row._table, table)
         self.assertEqual(row._pb_mutations, [])
 
     def test_constructor_with_unicode(self):
@@ -56,7 +56,7 @@ class TestDirectRow(unittest.TestCase):
 
         row = self._makeOne(row_key, table)
         self.assertEqual(row._row_key, row_key_bytes)
-        self.assertTrue(row._table is table)
+        self.assertIs(row._table, table)
 
     def test_constructor_with_non_bytes(self):
         row_key = object()
@@ -68,7 +68,7 @@ class TestDirectRow(unittest.TestCase):
         row = self._makeOne(row_key, None)
 
         row._pb_mutations = mutations = object()
-        self.assertTrue(mutations is row._get_mutations(None))
+        self.assertIs(mutations, row._get_mutations(None))
 
     def _set_cell_helper(self, column=None, column_bytes=None,
                          value=b'foobar', timestamp=None,
@@ -390,8 +390,8 @@ class TestConditionalRow(unittest.TestCase):
 
         row = self._makeOne(row_key, table, filter_=filter_)
         self.assertEqual(row._row_key, row_key)
-        self.assertTrue(row._table is table)
-        self.assertTrue(row._filter is filter_)
+        self.assertIs(row._table, table)
+        self.assertIs(row._filter, filter_)
         self.assertEqual(row._true_pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
 
@@ -402,9 +402,9 @@ class TestConditionalRow(unittest.TestCase):
 
         row._true_pb_mutations = true_mutations = object()
         row._false_pb_mutations = false_mutations = object()
-        self.assertTrue(true_mutations is row._get_mutations(True))
-        self.assertTrue(false_mutations is row._get_mutations(False))
-        self.assertTrue(false_mutations is row._get_mutations(None))
+        self.assertIs(true_mutations, row._get_mutations(True))
+        self.assertIs(false_mutations, row._get_mutations(False))
+        self.assertIs(false_mutations, row._get_mutations(None))
 
     def test_commit(self):
         from unit_tests.bigtable._testing import _FakeStub
@@ -530,7 +530,7 @@ class TestAppendRow(unittest.TestCase):
 
         row = self._makeOne(row_key, table)
         self.assertEqual(row._row_key, row_key)
-        self.assertTrue(row._table is table)
+        self.assertIs(row._table, table)
         self.assertEqual(row._rule_pb_list, [])
 
     def test_clear(self):

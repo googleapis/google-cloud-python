@@ -30,7 +30,7 @@ class Test__ProjectIterator(unittest.TestCase):
         self.assertEqual(iterator.path, '/projects')
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, None)
-        self.assertTrue(iterator.client is client)
+        self.assertIs(iterator.client, client)
         self.assertEqual(iterator.extra_params, {})
 
     def test_get_items_from_response_empty(self):

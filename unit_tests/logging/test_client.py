@@ -49,10 +49,10 @@ class TestClient(unittest.TestCase):
             api = client.logging_api
 
         self.assertIsInstance(api, _LoggingAPI)
-        self.assertTrue(api._connection is conn)
+        self.assertIs(api._connection, conn)
         # API instance is cached
         again = client.logging_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
 
     def test_logging_api_w_gax(self):
         from google.cloud.logging import client as MUT
@@ -80,10 +80,10 @@ class TestClient(unittest.TestCase):
             api = client.logging_api
 
         self.assertIsInstance(api, _GaxLoggingAPI)
-        self.assertTrue(api._wrapped is wrapped)
+        self.assertIs(api._wrapped, wrapped)
         # API instance is cached
         again = client.logging_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
 
     def test_sinks_api_wo_gax(self):
         from google.cloud.logging.connection import _SinksAPI
@@ -96,10 +96,10 @@ class TestClient(unittest.TestCase):
             api = client.sinks_api
 
         self.assertIsInstance(api, _SinksAPI)
-        self.assertTrue(api._connection is conn)
+        self.assertIs(api._connection, conn)
         # API instance is cached
         again = client.sinks_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
 
     def test_sinks_api_w_gax(self):
         from google.cloud.logging import client as MUT
@@ -127,10 +127,10 @@ class TestClient(unittest.TestCase):
             api = client.sinks_api
 
         self.assertIsInstance(api, _GaxSinksAPI)
-        self.assertTrue(api._wrapped is wrapped)
+        self.assertIs(api._wrapped, wrapped)
         # API instance is cached
         again = client.sinks_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
 
     def test_metrics_api_wo_gax(self):
         from google.cloud.logging.connection import _MetricsAPI
@@ -143,10 +143,10 @@ class TestClient(unittest.TestCase):
             api = client.metrics_api
 
         self.assertIsInstance(api, _MetricsAPI)
-        self.assertTrue(api._connection is conn)
+        self.assertIs(api._connection, conn)
         # API instance is cached
         again = client.metrics_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
 
     def test_metrics_api_w_gax(self):
         from google.cloud.logging import client as MUT
@@ -174,10 +174,10 @@ class TestClient(unittest.TestCase):
             api = client.metrics_api
 
         self.assertIsInstance(api, _GaxMetricsAPI)
-        self.assertTrue(api._wrapped is wrapped)
+        self.assertIs(api._wrapped, wrapped)
         # API instance is cached
         again = client.metrics_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
 
     def test_logger(self):
         from google.cloud.logging.logger import Logger
@@ -186,7 +186,7 @@ class TestClient(unittest.TestCase):
         logger = client.logger(self.LOGGER_NAME)
         self.assertIsInstance(logger, Logger)
         self.assertEqual(logger.name, self.LOGGER_NAME)
-        self.assertTrue(logger.client is client)
+        self.assertIs(logger.client, client)
         self.assertEqual(logger.project, self.PROJECT)
 
     def test__entry_from_resource_unknown_type(self):
@@ -225,7 +225,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(entry.payload, TEXT)
         logger = entry.logger
         self.assertEqual(logger.name, self.LOGGER_NAME)
-        self.assertTrue(logger.client is client)
+        self.assertIs(logger.client, client)
         self.assertEqual(logger.project, self.PROJECT)
         self.assertEqual(token, TOKEN)
 
@@ -282,7 +282,7 @@ class TestClient(unittest.TestCase):
         logger = entry.logger
         self.assertIsInstance(logger, Logger)
         self.assertEqual(logger.name, self.LOGGER_NAME)
-        self.assertTrue(logger.client is client)
+        self.assertIs(logger.client, client)
         self.assertEqual(logger.project, self.PROJECT)
 
         entry = entries[1]
@@ -291,10 +291,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(entry.payload, PROTO_PAYLOAD)
         logger = entry.logger
         self.assertEqual(logger.name, self.LOGGER_NAME)
-        self.assertTrue(logger.client is client)
+        self.assertIs(logger.client, client)
         self.assertEqual(logger.project, self.PROJECT)
 
-        self.assertTrue(entries[0].logger is entries[1].logger)
+        self.assertIs(entries[0].logger, entries[1].logger)
 
         self.assertEqual(token, None)
         self.assertEqual(
@@ -310,7 +310,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter_, None)
         self.assertEqual(sink.destination, None)
-        self.assertTrue(sink.client is client)
+        self.assertIs(sink.client, client)
         self.assertEqual(sink.project, self.PROJECT)
 
     def test_sink_explicit(self):
@@ -322,7 +322,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter_, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
-        self.assertTrue(sink.client is client)
+        self.assertIs(sink.client, client)
         self.assertEqual(sink.project, self.PROJECT)
 
     def test_list_sinks_no_paging(self):
@@ -391,7 +391,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, None)
         self.assertEqual(metric.description, '')
-        self.assertTrue(metric.client is client_obj)
+        self.assertIs(metric.client, client_obj)
         self.assertEqual(metric.project, self.PROJECT)
 
     def test_metric_explicit(self):
@@ -405,7 +405,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
-        self.assertTrue(metric.client is client_obj)
+        self.assertIs(metric.client, client_obj)
         self.assertEqual(metric.project, self.PROJECT)
 
     def test_list_metrics_no_paging(self):

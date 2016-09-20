@@ -32,12 +32,12 @@ class Test__LocalStack(unittest.TestCase):
         self.assertEqual(list(batches), [])
         self.assertIsNone(batches.top)
         batches.push(batch1)
-        self.assertTrue(batches.top is batch1)
+        self.assertIs(batches.top, batch1)
         batches.push(batch2)
-        self.assertTrue(batches.top is batch2)
+        self.assertIs(batches.top, batch2)
         popped = batches.pop()
-        self.assertTrue(popped is batch2)
-        self.assertTrue(batches.top is batch1)
+        self.assertIs(popped, batch2)
+        self.assertIs(batches.top, batch1)
         self.assertEqual(list(batches), [batch1])
         popped = batches.pop()
         self.assertIsNone(batches.top)
@@ -963,7 +963,7 @@ class Test_make_secure_stub(unittest.TestCase):
             result = self._callFUT(credentials, user_agent,
                                    mock_stub_class, host)
 
-        self.assertTrue(result is mock_result)
+        self.assertIs(result, mock_result)
         self.assertEqual(stub_inputs, [CHANNEL])
         self.assertEqual(plugin_args, [(credentials,)])
         self.assertEqual(grpc_mod.ssl_channel_credentials_args, ())
@@ -1010,7 +1010,7 @@ class Test_make_insecure_stub(unittest.TestCase):
         with _Monkey(MUT, grpc=grpc_mod):
             result = self._callFUT(mock_stub_class, host, port=port)
 
-        self.assertTrue(result is mock_result)
+        self.assertIs(result, mock_result)
         self.assertEqual(stub_inputs, [CHANNEL])
         self.assertEqual(grpc_mod.insecure_channel_args, (target,))
 

@@ -135,7 +135,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         table = self._makeOne(self.TABLE_NAME, dataset)
         self.assertEqual(table.name, self.TABLE_NAME)
-        self.assertTrue(table._dataset is dataset)
+        self.assertIs(table._dataset, dataset)
         self.assertEqual(table.project, self.PROJECT)
         self.assertEqual(table.dataset_name, self.DS_NAME)
         self.assertEqual(
@@ -378,7 +378,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         klass = self._getTargetClass()
         table = klass.from_api_repr(RESOURCE, dataset)
         self.assertEqual(table.name, self.TABLE_NAME)
-        self.assertTrue(table._dataset is dataset)
+        self.assertIs(table._dataset, dataset)
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
@@ -387,7 +387,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         RESOURCE = self._makeResource()
         klass = self._getTargetClass()
         table = klass.from_api_repr(RESOURCE, dataset)
-        self.assertTrue(table._dataset._client is client)
+        self.assertIs(table._dataset._client, client)
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_create_no_view_query_no_schema(self):
@@ -1507,7 +1507,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 job = table.upload_from_file(
                     file_obj, 'CSV', rewind=True, **kw)
 
-        self.assertTrue(job is expected_job)
+        self.assertIs(job, expected_job)
         return conn.http._requested, PATH, BODY
 
     def test_upload_from_file_w_bound_client_multipart(self):

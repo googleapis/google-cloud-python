@@ -105,7 +105,7 @@ class TestManagedZone(unittest.TestCase):
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, self.DNS_NAME)
-        self.assertTrue(zone._client is client)
+        self.assertIs(zone._client, client)
         self.assertEqual(zone.project, client.project)
         self.assertEqual(
             zone.path,
@@ -121,7 +121,7 @@ class TestManagedZone(unittest.TestCase):
             self.ZONE_NAME, self.DNS_NAME, client, DESCRIPTION)
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, self.DNS_NAME)
-        self.assertTrue(zone._client is client)
+        self.assertIs(zone._client, client)
         self.assertEqual(zone.project, client.project)
         self.assertEqual(
             zone.path,
@@ -147,7 +147,7 @@ class TestManagedZone(unittest.TestCase):
         }
         klass = self._getTargetClass()
         zone = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(zone._client is client)
+        self.assertIs(zone._client, client)
         self._verifyResourceProperties(zone, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
@@ -156,7 +156,7 @@ class TestManagedZone(unittest.TestCase):
         RESOURCE = self._makeResource()
         klass = self._getTargetClass()
         zone = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(zone._client is client)
+        self.assertIs(zone._client, client)
         self._verifyResourceProperties(zone, RESOURCE)
 
     def test_description_setter_bad_value(self):
@@ -197,7 +197,7 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(rrs.record_type, RRS_TYPE)
         self.assertEqual(rrs.ttl, TTL)
         self.assertEqual(rrs.rrdatas, RRDATAS)
-        self.assertTrue(rrs.zone is zone)
+        self.assertIs(rrs.zone, zone)
 
     def test_changes(self):
         from google.cloud.dns.changes import Changes
@@ -205,7 +205,7 @@ class TestManagedZone(unittest.TestCase):
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
         changes = zone.changes()
         self.assertIsInstance(changes, Changes)
-        self.assertTrue(changes.zone is zone)
+        self.assertIs(changes.zone, zone)
 
     def test_create_w_bound_client(self):
         PATH = 'projects/%s/managedZones' % self.PROJECT

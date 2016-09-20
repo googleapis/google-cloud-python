@@ -29,11 +29,11 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket()
         properties = {'key': 'value'}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
-        self.assertTrue(blob.bucket is bucket)
+        self.assertIs(blob.bucket, bucket)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(blob._properties, properties)
         self.assertFalse(blob._acl.loaded)
-        self.assertTrue(blob._acl.blob is blob)
+        self.assertIs(blob._acl.blob, blob)
 
     def test_chunk_size_ctor(self):
         from google.cloud.storage.blob import Blob
@@ -50,7 +50,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.chunk_size, None)
         VALUE = object()
         blob._chunk_size = VALUE
-        self.assertTrue(blob.chunk_size is VALUE)
+        self.assertIs(blob.chunk_size, VALUE)
 
     def test_chunk_size_setter(self):
         BLOB_NAME = 'blob-name'
@@ -76,7 +76,7 @@ class Test_Blob(unittest.TestCase):
         blob = self._makeOne(None, bucket=FAKE_BUCKET)
         acl = blob.acl
         self.assertIsInstance(acl, ObjectACL)
-        self.assertTrue(acl is blob._acl)
+        self.assertIs(acl, blob._acl)
 
     def test_path_no_bucket(self):
         FAKE_BUCKET = object()

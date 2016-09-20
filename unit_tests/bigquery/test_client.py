@@ -31,8 +31,8 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._makeOne(project=PROJECT, credentials=creds, http=http)
         self.assertIsInstance(client.connection, Connection)
-        self.assertTrue(client.connection.credentials is creds)
-        self.assertTrue(client.connection.http is http)
+        self.assertIs(client.connection.credentials, creds)
+        self.assertIs(client.connection.http, http)
 
     def test_list_projects_defaults(self):
         from google.cloud.bigquery.client import Project
@@ -167,7 +167,7 @@ class TestClient(unittest.TestCase):
         dataset = client.dataset(DATASET)
         self.assertIsInstance(dataset, Dataset)
         self.assertEqual(dataset.name, DATASET)
-        self.assertTrue(dataset._client is client)
+        self.assertIs(dataset._client, client)
 
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
@@ -395,10 +395,10 @@ class TestClient(unittest.TestCase):
         destination = dataset.table(DESTINATION)
         job = client.load_table_from_storage(JOB, destination, SOURCE_URI)
         self.assertIsInstance(job, LoadTableFromStorageJob)
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(list(job.source_uris), [SOURCE_URI])
-        self.assertTrue(job.destination is destination)
+        self.assertIs(job.destination, destination)
 
     def test_copy_table(self):
         from google.cloud.bigquery.job import CopyJob
@@ -415,10 +415,10 @@ class TestClient(unittest.TestCase):
         destination = dataset.table(DESTINATION)
         job = client.copy_table(JOB, destination, source)
         self.assertIsInstance(job, CopyJob)
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(list(job.sources), [source])
-        self.assertTrue(job.destination is destination)
+        self.assertIs(job.destination, destination)
 
     def test_extract_table_to_storage(self):
         from google.cloud.bigquery.job import ExtractTableToStorageJob
@@ -434,7 +434,7 @@ class TestClient(unittest.TestCase):
         source = dataset.table(SOURCE)
         job = client.extract_table_to_storage(JOB, source, DESTINATION)
         self.assertIsInstance(job, ExtractTableToStorageJob)
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(job.source, source)
         self.assertEqual(list(job.destination_uris), [DESTINATION])
@@ -449,7 +449,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=PROJECT, credentials=creds, http=http)
         job = client.run_async_query(JOB, QUERY)
         self.assertIsInstance(job, QueryJob)
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(job.query, QUERY)
 
@@ -462,7 +462,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=PROJECT, credentials=creds, http=http)
         job = client.run_sync_query(QUERY)
         self.assertIsInstance(job, QueryResults)
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self.assertEqual(job.name, None)
         self.assertEqual(job.query, QUERY)
 

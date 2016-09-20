@@ -170,7 +170,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, None)
         self.assertIsInstance(client.connection, _MockConnection)
-        self.assertTrue(client.connection.credentials is creds)
+        self.assertIs(client.connection.credentials, creds)
         self.assertIsNone(client.connection.http)
         self.assertIsNone(client.current_batch)
         self.assertIsNone(client.current_transaction)
@@ -188,8 +188,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, NAMESPACE)
         self.assertIsInstance(client.connection, _MockConnection)
-        self.assertTrue(client.connection.credentials is creds)
-        self.assertTrue(client.connection.http is http)
+        self.assertIs(client.connection.credentials, creds)
+        self.assertIs(client.connection.http, http)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
 
@@ -200,16 +200,16 @@ class TestClient(unittest.TestCase):
         xact = client.transaction()
         client._push_batch(batch)
         self.assertEqual(list(client._batch_stack), [batch])
-        self.assertTrue(client.current_batch is batch)
+        self.assertIs(client.current_batch, batch)
         self.assertIsNone(client.current_transaction)
         client._push_batch(xact)
-        self.assertTrue(client.current_batch is xact)
-        self.assertTrue(client.current_transaction is xact)
+        self.assertIs(client.current_batch, xact)
+        self.assertIs(client.current_transaction, xact)
         # list(_LocalStack) returns in reverse order.
         self.assertEqual(list(client._batch_stack), [xact, batch])
-        self.assertTrue(client._pop_batch() is xact)
+        self.assertIs(client._pop_batch(), xact)
         self.assertEqual(list(client._batch_stack), [batch])
-        self.assertTrue(client._pop_batch() is batch)
+        self.assertIs(client._pop_batch(), batch)
         self.assertEqual(list(client._batch_stack), [])
 
     def test_get_miss(self):
@@ -248,12 +248,12 @@ class TestClient(unittest.TestCase):
 
         key, missing, deferred = object(), [], []
 
-        self.assertTrue(client.get(key, missing, deferred, TXN_ID) is _entity)
+        self.assertIs(client.get(key, missing, deferred, TXN_ID), _entity)
 
         self.assertEqual(_called_with[0][0], ())
         self.assertEqual(_called_with[0][1]['keys'], [key])
-        self.assertTrue(_called_with[0][1]['missing'] is missing)
-        self.assertTrue(_called_with[0][1]['deferred'] is deferred)
+        self.assertIs(_called_with[0][1]['missing'], missing)
+        self.assertIs(_called_with[0][1]['deferred'], deferred)
         self.assertEqual(_called_with[0][1]['transaction'], TXN_ID)
 
     def test_get_multi_no_keys(self):

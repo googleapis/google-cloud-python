@@ -40,7 +40,7 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch._status, batch._INITIAL)
         self.assertIsInstance(batch._commit_request,
                               datastore_pb2.CommitRequest)
-        self.assertTrue(batch.mutations is batch._commit_request.mutations)
+        self.assertIs(batch.mutations, batch._commit_request.mutations)
         self.assertEqual(batch._partial_key_entities, [])
 
     def test_current(self):
@@ -52,13 +52,13 @@ class TestBatch(unittest.TestCase):
         self.assertIsNone(batch1.current())
         self.assertIsNone(batch2.current())
         with batch1:
-            self.assertTrue(batch1.current() is batch1)
-            self.assertTrue(batch2.current() is batch1)
+            self.assertIs(batch1.current(), batch1)
+            self.assertIs(batch2.current(), batch1)
             with batch2:
-                self.assertTrue(batch1.current() is batch2)
-                self.assertTrue(batch2.current() is batch2)
-            self.assertTrue(batch1.current() is batch1)
-            self.assertTrue(batch2.current() is batch1)
+                self.assertIs(batch1.current(), batch2)
+                self.assertIs(batch2.current(), batch2)
+            self.assertIs(batch1.current(), batch1)
+            self.assertIs(batch2.current(), batch1)
         self.assertIsNone(batch1.current())
         self.assertIsNone(batch2.current())
 

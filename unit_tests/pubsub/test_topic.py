@@ -43,7 +43,7 @@ class TestTopic(unittest.TestCase):
         klass = self._getTargetClass()
         topic = klass.from_api_repr(resource, client=client)
         self.assertEqual(topic.name, self.TOPIC_NAME)
-        self.assertTrue(topic._client is client)
+        self.assertIs(topic._client, client)
         self.assertEqual(topic.project, self.PROJECT)
         self.assertEqual(topic.full_name, self.TOPIC_PATH)
 
@@ -295,7 +295,7 @@ class TestTopic(unittest.TestCase):
         subscription = topic.subscription(SUBSCRIPTION_NAME)
         self.assertIsInstance(subscription, Subscription)
         self.assertEqual(subscription.name, SUBSCRIPTION_NAME)
-        self.assertTrue(subscription.topic is topic)
+        self.assertIs(subscription.topic, topic)
 
     def test_list_subscriptions_no_paging(self):
         from google.cloud.pubsub.subscription import Subscription
@@ -320,12 +320,12 @@ class TestTopic(unittest.TestCase):
         subscription = subscriptions[0]
         self.assertIsInstance(subscription, Subscription)
         self.assertEqual(subscriptions[0].name, SUB_NAME_1)
-        self.assertTrue(subscription.topic is topic)
+        self.assertIs(subscription.topic, topic)
 
         subscription = subscriptions[1]
         self.assertIsInstance(subscription, Subscription)
         self.assertEqual(subscriptions[1].name, SUB_NAME_2)
-        self.assertTrue(subscription.topic is topic)
+        self.assertIs(subscription.topic, topic)
 
         self.assertEqual(next_page_token, TOKEN)
         self.assertEqual(api._topic_listed,
@@ -356,12 +356,12 @@ class TestTopic(unittest.TestCase):
         subscription = subscriptions[0]
         self.assertIsInstance(subscription, Subscription)
         self.assertEqual(subscriptions[0].name, SUB_NAME_1)
-        self.assertTrue(subscription.topic is topic)
+        self.assertIs(subscription.topic, topic)
 
         subscription = subscriptions[1]
         self.assertIsInstance(subscription, Subscription)
         self.assertEqual(subscriptions[1].name, SUB_NAME_2)
-        self.assertTrue(subscription.topic is topic)
+        self.assertIs(subscription.topic, topic)
 
         self.assertEqual(next_page_token, None)
         self.assertEqual(api._topic_listed,
@@ -579,8 +579,8 @@ class TestBatch(unittest.TestCase):
         topic = _Topic()
         client = _Client(project=self.PROJECT)
         batch = self._makeOne(topic, client)
-        self.assertTrue(batch.topic is topic)
-        self.assertTrue(batch.client is client)
+        self.assertIs(batch.topic, topic)
+        self.assertIs(batch.client, client)
         self.assertEqual(len(batch.messages), 0)
         self.assertEqual(len(batch.message_ids), 0)
 
@@ -698,7 +698,7 @@ class TestBatch(unittest.TestCase):
             batch.publish(PAYLOAD1)
             batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
 
-        self.assertTrue(other is batch)
+        self.assertIs(other, batch)
         self.assertEqual(list(batch), [MSGID1, MSGID2])
         self.assertEqual(list(batch.messages), [])
         self.assertEqual(api._topic_published,
@@ -727,7 +727,7 @@ class TestBatch(unittest.TestCase):
         except _Bugout:
             pass
 
-        self.assertTrue(other is batch)
+        self.assertIs(other, batch)
         self.assertEqual(list(batch), [])
         self.assertEqual(list(batch.messages), [MESSAGE1, MESSAGE2])
         self.assertEqual(getattr(api, '_topic_published', self), self)

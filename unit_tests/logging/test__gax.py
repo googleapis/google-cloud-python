@@ -47,7 +47,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXLoggingAPI()
         api = self._makeOne(gax_api)
-        self.assertTrue(api._gax_api is gax_api)
+        self.assertIs(api._gax_api, gax_api)
 
     def test_list_entries_no_paging(self):
         from google.gax import INITIAL_PAGE
@@ -78,7 +78,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(filter_, self.FILTER)
         self.assertEqual(order_by, DESCENDING)
         self.assertEqual(page_size, 0)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_list_entries_with_paging(self):
         from google.protobuf.struct_pb2 import Value
@@ -450,7 +450,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXSinksAPI()
         api = self._makeOne(gax_api)
-        self.assertTrue(api._gax_api is gax_api)
+        self.assertIs(api._gax_api, gax_api)
 
     def test_list_sinks_no_paging(self):
         from google.gax import INITIAL_PAGE
@@ -658,7 +658,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXMetricsAPI()
         api = self._makeOne(gax_api)
-        self.assertTrue(api._gax_api is gax_api)
+        self.assertIs(api._gax_api, gax_api)
 
     def test_list_metrics_no_paging(self):
         from google.gax import INITIAL_PAGE
@@ -876,9 +876,9 @@ class Test_value_pb_to_value(_Base, unittest.TestCase):
     def test_w_bool_values(self):
         from google.protobuf.struct_pb2 import Value
         true_value_pb = Value(bool_value=True)
-        self.assertTrue(self._callFUT(true_value_pb) is True)
+        self.assertIs(self._callFUT(true_value_pb), True)
         false_value_pb = Value(bool_value=False)
-        self.assertTrue(self._callFUT(false_value_pb) is False)
+        self.assertIs(self._callFUT(false_value_pb), False)
 
     def test_w_number_values(self):
         from google.protobuf.struct_pb2 import Value

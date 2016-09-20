@@ -112,7 +112,7 @@ class TestPubsub(unittest.TestCase):
         self.to_delete.append(subscription)
         self.assertTrue(subscription.exists())
         self.assertEqual(subscription.name, SUBSCRIPTION_NAME)
-        self.assertTrue(subscription.topic is topic)
+        self.assertIs(subscription.topic, topic)
 
     def test_create_subscription_w_ack_deadline(self):
         TOPIC_NAME = 'create-sub-ack' + unique_resource_id('-')
@@ -128,7 +128,7 @@ class TestPubsub(unittest.TestCase):
         self.assertTrue(subscription.exists())
         self.assertEqual(subscription.name, SUBSCRIPTION_NAME)
         self.assertEqual(subscription.ack_deadline, 120)
-        self.assertTrue(subscription.topic is topic)
+        self.assertIs(subscription.topic, topic)
 
     def test_list_subscriptions(self):
         TOPIC_NAME = 'list-sub' + unique_resource_id('-')

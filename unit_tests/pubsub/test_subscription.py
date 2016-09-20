@@ -36,7 +36,7 @@ class TestSubscription(unittest.TestCase):
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
         self.assertEqual(subscription.name, self.SUB_NAME)
-        self.assertTrue(subscription.topic is topic)
+        self.assertIs(subscription.topic, topic)
         self.assertEqual(subscription.ack_deadline, None)
         self.assertEqual(subscription.push_endpoint, None)
 
@@ -46,7 +46,7 @@ class TestSubscription(unittest.TestCase):
         subscription = self._makeOne(self.SUB_NAME, topic,
                                      self.DEADLINE, self.ENDPOINT)
         self.assertEqual(subscription.name, self.SUB_NAME)
-        self.assertTrue(subscription.topic is topic)
+        self.assertIs(subscription.topic, topic)
         self.assertEqual(subscription.ack_deadline, self.DEADLINE)
         self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
 
@@ -111,7 +111,7 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(subscription.name, self.SUB_NAME)
         topic = subscription.topic
         self.assertIsInstance(topic, Topic)
-        self.assertTrue(topic is topics[self.TOPIC_PATH])
+        self.assertIs(topic, topics[self.TOPIC_PATH])
         self.assertEqual(topic.name, self.TOPIC_NAME)
         self.assertEqual(topic.project, self.PROJECT)
         self.assertEqual(subscription.ack_deadline, self.DEADLINE)
@@ -128,7 +128,7 @@ class TestSubscription(unittest.TestCase):
         klass = self._getTargetClass()
         subscription = klass.from_api_repr(resource, client, topics=topics)
         self.assertEqual(subscription.name, self.SUB_NAME)
-        self.assertTrue(subscription.topic is topic)
+        self.assertIs(subscription.topic, topic)
         self.assertEqual(subscription.ack_deadline, self.DEADLINE)
         self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
 
@@ -150,7 +150,7 @@ class TestSubscription(unittest.TestCase):
         subscription = self._makeOne(self.SUB_NAME, topic)
         auto_ack = subscription.auto_ack()
         self.assertIsInstance(auto_ack, AutoAck)
-        self.assertTrue(auto_ack._subscription is subscription)
+        self.assertIs(auto_ack._subscription, subscription)
         self.assertEqual(auto_ack._return_immediately, False)
         self.assertEqual(auto_ack._max_messages, 1)
         self.assertIsNone(auto_ack._client)
@@ -163,10 +163,10 @@ class TestSubscription(unittest.TestCase):
         subscription = self._makeOne(self.SUB_NAME, topic)
         auto_ack = subscription.auto_ack(True, 10, client2)
         self.assertIsInstance(auto_ack, AutoAck)
-        self.assertTrue(auto_ack._subscription is subscription)
+        self.assertIs(auto_ack._subscription, subscription)
         self.assertEqual(auto_ack._return_immediately, True)
         self.assertEqual(auto_ack._max_messages, 10)
-        self.assertTrue(auto_ack._client is client2)
+        self.assertIs(auto_ack._client, client2)
 
     def test_create_pull_wo_ack_deadline_w_bound_client(self):
         RESPONSE = {
@@ -694,10 +694,10 @@ class TestAutoAck(unittest.TestCase):
         auto_ack = self._makeOne(
             subscription, return_immediately=True, max_messages=10,
             client=CLIENT)
-        self.assertTrue(auto_ack._subscription is subscription)
+        self.assertIs(auto_ack._subscription, subscription)
         self.assertEqual(auto_ack._return_immediately, True)
         self.assertEqual(auto_ack._max_messages, 10)
-        self.assertTrue(auto_ack._client is CLIENT)
+        self.assertIs(auto_ack._client, CLIENT)
 
     def test___enter___w_defaults(self):
         subscription = _FauxSubscription(())
@@ -706,7 +706,7 @@ class TestAutoAck(unittest.TestCase):
         with auto_ack as returned:
             pass
 
-        self.assertTrue(returned is auto_ack)
+        self.assertIs(returned, auto_ack)
         self.assertEqual(subscription._return_immediately, False)
         self.assertEqual(subscription._max_messages, 1)
         self.assertIsNone(subscription._client)
@@ -721,10 +721,10 @@ class TestAutoAck(unittest.TestCase):
         with auto_ack as returned:
             pass
 
-        self.assertTrue(returned is auto_ack)
+        self.assertIs(returned, auto_ack)
         self.assertEqual(subscription._return_immediately, True)
         self.assertEqual(subscription._max_messages, 10)
-        self.assertTrue(subscription._client is CLIENT)
+        self.assertIs(subscription._client, CLIENT)
 
     def test___exit___(self):
         CLIENT = object()
@@ -744,7 +744,7 @@ class TestAutoAck(unittest.TestCase):
                     del auto_ack[ack_id]
         self.assertEqual(sorted(subscription._acknowledged),
                          [ACK_ID1, ACK_ID2])
-        self.assertTrue(subscription._ack_client is CLIENT)
+        self.assertIs(subscription._ack_client, CLIENT)
 
 
 class _FauxIAMPolicy(object):

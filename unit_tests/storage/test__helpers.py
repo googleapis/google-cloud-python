@@ -162,7 +162,7 @@ class Test__base64_md5hash(unittest.TestCase):
             SIGNED_CONTENT = self._callFUT(BUFFER)
 
         self.assertEqual(BUFFER._block_sizes, [8192, 8192])
-        self.assertTrue(SIGNED_CONTENT is DIGEST_VAL)
+        self.assertIs(SIGNED_CONTENT, DIGEST_VAL)
         self.assertEqual(BASE64._called_b64encode, [DIGEST_VAL])
         self.assertEqual(MD5._called, [None])
         self.assertEqual(MD5.hash_obj.num_digest_calls, 1)

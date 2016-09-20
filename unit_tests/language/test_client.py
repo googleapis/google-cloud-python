@@ -31,8 +31,8 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._makeOne(credentials=creds, http=http)
         self.assertIsInstance(client.connection, Connection)
-        self.assertTrue(client.connection.credentials is creds)
-        self.assertTrue(client.connection.http is http)
+        self.assertIs(client.connection.credentials, creds)
+        self.assertIs(client.connection.http, http)
 
     def test_document_from_text_factory(self):
         from google.cloud.language.document import Document

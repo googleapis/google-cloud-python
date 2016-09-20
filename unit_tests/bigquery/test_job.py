@@ -231,9 +231,9 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         client = _Client(self.PROJECT)
         table = _Table()
         job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        self.assertTrue(job.destination is table)
+        self.assertIs(job.destination, table)
         self.assertEqual(list(job.source_uris), [self.SOURCE1])
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self.assertEqual(job.job_type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
@@ -403,7 +403,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         }
         klass = self._getTargetClass()
         job = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
@@ -411,7 +411,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         RESOURCE = self._makeResource()
         klass = self._getTargetClass()
         dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(dataset._client is client)
+        self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_begin_w_already_running(self):
@@ -695,9 +695,9 @@ class TestCopyJob(unittest.TestCase, _Base):
         source = _Table(self.SOURCE_TABLE)
         destination = _Table(self.DESTINATION_TABLE)
         job = self._makeOne(self.JOB_NAME, destination, [source], client)
-        self.assertTrue(job.destination is destination)
+        self.assertIs(job.destination, destination)
         self.assertEqual(job.sources, [source])
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self.assertEqual(job.job_type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
@@ -757,7 +757,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         }
         klass = self._getTargetClass()
         job = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
@@ -765,7 +765,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         RESOURCE = self._makeResource()
         klass = self._getTargetClass()
         dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(dataset._client is client)
+        self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_begin_w_bound_client(self):
@@ -996,7 +996,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
                             client)
         self.assertEqual(job.source, source)
         self.assertEqual(job.destination_uris, [self.DESTINATION_URI])
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self.assertEqual(job.job_type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
@@ -1054,7 +1054,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         }
         klass = self._getTargetClass()
         job = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
@@ -1062,7 +1062,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         RESOURCE = self._makeResource()
         klass = self._getTargetClass()
         dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(dataset._client is client)
+        self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_begin_w_bound_client(self):
@@ -1322,7 +1322,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _Client(self.PROJECT)
         job = self._makeOne(self.JOB_NAME, self.QUERY, client)
         self.assertEqual(job.query, self.QUERY)
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self.assertEqual(job.job_type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
@@ -1380,7 +1380,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         }
         klass = self._getTargetClass()
         job = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
@@ -1393,7 +1393,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         }
         klass = self._getTargetClass()
         dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(dataset._client is client)
+        self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_results(self):
@@ -1402,7 +1402,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._makeOne(self.JOB_NAME, self.QUERY, client)
         results = job.results()
         self.assertIsInstance(results, QueryResults)
-        self.assertTrue(results._job is job)
+        self.assertIs(results._job, job)
 
     def test_begin_w_bound_client(self):
         PATH = 'projects/%s/jobs' % self.PROJECT

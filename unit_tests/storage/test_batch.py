@@ -80,7 +80,7 @@ class TestBatch(unittest.TestCase):
         connection = _Connection(http=http)
         client = _Client(connection)
         batch = self._makeOne(client)
-        self.assertTrue(batch._client is client)
+        self.assertIs(batch._client, client)
         self.assertEqual(len(batch._requests), 0)
         self.assertEqual(len(batch._target_objects), 0)
 
@@ -93,11 +93,11 @@ class TestBatch(unittest.TestCase):
         self.assertIsNone(batch1.current())
 
         client._push_batch(batch1)
-        self.assertTrue(batch1.current() is batch1)
+        self.assertIs(batch1.current(), batch1)
 
         batch2 = self._makeOne(client)
         client._push_batch(batch2)
-        self.assertTrue(batch1.current() is batch2)
+        self.assertIs(batch1.current(), batch2)
 
     def test__make_request_GET_normal(self):
         from google.cloud.storage.batch import _FutureDict
@@ -111,7 +111,7 @@ class TestBatch(unittest.TestCase):
                                                 target_object=target)
         self.assertEqual(response.status, 204)
         self.assertIsInstance(content, _FutureDict)
-        self.assertTrue(target._properties is content)
+        self.assertIs(target._properties, content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
@@ -136,7 +136,7 @@ class TestBatch(unittest.TestCase):
                                                 target_object=target)
         self.assertEqual(response.status, 204)
         self.assertIsInstance(content, _FutureDict)
-        self.assertTrue(target._properties is content)
+        self.assertIs(target._properties, content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
@@ -161,7 +161,7 @@ class TestBatch(unittest.TestCase):
                                                 target_object=target)
         self.assertEqual(response.status, 204)
         self.assertIsInstance(content, _FutureDict)
-        self.assertTrue(target._properties is content)
+        self.assertIs(target._properties, content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
@@ -186,7 +186,7 @@ class TestBatch(unittest.TestCase):
                                                 target_object=target)
         self.assertEqual(response.status, 204)
         self.assertIsInstance(content, _FutureDict)
-        self.assertTrue(target._properties is content)
+        self.assertIs(target._properties, content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
@@ -209,14 +209,14 @@ class TestBatch(unittest.TestCase):
         batch._requests.append(('POST', URL, {}, {'bar': 2}))
         self.assertRaises(ValueError,
                           batch._make_request, 'POST', URL, data={'foo': 1})
-        self.assertTrue(connection.http is http)
+        self.assertIs(connection.http, http)
 
     def test_finish_empty(self):
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
         self.assertRaises(ValueError, batch.finish)
-        self.assertTrue(connection.http is http)
+        self.assertIs(connection.http, http)
 
     def _check_subrequest_no_payload(self, chunk, method, url):
         lines = chunk.splitlines()
@@ -335,7 +335,7 @@ class TestBatch(unittest.TestCase):
         self.assertRaises(NotFound, batch.finish)
         self.assertEqual(target1._properties,
                          {'foo': 1, 'bar': 2})
-        self.assertTrue(target2._properties is target2_future_before)
+        self.assertIs(target2._properties, target2_future_before)
 
         self.assertEqual(len(http._requests), 1)
         method, uri, headers, body = http._requests[0]
@@ -550,7 +550,7 @@ class Test__FutureDict(unittest.TestCase):
         value = orig_value = object()
         with self.assertRaises(KeyError):
             value = future[None]
-        self.assertTrue(value is orig_value)
+        self.assertIs(value, orig_value)
 
     def test___setitem__(self):
         future = self._makeOne()

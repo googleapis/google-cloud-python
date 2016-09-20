@@ -104,7 +104,7 @@ class OperationTests(unittest.TestCase):
         operation = self._makeOne(
             self.OPERATION_NAME, client)
         self.assertEqual(operation.name, self.OPERATION_NAME)
-        self.assertTrue(operation.client is client)
+        self.assertIs(operation.client, client)
         self.assertIsNone(operation.target)
         self.assertIsNone(operation.pb_metadata)
         self.assertEqual(operation.metadata, {})
@@ -115,9 +115,9 @@ class OperationTests(unittest.TestCase):
         operation = self._makeOne(
             self.OPERATION_NAME, client, pb_metadata, foo='bar')
         self.assertEqual(operation.name, self.OPERATION_NAME)
-        self.assertTrue(operation.client is client)
+        self.assertIs(operation.client, client)
         self.assertIsNone(operation.target)
-        self.assertTrue(operation.pb_metadata is pb_metadata)
+        self.assertIs(operation.pb_metadata, pb_metadata)
         self.assertEqual(operation.metadata, {'foo': 'bar'})
 
     def test_from_pb_wo_metadata_or_kw(self):
@@ -129,7 +129,7 @@ class OperationTests(unittest.TestCase):
         operation = klass.from_pb(operation_pb, client)
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
-        self.assertTrue(operation.client is client)
+        self.assertIs(operation.client, client)
         self.assertIsNone(operation.pb_metadata)
         self.assertEqual(operation.metadata, {})
 
@@ -149,7 +149,7 @@ class OperationTests(unittest.TestCase):
         operation = klass.from_pb(operation_pb, client)
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
-        self.assertTrue(operation.client is client)
+        self.assertIs(operation.client, client)
         self.assertIsNone(operation.pb_metadata)
         self.assertEqual(operation.metadata, {})
 
@@ -173,7 +173,7 @@ class OperationTests(unittest.TestCase):
             operation = klass.from_pb(operation_pb, client, baz='qux')
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
-        self.assertTrue(operation.client is client)
+        self.assertIs(operation.client, client)
         pb_metadata = operation.pb_metadata
         self.assertIsInstance(pb_metadata, Struct)
         self.assertEqual(list(pb_metadata.fields), ['foo'])

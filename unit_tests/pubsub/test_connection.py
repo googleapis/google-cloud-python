@@ -102,7 +102,7 @@ class Test_PublisherAPI(_Base):
     def test_ctor(self):
         connection = _Connection()
         api = self._makeOne(connection)
-        self.assertTrue(api._connection is connection)
+        self.assertIs(api._connection, connection)
 
     def test_list_topics_no_paging(self):
         RETURNED = {'topics': [{'name': self.TOPIC_PATH}]}
@@ -363,7 +363,7 @@ class Test_SubscriberAPI(_Base):
     def test_ctor(self):
         connection = _Connection()
         api = self._makeOne(connection)
-        self.assertTrue(api._connection is connection)
+        self.assertIs(api._connection, connection)
 
     def test_list_subscriptions_no_paging(self):
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
@@ -613,7 +613,7 @@ class Test_IAMPolicyAPI(_Base):
     def test_ctor(self):
         connection = _Connection()
         api = self._makeOne(connection)
-        self.assertTrue(api._connection is connection)
+        self.assertIs(api._connection, connection)
 
     def test_get_iam_policy(self):
         from google.cloud.pubsub.iam import OWNER_ROLE

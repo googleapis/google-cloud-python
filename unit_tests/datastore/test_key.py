@@ -56,7 +56,7 @@ class TestKey(unittest.TestCase):
         self.assertEqual(key.namespace, parent_key.namespace)
         self.assertEqual(key.kind, _CHILD_KIND)
         self.assertEqual(key.path, _PATH)
-        self.assertTrue(key.parent is parent_key)
+        self.assertIs(key.parent, parent_key)
 
     def test_ctor_partial_parent(self):
         parent_key = self._makeOne('KIND', project=self._DEFAULT_PROJECT)
@@ -138,9 +138,9 @@ class TestKey(unittest.TestCase):
         parent = self._makeOne(_KIND1, _ID1, namespace=_NAMESPACE,
                                project=_PROJECT)
         key = self._makeOne(_KIND2, _ID2, parent=parent)
-        self.assertTrue(key.parent is parent)
+        self.assertIs(key.parent, parent)
         clone = key._clone()
-        self.assertTrue(clone.parent is key.parent)
+        self.assertIs(clone.parent, key.parent)
         self.assertEqual(clone.project, _PROJECT)
         self.assertEqual(clone.namespace, _NAMESPACE)
         self.assertEqual(clone.path, _PATH)
@@ -428,4 +428,4 @@ class TestKey(unittest.TestCase):
         parent = key.parent
         self.assertEqual(parent.path, _PARENT_PATH)
         new_parent = key.parent
-        self.assertTrue(parent is new_parent)
+        self.assertIs(parent, new_parent)

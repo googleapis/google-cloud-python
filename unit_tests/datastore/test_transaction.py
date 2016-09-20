@@ -37,7 +37,7 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
         self.assertIsInstance(xact._commit_request,
                               datastore_pb2.CommitRequest)
-        self.assertTrue(xact.mutations is xact._commit_request.mutations)
+        self.assertIs(xact.mutations, xact._commit_request.mutations)
         self.assertEqual(len(xact._partial_key_entities), 0)
 
     def test_current(self):
@@ -49,19 +49,19 @@ class TestTransaction(unittest.TestCase):
         self.assertIsNone(xact1.current())
         self.assertIsNone(xact2.current())
         with xact1:
-            self.assertTrue(xact1.current() is xact1)
-            self.assertTrue(xact2.current() is xact1)
+            self.assertIs(xact1.current(), xact1)
+            self.assertIs(xact2.current(), xact1)
             with _NoCommitBatch(client):
                 self.assertIsNone(xact1.current())
                 self.assertIsNone(xact2.current())
             with xact2:
-                self.assertTrue(xact1.current() is xact2)
-                self.assertTrue(xact2.current() is xact2)
+                self.assertIs(xact1.current(), xact2)
+                self.assertIs(xact2.current(), xact2)
                 with _NoCommitBatch(client):
                     self.assertIsNone(xact1.current())
                     self.assertIsNone(xact2.current())
-            self.assertTrue(xact1.current() is xact1)
-            self.assertTrue(xact2.current() is xact1)
+            self.assertIs(xact1.current(), xact1)
+            self.assertIs(xact2.current(), xact1)
         self.assertIsNone(xact1.current())
         self.assertIsNone(xact2.current())
 

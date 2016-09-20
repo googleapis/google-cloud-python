@@ -29,7 +29,7 @@ class TestIterator(unittest.TestCase):
         client = _Client(connection)
         PATH = '/foo'
         iterator = self._makeOne(client, PATH)
-        self.assertTrue(iterator.client is client)
+        self.assertIs(iterator.client, client)
         self.assertEqual(iterator.path, PATH)
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, None)

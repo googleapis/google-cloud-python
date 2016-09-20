@@ -176,7 +176,7 @@ class TestDataset(unittest.TestCase):
         client = _Client(self.PROJECT)
         dataset = self._makeOne(self.DS_NAME, client)
         self.assertEqual(dataset.name, self.DS_NAME)
-        self.assertTrue(dataset._client is client)
+        self.assertIs(dataset._client, client)
         self.assertEqual(dataset.project, client.project)
         self.assertEqual(
             dataset.path,
@@ -285,7 +285,7 @@ class TestDataset(unittest.TestCase):
         }
         klass = self._getTargetClass()
         dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(dataset._client is client)
+        self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
@@ -293,7 +293,7 @@ class TestDataset(unittest.TestCase):
         RESOURCE = self._makeResource()
         klass = self._getTargetClass()
         dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(dataset._client is client)
+        self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test__parse_access_grants_w_unknown_entity_type(self):
@@ -743,7 +743,7 @@ class TestDataset(unittest.TestCase):
         table = dataset.table('table_name')
         self.assertIsInstance(table, Table)
         self.assertEqual(table.name, 'table_name')
-        self.assertTrue(table._dataset is dataset)
+        self.assertIs(table._dataset, dataset)
         self.assertEqual(table.schema, [])
 
     def test_table_w_schema(self):
@@ -757,7 +757,7 @@ class TestDataset(unittest.TestCase):
         table = dataset.table('table_name', schema=[full_name, age])
         self.assertIsInstance(table, Table)
         self.assertEqual(table.name, 'table_name')
-        self.assertTrue(table._dataset is dataset)
+        self.assertIs(table._dataset, dataset)
         self.assertEqual(table.schema, [full_name, age])
 
 

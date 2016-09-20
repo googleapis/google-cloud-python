@@ -34,7 +34,7 @@ class TestQuery(unittest.TestCase):
     def test_ctor_defaults(self):
         client = self._makeClient()
         query = self._makeOne(client)
-        self.assertTrue(query._client is client)
+        self.assertIs(query._client, client)
         self.assertEqual(query.project, client.project)
         self.assertEqual(query.kind, None)
         self.assertEqual(query.namespace, client.namespace)
@@ -66,7 +66,7 @@ class TestQuery(unittest.TestCase):
             order=ORDER,
             distinct_on=DISTINCT_ON,
             )
-        self.assertTrue(query._client is client)
+        self.assertIs(query._client, client)
         self.assertEqual(query.project, _PROJECT)
         self.assertEqual(query.kind, _KIND)
         self.assertEqual(query.namespace, _NAMESPACE)
@@ -313,8 +313,8 @@ class TestQuery(unittest.TestCase):
         client = self._makeClient(connection)
         query = self._makeOne(client)
         iterator = query.fetch()
-        self.assertTrue(iterator._query is query)
-        self.assertTrue(iterator._client is client)
+        self.assertIs(iterator._query, query)
+        self.assertIs(iterator._client, client)
         self.assertEqual(iterator._limit, None)
         self.assertEqual(iterator._offset, 0)
 
@@ -324,8 +324,8 @@ class TestQuery(unittest.TestCase):
         other_client = self._makeClient(connection)
         query = self._makeOne(client)
         iterator = query.fetch(limit=7, offset=8, client=other_client)
-        self.assertTrue(iterator._query is query)
-        self.assertTrue(iterator._client is other_client)
+        self.assertIs(iterator._query, query)
+        self.assertIs(iterator._client, other_client)
         self.assertEqual(iterator._limit, 7)
         self.assertEqual(iterator._offset, 8)
 
@@ -380,7 +380,7 @@ class TestIterator(unittest.TestCase):
         connection = _Connection()
         query = object()
         iterator = self._makeOne(query, connection)
-        self.assertTrue(iterator._query is query)
+        self.assertIs(iterator._query, query)
         self.assertEqual(iterator._limit, None)
         self.assertEqual(iterator._offset, None)
         self.assertEqual(iterator._skipped_results, None)
@@ -389,7 +389,7 @@ class TestIterator(unittest.TestCase):
         client = self._makeClient()
         query = _Query(client)
         iterator = self._makeOne(query, client, 13, 29)
-        self.assertTrue(iterator._query is query)
+        self.assertIs(iterator._query, query)
         self.assertEqual(iterator._limit, 13)
         self.assertEqual(iterator._offset, 29)
 

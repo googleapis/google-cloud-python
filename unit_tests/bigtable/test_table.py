@@ -42,7 +42,7 @@ class TestTable(unittest.TestCase):
 
         table = self._makeOne(table_id, instance)
         self.assertEqual(table.table_id, table_id)
-        self.assertTrue(table._instance is instance)
+        self.assertIs(table._instance, instance)
 
     def test_name_property(self):
         table_id = 'table-id'
@@ -64,7 +64,7 @@ class TestTable(unittest.TestCase):
 
         self.assertIsInstance(column_family, ColumnFamily)
         self.assertEqual(column_family.column_family_id, column_family_id)
-        self.assertTrue(column_family.gc_rule is gc_rule)
+        self.assertIs(column_family.gc_rule, gc_rule)
         self.assertEqual(column_family._table, table)
 
     def test_row_factory_direct(self):

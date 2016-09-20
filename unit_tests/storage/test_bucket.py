@@ -29,8 +29,8 @@ class Test__BlobIterator(unittest.TestCase):
         client = _Client(connection)
         bucket = _Bucket()
         iterator = self._makeOne(bucket, client=client)
-        self.assertTrue(iterator.bucket is bucket)
-        self.assertTrue(iterator.client is client)
+        self.assertIs(iterator.bucket, bucket)
+        self.assertIs(iterator.client, client)
         self.assertEqual(iterator.path, '%s/o' % bucket.path)
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, None)
@@ -103,9 +103,9 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, properties)
         self.assertFalse(bucket._acl.loaded)
-        self.assertTrue(bucket._acl.bucket is bucket)
+        self.assertIs(bucket._acl.bucket, bucket)
         self.assertFalse(bucket._default_object_acl.loaded)
-        self.assertTrue(bucket._default_object_acl.bucket is bucket)
+        self.assertIs(bucket._default_object_acl.bucket, bucket)
 
     def test_blob(self):
         from google.cloud.storage.blob import Blob
@@ -117,8 +117,8 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._makeOne(name=BUCKET_NAME)
         blob = bucket.blob(BLOB_NAME, chunk_size=CHUNK_SIZE)
         self.assertIsInstance(blob, Blob)
-        self.assertTrue(blob.bucket is bucket)
-        self.assertTrue(blob.client is bucket.client)
+        self.assertIs(blob.bucket, bucket)
+        self.assertIs(blob.client, bucket.client)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(blob.chunk_size, CHUNK_SIZE)
 
@@ -234,14 +234,14 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._makeOne()
         acl = bucket.acl
         self.assertIsInstance(acl, BucketACL)
-        self.assertTrue(acl is bucket._acl)
+        self.assertIs(acl, bucket._acl)
 
     def test_default_object_acl_property(self):
         from google.cloud.storage.acl import DefaultObjectACL
         bucket = self._makeOne()
         acl = bucket.default_object_acl
         self.assertIsInstance(acl, DefaultObjectACL)
-        self.assertTrue(acl is bucket._default_object_acl)
+        self.assertIs(acl, bucket._default_object_acl)
 
     def test_path_no_name(self):
         bucket = self._makeOne()
@@ -271,7 +271,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._makeOne(name=NAME)
         blob = bucket.get_blob(BLOB_NAME, client=client)
-        self.assertTrue(blob.bucket is bucket)
+        self.assertIs(blob.bucket, bucket)
         self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
@@ -526,7 +526,7 @@ class Test_Bucket(unittest.TestCase):
         dest = self._makeOne(client=client, name=DEST)
         blob = _Blob()
         new_blob = source.copy_blob(blob, dest)
-        self.assertTrue(new_blob.bucket is dest)
+        self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, BLOB_NAME)
         kw, = connection._requested
         COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
@@ -550,7 +550,7 @@ class Test_Bucket(unittest.TestCase):
         dest = self._makeOne(client=client, name=DEST)
         blob = _Blob()
         new_blob = source.copy_blob(blob, dest, NEW_NAME)
-        self.assertTrue(new_blob.bucket is dest)
+        self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, NEW_NAME)
         kw, = connection._requested
         COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
@@ -580,7 +580,7 @@ class Test_Bucket(unittest.TestCase):
 
         blob = _Blob(BLOB_NAME, BUCKET_NAME)
         renamed_blob = bucket.rename_blob(blob, NEW_BLOB_NAME, client=client)
-        self.assertTrue(renamed_blob.bucket is bucket)
+        self.assertIs(renamed_blob.bucket, bucket)
         self.assertEqual(renamed_blob.name, NEW_BLOB_NAME)
         self.assertEqual(blob._deleted, [client])
 
@@ -704,7 +704,7 @@ class Test_Bucket(unittest.TestCase):
         NAME = 'name'
         before = {'logging': {'logBucket': 'logs', 'logObjectPrefix': 'pfx'}}
         bucket = self._makeOne(name=NAME, properties=before)
-        self.assertTrue(bucket.get_logging() is not None)
+        self.assertIs(bucket.get_logging(), not None)
         bucket.disable_logging()
         self.assertIsNone(bucket.get_logging())
 

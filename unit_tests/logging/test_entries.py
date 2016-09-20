@@ -57,7 +57,7 @@ class Test_BaseEntry(unittest.TestCase):
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
         entry = self._makeOne(PAYLOAD, logger)
         self.assertEqual(entry.payload, PAYLOAD)
-        self.assertTrue(entry.logger is logger)
+        self.assertIs(entry.logger, logger)
         self.assertIsNone(entry.insert_id)
         self.assertIsNone(entry.timestamp)
         self.assertIsNone(entry.labels)
@@ -87,7 +87,7 @@ class Test_BaseEntry(unittest.TestCase):
                               severity=SEVERITY,
                               http_request=REQUEST)
         self.assertEqual(entry.payload, PAYLOAD)
-        self.assertTrue(entry.logger is logger)
+        self.assertIs(entry.logger, logger)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, TIMESTAMP)
         self.assertEqual(entry.labels, LABELS)
@@ -113,7 +113,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertIsNone(entry.http_request)
         logger = entry.logger
         self.assertIsInstance(logger, _Logger)
-        self.assertTrue(logger.client is client)
+        self.assertIs(logger.client, client)
         self.assertEqual(logger.name, self.LOGGER_NAME)
 
     def test_from_api_repr_w_loggers_no_logger_match(self):
@@ -156,7 +156,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.http_request['status'], STATUS)
         logger = entry.logger
         self.assertIsInstance(logger, _Logger)
-        self.assertTrue(logger.client is client)
+        self.assertIs(logger.client, client)
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertEqual(loggers, {LOG_NAME: logger})
 
@@ -185,7 +185,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, NOW)
         self.assertEqual(entry.labels, LABELS)
-        self.assertTrue(entry.logger is LOGGER)
+        self.assertIs(entry.logger, LOGGER)
 
 
 class TestProtobufEntry(unittest.TestCase):

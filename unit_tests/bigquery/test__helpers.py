@@ -343,8 +343,8 @@ class Test_ConfigurationProperty(unittest.TestCase):
 
         value = object()
         wrapper.attr = value
-        self.assertTrue(wrapper.attr is value)
-        self.assertTrue(wrapper._configuration._attr is value)
+        self.assertIs(wrapper.attr, value)
+        self.assertIs(wrapper._configuration._attr, value)
 
         del wrapper.attr
         self.assertEqual(wrapper.attr, None)
@@ -437,7 +437,7 @@ class Test_UDFResourcesProperty(unittest.TestCase):
 
     def test_class_getter(self):
         descriptor, klass = self._descriptor_and_klass()
-        self.assertTrue(klass.udf_resources is descriptor)
+        self.assertIs(klass.udf_resources, descriptor)
 
     def test_instance_getter_empty(self):
         _, klass = self._descriptor_and_klass()

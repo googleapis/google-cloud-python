@@ -34,7 +34,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(self.KEY, http=http)
         self.assertIsInstance(client.connection, Connection)
         self.assertIsNone(client.connection.credentials)
-        self.assertTrue(client.connection.http is http)
+        self.assertIs(client.connection.http, http)
         self.assertEqual(client.target_language, ENGLISH_ISO_639)
 
     def test_ctor_non_default(self):
@@ -45,7 +45,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(self.KEY, http=http, target_language=target)
         self.assertIsInstance(client.connection, Connection)
         self.assertIsNone(client.connection.credentials)
-        self.assertTrue(client.connection.http is http)
+        self.assertIs(client.connection.http, http)
         self.assertEqual(client.target_language, target)
 
     def test_get_languages(self):

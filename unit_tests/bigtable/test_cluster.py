@@ -39,7 +39,7 @@ class TestCluster(unittest.TestCase):
 
         cluster = self._makeOne(self.CLUSTER_ID, instance)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
-        self.assertTrue(cluster._instance is instance)
+        self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
 
     def test_constructor_non_default(self):
@@ -50,7 +50,7 @@ class TestCluster(unittest.TestCase):
         cluster = self._makeOne(self.CLUSTER_ID, instance,
                                 serve_nodes=SERVE_NODES)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
-        self.assertTrue(cluster._instance is instance)
+        self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
 
     def test_copy(self):
@@ -110,7 +110,7 @@ class TestCluster(unittest.TestCase):
         klass = self._getTargetClass()
         cluster = klass.from_pb(cluster_pb, instance)
         self.assertIsInstance(cluster, klass)
-        self.assertTrue(cluster._instance is instance)
+        self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
 
@@ -255,8 +255,8 @@ class TestCluster(unittest.TestCase):
 
         self.assertIsInstance(result, Operation)
         self.assertEqual(result.name, OP_NAME)
-        self.assertTrue(result.target is cluster)
-        self.assertTrue(result.client is client)
+        self.assertIs(result.target, cluster)
+        self.assertIs(result.client, client)
         self.assertIsNone(result.pb_metadata)
         self.assertEqual(result.metadata, {'request_type': 'CreateCluster'})
 
@@ -321,8 +321,8 @@ class TestCluster(unittest.TestCase):
 
         self.assertIsInstance(result, Operation)
         self.assertEqual(result.name, OP_NAME)
-        self.assertTrue(result.target is cluster)
-        self.assertTrue(result.client is client)
+        self.assertIs(result.target, cluster)
+        self.assertIs(result.client, client)
         self.assertIsInstance(result.pb_metadata,
                               messages_v2_pb2.UpdateClusterMetadata)
         self.assertEqual(result.pb_metadata.request_time, NOW_PB)

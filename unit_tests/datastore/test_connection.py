@@ -397,12 +397,12 @@ class TestConnection(unittest.TestCase):
 
         creds = Creds()
         conn = self._makeOne(creds)
-        self.assertTrue(conn.credentials is creds)
+        self.assertIs(conn.credentials, creds)
 
     def test_http_w_existing(self):
         conn = self._makeOne()
         conn._http = http = object()
-        self.assertTrue(conn.http is http)
+        self.assertIs(conn.http, http)
 
     def test_http_wo_creds(self):
         import httplib2
@@ -426,7 +426,7 @@ class TestConnection(unittest.TestCase):
 
         creds = Creds()
         conn = self._makeOne(creds)
-        self.assertTrue(conn.http is authorized)
+        self.assertIs(conn.http, authorized)
         self.assertIsInstance(creds._called_with, httplib2.Http)
 
     def test_build_api_url_w_default_base_version(self):
@@ -900,7 +900,7 @@ class TestConnection(unittest.TestCase):
         with _Monkey(MUT, _parse_commit_response=mock_parse):
             result = conn.commit(PROJECT, req_pb, None)
 
-        self.assertTrue(result is expected_result)
+        self.assertIs(result, expected_result)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb2.CommitRequest
@@ -946,7 +946,7 @@ class TestConnection(unittest.TestCase):
         with _Monkey(MUT, _parse_commit_response=mock_parse):
             result = conn.commit(PROJECT, req_pb, b'xact')
 
-        self.assertTrue(result is expected_result)
+        self.assertIs(result, expected_result)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb2.CommitRequest

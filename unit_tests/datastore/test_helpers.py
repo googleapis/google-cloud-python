@@ -507,13 +507,13 @@ class Test__pb_attr_value(unittest.TestCase):
         entity = Entity()
         name, value = self._callFUT(entity)
         self.assertEqual(name, 'entity_value')
-        self.assertTrue(value is entity)
+        self.assertIs(value, entity)
 
     def test_array(self):
         values = ['a', 0, 3.14]
         name, value = self._callFUT(values)
         self.assertEqual(name, 'array_value')
-        self.assertTrue(value is values)
+        self.assertIs(value, values)
 
     def test_geo_point(self):
         from google.type import latlng_pb2

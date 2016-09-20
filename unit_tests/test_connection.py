@@ -33,25 +33,25 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(credentials._create_scoped_calls, 0)
         conn = self._makeOne(credentials)
         self.assertEqual(credentials._create_scoped_calls, 1)
-        self.assertTrue(conn.credentials is credentials)
+        self.assertIs(conn.credentials, credentials)
         self.assertEqual(conn._http, None)
 
     def test_ctor_explicit_http(self):
         http = object()
         conn = self._makeOne(http=http)
         self.assertEqual(conn.credentials, None)
-        self.assertTrue(conn.http is http)
+        self.assertIs(conn.http, http)
 
     def test_ctor_credentials_wo_create_scoped(self):
         credentials = object()
         conn = self._makeOne(credentials)
-        self.assertTrue(conn.credentials is credentials)
+        self.assertIs(conn.credentials, credentials)
         self.assertEqual(conn._http, None)
 
     def test_http_w_existing(self):
         conn = self._makeOne()
         conn._http = http = object()
-        self.assertTrue(conn.http is http)
+        self.assertIs(conn.http, http)
 
     def test_http_wo_creds(self):
         import httplib2
@@ -64,7 +64,7 @@ class TestConnection(unittest.TestCase):
         authorized = object()
         credentials = _Credentials(authorized)
         conn = self._makeOne(credentials)
-        self.assertTrue(conn.http is authorized)
+        self.assertIs(conn.http, authorized)
         self.assertIsInstance(credentials._called_with, httplib2.Http)
 
     def test_user_agent_format(self):
@@ -104,12 +104,12 @@ class TestJSONConnection(unittest.TestCase):
     def test_ctor_explicit(self):
         credentials = _Credentials()
         conn = self._makeOne(credentials)
-        self.assertTrue(conn.credentials is credentials)
+        self.assertIs(conn.credentials, credentials)
 
     def test_http_w_existing(self):
         conn = self._makeOne()
         conn._http = http = object()
-        self.assertTrue(conn.http is http)
+        self.assertIs(conn.http, http)
 
     def test_http_wo_creds(self):
         import httplib2
@@ -122,7 +122,7 @@ class TestJSONConnection(unittest.TestCase):
         authorized = object()
         credentials = _Credentials(authorized)
         conn = self._makeOne(credentials)
-        self.assertTrue(conn.http is authorized)
+        self.assertIs(conn.http, authorized)
         self.assertIsInstance(credentials._called_with, httplib2.Http)
 
     def test_build_api_url_no_extra_query_params(self):

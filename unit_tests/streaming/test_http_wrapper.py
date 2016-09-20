@@ -96,7 +96,7 @@ class Test_Request(unittest.TestCase):
         request.loggable_body = 'abc'
         request.body = body = _Dummy(length=123)
         self.assertEqual(request.headers, {'content-length': '123'})
-        self.assertTrue(request.body is body)
+        self.assertIs(request.body, body)
         self.assertEqual(request.loggable_body, '<media body>')
 
 
@@ -371,7 +371,7 @@ class Test_make_api_request(unittest.TestCase):
                      _check_response=_checked.append):
             response = self._callFUT(HTTP, REQUEST)
 
-        self.assertTrue(response is RESPONSE)
+        self.assertIs(response, RESPONSE)
         expected_kw = {'redirections': MUT._REDIRECTIONS}
         self.assertEqual(_created, [((HTTP, REQUEST), expected_kw)])
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
@@ -397,7 +397,7 @@ class Test_make_api_request(unittest.TestCase):
                      _check_response=_checked.append):
             response = self._callFUT(HTTP, REQUEST, retries=5)
 
-        self.assertTrue(response is RESPONSE)
+        self.assertIs(response, RESPONSE)
         self.assertEqual(len(_created), 5)
         expected_kw = {'redirections': MUT._REDIRECTIONS}
         for attempt in _created:

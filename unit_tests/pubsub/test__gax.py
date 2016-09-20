@@ -51,7 +51,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXPublisherAPI()
         api = self._makeOne(gax_api)
-        self.assertTrue(api._gax_api is gax_api)
+        self.assertIs(api._gax_api, gax_api)
 
     def test_list_topics_no_paging(self):
         from google.gax import INITIAL_PAGE
@@ -72,7 +72,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         name, page_size, options = gax_api._list_topics_called_with
         self.assertEqual(name, self.PROJECT_PATH)
         self.assertEqual(page_size, 0)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_list_topics_with_paging(self):
         from unit_tests._testing import _GAXPageIterator
@@ -288,7 +288,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
             gax_api._list_topic_subscriptions_called_with)
         self.assertEqual(topic_path, self.TOPIC_PATH)
         self.assertEqual(page_size, 0)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_topic_list_subscriptions_with_paging(self):
         from unit_tests._testing import _GAXPageIterator
@@ -329,7 +329,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
             gax_api._list_topic_subscriptions_called_with)
         self.assertEqual(topic_path, self.TOPIC_PATH)
         self.assertEqual(page_size, 0)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_topic_list_subscriptions_error(self):
         from google.gax import INITIAL_PAGE
@@ -345,7 +345,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
             gax_api._list_topic_subscriptions_called_with)
         self.assertEqual(topic_path, self.TOPIC_PATH)
         self.assertEqual(page_size, 0)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
@@ -360,7 +360,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXSubscriberAPI()
         api = self._makeOne(gax_api)
-        self.assertTrue(api._gax_api is gax_api)
+        self.assertIs(api._gax_api, gax_api)
 
     def test_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
@@ -385,7 +385,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         name, page_size, options = gax_api._list_subscriptions_called_with
         self.assertEqual(name, self.PROJECT_PATH)
         self.assertEqual(page_size, 0)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_list_subscriptions_with_paging(self):
         from unit_tests._testing import _GAXPageIterator

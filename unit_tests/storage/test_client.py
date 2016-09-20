@@ -33,7 +33,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client.connection, Connection)
-        self.assertTrue(client.connection.credentials is CREDENTIALS)
+        self.assertIs(client.connection.credentials, CREDENTIALS)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
 
@@ -48,14 +48,14 @@ class TestClient(unittest.TestCase):
         batch2 = Batch(client)
         client._push_batch(batch1)
         self.assertEqual(list(client._batch_stack), [batch1])
-        self.assertTrue(client.current_batch is batch1)
+        self.assertIs(client.current_batch, batch1)
         client._push_batch(batch2)
-        self.assertTrue(client.current_batch is batch2)
+        self.assertIs(client.current_batch, batch2)
         # list(_LocalStack) returns in reverse order.
         self.assertEqual(list(client._batch_stack), [batch2, batch1])
-        self.assertTrue(client._pop_batch() is batch2)
+        self.assertIs(client._pop_batch(), batch2)
         self.assertEqual(list(client._batch_stack), [batch1])
-        self.assertTrue(client._pop_batch() is batch1)
+        self.assertIs(client._pop_batch(), batch1)
         self.assertEqual(list(client._batch_stack), [])
 
     def test_connection_setter(self):
@@ -64,7 +64,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         client._connection = None  # Unset the value from the constructor
         client.connection = connection = object()
-        self.assertTrue(client._connection is connection)
+        self.assertIs(client._connection, connection)
 
     def test_connection_setter_when_set(self):
         PROJECT = 'PROJECT'
@@ -76,7 +76,7 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
-        self.assertTrue(client.connection is client._connection)
+        self.assertIs(client.connection, client._connection)
         self.assertIsNone(client.current_batch)
 
     def test_connection_getter_with_batch(self):
@@ -86,9 +86,9 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         batch = Batch(client)
         client._push_batch(batch)
-        self.assertTrue(client.connection is not client._connection)
-        self.assertTrue(client.connection is batch)
-        self.assertTrue(client.current_batch is batch)
+        self.assertIs(client.connection, not client._connection)
+        self.assertIs(client.connection, batch)
+        self.assertIs(client.current_batch, batch)
 
     def test_bucket(self):
         from google.cloud.storage.bucket import Bucket
@@ -100,7 +100,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         bucket = client.bucket(BUCKET_NAME)
         self.assertIsInstance(bucket, Bucket)
-        self.assertTrue(bucket.client is client)
+        self.assertIs(bucket.client, client)
         self.assertEqual(bucket.name, BUCKET_NAME)
 
     def test_batch(self):
@@ -112,7 +112,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         batch = client.batch()
         self.assertIsInstance(batch, Batch)
-        self.assertTrue(batch._client is client)
+        self.assertIs(batch._client, client)
 
     def test_get_bucket_miss(self):
         from google.cloud.exceptions import NotFound
@@ -386,7 +386,7 @@ class Test__BucketIterator(unittest.TestCase):
         self.assertEqual(iterator.path, '/b')
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, None)
-        self.assertTrue(iterator.client is client)
+        self.assertIs(iterator.client, client)
 
     def test_get_items_from_response_empty(self):
         connection = object()

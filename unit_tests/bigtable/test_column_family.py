@@ -167,7 +167,7 @@ class TestGCRuleUnion(unittest.TestCase):
     def test_constructor(self):
         rules = object()
         rule_union = self._makeOne(rules)
-        self.assertTrue(rule_union.rules is rules)
+        self.assertIs(rule_union.rules, rules)
 
     def test___eq__(self):
         rules = object()
@@ -253,7 +253,7 @@ class TestGCRuleIntersection(unittest.TestCase):
     def test_constructor(self):
         rules = object()
         rule_intersection = self._makeOne(rules)
-        self.assertTrue(rule_intersection.rules is rules)
+        self.assertIs(rule_intersection.rules, rules)
 
     def test___eq__(self):
         rules = object()
@@ -347,8 +347,8 @@ class TestColumnFamily(unittest.TestCase):
             column_family_id, table, gc_rule=gc_rule)
 
         self.assertEqual(column_family.column_family_id, column_family_id)
-        self.assertTrue(column_family._table is table)
-        self.assertTrue(column_family.gc_rule is gc_rule)
+        self.assertIs(column_family._table, table)
+        self.assertIs(column_family.gc_rule, gc_rule)
 
     def test_name_property(self):
         column_family_id = u'column-family-id'

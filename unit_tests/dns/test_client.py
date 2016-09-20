@@ -34,8 +34,8 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=self.PROJECT, credentials=creds,
                                http=http)
         self.assertIsInstance(client.connection, Connection)
-        self.assertTrue(client.connection.credentials is creds)
-        self.assertTrue(client.connection.http is http)
+        self.assertIs(client.connection.credentials, creds)
+        self.assertIs(client.connection.http, http)
 
     def test_quotas_defaults(self):
         PATH = 'projects/%s' % (self.PROJECT,)
@@ -201,7 +201,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, DNS_NAME)
         self.assertEqual(zone.description, DESCRIPTION)
-        self.assertTrue(zone._client is client)
+        self.assertIs(zone._client, client)
 
     def test_zone_w_dns_name_wo_description(self):
         from google.cloud.dns.zone import ManagedZone
@@ -213,7 +213,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, DNS_NAME)
         self.assertEqual(zone.description, DNS_NAME)
-        self.assertTrue(zone._client is client)
+        self.assertIs(zone._client, client)
 
     def test_zone_wo_dns_name(self):
         from google.cloud.dns.zone import ManagedZone
@@ -224,7 +224,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, None)
         self.assertEqual(zone.description, None)
-        self.assertTrue(zone._client is client)
+        self.assertIs(zone._client, client)
 
 
 class _Credentials(object):

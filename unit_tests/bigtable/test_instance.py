@@ -44,7 +44,7 @@ class TestInstance(unittest.TestCase):
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
-        self.assertTrue(instance._client is client)
+        self.assertIs(instance._client, client)
         self.assertEqual(instance._cluster_location_id, self.LOCATION_ID)
         self.assertEqual(instance._cluster_serve_nodes, DEFAULT_SERVE_NODES)
 
@@ -56,7 +56,7 @@ class TestInstance(unittest.TestCase):
                                  display_name=display_name)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, display_name)
-        self.assertTrue(instance._client is client)
+        self.assertIs(instance._client, client)
 
     def test_copy(self):
         display_name = 'display_name'
@@ -263,8 +263,8 @@ class TestInstance(unittest.TestCase):
 
         self.assertIsInstance(result, Operation)
         self.assertEqual(result.name, self.OP_NAME)
-        self.assertTrue(result.target is instance)
-        self.assertTrue(result.client is client)
+        self.assertIs(result.target, instance)
+        self.assertIs(result.client, client)
         self.assertIsInstance(result.pb_metadata,
                               messages_v2_pb2.CreateInstanceMetadata)
         self.assertEqual(result.pb_metadata.request_time, NOW_PB)
@@ -307,8 +307,8 @@ class TestInstance(unittest.TestCase):
 
         self.assertIsInstance(result, Operation)
         self.assertEqual(result.name, self.OP_NAME)
-        self.assertTrue(result.target is instance)
-        self.assertTrue(result.client is client)
+        self.assertIs(result.target, instance)
+        self.assertIs(result.client, client)
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]

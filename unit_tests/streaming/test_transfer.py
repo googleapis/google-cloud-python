@@ -15,7 +15,7 @@ class Test__Transfer(unittest.TestCase):
         from google.cloud.streaming.transfer import _DEFAULT_CHUNKSIZE
         stream = _Stream()
         xfer = self._makeOne(stream)
-        self.assertTrue(xfer.stream is stream)
+        self.assertIs(xfer.stream, stream)
         self.assertFalse(xfer.close_stream)
         self.assertEqual(xfer.chunksize, _DEFAULT_CHUNKSIZE)
         self.assertTrue(xfer.auto_transfer)
@@ -36,19 +36,19 @@ class Test__Transfer(unittest.TestCase):
                              auto_transfer=False,
                              http=HTTP,
                              num_retries=NUM_RETRIES)
-        self.assertTrue(xfer.stream is stream)
+        self.assertIs(xfer.stream, stream)
         self.assertTrue(xfer.close_stream)
         self.assertEqual(xfer.chunksize, CHUNK_SIZE)
         self.assertFalse(xfer.auto_transfer)
-        self.assertTrue(xfer.bytes_http is HTTP)
-        self.assertTrue(xfer.http is HTTP)
+        self.assertIs(xfer.bytes_http, HTTP)
+        self.assertIs(xfer.http, HTTP)
         self.assertEqual(xfer.num_retries, NUM_RETRIES)
 
     def test_bytes_http_fallback_to_http(self):
         stream = _Stream()
         HTTP = object()
         xfer = self._makeOne(stream, http=HTTP)
-        self.assertTrue(xfer.bytes_http is HTTP)
+        self.assertIs(xfer.bytes_http, HTTP)
 
     def test_bytes_http_setter(self):
         stream = _Stream()
@@ -56,7 +56,7 @@ class Test__Transfer(unittest.TestCase):
         BYTES_HTTP = object()
         xfer = self._makeOne(stream, http=HTTP)
         xfer.bytes_http = BYTES_HTTP
-        self.assertTrue(xfer.bytes_http is BYTES_HTTP)
+        self.assertIs(xfer.bytes_http, BYTES_HTTP)
 
     def test_num_retries_setter_invalid(self):
         stream = _Stream()
@@ -76,8 +76,8 @@ class Test__Transfer(unittest.TestCase):
         xfer = self._makeOne(stream)
         xfer._initialize(HTTP, self.URL)
         self.assertTrue(xfer.initialized)
-        self.assertTrue(xfer.http is HTTP)
-        self.assertTrue(xfer.url is self.URL)
+        self.assertIs(xfer.http, HTTP)
+        self.assertIs(xfer.url, self.URL)
 
     def test__initialize_not_already_initialized_wo_http(self):
         from httplib2 import Http
@@ -86,7 +86,7 @@ class Test__Transfer(unittest.TestCase):
         xfer._initialize(None, self.URL)
         self.assertTrue(xfer.initialized)
         self.assertIsInstance(xfer.http, Http)
-        self.assertTrue(xfer.url is self.URL)
+        self.assertIs(xfer.url, self.URL)
 
     def test__initialize_w_existing_http(self):
         HTTP_1, HTTP_2 = object(), object()
@@ -94,8 +94,8 @@ class Test__Transfer(unittest.TestCase):
         xfer = self._makeOne(stream, http=HTTP_1)
         xfer._initialize(HTTP_2, self.URL)
         self.assertTrue(xfer.initialized)
-        self.assertTrue(xfer.http is HTTP_1)
-        self.assertTrue(xfer.url is self.URL)
+        self.assertIs(xfer.http, HTTP_1)
+        self.assertIs(xfer.url, self.URL)
 
     def test__initialize_already_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
@@ -158,7 +158,7 @@ class Test_Download(unittest.TestCase):
     def test_ctor_defaults(self):
         stream = _Stream()
         download = self._makeOne(stream)
-        self.assertTrue(download.stream is stream)
+        self.assertIs(download.stream, stream)
         self.assertIsNone(download._initial_response)
         self.assertEqual(download.progress, 0)
         self.assertIsNone(download.total_size)
@@ -168,14 +168,14 @@ class Test_Download(unittest.TestCase):
         stream = _Stream()
         CHUNK_SIZE = 123
         download = self._makeOne(stream, chunksize=CHUNK_SIZE)
-        self.assertTrue(download.stream is stream)
+        self.assertIs(download.stream, stream)
         self.assertEqual(download.chunksize, CHUNK_SIZE)
 
     def test_ctor_w_total_size(self):
         stream = _Stream()
         SIZE = 123
         download = self._makeOne(stream, total_size=SIZE)
-        self.assertTrue(download.stream is stream)
+        self.assertIs(download.stream, stream)
         self.assertEqual(download.total_size, SIZE)
 
     def test_from_file_w_existing_file_no_override(self):
@@ -206,7 +206,7 @@ class Test_Download(unittest.TestCase):
         stream = _Stream()
         klass = self._getTargetClass()
         download = klass.from_stream(stream)
-        self.assertTrue(download.stream is stream)
+        self.assertIs(download.stream, stream)
         self.assertTrue(download.auto_transfer)
         self.assertIsNone(download.total_size)
 
@@ -217,7 +217,7 @@ class Test_Download(unittest.TestCase):
         klass = self._getTargetClass()
         download = klass.from_stream(stream, auto_transfer=False,
                                      total_size=SIZE, chunksize=CHUNK_SIZE)
-        self.assertTrue(download.stream is stream)
+        self.assertIs(download.stream, stream)
         self.assertFalse(download.auto_transfer)
         self.assertEqual(download.total_size, SIZE)
         self.assertEqual(download.chunksize, CHUNK_SIZE)
@@ -270,7 +270,7 @@ class Test_Download(unittest.TestCase):
         http = object()
         download = self._makeOne(_Stream(), auto_transfer=False)
         download.initialize_download(request, http)
-        self.assertTrue(download.http is http)
+        self.assertIs(download.http, http)
         self.assertEqual(download.url, request.url)
 
     def test_initialize_download_w_autotransfer_failing(self):
@@ -290,7 +290,7 @@ class Test_Download(unittest.TestCase):
                 download.initialize_download(request, http)
 
         self.assertTrue(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
+        self.assertIs(requester._requested[0][0], request)
 
     def test_initialize_download_w_autotransfer_w_content_location(self):
         from six.moves import http_client
@@ -310,10 +310,10 @@ class Test_Download(unittest.TestCase):
 
         self.assertIsNone(download._initial_response)
         self.assertEqual(download.total_size, 0)
-        self.assertTrue(download.http is http)
+        self.assertIs(download.http, http)
         self.assertEqual(download.url, REDIRECT_URL)
         self.assertTrue(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
+        self.assertIs(requester._requested[0][0], request)
 
     def test__normalize_start_end_w_end_w_start_lt_0(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
@@ -424,7 +424,7 @@ class Test_Download(unittest.TestCase):
                      make_api_request=requester):
             found = download._get_chunk(0, 10)
 
-        self.assertTrue(found is response)
+        self.assertIs(found, response)
         self.assertTrue(len(requester._requested), 1)
         request = requester._requested[0][0]
         self.assertEqual(request.headers['range'], 'bytes=0-10')
@@ -459,7 +459,7 @@ class Test_Download(unittest.TestCase):
         download = self._makeOne(stream)
         response = _makeResponse(http_client.OK, content='OK')
         found = download._process_response(response)
-        self.assertTrue(found is response)
+        self.assertIs(found, response)
         self.assertEqual(stream._written, ['OK'])
         self.assertEqual(download.progress, 2)
         self.assertEqual(download.encoding, None)
@@ -471,7 +471,7 @@ class Test_Download(unittest.TestCase):
         info = {'content-encoding': 'blah'}
         response = _makeResponse(http_client.OK, info, 'PARTIAL')
         found = download._process_response(response)
-        self.assertTrue(found is response)
+        self.assertIs(found, response)
         self.assertEqual(stream._written, ['PARTIAL'])
         self.assertEqual(download.progress, 7)
         self.assertEqual(download.encoding, 'blah')
@@ -483,7 +483,7 @@ class Test_Download(unittest.TestCase):
         response = _makeResponse(
             http_client.REQUESTED_RANGE_NOT_SATISFIABLE)
         found = download._process_response(response)
-        self.assertTrue(found is response)
+        self.assertIs(found, response)
         self.assertEqual(stream._written, [])
         self.assertEqual(download.progress, 0)
         self.assertEqual(download.encoding, None)
@@ -494,7 +494,7 @@ class Test_Download(unittest.TestCase):
         download = self._makeOne(stream)
         response = _makeResponse(status_code=http_client.NO_CONTENT)
         found = download._process_response(response)
-        self.assertTrue(found is response)
+        self.assertIs(found, response)
         self.assertEqual(stream._written, [''])
         self.assertEqual(download.progress, 0)
         self.assertEqual(download.encoding, None)
@@ -794,7 +794,7 @@ class Test_Upload(unittest.TestCase):
         from google.cloud.streaming.transfer import _DEFAULT_CHUNKSIZE
         stream = _Stream()
         upload = self._makeOne(stream)
-        self.assertTrue(upload.stream is stream)
+        self.assertIs(upload.stream, stream)
         self.assertIsNone(upload._final_response)
         self.assertIsNone(upload._server_chunk_granularity)
         self.assertFalse(upload.complete)
@@ -808,7 +808,7 @@ class Test_Upload(unittest.TestCase):
         stream = _Stream()
         CHUNK_SIZE = 123
         upload = self._makeOne(stream, chunksize=CHUNK_SIZE)
-        self.assertTrue(upload.stream is stream)
+        self.assertIs(upload.stream, stream)
         self.assertEqual(upload.mime_type, self.MIME_TYPE)
         self.assertEqual(upload.chunksize, CHUNK_SIZE)
 
@@ -1147,7 +1147,7 @@ class Test_Upload(unittest.TestCase):
         self.assertTrue(upload.complete)
         self.assertEqual(upload.progress, LEN)
         self.assertEqual(stream.tell(), LEN)
-        self.assertTrue(upload._final_response is response)
+        self.assertIs(upload._final_response, response)
 
     def test_refresh_upload_state_w_CREATED(self):
         from six.moves import http_client
@@ -1174,7 +1174,7 @@ class Test_Upload(unittest.TestCase):
         self.assertTrue(upload.complete)
         self.assertEqual(upload.progress, LEN)
         self.assertEqual(stream.tell(), LEN)
-        self.assertTrue(upload._final_response is response)
+        self.assertIs(upload._final_response, response)
 
     def test_refresh_upload_state_w_RESUME_INCOMPLETE_w_range(self):
         from google.cloud.streaming import transfer as MUT
@@ -1323,7 +1323,7 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(upload.url, self.UPLOAD_URL)
         self.assertEqual(requester._responses, [])
         self.assertEqual(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
+        self.assertIs(requester._requested[0][0], request)
 
     def test_initialize_upload_w_granularity_w_auto_transfer_w_OK(self):
         from six.moves import http_client
@@ -1350,7 +1350,7 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(upload.url, self.UPLOAD_URL)
         self.assertEqual(requester._responses, [])
         self.assertEqual(len(requester._requested), 2)
-        self.assertTrue(requester._requested[0][0] is request)
+        self.assertIs(requester._requested[0][0], request)
         chunk_request = requester._requested[1][0]
         self.assertIsInstance(chunk_request, _Request)
         self.assertEqual(chunk_request.url, self.UPLOAD_URL)
@@ -1411,7 +1411,7 @@ class Test_Upload(unittest.TestCase):
         upload._initialize(http, _Request.URL)
         upload._final_response = response
         upload._complete = True
-        self.assertTrue(upload.stream_file() is response)
+        self.assertIs(upload.stream_file(), response)
 
     def test_stream_file_already_complete_w_seekable_stream_unsynced(self):
         from google.cloud.streaming.exceptions import CommunicationError
@@ -1443,7 +1443,7 @@ class Test_Upload(unittest.TestCase):
         upload._initialize(http, _Request.URL)
         upload._final_response = response
         upload._complete = True
-        self.assertTrue(upload.stream_file(use_chunks=False) is response)
+        self.assertIs(upload.stream_file(use_chunks=False), response)
 
     def test_stream_file_already_complete_w_seekable_method_true_synced(self):
         import os
@@ -1459,7 +1459,7 @@ class Test_Upload(unittest.TestCase):
         upload._initialize(http, _Request.URL)
         upload._final_response = response
         upload._complete = True
-        self.assertTrue(upload.stream_file(use_chunks=False) is response)
+        self.assertIs(upload.stream_file(use_chunks=False), response)
 
     def test_stream_file_already_complete_w_seekable_method_false(self):
         import os
@@ -1475,7 +1475,7 @@ class Test_Upload(unittest.TestCase):
         upload._initialize(http, _Request.URL)
         upload._final_response = response
         upload._complete = True
-        self.assertTrue(upload.stream_file(use_chunks=False) is response)
+        self.assertIs(upload.stream_file(use_chunks=False), response)
 
     def test_stream_file_incomplete(self):
         from six.moves import http_client
@@ -1502,7 +1502,7 @@ class Test_Upload(unittest.TestCase):
                      make_api_request=requester):
             response = upload.stream_file()
 
-        self.assertTrue(response is response_2)
+        self.assertIs(response, response_2)
         self.assertEqual(len(requester._responses), 0)
         self.assertEqual(len(requester._requested), 2)
 
@@ -1583,8 +1583,8 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(len(requester._responses), 0)
         self.assertEqual(len(requester._requested), 1)
         used_request, used_http, _ = requester._requested[0]
-        self.assertTrue(used_request is request)
-        self.assertTrue(used_http is bytes_http)
+        self.assertIs(used_request, request)
+        self.assertIs(used_http, bytes_http)
         self.assertEqual(stream.tell(), 4)
 
     def test__send_media_request_w_error(self):
@@ -1619,14 +1619,14 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(len(requester._responses), 0)
         self.assertEqual(len(requester._requested), 2)
         first_request, first_http, _ = requester._requested[0]
-        self.assertTrue(first_request is request)
-        self.assertTrue(first_http is bytes_http)
+        self.assertIs(first_request, request)
+        self.assertIs(first_http, bytes_http)
         second_request, second_http, _ = requester._requested[1]
         self.assertEqual(second_request.url, self.UPLOAD_URL)
         self.assertEqual(second_request.http_method, 'PUT')  # ACK!
         self.assertEqual(second_request.headers,
                          {'Content-Range': 'bytes */*'})
-        self.assertTrue(second_http is http)
+        self.assertIs(second_http, http)
 
     def test__send_media_body_not_initialized(self):
         from google.cloud.streaming.exceptions import TransferInvalidError
@@ -1655,13 +1655,13 @@ class Test_Upload(unittest.TestCase):
 
         found = upload._send_media_body(0)
 
-        self.assertTrue(found is response)
+        self.assertIs(found, response)
         request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
         self.assertIsInstance(body_stream, StreamSlice)
-        self.assertTrue(body_stream._stream is stream)
+        self.assertIs(body_stream._stream, stream)
         self.assertEqual(len(body_stream), SIZE)
         self.assertEqual(request.headers,
                          {'content-length': '%d' % (SIZE,),  # speling!
@@ -1682,13 +1682,13 @@ class Test_Upload(unittest.TestCase):
 
         found = upload._send_media_body(SIZE)
 
-        self.assertTrue(found is response)
+        self.assertIs(found, response)
         request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
         self.assertIsInstance(body_stream, StreamSlice)
-        self.assertTrue(body_stream._stream is stream)
+        self.assertIs(body_stream._stream, stream)
         self.assertEqual(len(body_stream), 0)
         self.assertEqual(request.headers,
                          {'content-length': '0',  # speling!
@@ -1715,7 +1715,7 @@ class Test_Upload(unittest.TestCase):
 
         found = upload._send_chunk(0)
 
-        self.assertTrue(found is response)
+        self.assertIs(found, response)
         self.assertEqual(upload.total_size, SIZE)
         request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
@@ -1741,7 +1741,7 @@ class Test_Upload(unittest.TestCase):
 
         found = upload._send_chunk(0)
 
-        self.assertTrue(found is response)
+        self.assertIs(found, response)
         self.assertEqual(upload.total_size, None)
         request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
@@ -1770,13 +1770,13 @@ class Test_Upload(unittest.TestCase):
 
         found = upload._send_chunk(0)
 
-        self.assertTrue(found is response)
+        self.assertIs(found, response)
         request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
         self.assertIsInstance(body_stream, StreamSlice)
-        self.assertTrue(body_stream._stream is stream)
+        self.assertIs(body_stream._stream, stream)
         self.assertEqual(len(body_stream), CHUNK_SIZE)
         expected_headers = {
             'content-length': '%d' % CHUNK_SIZE,  # speling!
@@ -1801,13 +1801,13 @@ class Test_Upload(unittest.TestCase):
 
         found = upload._send_chunk(SIZE)
 
-        self.assertTrue(found is response)
+        self.assertIs(found, response)
         request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
         self.assertIsInstance(body_stream, StreamSlice)
-        self.assertTrue(body_stream._stream is stream)
+        self.assertIs(body_stream._stream, stream)
         self.assertEqual(len(body_stream), 0)
         self.assertEqual(request.headers,
                          {'content-length': '0',  # speling!

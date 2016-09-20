@@ -120,7 +120,7 @@ class TestQueryResults(unittest.TestCase):
         client = _Client(self.PROJECT)
         query = self._makeOne(self.QUERY, client)
         self.assertEqual(query.query, self.QUERY)
-        self.assertTrue(query._client is client)
+        self.assertIs(query._client, client)
 
         self.assertIsNone(query.cache_hit)
         self.assertIsNone(query.complete)
@@ -156,10 +156,10 @@ class TestQueryResults(unittest.TestCase):
         query = klass.from_query_job(job)
 
         self.assertEqual(query.query, self.QUERY)
-        self.assertTrue(query._client is client)
-        self.assertTrue(query._job is job)
+        self.assertIs(query._client, client)
+        self.assertIs(query._job, job)
         self.assertEqual(query.udf_resources, job.udf_resources)
-        self.assertTrue(query.default_dataset is dataset)
+        self.assertIs(query.default_dataset, dataset)
         self.assertTrue(query.use_query_cache)
         self.assertTrue(query.use_legacy_sql)
 
@@ -176,8 +176,8 @@ class TestQueryResults(unittest.TestCase):
         query = klass.from_query_job(job)
 
         self.assertEqual(query.query, self.QUERY)
-        self.assertTrue(query._client is client)
-        self.assertTrue(query._job is job)
+        self.assertIs(query._client, client)
+        self.assertIs(query._job, job)
         self.assertEqual(query.udf_resources, job.udf_resources)
         self.assertIsNone(query.default_dataset)
         self.assertIsNone(query.use_query_cache)
@@ -200,10 +200,10 @@ class TestQueryResults(unittest.TestCase):
         job = query.job
         self.assertIsInstance(job, QueryJob)
         self.assertEqual(job.query, self.QUERY)
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self.assertEqual(job.name, SERVER_GENERATED)
         fetched_later = query.job
-        self.assertTrue(fetched_later is job)
+        self.assertIs(fetched_later, job)
 
     def test_schema(self):
         client = _Client(self.PROJECT)
