@@ -22,7 +22,8 @@ This client supports the following Google Cloud Platform services:
 -  `Google Cloud Resource Manager`_
 -  `Google Stackdriver Logging`_
 -  `Google Stackdriver Monitoring`_
--  `Google Bigtable`_
+-  `Google Cloud Bigtable`_
+-  `Google Cloud DNS`_
 
 .. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
 .. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
@@ -31,7 +32,8 @@ This client supports the following Google Cloud Platform services:
 .. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/resource_manager
 .. _Google Stackdriver Logging: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/logging
 .. _Google Stackdriver Monitoring: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/monitoring
-.. _Google Bigtable: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigtable
+.. _Google Cloud Bigtable: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigtable
+.. _Google Cloud DNS: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/dns
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.

@@ -1,9 +1,9 @@
-Python Client for Google Cloud Bigtable
-=======================================
+Python Client for Google Cloud DNS
+==================================
 
-    Python idiomatic client for `Google Cloud Bigtable`_
+    Python idiomatic client for `Google Cloud DNS`_
 
-.. _Google Cloud Bigtable: https://cloud.google.com/bigtable/docs/
+.. _Google Cloud DNS: https://cloud.google.com/dns/
 
 -  `Homepage`_
 -  `API Documentation`_
@@ -16,7 +16,7 @@ Quick Start
 
 ::
 
-    $ pip install --upgrade google-cloud-bigtable
+    $ pip install --upgrade google-cloud-dns
 
 Authentication
 --------------
@@ -32,13 +32,13 @@ the ``google-cloud-*`` libraries to be helpful.
 Using the API
 -------------
 
-Cloud `Bigtable`_  is Google's NoSQL Big Data database service. It's the same
-database that powers many core Google services, including Search,
-Analytics, Maps, and Gmail.
+The Cloud `DNS`_ API (`DNS API docs`_) provides methods that you can use to
+manage DNS for your applications.
 
-.. _Bigtable: https://cloud.google.com/bigtable/docs/
+.. _DNS: https://cloud.google.com/dns/
+.. _DNS API docs: https://cloud.google.com/dns/docs/apis
 
-See the ``google-cloud-python`` API `Bigtable documentation`_ to learn
-how to manage your data in Bigtable tables.
+See the ``google-cloud-python`` API `DNS documentation`_ to learn
+how to manage DNS records using this Client Library.
 
-.. _Bigtable documentation: https://google-cloud-python.readthedocs.io/en/stable/bigtable-usage.html
+.. _DNS documentation: https://google-cloud-python.readthedocs.io/en/stable/dns-usage.html
