@@ -27,6 +27,7 @@ This client supports the following Google Cloud Platform services:
 -  `Stackdriver Error Reporting`_
 -  `Google Cloud Natural Language`_
 -  `Google Translate`_
+-  `Google Cloud Vision`_
 
 .. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
 .. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
@@ -40,6 +41,7 @@ This client supports the following Google Cloud Platform services:
 .. _Stackdriver Error Reporting: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/error_reporting
 .. _Google Cloud Natural Language: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/language
 .. _Google Translate: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/translate
+.. _Google Cloud Vision: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/vision
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
