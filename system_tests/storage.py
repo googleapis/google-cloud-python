@@ -261,7 +261,7 @@ class TestStorageListFiles(TestStorageFiles):
         blobs = list(iterator.get_items_from_response(response))
         self.assertEqual(len(blobs), count)
         self.assertEqual(iterator.page_number, 1)
-        self.assertIs(iterator.next_page_token, not None)
+        self.assertIsNotNone(iterator.next_page_token)
 
         response = iterator.get_next_page_response()
         last_blobs = list(iterator.get_items_from_response(response))

@@ -264,7 +264,7 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(character_entities), limit)
 
         # Check cursor after fetch.
-        self.assertIs(cursor, not None)
+        self.assertIsNotNone(cursor)
 
         # Fetch remaining of characters.
         new_character_entities = list(iterator)
