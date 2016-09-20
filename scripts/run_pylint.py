@@ -38,7 +38,6 @@ IGNORED_DIRECTORIES = [
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),
     'setup.py',
-    os.path.join('google', 'cloud', 'vision', '_fixtures.py'),
 ]
 SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
 PRODUCTION_RC = os.path.join(SCRIPTS_DIR, 'pylintrc_default')
