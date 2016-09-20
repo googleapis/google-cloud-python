@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.timeseries &mdash; google-cloud 707ee67 documentation</title>
+  <title>google.cloud.monitoring.timeseries &mdash; google-cloud 75835c8 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 707ee67 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 75835c8 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -419,14 +419,14 @@
 <span class="sd">    :returns: A dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">typed_value_map</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="nb">bool</span><span class="p">:</span> <span class="s2">&quot;boolValue&quot;</span><span class="p">,</span>
-        <span class="nb">int</span><span class="p">:</span> <span class="s2">&quot;int64Value&quot;</span><span class="p">,</span>
-        <span class="nb">float</span><span class="p">:</span> <span class="s2">&quot;doubleValue&quot;</span><span class="p">,</span>
-        <span class="nb">str</span><span class="p">:</span> <span class="s2">&quot;stringValue&quot;</span><span class="p">,</span>
-        <span class="nb">dict</span><span class="p">:</span> <span class="s2">&quot;distributionValue&quot;</span><span class="p">,</span>
+        <span class="nb">bool</span><span class="p">:</span> <span class="s1">&#39;boolValue&#39;</span><span class="p">,</span>
+        <span class="nb">int</span><span class="p">:</span> <span class="s1">&#39;int64Value&#39;</span><span class="p">,</span>
+        <span class="nb">float</span><span class="p">:</span> <span class="s1">&#39;doubleValue&#39;</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">:</span> <span class="s1">&#39;stringValue&#39;</span><span class="p">,</span>
+        <span class="nb">dict</span><span class="p">:</span> <span class="s1">&#39;distributionValue&#39;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">type_</span> <span class="o">=</span> <span class="n">typed_value_map</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span>
-    <span class="k">if</span> <span class="n">type_</span> <span class="o">==</span> <span class="s2">&quot;int64Value&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;int64Value&#39;</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">type_</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
 
@@ -475,9 +475,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;interval&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;endTime&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span>
+                <span class="s1">&#39;endTime&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">,</span>
             <span class="p">},</span>
-            <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">_make_typed_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">_make_typed_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -517,7 +517,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'707ee67',
+            VERSION:'75835c8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

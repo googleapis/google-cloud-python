@@ -326,12 +326,12 @@ However, ``DELTA`` is not supported for custom metrics.
 specified::
 
     >>> client.write_point(metric=metric, resource=resource,
-    ...                    value=3.14, end_time=end_time) # API call
+    ...                    value=3.14, end_time=end_time)  # API call
 
 By default, ``end_time`` defaults to :meth:`~datetime.datetime.utcnow()`, so metrics can be written
 to the current time as follows::
 
-   >>> client.write_point(metric, resource, 3.14) # API call
+   >>> client.write_point(metric, resource, 3.14)  # API call
 
 ``CUMULATIVE`` metrics enable the monitoring system to compute rates of increase on metrics that
 sometimes reset, such as after a process restart. Without cumulative metrics, this
@@ -341,15 +341,15 @@ time should be re-used repeatedly as more points are written to the time series.
 In the examples below, the ``end_time`` again defaults to the current time::
 
     >>> RESET = datetime.utcnow()
-    >>> client.write_point(metric, resource, 3, start_time=RESET) # API call
-    >>> client.write_point(metric, resource, 6, start_time=RESET) # API call
+    >>> client.write_point(metric, resource, 3, start_time=RESET)  # API call
+    >>> client.write_point(metric, resource, 6, start_time=RESET)  # API call
 
 To write multiple ``TimeSeries`` in a single batch, you can use
 :meth:`~google.cloud.monitoring.client.write_time_series`::
 
     >>> ts1 = client.time_series(metric1, resource, 3.14, end_time=end_time)
     >>> ts2 = client.time_series(metric2, resource, 42, end_time=end_time)
-    >>> client.write_time_series([ts1, ts2]) # API call
+    >>> client.write_time_series([ts1, ts2])  # API call
 
 While multiple time series can be written in a single batch, each ``TimeSeries`` object sent to
 the API must only include a single point.

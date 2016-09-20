@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 707ee67 documentation</title>
+  <title>Using the API &mdash; google-cloud 75835c8 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 707ee67 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 75835c8 documentation" href="index.html"/>
         <link rel="next" title="Stackdriver Monitoring Client" href="monitoring-client.html"/>
         <link rel="prev" title="Error Reporting Client" href="error-reporting-client.html"/> 
 
@@ -535,12 +535,12 @@ However, <code class="docutils literal"><span class="pre">DELTA</span></code> is
 <p><code class="docutils literal"><span class="pre">GAUGE</span></code> metrics represent only a single point in time, so only the <code class="docutils literal"><span class="pre">end_time</span></code> should be
 specified:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
-<span class="gp">... </span>                   <span class="n">value</span><span class="o">=</span><span class="mf">3.14</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)</span> <span class="c1"># API call</span>
+<span class="gp">... </span>                   <span class="n">value</span><span class="o">=</span><span class="mf">3.14</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p>By default, <code class="docutils literal"><span class="pre">end_time</span></code> defaults to <a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime.utcnow" title="(in Python v2.7)"><code class="xref py py-meth docutils literal"><span class="pre">utcnow()</span></code></a>, so metrics can be written
 to the current time as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">)</span> <span class="c1"># API call</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">)</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">CUMULATIVE</span></code> metrics enable the monitoring system to compute rates of increase on metrics that
@@ -549,15 +549,15 @@ reset would otherwise show up as a huge negative spike. For cumulative metrics, 
 time should be re-used repeatedly as more points are written to the time series.</p>
 <p>In the examples below, the <code class="docutils literal"><span class="pre">end_time</span></code> again defaults to the current time:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">RESET</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">RESET</span><span class="p">)</span> <span class="c1"># API call</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">RESET</span><span class="p">)</span> <span class="c1"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">RESET</span><span class="p">)</span>  <span class="c1"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">RESET</span><span class="p">)</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p>To write multiple <code class="docutils literal"><span class="pre">TimeSeries</span></code> in a single batch, you can use
 <code class="xref py py-meth docutils literal"><span class="pre">write_time_series()</span></code>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ts1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">metric1</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ts2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">metric2</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_time_series</span><span class="p">([</span><span class="n">ts1</span><span class="p">,</span> <span class="n">ts2</span><span class="p">])</span> <span class="c1"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_time_series</span><span class="p">([</span><span class="n">ts1</span><span class="p">,</span> <span class="n">ts2</span><span class="p">])</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p>While multiple time series can be written in a single batch, each <code class="docutils literal"><span class="pre">TimeSeries</span></code> object sent to
@@ -607,7 +607,7 @@ the API must only include a single point.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'707ee67',
+            VERSION:'75835c8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
