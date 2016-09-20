@@ -1458,6 +1458,35 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table.upload_from_file(file_obj, 'CSV', size=None)
 
+    def test_upload_from_file_multipart_w_400(self):
+        import csv
+        import datetime
+        from six.moves.http_client import BAD_REQUEST
+        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._helpers import UTC
+        from google.cloud.exceptions import BadRequest
+        WHEN_TS = 1437767599.006
+        WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
+            tzinfo=UTC)
+        response = {'status': BAD_REQUEST}
+        conn = _Connection(
+            (response, b'{}'),
+        )
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'w') as file_obj:
+                writer = csv.writer(file_obj)
+                writer.writerow(('full_name', 'age', 'joined'))
+                writer.writerow(('Phred Phlyntstone', 32, WHEN))
+
+            with open(temp.name, 'rb') as file_obj:
+                with self.assertRaises(BadRequest):
+                    table.upload_from_file(
+                        file_obj, 'CSV', rewind=True)
+
     def _upload_from_file_helper(self, **kw):
         import csv
         import datetime
@@ -1563,6 +1592,46 @@ class TestTable(unittest.TestCase, _SchemaBase):
         body_lines = [line.strip() for line in body.splitlines()]
         payload_lines = app_msg._payload.rstrip().splitlines()
         self.assertEqual(payload_lines, body_lines)
+
+    def test_upload_from_file_resumable_with_400(self):
+        import csv
+        import datetime
+        from six.moves.http_client import BAD_REQUEST
+        from google.cloud.bigquery import table as MUT
+        from google.cloud.exceptions import BadRequest
+        from google.cloud._helpers import UTC
+        from unit_tests._testing import _Monkey
+        from unit_tests._testing import _NamedTemporaryFile
+        WHEN_TS = 1437767599.006
+        WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
+            tzinfo=UTC)
+        initial_response = {'status': BAD_REQUEST}
+        conn = _Connection(
+            (initial_response, b'{}'),
+        )
+        client = _Client(project=self.PROJECT, connection=conn)
+
+        class _UploadConfig(object):
+            accept = ['*/*']
+            max_size = None
+            resumable_multipart = True
+            resumable_path = u'/upload/bigquery/v2/projects/{project}/jobs'
+            simple_multipart = True
+            simple_path = u''  # force resumable
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+
+        with _Monkey(MUT, _UploadConfig=_UploadConfig):
+            with _NamedTemporaryFile() as temp:
+                with open(temp.name, 'w') as file_obj:
+                    writer = csv.writer(file_obj)
+                    writer.writerow(('full_name', 'age', 'joined'))
+                    writer.writerow(('Phred Phlyntstone', 32, WHEN))
+
+                with open(temp.name, 'rb') as file_obj:
+                    with self.assertRaises(BadRequest):
+                        table.upload_from_file(
+                            file_obj, 'CSV', rewind=True)
 
     # pylint: disable=too-many-statements
     def test_upload_from_file_w_explicit_client_resumable(self):

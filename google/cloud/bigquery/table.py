@@ -18,12 +18,15 @@ import datetime
 import json
 import os
 
+import httplib2
 import six
 
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _millis_from_datetime
 from google.cloud.exceptions import NotFound
+from google.cloud.exceptions import make_exception
+from google.cloud.streaming.exceptions import HttpError
 from google.cloud.streaming.http_wrapper import Request
 from google.cloud.streaming.http_wrapper import make_api_request
 from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
@@ -776,6 +779,16 @@ class Table(object):
 
         return errors
 
+    @staticmethod
+    def _check_response_error(request, http_response):
+        """Helper for :meth:`upload_from_file`."""
+        info = http_response.info
+        status = int(info['status'])
+        if not 200 <= status < 300:
+            faux_response = httplib2.Response({'status': status})
+            raise make_exception(faux_response, http_response.content,
+                                 error_info=request.url)
+
     # pylint: disable=too-many-arguments,too-many-locals
     def upload_from_file(self,
                          file_obj,
@@ -947,13 +960,21 @@ class Table(object):
         request.url = connection.build_api_url(api_base_url=base_url,
                                                path=path,
                                                query_params=query_params)
-        upload.initialize_upload(request, connection.http)
+        try:
+            upload.initialize_upload(request, connection.http)
+        except HttpError as err_response:
+            faux_response = httplib2.Response(err_response.response)
+            raise make_exception(faux_response, err_response.content,
+                                 error_info=request.url)
 
         if upload.strategy == RESUMABLE_UPLOAD:
             http_response = upload.stream_file(use_chunks=True)
         else:
             http_response = make_api_request(connection.http, request,
                                              retries=num_retries)
+
+        self._check_response_error(request, http_response)
+
         response_content = http_response.content
         if not isinstance(response_content,
                           six.string_types):  # pragma: NO COVER  Python3
