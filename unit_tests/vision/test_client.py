@@ -78,7 +78,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=self.PROJECT,
                                credentials=credentials)
         image = client.image(source_uri=_IMAGE_SOURCE)
-        self.assertTrue(isinstance(image, Image))
+        self.assertIsInstance(image, Image)
 
     def test_face_detection_from_source(self):
         from google.cloud.vision.face import Face
@@ -91,7 +91,7 @@ class TestClient(unittest.TestCase):
         image = client.image(source_uri=_IMAGE_SOURCE)
         faces = image.detect_faces(limit=3)
         self.assertEqual(5, len(faces))
-        self.assertTrue(isinstance(faces[0], Face))
+        self.assertIsInstance(faces[0], Face)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(_IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
@@ -108,7 +108,7 @@ class TestClient(unittest.TestCase):
         image = client.image(content=_IMAGE_CONTENT)
         faces = image.detect_faces(limit=5)
         self.assertEqual(5, len(faces))
-        self.assertTrue(isinstance(faces[0], Face))
+        self.assertIsInstance(faces[0], Face)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(self.B64_IMAGE_CONTENT,
                          image_request['image']['content'])
@@ -125,7 +125,7 @@ class TestClient(unittest.TestCase):
         image = client.image(source_uri=_IMAGE_SOURCE)
         labels = image.detect_labels(limit=3)
         self.assertEqual(3, len(labels))
-        self.assertTrue(isinstance(labels[0], EntityAnnotation))
+        self.assertIsInstance(labels[0], EntityAnnotation)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(_IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
@@ -146,7 +146,7 @@ class TestClient(unittest.TestCase):
         image = client.image(source_uri=_IMAGE_SOURCE)
         landmarks = image.detect_landmarks(limit=3)
         self.assertEqual(2, len(landmarks))
-        self.assertTrue(isinstance(landmarks[0], EntityAnnotation))
+        self.assertIsInstance(landmarks[0], EntityAnnotation)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(_IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
@@ -167,7 +167,7 @@ class TestClient(unittest.TestCase):
         image = client.image(content=_IMAGE_CONTENT)
         landmarks = image.detect_landmarks(limit=5)
         self.assertEqual(2, len(landmarks))
-        self.assertTrue(isinstance(landmarks[0], EntityAnnotation))
+        self.assertIsInstance(landmarks[0], EntityAnnotation)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(self.B64_IMAGE_CONTENT,
                          image_request['image']['content'])
@@ -184,7 +184,7 @@ class TestClient(unittest.TestCase):
         image = client.image(source_uri=_IMAGE_SOURCE)
         logos = image.detect_logos(limit=3)
         self.assertEqual(2, len(logos))
-        self.assertTrue(isinstance(logos[0], EntityAnnotation))
+        self.assertIsInstance(logos[0], EntityAnnotation)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(_IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
@@ -201,7 +201,7 @@ class TestClient(unittest.TestCase):
         image = client.image(content=_IMAGE_CONTENT)
         logos = image.detect_logos(limit=5)
         self.assertEqual(2, len(logos))
-        self.assertTrue(isinstance(logos[0], EntityAnnotation))
+        self.assertIsInstance(logos[0], EntityAnnotation)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(self.B64_IMAGE_CONTENT,
                          image_request['image']['content'])
@@ -218,7 +218,7 @@ class TestClient(unittest.TestCase):
         image = client.image(source_uri=_IMAGE_SOURCE)
         text = image.detect_text(limit=3)
         self.assertEqual(3, len(text))
-        self.assertTrue(isinstance(text[0], EntityAnnotation))
+        self.assertIsInstance(text[0], EntityAnnotation)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(_IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
@@ -239,7 +239,7 @@ class TestClient(unittest.TestCase):
 
         image = client.image(source_uri=_IMAGE_SOURCE)
         safe_search = image.detect_safe_search()
-        self.assertTrue(isinstance(safe_search, SafeSearchAnnotation))
+        self.assertIsInstance(safe_search, SafeSearchAnnotation)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(_IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
@@ -259,8 +259,7 @@ class TestClient(unittest.TestCase):
 
         image = client.image(source_uri=_IMAGE_SOURCE)
         image_properties = image.detect_properties()
-        self.assertTrue(isinstance(image_properties,
-                                   ImagePropertiesAnnotation))
+        self.assertIsInstance(image_properties, ImagePropertiesAnnotation)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(_IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])

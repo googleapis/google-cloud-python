@@ -30,9 +30,9 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         http = object()
         client = self._makeOne(project=PROJECT, credentials=creds, http=http)
-        self.assertTrue(isinstance(client.connection, Connection))
-        self.assertTrue(client.connection.credentials is creds)
-        self.assertTrue(client.connection.http is http)
+        self.assertIsInstance(client.connection, Connection)
+        self.assertIs(client.connection.credentials, creds)
+        self.assertIs(client.connection.http, http)
 
     def test_list_projects_defaults(self):
         from google.cloud.bigquery.client import Project
@@ -63,7 +63,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(projects), len(DATA['projects']))
         for found, expected in zip(projects, DATA['projects']):
-            self.assertTrue(isinstance(found, Project))
+            self.assertIsInstance(found, Project)
             self.assertEqual(found.project_id, expected['id'])
             self.assertEqual(found.numeric_id, expected['numericId'])
             self.assertEqual(found.friendly_name, expected['friendlyName'])
@@ -86,7 +86,7 @@ class TestClient(unittest.TestCase):
         projects, token = client.list_projects(max_results=3, page_token=TOKEN)
 
         self.assertEqual(len(projects), 0)
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -125,7 +125,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(datasets), len(DATA['datasets']))
         for found, expected in zip(datasets, DATA['datasets']):
-            self.assertTrue(isinstance(found, Dataset))
+            self.assertIsInstance(found, Dataset)
             self.assertEqual(found.dataset_id, expected['id'])
             self.assertEqual(found.friendly_name, expected['friendlyName'])
         self.assertEqual(token, TOKEN)
@@ -148,7 +148,7 @@ class TestClient(unittest.TestCase):
             include_all=True, max_results=3, page_token=TOKEN)
 
         self.assertEqual(len(datasets), 0)
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -165,9 +165,9 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._makeOne(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
-        self.assertTrue(isinstance(dataset, Dataset))
+        self.assertIsInstance(dataset, Dataset)
         self.assertEqual(dataset.name, DATASET)
-        self.assertTrue(dataset._client is client)
+        self.assertIs(dataset._client, client)
 
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
@@ -293,7 +293,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(jobs), len(DATA['jobs']))
         for found, expected in zip(jobs, DATA['jobs']):
             name = expected['jobReference']['jobId']
-            self.assertTrue(isinstance(found, JOB_TYPES[name]))
+            self.assertIsInstance(found, JOB_TYPES[name])
             self.assertEqual(found.name, name)
         self.assertEqual(token, TOKEN)
 
@@ -345,7 +345,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(jobs), len(DATA['jobs']))
         for found, expected in zip(jobs, DATA['jobs']):
             name = expected['jobReference']['jobId']
-            self.assertTrue(isinstance(found, JOB_TYPES[name]))
+            self.assertIsInstance(found, JOB_TYPES[name])
             self.assertEqual(found.name, name)
         self.assertEqual(token, TOKEN)
 
@@ -368,7 +368,7 @@ class TestClient(unittest.TestCase):
                                        all_users=True, state_filter='done')
 
         self.assertEqual(len(jobs), 0)
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -394,11 +394,11 @@ class TestClient(unittest.TestCase):
         dataset = client.dataset(DATASET)
         destination = dataset.table(DESTINATION)
         job = client.load_table_from_storage(JOB, destination, SOURCE_URI)
-        self.assertTrue(isinstance(job, LoadTableFromStorageJob))
-        self.assertTrue(job._client is client)
+        self.assertIsInstance(job, LoadTableFromStorageJob)
+        self.assertIs(job._client, client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(list(job.source_uris), [SOURCE_URI])
-        self.assertTrue(job.destination is destination)
+        self.assertIs(job.destination, destination)
 
     def test_copy_table(self):
         from google.cloud.bigquery.job import CopyJob
@@ -414,11 +414,11 @@ class TestClient(unittest.TestCase):
         source = dataset.table(SOURCE)
         destination = dataset.table(DESTINATION)
         job = client.copy_table(JOB, destination, source)
-        self.assertTrue(isinstance(job, CopyJob))
-        self.assertTrue(job._client is client)
+        self.assertIsInstance(job, CopyJob)
+        self.assertIs(job._client, client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(list(job.sources), [source])
-        self.assertTrue(job.destination is destination)
+        self.assertIs(job.destination, destination)
 
     def test_extract_table_to_storage(self):
         from google.cloud.bigquery.job import ExtractTableToStorageJob
@@ -433,8 +433,8 @@ class TestClient(unittest.TestCase):
         dataset = client.dataset(DATASET)
         source = dataset.table(SOURCE)
         job = client.extract_table_to_storage(JOB, source, DESTINATION)
-        self.assertTrue(isinstance(job, ExtractTableToStorageJob))
-        self.assertTrue(job._client is client)
+        self.assertIsInstance(job, ExtractTableToStorageJob)
+        self.assertIs(job._client, client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(job.source, source)
         self.assertEqual(list(job.destination_uris), [DESTINATION])
@@ -448,8 +448,8 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._makeOne(project=PROJECT, credentials=creds, http=http)
         job = client.run_async_query(JOB, QUERY)
-        self.assertTrue(isinstance(job, QueryJob))
-        self.assertTrue(job._client is client)
+        self.assertIsInstance(job, QueryJob)
+        self.assertIs(job._client, client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(job.query, QUERY)
 
@@ -461,9 +461,9 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._makeOne(project=PROJECT, credentials=creds, http=http)
         job = client.run_sync_query(QUERY)
-        self.assertTrue(isinstance(job, QueryResults))
-        self.assertTrue(job._client is client)
-        self.assertEqual(job.name, None)
+        self.assertIsInstance(job, QueryResults)
+        self.assertIs(job._client, client)
+        self.assertIsNone(job.name)
         self.assertEqual(job.query, QUERY)
 
 

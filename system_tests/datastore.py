@@ -85,7 +85,7 @@ class TestDatastoreAllocateIDs(TestDatastore):
         unique_ids = set()
         for key in allocated_keys:
             unique_ids.add(key.id)
-            self.assertEqual(key.name, None)
+            self.assertIsNone(key.name)
             self.assertNotEqual(key.id, None)
 
         self.assertEqual(len(unique_ids), num_ids)
@@ -264,7 +264,7 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(character_entities), limit)
 
         # Check cursor after fetch.
-        self.assertTrue(cursor is not None)
+        self.assertIsNotNone(cursor)
 
         # Fetch remaining of characters.
         new_character_entities = list(iterator)

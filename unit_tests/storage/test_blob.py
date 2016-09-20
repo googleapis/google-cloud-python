@@ -29,11 +29,11 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket()
         properties = {'key': 'value'}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
-        self.assertTrue(blob.bucket is bucket)
+        self.assertIs(blob.bucket, bucket)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(blob._properties, properties)
         self.assertFalse(blob._acl.loaded)
-        self.assertTrue(blob._acl.blob is blob)
+        self.assertIs(blob._acl.blob, blob)
 
     def test_chunk_size_ctor(self):
         from google.cloud.storage.blob import Blob
@@ -47,16 +47,16 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = 'blob-name'
         BUCKET = object()
         blob = self._makeOne(BLOB_NAME, bucket=BUCKET)
-        self.assertEqual(blob.chunk_size, None)
+        self.assertIsNone(blob.chunk_size)
         VALUE = object()
         blob._chunk_size = VALUE
-        self.assertTrue(blob.chunk_size is VALUE)
+        self.assertIs(blob.chunk_size, VALUE)
 
     def test_chunk_size_setter(self):
         BLOB_NAME = 'blob-name'
         BUCKET = object()
         blob = self._makeOne(BLOB_NAME, bucket=BUCKET)
-        self.assertEqual(blob._chunk_size, None)
+        self.assertIsNone(blob._chunk_size)
         blob._CHUNK_SIZE_MULTIPLE = 10
         blob.chunk_size = 20
         self.assertEqual(blob._chunk_size, 20)
@@ -65,7 +65,7 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = 'blob-name'
         BUCKET = object()
         blob = self._makeOne(BLOB_NAME, bucket=BUCKET)
-        self.assertEqual(blob._chunk_size, None)
+        self.assertIsNone(blob._chunk_size)
         blob._CHUNK_SIZE_MULTIPLE = 10
         with self.assertRaises(ValueError):
             blob.chunk_size = 11
@@ -75,8 +75,8 @@ class Test_Blob(unittest.TestCase):
         FAKE_BUCKET = _Bucket()
         blob = self._makeOne(None, bucket=FAKE_BUCKET)
         acl = blob.acl
-        self.assertTrue(isinstance(acl, ObjectACL))
-        self.assertTrue(acl is blob._acl)
+        self.assertIsInstance(acl, ObjectACL)
+        self.assertIs(acl, blob._acl)
 
     def test_path_no_bucket(self):
         FAKE_BUCKET = object()
@@ -811,7 +811,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['redirections'], 5)
         self.assertEqual(rq[0]['body'], DATA)
-        self.assertEqual(rq[0]['connection_type'], None)
+        self.assertIsNone(rq[0]['connection_type'])
         self.assertEqual(rq[0]['method'], 'POST')
         uri = rq[0]['uri']
         scheme, netloc, path, qs, _ = urlsplit(uri)
@@ -1115,7 +1115,7 @@ class Test_Blob(unittest.TestCase):
         CACHE_CONTROL = 'no-cache'
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        self.assertEqual(blob.cache_control, None)
+        self.assertIsNone(blob.cache_control)
         blob.cache_control = CACHE_CONTROL
         self.assertEqual(blob.cache_control, CACHE_CONTROL)
 
@@ -1129,7 +1129,7 @@ class Test_Blob(unittest.TestCase):
     def test_component_count_unset(self):
         BUCKET = object()
         blob = self._makeOne('blob-name', bucket=BUCKET)
-        self.assertEqual(blob.component_count, None)
+        self.assertIsNone(blob.component_count)
 
     def test_component_count_string_val(self):
         BUCKET = object()
@@ -1152,7 +1152,7 @@ class Test_Blob(unittest.TestCase):
         CONTENT_DISPOSITION = 'Attachment; filename=example.jpg'
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        self.assertEqual(blob.content_disposition, None)
+        self.assertIsNone(blob.content_disposition)
         blob.content_disposition = CONTENT_DISPOSITION
         self.assertEqual(blob.content_disposition, CONTENT_DISPOSITION)
 
@@ -1169,7 +1169,7 @@ class Test_Blob(unittest.TestCase):
         CONTENT_ENCODING = 'gzip'
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        self.assertEqual(blob.content_encoding, None)
+        self.assertIsNone(blob.content_encoding)
         blob.content_encoding = CONTENT_ENCODING
         self.assertEqual(blob.content_encoding, CONTENT_ENCODING)
 
@@ -1186,7 +1186,7 @@ class Test_Blob(unittest.TestCase):
         CONTENT_LANGUAGE = 'pt-BR'
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        self.assertEqual(blob.content_language, None)
+        self.assertIsNone(blob.content_language)
         blob.content_language = CONTENT_LANGUAGE
         self.assertEqual(blob.content_language, CONTENT_LANGUAGE)
 
@@ -1203,7 +1203,7 @@ class Test_Blob(unittest.TestCase):
         CONTENT_TYPE = 'image/jpeg'
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        self.assertEqual(blob.content_type, None)
+        self.assertIsNone(blob.content_type)
         blob.content_type = CONTENT_TYPE
         self.assertEqual(blob.content_type, CONTENT_TYPE)
 
@@ -1220,7 +1220,7 @@ class Test_Blob(unittest.TestCase):
         CRC32C = 'DEADBEEF'
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        self.assertEqual(blob.crc32c, None)
+        self.assertIsNone(blob.crc32c)
         blob.crc32c = CRC32C
         self.assertEqual(blob.crc32c, CRC32C)
 
@@ -1242,7 +1242,7 @@ class Test_Blob(unittest.TestCase):
     def test_generation_unset(self):
         BUCKET = object()
         blob = self._makeOne('blob-name', bucket=BUCKET)
-        self.assertEqual(blob.generation, None)
+        self.assertIsNone(blob.generation)
 
     def test_generation_string_val(self):
         BUCKET = object()
@@ -1272,7 +1272,7 @@ class Test_Blob(unittest.TestCase):
         MD5_HASH = 'DEADBEEF'
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        self.assertEqual(blob.md5_hash, None)
+        self.assertIsNone(blob.md5_hash)
         blob.md5_hash = MD5_HASH
         self.assertEqual(blob.md5_hash, MD5_HASH)
 
@@ -1297,7 +1297,7 @@ class Test_Blob(unittest.TestCase):
         METADATA = {'foo': 'Foo'}
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        self.assertEqual(blob.metadata, None)
+        self.assertIsNone(blob.metadata)
         blob.metadata = METADATA
         self.assertEqual(blob.metadata, METADATA)
 
@@ -1311,7 +1311,7 @@ class Test_Blob(unittest.TestCase):
     def test_metageneration_unset(self):
         BUCKET = object()
         blob = self._makeOne('blob-name', bucket=BUCKET)
-        self.assertEqual(blob.metageneration, None)
+        self.assertIsNone(blob.metageneration)
 
     def test_metageneration_string_val(self):
         BUCKET = object()
@@ -1349,7 +1349,7 @@ class Test_Blob(unittest.TestCase):
     def test_size_unset(self):
         BUCKET = object()
         blob = self._makeOne('blob-name', bucket=BUCKET)
-        self.assertEqual(blob.size, None)
+        self.assertIsNone(blob.size)
 
     def test_size_string_val(self):
         BUCKET = object()
@@ -1381,7 +1381,7 @@ class Test_Blob(unittest.TestCase):
     def test_time_deleted_unset(self):
         BUCKET = object()
         blob = self._makeOne('blob-name', bucket=BUCKET)
-        self.assertEqual(blob.time_deleted, None)
+        self.assertIsNone(blob.time_deleted)
 
     def test_updated(self):
         import datetime
@@ -1398,7 +1398,7 @@ class Test_Blob(unittest.TestCase):
     def test_updated_unset(self):
         BUCKET = object()
         blob = self._makeOne('blob-name', bucket=BUCKET)
-        self.assertEqual(blob.updated, None)
+        self.assertIsNone(blob.updated)
 
 
 class _Responder(object):

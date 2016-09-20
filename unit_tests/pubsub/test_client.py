@@ -41,10 +41,10 @@ class TestClient(unittest.TestCase):
             api = client.publisher_api
 
         self.assertIsInstance(api, _PublisherAPI)
-        self.assertTrue(api._connection is conn)
+        self.assertIs(api._connection, conn)
         # API instance is cached
         again = client.publisher_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
 
     def test_publisher_api_w_gax(self):
         from google.cloud.pubsub import client as MUT
@@ -72,10 +72,10 @@ class TestClient(unittest.TestCase):
             api = client.publisher_api
 
         self.assertIsInstance(api, _GaxPublisherAPI)
-        self.assertTrue(api._wrapped is wrapped)
+        self.assertIs(api._wrapped, wrapped)
         # API instance is cached
         again = client.publisher_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
         args = (client.connection,)
         self.assertEqual(_called_with, [(args, {})])
 
@@ -91,10 +91,10 @@ class TestClient(unittest.TestCase):
             api = client.subscriber_api
 
         self.assertIsInstance(api, _SubscriberAPI)
-        self.assertTrue(api._connection is conn)
+        self.assertIs(api._connection, conn)
         # API instance is cached
         again = client.subscriber_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
 
     def test_subscriber_api_w_gax(self):
         from google.cloud.pubsub import client as MUT
@@ -122,10 +122,10 @@ class TestClient(unittest.TestCase):
             api = client.subscriber_api
 
         self.assertIsInstance(api, _GaxSubscriberAPI)
-        self.assertTrue(api._wrapped is wrapped)
+        self.assertIs(api._wrapped, wrapped)
         # API instance is cached
         again = client.subscriber_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
         args = (client.connection,)
         self.assertEqual(_called_with, [(args, {})])
 
@@ -136,10 +136,10 @@ class TestClient(unittest.TestCase):
         conn = client.connection = object()
         api = client.iam_policy_api
         self.assertIsInstance(api, _IAMPolicyAPI)
-        self.assertTrue(api._connection is conn)
+        self.assertIs(api._connection, conn)
         # API instance is cached
         again = client.iam_policy_api
-        self.assertTrue(again is api)
+        self.assertIs(again, api)
 
     def test_list_topics_no_paging(self):
         from google.cloud.pubsub.topic import Topic
@@ -154,7 +154,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(topics), 1)
         self.assertIsInstance(topics[0], Topic)
         self.assertEqual(topics[0].name, self.TOPIC_NAME)
-        self.assertEqual(next_page_token, None)
+        self.assertIsNone(next_page_token)
 
         self.assertEqual(api._listed_topics, (self.PROJECT, None, None))
 
@@ -188,7 +188,7 @@ class TestClient(unittest.TestCase):
         topics, next_page_token = client.list_topics()
 
         self.assertEqual(len(topics), 0)
-        self.assertEqual(next_page_token, None)
+        self.assertIsNone(next_page_token)
 
         self.assertEqual(api._listed_topics, (self.PROJECT, None, None))
 
@@ -207,7 +207,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(subscriptions[0], Subscription)
         self.assertEqual(subscriptions[0].name, self.SUB_NAME)
         self.assertEqual(subscriptions[0].topic.name, self.TOPIC_NAME)
-        self.assertEqual(next_page_token, None)
+        self.assertIsNone(next_page_token)
 
         self.assertEqual(api._listed_subscriptions,
                          (self.PROJECT, None, None))
@@ -256,7 +256,7 @@ class TestClient(unittest.TestCase):
         subscriptions, next_page_token = client.list_subscriptions()
 
         self.assertEqual(len(subscriptions), 0)
-        self.assertEqual(next_page_token, None)
+        self.assertIsNone(next_page_token)
 
         self.assertEqual(api._listed_subscriptions,
                          (self.PROJECT, None, None))
@@ -269,7 +269,7 @@ class TestClient(unittest.TestCase):
         client_obj = self._makeOne(project=PROJECT, credentials=creds)
         new_topic = client_obj.topic(TOPIC_NAME)
         self.assertEqual(new_topic.name, TOPIC_NAME)
-        self.assertTrue(new_topic._client is client_obj)
+        self.assertIs(new_topic._client, client_obj)
         self.assertEqual(new_topic.project, PROJECT)
         self.assertEqual(new_topic.full_name,
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))

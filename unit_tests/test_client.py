@@ -58,8 +58,8 @@ class TestClient(unittest.TestCase):
         with _Monkey(client, get_credentials=mock_get_credentials):
             client_obj = self._makeOne()
 
-        self.assertTrue(isinstance(client_obj.connection, _MockConnection))
-        self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
+        self.assertIsInstance(client_obj.connection, _MockConnection)
+        self.assertIs(client_obj.connection.credentials, CREDENTIALS)
         self.assertEqual(FUNC_CALLS, ['get_credentials'])
 
     def test_ctor_explicit(self):
@@ -67,9 +67,9 @@ class TestClient(unittest.TestCase):
         HTTP = object()
         client_obj = self._makeOne(credentials=CREDENTIALS, http=HTTP)
 
-        self.assertTrue(isinstance(client_obj.connection, _MockConnection))
-        self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
-        self.assertTrue(client_obj.connection.http is HTTP)
+        self.assertIsInstance(client_obj.connection, _MockConnection)
+        self.assertIs(client_obj.connection.credentials, CREDENTIALS)
+        self.assertIs(client_obj.connection.http, HTTP)
 
     def test_from_service_account_json(self):
         from unit_tests._testing import _Monkey
@@ -81,8 +81,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(client, ServiceAccountCredentials=mock_creds):
             client_obj = KLASS.from_service_account_json(MOCK_FILENAME)
 
-        self.assertTrue(client_obj.connection.credentials is
-                        mock_creds._result)
+        self.assertIs(client_obj.connection.credentials, mock_creds._result)
         self.assertEqual(mock_creds.json_called, [MOCK_FILENAME])
 
     def test_from_service_account_json_fail(self):
@@ -103,8 +102,7 @@ class TestClient(unittest.TestCase):
             client_obj = KLASS.from_service_account_p12(CLIENT_EMAIL,
                                                         MOCK_FILENAME)
 
-        self.assertTrue(client_obj.connection.credentials is
-                        mock_creds._result)
+        self.assertIs(client_obj.connection.credentials, mock_creds._result)
         self.assertEqual(mock_creds.p12_called,
                          [(CLIENT_EMAIL, MOCK_FILENAME)])
 
@@ -154,8 +152,8 @@ class TestJSONClient(unittest.TestCase):
             client_obj = self._makeOne()
 
         self.assertEqual(client_obj.project, PROJECT)
-        self.assertTrue(isinstance(client_obj.connection, _MockConnection))
-        self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
+        self.assertIsInstance(client_obj.connection, _MockConnection)
+        self.assertIs(client_obj.connection.credentials, CREDENTIALS)
         self.assertEqual(
             FUNC_CALLS,
             [(None, '_determine_default_project'), 'get_credentials'])
@@ -194,9 +192,9 @@ class TestJSONClient(unittest.TestCase):
             self.assertEqual(client_obj.project, project.decode('utf-8'))
         else:
             self.assertEqual(client_obj.project, project)
-        self.assertTrue(isinstance(client_obj.connection, _MockConnection))
-        self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
-        self.assertTrue(client_obj.connection.http is HTTP)
+        self.assertIsInstance(client_obj.connection, _MockConnection)
+        self.assertIs(client_obj.connection.credentials, CREDENTIALS)
+        self.assertIs(client_obj.connection.http, HTTP)
 
     def test_ctor_explicit_bytes(self):
         PROJECT = b'PROJECT'

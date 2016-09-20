@@ -47,7 +47,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXLoggingAPI()
         api = self._makeOne(gax_api)
-        self.assertTrue(api._gax_api is gax_api)
+        self.assertIs(api._gax_api, gax_api)
 
     def test_list_entries_no_paging(self):
         from google.gax import INITIAL_PAGE
@@ -78,7 +78,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(filter_, self.FILTER)
         self.assertEqual(order_by, DESCENDING)
         self.assertEqual(page_size, 0)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_list_entries_with_paging(self):
         from google.protobuf.struct_pb2 import Value
@@ -208,17 +208,17 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(len(entries), 1)
 
         entry = entries[0]
-        self.assertTrue(isinstance(entry, LogEntry))
+        self.assertIsInstance(entry, LogEntry)
         self.assertEqual(entry.log_name, LOG_PATH)
         self.assertEqual(entry.resource.type, 'global')
         self.assertEqual(entry.labels, {})
         self.assertEqual(entry.text_payload, TEXT)
 
-        self.assertEqual(log_name, None)
-        self.assertEqual(resource, None)
-        self.assertEqual(labels, None)
+        self.assertIsNone(log_name)
+        self.assertIsNone(resource)
+        self.assertIsNone(labels)
         self.assertEqual(partial_success, False)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_write_entries_w_extra_properties(self):
         # pylint: disable=too-many-statements
@@ -282,7 +282,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(len(entries), 1)
 
         entry = entries[0]
-        self.assertTrue(isinstance(entry, LogEntry))
+        self.assertIsInstance(entry, LogEntry)
         self.assertEqual(entry.log_name, LOG_PATH)
         self.assertEqual(entry.resource.type, 'global')
         self.assertEqual(entry.text_payload, TEXT)
@@ -309,11 +309,11 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertFalse(operation.first)
         self.assertTrue(operation.last)
 
-        self.assertEqual(log_name, None)
-        self.assertEqual(resource, None)
-        self.assertEqual(labels, None)
+        self.assertIsNone(log_name)
+        self.assertIsNone(resource)
+        self.assertIsNone(labels)
         self.assertEqual(partial_success, False)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
         # pylint: enable=too-many-statements
 
     def test_write_entries_multiple(self):
@@ -360,7 +360,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(len(entries), len(ENTRIES))
 
         entry = entries[0]
-        self.assertTrue(isinstance(entry, LogEntry))
+        self.assertIsInstance(entry, LogEntry)
         self.assertEqual(entry.log_name, '')
         self.assertEqual(entry.resource.type, '')
         self.assertEqual(entry.labels, {})
@@ -368,12 +368,12 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(entry.severity, WARNING)
 
         entry = entries[1]
-        self.assertTrue(isinstance(entry, LogEntry))
+        self.assertIsInstance(entry, LogEntry)
         self.assertEqual(entry.log_name, '')
         self.assertEqual(entry.resource.type, '')
         self.assertEqual(entry.labels, {})
         json_struct = entry.json_payload
-        self.assertTrue(isinstance(json_struct, Struct))
+        self.assertIsInstance(json_struct, Struct)
         self.assertEqual(json_struct.fields['payload'].string_value,
                          JSON['payload'])
         operation = entry.operation
@@ -381,12 +381,12 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(operation.id, OPID)
 
         entry = entries[2]
-        self.assertTrue(isinstance(entry, LogEntry))
+        self.assertIsInstance(entry, LogEntry)
         self.assertEqual(entry.log_name, '')
         self.assertEqual(entry.resource.type, '')
         self.assertEqual(entry.labels, {})
         proto = entry.proto_payload
-        self.assertTrue(isinstance(proto, Any))
+        self.assertIsInstance(proto, Any)
         self.assertEqual(proto.type_url, TIMESTAMP_TYPE_URL)
         request = entry.http_request
         self.assertEqual(request.request_url, URL)
@@ -395,7 +395,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(resource, RESOURCE)
         self.assertEqual(labels, LABELS)
         self.assertEqual(partial_success, False)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
         # pylint: enable=too-many-statements
 
     def test_logger_delete(self):
@@ -407,7 +407,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
         log_name, options = gax_api._delete_log_called_with
         self.assertEqual(log_name, LOG_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_logger_delete_not_found(self):
         from google.cloud.exceptions import NotFound
@@ -420,7 +420,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
         log_name, options = gax_api._delete_log_called_with
         self.assertEqual(log_name, LOG_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_logger_delete_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -434,7 +434,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
         log_name, options = gax_api._delete_log_called_with
         self.assertEqual(log_name, LOG_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
@@ -450,7 +450,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXSinksAPI()
         api = self._makeOne(gax_api)
-        self.assertTrue(api._gax_api is gax_api)
+        self.assertIs(api._gax_api, gax_api)
 
     def test_list_sinks_no_paging(self):
         from google.gax import INITIAL_PAGE
@@ -496,7 +496,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
             self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
 
         self.assertEqual(sinks, SINKS)
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         project, page_size, options = gax_api._list_sinks_called_with
         self.assertEqual(project, self.PROJECT_PATH)
@@ -535,11 +535,11 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         parent, sink, options = (
             gax_api._create_sink_called_with)
         self.assertEqual(parent, self.PROJECT_PATH)
-        self.assertTrue(isinstance(sink, LogSink))
+        self.assertIsInstance(sink, LogSink)
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_sink_get_error(self):
         from google.cloud.exceptions import NotFound
@@ -575,7 +575,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
         sink_name, options = gax_api._get_sink_called_with
         self.assertEqual(sink_name, self.SINK_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_sink_update_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -611,11 +611,11 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         sink_name, sink, options = (
             gax_api._update_sink_called_with)
         self.assertEqual(sink_name, self.SINK_PATH)
-        self.assertTrue(isinstance(sink, LogSink))
+        self.assertIsInstance(sink, LogSink)
         self.assertEqual(sink.name, self.SINK_PATH)
         self.assertEqual(sink.filter, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_sink_delete_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -642,7 +642,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
         sink_name, options = gax_api._delete_sink_called_with
         self.assertEqual(sink_name, self.SINK_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
@@ -658,7 +658,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXMetricsAPI()
         api = self._makeOne(gax_api)
-        self.assertTrue(api._gax_api is gax_api)
+        self.assertIs(api._gax_api, gax_api)
 
     def test_list_metrics_no_paging(self):
         from google.gax import INITIAL_PAGE
@@ -704,7 +704,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
             self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
 
         self.assertEqual(metrics, METRICS)
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         project, page_size, options = gax_api._list_log_metrics_called_with
         self.assertEqual(project, self.PROJECT_PATH)
@@ -743,11 +743,11 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         parent, metric, options = (
             gax_api._create_log_metric_called_with)
         self.assertEqual(parent, self.PROJECT_PATH)
-        self.assertTrue(isinstance(metric, LogMetric))
+        self.assertIsInstance(metric, LogMetric)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_metric_get_error(self):
         from google.cloud.exceptions import NotFound
@@ -783,7 +783,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
         metric_name, options = gax_api._get_log_metric_called_with
         self.assertEqual(metric_name, self.METRIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_metric_update_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -819,11 +819,11 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         metric_name, metric, options = (
             gax_api._update_log_metric_called_with)
         self.assertEqual(metric_name, self.METRIC_PATH)
-        self.assertTrue(isinstance(metric, LogMetric))
+        self.assertIsInstance(metric, LogMetric)
         self.assertEqual(metric.name, self.METRIC_PATH)
         self.assertEqual(metric.filter, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_metric_delete_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -850,7 +850,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
         metric_name, options = gax_api._delete_log_metric_called_with
         self.assertEqual(metric_name, self.METRIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
@@ -863,9 +863,9 @@ class Test_value_pb_to_value(_Base, unittest.TestCase):
     def test_w_null_values(self):
         from google.protobuf.struct_pb2 import Value
         value_pb = Value()
-        self.assertEqual(self._callFUT(value_pb), None)
+        self.assertIsNone(self._callFUT(value_pb))
         value_pb = Value(null_value=None)
-        self.assertEqual(self._callFUT(value_pb), None)
+        self.assertIsNone(self._callFUT(value_pb))
 
     def test_w_string_value(self):
         from google.protobuf.struct_pb2 import Value
@@ -876,9 +876,9 @@ class Test_value_pb_to_value(_Base, unittest.TestCase):
     def test_w_bool_values(self):
         from google.protobuf.struct_pb2 import Value
         true_value_pb = Value(bool_value=True)
-        self.assertTrue(self._callFUT(true_value_pb) is True)
+        self.assertIs(self._callFUT(true_value_pb), True)
         false_value_pb = Value(bool_value=False)
-        self.assertTrue(self._callFUT(false_value_pb) is False)
+        self.assertIs(self._callFUT(false_value_pb), False)
 
     def test_w_number_values(self):
         from google.protobuf.struct_pb2 import Value

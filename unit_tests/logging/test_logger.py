@@ -32,13 +32,13 @@ class TestLogger(unittest.TestCase):
         client = _Client(self.PROJECT, conn)
         logger = self._makeOne(self.LOGGER_NAME, client=client)
         self.assertEqual(logger.name, self.LOGGER_NAME)
-        self.assertTrue(logger.client is client)
+        self.assertIs(logger.client, client)
         self.assertEqual(logger.project, self.PROJECT)
         self.assertEqual(logger.full_name, 'projects/%s/logs/%s'
                          % (self.PROJECT, self.LOGGER_NAME))
         self.assertEqual(logger.path, '/projects/%s/logs/%s'
                          % (self.PROJECT, self.LOGGER_NAME))
-        self.assertEqual(logger.labels, None)
+        self.assertIsNone(logger.labels)
 
     def test_ctor_explicit(self):
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -46,7 +46,7 @@ class TestLogger(unittest.TestCase):
         client = _Client(self.PROJECT, conn)
         logger = self._makeOne(self.LOGGER_NAME, client=client, labels=LABELS)
         self.assertEqual(logger.name, self.LOGGER_NAME)
-        self.assertTrue(logger.client is client)
+        self.assertIs(logger.client, client)
         self.assertEqual(logger.project, self.PROJECT)
         self.assertEqual(logger.full_name, 'projects/%s/logs/%s'
                          % (self.PROJECT, self.LOGGER_NAME))
@@ -60,9 +60,9 @@ class TestLogger(unittest.TestCase):
         client = _Client(self.PROJECT, conn)
         logger = self._makeOne(self.LOGGER_NAME, client=client)
         batch = logger.batch()
-        self.assertTrue(isinstance(batch, Batch))
-        self.assertTrue(batch.logger is logger)
-        self.assertTrue(batch.client is client)
+        self.assertIsInstance(batch, Batch)
+        self.assertIs(batch.logger, logger)
+        self.assertIs(batch.client, client)
 
     def test_batch_w_alternate_client(self):
         from google.cloud.logging.logger import Batch
@@ -72,9 +72,9 @@ class TestLogger(unittest.TestCase):
         client2 = _Client(self.PROJECT, conn2)
         logger = self._makeOne(self.LOGGER_NAME, client=client1)
         batch = logger.batch(client2)
-        self.assertTrue(isinstance(batch, Batch))
-        self.assertTrue(batch.logger is logger)
-        self.assertTrue(batch.client is client2)
+        self.assertIsInstance(batch, Batch)
+        self.assertIs(batch.logger, logger)
+        self.assertIs(batch.client, client2)
 
     def test_log_text_w_str_implicit_client(self):
         TEXT = 'TEXT'
@@ -385,7 +385,7 @@ class TestLogger(unittest.TestCase):
             projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
             page_size=PAGE_SIZE, page_token=TOKEN)
         self.assertEqual(len(entries), 0)
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
         self.assertEqual(client._listed, LISTED)
 
 
@@ -404,8 +404,8 @@ class TestBatch(unittest.TestCase):
         logger = _Logger()
         client = _Client(project=self.PROJECT)
         batch = self._makeOne(logger, client)
-        self.assertTrue(batch.logger is logger)
-        self.assertTrue(batch.client is client)
+        self.assertIs(batch.logger, logger)
+        self.assertIs(batch.client, client)
         self.assertEqual(len(batch.entries), 0)
 
     def test_log_text_defaults(self):
@@ -663,7 +663,7 @@ class TestBatch(unittest.TestCase):
             pass
 
         self.assertEqual(list(batch.entries), UNSENT)
-        self.assertEqual(api._write_entries_called_with, None)
+        self.assertIsNone(api._write_entries_called_with)
 
 
 class _Logger(object):

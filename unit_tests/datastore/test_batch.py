@@ -36,11 +36,11 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch.project, _PROJECT)
         self.assertEqual(batch.connection, connection)
         self.assertEqual(batch.namespace, _NAMESPACE)
-        self.assertTrue(batch._id is None)
+        self.assertIsNone(batch._id)
         self.assertEqual(batch._status, batch._INITIAL)
-        self.assertTrue(isinstance(batch._commit_request,
-                                   datastore_pb2.CommitRequest))
-        self.assertTrue(batch.mutations is batch._commit_request.mutations)
+        self.assertIsInstance(batch._commit_request,
+                              datastore_pb2.CommitRequest)
+        self.assertIs(batch.mutations, batch._commit_request.mutations)
         self.assertEqual(batch._partial_key_entities, [])
 
     def test_current(self):
@@ -49,18 +49,18 @@ class TestBatch(unittest.TestCase):
         client = _Client(_PROJECT, connection)
         batch1 = self._makeOne(client)
         batch2 = self._makeOne(client)
-        self.assertTrue(batch1.current() is None)
-        self.assertTrue(batch2.current() is None)
+        self.assertIsNone(batch1.current())
+        self.assertIsNone(batch2.current())
         with batch1:
-            self.assertTrue(batch1.current() is batch1)
-            self.assertTrue(batch2.current() is batch1)
+            self.assertIs(batch1.current(), batch1)
+            self.assertIs(batch2.current(), batch1)
             with batch2:
-                self.assertTrue(batch1.current() is batch2)
-                self.assertTrue(batch2.current() is batch2)
-            self.assertTrue(batch1.current() is batch1)
-            self.assertTrue(batch2.current() is batch1)
-        self.assertTrue(batch1.current() is None)
-        self.assertTrue(batch2.current() is None)
+                self.assertIs(batch1.current(), batch2)
+                self.assertIs(batch2.current(), batch2)
+            self.assertIs(batch1.current(), batch1)
+            self.assertIs(batch2.current(), batch1)
+        self.assertIsNone(batch1.current())
+        self.assertIsNone(batch2.current())
 
     def test_put_entity_wo_key(self):
         _PROJECT = 'PROJECT'

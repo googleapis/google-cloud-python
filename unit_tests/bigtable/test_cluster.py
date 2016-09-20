@@ -39,7 +39,7 @@ class TestCluster(unittest.TestCase):
 
         cluster = self._makeOne(self.CLUSTER_ID, instance)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
-        self.assertTrue(cluster._instance is instance)
+        self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
 
     def test_constructor_non_default(self):
@@ -50,7 +50,7 @@ class TestCluster(unittest.TestCase):
         cluster = self._makeOne(self.CLUSTER_ID, instance,
                                 serve_nodes=SERVE_NODES)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
-        self.assertTrue(cluster._instance is instance)
+        self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
 
     def test_copy(self):
@@ -63,10 +63,10 @@ class TestCluster(unittest.TestCase):
         new_cluster = cluster.copy()
 
         # Make sure the client copy succeeded.
-        self.assertFalse(new_cluster._instance is instance)
+        self.assertIsNot(new_cluster._instance, instance)
         self.assertEqual(new_cluster.serve_nodes, SERVE_NODES)
         # Make sure the client got copied to a new instance.
-        self.assertFalse(cluster is new_cluster)
+        self.assertIsNot(cluster, new_cluster)
         self.assertEqual(cluster, new_cluster)
 
     def test__update_from_pb_success(self):
@@ -109,8 +109,8 @@ class TestCluster(unittest.TestCase):
 
         klass = self._getTargetClass()
         cluster = klass.from_pb(cluster_pb, instance)
-        self.assertTrue(isinstance(cluster, klass))
-        self.assertTrue(cluster._instance is instance)
+        self.assertIsInstance(cluster, klass)
+        self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
 
@@ -253,19 +253,19 @@ class TestCluster(unittest.TestCase):
         # Perform the method and check the result.
         result = cluster.create()
 
-        self.assertTrue(isinstance(result, Operation))
+        self.assertIsInstance(result, Operation)
         self.assertEqual(result.name, OP_NAME)
-        self.assertTrue(result.target is cluster)
-        self.assertTrue(result.client is client)
-        self.assertTrue(result.pb_metadata is None)
+        self.assertIs(result.target, cluster)
+        self.assertIs(result.client, client)
+        self.assertIsNone(result.pb_metadata)
         self.assertEqual(result.metadata, {'request_type': 'CreateCluster'})
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]
         self.assertEqual(api_name, 'CreateCluster')
         request_pb, = args
-        self.assertTrue(
-            isinstance(request_pb, messages_v2_pb2.CreateClusterRequest))
+        self.assertIsInstance(request_pb,
+                              messages_v2_pb2.CreateClusterRequest)
         self.assertEqual(request_pb.parent, instance.name)
         self.assertEqual(request_pb.cluster_id, self.CLUSTER_ID)
         self.assertEqual(request_pb.cluster.serve_nodes, SERVE_NODES)
@@ -319,10 +319,10 @@ class TestCluster(unittest.TestCase):
 
         result = cluster.update()
 
-        self.assertTrue(isinstance(result, Operation))
+        self.assertIsInstance(result, Operation)
         self.assertEqual(result.name, OP_NAME)
-        self.assertTrue(result.target is cluster)
-        self.assertTrue(result.client is client)
+        self.assertIs(result.target, cluster)
+        self.assertIs(result.client, client)
         self.assertIsInstance(result.pb_metadata,
                               messages_v2_pb2.UpdateClusterMetadata)
         self.assertEqual(result.pb_metadata.request_time, NOW_PB)
@@ -332,8 +332,7 @@ class TestCluster(unittest.TestCase):
         api_name, args, kwargs = stub.method_calls[0]
         self.assertEqual(api_name, 'UpdateCluster')
         request_pb, = args
-        self.assertTrue(
-            isinstance(request_pb, data_v2_pb2.Cluster))
+        self.assertIsInstance(request_pb, data_v2_pb2.Cluster)
         self.assertEqual(request_pb.name, self.CLUSTER_NAME)
         self.assertEqual(request_pb.serve_nodes, SERVE_NODES)
         self.assertEqual(kwargs, {})

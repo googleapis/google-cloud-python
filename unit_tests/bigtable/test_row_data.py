@@ -103,7 +103,7 @@ class TestPartialRowData(unittest.TestCase):
     def test_constructor(self):
         row_key = object()
         partial_row_data = self._makeOne(row_key)
-        self.assertTrue(partial_row_data._row_key is row_key)
+        self.assertIs(partial_row_data._row_key, row_key)
         self.assertEqual(partial_row_data._cells, {})
 
     def test___eq__(self):
@@ -173,13 +173,13 @@ class TestPartialRowData(unittest.TestCase):
         cells = {1: 2}
         partial_row_data._cells = cells
         # Make sure we get a copy, not the original.
-        self.assertFalse(partial_row_data.cells is cells)
+        self.assertIsNot(partial_row_data.cells, cells)
         self.assertEqual(partial_row_data.cells, cells)
 
     def test_row_key_getter(self):
         row_key = object()
         partial_row_data = self._makeOne(row_key)
-        self.assertTrue(partial_row_data.row_key is row_key)
+        self.assertIs(partial_row_data.row_key, row_key)
 
 
 class TestPartialRowsData(unittest.TestCase):
@@ -210,8 +210,8 @@ class TestPartialRowsData(unittest.TestCase):
     def test_constructor(self):
         response_iterator = object()
         partial_rows_data = self._makeOne(response_iterator)
-        self.assertTrue(partial_rows_data._response_iterator
-                        is response_iterator)
+        self.assertIs(partial_rows_data._response_iterator,
+                      response_iterator)
         self.assertEqual(partial_rows_data._rows, {})
 
     def test___eq__(self):
@@ -252,7 +252,7 @@ class TestPartialRowsData(unittest.TestCase):
     def test_rows_getter(self):
         partial_rows_data = self._makeOne(None)
         partial_rows_data._rows = value = object()
-        self.assertTrue(partial_rows_data.rows is value)
+        self.assertIs(partial_rows_data.rows, value)
 
     def test_cancel(self):
         response_iterator = _MockCancellableIterator()
@@ -380,7 +380,7 @@ class TestPartialRowsData(unittest.TestCase):
         row = prd._row = _Dummy(row_key=ROW_KEY)
         prd._cell = None
         prd._save_current_row()
-        self.assertTrue(prd._rows[ROW_KEY] is row)
+        self.assertIs(prd._rows[ROW_KEY], row)
 
     def test_invalid_last_scanned_row_key_on_start(self):
         from google.cloud.bigtable.row_data import InvalidReadRowsResponse

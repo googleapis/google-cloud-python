@@ -31,7 +31,7 @@ class TestMessage(unittest.TestCase):
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.attributes, {})
-        self.assertEqual(message.service_timestamp, None)
+        self.assertIsNone(message.service_timestamp)
 
     def test_ctor_w_attributes(self):
         DATA = b'DEADBEEF'
@@ -42,7 +42,7 @@ class TestMessage(unittest.TestCase):
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.attributes, ATTRS)
-        self.assertEqual(message.service_timestamp, None)
+        self.assertIsNone(message.service_timestamp)
 
     def test_timestamp_no_attributes(self):
         DATA = b'DEADBEEF'
@@ -87,7 +87,7 @@ class TestMessage(unittest.TestCase):
         self.assertEqual(message.data, b'')
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.attributes, {})
-        self.assertEqual(message.service_timestamp, None)
+        self.assertIsNone(message.service_timestamp)
 
     def test_from_api_repr_no_attributes(self):
         from base64 import b64encode as b64

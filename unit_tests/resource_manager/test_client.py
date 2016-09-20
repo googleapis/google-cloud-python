@@ -29,8 +29,8 @@ class Test__ProjectIterator(unittest.TestCase):
         iterator = self._makeOne(client)
         self.assertEqual(iterator.path, '/projects')
         self.assertEqual(iterator.page_number, 0)
-        self.assertEqual(iterator.next_page_token, None)
-        self.assertTrue(iterator.client is client)
+        self.assertIsNone(iterator.next_page_token)
+        self.assertIs(iterator.client, client)
         self.assertEqual(iterator.extra_params, {})
 
     def test_get_items_from_response_empty(self):
@@ -60,7 +60,7 @@ class Test__ProjectIterator(unittest.TestCase):
         projects = list(iterator.get_items_from_response(RESPONSE))
 
         project, = projects
-        self.assertTrue(isinstance(project, Project))
+        self.assertIsInstance(project, Project)
         self.assertEqual(project.project_id, PROJECT_ID)
         self.assertEqual(project._client, client)
         self.assertEqual(project.name, PROJECT_NAME)
@@ -84,7 +84,7 @@ class TestClient(unittest.TestCase):
         http = object()
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials, http=http)
-        self.assertTrue(isinstance(client.connection, Connection))
+        self.assertIsInstance(client.connection, Connection)
         self.assertEqual(client.connection._credentials, credentials)
         self.assertEqual(client.connection._http, http)
 
@@ -98,7 +98,7 @@ class TestClient(unittest.TestCase):
         labels = object()
         project = client.new_project(project_id, name=name, labels=labels)
 
-        self.assertTrue(isinstance(project, Project))
+        self.assertIsInstance(project, Project)
         self.assertEqual(project._client, client)
         self.assertEqual(project.project_id, project_id)
         self.assertEqual(project.name, name)
@@ -125,7 +125,7 @@ class TestClient(unittest.TestCase):
         client.connection = _Connection(project_resource)
 
         project = client.fetch_project(project_id)
-        self.assertTrue(isinstance(project, Project))
+        self.assertIsInstance(project, Project)
         self.assertEqual(project._client, client)
         self.assertEqual(project.project_id, project_id)
         self.assertEqual(project.name, project_name)

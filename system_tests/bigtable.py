@@ -231,7 +231,7 @@ class TestTableAdminAPI(unittest.TestCase):
 
         self.assertEqual(len(col_fams), 1)
         retrieved_col_fam = col_fams[COLUMN_FAMILY_ID1]
-        self.assertTrue(retrieved_col_fam._table is column_family._table)
+        self.assertIs(retrieved_col_fam._table, column_family._table)
         self.assertEqual(retrieved_col_fam.column_family_id,
                          column_family.column_family_id)
         self.assertEqual(retrieved_col_fam.gc_rule, gc_rule)
@@ -257,7 +257,7 @@ class TestTableAdminAPI(unittest.TestCase):
 
         # Check that the update has propagated.
         col_fams = temp_table.list_column_families()
-        self.assertEqual(col_fams[COLUMN_FAMILY_ID1].gc_rule, None)
+        self.assertIsNone(col_fams[COLUMN_FAMILY_ID1].gc_rule)
 
     def test_delete_column_family(self):
         temp_table_id = 'foo-bar-baz-table'

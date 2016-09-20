@@ -68,7 +68,7 @@ class TestChanges(unittest.TestCase):
             self.assertEqual(found.record_type, expected['type'])
             self.assertEqual(found.ttl, int(expected['ttl']))
             self.assertEqual(found.rrdatas, expected['rrdatas'])
-            self.assertTrue(found.zone is zone)
+            self.assertIs(found.zone, zone)
 
         r_deletions = resource.get('deletions', ())
         self.assertEqual(len(changes.deletions), len(r_deletions))
@@ -77,17 +77,17 @@ class TestChanges(unittest.TestCase):
             self.assertEqual(found.record_type, expected['type'])
             self.assertEqual(found.ttl, int(expected['ttl']))
             self.assertEqual(found.rrdatas, expected['rrdatas'])
-            self.assertTrue(found.zone is zone)
+            self.assertIs(found.zone, zone)
 
     def test_ctor(self):
         zone = _Zone()
 
         changes = self._makeOne(zone)
 
-        self.assertTrue(changes.zone is zone)
-        self.assertEqual(changes.name, None)
-        self.assertEqual(changes.status, None)
-        self.assertEqual(changes.started, None)
+        self.assertIs(changes.zone, zone)
+        self.assertIsNone(changes.name)
+        self.assertIsNone(changes.status)
+        self.assertIsNone(changes.started)
         self.assertEqual(list(changes.additions), [])
         self.assertEqual(list(changes.deletions), [])
 

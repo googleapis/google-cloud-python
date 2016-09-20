@@ -30,10 +30,10 @@ class TestProject(unittest.TestCase):
         project = self._makeOne(PROJECT_ID, client)
         self.assertEqual(project.project_id, PROJECT_ID)
         self.assertEqual(project._client, client)
-        self.assertEqual(project.name, None)
-        self.assertEqual(project.number, None)
+        self.assertIsNone(project.name)
+        self.assertIsNone(project.number)
         self.assertEqual(project.labels, {})
-        self.assertEqual(project.status, None)
+        self.assertIsNone(project.status)
 
     def test_constructor_explicit(self):
         client = object()
@@ -45,9 +45,9 @@ class TestProject(unittest.TestCase):
         self.assertEqual(project.project_id, PROJECT_ID)
         self.assertEqual(project._client, client)
         self.assertEqual(project.name, DISPLAY_NAME)
-        self.assertEqual(project.number, None)
+        self.assertIsNone(project.number)
         self.assertEqual(project.labels, LABELS)
-        self.assertEqual(project.status, None)
+        self.assertIsNone(project.status)
 
     def test_from_api_repr(self):
         client = object()
@@ -97,7 +97,7 @@ class TestProject(unittest.TestCase):
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
         project = self._makeOne(PROJECT_ID, client)
-        self.assertEqual(project.number, None)
+        self.assertIsNone(project.number)
         project.create()
         self.assertEqual(project.number, PROJECT_NUMBER)
         request, = connection._requested
@@ -126,10 +126,10 @@ class TestProject(unittest.TestCase):
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
         project = self._makeOne(PROJECT_ID, client)
-        self.assertEqual(project.number, None)
-        self.assertEqual(project.name, None)
+        self.assertIsNone(project.number)
+        self.assertIsNone(project.name)
         self.assertEqual(project.labels, {})
-        self.assertEqual(project.status, None)
+        self.assertIsNone(project.status)
         project.reload()
         self.assertEqual(project.name, PROJECT_RESOURCE['name'])
         self.assertEqual(project.number, PROJECT_NUMBER)

@@ -44,7 +44,7 @@ class Test__get_gcd_project(unittest.TestCase):
         environ = {}
         with _Monkey(os, getenv=environ.get):
             project = self._callFUT()
-            self.assertEqual(project, None)
+            self.assertIsNone(project)
 
     def test_value_set(self):
         import os
@@ -92,7 +92,7 @@ class Test__determine_default_project(unittest.TestCase):
 
     def test_no_value(self):
         project, callers = self._determine_default_helper()
-        self.assertEqual(project, None)
+        self.assertIsNone(project)
         self.assertEqual(callers, ['gcd_mock', ('fallback_mock', None)])
 
     def test_explicit(self):
@@ -168,12 +168,12 @@ class TestClient(unittest.TestCase):
                          get_credentials=lambda: creds):
                 client = klass()
         self.assertEqual(client.project, OTHER)
-        self.assertEqual(client.namespace, None)
-        self.assertTrue(isinstance(client.connection, _MockConnection))
-        self.assertTrue(client.connection.credentials is creds)
-        self.assertTrue(client.connection.http is None)
-        self.assertTrue(client.current_batch is None)
-        self.assertTrue(client.current_transaction is None)
+        self.assertIsNone(client.namespace)
+        self.assertIsInstance(client.connection, _MockConnection)
+        self.assertIs(client.connection.credentials, creds)
+        self.assertIsNone(client.connection.http)
+        self.assertIsNone(client.current_batch)
+        self.assertIsNone(client.current_transaction)
         self.assertEqual(default_called, [None])
 
     def test_ctor_w_explicit_inputs(self):
@@ -187,10 +187,10 @@ class TestClient(unittest.TestCase):
                                http=http)
         self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, NAMESPACE)
-        self.assertTrue(isinstance(client.connection, _MockConnection))
-        self.assertTrue(client.connection.credentials is creds)
-        self.assertTrue(client.connection.http is http)
-        self.assertTrue(client.current_batch is None)
+        self.assertIsInstance(client.connection, _MockConnection)
+        self.assertIs(client.connection.credentials, creds)
+        self.assertIs(client.connection.http, http)
+        self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
 
     def test__push_batch_and__pop_batch(self):
@@ -200,16 +200,16 @@ class TestClient(unittest.TestCase):
         xact = client.transaction()
         client._push_batch(batch)
         self.assertEqual(list(client._batch_stack), [batch])
-        self.assertTrue(client.current_batch is batch)
-        self.assertTrue(client.current_transaction is None)
+        self.assertIs(client.current_batch, batch)
+        self.assertIsNone(client.current_transaction)
         client._push_batch(xact)
-        self.assertTrue(client.current_batch is xact)
-        self.assertTrue(client.current_transaction is xact)
+        self.assertIs(client.current_batch, xact)
+        self.assertIs(client.current_transaction, xact)
         # list(_LocalStack) returns in reverse order.
         self.assertEqual(list(client._batch_stack), [xact, batch])
-        self.assertTrue(client._pop_batch() is xact)
+        self.assertIs(client._pop_batch(), xact)
         self.assertEqual(list(client._batch_stack), [batch])
-        self.assertTrue(client._pop_batch() is batch)
+        self.assertIs(client._pop_batch(), batch)
         self.assertEqual(list(client._batch_stack), [])
 
     def test_get_miss(self):
@@ -225,13 +225,13 @@ class TestClient(unittest.TestCase):
 
         key = object()
 
-        self.assertTrue(client.get(key) is None)
+        self.assertIsNone(client.get(key))
 
         self.assertEqual(_called_with[0][0], ())
         self.assertEqual(_called_with[0][1]['keys'], [key])
-        self.assertTrue(_called_with[0][1]['missing'] is None)
-        self.assertTrue(_called_with[0][1]['deferred'] is None)
-        self.assertTrue(_called_with[0][1]['transaction'] is None)
+        self.assertIsNone(_called_with[0][1]['missing'])
+        self.assertIsNone(_called_with[0][1]['deferred'])
+        self.assertIsNone(_called_with[0][1]['transaction'])
 
     def test_get_hit(self):
         TXN_ID = '123'
@@ -248,12 +248,12 @@ class TestClient(unittest.TestCase):
 
         key, missing, deferred = object(), [], []
 
-        self.assertTrue(client.get(key, missing, deferred, TXN_ID) is _entity)
+        self.assertIs(client.get(key, missing, deferred, TXN_ID), _entity)
 
         self.assertEqual(_called_with[0][0], ())
         self.assertEqual(_called_with[0][1]['keys'], [key])
-        self.assertTrue(_called_with[0][1]['missing'] is missing)
-        self.assertTrue(_called_with[0][1]['deferred'] is deferred)
+        self.assertIs(_called_with[0][1]['missing'], missing)
+        self.assertIs(_called_with[0][1]['deferred'], deferred)
         self.assertEqual(_called_with[0][1]['transaction'], TXN_ID)
 
     def test_get_multi_no_keys(self):
@@ -363,11 +363,11 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(missing), 0)
 
         # Check the actual contents on the response.
-        self.assertTrue(isinstance(found[0], Entity))
+        self.assertIsInstance(found[0], Entity)
         self.assertEqual(found[0].key.path, key1.path)
         self.assertEqual(found[0].key.project, key1.project)
 
-        self.assertTrue(isinstance(found[1], Entity))
+        self.assertIsInstance(found[1], Entity)
         self.assertEqual(found[1].key.path, key2.path)
         self.assertEqual(found[1].key.project, key2.project)
 
@@ -380,14 +380,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key1_pb, k_pbs[0])
         self.assertEqual(key2_pb, k_pbs[1])
         self.assertFalse(eventual)
-        self.assertTrue(tid is None)
+        self.assertIsNone(tid)
 
         ds_id, k_pbs, eventual, tid = cw[1]
         self.assertEqual(ds_id, self.PROJECT)
         self.assertEqual(len(k_pbs), 1)
         self.assertEqual(key2_pb, k_pbs[0])
         self.assertFalse(eventual)
-        self.assertTrue(tid is None)
+        self.assertIsNone(tid)
 
     def test_get_multi_hit(self):
         from google.cloud.datastore.key import Key
@@ -409,7 +409,7 @@ class TestClient(unittest.TestCase):
         new_key = result.key
 
         # Check the returned value is as expected.
-        self.assertFalse(new_key is key)
+        self.assertIsNot(new_key, key)
         self.assertEqual(new_key.project, self.PROJECT)
         self.assertEqual(new_key.path, PATH)
         self.assertEqual(list(result), ['foo'])
@@ -438,7 +438,7 @@ class TestClient(unittest.TestCase):
         new_key = result.key
 
         # Check the returned value is as expected.
-        self.assertFalse(new_key is key)
+        self.assertIsNot(new_key, key)
         self.assertEqual(new_key.project, self.PROJECT)
         self.assertEqual(new_key.path, PATH)
         self.assertEqual(list(result), ['foo'])
@@ -541,7 +541,7 @@ class TestClient(unittest.TestCase):
     def test_put_multi_no_entities(self):
         creds = object()
         client = self._makeOne(credentials=creds)
-        self.assertEqual(client.put_multi([]), None)
+        self.assertIsNone(client.put_multi([]))
 
     def test_put_multi_w_single_empty_entity(self):
         # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/649
@@ -563,7 +563,7 @@ class TestClient(unittest.TestCase):
         client.connection._commit.append([_KeyPB(key)])
 
         result = client.put_multi([entity])
-        self.assertTrue(result is None)
+        self.assertIsNone(result)
 
         self.assertEqual(len(client.connection._commit_cw), 1)
         (project,
@@ -579,7 +579,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(name, 'foo')
         self.assertEqual(value_pb.string_value, u'bar')
 
-        self.assertTrue(transaction_id is None)
+        self.assertIsNone(transaction_id)
 
     def test_put_multi_existing_batch_w_completed_key(self):
         from google.cloud.datastore.helpers import _property_tuples
@@ -592,7 +592,7 @@ class TestClient(unittest.TestCase):
         with _NoCommitBatch(client) as CURR_BATCH:
             result = client.put_multi([entity])
 
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         mutated_entity = _mutated_pb(self, CURR_BATCH.mutations, 'upsert')
         self.assertEqual(mutated_entity.key, key.to_protobuf())
 
@@ -622,7 +622,7 @@ class TestClient(unittest.TestCase):
         creds = object()
         client = self._makeOne(credentials=creds)
         result = client.delete_multi([])
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         self.assertEqual(len(client.connection._commit_cw), 0)
 
     def test_delete_multi_no_batch(self):
@@ -633,7 +633,7 @@ class TestClient(unittest.TestCase):
         client.connection._commit.append([])
 
         result = client.delete_multi([key])
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         self.assertEqual(len(client.connection._commit_cw), 1)
         (project,
          commit_req, transaction_id) = client.connection._commit_cw[0]
@@ -641,7 +641,7 @@ class TestClient(unittest.TestCase):
 
         mutated_key = _mutated_pb(self, commit_req.mutations, 'delete')
         self.assertEqual(mutated_key, key.to_protobuf())
-        self.assertTrue(transaction_id is None)
+        self.assertIsNone(transaction_id)
 
     def test_delete_multi_w_existing_batch(self):
         creds = object()
@@ -651,7 +651,7 @@ class TestClient(unittest.TestCase):
         with _NoCommitBatch(client) as CURR_BATCH:
             result = client.delete_multi([key])
 
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         mutated_key = _mutated_pb(self, CURR_BATCH.mutations, 'delete')
         self.assertEqual(mutated_key, key._key)
         self.assertEqual(len(client.connection._commit_cw), 0)
@@ -664,7 +664,7 @@ class TestClient(unittest.TestCase):
         with _NoCommitTransaction(client) as CURR_XACT:
             result = client.delete_multi([key])
 
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         mutated_key = _mutated_pb(self, CURR_XACT.mutations, 'delete')
         self.assertEqual(mutated_key, key._key)
         self.assertEqual(len(client.connection._commit_cw), 0)
@@ -713,7 +713,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Key=_Dummy):
             key = client.key(KIND, ID)
 
-        self.assertTrue(isinstance(key, _Dummy))
+        self.assertIsInstance(key, _Dummy)
         self.assertEqual(key.args, (KIND, ID))
         expected_kwargs = {
             'project': self.PROJECT,
@@ -735,7 +735,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Key=_Dummy):
             key = client.key(KIND, ID)
 
-        self.assertTrue(isinstance(key, _Dummy))
+        self.assertIsInstance(key, _Dummy)
         expected_kwargs = {
             'project': self.PROJECT,
             'namespace': NAMESPACE,
@@ -757,7 +757,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Key=_Dummy):
             key = client.key(KIND, ID, namespace=NAMESPACE2)
 
-        self.assertTrue(isinstance(key, _Dummy))
+        self.assertIsInstance(key, _Dummy)
         expected_kwargs = {
             'project': self.PROJECT,
             'namespace': NAMESPACE2,
@@ -774,7 +774,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Batch=_Dummy):
             batch = client.batch()
 
-        self.assertTrue(isinstance(batch, _Dummy))
+        self.assertIsInstance(batch, _Dummy)
         self.assertEqual(batch.args, (client,))
         self.assertEqual(batch.kwargs, {})
 
@@ -788,7 +788,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Transaction=_Dummy):
             xact = client.transaction()
 
-        self.assertTrue(isinstance(xact, _Dummy))
+        self.assertIsInstance(xact, _Dummy)
         self.assertEqual(xact.args, (client,))
         self.assertEqual(xact.kwargs, {})
 
@@ -820,7 +820,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Query=_Dummy):
             query = client.query()
 
-        self.assertTrue(isinstance(query, _Dummy))
+        self.assertIsInstance(query, _Dummy)
         self.assertEqual(query.args, (client,))
         expected_kwargs = {
             'project': self.PROJECT,
@@ -854,7 +854,7 @@ class TestClient(unittest.TestCase):
                 distinct_on=DISTINCT_ON,
                 )
 
-        self.assertTrue(isinstance(query, _Dummy))
+        self.assertIsInstance(query, _Dummy)
         self.assertEqual(query.args, (client,))
         kwargs = {
             'project': self.PROJECT,
@@ -881,7 +881,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Query=_Dummy):
             query = client.query(kind=KIND)
 
-        self.assertTrue(isinstance(query, _Dummy))
+        self.assertIsInstance(query, _Dummy)
         self.assertEqual(query.args, (client,))
         expected_kwargs = {
             'project': self.PROJECT,
@@ -904,7 +904,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, Query=_Dummy):
             query = client.query(kind=KIND, namespace=NAMESPACE2)
 
-        self.assertTrue(isinstance(query, _Dummy))
+        self.assertIsInstance(query, _Dummy)
         self.assertEqual(query.args, (client,))
         expected_kwargs = {
             'project': self.PROJECT,

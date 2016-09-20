@@ -29,11 +29,11 @@ class Test__BlobIterator(unittest.TestCase):
         client = _Client(connection)
         bucket = _Bucket()
         iterator = self._makeOne(bucket, client=client)
-        self.assertTrue(iterator.bucket is bucket)
-        self.assertTrue(iterator.client is client)
+        self.assertIs(iterator.bucket, bucket)
+        self.assertIs(iterator.client, client)
         self.assertEqual(iterator.path, '%s/o' % bucket.path)
         self.assertEqual(iterator.page_number, 0)
-        self.assertEqual(iterator.next_page_token, None)
+        self.assertIsNone(iterator.next_page_token)
         self.assertEqual(iterator.prefixes, set())
 
     def test_get_items_from_response_empty(self):
@@ -56,7 +56,7 @@ class Test__BlobIterator(unittest.TestCase):
         blobs = list(iterator.get_items_from_response(response))
         self.assertEqual(len(blobs), 1)
         blob = blobs[0]
-        self.assertTrue(isinstance(blob, Blob))
+        self.assertIsInstance(blob, Blob)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(iterator.prefixes, set(['foo']))
 
@@ -76,7 +76,7 @@ class Test__BlobIterator(unittest.TestCase):
         blobs = list(iterator.get_items_from_response(response1))
         self.assertEqual(len(blobs), 1)
         blob = blobs[0]
-        self.assertTrue(isinstance(blob, Blob))
+        self.assertIsInstance(blob, Blob)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(iterator.prefixes, set(['foo']))
         # Parse second response.
@@ -103,9 +103,9 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, properties)
         self.assertFalse(bucket._acl.loaded)
-        self.assertTrue(bucket._acl.bucket is bucket)
+        self.assertIs(bucket._acl.bucket, bucket)
         self.assertFalse(bucket._default_object_acl.loaded)
-        self.assertTrue(bucket._default_object_acl.bucket is bucket)
+        self.assertIs(bucket._default_object_acl.bucket, bucket)
 
     def test_blob(self):
         from google.cloud.storage.blob import Blob
@@ -116,9 +116,9 @@ class Test_Bucket(unittest.TestCase):
 
         bucket = self._makeOne(name=BUCKET_NAME)
         blob = bucket.blob(BLOB_NAME, chunk_size=CHUNK_SIZE)
-        self.assertTrue(isinstance(blob, Blob))
-        self.assertTrue(blob.bucket is bucket)
-        self.assertTrue(blob.client is bucket.client)
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.bucket, bucket)
+        self.assertIs(blob.client, bucket.client)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(blob.chunk_size, CHUNK_SIZE)
 
@@ -233,15 +233,15 @@ class Test_Bucket(unittest.TestCase):
         from google.cloud.storage.acl import BucketACL
         bucket = self._makeOne()
         acl = bucket.acl
-        self.assertTrue(isinstance(acl, BucketACL))
-        self.assertTrue(acl is bucket._acl)
+        self.assertIsInstance(acl, BucketACL)
+        self.assertIs(acl, bucket._acl)
 
     def test_default_object_acl_property(self):
         from google.cloud.storage.acl import DefaultObjectACL
         bucket = self._makeOne()
         acl = bucket.default_object_acl
-        self.assertTrue(isinstance(acl, DefaultObjectACL))
-        self.assertTrue(acl is bucket._default_object_acl)
+        self.assertIsInstance(acl, DefaultObjectACL)
+        self.assertIs(acl, bucket._default_object_acl)
 
     def test_path_no_name(self):
         bucket = self._makeOne()
@@ -259,7 +259,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._makeOne(name=NAME)
         result = bucket.get_blob(NONESUCH, client=client)
-        self.assertTrue(result is None)
+        self.assertIsNone(result)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
@@ -271,7 +271,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._makeOne(name=NAME)
         blob = bucket.get_blob(BLOB_NAME, client=client)
-        self.assertTrue(blob.bucket is bucket)
+        self.assertIs(blob.bucket, bucket)
         self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
@@ -363,7 +363,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._makeOne(client=client, name=NAME)
         result = bucket.delete(force=True)
-        self.assertTrue(result is None)
+        self.assertIsNone(result)
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
@@ -388,7 +388,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._makeOne(client=client, name=NAME)
         result = bucket.delete(force=True)
-        self.assertTrue(result is None)
+        self.assertIsNone(result)
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
@@ -406,7 +406,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._makeOne(client=client, name=NAME)
         result = bucket.delete(force=True)
-        self.assertTrue(result is None)
+        self.assertIsNone(result)
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
@@ -453,7 +453,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._makeOne(client=client, name=NAME)
         result = bucket.delete_blob(BLOB_NAME)
-        self.assertTrue(result is None)
+        self.assertIsNone(result)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
@@ -526,7 +526,7 @@ class Test_Bucket(unittest.TestCase):
         dest = self._makeOne(client=client, name=DEST)
         blob = _Blob()
         new_blob = source.copy_blob(blob, dest)
-        self.assertTrue(new_blob.bucket is dest)
+        self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, BLOB_NAME)
         kw, = connection._requested
         COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
@@ -550,7 +550,7 @@ class Test_Bucket(unittest.TestCase):
         dest = self._makeOne(client=client, name=DEST)
         blob = _Blob()
         new_blob = source.copy_blob(blob, dest, NEW_NAME)
-        self.assertTrue(new_blob.bucket is dest)
+        self.assertIs(new_blob.bucket, dest)
         self.assertEqual(new_blob.name, NEW_NAME)
         kw, = connection._requested
         COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
@@ -580,7 +580,7 @@ class Test_Bucket(unittest.TestCase):
 
         blob = _Blob(BLOB_NAME, BUCKET_NAME)
         renamed_blob = bucket.rename_blob(blob, NEW_BLOB_NAME, client=client)
-        self.assertTrue(renamed_blob.bucket is bucket)
+        self.assertIs(renamed_blob.bucket, bucket)
         self.assertEqual(renamed_blob.name, NEW_BLOB_NAME)
         self.assertEqual(blob._deleted, [client])
 
@@ -605,7 +605,7 @@ class Test_Bucket(unittest.TestCase):
     def test_location_setter(self):
         NAME = 'name'
         bucket = self._makeOne(name=NAME)
-        self.assertEqual(bucket.location, None)
+        self.assertIsNone(bucket.location)
         bucket.location = 'AS'
         self.assertEqual(bucket.location, 'AS')
         self.assertTrue('location' in bucket._changes)
@@ -618,7 +618,7 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._makeOne(name=NAME, properties=properties)
         self.assertEqual(bucket.lifecycle_rules, rules)
         # Make sure it's a copy
-        self.assertFalse(bucket.lifecycle_rules is rules)
+        self.assertIsNot(bucket.lifecycle_rules, rules)
 
     def test_lifecycle_rules_setter(self):
         NAME = 'name'
@@ -645,7 +645,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(entries[0], CORS_ENTRY)
         self.assertEqual(entries[1], {})
         # Make sure it was a copy, not the same object.
-        self.assertFalse(entries[0] is CORS_ENTRY)
+        self.assertIsNot(entries[0], CORS_ENTRY)
 
     def test_cors_setter(self):
         NAME = 'name'
@@ -682,7 +682,7 @@ class Test_Bucket(unittest.TestCase):
         LOG_BUCKET = 'logs'
         before = {'logging': None}
         bucket = self._makeOne(name=NAME, properties=before)
-        self.assertTrue(bucket.get_logging() is None)
+        self.assertIsNone(bucket.get_logging())
         bucket.enable_logging(LOG_BUCKET)
         info = bucket.get_logging()
         self.assertEqual(info['logBucket'], LOG_BUCKET)
@@ -694,7 +694,7 @@ class Test_Bucket(unittest.TestCase):
         LOG_PFX = 'pfx'
         before = {'logging': None}
         bucket = self._makeOne(name=NAME, properties=before)
-        self.assertTrue(bucket.get_logging() is None)
+        self.assertIsNone(bucket.get_logging())
         bucket.enable_logging(LOG_BUCKET, LOG_PFX)
         info = bucket.get_logging()
         self.assertEqual(info['logBucket'], LOG_BUCKET)
@@ -704,9 +704,9 @@ class Test_Bucket(unittest.TestCase):
         NAME = 'name'
         before = {'logging': {'logBucket': 'logs', 'logObjectPrefix': 'pfx'}}
         bucket = self._makeOne(name=NAME, properties=before)
-        self.assertTrue(bucket.get_logging() is not None)
+        self.assertIsNotNone(bucket.get_logging())
         bucket.disable_logging()
-        self.assertTrue(bucket.get_logging() is None)
+        self.assertIsNone(bucket.get_logging())
 
     def test_metageneration(self):
         METAGENERATION = 42
@@ -716,7 +716,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_metageneration_unset(self):
         bucket = self._makeOne()
-        self.assertEqual(bucket.metageneration, None)
+        self.assertIsNone(bucket.metageneration)
 
     def test_metageneration_string_val(self):
         METAGENERATION = 42
@@ -740,7 +740,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_project_number_unset(self):
         bucket = self._makeOne()
-        self.assertEqual(bucket.project_number, None)
+        self.assertIsNone(bucket.project_number)
 
     def test_project_number_string_val(self):
         PROJECT_NUMBER = 12345
@@ -800,7 +800,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_time_created_unset(self):
         bucket = self._makeOne()
-        self.assertEqual(bucket.time_created, None)
+        self.assertIsNone(bucket.time_created)
 
     def test_versioning_enabled_getter_missing(self):
         NAME = 'name'

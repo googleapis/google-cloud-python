@@ -36,7 +36,7 @@ class Test_HttpError(unittest.TestCase):
 
         klass = self._getTargetClass()
         exception = klass.from_response(_Response())
-        self.assertTrue(isinstance(exception, klass))
+        self.assertIsInstance(exception, klass)
         self.assertEqual(exception.response, RESPONSE)
         self.assertEqual(exception.content, CONTENT)
         self.assertEqual(exception.url, URL)
@@ -80,7 +80,7 @@ class Test_RetryAfterError(unittest.TestCase):
 
         klass = self._getTargetClass()
         exception = klass.from_response(_Response())
-        self.assertTrue(isinstance(exception, klass))
+        self.assertIsInstance(exception, klass)
         self.assertEqual(exception.response, RESPONSE)
         self.assertEqual(exception.content, CONTENT)
         self.assertEqual(exception.url, URL)

@@ -316,7 +316,7 @@ class TestClient(unittest.TestCase):
             self.assertSequenceEqual(mock_make_table_stub.calls, [])
 
         expected_creds = expected_creds or creds
-        self.assertTrue(client._credentials is expected_creds)
+        self.assertIs(client._credentials, expected_creds)
         if expected_scopes is not None:
             self.assertEqual(client._credentials.scopes, expected_scopes)
 
@@ -446,7 +446,7 @@ class TestClient(unittest.TestCase):
         project = 'PROJECT'
         client = self._makeOneWithMocks(project=project,
                                         credentials=credentials)
-        self.assertTrue(client.credentials is credentials)
+        self.assertIs(client.credentials, credentials)
 
     def test_project_name_property(self):
         credentials = _Credentials()
@@ -517,13 +517,13 @@ class TestClient(unittest.TestCase):
 
         instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME)
 
-        self.assertTrue(isinstance(instance, Instance))
+        self.assertIsInstance(instance, Instance)
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
         self.assertEqual(instance._cluster_location_id,
                          _EXISTING_INSTANCE_LOCATION_ID)
         self.assertEqual(instance._cluster_serve_nodes, DEFAULT_SERVE_NODES)
-        self.assertTrue(instance._client is client)
+        self.assertIs(instance._client, client)
 
     def test_instance_factory_w_explicit_serve_nodes(self):
         from google.cloud.bigtable.instance import Instance
@@ -541,12 +541,12 @@ class TestClient(unittest.TestCase):
             INSTANCE_ID, display_name=DISPLAY_NAME,
             location=LOCATION_ID, serve_nodes=SERVE_NODES)
 
-        self.assertTrue(isinstance(instance, Instance))
+        self.assertIsInstance(instance, Instance)
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
         self.assertEqual(instance._cluster_location_id, LOCATION_ID)
         self.assertEqual(instance._cluster_serve_nodes, SERVE_NODES)
-        self.assertTrue(instance._client is client)
+        self.assertIs(instance._client, client)
 
     def test_list_instances(self):
         from google.cloud.bigtable._generated import (

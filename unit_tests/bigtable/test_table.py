@@ -42,7 +42,7 @@ class TestTable(unittest.TestCase):
 
         table = self._makeOne(table_id, instance)
         self.assertEqual(table.table_id, table_id)
-        self.assertTrue(table._instance is instance)
+        self.assertIs(table._instance, instance)
 
     def test_name_property(self):
         table_id = 'table-id'
@@ -62,9 +62,9 @@ class TestTable(unittest.TestCase):
         column_family_id = 'column_family_id'
         column_family = table.column_family(column_family_id, gc_rule=gc_rule)
 
-        self.assertTrue(isinstance(column_family, ColumnFamily))
+        self.assertIsInstance(column_family, ColumnFamily)
         self.assertEqual(column_family.column_family_id, column_family_id)
-        self.assertTrue(column_family.gc_rule is gc_rule)
+        self.assertIs(column_family.gc_rule, gc_rule)
         self.assertEqual(column_family._table, table)
 
     def test_row_factory_direct(self):
@@ -75,7 +75,7 @@ class TestTable(unittest.TestCase):
         row_key = b'row_key'
         row = table.row(row_key)
 
-        self.assertTrue(isinstance(row, DirectRow))
+        self.assertIsInstance(row, DirectRow)
         self.assertEqual(row._row_key, row_key)
         self.assertEqual(row._table, table)
 
@@ -88,7 +88,7 @@ class TestTable(unittest.TestCase):
         filter_ = object()
         row = table.row(row_key, filter_=filter_)
 
-        self.assertTrue(isinstance(row, ConditionalRow))
+        self.assertIsInstance(row, ConditionalRow)
         self.assertEqual(row._row_key, row_key)
         self.assertEqual(row._table, table)
 
@@ -100,7 +100,7 @@ class TestTable(unittest.TestCase):
         row_key = b'row_key'
         row = table.row(row_key, append=True)
 
-        self.assertTrue(isinstance(row, AppendRow))
+        self.assertIsInstance(row, AppendRow)
         self.assertEqual(row._row_key, row_key)
         self.assertEqual(row._table, table)
 

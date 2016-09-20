@@ -28,7 +28,7 @@ class Test__new_value_pb(unittest.TestCase):
         name = 'foo'
         result = self._callFUT(entity_pb, name)
 
-        self.assertTrue(isinstance(result, entity_pb2.Value))
+        self.assertIsInstance(result, entity_pb2.Value)
         self.assertEqual(len(entity_pb.properties), 1)
         self.assertEqual(entity_pb.properties[name], result)
 
@@ -51,7 +51,7 @@ class Test__property_tuples(unittest.TestCase):
         val_pb2 = _new_value_pb(entity_pb, name2)
 
         result = self._callFUT(entity_pb)
-        self.assertTrue(isinstance(result, types.GeneratorType))
+        self.assertIsInstance(result, types.GeneratorType)
         self.assertEqual(sorted(result),
                          sorted([(name1, val_pb1), (name2, val_pb2)]))
 
@@ -104,7 +104,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
         # Also check the key.
         key = entity.key
         self.assertEqual(key.project, _PROJECT)
-        self.assertEqual(key.namespace, None)
+        self.assertIsNone(key.namespace)
         self.assertEqual(key.kind, _KIND)
         self.assertEqual(key.id, _ID)
 
@@ -138,7 +138,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
         entity_pb = entity_pb2.Entity()
         entity = self._callFUT(entity_pb)
 
-        self.assertEqual(entity.key, None)
+        self.assertIsNone(entity.key)
         self.assertEqual(dict(entity), {})
 
     def test_entity_with_meaning(self):
@@ -152,7 +152,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
         value_pb.string_value = val = u'something'
 
         entity = self._callFUT(entity_pb)
-        self.assertEqual(entity.key, None)
+        self.assertIsNone(entity.key)
         self.assertEqual(dict(entity), {name: val})
         self.assertEqual(entity._meanings, {name: (meaning, val)})
 
@@ -184,7 +184,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
         self.assertEqual(len(entity), 1)
 
         inside_entity = entity[OUTSIDE_NAME]
-        self.assertEqual(inside_entity.key, None)
+        self.assertIsNone(inside_entity.key)
         self.assertEqual(len(inside_entity), 1)
         self.assertEqual(inside_entity[INSIDE_NAME], INSIDE_VALUE)
 
@@ -396,7 +396,7 @@ class Test_key_from_protobuf(unittest.TestCase):
         pb = self._makePB(path=[{'kind': 'KIND'}], project=_PROJECT)
         key = self._callFUT(pb)
         self.assertEqual(key.project, _PROJECT)
-        self.assertEqual(key.namespace, None)
+        self.assertIsNone(key.namespace)
 
     def test_w_namespace_in_pb(self):
         _PROJECT = 'PROJECT'
@@ -507,13 +507,13 @@ class Test__pb_attr_value(unittest.TestCase):
         entity = Entity()
         name, value = self._callFUT(entity)
         self.assertEqual(name, 'entity_value')
-        self.assertTrue(value is entity)
+        self.assertIs(value, entity)
 
     def test_array(self):
         values = ['a', 0, 3.14]
         name, value = self._callFUT(values)
         self.assertEqual(name, 'array_value')
-        self.assertTrue(value is values)
+        self.assertIs(value, values)
 
     def test_geo_point(self):
         from google.type import latlng_pb2
@@ -608,7 +608,7 @@ class Test__get_value_from_value_pb(unittest.TestCase):
         value_pb = _new_value_pb(entity_pb, 'foo')
         value_pb.string_value = 'Foo'
         entity = self._callFUT(pb)
-        self.assertTrue(isinstance(entity, Entity))
+        self.assertIsInstance(entity, Entity)
         self.assertEqual(entity['foo'], 'Foo')
 
     def test_array(self):
@@ -803,7 +803,7 @@ class Test__get_meaning(unittest.TestCase):
 
         value_pb = entity_pb2.Value()
         result = self._callFUT(value_pb)
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
 
     def test_single(self):
         from google.cloud.datastore._generated import entity_pb2

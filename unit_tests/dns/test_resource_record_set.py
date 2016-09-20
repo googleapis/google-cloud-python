@@ -34,7 +34,7 @@ class TestResourceRecordSet(unittest.TestCase):
         self.assertEqual(rrs.record_type, 'CNAME')
         self.assertEqual(rrs.ttl, 3600)
         self.assertEqual(rrs.rrdatas, ['www.example.com'])
-        self.assertTrue(rrs.zone is zone)
+        self.assertIs(rrs.zone, zone)
 
     def test_from_api_repr_missing_rrdatas(self):
         zone = _Zone()
@@ -87,7 +87,7 @@ class TestResourceRecordSet(unittest.TestCase):
         self.assertEqual(rrs.record_type, 'CNAME')
         self.assertEqual(rrs.ttl, 3600)
         self.assertEqual(rrs.rrdatas, ['www.example.com'])
-        self.assertTrue(rrs.zone is zone)
+        self.assertIs(rrs.zone, zone)
 
 
 class _Zone(object):

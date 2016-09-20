@@ -78,7 +78,7 @@ class TestQueryResults(unittest.TestCase):
             fields = resource['schema']['fields']
             self.assertEqual(len(query.schema), len(fields))
             for found, expected in zip(query.schema, fields):
-                self.assertTrue(isinstance(found, SchemaField))
+                self.assertIsInstance(found, SchemaField)
                 self.assertEqual(found.name, expected['name'])
                 self.assertEqual(found.field_type, expected['type'])
                 self.assertEqual(found.mode, expected['mode'])
@@ -86,7 +86,7 @@ class TestQueryResults(unittest.TestCase):
                                  expected.get('description'))
                 self.assertEqual(found.fields, expected.get('fields'))
         else:
-            self.assertTrue(query.schema is None)
+            self.assertIsNone(query.schema)
 
     def _verifyRows(self, query, resource):
         expected = resource.get('rows')
@@ -111,7 +111,7 @@ class TestQueryResults(unittest.TestCase):
         if 'jobReference' in resource:
             self.assertEqual(query.name, resource['jobReference']['jobId'])
         else:
-            self.assertTrue(query.name is None)
+            self.assertIsNone(query.name)
 
         self._verifySchema(query, resource)
         self._verifyRows(query, resource)
@@ -120,23 +120,23 @@ class TestQueryResults(unittest.TestCase):
         client = _Client(self.PROJECT)
         query = self._makeOne(self.QUERY, client)
         self.assertEqual(query.query, self.QUERY)
-        self.assertTrue(query._client is client)
+        self.assertIs(query._client, client)
 
-        self.assertTrue(query.cache_hit is None)
-        self.assertTrue(query.complete is None)
-        self.assertTrue(query.errors is None)
-        self.assertTrue(query.name is None)
-        self.assertTrue(query.page_token is None)
+        self.assertIsNone(query.cache_hit)
+        self.assertIsNone(query.complete)
+        self.assertIsNone(query.errors)
+        self.assertIsNone(query.name)
+        self.assertIsNone(query.page_token)
         self.assertEqual(query.rows, [])
-        self.assertTrue(query.schema is None)
-        self.assertTrue(query.total_rows is None)
-        self.assertTrue(query.total_bytes_processed is None)
+        self.assertIsNone(query.schema)
+        self.assertIsNone(query.total_rows)
+        self.assertIsNone(query.total_bytes_processed)
 
-        self.assertTrue(query.default_dataset is None)
-        self.assertTrue(query.max_results is None)
-        self.assertTrue(query.preserve_nulls is None)
-        self.assertTrue(query.use_query_cache is None)
-        self.assertTrue(query.use_legacy_sql is None)
+        self.assertIsNone(query.default_dataset)
+        self.assertIsNone(query.max_results)
+        self.assertIsNone(query.preserve_nulls)
+        self.assertIsNone(query.use_query_cache)
+        self.assertIsNone(query.use_legacy_sql)
 
     def test_from_query_job(self):
         from google.cloud.bigquery.dataset import Dataset
@@ -156,10 +156,10 @@ class TestQueryResults(unittest.TestCase):
         query = klass.from_query_job(job)
 
         self.assertEqual(query.query, self.QUERY)
-        self.assertTrue(query._client is client)
-        self.assertTrue(query._job is job)
+        self.assertIs(query._client, client)
+        self.assertIs(query._job, job)
         self.assertEqual(query.udf_resources, job.udf_resources)
-        self.assertTrue(query.default_dataset is dataset)
+        self.assertIs(query.default_dataset, dataset)
         self.assertTrue(query.use_query_cache)
         self.assertTrue(query.use_legacy_sql)
 
@@ -176,8 +176,8 @@ class TestQueryResults(unittest.TestCase):
         query = klass.from_query_job(job)
 
         self.assertEqual(query.query, self.QUERY)
-        self.assertTrue(query._client is client)
-        self.assertTrue(query._job is job)
+        self.assertIs(query._client, client)
+        self.assertIs(query._job, job)
         self.assertEqual(query.udf_resources, job.udf_resources)
         self.assertIsNone(query.default_dataset)
         self.assertIsNone(query.use_query_cache)
@@ -186,7 +186,7 @@ class TestQueryResults(unittest.TestCase):
     def test_job_wo_jobid(self):
         client = _Client(self.PROJECT)
         query = self._makeOne(self.QUERY, client)
-        self.assertTrue(query.job is None)
+        self.assertIsNone(query.job)
 
     def test_job_w_jobid(self):
         from google.cloud.bigquery.job import QueryJob
@@ -198,12 +198,12 @@ class TestQueryResults(unittest.TestCase):
             'jobId': SERVER_GENERATED,
         }
         job = query.job
-        self.assertTrue(isinstance(job, QueryJob))
+        self.assertIsInstance(job, QueryJob)
         self.assertEqual(job.query, self.QUERY)
-        self.assertTrue(job._client is client)
+        self.assertIs(job._client, client)
         self.assertEqual(job.name, SERVER_GENERATED)
         fetched_later = query.job
-        self.assertTrue(fetched_later is job)
+        self.assertIs(fetched_later, job)
 
     def test_schema(self):
         client = _Client(self.PROJECT)
@@ -384,7 +384,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(rows[1], ('Bharney Rhubble', 33))
         self.assertEqual(rows[2], ('Wylma Phlyntstone', 29))
         self.assertEqual(rows[3], ('Bhettye Rhubble', 27))
-        self.assertEqual(total_rows, None)
+        self.assertIsNone(total_rows)
         self.assertEqual(page_token, AFTER['pageToken'])
 
         self.assertEqual(len(conn._requested), 1)

@@ -51,7 +51,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXPublisherAPI()
         api = self._makeOne(gax_api)
-        self.assertTrue(api._gax_api is gax_api)
+        self.assertIs(api._gax_api, gax_api)
 
     def test_list_topics_no_paging(self):
         from google.gax import INITIAL_PAGE
@@ -72,7 +72,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         name, page_size, options = gax_api._list_topics_called_with
         self.assertEqual(name, self.PROJECT_PATH)
         self.assertEqual(page_size, 0)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_list_topics_with_paging(self):
         from unit_tests._testing import _GAXPageIterator
@@ -108,7 +108,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertEqual(resource, {'name': self.TOPIC_PATH})
         topic_path, options = gax_api._create_topic_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_topic_create_already_exists(self):
         from google.cloud.exceptions import Conflict
@@ -120,7 +120,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
         topic_path, options = gax_api._create_topic_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_topic_create_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -133,7 +133,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
         topic_path, options = gax_api._create_topic_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_topic_get_hit(self):
         topic_pb = _TopicPB(self.TOPIC_PATH)
@@ -145,7 +145,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertEqual(resource, {'name': self.TOPIC_PATH})
         topic_path, options = gax_api._get_topic_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_topic_get_miss(self):
         from google.cloud.exceptions import NotFound
@@ -157,7 +157,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
         topic_path, options = gax_api._get_topic_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_topic_get_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -170,7 +170,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
         topic_path, options = gax_api._get_topic_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_topic_delete_hit(self):
         gax_api = _GAXPublisherAPI(_delete_topic_ok=True)
@@ -180,7 +180,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
         topic_path, options = gax_api._delete_topic_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_topic_delete_miss(self):
         from google.cloud.exceptions import NotFound
@@ -192,7 +192,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
         topic_path, options = gax_api._delete_topic_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_topic_delete_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -205,7 +205,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
         topic_path, options = gax_api._delete_topic_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_topic_publish_hit(self):
         import base64
@@ -282,13 +282,13 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertIsInstance(subscription, dict)
         self.assertEqual(subscription['name'], self.SUB_PATH)
         self.assertEqual(subscription['topic'], self.TOPIC_PATH)
-        self.assertEqual(next_token, None)
+        self.assertIsNone(next_token)
 
         topic_path, page_size, options = (
             gax_api._list_topic_subscriptions_called_with)
         self.assertEqual(topic_path, self.TOPIC_PATH)
         self.assertEqual(page_size, 0)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_topic_list_subscriptions_with_paging(self):
         from unit_tests._testing import _GAXPageIterator
@@ -329,7 +329,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
             gax_api._list_topic_subscriptions_called_with)
         self.assertEqual(topic_path, self.TOPIC_PATH)
         self.assertEqual(page_size, 0)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_topic_list_subscriptions_error(self):
         from google.gax import INITIAL_PAGE
@@ -345,7 +345,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
             gax_api._list_topic_subscriptions_called_with)
         self.assertEqual(topic_path, self.TOPIC_PATH)
         self.assertEqual(page_size, 0)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
@@ -360,7 +360,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXSubscriberAPI()
         api = self._makeOne(gax_api)
-        self.assertTrue(api._gax_api is gax_api)
+        self.assertIs(api._gax_api, gax_api)
 
     def test_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
@@ -380,12 +380,12 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(subscription['pushConfig'],
                          {'pushEndpoint': self.PUSH_ENDPOINT})
         self.assertEqual(subscription['ackDeadlineSeconds'], 0)
-        self.assertEqual(next_token, None)
+        self.assertIsNone(next_token)
 
         name, page_size, options = gax_api._list_subscriptions_called_with
         self.assertEqual(name, self.PROJECT_PATH)
         self.assertEqual(page_size, 0)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_list_subscriptions_with_paging(self):
         from unit_tests._testing import _GAXPageIterator
@@ -432,9 +432,9 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
             gax_api._create_subscription_called_with)
         self.assertEqual(name, self.SUB_PATH)
         self.assertEqual(topic, self.TOPIC_PATH)
-        self.assertEqual(push_config, None)
+        self.assertIsNone(push_config)
         self.assertEqual(ack_deadline, 0)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_create_already_exists(self):
         from google.cloud.exceptions import Conflict
@@ -452,7 +452,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(topic, self.TOPIC_PATH)
         self.assertEqual(push_config.push_endpoint, self.PUSH_ENDPOINT)
         self.assertEqual(ack_deadline, DEADLINE)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_create_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -467,9 +467,9 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
             gax_api._create_subscription_called_with)
         self.assertEqual(name, self.SUB_PATH)
         self.assertEqual(topic, self.TOPIC_PATH)
-        self.assertEqual(push_config, None)
+        self.assertIsNone(push_config)
         self.assertEqual(ack_deadline, 0)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_get_hit(self):
         sub_pb = _SubscriptionPB(
@@ -490,7 +490,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(resource, expected)
         sub_path, options = gax_api._get_subscription_called_with
         self.assertEqual(sub_path, self.SUB_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_get_miss(self):
         from google.cloud.exceptions import NotFound
@@ -502,7 +502,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
         sub_path, options = gax_api._get_subscription_called_with
         self.assertEqual(sub_path, self.SUB_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_get_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -515,7 +515,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
         sub_path, options = gax_api._get_subscription_called_with
         self.assertEqual(sub_path, self.SUB_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_delete_hit(self):
         gax_api = _GAXSubscriberAPI(_delete_subscription_ok=True)
@@ -525,7 +525,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
         sub_path, options = gax_api._delete_subscription_called_with
         self.assertEqual(sub_path, self.TOPIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_delete_miss(self):
         from google.cloud.exceptions import NotFound
@@ -537,7 +537,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
         sub_path, options = gax_api._delete_subscription_called_with
         self.assertEqual(sub_path, self.TOPIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_delete_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -550,7 +550,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
         sub_path, options = gax_api._delete_subscription_called_with
         self.assertEqual(sub_path, self.TOPIC_PATH)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_modify_push_config_hit(self):
         gax_api = _GAXSubscriberAPI(_modify_push_config_ok=True)
@@ -561,7 +561,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         sub_path, config, options = gax_api._modify_push_config_called_with
         self.assertEqual(sub_path, self.SUB_PATH)
         self.assertEqual(config.push_endpoint, self.PUSH_ENDPOINT)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_modify_push_config_miss(self):
         from google.cloud.exceptions import NotFound
@@ -575,7 +575,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         sub_path, config, options = gax_api._modify_push_config_called_with
         self.assertEqual(sub_path, self.SUB_PATH)
         self.assertEqual(config.push_endpoint, self.PUSH_ENDPOINT)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_modify_push_config_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -590,7 +590,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         sub_path, config, options = gax_api._modify_push_config_called_with
         self.assertEqual(sub_path, self.SUB_PATH)
         self.assertEqual(config.push_endpoint, self.PUSH_ENDPOINT)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_pull_explicit(self):
         import base64
@@ -627,7 +627,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(sub_path, self.SUB_PATH)
         self.assertEqual(max_messages, MAX_MESSAGES)
         self.assertTrue(return_immediately)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_pull_defaults_miss(self):
         from google.cloud.exceptions import NotFound
@@ -642,7 +642,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(sub_path, self.SUB_PATH)
         self.assertEqual(max_messages, 1)
         self.assertFalse(return_immediately)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_pull_defaults_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -658,7 +658,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(sub_path, self.SUB_PATH)
         self.assertEqual(max_messages, 1)
         self.assertFalse(return_immediately)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_acknowledge_hit(self):
         ACK_ID1 = 'DEADBEEF'
@@ -671,7 +671,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         sub_path, ack_ids, options = gax_api._acknowledge_called_with
         self.assertEqual(sub_path, self.SUB_PATH)
         self.assertEqual(ack_ids, [ACK_ID1, ACK_ID2])
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_acknowledge_miss(self):
         from google.cloud.exceptions import NotFound
@@ -686,7 +686,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         sub_path, ack_ids, options = gax_api._acknowledge_called_with
         self.assertEqual(sub_path, self.SUB_PATH)
         self.assertEqual(ack_ids, [ACK_ID1, ACK_ID2])
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_acknowledge_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -702,7 +702,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         sub_path, ack_ids, options = gax_api._acknowledge_called_with
         self.assertEqual(sub_path, self.SUB_PATH)
         self.assertEqual(ack_ids, [ACK_ID1, ACK_ID2])
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_modify_ack_deadline_hit(self):
         ACK_ID1 = 'DEADBEEF'
@@ -719,7 +719,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(sub_path, self.SUB_PATH)
         self.assertEqual(ack_ids, [ACK_ID1, ACK_ID2])
         self.assertEqual(deadline, NEW_DEADLINE)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_modify_ack_deadline_miss(self):
         from google.cloud.exceptions import NotFound
@@ -738,7 +738,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(sub_path, self.SUB_PATH)
         self.assertEqual(ack_ids, [ACK_ID1, ACK_ID2])
         self.assertEqual(deadline, NEW_DEADLINE)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
     def test_subscription_modify_ack_deadline_error(self):
         from google.cloud.exceptions import GrpcRendezvous
@@ -758,7 +758,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(sub_path, self.SUB_PATH)
         self.assertEqual(ack_ids, [ACK_ID1, ACK_ID2])
         self.assertEqual(deadline, NEW_DEADLINE)
-        self.assertEqual(options, None)
+        self.assertIsNone(options)
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')

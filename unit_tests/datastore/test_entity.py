@@ -32,8 +32,8 @@ class TestEntity(unittest.TestCase):
     def test_ctor_defaults(self):
         klass = self._getTargetClass()
         entity = klass()
-        self.assertEqual(entity.key, None)
-        self.assertEqual(entity.kind, None)
+        self.assertIsNone(entity.key)
+        self.assertIsNone(entity.kind)
         self.assertEqual(sorted(entity.exclude_from_indexes), [])
 
     def test_ctor_explicit(self):

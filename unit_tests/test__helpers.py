@@ -30,17 +30,17 @@ class Test__LocalStack(unittest.TestCase):
         batch1, batch2 = object(), object()
         batches = self._makeOne()
         self.assertEqual(list(batches), [])
-        self.assertTrue(batches.top is None)
+        self.assertIsNone(batches.top)
         batches.push(batch1)
-        self.assertTrue(batches.top is batch1)
+        self.assertIs(batches.top, batch1)
         batches.push(batch2)
-        self.assertTrue(batches.top is batch2)
+        self.assertIs(batches.top, batch2)
         popped = batches.pop()
-        self.assertTrue(popped is batch2)
-        self.assertTrue(batches.top is batch1)
+        self.assertIs(popped, batch2)
+        self.assertIs(batches.top, batch1)
         self.assertEqual(list(batches), [batch1])
         popped = batches.pop()
-        self.assertTrue(batches.top is None)
+        self.assertIsNone(batches.top)
         self.assertEqual(list(batches), [])
 
 
@@ -59,7 +59,7 @@ class Test__UTC(unittest.TestCase):
         try:
             import pytz
         except ImportError:
-            self.assertTrue(isinstance(MUT.UTC, klass))
+            self.assertIsInstance(MUT.UTC, klass)
         else:
             self.assertIs(MUT.UTC, pytz.UTC)  # pragma: NO COVER
 
@@ -73,7 +73,7 @@ class Test__UTC(unittest.TestCase):
         import datetime
 
         naive_epoch = datetime.datetime.utcfromtimestamp(0)
-        self.assertEqual(naive_epoch.tzinfo, None)
+        self.assertIsNone(naive_epoch.tzinfo)
         tz = self._makeOne()
         epoch = tz.fromutc(naive_epoch)
         self.assertEqual(epoch.tzinfo, tz)
@@ -136,7 +136,7 @@ class Test__app_engine_id(unittest.TestCase):
 
         with _Monkey(_helpers, app_identity=None):
             dataset_id = self._callFUT()
-            self.assertEqual(dataset_id, None)
+            self.assertIsNone(dataset_id)
 
     def test_value_set(self):
         from unit_tests._testing import _Monkey
@@ -309,7 +309,7 @@ class Test__compute_engine_id(unittest.TestCase):
         connection = _HTTPConnection(404, None)
         with self._monkeyConnection(connection):
             dataset_id = self._callFUT()
-            self.assertEqual(dataset_id, None)
+            self.assertIsNone(dataset_id)
 
     def test_success(self):
         COMPUTE_ENGINE_ID = object()
@@ -322,7 +322,7 @@ class Test__compute_engine_id(unittest.TestCase):
         connection = _TimeoutHTTPConnection()
         with self._monkeyConnection(connection):
             dataset_id = self._callFUT()
-            self.assertEqual(dataset_id, None)
+            self.assertIsNone(dataset_id)
 
 
 class Test__get_production_project(unittest.TestCase):
@@ -337,7 +337,7 @@ class Test__get_production_project(unittest.TestCase):
         environ = {}
         with _Monkey(os, getenv=environ.get):
             project = self._callFUT()
-            self.assertEqual(project, None)
+            self.assertIsNone(project)
 
     def test_value_set(self):
         from unit_tests._testing import _Monkey
@@ -398,7 +398,7 @@ class Test__determine_default_project(unittest.TestCase):
 
     def test_no_value(self):
         project, callers = self._determine_default_helper()
-        self.assertEqual(project, None)
+        self.assertIsNone(project)
         self.assertEqual(callers, ['prod_mock', 'file_id_mock', 'srv_id_mock',
                                    'gae_mock', 'gce_mock'])
 
@@ -467,7 +467,7 @@ class Test__millis_from_datetime(unittest.TestCase):
         return _millis_from_datetime(value)
 
     def test_w_none(self):
-        self.assertTrue(self._callFUT(None) is None)
+        self.assertIsNone(self._callFUT(None))
 
     def test_w_utc_datetime(self):
         import datetime
@@ -479,7 +479,7 @@ class Test__millis_from_datetime(unittest.TestCase):
         NOW_MICROS = _microseconds_from_datetime(NOW)
         MILLIS = NOW_MICROS // 1000
         result = self._callFUT(NOW)
-        self.assertTrue(isinstance(result, six.integer_types))
+        self.assertIsInstance(result, six.integer_types)
         self.assertEqual(result, MILLIS)
 
     def test_w_non_utc_datetime(self):
@@ -497,7 +497,7 @@ class Test__millis_from_datetime(unittest.TestCase):
         NOW_MICROS = _microseconds_from_datetime(NOW)
         MILLIS = NOW_MICROS // 1000
         result = self._callFUT(NOW)
-        self.assertTrue(isinstance(result, six.integer_types))
+        self.assertIsInstance(result, six.integer_types)
         self.assertEqual(result, MILLIS)
 
     def test_w_naive_datetime(self):
@@ -511,7 +511,7 @@ class Test__millis_from_datetime(unittest.TestCase):
         UTC_NOW_MICROS = _microseconds_from_datetime(UTC_NOW)
         MILLIS = UTC_NOW_MICROS // 1000
         result = self._callFUT(NOW)
-        self.assertTrue(isinstance(result, six.integer_types))
+        self.assertIsInstance(result, six.integer_types)
         self.assertEqual(result, MILLIS)
 
 
@@ -894,7 +894,7 @@ class TestMetadataPlugin(unittest.TestCase):
         cb_headers = [
             ('authorization', 'Bearer ' + access_token_expected),
         ]
-        self.assertEqual(result, None)
+        self.assertIsNone(result)
         self.assertEqual(callback_args, [(cb_headers, None)])
         self.assertEqual(len(credentials._tokens), 1)
 
@@ -963,7 +963,7 @@ class Test_make_secure_stub(unittest.TestCase):
             result = self._callFUT(credentials, user_agent,
                                    mock_stub_class, host)
 
-        self.assertTrue(result is mock_result)
+        self.assertIs(result, mock_result)
         self.assertEqual(stub_inputs, [CHANNEL])
         self.assertEqual(plugin_args, [(credentials,)])
         self.assertEqual(grpc_mod.ssl_channel_credentials_args, ())
@@ -1010,7 +1010,7 @@ class Test_make_insecure_stub(unittest.TestCase):
         with _Monkey(MUT, grpc=grpc_mod):
             result = self._callFUT(mock_stub_class, host, port=port)
 
-        self.assertTrue(result is mock_result)
+        self.assertIs(result, mock_result)
         self.assertEqual(stub_inputs, [CHANNEL])
         self.assertEqual(grpc_mod.insecure_channel_args, (target,))
 

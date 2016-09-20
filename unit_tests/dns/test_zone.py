@@ -67,12 +67,12 @@ class TestManagedZone(unittest.TestCase):
         if 'creationTime' in resource:
             self.assertEqual(zone.created, self.WHEN)
         else:
-            self.assertEqual(zone.created, None)
+            self.assertIsNone(zone.created)
 
         if 'nameServers' in resource:
             self.assertEqual(zone.name_servers, resource['nameServers'])
         else:
-            self.assertEqual(zone.name_servers, None)
+            self.assertIsNone(zone.name_servers)
 
     def _verifyResourceProperties(self, zone, resource):
 
@@ -87,8 +87,8 @@ class TestManagedZone(unittest.TestCase):
     def test_ctor_defaults(self):
         zone = self._makeOne(self.ZONE_NAME)
         self.assertEqual(zone.name, self.ZONE_NAME)
-        self.assertEqual(zone.dns_name, None)
-        self.assertTrue(zone._client is None)
+        self.assertIsNone(zone.dns_name)
+        self.assertIsNone(zone._client)
 
         with self.assertRaises(AttributeError):
             _ = zone.project
@@ -96,22 +96,22 @@ class TestManagedZone(unittest.TestCase):
         with self.assertRaises(AttributeError):
             _ = zone.path
 
-        self.assertEqual(zone.zone_id, None)
-        self.assertEqual(zone.created, None)
-        self.assertEqual(zone.description, None)
+        self.assertIsNone(zone.zone_id)
+        self.assertIsNone(zone.created)
+        self.assertIsNone(zone.description)
 
     def test_ctor_wo_description(self):
         client = _Client(self.PROJECT)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, self.DNS_NAME)
-        self.assertTrue(zone._client is client)
+        self.assertIs(zone._client, client)
         self.assertEqual(zone.project, client.project)
         self.assertEqual(
             zone.path,
             '/projects/%s/managedZones/%s' % (self.PROJECT, self.ZONE_NAME))
-        self.assertEqual(zone.zone_id, None)
-        self.assertEqual(zone.created, None)
+        self.assertIsNone(zone.zone_id)
+        self.assertIsNone(zone.created)
         self.assertEqual(zone.description, self.DNS_NAME)
 
     def test_ctor_explicit(self):
@@ -121,13 +121,13 @@ class TestManagedZone(unittest.TestCase):
             self.ZONE_NAME, self.DNS_NAME, client, DESCRIPTION)
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, self.DNS_NAME)
-        self.assertTrue(zone._client is client)
+        self.assertIs(zone._client, client)
         self.assertEqual(zone.project, client.project)
         self.assertEqual(
             zone.path,
             '/projects/%s/managedZones/%s' % (self.PROJECT, self.ZONE_NAME))
-        self.assertEqual(zone.zone_id, None)
-        self.assertEqual(zone.created, None)
+        self.assertIsNone(zone.zone_id)
+        self.assertIsNone(zone.created)
         self.assertEqual(zone.description, DESCRIPTION)
 
     def test_from_api_repr_missing_identity(self):
@@ -147,7 +147,7 @@ class TestManagedZone(unittest.TestCase):
         }
         klass = self._getTargetClass()
         zone = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(zone._client is client)
+        self.assertIs(zone._client, client)
         self._verifyResourceProperties(zone, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
@@ -156,7 +156,7 @@ class TestManagedZone(unittest.TestCase):
         RESOURCE = self._makeResource()
         klass = self._getTargetClass()
         zone = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(zone._client is client)
+        self.assertIs(zone._client, client)
         self._verifyResourceProperties(zone, RESOURCE)
 
     def test_description_setter_bad_value(self):
@@ -192,20 +192,20 @@ class TestManagedZone(unittest.TestCase):
         client = _Client(self.PROJECT)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
         rrs = zone.resource_record_set(RRS_NAME, RRS_TYPE, TTL, RRDATAS)
-        self.assertTrue(isinstance(rrs, ResourceRecordSet))
+        self.assertIsInstance(rrs, ResourceRecordSet)
         self.assertEqual(rrs.name, RRS_NAME)
         self.assertEqual(rrs.record_type, RRS_TYPE)
         self.assertEqual(rrs.ttl, TTL)
         self.assertEqual(rrs.rrdatas, RRDATAS)
-        self.assertTrue(rrs.zone is zone)
+        self.assertIs(rrs.zone, zone)
 
     def test_changes(self):
         from google.cloud.dns.changes import Changes
         client = _Client(self.PROJECT)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
         changes = zone.changes()
-        self.assertTrue(isinstance(changes, Changes))
-        self.assertTrue(changes.zone is zone)
+        self.assertIsInstance(changes, Changes)
+        self.assertIs(changes.zone, zone)
 
     def test_create_w_bound_client(self):
         PATH = 'projects/%s/managedZones' % self.PROJECT
@@ -444,7 +444,7 @@ class TestManagedZone(unittest.TestCase):
 
         self.assertEqual(len(rrsets), len(DATA['rrsets']))
         for found, expected in zip(rrsets, DATA['rrsets']):
-            self.assertTrue(isinstance(found, ResourceRecordSet))
+            self.assertIsInstance(found, ResourceRecordSet)
             self.assertEqual(found.name, expected['name'])
             self.assertEqual(found.record_type, expected['type'])
             self.assertEqual(found.ttl, int(expected['ttl']))
@@ -494,12 +494,12 @@ class TestManagedZone(unittest.TestCase):
 
         self.assertEqual(len(rrsets), len(DATA['rrsets']))
         for found, expected in zip(rrsets, DATA['rrsets']):
-            self.assertTrue(isinstance(found, ResourceRecordSet))
+            self.assertIsInstance(found, ResourceRecordSet)
             self.assertEqual(found.name, expected['name'])
             self.assertEqual(found.record_type, expected['type'])
             self.assertEqual(found.ttl, int(expected['ttl']))
             self.assertEqual(found.rrdatas, expected['rrdatas'])
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
@@ -555,7 +555,7 @@ class TestManagedZone(unittest.TestCase):
 
         self.assertEqual(len(changes), len(DATA['changes']))
         for found, expected in zip(changes, DATA['changes']):
-            self.assertTrue(isinstance(found, Changes))
+            self.assertIsInstance(found, Changes)
             self.assertEqual(found.name, CHANGES_NAME)
             self.assertEqual(found.status, 'pending')
             self.assertEqual(found.started, self.WHEN)
@@ -563,7 +563,7 @@ class TestManagedZone(unittest.TestCase):
             self.assertEqual(len(found.additions), len(expected['additions']))
             for found_rr, expected_rr in zip(found.additions,
                                              expected['additions']):
-                self.assertTrue(isinstance(found_rr, ResourceRecordSet))
+                self.assertIsInstance(found_rr, ResourceRecordSet)
                 self.assertEqual(found_rr.name, expected_rr['name'])
                 self.assertEqual(found_rr.record_type, expected_rr['type'])
                 self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
@@ -572,7 +572,7 @@ class TestManagedZone(unittest.TestCase):
             self.assertEqual(len(found.deletions), len(expected['deletions']))
             for found_rr, expected_rr in zip(found.deletions,
                                              expected['deletions']):
-                self.assertTrue(isinstance(found_rr, ResourceRecordSet))
+                self.assertIsInstance(found_rr, ResourceRecordSet)
                 self.assertEqual(found_rr.name, expected_rr['name'])
                 self.assertEqual(found_rr.record_type, expected_rr['type'])
                 self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
@@ -633,7 +633,7 @@ class TestManagedZone(unittest.TestCase):
 
         self.assertEqual(len(changes), len(DATA['changes']))
         for found, expected in zip(changes, DATA['changes']):
-            self.assertTrue(isinstance(found, Changes))
+            self.assertIsInstance(found, Changes)
             self.assertEqual(found.name, CHANGES_NAME)
             self.assertEqual(found.status, 'pending')
             self.assertEqual(found.started, self.WHEN)
@@ -641,7 +641,7 @@ class TestManagedZone(unittest.TestCase):
             self.assertEqual(len(found.additions), len(expected['additions']))
             for found_rr, expected_rr in zip(found.additions,
                                              expected['additions']):
-                self.assertTrue(isinstance(found_rr, ResourceRecordSet))
+                self.assertIsInstance(found_rr, ResourceRecordSet)
                 self.assertEqual(found_rr.name, expected_rr['name'])
                 self.assertEqual(found_rr.record_type, expected_rr['type'])
                 self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
@@ -650,13 +650,13 @@ class TestManagedZone(unittest.TestCase):
             self.assertEqual(len(found.deletions), len(expected['deletions']))
             for found_rr, expected_rr in zip(found.deletions,
                                              expected['deletions']):
-                self.assertTrue(isinstance(found_rr, ResourceRecordSet))
+                self.assertIsInstance(found_rr, ResourceRecordSet)
                 self.assertEqual(found_rr.name, expected_rr['name'])
                 self.assertEqual(found_rr.record_type, expected_rr['type'])
                 self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
                 self.assertEqual(found_rr.rrdatas, expected_rr['rrdatas'])
 
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)

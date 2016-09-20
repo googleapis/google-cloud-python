@@ -113,8 +113,8 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.append(dataset)
 
         self.assertTrue(dataset.exists())
-        self.assertEqual(dataset.friendly_name, None)
-        self.assertEqual(dataset.description, None)
+        self.assertIsNone(dataset.friendly_name)
+        self.assertIsNone(dataset.description)
         dataset.patch(friendly_name='Friendly', description='Description')
         self.assertEqual(dataset.friendly_name, 'Friendly')
         self.assertEqual(dataset.description, 'Description')
@@ -152,7 +152,7 @@ class TestBigQuery(unittest.TestCase):
 
         # Retrieve the datasets.
         all_datasets, token = Config.CLIENT.list_datasets()
-        self.assertTrue(token is None)
+        self.assertIsNone(token)
         created = [dataset for dataset in all_datasets
                    if dataset.name in datasets_to_create and
                    dataset.project == Config.CLIENT.project]
@@ -187,7 +187,7 @@ class TestBigQuery(unittest.TestCase):
         # Retrieve tables before any are created for the dataset.
         all_tables, token = dataset.list_tables()
         self.assertEqual(all_tables, [])
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         # Insert some tables to be listed.
         tables_to_create = [
@@ -205,7 +205,7 @@ class TestBigQuery(unittest.TestCase):
 
         # Retrieve the tables.
         all_tables, token = dataset.list_tables()
-        self.assertTrue(token is None)
+        self.assertIsNone(token)
         created = [table for table in all_tables
                    if (table.name in tables_to_create and
                        table.dataset_name == DATASET_NAME)]
@@ -227,8 +227,8 @@ class TestBigQuery(unittest.TestCase):
         table.create()
         self.to_delete.insert(0, table)
         self.assertTrue(table.exists())
-        self.assertEqual(table.friendly_name, None)
-        self.assertEqual(table.description, None)
+        self.assertIsNone(table.friendly_name)
+        self.assertIsNone(table.description)
         table.patch(friendly_name='Friendly', description='Description')
         self.assertEqual(table.friendly_name, 'Friendly')
         self.assertEqual(table.description, 'Description')

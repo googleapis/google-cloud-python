@@ -261,7 +261,7 @@ class TestStorageListFiles(TestStorageFiles):
         blobs = list(iterator.get_items_from_response(response))
         self.assertEqual(len(blobs), count)
         self.assertEqual(iterator.page_number, 1)
-        self.assertTrue(iterator.next_page_token is not None)
+        self.assertIsNotNone(iterator.next_page_token)
 
         response = iterator.get_next_page_response()
         last_blobs = list(iterator.get_items_from_response(response))
@@ -306,7 +306,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         blobs = list(iterator.get_items_from_response(response))
         self.assertEqual([blob.name for blob in blobs], ['file01.txt'])
         self.assertEqual(iterator.page_number, 1)
-        self.assertTrue(iterator.next_page_token is None)
+        self.assertIsNone(iterator.next_page_token)
         self.assertEqual(iterator.prefixes, set(['parent/']))
 
     @RetryErrors(unittest.TestCase.failureException)
@@ -316,7 +316,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         blobs = list(iterator.get_items_from_response(response))
         self.assertEqual([blob.name for blob in blobs], ['parent/file11.txt'])
         self.assertEqual(iterator.page_number, 1)
-        self.assertTrue(iterator.next_page_token is None)
+        self.assertIsNone(iterator.next_page_token)
         self.assertEqual(iterator.prefixes, set(['parent/child/']))
 
     @RetryErrors(unittest.TestCase.failureException)
@@ -333,7 +333,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertEqual([blob.name for blob in blobs],
                          expected_names)
         self.assertEqual(iterator.page_number, 1)
-        self.assertTrue(iterator.next_page_token is None)
+        self.assertIsNone(iterator.next_page_token)
         self.assertEqual(iterator.prefixes,
                          set(['parent/child/grand/', 'parent/child/other/']))
 
@@ -350,7 +350,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertEqual([blob.name for blob in blobs],
                          ['parent/child/grand/file31.txt'])
         self.assertEqual(iterator.page_number, 1)
-        self.assertTrue(iterator.next_page_token is None)
+        self.assertIsNone(iterator.next_page_token)
         self.assertEqual(iterator.prefixes, set())
 
 

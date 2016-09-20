@@ -49,7 +49,7 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         datastore_api = self._makeOne(conn)
         http = conn.http = Http({'status': '200'}, 'CONTENT')
         response = datastore_api._rpc(PROJECT, METHOD, ReqPB(), RspPB)
-        self.assertTrue(isinstance(response, RspPB))
+        self.assertIsInstance(response, RspPB)
         self.assertEqual(response._pb, 'CONTENT')
         called_with = http._called_with
         self.assertEqual(called_with['uri'], URI)
@@ -351,7 +351,7 @@ class TestConnection(unittest.TestCase):
 
     def test_ctor_defaults(self):
         conn = self._makeOne()
-        self.assertEqual(conn.credentials, None)
+        self.assertIsNone(conn.credentials)
 
     def test_ctor_without_grpc(self):
         from unit_tests._testing import _Monkey
@@ -367,7 +367,7 @@ class TestConnection(unittest.TestCase):
         with _Monkey(MUT, _DatastoreAPIOverHttp=mock_api):
             conn = self._makeOne(use_grpc=False)
 
-        self.assertEqual(conn.credentials, None)
+        self.assertIsNone(conn.credentials)
         self.assertIs(conn._datastore_api, return_val)
         self.assertEqual(connections, [conn])
 
@@ -385,7 +385,7 @@ class TestConnection(unittest.TestCase):
         with _Monkey(MUT, _DatastoreAPIOverGRPC=mock_api):
             conn = self._makeOne(use_grpc=True)
 
-        self.assertEqual(conn.credentials, None)
+        self.assertIsNone(conn.credentials)
         self.assertIs(conn._datastore_api, return_val)
         self.assertEqual(api_args, [(conn, True)])
 
@@ -397,18 +397,18 @@ class TestConnection(unittest.TestCase):
 
         creds = Creds()
         conn = self._makeOne(creds)
-        self.assertTrue(conn.credentials is creds)
+        self.assertIs(conn.credentials, creds)
 
     def test_http_w_existing(self):
         conn = self._makeOne()
         conn._http = http = object()
-        self.assertTrue(conn.http is http)
+        self.assertIs(conn.http, http)
 
     def test_http_wo_creds(self):
         import httplib2
 
         conn = self._makeOne()
-        self.assertTrue(isinstance(conn.http, httplib2.Http))
+        self.assertIsInstance(conn.http, httplib2.Http)
 
     def test_http_w_creds(self):
         import httplib2
@@ -426,8 +426,8 @@ class TestConnection(unittest.TestCase):
 
         creds = Creds()
         conn = self._makeOne(creds)
-        self.assertTrue(conn.http is authorized)
-        self.assertTrue(isinstance(creds._called_with, httplib2.Http))
+        self.assertIs(conn.http, authorized)
+        self.assertIsInstance(creds._called_with, httplib2.Http)
 
     def test_build_api_url_w_default_base_version(self):
         PROJECT = 'PROJECT'
@@ -900,7 +900,7 @@ class TestConnection(unittest.TestCase):
         with _Monkey(MUT, _parse_commit_response=mock_parse):
             result = conn.commit(PROJECT, req_pb, None)
 
-        self.assertTrue(result is expected_result)
+        self.assertIs(result, expected_result)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb2.CommitRequest
@@ -946,7 +946,7 @@ class TestConnection(unittest.TestCase):
         with _Monkey(MUT, _parse_commit_response=mock_parse):
             result = conn.commit(PROJECT, req_pb, b'xact')
 
-        self.assertTrue(result is expected_result)
+        self.assertIs(result, expected_result)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb2.CommitRequest
@@ -971,7 +971,7 @@ class TestConnection(unittest.TestCase):
             PROJECT + ':rollback',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.rollback(PROJECT, TRANSACTION), None)
+        self.assertIsNone(conn.rollback(PROJECT, TRANSACTION))
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb2.RollbackRequest

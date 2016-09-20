@@ -102,7 +102,7 @@ class Test_PublisherAPI(_Base):
     def test_ctor(self):
         connection = _Connection()
         api = self._makeOne(connection)
-        self.assertTrue(api._connection is connection)
+        self.assertIs(api._connection, connection)
 
     def test_list_topics_no_paging(self):
         RETURNED = {'topics': [{'name': self.TOPIC_PATH}]}
@@ -115,7 +115,7 @@ class Test_PublisherAPI(_Base):
         topic = topics[0]
         self.assertIsInstance(topic, dict)
         self.assertEqual(topic['name'], self.TOPIC_PATH)
-        self.assertEqual(next_token, None)
+        self.assertIsNone(next_token)
 
         self.assertEqual(connection._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_TOPICS_PATH,)
@@ -156,7 +156,7 @@ class Test_PublisherAPI(_Base):
         topics, next_token = api.list_topics(self.PROJECT)
 
         self.assertEqual(len(topics), 0)
-        self.assertEqual(next_token, None)
+        self.assertIsNone(next_token)
 
         self.assertEqual(connection._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_TOPICS_PATH,)
@@ -286,7 +286,7 @@ class Test_PublisherAPI(_Base):
         self.assertIsInstance(subscription, dict)
         self.assertEqual(subscription['name'], self.SUB_PATH)
         self.assertEqual(subscription['topic'], self.TOPIC_PATH)
-        self.assertEqual(next_token, None)
+        self.assertIsNone(next_token)
 
         self.assertEqual(connection._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_TOPIC_SUBSCRIPTIONS_PATH,)
@@ -330,7 +330,7 @@ class Test_PublisherAPI(_Base):
             self.TOPIC_PATH)
 
         self.assertEqual(len(subscriptions), 0)
-        self.assertEqual(next_token, None)
+        self.assertIsNone(next_token)
 
         self.assertEqual(connection._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_TOPIC_SUBSCRIPTIONS_PATH,)
@@ -363,7 +363,7 @@ class Test_SubscriberAPI(_Base):
     def test_ctor(self):
         connection = _Connection()
         api = self._makeOne(connection)
-        self.assertTrue(api._connection is connection)
+        self.assertIs(api._connection, connection)
 
     def test_list_subscriptions_no_paging(self):
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
@@ -378,7 +378,7 @@ class Test_SubscriberAPI(_Base):
         self.assertIsInstance(subscription, dict)
         self.assertEqual(subscription['name'], self.SUB_PATH)
         self.assertEqual(subscription['topic'], self.TOPIC_PATH)
-        self.assertEqual(next_token, None)
+        self.assertIsNone(next_token)
 
         self.assertEqual(connection._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_SUBSCRIPTIONS_PATH,)
@@ -421,7 +421,7 @@ class Test_SubscriberAPI(_Base):
         subscriptions, next_token = api.list_subscriptions(self.PROJECT)
 
         self.assertEqual(len(subscriptions), 0)
-        self.assertEqual(next_token, None)
+        self.assertIsNone(next_token)
 
         self.assertEqual(connection._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_SUBSCRIPTIONS_PATH,)
@@ -613,7 +613,7 @@ class Test_IAMPolicyAPI(_Base):
     def test_ctor(self):
         connection = _Connection()
         api = self._makeOne(connection)
-        self.assertTrue(api._connection is connection)
+        self.assertIs(api._connection, connection)
 
     def test_get_iam_policy(self):
         from google.cloud.pubsub.iam import OWNER_ROLE

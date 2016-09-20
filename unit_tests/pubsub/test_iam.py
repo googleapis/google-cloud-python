@@ -26,8 +26,8 @@ class TestPolicy(unittest.TestCase):
 
     def test_ctor_defaults(self):
         policy = self._makeOne()
-        self.assertEqual(policy.etag, None)
-        self.assertEqual(policy.version, None)
+        self.assertIsNone(policy.etag)
+        self.assertIsNone(policy.version)
         self.assertEqual(list(policy.owners), [])
         self.assertEqual(list(policy.editors), [])
         self.assertEqual(list(policy.viewers), [])
@@ -85,7 +85,7 @@ class TestPolicy(unittest.TestCase):
         klass = self._getTargetClass()
         policy = klass.from_api_repr(RESOURCE)
         self.assertEqual(policy.etag, 'ACAB')
-        self.assertEqual(policy.version, None)
+        self.assertIsNone(policy.version)
         self.assertEqual(list(policy.owners), [])
         self.assertEqual(list(policy.editors), [])
         self.assertEqual(list(policy.viewers), [])

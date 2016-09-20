@@ -28,7 +28,7 @@ class Test_BoolFilter(unittest.TestCase):
     def test_constructor(self):
         flag = object()
         row_filter = self._makeOne(flag)
-        self.assertTrue(row_filter.flag is flag)
+        self.assertIs(row_filter.flag, flag)
 
     def test___eq__type_differ(self):
         flag = object()
@@ -113,7 +113,7 @@ class Test_RegexFilter(unittest.TestCase):
     def test_constructor(self):
         regex = b'abc'
         row_filter = self._makeOne(regex)
-        self.assertTrue(row_filter.regex is regex)
+        self.assertIs(row_filter.regex, regex)
 
     def test_constructor_non_bytes(self):
         regex = u'abc'
@@ -169,7 +169,7 @@ class TestRowSampleFilter(unittest.TestCase):
     def test_constructor(self):
         sample = object()
         row_filter = self._makeOne(sample)
-        self.assertTrue(row_filter.sample is sample)
+        self.assertIs(row_filter.sample, sample)
 
     def test___eq__type_differ(self):
         sample = object()
@@ -240,8 +240,8 @@ class TestTimestampRange(unittest.TestCase):
         start = object()
         end = object()
         time_range = self._makeOne(start=start, end=end)
-        self.assertTrue(time_range.start is start)
-        self.assertTrue(time_range.end is end)
+        self.assertIs(time_range.start, start)
+        self.assertIs(time_range.end, end)
 
     def test___eq__(self):
         start = object()
@@ -313,7 +313,7 @@ class TestTimestampRangeFilter(unittest.TestCase):
     def test_constructor(self):
         range_ = object()
         row_filter = self._makeOne(range_)
-        self.assertTrue(row_filter.range_ is range_)
+        self.assertIs(row_filter.range_, range_)
 
     def test___eq__type_differ(self):
         range_ = object()
@@ -350,9 +350,9 @@ class TestColumnRangeFilter(unittest.TestCase):
     def test_constructor_defaults(self):
         column_family_id = object()
         row_filter = self._makeOne(column_family_id)
-        self.assertTrue(row_filter.column_family_id is column_family_id)
-        self.assertEqual(row_filter.start_column, None)
-        self.assertEqual(row_filter.end_column, None)
+        self.assertIs(row_filter.column_family_id, column_family_id)
+        self.assertIsNone(row_filter.start_column)
+        self.assertIsNone(row_filter.end_column)
         self.assertTrue(row_filter.inclusive_start)
         self.assertTrue(row_filter.inclusive_end)
 
@@ -368,11 +368,11 @@ class TestColumnRangeFilter(unittest.TestCase):
             end_column=end_column,
             inclusive_start=inclusive_start,
             inclusive_end=inclusive_end)
-        self.assertTrue(row_filter.column_family_id is column_family_id)
-        self.assertTrue(row_filter.start_column is start_column)
-        self.assertTrue(row_filter.end_column is end_column)
-        self.assertTrue(row_filter.inclusive_start is inclusive_start)
-        self.assertTrue(row_filter.inclusive_end is inclusive_end)
+        self.assertIs(row_filter.column_family_id, column_family_id)
+        self.assertIs(row_filter.start_column, start_column)
+        self.assertIs(row_filter.end_column, end_column)
+        self.assertIs(row_filter.inclusive_start, inclusive_start)
+        self.assertIs(row_filter.inclusive_end, inclusive_end)
 
     def test_constructor_bad_start(self):
         column_family_id = object()
@@ -490,8 +490,8 @@ class TestValueRangeFilter(unittest.TestCase):
 
     def test_constructor_defaults(self):
         row_filter = self._makeOne()
-        self.assertEqual(row_filter.start_value, None)
-        self.assertEqual(row_filter.end_value, None)
+        self.assertIsNone(row_filter.start_value)
+        self.assertIsNone(row_filter.end_value)
         self.assertTrue(row_filter.inclusive_start)
         self.assertTrue(row_filter.inclusive_end)
 
@@ -504,10 +504,10 @@ class TestValueRangeFilter(unittest.TestCase):
                                    end_value=end_value,
                                    inclusive_start=inclusive_start,
                                    inclusive_end=inclusive_end)
-        self.assertTrue(row_filter.start_value is start_value)
-        self.assertTrue(row_filter.end_value is end_value)
-        self.assertTrue(row_filter.inclusive_start is inclusive_start)
-        self.assertTrue(row_filter.inclusive_end is inclusive_end)
+        self.assertIs(row_filter.start_value, start_value)
+        self.assertIs(row_filter.end_value, end_value)
+        self.assertIs(row_filter.inclusive_start, inclusive_start)
+        self.assertIs(row_filter.inclusive_end, inclusive_end)
 
     def test_constructor_bad_start(self):
         self.assertRaises(ValueError, self._makeOne, inclusive_start=True)
@@ -582,7 +582,7 @@ class Test_CellCountFilter(unittest.TestCase):
     def test_constructor(self):
         num_cells = object()
         row_filter = self._makeOne(num_cells)
-        self.assertTrue(row_filter.num_cells is num_cells)
+        self.assertIs(row_filter.num_cells, num_cells)
 
     def test___eq__type_differ(self):
         num_cells = object()
@@ -688,7 +688,7 @@ class TestApplyLabelFilter(unittest.TestCase):
     def test_constructor(self):
         label = object()
         row_filter = self._makeOne(label)
-        self.assertTrue(row_filter.label is label)
+        self.assertIs(row_filter.label, label)
 
     def test___eq__type_differ(self):
         label = object()
@@ -726,7 +726,7 @@ class Test_FilterCombination(unittest.TestCase):
     def test_constructor_explicit(self):
         filters = object()
         row_filter = self._makeOne(filters=filters)
-        self.assertTrue(row_filter.filters is filters)
+        self.assertIs(row_filter.filters, filters)
 
     def test___eq__(self):
         filters = object()
@@ -869,9 +869,9 @@ class TestConditionalRowFilter(unittest.TestCase):
         cond_filter = self._makeOne(base_filter,
                                     true_filter=true_filter,
                                     false_filter=false_filter)
-        self.assertTrue(cond_filter.base_filter is base_filter)
-        self.assertTrue(cond_filter.true_filter is true_filter)
-        self.assertTrue(cond_filter.false_filter is false_filter)
+        self.assertIs(cond_filter.base_filter, base_filter)
+        self.assertIs(cond_filter.true_filter, true_filter)
+        self.assertIs(cond_filter.false_filter, false_filter)
 
     def test___eq__(self):
         base_filter = object()

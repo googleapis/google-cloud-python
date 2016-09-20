@@ -140,19 +140,19 @@ class TestDataset(unittest.TestCase):
         if 'creationTime' in resource:
             self.assertEqual(dataset.created, self.WHEN)
         else:
-            self.assertEqual(dataset.created, None)
+            self.assertIsNone(dataset.created)
         if 'etag' in resource:
             self.assertEqual(dataset.etag, self.ETAG)
         else:
-            self.assertEqual(dataset.etag, None)
+            self.assertIsNone(dataset.etag)
         if 'lastModifiedTime' in resource:
             self.assertEqual(dataset.modified, self.WHEN)
         else:
-            self.assertEqual(dataset.modified, None)
+            self.assertIsNone(dataset.modified)
         if 'selfLink' in resource:
             self.assertEqual(dataset.self_link, self.RESOURCE_URL)
         else:
-            self.assertEqual(dataset.self_link, None)
+            self.assertIsNone(dataset.self_link)
 
     def _verifyResourceProperties(self, dataset, resource):
 
@@ -162,7 +162,7 @@ class TestDataset(unittest.TestCase):
             self.assertEqual(dataset.default_table_expiration_ms,
                              int(resource.get('defaultTableExpirationMs')))
         else:
-            self.assertEqual(dataset.default_table_expiration_ms, None)
+            self.assertIsNone(dataset.default_table_expiration_ms)
         self.assertEqual(dataset.description, resource.get('description'))
         self.assertEqual(dataset.friendly_name, resource.get('friendlyName'))
         self.assertEqual(dataset.location, resource.get('location'))
@@ -176,23 +176,23 @@ class TestDataset(unittest.TestCase):
         client = _Client(self.PROJECT)
         dataset = self._makeOne(self.DS_NAME, client)
         self.assertEqual(dataset.name, self.DS_NAME)
-        self.assertTrue(dataset._client is client)
+        self.assertIs(dataset._client, client)
         self.assertEqual(dataset.project, client.project)
         self.assertEqual(
             dataset.path,
             '/projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME))
         self.assertEqual(dataset.access_grants, [])
 
-        self.assertEqual(dataset.created, None)
-        self.assertEqual(dataset.dataset_id, None)
-        self.assertEqual(dataset.etag, None)
-        self.assertEqual(dataset.modified, None)
-        self.assertEqual(dataset.self_link, None)
+        self.assertIsNone(dataset.created)
+        self.assertIsNone(dataset.dataset_id)
+        self.assertIsNone(dataset.etag)
+        self.assertIsNone(dataset.modified)
+        self.assertIsNone(dataset.self_link)
 
-        self.assertEqual(dataset.default_table_expiration_ms, None)
-        self.assertEqual(dataset.description, None)
-        self.assertEqual(dataset.friendly_name, None)
-        self.assertEqual(dataset.location, None)
+        self.assertIsNone(dataset.default_table_expiration_ms)
+        self.assertIsNone(dataset.description)
+        self.assertIsNone(dataset.friendly_name)
+        self.assertIsNone(dataset.location)
 
     def test_access_roles_setter_non_list(self):
         client = _Client(self.PROJECT)
@@ -285,7 +285,7 @@ class TestDataset(unittest.TestCase):
         }
         klass = self._getTargetClass()
         dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(dataset._client is client)
+        self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
@@ -293,7 +293,7 @@ class TestDataset(unittest.TestCase):
         RESOURCE = self._makeResource()
         klass = self._getTargetClass()
         dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertTrue(dataset._client is client)
+        self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test__parse_access_grants_w_unknown_entity_type(self):
@@ -641,7 +641,7 @@ class TestDataset(unittest.TestCase):
         dataset = self._makeOne(self.DS_NAME, client=client)
         tables, token = dataset.list_tables()
         self.assertEqual(tables, [])
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
@@ -681,7 +681,7 @@ class TestDataset(unittest.TestCase):
 
         self.assertEqual(len(tables), len(DATA['tables']))
         for found, expected in zip(tables, DATA['tables']):
-            self.assertTrue(isinstance(found, Table))
+            self.assertIsInstance(found, Table)
             self.assertEqual(found.table_id, expected['id'])
             self.assertEqual(found.table_type, expected['type'])
         self.assertEqual(token, TOKEN)
@@ -723,10 +723,10 @@ class TestDataset(unittest.TestCase):
 
         self.assertEqual(len(tables), len(DATA['tables']))
         for found, expected in zip(tables, DATA['tables']):
-            self.assertTrue(isinstance(found, Table))
+            self.assertIsInstance(found, Table)
             self.assertEqual(found.table_id, expected['id'])
             self.assertEqual(found.table_type, expected['type'])
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -741,9 +741,9 @@ class TestDataset(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = self._makeOne(self.DS_NAME, client=client)
         table = dataset.table('table_name')
-        self.assertTrue(isinstance(table, Table))
+        self.assertIsInstance(table, Table)
         self.assertEqual(table.name, 'table_name')
-        self.assertTrue(table._dataset is dataset)
+        self.assertIs(table._dataset, dataset)
         self.assertEqual(table.schema, [])
 
     def test_table_w_schema(self):
@@ -755,9 +755,9 @@ class TestDataset(unittest.TestCase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = dataset.table('table_name', schema=[full_name, age])
-        self.assertTrue(isinstance(table, Table))
+        self.assertIsInstance(table, Table)
         self.assertEqual(table.name, 'table_name')
-        self.assertTrue(table._dataset is dataset)
+        self.assertIs(table._dataset, dataset)
         self.assertEqual(table.schema, [full_name, age])
 
 

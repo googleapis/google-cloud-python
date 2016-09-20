@@ -16,7 +16,7 @@ class Test_StreamSlice(unittest.TestCase):
         MAXSIZE = 4
         stream = BytesIO(CONTENT)
         stream_slice = self._makeOne(stream, MAXSIZE)
-        self.assertTrue(stream_slice._stream is stream)
+        self.assertIs(stream_slice._stream, stream)
         self.assertEqual(stream_slice._remaining_bytes, MAXSIZE)
         self.assertEqual(stream_slice._max_bytes, MAXSIZE)
         self.assertEqual(len(stream_slice), MAXSIZE)

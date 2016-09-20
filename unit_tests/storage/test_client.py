@@ -32,9 +32,9 @@ class TestClient(unittest.TestCase):
 
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         self.assertEqual(client.project, PROJECT)
-        self.assertTrue(isinstance(client.connection, Connection))
-        self.assertTrue(client.connection.credentials is CREDENTIALS)
-        self.assertTrue(client.current_batch is None)
+        self.assertIsInstance(client.connection, Connection)
+        self.assertIs(client.connection.credentials, CREDENTIALS)
+        self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
 
     def test__push_batch_and__pop_batch(self):
@@ -48,14 +48,14 @@ class TestClient(unittest.TestCase):
         batch2 = Batch(client)
         client._push_batch(batch1)
         self.assertEqual(list(client._batch_stack), [batch1])
-        self.assertTrue(client.current_batch is batch1)
+        self.assertIs(client.current_batch, batch1)
         client._push_batch(batch2)
-        self.assertTrue(client.current_batch is batch2)
+        self.assertIs(client.current_batch, batch2)
         # list(_LocalStack) returns in reverse order.
         self.assertEqual(list(client._batch_stack), [batch2, batch1])
-        self.assertTrue(client._pop_batch() is batch2)
+        self.assertIs(client._pop_batch(), batch2)
         self.assertEqual(list(client._batch_stack), [batch1])
-        self.assertTrue(client._pop_batch() is batch1)
+        self.assertIs(client._pop_batch(), batch1)
         self.assertEqual(list(client._batch_stack), [])
 
     def test_connection_setter(self):
@@ -64,7 +64,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         client._connection = None  # Unset the value from the constructor
         client.connection = connection = object()
-        self.assertTrue(client._connection is connection)
+        self.assertIs(client._connection, connection)
 
     def test_connection_setter_when_set(self):
         PROJECT = 'PROJECT'
@@ -76,8 +76,8 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
-        self.assertTrue(client.connection is client._connection)
-        self.assertTrue(client.current_batch is None)
+        self.assertIs(client.connection, client._connection)
+        self.assertIsNone(client.current_batch)
 
     def test_connection_getter_with_batch(self):
         from google.cloud.storage.batch import Batch
@@ -86,9 +86,9 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         batch = Batch(client)
         client._push_batch(batch)
-        self.assertTrue(client.connection is not client._connection)
-        self.assertTrue(client.connection is batch)
-        self.assertTrue(client.current_batch is batch)
+        self.assertIsNot(client.connection, client._connection)
+        self.assertIs(client.connection, batch)
+        self.assertIs(client.current_batch, batch)
 
     def test_bucket(self):
         from google.cloud.storage.bucket import Bucket
@@ -99,8 +99,8 @@ class TestClient(unittest.TestCase):
 
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         bucket = client.bucket(BUCKET_NAME)
-        self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.client is client)
+        self.assertIsInstance(bucket, Bucket)
+        self.assertIs(bucket.client, client)
         self.assertEqual(bucket.name, BUCKET_NAME)
 
     def test_batch(self):
@@ -111,8 +111,8 @@ class TestClient(unittest.TestCase):
 
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         batch = client.batch()
-        self.assertTrue(isinstance(batch, Batch))
-        self.assertTrue(batch._client is client)
+        self.assertIsInstance(batch, Batch)
+        self.assertIs(batch._client, client)
 
     def test_get_bucket_miss(self):
         from google.cloud.exceptions import NotFound
@@ -158,7 +158,7 @@ class TestClient(unittest.TestCase):
         )
 
         bucket = client.get_bucket(BLOB_NAME)
-        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -181,7 +181,7 @@ class TestClient(unittest.TestCase):
             b'{}',
         )
         bucket = client.lookup_bucket(NONESUCH)
-        self.assertEqual(bucket, None)
+        self.assertIsNone(bucket)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
@@ -206,7 +206,7 @@ class TestClient(unittest.TestCase):
         )
 
         bucket = client.lookup_bucket(BLOB_NAME)
-        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -254,7 +254,7 @@ class TestClient(unittest.TestCase):
         )
 
         bucket = client.create_bucket(BLOB_NAME)
-        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'POST')
         self.assertEqual(http._called_with['uri'], URI)
@@ -278,7 +278,7 @@ class TestClient(unittest.TestCase):
         buckets = list(client.list_buckets())
         self.assertEqual(len(buckets), 0)
         self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['body'], None)
+        self.assertIsNone(http._called_with['body'])
 
         BASE_URI = '/'.join([
             client.connection.API_BASE_URL,
@@ -356,7 +356,7 @@ class TestClient(unittest.TestCase):
         buckets = list(iterator)
         self.assertEqual(buckets, [])
         self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['body'], None)
+        self.assertIsNone(http._called_with['body'])
 
         BASE_URI = '/'.join([
             client.connection.API_BASE_URL,
@@ -385,8 +385,8 @@ class Test__BucketIterator(unittest.TestCase):
         iterator = self._makeOne(client)
         self.assertEqual(iterator.path, '/b')
         self.assertEqual(iterator.page_number, 0)
-        self.assertEqual(iterator.next_page_token, None)
-        self.assertTrue(iterator.client is client)
+        self.assertIsNone(iterator.next_page_token)
+        self.assertIs(iterator.client, client)
 
     def test_get_items_from_response_empty(self):
         connection = object()
@@ -404,7 +404,7 @@ class Test__BucketIterator(unittest.TestCase):
         buckets = list(iterator.get_items_from_response(response))
         self.assertEqual(len(buckets), 1)
         bucket = buckets[0]
-        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, BLOB_NAME)
 
 

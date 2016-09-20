@@ -75,7 +75,7 @@ class Test_Request(unittest.TestCase):
         self.assertEqual(request.http_method, 'GET')
         self.assertEqual(request.headers, {'content-length': '0'})
         self.assertEqual(request.body, '')
-        self.assertEqual(request.loggable_body, None)
+        self.assertIsNone(request.loggable_body)
 
     def test_loggable_body_setter_w_body_None(self):
         from google.cloud.streaming.exceptions import RequestError
@@ -88,7 +88,7 @@ class Test_Request(unittest.TestCase):
         request.loggable_body = 'abc'
         request.body = None
         self.assertEqual(request.headers, {})
-        self.assertEqual(request.body, None)
+        self.assertIsNone(request.body)
         self.assertEqual(request.loggable_body, 'abc')
 
     def test_body_setter_w_non_string(self):
@@ -96,7 +96,7 @@ class Test_Request(unittest.TestCase):
         request.loggable_body = 'abc'
         request.body = body = _Dummy(length=123)
         self.assertEqual(request.headers, {'content-length': '123'})
-        self.assertTrue(request.body is body)
+        self.assertIs(request.body, body)
         self.assertEqual(request.loggable_body, '<media body>')
 
 
@@ -116,7 +116,7 @@ class Test_Response(unittest.TestCase):
         response = self._makeOne(info, CONTENT, URL)
         self.assertEqual(len(response), len(CONTENT))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.retry_after, None)
+        self.assertIsNone(response.retry_after)
         self.assertFalse(response.is_redirect)
 
     def test_length_w_content_encoding_w_content_range(self):
@@ -282,7 +282,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
                      _check_response=_checked.append):
             response = self._callFUT(_http, _request)
 
-        self.assertTrue(isinstance(response, MUT.Response))
+        self.assertIsInstance(response, MUT.Response)
         self.assertEqual(response.info, INFO)
         self.assertEqual(response.content, CONTENT)
         self.assertEqual(response.request_url, _request.url)
@@ -304,7 +304,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
                      _check_response=_checked.append):
             response = self._callFUT(_http, _request)
 
-        self.assertTrue(isinstance(response, MUT.Response))
+        self.assertIsInstance(response, MUT.Response)
         self.assertEqual(response.info, INFO)
         self.assertEqual(response.content, CONTENT)
         self.assertEqual(response.request_url, _request.url)
@@ -326,7 +326,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
                      _check_response=_checked.append):
             response = self._callFUT(_http, _request)
 
-        self.assertTrue(isinstance(response, MUT.Response))
+        self.assertIsInstance(response, MUT.Response)
         self.assertEqual(response.info, INFO)
         self.assertEqual(response.content, CONTENT)
         self.assertEqual(response.request_url, _request.url)
@@ -371,7 +371,7 @@ class Test_make_api_request(unittest.TestCase):
                      _check_response=_checked.append):
             response = self._callFUT(HTTP, REQUEST)
 
-        self.assertTrue(response is RESPONSE)
+        self.assertIs(response, RESPONSE)
         expected_kw = {'redirections': MUT._REDIRECTIONS}
         self.assertEqual(_created, [((HTTP, REQUEST), expected_kw)])
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
@@ -397,7 +397,7 @@ class Test_make_api_request(unittest.TestCase):
                      _check_response=_checked.append):
             response = self._callFUT(HTTP, REQUEST, retries=5)
 
-        self.assertTrue(response is RESPONSE)
+        self.assertIs(response, RESPONSE)
         self.assertEqual(len(_created), 5)
         expected_kw = {'redirections': MUT._REDIRECTIONS}
         for attempt in _created:

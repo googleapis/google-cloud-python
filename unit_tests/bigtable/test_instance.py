@@ -44,7 +44,7 @@ class TestInstance(unittest.TestCase):
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
-        self.assertTrue(instance._client is client)
+        self.assertIs(instance._client, client)
         self.assertEqual(instance._cluster_location_id, self.LOCATION_ID)
         self.assertEqual(instance._cluster_serve_nodes, DEFAULT_SERVE_NODES)
 
@@ -56,7 +56,7 @@ class TestInstance(unittest.TestCase):
                                  display_name=display_name)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, display_name)
-        self.assertTrue(instance._client is client)
+        self.assertIs(instance._client, client)
 
     def test_copy(self):
         display_name = 'display_name'
@@ -67,10 +67,10 @@ class TestInstance(unittest.TestCase):
         new_instance = instance.copy()
 
         # Make sure the client copy succeeded.
-        self.assertFalse(new_instance._client is client)
+        self.assertIsNot(new_instance._client, client)
         self.assertEqual(new_instance._client, client)
         # Make sure the client got copied to a new instance.
-        self.assertFalse(instance is new_instance)
+        self.assertIsNot(instance, new_instance)
         self.assertEqual(instance, new_instance)
 
     def test_table_factory(self):
@@ -79,7 +79,7 @@ class TestInstance(unittest.TestCase):
         instance = self._makeOne(self.INSTANCE_ID, None, self.LOCATION_ID)
 
         table = instance.table(self.TABLE_ID)
-        self.assertTrue(isinstance(table, Table))
+        self.assertIsInstance(table, Table)
         self.assertEqual(table.table_id, self.TABLE_ID)
         self.assertEqual(table._instance, instance)
 
@@ -93,7 +93,7 @@ class TestInstance(unittest.TestCase):
         )
 
         instance = self._makeOne(None, None, None, None)
-        self.assertEqual(instance.display_name, None)
+        self.assertIsNone(instance.display_name)
         instance._update_from_pb(instance_pb)
         self.assertEqual(instance.display_name, display_name)
 
@@ -103,10 +103,10 @@ class TestInstance(unittest.TestCase):
 
         instance_pb = data_v2_pb2.Instance()
         instance = self._makeOne(None, None, None, None)
-        self.assertEqual(instance.display_name, None)
+        self.assertIsNone(instance.display_name)
         with self.assertRaises(ValueError):
             instance._update_from_pb(instance_pb)
-        self.assertEqual(instance.display_name, None)
+        self.assertIsNone(instance.display_name)
 
     def test_from_pb_success(self):
         from google.cloud.bigtable.instance import (
@@ -123,7 +123,7 @@ class TestInstance(unittest.TestCase):
 
         klass = self._getTargetClass()
         instance = klass.from_pb(instance_pb, client)
-        self.assertTrue(isinstance(instance, klass))
+        self.assertIsInstance(instance, klass)
         self.assertEqual(instance._client, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance._cluster_location_id,
@@ -261,10 +261,10 @@ class TestInstance(unittest.TestCase):
         # Perform the method and check the result.
         result = instance.create()
 
-        self.assertTrue(isinstance(result, Operation))
+        self.assertIsInstance(result, Operation)
         self.assertEqual(result.name, self.OP_NAME)
-        self.assertTrue(result.target is instance)
-        self.assertTrue(result.client is client)
+        self.assertIs(result.target, instance)
+        self.assertIs(result.client, client)
         self.assertIsInstance(result.pb_metadata,
                               messages_v2_pb2.CreateInstanceMetadata)
         self.assertEqual(result.pb_metadata.request_time, NOW_PB)
@@ -274,8 +274,8 @@ class TestInstance(unittest.TestCase):
         api_name, args, kwargs = stub.method_calls[0]
         self.assertEqual(api_name, 'CreateInstance')
         request_pb, = args
-        self.assertTrue(
-            isinstance(request_pb, messages_v2_pb2.CreateInstanceRequest))
+        self.assertIsInstance(request_pb,
+                              messages_v2_pb2.CreateInstanceRequest)
         self.assertEqual(request_pb.parent, 'projects/%s' % (self.PROJECT,))
         self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
         self.assertEqual(request_pb.instance.display_name, self.DISPLAY_NAME)
@@ -305,17 +305,17 @@ class TestInstance(unittest.TestCase):
         # Perform the method and check the result.
         result = instance.create()
 
-        self.assertTrue(isinstance(result, Operation))
+        self.assertIsInstance(result, Operation)
         self.assertEqual(result.name, self.OP_NAME)
-        self.assertTrue(result.target is instance)
-        self.assertTrue(result.client is client)
+        self.assertIs(result.target, instance)
+        self.assertIs(result.client, client)
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]
         self.assertEqual(api_name, 'CreateInstance')
         request_pb, = args
-        self.assertTrue(
-            isinstance(request_pb, messages_v2_pb2.CreateInstanceRequest))
+        self.assertIsInstance(request_pb,
+                              messages_v2_pb2.CreateInstanceRequest)
         self.assertEqual(request_pb.parent, 'projects/%s' % (self.PROJECT,))
         self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
         self.assertEqual(request_pb.instance.display_name, self.INSTANCE_ID)
@@ -528,17 +528,17 @@ class Test__prepare_create_request(unittest.TestCase):
 
         instance = Instance(self.INSTANCE_ID, client, self.LOCATION_ID)
         request_pb = self._callFUT(instance)
-        self.assertTrue(isinstance(request_pb,
-                                   messages_v2_pb.CreateInstanceRequest))
+        self.assertIsInstance(request_pb,
+                              messages_v2_pb.CreateInstanceRequest)
         self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
         self.assertEqual(request_pb.parent, self.PARENT)
-        self.assertTrue(isinstance(request_pb.instance, data_v2_pb2.Instance))
+        self.assertIsInstance(request_pb.instance, data_v2_pb2.Instance)
         self.assertEqual(request_pb.instance.name, u'')
         self.assertEqual(request_pb.instance.display_name, self.INSTANCE_ID)
 
         # An instance must also define a same-named cluster
         cluster = request_pb.clusters[self.INSTANCE_ID]
-        self.assertTrue(isinstance(cluster, data_v2_pb2.Cluster))
+        self.assertIsInstance(cluster, data_v2_pb2.Cluster)
         self.assertEqual(cluster.name, self.CLUSTER_NAME)
         self.assertEqual(cluster.location, self.LOCATION_NAME)
         self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
@@ -558,16 +558,16 @@ class Test__prepare_create_request(unittest.TestCase):
 
         request_pb = self._callFUT(instance)
 
-        self.assertTrue(isinstance(request_pb,
-                                   messages_v2_pb.CreateInstanceRequest))
+        self.assertIsInstance(request_pb,
+                              messages_v2_pb.CreateInstanceRequest)
         self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
         self.assertEqual(request_pb.parent,
                          'projects/' + self.PROJECT)
-        self.assertTrue(isinstance(request_pb.instance, data_v2_pb2.Instance))
+        self.assertIsInstance(request_pb.instance, data_v2_pb2.Instance)
         self.assertEqual(request_pb.instance.display_name, DISPLAY_NAME)
         # An instance must also define a same-named cluster
         cluster = request_pb.clusters[self.INSTANCE_ID]
-        self.assertTrue(isinstance(cluster, data_v2_pb2.Cluster))
+        self.assertIsInstance(cluster, data_v2_pb2.Cluster)
         self.assertEqual(cluster.location, self.LOCATION_NAME)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
 

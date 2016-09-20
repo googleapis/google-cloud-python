@@ -81,27 +81,27 @@ class TestTable(unittest.TestCase, _SchemaBase):
         if 'creationTime' in resource:
             self.assertEqual(table.created, self.WHEN)
         else:
-            self.assertEqual(table.created, None)
+            self.assertIsNone(table.created)
 
         if 'etag' in resource:
             self.assertEqual(table.etag, self.ETAG)
         else:
-            self.assertEqual(table.etag, None)
+            self.assertIsNone(table.etag)
 
         if 'numRows' in resource:
             self.assertEqual(table.num_rows, self.NUM_ROWS)
         else:
-            self.assertEqual(table.num_rows, None)
+            self.assertIsNone(table.num_rows)
 
         if 'numBytes' in resource:
             self.assertEqual(table.num_bytes, self.NUM_BYTES)
         else:
-            self.assertEqual(table.num_bytes, None)
+            self.assertIsNone(table.num_bytes)
 
         if 'selfLink' in resource:
             self.assertEqual(table.self_link, self.RESOURCE_URL)
         else:
-            self.assertEqual(table.self_link, None)
+            self.assertIsNone(table.self_link)
 
         self.assertEqual(table.table_id, self.TABLE_ID)
         self.assertEqual(table.table_type,
@@ -114,7 +114,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         if 'expirationTime' in resource:
             self.assertEqual(table.expires, self.EXP_TIME)
         else:
-            self.assertEqual(table.expires, None)
+            self.assertIsNone(table.expires)
 
         self.assertEqual(table.description, resource.get('description'))
         self.assertEqual(table.friendly_name, resource.get('friendlyName'))
@@ -123,7 +123,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         if 'view' in resource:
             self.assertEqual(table.view_query, resource['view']['query'])
         else:
-            self.assertEqual(table.view_query, None)
+            self.assertIsNone(table.view_query)
 
         if 'schema' in resource:
             self._verifySchema(table.schema, resource)
@@ -135,7 +135,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         table = self._makeOne(self.TABLE_NAME, dataset)
         self.assertEqual(table.name, self.TABLE_NAME)
-        self.assertTrue(table._dataset is dataset)
+        self.assertIs(table._dataset, dataset)
         self.assertEqual(table.project, self.PROJECT)
         self.assertEqual(table.dataset_name, self.DS_NAME)
         self.assertEqual(
@@ -144,20 +144,20 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 self.PROJECT, self.DS_NAME, self.TABLE_NAME))
         self.assertEqual(table.schema, [])
 
-        self.assertEqual(table.created, None)
-        self.assertEqual(table.etag, None)
-        self.assertEqual(table.modified, None)
-        self.assertEqual(table.num_bytes, None)
-        self.assertEqual(table.num_rows, None)
-        self.assertEqual(table.self_link, None)
-        self.assertEqual(table.table_id, None)
-        self.assertEqual(table.table_type, None)
+        self.assertIsNone(table.created)
+        self.assertIsNone(table.etag)
+        self.assertIsNone(table.modified)
+        self.assertIsNone(table.num_bytes)
+        self.assertIsNone(table.num_rows)
+        self.assertIsNone(table.self_link)
+        self.assertIsNone(table.table_id)
+        self.assertIsNone(table.table_type)
 
-        self.assertEqual(table.description, None)
-        self.assertEqual(table.expires, None)
-        self.assertEqual(table.friendly_name, None)
-        self.assertEqual(table.location, None)
-        self.assertEqual(table.view_query, None)
+        self.assertIsNone(table.description)
+        self.assertIsNone(table.expires)
+        self.assertIsNone(table.friendly_name)
+        self.assertIsNone(table.location)
+        self.assertIsNone(table.view_query)
 
     def test_ctor_w_schema(self):
         from google.cloud.bigquery.table import SchemaField
@@ -175,7 +175,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset)
 
         # Check with no value set.
-        self.assertEqual(table.num_bytes, None)
+        self.assertIsNone(table.num_bytes)
 
         num_bytes = 1337
         # Check with integer value set.
@@ -197,7 +197,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset)
 
         # Check with no value set.
-        self.assertEqual(table.num_rows, None)
+        self.assertIsNone(table.num_rows)
 
         num_rows = 42
         # Check with integer value set.
@@ -351,7 +351,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset)
         table.view_query = 'select * from foo'
         del table.view_query
-        self.assertEqual(table.view_query, None)
+        self.assertIsNone(table.view_query)
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
@@ -378,7 +378,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         klass = self._getTargetClass()
         table = klass.from_api_repr(RESOURCE, dataset)
         self.assertEqual(table.name, self.TABLE_NAME)
-        self.assertTrue(table._dataset is dataset)
+        self.assertIs(table._dataset, dataset)
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
@@ -387,7 +387,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         RESOURCE = self._makeResource()
         klass = self._getTargetClass()
         table = klass.from_api_repr(RESOURCE, dataset)
-        self.assertTrue(table._dataset._client is client)
+        self.assertIs(table._dataset._client, client)
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_create_no_view_query_no_schema(self):
@@ -441,7 +441,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset,
                               schema=[full_name, age])
 
-        self.assertEqual(table.partitioning_type, None)
+        self.assertIsNone(table.partitioning_type)
         table.partitioning_type = "DAY"
         self.assertEqual(table.partitioning_type, "DAY")
         table.create()
@@ -474,7 +474,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._makeOne(self.TABLE_NAME, dataset,
                               schema=[full_name, age])
-        self.assertEqual(table.partition_expiration, None)
+        self.assertIsNone(table.partition_expiration)
         table.partition_expiration = 100
         self.assertEqual(table.partitioning_type, "DAY")
         self.assertEqual(table.partition_expiration, 100)
@@ -533,7 +533,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._makeOne(self.TABLE_NAME, dataset,
                               schema=[full_name, age])
-        self.assertEqual(table.partitioning_type, None)
+        self.assertIsNone(table.partitioning_type)
         table.partitioning_type = 'DAY'
         self.assertEqual(table.partitioning_type, 'DAY')
 
@@ -549,7 +549,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
                               schema=[full_name, age])
         table._properties['timePartitioning'] = {'type': 'DAY'}
         table.partitioning_type = None
-        self.assertEqual(table.partitioning_type, None)
+        self.assertIsNone(table.partitioning_type)
         self.assertFalse('timePartitioning' in table._properties)
 
     def test_partition_experation_bad_type(self):
@@ -575,7 +575,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._makeOne(self.TABLE_NAME, dataset,
                               schema=[full_name, age])
-        self.assertEqual(table.partition_expiration, None)
+        self.assertIsNone(table.partition_expiration)
         table.partition_expiration = 100
         self.assertEqual(table.partitioning_type, "DAY")
         self.assertEqual(table.partition_expiration, 100)
@@ -590,14 +590,14 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._makeOne(self.TABLE_NAME, dataset,
                               schema=[full_name, age])
-        self.assertEqual(table.partition_expiration, None)
+        self.assertIsNone(table.partition_expiration)
         table._properties['timePartitioning'] = {
             'type': 'DAY',
             'expirationMs': 100,
         }
         table.partition_expiration = None
         self.assertEqual(table.partitioning_type, "DAY")
-        self.assertEqual(table.partition_expiration, None)
+        self.assertIsNone(table.partition_expiration)
 
     def test_partition_expiration_w_none_no_partition_set(self):
         from google.cloud.bigquery.table import SchemaField
@@ -609,10 +609,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._makeOne(self.TABLE_NAME, dataset,
                               schema=[full_name, age])
-        self.assertEqual(table.partition_expiration, None)
+        self.assertIsNone(table.partition_expiration)
         table.partition_expiration = None
-        self.assertEqual(table.partitioning_type, None)
-        self.assertEqual(table.partition_expiration, None)
+        self.assertIsNone(table.partitioning_type)
+        self.assertIsNone(table.partition_expiration)
 
     def test_list_partitions(self):
         from google.cloud.bigquery.table import SchemaField
@@ -1138,8 +1138,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(rows[1], ('Bharney Rhubble', 33, False, 1.414))
         self.assertEqual(rows[2], ('Wylma Phlyntstone', 29, True, 2.71828))
         self.assertEqual(rows[3], ('Bhettye Rhubble', 27, None, None))
-        self.assertEqual(total_rows, None)
-        self.assertEqual(page_token, None)
+        self.assertIsNone(total_rows)
+        self.assertIsNone(page_token)
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
@@ -1239,7 +1239,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
                                       'local_number': '768-5309',
                                       'rank': 2})
         self.assertEqual(rows[2][0], 'Wylma Phlyntstone')
-        self.assertEqual(rows[2][1], None)
+        self.assertIsNone(rows[2][1])
         self.assertEqual(total_rows, ROWS)
         self.assertEqual(page_token, TOKEN)
 
@@ -1511,7 +1511,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 job = table.upload_from_file(
                     file_obj, 'CSV', rewind=True, **kw)
 
-        self.assertTrue(job is expected_job)
+        self.assertIs(job, expected_job)
         return conn.http._requested, PATH, BODY
 
     def test_upload_from_file_w_bound_client_multipart(self):

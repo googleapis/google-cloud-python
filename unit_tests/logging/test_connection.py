@@ -52,7 +52,7 @@ class Test_LoggingAPI(unittest.TestCase):
     def test_ctor(self):
         connection = object()
         api = self._makeOne(connection)
-        self.assertTrue(api._connection is connection)
+        self.assertIs(api._connection, connection)
 
     @staticmethod
     def _make_timestamp():
@@ -145,7 +145,7 @@ class Test_LoggingAPI(unittest.TestCase):
             order_by=DESCENDING, page_size=PAGE_SIZE, page_token=TOKEN)
 
         self.assertEqual(entries, RETURNED['entries'])
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(conn._called_with['method'], 'POST')
         path = '/%s' % self.LIST_ENTRIES_PATH
@@ -237,7 +237,7 @@ class Test_SinksAPI(unittest.TestCase):
     def test_ctor(self):
         connection = object()
         api = self._makeOne(connection)
-        self.assertTrue(api._connection is connection)
+        self.assertIs(api._connection, connection)
 
     def test_list_sinks_no_paging(self):
         TOKEN = 'TOKEN'
@@ -279,7 +279,7 @@ class Test_SinksAPI(unittest.TestCase):
             self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
 
         self.assertEqual(sinks, RETURNED['sinks'])
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(conn._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_SINKS_PATH,)
@@ -466,7 +466,7 @@ class Test_MetricsAPI(unittest.TestCase):
             self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
 
         self.assertEqual(metrics, RETURNED['metrics'])
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
 
         self.assertEqual(conn._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_METRICS_PATH,)

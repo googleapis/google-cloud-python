@@ -17,7 +17,7 @@ class Test_BufferedStream(unittest.TestCase):
         BUFSIZE = 4
         stream = BytesIO(CONTENT)
         bufstream = self._makeOne(stream, START, BUFSIZE)
-        self.assertTrue(bufstream._stream is stream)
+        self.assertIs(bufstream._stream, stream)
         self.assertEqual(bufstream._start_pos, START)
         self.assertEqual(bufstream._buffer_pos, 0)
         self.assertEqual(bufstream._buffered_data, CONTENT[:BUFSIZE])
@@ -33,7 +33,7 @@ class Test_BufferedStream(unittest.TestCase):
         stream = BytesIO(CONTENT)
         stream.read(START)  # already consumed
         bufstream = self._makeOne(stream, START, BUFSIZE)
-        self.assertTrue(bufstream._stream is stream)
+        self.assertIs(bufstream._stream, stream)
         self.assertEqual(bufstream._start_pos, START)
         self.assertEqual(bufstream._buffer_pos, 0)
         self.assertEqual(bufstream._buffered_data, CONTENT[START:])

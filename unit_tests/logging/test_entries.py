@@ -57,12 +57,12 @@ class Test_BaseEntry(unittest.TestCase):
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
         entry = self._makeOne(PAYLOAD, logger)
         self.assertEqual(entry.payload, PAYLOAD)
-        self.assertTrue(entry.logger is logger)
-        self.assertTrue(entry.insert_id is None)
-        self.assertTrue(entry.timestamp is None)
-        self.assertTrue(entry.labels is None)
-        self.assertTrue(entry.severity is None)
-        self.assertTrue(entry.http_request is None)
+        self.assertIs(entry.logger, logger)
+        self.assertIsNone(entry.insert_id)
+        self.assertIsNone(entry.timestamp)
+        self.assertIsNone(entry.labels)
+        self.assertIsNone(entry.severity)
+        self.assertIsNone(entry.http_request)
 
     def test_ctor_explicit(self):
         import datetime
@@ -87,7 +87,7 @@ class Test_BaseEntry(unittest.TestCase):
                               severity=SEVERITY,
                               http_request=REQUEST)
         self.assertEqual(entry.payload, PAYLOAD)
-        self.assertTrue(entry.logger is logger)
+        self.assertIs(entry.logger, logger)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, TIMESTAMP)
         self.assertEqual(entry.labels, LABELS)
@@ -107,13 +107,13 @@ class Test_BaseEntry(unittest.TestCase):
         klass = self._getTargetClass()
         entry = klass.from_api_repr(API_REPR, client)
         self.assertEqual(entry.payload, PAYLOAD)
-        self.assertTrue(entry.insert_id is None)
-        self.assertTrue(entry.timestamp is None)
-        self.assertTrue(entry.severity is None)
-        self.assertTrue(entry.http_request is None)
+        self.assertIsNone(entry.insert_id)
+        self.assertIsNone(entry.timestamp)
+        self.assertIsNone(entry.severity)
+        self.assertIsNone(entry.http_request)
         logger = entry.logger
-        self.assertTrue(isinstance(logger, _Logger))
-        self.assertTrue(logger.client is client)
+        self.assertIsInstance(logger, _Logger)
+        self.assertIs(logger.client, client)
         self.assertEqual(logger.name, self.LOGGER_NAME)
 
     def test_from_api_repr_w_loggers_no_logger_match(self):
@@ -155,8 +155,8 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.http_request['requestUrl'], URI)
         self.assertEqual(entry.http_request['status'], STATUS)
         logger = entry.logger
-        self.assertTrue(isinstance(logger, _Logger))
-        self.assertTrue(logger.client is client)
+        self.assertIsInstance(logger, _Logger)
+        self.assertIs(logger.client, client)
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertEqual(loggers, {LOG_NAME: logger})
 
@@ -185,7 +185,7 @@ class Test_BaseEntry(unittest.TestCase):
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, NOW)
         self.assertEqual(entry.labels, LABELS)
-        self.assertTrue(entry.logger is LOGGER)
+        self.assertIs(entry.logger, LOGGER)
 
 
 class TestProtobufEntry(unittest.TestCase):

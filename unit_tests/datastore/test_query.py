@@ -34,11 +34,11 @@ class TestQuery(unittest.TestCase):
     def test_ctor_defaults(self):
         client = self._makeClient()
         query = self._makeOne(client)
-        self.assertTrue(query._client is client)
+        self.assertIs(query._client, client)
         self.assertEqual(query.project, client.project)
-        self.assertEqual(query.kind, None)
+        self.assertIsNone(query.kind)
         self.assertEqual(query.namespace, client.namespace)
-        self.assertEqual(query.ancestor, None)
+        self.assertIsNone(query.ancestor)
         self.assertEqual(query.filters, [])
         self.assertEqual(query.projection, [])
         self.assertEqual(query.order, [])
@@ -66,7 +66,7 @@ class TestQuery(unittest.TestCase):
             order=ORDER,
             distinct_on=DISTINCT_ON,
             )
-        self.assertTrue(query._client is client)
+        self.assertIs(query._client, client)
         self.assertEqual(query.project, _PROJECT)
         self.assertEqual(query.kind, _KIND)
         self.assertEqual(query.namespace, _NAMESPACE)
@@ -156,7 +156,7 @@ class TestQuery(unittest.TestCase):
         key = Key('KIND', 123, project=self._PROJECT)
         query = self._makeOne(client=self._makeClient(), ancestor=key)
         del query.ancestor
-        self.assertTrue(query.ancestor is None)
+        self.assertIsNone(query.ancestor)
 
     def test_add_filter_setter_w_unknown_operator(self):
         query = self._makeOne(self._makeClient())
@@ -313,9 +313,9 @@ class TestQuery(unittest.TestCase):
         client = self._makeClient(connection)
         query = self._makeOne(client)
         iterator = query.fetch()
-        self.assertTrue(iterator._query is query)
-        self.assertTrue(iterator._client is client)
-        self.assertEqual(iterator._limit, None)
+        self.assertIs(iterator._query, query)
+        self.assertIs(iterator._client, client)
+        self.assertIsNone(iterator._limit)
         self.assertEqual(iterator._offset, 0)
 
     def test_fetch_w_explicit_client(self):
@@ -324,8 +324,8 @@ class TestQuery(unittest.TestCase):
         other_client = self._makeClient(connection)
         query = self._makeOne(client)
         iterator = query.fetch(limit=7, offset=8, client=other_client)
-        self.assertTrue(iterator._query is query)
-        self.assertTrue(iterator._client is other_client)
+        self.assertIs(iterator._query, query)
+        self.assertIs(iterator._client, other_client)
         self.assertEqual(iterator._limit, 7)
         self.assertEqual(iterator._offset, 8)
 
@@ -380,16 +380,16 @@ class TestIterator(unittest.TestCase):
         connection = _Connection()
         query = object()
         iterator = self._makeOne(query, connection)
-        self.assertTrue(iterator._query is query)
-        self.assertEqual(iterator._limit, None)
-        self.assertEqual(iterator._offset, None)
-        self.assertEqual(iterator._skipped_results, None)
+        self.assertIs(iterator._query, query)
+        self.assertIsNone(iterator._limit)
+        self.assertIsNone(iterator._offset)
+        self.assertIsNone(iterator._skipped_results)
 
     def test_ctor_explicit(self):
         client = self._makeClient()
         query = _Query(client)
         iterator = self._makeOne(query, client, 13, 29)
-        self.assertTrue(iterator._query is query)
+        self.assertIs(iterator._query, query)
         self.assertEqual(iterator._limit, 13)
         self.assertEqual(iterator._offset, 29)
 
@@ -401,9 +401,9 @@ class TestIterator(unittest.TestCase):
         self._addQueryResults(connection, cursor=b'')
         iterator = self._makeOne(query, client)
         entities, more_results, cursor = iterator.next_page()
-        self.assertEqual(iterator._skipped_results, None)
+        self.assertIsNone(iterator._skipped_results)
 
-        self.assertEqual(cursor, None)
+        self.assertIsNone(cursor)
         self.assertFalse(more_results)
         self.assertFalse(iterator._more_results)
         self.assertEqual(len(entities), 1)
@@ -431,7 +431,7 @@ class TestIterator(unittest.TestCase):
         iterator = self._makeOne(query, client, 13, 29)
         entities, more_results, cursor = iterator.next_page()
 
-        self.assertEqual(cursor, None)
+        self.assertIsNone(cursor)
         self.assertFalse(more_results)
         self.assertFalse(iterator._more_results)
         self.assertEqual(iterator._skipped_results, skipped_results)
@@ -466,8 +466,8 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(cursor, urlsafe_b64encode(self._END))
         self.assertTrue(more_results)
         self.assertTrue(iterator._more_results)
-        self.assertEqual(iterator._skipped_results, None)
-        self.assertEqual(iterator._end_cursor, None)
+        self.assertIsNone(iterator._skipped_results)
+        self.assertIsNone(iterator._end_cursor)
         self.assertEqual(urlsafe_b64decode(iterator._start_cursor), self._END)
         self.assertEqual(len(entities), 1)
         self.assertEqual(entities[0].key.path,
