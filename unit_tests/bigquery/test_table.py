@@ -1449,11 +1449,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table.upload_from_file(file_obj, 'CSV', size=1234)
 
-    def test_upload_from_file_binary_mode_success(self):
-        try:
-            self._upload_from_file_helper(input_file_mode='r+b')
-        except ValueError:
-            self.fail("Unexpected failure when uploading binary mode file")
+    def test_upload_from_file_binary_mode_no_failure(self):
+        self._upload_from_file_helper(input_file_mode='r+b')
 
     def test_upload_from_file_size_failure(self):
         conn = _Connection()
