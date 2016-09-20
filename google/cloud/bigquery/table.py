@@ -887,7 +887,7 @@ class Table(object):
         if mode is not None and mode not in ('rb', 'r+b', 'rb+'):
             raise ValueError(
                 "Cannot upload files opened in text mode:  use "
-                "open(filename, mode='rb')")
+                "open(filename, mode='rb') or open(filename, mode='r+b')")
 
         # Get the basic stats about the file.
         total_bytes = size
