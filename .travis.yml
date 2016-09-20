@@ -2,8 +2,7 @@ language: python
 sudo: false
 
 install:
-  - pip install --upgrade pip
-  - pip install --upgrade tox
+  - pip install --upgrade pip tox
 
 script:
   - tox -e py27
