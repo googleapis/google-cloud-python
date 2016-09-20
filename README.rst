@@ -20,24 +20,26 @@ This client supports the following Google Cloud Platform services:
 -  `Google Cloud Pub/Sub`_
 -  `Google BigQuery`_
 -  `Google Cloud Resource Manager`_
--  `Google Stackdriver Logging`_
--  `Google Stackdriver Monitoring`_
+-  `Stackdriver Logging`_
+-  `Stackdriver Monitoring`_
 -  `Google Cloud Bigtable`_
 -  `Google Cloud DNS`_
 -  `Stackdriver Error Reporting`_
 -  `Google Cloud Natural Language`_
+-  `Google Translate`_
 
 .. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
 .. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
 .. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/pubsub
 .. _Google BigQuery: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery
 .. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/resource_manager
-.. _Google Stackdriver Logging: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/logging
-.. _Google Stackdriver Monitoring: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/monitoring
+.. _Stackdriver Logging: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/logging
+.. _Stackdriver Monitoring: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/monitoring
 .. _Google Cloud Bigtable: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigtable
 .. _Google Cloud DNS: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/dns
 .. _Stackdriver Error Reporting: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/error_reporting
 .. _Google Cloud Natural Language: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/language
+.. _Google Translate: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/translate
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
