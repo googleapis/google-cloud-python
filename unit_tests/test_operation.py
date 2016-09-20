@@ -105,8 +105,8 @@ class OperationTests(unittest.TestCase):
             self.OPERATION_NAME, client)
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertTrue(operation.client is client)
-        self.assertTrue(operation.target is None)
-        self.assertTrue(operation.pb_metadata is None)
+        self.assertIsNone(operation.target)
+        self.assertIsNone(operation.pb_metadata)
         self.assertEqual(operation.metadata, {})
 
     def test_ctor_explicit(self):
@@ -116,7 +116,7 @@ class OperationTests(unittest.TestCase):
             self.OPERATION_NAME, client, pb_metadata, foo='bar')
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertTrue(operation.client is client)
-        self.assertTrue(operation.target is None)
+        self.assertIsNone(operation.target)
         self.assertTrue(operation.pb_metadata is pb_metadata)
         self.assertEqual(operation.metadata, {'foo': 'bar'})
 
@@ -130,7 +130,7 @@ class OperationTests(unittest.TestCase):
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertTrue(operation.client is client)
-        self.assertTrue(operation.pb_metadata is None)
+        self.assertIsNone(operation.pb_metadata)
         self.assertEqual(operation.metadata, {})
 
     def test_from_pb_w_unknown_metadata(self):
@@ -150,7 +150,7 @@ class OperationTests(unittest.TestCase):
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertTrue(operation.client is client)
-        self.assertTrue(operation.pb_metadata is None)
+        self.assertIsNone(operation.pb_metadata)
         self.assertEqual(operation.metadata, {})
 
     def test_from_pb_w_metadata_and_kwargs(self):

@@ -171,9 +171,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.namespace, None)
         self.assertIsInstance(client.connection, _MockConnection)
         self.assertTrue(client.connection.credentials is creds)
-        self.assertTrue(client.connection.http is None)
-        self.assertTrue(client.current_batch is None)
-        self.assertTrue(client.current_transaction is None)
+        self.assertIsNone(client.connection.http)
+        self.assertIsNone(client.current_batch)
+        self.assertIsNone(client.current_transaction)
         self.assertEqual(default_called, [None])
 
     def test_ctor_w_explicit_inputs(self):
@@ -190,7 +190,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client.connection, _MockConnection)
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
-        self.assertTrue(client.current_batch is None)
+        self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
 
     def test__push_batch_and__pop_batch(self):
@@ -201,7 +201,7 @@ class TestClient(unittest.TestCase):
         client._push_batch(batch)
         self.assertEqual(list(client._batch_stack), [batch])
         self.assertTrue(client.current_batch is batch)
-        self.assertTrue(client.current_transaction is None)
+        self.assertIsNone(client.current_transaction)
         client._push_batch(xact)
         self.assertTrue(client.current_batch is xact)
         self.assertTrue(client.current_transaction is xact)
@@ -225,13 +225,13 @@ class TestClient(unittest.TestCase):
 
         key = object()
 
-        self.assertTrue(client.get(key) is None)
+        self.assertIsNone(client.get(key))
 
         self.assertEqual(_called_with[0][0], ())
         self.assertEqual(_called_with[0][1]['keys'], [key])
-        self.assertTrue(_called_with[0][1]['missing'] is None)
-        self.assertTrue(_called_with[0][1]['deferred'] is None)
-        self.assertTrue(_called_with[0][1]['transaction'] is None)
+        self.assertIsNone(_called_with[0][1]['missing'])
+        self.assertIsNone(_called_with[0][1]['deferred'])
+        self.assertIsNone(_called_with[0][1]['transaction'])
 
     def test_get_hit(self):
         TXN_ID = '123'
@@ -380,14 +380,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key1_pb, k_pbs[0])
         self.assertEqual(key2_pb, k_pbs[1])
         self.assertFalse(eventual)
-        self.assertTrue(tid is None)
+        self.assertIsNone(tid)
 
         ds_id, k_pbs, eventual, tid = cw[1]
         self.assertEqual(ds_id, self.PROJECT)
         self.assertEqual(len(k_pbs), 1)
         self.assertEqual(key2_pb, k_pbs[0])
         self.assertFalse(eventual)
-        self.assertTrue(tid is None)
+        self.assertIsNone(tid)
 
     def test_get_multi_hit(self):
         from google.cloud.datastore.key import Key
@@ -563,7 +563,7 @@ class TestClient(unittest.TestCase):
         client.connection._commit.append([_KeyPB(key)])
 
         result = client.put_multi([entity])
-        self.assertTrue(result is None)
+        self.assertIsNone(result)
 
         self.assertEqual(len(client.connection._commit_cw), 1)
         (project,
@@ -579,7 +579,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(name, 'foo')
         self.assertEqual(value_pb.string_value, u'bar')
 
-        self.assertTrue(transaction_id is None)
+        self.assertIsNone(transaction_id)
 
     def test_put_multi_existing_batch_w_completed_key(self):
         from google.cloud.datastore.helpers import _property_tuples
@@ -641,7 +641,7 @@ class TestClient(unittest.TestCase):
 
         mutated_key = _mutated_pb(self, commit_req.mutations, 'delete')
         self.assertEqual(mutated_key, key.to_protobuf())
-        self.assertTrue(transaction_id is None)
+        self.assertIsNone(transaction_id)
 
     def test_delete_multi_w_existing_batch(self):
         creds = object()

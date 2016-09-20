@@ -86,7 +86,7 @@ class TestQueryResults(unittest.TestCase):
                                  expected.get('description'))
                 self.assertEqual(found.fields, expected.get('fields'))
         else:
-            self.assertTrue(query.schema is None)
+            self.assertIsNone(query.schema)
 
     def _verifyRows(self, query, resource):
         expected = resource.get('rows')
@@ -111,7 +111,7 @@ class TestQueryResults(unittest.TestCase):
         if 'jobReference' in resource:
             self.assertEqual(query.name, resource['jobReference']['jobId'])
         else:
-            self.assertTrue(query.name is None)
+            self.assertIsNone(query.name)
 
         self._verifySchema(query, resource)
         self._verifyRows(query, resource)
@@ -122,21 +122,21 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(query.query, self.QUERY)
         self.assertTrue(query._client is client)
 
-        self.assertTrue(query.cache_hit is None)
-        self.assertTrue(query.complete is None)
-        self.assertTrue(query.errors is None)
-        self.assertTrue(query.name is None)
-        self.assertTrue(query.page_token is None)
+        self.assertIsNone(query.cache_hit)
+        self.assertIsNone(query.complete)
+        self.assertIsNone(query.errors)
+        self.assertIsNone(query.name)
+        self.assertIsNone(query.page_token)
         self.assertEqual(query.rows, [])
-        self.assertTrue(query.schema is None)
-        self.assertTrue(query.total_rows is None)
-        self.assertTrue(query.total_bytes_processed is None)
+        self.assertIsNone(query.schema)
+        self.assertIsNone(query.total_rows)
+        self.assertIsNone(query.total_bytes_processed)
 
-        self.assertTrue(query.default_dataset is None)
-        self.assertTrue(query.max_results is None)
-        self.assertTrue(query.preserve_nulls is None)
-        self.assertTrue(query.use_query_cache is None)
-        self.assertTrue(query.use_legacy_sql is None)
+        self.assertIsNone(query.default_dataset)
+        self.assertIsNone(query.max_results)
+        self.assertIsNone(query.preserve_nulls)
+        self.assertIsNone(query.use_query_cache)
+        self.assertIsNone(query.use_legacy_sql)
 
     def test_from_query_job(self):
         from google.cloud.bigquery.dataset import Dataset
@@ -186,7 +186,7 @@ class TestQueryResults(unittest.TestCase):
     def test_job_wo_jobid(self):
         client = _Client(self.PROJECT)
         query = self._makeOne(self.QUERY, client)
-        self.assertTrue(query.job is None)
+        self.assertIsNone(query.job)
 
     def test_job_w_jobid(self):
         from google.cloud.bigquery.job import QueryJob

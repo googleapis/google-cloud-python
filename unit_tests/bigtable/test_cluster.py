@@ -257,7 +257,7 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(result.name, OP_NAME)
         self.assertTrue(result.target is cluster)
         self.assertTrue(result.client is client)
-        self.assertTrue(result.pb_metadata is None)
+        self.assertIsNone(result.pb_metadata)
         self.assertEqual(result.metadata, {'request_type': 'CreateCluster'})
 
         self.assertEqual(len(stub.method_calls), 1)

@@ -259,7 +259,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._makeOne(name=NAME)
         result = bucket.get_blob(NONESUCH, client=client)
-        self.assertTrue(result is None)
+        self.assertIsNone(result)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
@@ -363,7 +363,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._makeOne(client=client, name=NAME)
         result = bucket.delete(force=True)
-        self.assertTrue(result is None)
+        self.assertIsNone(result)
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
@@ -388,7 +388,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._makeOne(client=client, name=NAME)
         result = bucket.delete(force=True)
-        self.assertTrue(result is None)
+        self.assertIsNone(result)
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
@@ -406,7 +406,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._makeOne(client=client, name=NAME)
         result = bucket.delete(force=True)
-        self.assertTrue(result is None)
+        self.assertIsNone(result)
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
@@ -453,7 +453,7 @@ class Test_Bucket(unittest.TestCase):
         client = _Client(connection)
         bucket = self._makeOne(client=client, name=NAME)
         result = bucket.delete_blob(BLOB_NAME)
-        self.assertTrue(result is None)
+        self.assertIsNone(result)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
@@ -682,7 +682,7 @@ class Test_Bucket(unittest.TestCase):
         LOG_BUCKET = 'logs'
         before = {'logging': None}
         bucket = self._makeOne(name=NAME, properties=before)
-        self.assertTrue(bucket.get_logging() is None)
+        self.assertIsNone(bucket.get_logging())
         bucket.enable_logging(LOG_BUCKET)
         info = bucket.get_logging()
         self.assertEqual(info['logBucket'], LOG_BUCKET)
@@ -694,7 +694,7 @@ class Test_Bucket(unittest.TestCase):
         LOG_PFX = 'pfx'
         before = {'logging': None}
         bucket = self._makeOne(name=NAME, properties=before)
-        self.assertTrue(bucket.get_logging() is None)
+        self.assertIsNone(bucket.get_logging())
         bucket.enable_logging(LOG_BUCKET, LOG_PFX)
         info = bucket.get_logging()
         self.assertEqual(info['logBucket'], LOG_BUCKET)
@@ -706,7 +706,7 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._makeOne(name=NAME, properties=before)
         self.assertTrue(bucket.get_logging() is not None)
         bucket.disable_logging()
-        self.assertTrue(bucket.get_logging() is None)
+        self.assertIsNone(bucket.get_logging())
 
     def test_metageneration(self):
         METAGENERATION = 42

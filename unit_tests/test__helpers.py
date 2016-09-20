@@ -30,7 +30,7 @@ class Test__LocalStack(unittest.TestCase):
         batch1, batch2 = object(), object()
         batches = self._makeOne()
         self.assertEqual(list(batches), [])
-        self.assertTrue(batches.top is None)
+        self.assertIsNone(batches.top)
         batches.push(batch1)
         self.assertTrue(batches.top is batch1)
         batches.push(batch2)
@@ -40,7 +40,7 @@ class Test__LocalStack(unittest.TestCase):
         self.assertTrue(batches.top is batch1)
         self.assertEqual(list(batches), [batch1])
         popped = batches.pop()
-        self.assertTrue(batches.top is None)
+        self.assertIsNone(batches.top)
         self.assertEqual(list(batches), [])
 
 
@@ -467,7 +467,7 @@ class Test__millis_from_datetime(unittest.TestCase):
         return _millis_from_datetime(value)
 
     def test_w_none(self):
-        self.assertTrue(self._callFUT(None) is None)
+        self.assertIsNone(self._callFUT(None))
 
     def test_w_utc_datetime(self):
         import datetime

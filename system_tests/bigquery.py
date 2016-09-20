@@ -152,7 +152,7 @@ class TestBigQuery(unittest.TestCase):
 
         # Retrieve the datasets.
         all_datasets, token = Config.CLIENT.list_datasets()
-        self.assertTrue(token is None)
+        self.assertIsNone(token)
         created = [dataset for dataset in all_datasets
                    if dataset.name in datasets_to_create and
                    dataset.project == Config.CLIENT.project]
@@ -205,7 +205,7 @@ class TestBigQuery(unittest.TestCase):
 
         # Retrieve the tables.
         all_tables, token = dataset.list_tables()
-        self.assertTrue(token is None)
+        self.assertIsNone(token)
         created = [table for table in all_tables
                    if (table.name in tables_to_create and
                        table.dataset_name == DATASET_NAME)]

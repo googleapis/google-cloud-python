@@ -36,7 +36,7 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch.project, _PROJECT)
         self.assertEqual(batch.connection, connection)
         self.assertEqual(batch.namespace, _NAMESPACE)
-        self.assertTrue(batch._id is None)
+        self.assertIsNone(batch._id)
         self.assertEqual(batch._status, batch._INITIAL)
         self.assertIsInstance(batch._commit_request,
                               datastore_pb2.CommitRequest)
@@ -49,8 +49,8 @@ class TestBatch(unittest.TestCase):
         client = _Client(_PROJECT, connection)
         batch1 = self._makeOne(client)
         batch2 = self._makeOne(client)
-        self.assertTrue(batch1.current() is None)
-        self.assertTrue(batch2.current() is None)
+        self.assertIsNone(batch1.current())
+        self.assertIsNone(batch2.current())
         with batch1:
             self.assertTrue(batch1.current() is batch1)
             self.assertTrue(batch2.current() is batch1)
@@ -59,8 +59,8 @@ class TestBatch(unittest.TestCase):
                 self.assertTrue(batch2.current() is batch2)
             self.assertTrue(batch1.current() is batch1)
             self.assertTrue(batch2.current() is batch1)
-        self.assertTrue(batch1.current() is None)
-        self.assertTrue(batch2.current() is None)
+        self.assertIsNone(batch1.current())
+        self.assertIsNone(batch2.current())
 
     def test_put_entity_wo_key(self):
         _PROJECT = 'PROJECT'

@@ -58,11 +58,11 @@ class Test_BaseEntry(unittest.TestCase):
         entry = self._makeOne(PAYLOAD, logger)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertTrue(entry.logger is logger)
-        self.assertTrue(entry.insert_id is None)
-        self.assertTrue(entry.timestamp is None)
-        self.assertTrue(entry.labels is None)
-        self.assertTrue(entry.severity is None)
-        self.assertTrue(entry.http_request is None)
+        self.assertIsNone(entry.insert_id)
+        self.assertIsNone(entry.timestamp)
+        self.assertIsNone(entry.labels)
+        self.assertIsNone(entry.severity)
+        self.assertIsNone(entry.http_request)
 
     def test_ctor_explicit(self):
         import datetime
@@ -107,10 +107,10 @@ class Test_BaseEntry(unittest.TestCase):
         klass = self._getTargetClass()
         entry = klass.from_api_repr(API_REPR, client)
         self.assertEqual(entry.payload, PAYLOAD)
-        self.assertTrue(entry.insert_id is None)
-        self.assertTrue(entry.timestamp is None)
-        self.assertTrue(entry.severity is None)
-        self.assertTrue(entry.http_request is None)
+        self.assertIsNone(entry.insert_id)
+        self.assertIsNone(entry.timestamp)
+        self.assertIsNone(entry.severity)
+        self.assertIsNone(entry.http_request)
         logger = entry.logger
         self.assertIsInstance(logger, _Logger)
         self.assertTrue(logger.client is client)

@@ -88,7 +88,7 @@ class TestManagedZone(unittest.TestCase):
         zone = self._makeOne(self.ZONE_NAME)
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, None)
-        self.assertTrue(zone._client is None)
+        self.assertIsNone(zone._client)
 
         with self.assertRaises(AttributeError):
             _ = zone.project

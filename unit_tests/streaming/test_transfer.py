@@ -19,10 +19,10 @@ class Test__Transfer(unittest.TestCase):
         self.assertFalse(xfer.close_stream)
         self.assertEqual(xfer.chunksize, _DEFAULT_CHUNKSIZE)
         self.assertTrue(xfer.auto_transfer)
-        self.assertTrue(xfer.bytes_http is None)
-        self.assertTrue(xfer.http is None)
+        self.assertIsNone(xfer.bytes_http)
+        self.assertIsNone(xfer.http)
         self.assertEqual(xfer.num_retries, 5)
-        self.assertTrue(xfer.url is None)
+        self.assertIsNone(xfer.url)
         self.assertFalse(xfer.initialized)
 
     def test_ctor_explicit(self):
@@ -159,10 +159,10 @@ class Test_Download(unittest.TestCase):
         stream = _Stream()
         download = self._makeOne(stream)
         self.assertTrue(download.stream is stream)
-        self.assertTrue(download._initial_response is None)
+        self.assertIsNone(download._initial_response)
         self.assertEqual(download.progress, 0)
-        self.assertTrue(download.total_size is None)
-        self.assertTrue(download.encoding is None)
+        self.assertIsNone(download.total_size)
+        self.assertIsNone(download.encoding)
 
     def test_ctor_w_kwds(self):
         stream = _Stream()
@@ -208,7 +208,7 @@ class Test_Download(unittest.TestCase):
         download = klass.from_stream(stream)
         self.assertTrue(download.stream is stream)
         self.assertTrue(download.auto_transfer)
-        self.assertTrue(download.total_size is None)
+        self.assertIsNone(download.total_size)
 
     def test_from_stream_explicit(self):
         CHUNK_SIZE = 1 << 18
@@ -308,7 +308,7 @@ class Test_Download(unittest.TestCase):
         with _Monkey(MUT, make_api_request=requester):
             download.initialize_download(request, http)
 
-        self.assertTrue(download._initial_response is None)
+        self.assertIsNone(download._initial_response)
         self.assertEqual(download.total_size, 0)
         self.assertTrue(download.http is http)
         self.assertEqual(download.url, REDIRECT_URL)
@@ -795,13 +795,13 @@ class Test_Upload(unittest.TestCase):
         stream = _Stream()
         upload = self._makeOne(stream)
         self.assertTrue(upload.stream is stream)
-        self.assertTrue(upload._final_response is None)
-        self.assertTrue(upload._server_chunk_granularity is None)
+        self.assertIsNone(upload._final_response)
+        self.assertIsNone(upload._server_chunk_granularity)
         self.assertFalse(upload.complete)
         self.assertEqual(upload.mime_type, self.MIME_TYPE)
         self.assertEqual(upload.progress, 0)
-        self.assertTrue(upload.strategy is None)
-        self.assertTrue(upload.total_size is None)
+        self.assertIsNone(upload.strategy)
+        self.assertIsNone(upload.total_size)
         self.assertEqual(upload.chunksize, _DEFAULT_CHUNKSIZE)
 
     def test_ctor_w_kwds(self):
@@ -1253,7 +1253,7 @@ class Test_Upload(unittest.TestCase):
     def test__get_range_header_miss(self):
         upload = self._makeOne(_Stream())
         response = _makeResponse(None)
-        self.assertTrue(upload._get_range_header(response) is None)
+        self.assertIsNone(upload._get_range_header(response))
 
     def test__get_range_header_w_Range(self):
         upload = self._makeOne(_Stream())

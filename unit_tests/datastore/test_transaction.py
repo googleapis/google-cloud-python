@@ -46,24 +46,24 @@ class TestTransaction(unittest.TestCase):
         client = _Client(_PROJECT, connection)
         xact1 = self._makeOne(client)
         xact2 = self._makeOne(client)
-        self.assertTrue(xact1.current() is None)
-        self.assertTrue(xact2.current() is None)
+        self.assertIsNone(xact1.current())
+        self.assertIsNone(xact2.current())
         with xact1:
             self.assertTrue(xact1.current() is xact1)
             self.assertTrue(xact2.current() is xact1)
             with _NoCommitBatch(client):
-                self.assertTrue(xact1.current() is None)
-                self.assertTrue(xact2.current() is None)
+                self.assertIsNone(xact1.current())
+                self.assertIsNone(xact2.current())
             with xact2:
                 self.assertTrue(xact1.current() is xact2)
                 self.assertTrue(xact2.current() is xact2)
                 with _NoCommitBatch(client):
-                    self.assertTrue(xact1.current() is None)
-                    self.assertTrue(xact2.current() is None)
+                    self.assertIsNone(xact1.current())
+                    self.assertIsNone(xact2.current())
             self.assertTrue(xact1.current() is xact1)
             self.assertTrue(xact2.current() is xact1)
-        self.assertTrue(xact1.current() is None)
-        self.assertTrue(xact2.current() is None)
+        self.assertIsNone(xact1.current())
+        self.assertIsNone(xact2.current())
 
     def test_begin(self):
         _PROJECT = 'PROJECT'

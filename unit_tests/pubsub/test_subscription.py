@@ -54,7 +54,7 @@ class TestSubscription(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         subscription = self._makeOne(self.SUB_NAME, client=client)
         self.assertEqual(subscription.name, self.SUB_NAME)
-        self.assertTrue(subscription.topic is None)
+        self.assertIsNone(subscription.topic)
 
     def test_ctor_w_both_topic_and_client(self):
         client1 = _Client(project=self.PROJECT)
@@ -94,7 +94,7 @@ class TestSubscription(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         subscription = klass.from_api_repr(resource, client)
         self.assertEqual(subscription.name, self.SUB_NAME)
-        self.assertTrue(subscription.topic is None)
+        self.assertIsNone(subscription.topic)
         self.assertEqual(subscription.ack_deadline, self.DEADLINE)
         self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
 
@@ -153,7 +153,7 @@ class TestSubscription(unittest.TestCase):
         self.assertTrue(auto_ack._subscription is subscription)
         self.assertEqual(auto_ack._return_immediately, False)
         self.assertEqual(auto_ack._max_messages, 1)
-        self.assertTrue(auto_ack._client is None)
+        self.assertIsNone(auto_ack._client)
 
     def test_autoack_explicit(self):
         from google.cloud.pubsub.subscription import AutoAck
@@ -686,7 +686,7 @@ class TestAutoAck(unittest.TestCase):
         auto_ack = self._makeOne(subscription)
         self.assertEqual(auto_ack._return_immediately, False)
         self.assertEqual(auto_ack._max_messages, 1)
-        self.assertTrue(auto_ack._client is None)
+        self.assertIsNone(auto_ack._client)
 
     def test_ctor_explicit(self):
         CLIENT = object()
@@ -709,7 +709,7 @@ class TestAutoAck(unittest.TestCase):
         self.assertTrue(returned is auto_ack)
         self.assertEqual(subscription._return_immediately, False)
         self.assertEqual(subscription._max_messages, 1)
-        self.assertTrue(subscription._client is None)
+        self.assertIsNone(subscription._client)
 
     def test___enter___w_explicit(self):
         CLIENT = object()

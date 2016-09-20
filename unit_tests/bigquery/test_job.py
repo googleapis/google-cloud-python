@@ -157,39 +157,39 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
             self.assertEqual(job.allow_jagged_rows,
                              config['allowJaggedRows'])
         else:
-            self.assertTrue(job.allow_jagged_rows is None)
+            self.assertIsNone(job.allow_jagged_rows)
         if 'allowQuotedNewlines' in config:
             self.assertEqual(job.allow_quoted_newlines,
                              config['allowQuotedNewlines'])
         else:
-            self.assertTrue(job.allow_quoted_newlines is None)
+            self.assertIsNone(job.allow_quoted_newlines)
         if 'ignoreUnknownValues' in config:
             self.assertEqual(job.ignore_unknown_values,
                              config['ignoreUnknownValues'])
         else:
-            self.assertTrue(job.ignore_unknown_values is None)
+            self.assertIsNone(job.ignore_unknown_values)
 
     def _verifyEnumConfigProperties(self, job, config):
         if 'createDisposition' in config:
             self.assertEqual(job.create_disposition,
                              config['createDisposition'])
         else:
-            self.assertTrue(job.create_disposition is None)
+            self.assertIsNone(job.create_disposition)
         if 'encoding' in config:
             self.assertEqual(job.encoding,
                              config['encoding'])
         else:
-            self.assertTrue(job.encoding is None)
+            self.assertIsNone(job.encoding)
         if 'sourceFormat' in config:
             self.assertEqual(job.source_format,
                              config['sourceFormat'])
         else:
-            self.assertTrue(job.source_format is None)
+            self.assertIsNone(job.source_format)
         if 'writeDisposition' in config:
             self.assertEqual(job.write_disposition,
                              config['writeDisposition'])
         else:
-            self.assertTrue(job.write_disposition is None)
+            self.assertIsNone(job.write_disposition)
 
     def _verifyResourceProperties(self, job, resource):
         self._verifyReadonlyResourceProperties(job, resource)
@@ -210,22 +210,22 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
             self.assertEqual(job.field_delimiter,
                              config['fieldDelimiter'])
         else:
-            self.assertTrue(job.field_delimiter is None)
+            self.assertIsNone(job.field_delimiter)
         if 'maxBadRecords' in config:
             self.assertEqual(job.max_bad_records,
                              config['maxBadRecords'])
         else:
-            self.assertTrue(job.max_bad_records is None)
+            self.assertIsNone(job.max_bad_records)
         if 'quote' in config:
             self.assertEqual(job.quote_character,
                              config['quote'])
         else:
-            self.assertTrue(job.quote_character is None)
+            self.assertIsNone(job.quote_character)
         if 'skipLeadingRows' in config:
             self.assertEqual(job.skip_leading_rows,
                              config['skipLeadingRows'])
         else:
-            self.assertTrue(job.skip_leading_rows is None)
+            self.assertIsNone(job.skip_leading_rows)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -249,17 +249,17 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertEqual(job.output_rows, None)
 
         # set/read from resource['configuration']['load']
-        self.assertTrue(job.allow_jagged_rows is None)
-        self.assertTrue(job.allow_quoted_newlines is None)
-        self.assertTrue(job.create_disposition is None)
-        self.assertTrue(job.encoding is None)
-        self.assertTrue(job.field_delimiter is None)
-        self.assertTrue(job.ignore_unknown_values is None)
-        self.assertTrue(job.max_bad_records is None)
-        self.assertTrue(job.quote_character is None)
-        self.assertTrue(job.skip_leading_rows is None)
-        self.assertTrue(job.source_format is None)
-        self.assertTrue(job.write_disposition is None)
+        self.assertIsNone(job.allow_jagged_rows)
+        self.assertIsNone(job.allow_quoted_newlines)
+        self.assertIsNone(job.create_disposition)
+        self.assertIsNone(job.encoding)
+        self.assertIsNone(job.field_delimiter)
+        self.assertIsNone(job.ignore_unknown_values)
+        self.assertIsNone(job.max_bad_records)
+        self.assertIsNone(job.quote_character)
+        self.assertIsNone(job.skip_leading_rows)
+        self.assertIsNone(job.source_format)
+        self.assertIsNone(job.write_disposition)
 
     def test_ctor_w_schema(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -682,13 +682,13 @@ class TestCopyJob(unittest.TestCase, _Base):
             self.assertEqual(job.create_disposition,
                              config['createDisposition'])
         else:
-            self.assertTrue(job.create_disposition is None)
+            self.assertIsNone(job.create_disposition)
 
         if 'writeDisposition' in config:
             self.assertEqual(job.write_disposition,
                              config['writeDisposition'])
         else:
-            self.assertTrue(job.write_disposition is None)
+            self.assertIsNone(job.write_disposition)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -706,8 +706,8 @@ class TestCopyJob(unittest.TestCase, _Base):
         self._verifyInitialReadonlyProperties(job)
 
         # set/read from resource['configuration']['copy']
-        self.assertTrue(job.create_disposition is None)
-        self.assertTrue(job.write_disposition is None)
+        self.assertIsNone(job.create_disposition)
+        self.assertIsNone(job.write_disposition)
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
@@ -969,25 +969,25 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
             self.assertEqual(job.compression,
                              config['compression'])
         else:
-            self.assertTrue(job.compression is None)
+            self.assertIsNone(job.compression)
 
         if 'destinationFormat' in config:
             self.assertEqual(job.destination_format,
                              config['destinationFormat'])
         else:
-            self.assertTrue(job.destination_format is None)
+            self.assertIsNone(job.destination_format)
 
         if 'fieldDelimiter' in config:
             self.assertEqual(job.field_delimiter,
                              config['fieldDelimiter'])
         else:
-            self.assertTrue(job.field_delimiter is None)
+            self.assertIsNone(job.field_delimiter)
 
         if 'printHeader' in config:
             self.assertEqual(job.print_header,
                              config['printHeader'])
         else:
-            self.assertTrue(job.print_header is None)
+            self.assertIsNone(job.print_header)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -1005,10 +1005,10 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         self._verifyInitialReadonlyProperties(job)
 
         # set/read from resource['configuration']['copy']
-        self.assertTrue(job.compression is None)
-        self.assertTrue(job.destination_format is None)
-        self.assertTrue(job.field_delimiter is None)
-        self.assertTrue(job.print_header is None)
+        self.assertIsNone(job.compression)
+        self.assertIsNone(job.destination_format)
+        self.assertIsNone(job.field_delimiter)
+        self.assertIsNone(job.print_header)
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
@@ -1247,34 +1247,34 @@ class TestQueryJob(unittest.TestCase, _Base):
             self.assertEqual(job.allow_large_results,
                              config['allowLargeResults'])
         else:
-            self.assertTrue(job.allow_large_results is None)
+            self.assertIsNone(job.allow_large_results)
         if 'flattenResults' in config:
             self.assertEqual(job.flatten_results,
                              config['flattenResults'])
         else:
-            self.assertTrue(job.flatten_results is None)
+            self.assertIsNone(job.flatten_results)
         if 'useQueryCache' in config:
             self.assertEqual(job.use_query_cache,
                              config['useQueryCache'])
         else:
-            self.assertTrue(job.use_query_cache is None)
+            self.assertIsNone(job.use_query_cache)
         if 'useLegacySql' in config:
             self.assertEqual(job.use_legacy_sql,
                              config['useLegacySql'])
         else:
-            self.assertTrue(job.use_legacy_sql is None)
+            self.assertIsNone(job.use_legacy_sql)
 
     def _verifyIntegerResourceProperties(self, job, config):
         if 'maximumBillingTier' in config:
             self.assertEqual(job.maximum_billing_tier,
                              config['maximumBillingTier'])
         else:
-            self.assertTrue(job.maximum_billing_tier is None)
+            self.assertIsNone(job.maximum_billing_tier)
         if 'maximumBytesBilled' in config:
             self.assertEqual(job.maximum_bytes_billed,
                              config['maximumBytesBilled'])
         else:
-            self.assertTrue(job.maximum_bytes_billed is None)
+            self.assertIsNone(job.maximum_bytes_billed)
 
     def _verifyResourceProperties(self, job, resource):
         self._verifyReadonlyResourceProperties(job, resource)
@@ -1287,7 +1287,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             self.assertEqual(job.create_disposition,
                              config['createDisposition'])
         else:
-            self.assertTrue(job.create_disposition is None)
+            self.assertIsNone(job.create_disposition)
         if 'defaultDataset' in config:
             dataset = job.default_dataset
             ds_ref = {
@@ -1296,7 +1296,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             }
             self.assertEqual(ds_ref, config['defaultDataset'])
         else:
-            self.assertTrue(job.default_dataset is None)
+            self.assertIsNone(job.default_dataset)
         if 'destinationTable' in config:
             table = job.destination
             tb_ref = {
@@ -1306,17 +1306,17 @@ class TestQueryJob(unittest.TestCase, _Base):
             }
             self.assertEqual(tb_ref, config['destinationTable'])
         else:
-            self.assertTrue(job.destination is None)
+            self.assertIsNone(job.destination)
         if 'priority' in config:
             self.assertEqual(job.priority,
                              config['priority'])
         else:
-            self.assertTrue(job.priority is None)
+            self.assertIsNone(job.priority)
         if 'writeDisposition' in config:
             self.assertEqual(job.write_disposition,
                              config['writeDisposition'])
         else:
-            self.assertTrue(job.write_disposition is None)
+            self.assertIsNone(job.write_disposition)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -1331,17 +1331,17 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._verifyInitialReadonlyProperties(job)
 
         # set/read from resource['configuration']['copy']
-        self.assertTrue(job.allow_large_results is None)
-        self.assertTrue(job.create_disposition is None)
-        self.assertTrue(job.default_dataset is None)
-        self.assertTrue(job.destination is None)
-        self.assertTrue(job.flatten_results is None)
-        self.assertTrue(job.priority is None)
-        self.assertTrue(job.use_query_cache is None)
-        self.assertTrue(job.use_legacy_sql is None)
-        self.assertTrue(job.write_disposition is None)
-        self.assertTrue(job.maximum_billing_tier is None)
-        self.assertTrue(job.maximum_bytes_billed is None)
+        self.assertIsNone(job.allow_large_results)
+        self.assertIsNone(job.create_disposition)
+        self.assertIsNone(job.default_dataset)
+        self.assertIsNone(job.destination)
+        self.assertIsNone(job.flatten_results)
+        self.assertIsNone(job.priority)
+        self.assertIsNone(job.use_query_cache)
+        self.assertIsNone(job.use_legacy_sql)
+        self.assertIsNone(job.write_disposition)
+        self.assertIsNone(job.maximum_billing_tier)
+        self.assertIsNone(job.maximum_bytes_billed)
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()

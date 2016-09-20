@@ -34,7 +34,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client.connection, Connection)
         self.assertTrue(client.connection.credentials is CREDENTIALS)
-        self.assertTrue(client.current_batch is None)
+        self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
 
     def test__push_batch_and__pop_batch(self):
@@ -77,7 +77,7 @@ class TestClient(unittest.TestCase):
         CREDENTIALS = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         self.assertTrue(client.connection is client._connection)
-        self.assertTrue(client.current_batch is None)
+        self.assertIsNone(client.current_batch)
 
     def test_connection_getter_with_batch(self):
         from google.cloud.storage.batch import Batch

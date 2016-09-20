@@ -156,7 +156,7 @@ class TestQuery(unittest.TestCase):
         key = Key('KIND', 123, project=self._PROJECT)
         query = self._makeOne(client=self._makeClient(), ancestor=key)
         del query.ancestor
-        self.assertTrue(query.ancestor is None)
+        self.assertIsNone(query.ancestor)
 
     def test_add_filter_setter_w_unknown_operator(self):
         query = self._makeOne(self._makeClient())

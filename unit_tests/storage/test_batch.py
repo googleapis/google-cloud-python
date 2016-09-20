@@ -90,7 +90,7 @@ class TestBatch(unittest.TestCase):
         credentials = _Credentials()
         client = Client(project=project, credentials=credentials)
         batch1 = self._makeOne(client)
-        self.assertTrue(batch1.current() is None)
+        self.assertIsNone(batch1.current())
 
         client._push_batch(batch1)
         self.assertTrue(batch1.current() is batch1)
