@@ -1201,7 +1201,7 @@ class Test_Upload(unittest.TestCase):
         self.assertFalse(upload.complete)
         self.assertEqual(upload.progress, LAST)
         self.assertEqual(stream.tell(), LAST)
-        self.assertFalse(upload._final_response is response)
+        self.assertIsNot(upload._final_response, response)
 
     def test_refresh_upload_state_w_RESUME_INCOMPLETE_wo_range(self):
         from google.cloud.streaming import transfer as MUT
@@ -1226,7 +1226,7 @@ class Test_Upload(unittest.TestCase):
         self.assertFalse(upload.complete)
         self.assertEqual(upload.progress, 0)
         self.assertEqual(stream.tell(), 0)
-        self.assertFalse(upload._final_response is response)
+        self.assertIsNot(upload._final_response, response)
 
     def test_refresh_upload_state_w_error(self):
         from six.moves import http_client

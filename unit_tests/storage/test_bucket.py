@@ -618,7 +618,7 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._makeOne(name=NAME, properties=properties)
         self.assertEqual(bucket.lifecycle_rules, rules)
         # Make sure it's a copy
-        self.assertFalse(bucket.lifecycle_rules is rules)
+        self.assertIsNot(bucket.lifecycle_rules, rules)
 
     def test_lifecycle_rules_setter(self):
         NAME = 'name'
@@ -645,7 +645,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(entries[0], CORS_ENTRY)
         self.assertEqual(entries[1], {})
         # Make sure it was a copy, not the same object.
-        self.assertFalse(entries[0] is CORS_ENTRY)
+        self.assertIsNot(entries[0], CORS_ENTRY)
 
     def test_cors_setter(self):
         NAME = 'name'

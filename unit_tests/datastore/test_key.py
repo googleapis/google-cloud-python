@@ -292,7 +292,7 @@ class TestKey(unittest.TestCase):
         key = self._makeOne('KIND', project=self._DEFAULT_PROJECT)
         _ID = 1234
         new_key = key.completed_key(_ID)
-        self.assertFalse(key is new_key)
+        self.assertIsNot(key, new_key)
         self.assertEqual(new_key.id, _ID)
         self.assertEqual(new_key.name, None)
 
@@ -300,7 +300,7 @@ class TestKey(unittest.TestCase):
         key = self._makeOne('KIND', project=self._DEFAULT_PROJECT)
         _NAME = 'NAME'
         new_key = key.completed_key(_NAME)
-        self.assertFalse(key is new_key)
+        self.assertIsNot(key, new_key)
         self.assertEqual(new_key.id, None)
         self.assertEqual(new_key.name, _NAME)
 

@@ -409,7 +409,7 @@ class TestClient(unittest.TestCase):
         new_key = result.key
 
         # Check the returned value is as expected.
-        self.assertFalse(new_key is key)
+        self.assertIsNot(new_key, key)
         self.assertEqual(new_key.project, self.PROJECT)
         self.assertEqual(new_key.path, PATH)
         self.assertEqual(list(result), ['foo'])
@@ -438,7 +438,7 @@ class TestClient(unittest.TestCase):
         new_key = result.key
 
         # Check the returned value is as expected.
-        self.assertFalse(new_key is key)
+        self.assertIsNot(new_key, key)
         self.assertEqual(new_key.project, self.PROJECT)
         self.assertEqual(new_key.path, PATH)
         self.assertEqual(list(result), ['foo'])

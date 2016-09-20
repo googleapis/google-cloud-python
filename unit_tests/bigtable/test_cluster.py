@@ -63,10 +63,10 @@ class TestCluster(unittest.TestCase):
         new_cluster = cluster.copy()
 
         # Make sure the client copy succeeded.
-        self.assertFalse(new_cluster._instance is instance)
+        self.assertIsNot(new_cluster._instance, instance)
         self.assertEqual(new_cluster.serve_nodes, SERVE_NODES)
         # Make sure the client got copied to a new instance.
-        self.assertFalse(cluster is new_cluster)
+        self.assertIsNot(cluster, new_cluster)
         self.assertEqual(cluster, new_cluster)
 
     def test__update_from_pb_success(self):

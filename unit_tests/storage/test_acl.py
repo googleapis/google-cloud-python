@@ -395,7 +395,7 @@ class Test_ACL(unittest.TestCase):
         before = acl.entity(TYPE, ID)
         acl.add_entity(entity)
         self.assertTrue(acl.loaded)
-        self.assertFalse(acl.get_entity(ENTITY_VAL) is before)
+        self.assertIsNot(acl.get_entity(ENTITY_VAL), before)
         self.assertIs(acl.get_entity(ENTITY_VAL), entity)
         self.assertEqual(list(acl),
                          [{'entity': 'type-id', 'role': ROLE}])
