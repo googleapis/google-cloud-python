@@ -356,7 +356,6 @@ class TestBigQuery(unittest.TestCase):
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
 
-        self.assertTrue(_job_done(job))
         self.assertEqual(job.output_rows, len(ROWS))
 
         rows, _, _ = table.fetch_data()
@@ -428,8 +427,6 @@ class TestBigQuery(unittest.TestCase):
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
-
-        self.assertTrue(job.state in ('DONE', 'done'))
 
         rows, _, _ = table.fetch_data()
         by_age = operator.itemgetter(1)
