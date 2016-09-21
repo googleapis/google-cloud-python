@@ -995,10 +995,23 @@ class QueryJob(_AsyncJob):
                 'tableId': self.destination.name,
             }
 
-    def _populate_config_resource(self, configuration):
-        """Helper for _build_resource: copy config properties to resource"""
+    def _populate_config_resource_booleans(self, configuration):
+        """Helper for _populate_config_resource."""
         if self.allow_large_results is not None:
             configuration['allowLargeResults'] = self.allow_large_results
+        if self.flatten_results is not None:
+            configuration['flattenResults'] = self.flatten_results
+        if self.use_query_cache is not None:
+            configuration['useQueryCache'] = self.use_query_cache
+        if self.use_legacy_sql is not None:
+            configuration['useLegacySql'] = self.use_legacy_sql
+        if self.dry_run is not None:
+            configuration['dryRun'] = self.dry_run
+
+    def _populate_config_resource(self, configuration):
+        """Helper for _build_resource: copy config properties to resource"""
+        self._populate_config_resource_booleans(configuration)
+
         if self.create_disposition is not None:
             configuration['createDisposition'] = self.create_disposition
         if self.default_dataset is not None:
@@ -1009,16 +1022,8 @@ class QueryJob(_AsyncJob):
         if self.destination is not None:
             table_res = self._destination_table_resource()
             configuration['destinationTable'] = table_res
-        if self.flatten_results is not None:
-            configuration['flattenResults'] = self.flatten_results
         if self.priority is not None:
             configuration['priority'] = self.priority
-        if self.use_query_cache is not None:
-            configuration['useQueryCache'] = self.use_query_cache
-        if self.use_legacy_sql is not None:
-            configuration['useLegacySql'] = self.use_legacy_sql
-        if self.dry_run is not None:
-            configuration['dryRun'] = self.dry_run
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
         if self.maximum_billing_tier is not None:
