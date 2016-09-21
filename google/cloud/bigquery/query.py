@@ -77,6 +77,8 @@ class QueryResults(object):
         """
         instance = cls(job.query, job._client, job.udf_resources)
         instance._job = job
+        job_ref = instance._properties.setdefault('jobReference', {})
+        job_ref['jobId'] = job.name
         if job.default_dataset is not None:
             instance.default_dataset = job.default_dataset
         if job.use_query_cache is not None:
