@@ -55,6 +55,7 @@ IGNORED_MODULES = frozenset([
     'google.cloud.translate.__init__',
     'google.cloud.vision.__init__',
     'google.cloud.vision.fixtures',
+    'google.cloud.speech.__init__',
 ])
 
 
