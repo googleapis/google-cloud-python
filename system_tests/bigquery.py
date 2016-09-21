@@ -464,4 +464,8 @@ class TestBigQuery(unittest.TestCase):
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
 
-        self.assertEqual(job.state.lower(), 'done')
+        # The `cancel` API doesn't leave any reliable traces on
+        # the status of the job resource, so we can't really assert for
+        # them here.  The best we can do is not that the API call didn't
+        # raise an error, and that the job completed (in the `retry()`
+        # above).
