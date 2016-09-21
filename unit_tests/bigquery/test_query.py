@@ -155,6 +155,7 @@ class TestQueryResults(unittest.TestCase):
 
         query = klass.from_query_job(job)
 
+        self.assertEqual(query.name, self.JOB_NAME)
         self.assertEqual(query.query, self.QUERY)
         self.assertIs(query._client, client)
         self.assertIs(query._job, job)
