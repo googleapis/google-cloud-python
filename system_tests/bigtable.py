@@ -129,7 +129,7 @@ def tearDownModule():
 class TestInstanceAdminAPI(unittest.TestCase):
 
     def setUp(self):
-        if Config.IN_EMULATOR is not None:
+        if Config.IN_EMULATOR:
             self.skipTest(
                 'Instance Admin API not supported in Bigtable emulator')
         self.instances_to_delete = []
@@ -314,7 +314,7 @@ class TestDataAPI(unittest.TestCase):
         # NOTE: This method is necessary because ``Config.IN_EMULATOR``
         #       is set at runtime rather than import time, which means we
         #       can't use the @unittest.skipIf decorator.
-        if Config.IN_EMULATOR is not None:
+        if Config.IN_EMULATOR:
             self.skipTest(message)
 
     def setUp(self):
