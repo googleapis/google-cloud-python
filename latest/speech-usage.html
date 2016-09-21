@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud ddee548 documentation</title>
+  <title>Using the API &mdash; google-cloud 1f223f2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud ddee548 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 1f223f2 documentation" href="index.html"/>
         <link rel="next" title="Speech Client" href="speech-client.html"/>
         <link rel="prev" title="Natural Language Response Classes" href="language-responses.html"/> 
 
@@ -295,18 +295,19 @@ create an instance of <a class="reference internal" href="speech-client.html#goo
 <p>The <code class="xref py py-meth docutils literal"><span class="pre">sync_recognize()</span></code> method converts speech data to text
 and returns alternative text transcriptons.</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alternatives</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sync_recognize</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span><span class="s2">&quot;gs://my-bucket/recording.flac&quot;</span><span class="p">,</span>
-<span class="gp">... </span>                <span class="s2">&quot;FLAC&quot;</span><span class="p">,</span> <span class="mi">16000</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alternatives</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sync_recognize</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;FLAC&#39;</span><span class="p">,</span> <span class="mi">16000</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">alternatives</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;   transcript: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">alternative</span><span class="p">[</span><span class="s2">&quot;transcript&quot;</span><span class="p">],))</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;   confidence: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">alternative</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">],))</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;transcript: &#39;</span> <span class="o">+</span> <span class="n">alternative</span><span class="p">[</span><span class="s1">&#39;transcript&#39;</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;confidence: &#39;</span> <span class="o">+</span> <span class="n">alternative</span><span class="p">[</span><span class="s1">&#39;confidence&#39;</span><span class="p">])</span>
 <span class="go">====================</span>
-<span class="go">         transcript: Hello, this is a test</span>
-<span class="go">         confidence: 0.81</span>
+<span class="go">transcript: Hello, this is a test</span>
+<span class="go">confidence: 0.81</span>
 <span class="go">====================</span>
-<span class="go">         transcript: Hello, this is one test</span>
-<span class="go">         confidence: 0</span>
+<span class="go">transcript: Hello, this is one test</span>
+<span class="go">confidence: 0</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -354,7 +355,7 @@ and returns alternative text transcriptons.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'ddee548',
+            VERSION:'1f223f2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

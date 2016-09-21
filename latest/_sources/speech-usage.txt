@@ -38,17 +38,18 @@ and returns alternative text transcriptons.
 
   .. code-block:: python
 
-     >>> alternatives = client.sync_recognize(None,"gs://my-bucket/recording.flac",
-     ...                 "FLAC", 16000, max_alternatives=2):
+     >>> alternatives = client.sync_recognize(
+     ...     None, 'gs://my-bucket/recording.flac',
+     ...     'FLAC', 16000, max_alternatives=2)
      >>> for alternative in alternatives:
      ...     print('=' * 20)
-     ...     print('   transcript: %s' % (alternative["transcript"],))
-     ...     print('   confidence: %s' % (alternative["confidence"],))
+     ...     print('transcript: ' + alternative['transcript'])
+     ...     print('confidence: ' + alternative['confidence'])
      ====================
-              transcript: Hello, this is a test
-              confidence: 0.81
+     transcript: Hello, this is a test
+     confidence: 0.81
      ====================
-              transcript: Hello, this is one test
-              confidence: 0
+     transcript: Hello, this is one test
+     confidence: 0
 
 .. _sync_recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize

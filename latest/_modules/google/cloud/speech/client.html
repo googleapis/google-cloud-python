@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.client &mdash; google-cloud ddee548 documentation</title>
+  <title>google.cloud.speech.client &mdash; google-cloud 1f223f2 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud ddee548 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1f223f2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -261,7 +261,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for google.cloud.speech.client</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2016 Google Inc. All Rights Reserved.</span>
+<span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -333,8 +333,7 @@
 
 <div class="viewcode-block" id="Client.sync_recognize"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client.sync_recognize">[docs]</a>    <span class="k">def</span> <span class="nf">sync_recognize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">source_uri</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span>
                        <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">profanity_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                       <span class="n">profanity_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Synchronous Speech Recognition.</span>
 
 <span class="sd">        .. _sync_recognize: https://cloud.google.com/speech/reference/\</span>
@@ -347,10 +346,10 @@
 
 <span class="sd">        :type source_uri: str</span>
 <span class="sd">        :param source_uri: URI that points to a file that contains audio</span>
-<span class="sd">                      data bytes as specified in RecognitionConfig.</span>
-<span class="sd">                      Currently, only Google Cloud Storage URIs are</span>
-<span class="sd">                      supported, which must be specified in the following</span>
-<span class="sd">                      format: gs://bucket_name/object_name</span>
+<span class="sd">                           data bytes as specified in RecognitionConfig.</span>
+<span class="sd">                           Currently, only Google Cloud Storage URIs are</span>
+<span class="sd">                           supported, which must be specified in the following</span>
+<span class="sd">                           format: ``gs://bucket_name/object_name``.</span>
 
 <span class="sd">        :type encoding: str</span>
 <span class="sd">        :param encoding: encoding of audio data sent in all RecognitionAudio</span>
@@ -360,16 +359,16 @@
 
 <span class="sd">        :type sample_rate: int</span>
 <span class="sd">        :param sample_rate: Sample rate in Hertz of the audio data sent in all</span>
-<span class="sd">                            requests. Valid values are: 8000-48000.</span>
-<span class="sd">                            16000 is optimal. For best results, set the</span>
-<span class="sd">                            sampling rate of the audio source to 16000 Hz.</span>
-<span class="sd">                            If that&#39;s not possible, use the native sample rate</span>
-<span class="sd">                            of the audio source (instead of re-sampling).</span>
+<span class="sd">                            requests. Valid values are: 8000-48000. For best</span>
+<span class="sd">                            results, set the sampling rate of the audio source</span>
+<span class="sd">                            to 16000 Hz. If that&#39;s not possible, use the</span>
+<span class="sd">                            native sample rate of the audio source (instead of</span>
+<span class="sd">                            re-sampling).</span>
 
 <span class="sd">        :type language_code: str</span>
 <span class="sd">        :param language_code: (Optional) The language of the supplied audio as</span>
-<span class="sd">                              BCP-47 language tag. Example: &quot;en-GB&quot;.</span>
-<span class="sd">                              If omitted, defaults to &quot;en-US&quot;.</span>
+<span class="sd">                              BCP-47 language tag. Example: ``&#39;en-GB&#39;``.</span>
+<span class="sd">                              If omitted, defaults to ``&#39;en-US&#39;``.</span>
 
 <span class="sd">        :type max_alternatives: int</span>
 <span class="sd">        :param max_alternatives: (Optional) Maximum number of recognition</span>
@@ -382,8 +381,8 @@
 <span class="sd">        :param profanity_filter: If True, the server will attempt to filter</span>
 <span class="sd">                                 out profanities, replacing all but the</span>
 <span class="sd">                                 initial character in each filtered word with</span>
-<span class="sd">                                 asterisks, e.g. &quot;f***&quot;. If False or omitted,</span>
-<span class="sd">                                 profanities won&#39;t be filtered out.</span>
+<span class="sd">                                 asterisks, e.g. ``&#39;f***&#39;``. If False or</span>
+<span class="sd">                                 omitted, profanities won&#39;t be filtered out.</span>
 
 <span class="sd">        :type speech_context: list</span>
 <span class="sd">        :param speech_context: A list of strings (max 50) containing words and</span>
@@ -403,13 +402,14 @@
 <span class="sd">                    between 0 and 1.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="n">content</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">source_uri</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;content and source_uri cannot be both equal to</span><span class="se">\</span>
-<span class="s1">                             None&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">content</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">source_uri</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;content and source_uri cannot be both &#39;</span>
+                             <span class="s1">&#39;equal to None&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">source_uri</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;content and source_uri cannot be both different from</span><span class="se">\</span>
-<span class="s1">                             None&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">source_uri</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;content and source_uri cannot be both &#39;</span>
+                             <span class="s1">&#39;different from None&#39;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;encoding cannot be None&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">sample_rate</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -476,7 +476,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'ddee548',
+            VERSION:'1f223f2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
