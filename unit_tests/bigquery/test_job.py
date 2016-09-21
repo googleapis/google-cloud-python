@@ -1263,6 +1263,11 @@ class TestQueryJob(unittest.TestCase, _Base):
                              config['useLegacySql'])
         else:
             self.assertIsNone(job.use_legacy_sql)
+        if 'dryRun' in config:
+            self.assertEqual(job.dry_run,
+                             config['dryRun'])
+        else:
+            self.assertIsNone(job.dry_run)
 
     def _verifyIntegerResourceProperties(self, job, config):
         if 'maximumBillingTier' in config:
@@ -1339,6 +1344,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.priority)
         self.assertIsNone(job.use_query_cache)
         self.assertIsNone(job.use_legacy_sql)
+        self.assertIsNone(job.dry_run)
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.maximum_billing_tier)
         self.assertIsNone(job.maximum_bytes_billed)
@@ -1460,6 +1466,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             'priority': 'INTERACTIVE',
             'useQueryCache': True,
             'useLegacySql': True,
+            'dryRun': True,
             'writeDisposition': 'WRITE_TRUNCATE',
             'maximumBillingTier': 4,
             'maximumBytesBilled': 123456
@@ -1482,6 +1489,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         job.priority = 'INTERACTIVE'
         job.use_query_cache = True
         job.use_legacy_sql = True
+        job.dry_run = True
         job.write_disposition = 'WRITE_TRUNCATE'
         job.maximum_billing_tier = 4
         job.maximum_bytes_billed = 123456

@@ -885,6 +885,7 @@ class _AsyncQueryConfiguration(object):
     _priority = None
     _use_query_cache = None
     _use_legacy_sql = None
+    _dry_run = None
     _write_disposition = None
     _maximum_billing_tier = None
     _maximum_bytes_billed = None
@@ -960,6 +961,12 @@ class QueryJob(_AsyncJob):
     reference/v2/jobs#configuration.query.useLegacySql
     """
 
+    dry_run = _TypedProperty('dry_run', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/\
+    reference/v2/jobs#configuration.query.dryRun
+    """
+
     write_disposition = WriteDisposition('write_disposition')
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition
@@ -1010,6 +1017,8 @@ class QueryJob(_AsyncJob):
             configuration['useQueryCache'] = self.use_query_cache
         if self.use_legacy_sql is not None:
             configuration['useLegacySql'] = self.use_legacy_sql
+        if self.dry_run is not None:
+            configuration['dryRun'] = self.dry_run
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
         if self.maximum_billing_tier is not None:
