@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc. All Rights Reserved.
+# Copyright 2016 Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,11 @@
 
 import unittest
 
-_AUDIO_SOURCE_URI = 'gs://sample-bucket/sample-recording.flac'
-
 
 class TestClient(unittest.TestCase):
     SAMPLE_RATE = 16000
     HINTS = ['hi']
+    AUDIO_SOURCE_URI = 'gs://sample-bucket/sample-recording.flac'
 
     def _getTargetClass(self):
         from google.cloud.speech.client import Client
@@ -78,9 +77,15 @@ class TestClient(unittest.TestCase):
                                          profanity_filter=True,
                                          speech_context=self.HINTS)
 
-        self.assertEqual(REQUEST,
-                         client.connection._requested[0]['data'])
-        self.assertEqual(response[0]['transcript'], 'hello')
+        self.assertEqual(len(client.connection._requested), 1)
+        req = client.connection._requested[0]
+        self.assertEqual(len(req), 3)
+        self.assertEqual(req['data'], REQUEST)
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], 'syncrecognize')
+
+        expected = SYNC_RECOGNIZE_RESPONSE['results'][0]['alternatives']
+        self.assertEqual(response, expected)
 
     def test_sync_recognize_source_uri_without_optional_parameters(self):
         from google.cloud.speech.client import Encoding
@@ -93,7 +98,7 @@ class TestClient(unittest.TestCase):
                 'sampleRate': 16000,
             },
             'audio': {
-                'uri': _AUDIO_SOURCE_URI,
+                'uri': self.AUDIO_SOURCE_URI,
             }
         }
         credentials = _Credentials()
@@ -102,13 +107,19 @@ class TestClient(unittest.TestCase):
 
         encoding = Encoding.FLAC
 
-        response = client.sync_recognize(None, _AUDIO_SOURCE_URI,
+        response = client.sync_recognize(None, self.AUDIO_SOURCE_URI,
                                          encoding,
                                          self.SAMPLE_RATE)
 
-        self.assertEqual(REQUEST,
-                         client.connection._requested[0]['data'])
-        self.assertEqual(response[0]['transcript'], 'hello')
+        self.assertEqual(len(client.connection._requested), 1)
+        req = client.connection._requested[0]
+        self.assertEqual(len(req), 3)
+        self.assertEqual(req['data'], REQUEST)
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], 'syncrecognize')
+
+        expected = SYNC_RECOGNIZE_RESPONSE['results'][0]['alternatives']
+        self.assertEqual(response, expected)
 
     def test_sync_recognize_without_content_or_source_uri(self):
         from google.cloud.speech.client import Encoding
@@ -128,7 +139,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(credentials=credentials)
 
         with self.assertRaises(ValueError):
-            client.sync_recognize(_AUDIO_CONTENT, _AUDIO_SOURCE_URI,
+            client.sync_recognize(_AUDIO_CONTENT, self.AUDIO_SOURCE_URI,
                                   Encoding.FLAC, self.SAMPLE_RATE)
 
     def test_sync_recognize_without_encoding(self):
@@ -136,7 +147,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(credentials=credentials)
 
         with self.assertRaises(ValueError):
-            client.sync_recognize(None, _AUDIO_SOURCE_URI, None,
+            client.sync_recognize(None, self.AUDIO_SOURCE_URI, None,
                                   self.SAMPLE_RATE)
 
     def test_sync_recognize_without_samplerate(self):
@@ -146,7 +157,7 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(credentials=credentials)
 
         with self.assertRaises(ValueError):
-            client.sync_recognize(None, _AUDIO_SOURCE_URI, Encoding.FLAC,
+            client.sync_recognize(None, self.AUDIO_SOURCE_URI, Encoding.FLAC,
                                   None)
 
     def test_sync_recognize_with_empty_results(self):
@@ -158,7 +169,7 @@ class TestClient(unittest.TestCase):
         client.connection = _Connection(SYNC_RECOGNIZE_EMPTY_RESPONSE)
 
         with self.assertRaises(ValueError):
-            client.sync_recognize(None, _AUDIO_SOURCE_URI, Encoding.FLAC,
+            client.sync_recognize(None, self.AUDIO_SOURCE_URI, Encoding.FLAC,
                                   self.SAMPLE_RATE)
 
 
