@@ -169,6 +169,14 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: Speech
+
+  speech-usage
+  Client <speech-client>
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: External Links
 
   GitHub <https://github.com/GoogleCloudPlatform/google-cloud-python/>
