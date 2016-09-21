@@ -18,13 +18,13 @@ SYNC_RECOGNIZE_RESPONSE = {
             'alternatives': [
                 {
                     'transcript': 'hello',
-                    'confidence': 0.784919
-                }
-            ]
-        }
-    ]
+                    'confidence': 0.784919,
+                },
+            ],
+        },
+    ],
 }
 
 SYNC_RECOGNIZE_EMPTY_RESPONSE = {
-    'results': []
+    'results': [],
 }

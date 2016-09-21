@@ -44,6 +44,7 @@ IGNORED_MODULES = frozenset([
     'google.cloud.monitoring.__init__',
     'google.cloud.pubsub.__init__',
     'google.cloud.resource_manager.__init__',
+    'google.cloud.speech.__init__',
     'google.cloud.storage.__init__',
     'google.cloud.streaming.__init__',
     'google.cloud.streaming.buffered_stream',
@@ -55,7 +56,6 @@ IGNORED_MODULES = frozenset([
     'google.cloud.translate.__init__',
     'google.cloud.vision.__init__',
     'google.cloud.vision.fixtures',
-    'google.cloud.speech.__init__',
 ])
 
 
