@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.job &mdash; google-cloud 1f223f2 documentation</title>
+  <title>google.cloud.bigquery.job &mdash; google-cloud 744d2d0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 1f223f2 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 744d2d0 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -1148,6 +1148,7 @@
     <span class="n">_priority</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_use_query_cache</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_use_legacy_sql</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_dry_run</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_write_disposition</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_maximum_billing_tier</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_maximum_bytes_billed</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1223,6 +1224,12 @@
 <span class="sd">    reference/v2/jobs#configuration.query.useLegacySql</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">dry_run</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;dry_run&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See:</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/\</span>
+<span class="sd">    reference/v2/jobs#configuration.query.dryRun</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">write_disposition</span> <span class="o">=</span> <span class="n">WriteDisposition</span><span class="p">(</span><span class="s1">&#39;write_disposition&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition</span>
@@ -1251,10 +1258,23 @@
                 <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">_populate_config_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Helper for _build_resource: copy config properties to resource&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_populate_config_resource_booleans</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for _populate_config_resource.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_large_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;allowLargeResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_large_results</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;flattenResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten_results</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_query_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;useQueryCache&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_query_cache</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_legacy_sql</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;dryRun&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span>
+
+    <span class="k">def</span> <span class="nf">_populate_config_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for _build_resource: copy config properties to resource&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_populate_config_resource_booleans</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_disposition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;createDisposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_disposition</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1265,14 +1285,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">table_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_destination_table_resource</span><span class="p">()</span>
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;destinationTable&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table_res</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;flattenResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten_results</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">priority</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;priority&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">priority</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_query_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;useQueryCache&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_query_cache</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_legacy_sql</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_disposition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;writeDisposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_disposition</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum_billing_tier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1383,7 +1397,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'1f223f2',
+            VERSION:'744d2d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
