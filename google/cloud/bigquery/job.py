@@ -375,7 +375,7 @@ class _AsyncJob(_BaseJob):
 
         api_response = client.connection.api_request(
             method='POST', path='%s/cancel' % (self.path,))
-        self._set_properties(api_response)
+        self._set_properties(api_response['job'])
 
 
 class _LoadConfiguration(object):
