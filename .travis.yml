@@ -6,7 +6,6 @@ install:
   - pip install --upgrade tox
 
 script:
-  - tox -e py26
   - tox -e py27
   - tox -e py34
   - tox -e lint
