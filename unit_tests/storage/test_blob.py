@@ -419,8 +419,8 @@ class Test_Blob(unittest.TestCase):
                 updatedTime = time.mktime(blob.updated.timetuple())
 
         rq = connection.http._requested
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[0]['headers'].items()}
         self.assertEqual(headers['X-Goog-Encryption-Algorithm'], 'AES256')
         self.assertEqual(headers['X-Goog-Encryption-Key'], HEADER_KEY_VALUE)
         self.assertEqual(headers['X-Goog-Encryption-Key-Sha256'],
@@ -502,8 +502,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'media', 'name': BLOB_NAME})
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[0]['headers'].items()}
         self.assertEqual(headers['Content-Length'], '6')
         self.assertEqual(headers['Content-Type'], expected_content_type)
 
@@ -558,8 +558,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(len(rq), 3)
 
         # Requested[0]
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[0].pop('headers').items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[0].pop('headers').items()}
         self.assertEqual(headers['Content-Length'], '0')
         self.assertEqual(headers['X-Upload-Content-Type'],
                          'application/octet-stream')
@@ -579,8 +579,8 @@ class Test_Blob(unittest.TestCase):
         })
 
         # Requested[1]
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[1].pop('headers').items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[1].pop('headers').items()}
         self.assertEqual(headers['Content-Range'], 'bytes 0-4/*')
         self.assertEqual(rq[1], {
             'method': 'PUT',
@@ -591,8 +591,8 @@ class Test_Blob(unittest.TestCase):
         })
 
         # Requested[2]
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[2].pop('headers').items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[2].pop('headers').items()}
         self.assertEqual(headers['Content-Range'], 'bytes */5')
         self.assertEqual(rq[2], {
             'method': 'PUT',
@@ -677,8 +677,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(len(rq), 3)
 
         # Requested[0]
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[0].pop('headers').items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[0].pop('headers').items()}
         self.assertEqual(headers['X-Upload-Content-Length'], '6')
         self.assertEqual(headers['X-Upload-Content-Type'],
                          'application/octet-stream')
@@ -698,8 +698,8 @@ class Test_Blob(unittest.TestCase):
         })
 
         # Requested[1]
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[1].pop('headers').items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[1].pop('headers').items()}
         self.assertEqual(headers['Content-Range'], 'bytes 0-4/6')
         self.assertEqual(rq[1], {
             'method': 'PUT',
@@ -710,8 +710,8 @@ class Test_Blob(unittest.TestCase):
         })
 
         # Requested[2]
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[2].pop('headers').items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[2].pop('headers').items()}
         self.assertEqual(headers['Content-Range'], 'bytes 5-5/6')
         self.assertEqual(rq[2], {
             'method': 'PUT',
@@ -755,8 +755,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(len(rq), 1)
 
         # Requested[0]
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[0].pop('headers').items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[0].pop('headers').items()}
         self.assertEqual(headers['X-Upload-Content-Length'], '6')
         self.assertEqual(headers['X-Upload-Content-Type'],
                          'application/octet-stream')
@@ -820,8 +820,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'media', 'name': 'parent/child'})
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[0]['headers'].items()}
         self.assertEqual(headers['Content-Length'], '6')
         self.assertEqual(headers['Content-Type'], 'application/octet-stream')
 
@@ -873,8 +873,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'media', 'name': BLOB_NAME})
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[0]['headers'].items()}
         self.assertEqual(headers['X-Goog-Encryption-Algorithm'], 'AES256')
         self.assertEqual(headers['X-Goog-Encryption-Key'], HEADER_KEY_VALUE)
         self.assertEqual(headers['X-Goog-Encryption-Key-Sha256'],
@@ -926,8 +926,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'media', 'name': BLOB_NAME})
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[0]['headers'].items()}
         self.assertEqual(headers['Content-Length'], '6')
         self.assertEqual(headers['Content-Type'], expected_content_type)
 
@@ -988,8 +988,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'media', 'name': BLOB_NAME})
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[0]['headers'].items()}
         self.assertEqual(headers['Content-Length'], '6')
         self.assertEqual(headers['Content-Type'], 'text/plain')
         self.assertEqual(rq[0]['body'], DATA)
@@ -1028,8 +1028,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'media', 'name': BLOB_NAME})
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[0]['headers'].items()}
         self.assertEqual(headers['Content-Length'], str(len(ENCODED)))
         self.assertEqual(headers['Content-Type'], 'text/plain')
         self.assertEqual(rq[0]['body'], ENCODED)
@@ -1071,8 +1071,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'media', 'name': BLOB_NAME})
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        headers = {
+            x.title(): str(y) for x, y in rq[0]['headers'].items()}
 
         self.assertEqual(headers['X-Goog-Encryption-Algorithm'], 'AES256')
         self.assertEqual(headers['X-Goog-Encryption-Key'], HEADER_KEY_VALUE)

@@ -281,7 +281,7 @@ class TestLogging(unittest.TestCase):
         metric.description = NEW_DESCRIPTION
         metric.update()
         after_metrics, _ = Config.CLIENT.list_metrics()
-        after_info = dict((metric.name, metric) for metric in after_metrics)
+        after_info = {metric.name: metric for metric in after_metrics}
         after = after_info[METRIC_NAME]
         self.assertEqual(after.filter_, NEW_FILTER)
         self.assertEqual(after.description, NEW_DESCRIPTION)

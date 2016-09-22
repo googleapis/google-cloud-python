@@ -87,8 +87,9 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
         PAYLOAD = {'message': 'MESSAGE', 'weather': 'sunny'}
-        struct_pb = _StructPB(dict([(key, Value(string_value=value))
-                                    for key, value in PAYLOAD.items()]))
+        struct_pb = _StructPB({
+            key: Value(string_value=value) for key, value in PAYLOAD.items()
+        })
         response = _GAXPageIterator(
             [_LogEntryPB(self.LOG_NAME, json_payload=struct_pb)], NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
