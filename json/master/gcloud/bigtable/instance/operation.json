@@ -1,0 +1,35 @@
+{
+  "description": "\n User friendly container for Google Cloud Bigtable Instance.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.instance.operation", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Operation.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L146", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Operation.finished", 
+      "name": "finished", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "bool"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L167", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Operation", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

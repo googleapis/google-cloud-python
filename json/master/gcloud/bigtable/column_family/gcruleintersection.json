@@ -1,0 +1,35 @@
+{
+  "description": "\n User friendly container for Google Cloud Bigtable Column Family.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.column_family.gcruleintersection", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.column_family.GCRuleIntersection.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py/gcloud/bigtable/column_family.py#L178", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.column_family.GCRuleIntersection.to_pb", 
+      "name": "to_pb", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/column_family/gcruleintersection/table_v2_pb2/gcrule\">gcloud.bigtable.column_family.GCRuleIntersection.table_v2_pb2.GcRule</a>"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py/gcloud/bigtable/column_family.py#L186", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Gcruleintersection", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

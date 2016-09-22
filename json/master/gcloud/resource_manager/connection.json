@@ -1,0 +1,8 @@
+{
+  "description": "\n Create / interact with gcloud.resource_manager connections.", 
+  "examples": [], 
+  "id": "gcloud.resource_manager.connection", 
+  "methods": [], 
+  "name": "Connection", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

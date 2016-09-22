@@ -1,0 +1,333 @@
+{
+  "description": "\n Define API Subscriptions.", 
+  "examples": [], 
+  "id": "gcloud.pubsub.subscription.subscription", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L56", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.acknowledge", 
+      "name": "acknowledge", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L319", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.auto_ack", 
+      "name": "auto_ack", 
+      "params": [
+        {
+          "description": " passed through to Subscription.pull", 
+          "name": "return_immediately", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
+          ]
+        }, 
+        {
+          "description": " passed through to Subscription.pull and", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " passed through to Subscription.pull", 
+          "name": "max_messages", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "AutoAck"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L126", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.check_iam_permissions", 
+      "name": "check_iam_permissions", 
+      "params": [
+        {
+          "description": " list of permissions to be tested", 
+          "name": "permissions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " string"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current subscription's topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "sequence of string"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L418", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.create", 
+      "name": "create", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L159", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.delete", 
+      "name": "delete", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L232", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.exists", 
+      "name": "exists", 
+      "params": [
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current subscription's topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "bool"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L181", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.from_api_repr", 
+      "name": "from_api_repr", 
+      "params": [
+        {
+          "description": " A mapping of topic names -> topics. If not passed, the subscription will have a newly-created topic.", 
+          "name": "topics", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict or None"
+          ]
+        }, 
+        {
+          "description": " Client which holds credentials and project configuration for a topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
+          ]
+        }, 
+        {
+          "description": " topic resource representation returned from the API", 
+          "name": "resource", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/subscription/subscription\">gcloud.pubsub.subscription.Subscription</a>"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L72", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.get_iam_policy", 
+      "name": "get_iam_policy", 
+      "params": [
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current subscription's topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/iam/policy\">gcloud.pubsub.iam.Policy</a>"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L363", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.modify_ack_deadline", 
+      "name": "modify_ack_deadline", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L342", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.modify_push_configuration", 
+      "name": "modify_push_configuration", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L252", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.pull", 
+      "name": "pull", 
+      "params": [
+        {
+          "description": " if True, the back-end returns even if no messages are available; if False, the API call blocks until one or more messages are available.", 
+          "name": "return_immediately", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current subscription's topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " the maximum number of messages to return.", 
+          "name": "max_messages", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            " (ack_id, message) tuples"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L282", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.reload", 
+      "name": "reload", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L209", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.subscription.Subscription.set_iam_policy", 
+      "name": "set_iam_policy", 
+      "params": [
+        {
+          "description": " the new policy, typically fetched via", 
+          "name": "policy", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/iam/policy\">gcloud.pubsub.iam.Policy</a>"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current subscription's topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/iam/policy\">gcloud.pubsub.iam.Policy</a>"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/subscription.py/gcloud/pubsub/subscription.py#L388", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Subscription", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

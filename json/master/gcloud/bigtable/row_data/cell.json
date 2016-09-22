@@ -1,0 +1,45 @@
+{
+  "description": "\n Container for Google Cloud Bigtable Cells and Streaming Row Contents.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.row_data.cell", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row_data.Cell.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py/gcloud/bigtable/row_data.py#L38", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row_data.Cell.from_pb", 
+      "name": "from_pb", 
+      "params": [
+        {
+          "description": " The protobuf to convert.", 
+          "name": "cell_pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/row_data/cell/_generated/data_pb2/cell\">gcloud.bigtable.row_data.Cell._generated.data_pb2.Cell</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Cell"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py/gcloud/bigtable/row_data.py#L43", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Cell", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

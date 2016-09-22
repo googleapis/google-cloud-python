@@ -1,0 +1,275 @@
+{
+  "description": "\n Create / interact with Google Cloud Storage blobs.", 
+  "examples": [], 
+  "id": "gcloud.storage.blob.blob", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/blob.py/gcloud/storage/blob.py#L71", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.delete", 
+      "name": "delete", 
+      "params": [
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Blob"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/blob.py/gcloud/storage/blob.py#L269", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.download_as_string", 
+      "name": "download_as_string", 
+      "params": [
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " Optional 32 byte encryption key for customer-supplied encryption.", 
+          "name": "encryption_key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or bytes"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "bytes"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/blob.py/gcloud/storage/blob.py#L374", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.download_to_file", 
+      "name": "download_to_file", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/blob.py/gcloud/storage/blob.py#L284", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.download_to_filename", 
+      "name": "download_to_filename", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/blob.py/gcloud/storage/blob.py#L351", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.exists", 
+      "name": "exists", 
+      "params": [
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "boolean"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/blob.py/gcloud/storage/blob.py#L242", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.generate_signed_url", 
+      "name": "generate_signed_url", 
+      "params": [
+        {
+          "description": " When the signed URL should expire.", 
+          "name": "expiration", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int, long, datetime.datetime, datetime.timedelta"
+          ]
+        }, 
+        {
+          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
+          "name": "credentials", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "oauth2client.client.OAuth2Credentials or"
+          ]
+        }, 
+        {
+          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
+          "name": "content_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " The HTTP verb that will be used when requesting the URL.", 
+          "name": "method", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) Content disposition of responses to requests for the signed URL. For example, to enable the signed URL to initiate a file of blog.png, use the value 'attachment; filename=blob.png'.", 
+          "name": "response_disposition", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) Content type of responses to requests for the signed URL. Used to over-ride the content type of the underlying blob/object.", 
+          "name": "response_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) A value that indicates which generation of the resource to fetch.", 
+          "name": "generation", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/blob.py/gcloud/storage/blob.py#L159", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.make_public", 
+      "name": "make_public", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/blob.py/gcloud/storage/blob.py#L638", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.patch", 
+      "name": "patch", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/_helpers.py/gcloud/storage/_helpers.py#L108", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.reload", 
+      "name": "reload", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/_helpers.py/gcloud/storage/_helpers.py#L64", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.upload_from_file", 
+      "name": "upload_from_file", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/blob.py/gcloud/storage/blob.py#L405", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.upload_from_filename", 
+      "name": "upload_from_filename", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/blob.py/gcloud/storage/blob.py#L557", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.blob.Blob.upload_from_string", 
+      "name": "upload_from_string", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/blob.py/gcloud/storage/blob.py#L599", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Blob", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

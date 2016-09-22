@@ -1,0 +1,35 @@
+{
+  "description": "\n User friendly container for Google Cloud Bigtable Cluster.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.cluster.operation", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.cluster.Operation.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L122", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.cluster.Operation.finished", 
+      "name": "finished", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "bool"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L139", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Operation", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

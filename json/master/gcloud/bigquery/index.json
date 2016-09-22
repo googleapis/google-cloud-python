@@ -1,0 +1,104 @@
+{
+  "description": "\n Google Cloud BigQuery API wrapper.\n The main concepts with this API are:\n - <a data-custom-type=\"gcloud/bigquery/dataset/dataset\">gcloud.bigquery.dataset.Dataset</a> represents an collection of tables.\n - <a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a> represents a single \"relation\".", 
+  "examples": [
+    {
+      "caption": "List datasets for the client's project:", 
+      "code": "# client_list_datasets\n    datasets, token = client.list_datasets()   # API request\n    while True:\n        for dataset in datasets:\n            do_something_with(dataset)\n        if token is None:\n            break\n        datasets, token = client.list_datasets(page_token=token)  # API request\n"
+    }, 
+    {
+      "caption": "Create a new dataset for the client's project:", 
+      "code": "# dataset_create\n    dataset = client.dataset(DATASET_NAME)\n    dataset.create()              # API request\n"
+    }, 
+    {
+      "caption": "Check for the existence of a dataset:", 
+      "code": "# dataset_exists\n    assert not dataset.exists()   # API request\n    dataset.create()              # API request\n    assert dataset.exists()       # API request\n"
+    }, 
+    {
+      "caption": "Refresh metadata for a dataset (to pick up changes made by another client):", 
+      "code": "# dataset_reload\n    assert dataset.description == ORIGINAL_DESCRIPTION\n    dataset.description = LOCALLY_CHANGED_DESCRIPTION\n    assert dataset.description == LOCALLY_CHANGED_DESCRIPTION\n    dataset.reload()              # API request\n    assert dataset.description == ORIGINAL_DESCRIPTION\n"
+    }, 
+    {
+      "caption": "Patch metadata for a dataset:", 
+      "code": "# dataset_patch\n    ONE_DAY_MS = 24 * 60 * 60 * 1000\n    assert dataset.description == ORIGINAL_DESCRIPTION\n    dataset.patch(\n        description=PATCHED_DESCRIPTION,\n        default_table_expiration_ms=ONE_DAY_MS\n    )      # API request\n    assert dataset.description == PATCHED_DESCRIPTION\n    assert dataset.default_table_expiration_ms == ONE_DAY_MS\n"
+    }, 
+    {
+      "caption": null, 
+      "code": "# dataset_update\n    from gcloud.bigquery import AccessGrant\n    assert dataset.description == ORIGINAL_DESCRIPTION\n    assert dataset.default_table_expiration_ms is None\n    grant = AccessGrant(\n        role='READER', entity_type='domain', entity_id='example.com')\n    assert grant not in dataset.access_grants\n    ONE_DAY_MS = 24 * 60 * 60 * 1000\n    dataset.description = UPDATED_DESCRIPTION\n    dataset.default_table_expiration_ms = ONE_DAY_MS\n    grants = list(dataset.access_grants)\n    grants.append(grant)\n    dataset.access_grants = grants\n    dataset.update()              # API request\n    assert dataset.description == UPDATED_DESCRIPTION\n    assert dataset.default_table_expiration_ms == ONE_DAY_MS\n    assert grant in dataset.access_grants\n"
+    }, 
+    {
+      "caption": "Delete a dataset:", 
+      "code": "# dataset_delete\n    assert dataset.exists()       # API request\n    dataset.delete()\n    assert not dataset.exists()   # API request\n"
+    }, 
+    {
+      "caption": "Tables exist within datasets.  List tables for the dataset:", 
+      "code": "# dataset_list_tables\n    tables, token = dataset.list_tables()   # API request\n    assert len(tables) == 0\n    assert token is None\n    table = dataset.table(TABLE_NAME)\n    table.view_query = QUERY\n    table.create()                          # API request\n    tables, token = dataset.list_tables()   # API request\n    assert len(tables) == 1\n    assert tables[0].name == TABLE_NAME\n"
+    }, 
+    {
+      "caption": "Create a table:", 
+      "code": "# table_create\n    table = dataset.table(TABLE_NAME, SCHEMA)\n    table.create()                          # API request\n"
+    }, 
+    {
+      "caption": "Check for the existence of a table:", 
+      "code": "# table_exists\n    table = dataset.table(TABLE_NAME, SCHEMA)\n    assert not table.exists()               # API request\n    table.create()                          # API request\n    assert table.exists()                   # API request\n"
+    }, 
+    {
+      "caption": "Refresh metadata for a table (to pick up changes made by another client):", 
+      "code": "# table_reload\n    assert table.friendly_name == ORIGINAL_FRIENDLY_NAME\n    assert table.description == ORIGINAL_DESCRIPTION\n    table.friendly_name = LOCALLY_CHANGED_FRIENDLY_NAME\n    table.description = LOCALLY_CHANGED_DESCRIPTION\n    table.reload()                  # API request\n    assert table.friendly_name == ORIGINAL_FRIENDLY_NAME\n    assert table.description == ORIGINAL_DESCRIPTION\n"
+    }, 
+    {
+      "caption": "Patch specific properties for a table:", 
+      "code": "# table_patch\n    assert table.friendly_name == ORIGINAL_FRIENDLY_NAME\n    assert table.description == ORIGINAL_DESCRIPTION\n    table.patch(\n        friendly_name=PATCHED_FRIENDLY_NAME,\n        description=PATCHED_DESCRIPTION,\n    )      # API request\n    assert table.friendly_name == PATCHED_FRIENDLY_NAME\n    assert table.description == PATCHED_DESCRIPTION\n"
+    }, 
+    {
+      "caption": "Update all writable metadata for a table", 
+      "code": "# table_update\n    assert table.friendly_name == ORIGINAL_FRIENDLY_NAME\n    assert table.description == ORIGINAL_DESCRIPTION\n    NEW_SCHEMA = table.schema[:]\n    NEW_SCHEMA.append(SchemaField('phone', 'string'))\n    table.friendly_name = UPDATED_FRIENDLY_NAME\n    table.description = UPDATED_DESCRIPTION\n    table.schema = NEW_SCHEMA\n    table.update()              # API request\n    assert table.friendly_name == UPDATED_FRIENDLY_NAME\n    assert table.description == UPDATED_DESCRIPTION\n    assert table.schema == NEW_SCHEMA\n"
+    }, 
+    {
+      "caption": "Insert rows into a table's data:", 
+      "code": "# table_insert_data\n    ROWS_TO_INSERT = [\n        (u'Phred Phlyntstone', 32),\n        (u'Wylma Phlyntstone', 29),\n    ]\n\n    table.insert_data(ROWS_TO_INSERT)\n"
+    }, 
+    {
+      "caption": "Get rows from a table's data:", 
+      "code": "# table_fetch_data\n    rows, _, token = table.fetch_data()\n    while True:\n        for row in rows:\n            do_something(row)\n        if token is None:\n            break\n        rows, _, token = table.fetch_data(page_token=token)\n"
+    }, 
+    {
+      "caption": "Upload table data from a file:", 
+      "code": "# table_upload_from_file\n    writer = csv.writer(csv_file)\n    writer.writerow((b'full_name', b'age'))\n    writer.writerow((b'Phred Phlyntstone', b'32'))\n    writer.writerow((b'Wylma Phlyntstone', b'29'))\n    csv_file.flush()\n\n    with open(csv_file.name, 'rb') as readable:\n        table.upload_from_file(\n            readable, source_format='CSV', skip_leading_rows=1)\n"
+    }, 
+    {
+      "caption": "Delete a table:", 
+      "code": "# table_delete\n    assert table.exists()       # API request\n    table.delete()              # API request\n    assert not table.exists()   # API request\n"
+    }, 
+    {
+      "caption": "List jobs for a project:", 
+      "code": "# client_list_jobs\n    jobs, token = client.list_jobs()   # API request\n    while True:\n        for job in jobs:\n            do_something_with(job)\n        if token is None:\n            break\n        jobs, token = client.list_jobs(page_token=token)  # API request\n"
+    }, 
+    {
+      "caption": "Run a query which can be expected to complete within bounded time:", 
+      "code": "# client_run_sync_query\n    query = client.run_sync_query(LIMITED)\n    query.timeout_ms = TIMEOUT_MS\n    query.run()             # API request\n\n    assert query.complete\n    assert len(query.rows) == LIMIT\n    assert [field.name for field in query.schema] == ['name']\n"
+    }, 
+    {
+      "caption": "then we need to fetch the remaining rows via ``fetch_data``:", 
+      "code": "# client_run_sync_query_paged\n    query = client.run_sync_query(LIMITED)\n    query.timeout_ms = TIMEOUT_MS\n    query.max_results = PAGE_SIZE\n    query.run()                     # API request\n\n    assert query.complete\n    assert query.page_token is not None\n    assert len(query.rows) == PAGE_SIZE\n    assert [field.name for field in query.schema] == ['name']\n\n    rows = query.rows\n    token = query.page_token\n\n    while True:\n        do_something_with(rows)\n        if token is None:\n            break\n        rows, total_count, token = query.fetch_data(\n            page_token=token)       # API request\n"
+    }, 
+    {
+      "caption": "it is done, and then fetch the reuslts:", 
+      "code": "# client_run_sync_query_timeout\n    query = client.run_sync_query(QUERY)\n    query.timeout_ms = TIMEOUT_MS\n    query.use_query_cache = False\n    query.run()                           # API request\n\n    assert not query.complete\n\n    job = query.job\n    job.reload()                          # API rquest\n    retry_count = 0\n\n    while retry_count < 10 and job.state != u'DONE':\n        time.sleep(1.5**retry_count)      # exponential backoff\n        retry_count += 1\n        job.reload()                      # API request\n\n    assert job.state == u'DONE'\n\n    rows, total_count, token = query.fetch_data()  # API request\n    while True:\n        do_something_with(rows)\n        if token is None:\n            break\n        rows, total_count, token = query.fetch_data(\n            page_token=token)  # API request\n"
+    }
+  ], 
+  "id": "gcloud.bigquery.__init__", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigquery.__init__.SCOPE", 
+      "name": "SCOPE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }
+  ], 
+  "name": "__Init__", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

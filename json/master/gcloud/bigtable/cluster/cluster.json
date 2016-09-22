@@ -1,0 +1,122 @@
+{
+  "description": "\n User friendly container for Google Cloud Bigtable Cluster.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.cluster.cluster", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.cluster.Cluster.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L192", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.cluster.Cluster.copy", 
+      "name": "copy", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/cluster/cluster/cluster\">gcloud.bigtable.cluster.Cluster.Cluster</a>"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L243", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.cluster.Cluster.create", 
+      "name": "create", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "Operation"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L299", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.cluster.Cluster.delete", 
+      "name": "delete", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L356", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.cluster.Cluster.from_pb", 
+      "name": "from_pb", 
+      "params": [
+        {
+          "description": " A cluster protobuf object.", 
+          "name": "cluster_pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "instance_pb2.Cluster"
+          ]
+        }, 
+        {
+          "description": " The instance that owns the cluster.", 
+          "name": "instance", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/cluster/cluster/instance/instance>\">gcloud.bigtable.cluster.Cluster.instance.Instance></a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Cluster"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L209", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.cluster.Cluster.reload", 
+      "name": "reload", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L288", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.cluster.Cluster.update", 
+      "name": "update", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "Operation"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/cluster.py/gcloud/bigtable/cluster.py#L327", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Cluster", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

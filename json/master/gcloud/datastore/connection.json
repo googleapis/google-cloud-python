@@ -1,0 +1,19 @@
+{
+  "description": "\n Connections to gcloud datastore API servers.", 
+  "examples": [], 
+  "id": "gcloud.datastore.connection", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.connection.GCD_HOST", 
+      "name": "GCD_HOST", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Connection", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

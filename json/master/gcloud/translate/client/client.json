@@ -1,0 +1,133 @@
+{
+  "description": "\n Client for interacting with the Google Cloud Translate API.", 
+  "examples": [], 
+  "id": "gcloud.translate.client.client", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.translate.client.Client.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/translate/client.py/gcloud/translate/client.py#L46", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.translate.client.Client.detect_language", 
+      "name": "detect_language", 
+      "params": [
+        {
+          "description": " String or list of strings that will have language detected.", 
+          "name": "values", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or list"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "str or list"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/translate/client.py/gcloud/translate/client.py#L82", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.translate.client.Client.get_languages", 
+      "name": "get_languages", 
+      "params": [
+        {
+          "description": " (Optional) The language used to localize returned language names. Defaults to the target language on the current client.", 
+          "name": "target_language", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "list"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/translate/client.py/gcloud/translate/client.py#L53", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.translate.client.Client.translate", 
+      "name": "translate", 
+      "params": [
+        {
+          "description": " (Optional) One of <code>text</code> or html, to specify if the input text is plain text or HTML.", 
+          "name": "format_", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) ID or list of customization IDs for translation. Sets the <code>cid</code> parameter in the query.", 
+          "name": "customization_ids", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or list"
+          ]
+        }, 
+        {
+          "description": " (Optional) The language of the text to be translated.", 
+          "name": "source_language", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " The language to translate results into. This is required by the API and defaults to the target language of the current instance.", 
+          "name": "target_language", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " String or list of strings to translate.", 
+          "name": "values", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or list"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "str or list list"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/translate/client.py/gcloud/translate/client.py#L148", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Client", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

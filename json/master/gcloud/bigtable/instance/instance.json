@@ -1,0 +1,209 @@
+{
+  "description": "\n User friendly container for Google Cloud Bigtable Instance.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.instance.instance", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Instance.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L232", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Instance.cluster", 
+      "name": "cluster", 
+      "params": [
+        {
+          "description": " (Optional) The number of nodes in the cluster. Defaults to 3.", 
+          "name": "serve_nodes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " The ID of the cluster.", 
+          "name": "cluster_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/instance/instance/cluster\">gcloud.bigtable.instance.Instance.Cluster</a>"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L421", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Instance.copy", 
+      "name": "copy", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/instance/instance/instance\">gcloud.bigtable.instance.Instance.Instance</a>"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L282", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Instance.create", 
+      "name": "create", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "Operation"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L339", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Instance.delete", 
+      "name": "delete", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L389", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Instance.from_pb", 
+      "name": "from_pb", 
+      "params": [
+        {
+          "description": " The client that owns the instance.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "Client <gcloud.bigtable.client.Client>"
+          ]
+        }, 
+        {
+          "description": " A instance protobuf object.", 
+          "name": "instance_pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "instance_pb2.Instance"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Instance"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L251", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Instance.list_clusters", 
+      "name": "list_clusters", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "tuple"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L436", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Instance.list_tables", 
+      "name": "list_tables", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            " Table <gcloud.bigtable.table.Table>"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L466", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Instance.reload", 
+      "name": "reload", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L328", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Instance.table", 
+      "name": "table", 
+      "params": [
+        {
+          "description": " The ID of the table.", 
+          "name": "table_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Table <gcloud.bigtable.table.Table>"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L455", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.instance.Instance.update", 
+      "name": "update", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L367", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Instance", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

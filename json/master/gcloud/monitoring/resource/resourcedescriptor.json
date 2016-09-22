@@ -1,0 +1,19 @@
+{
+  "description": "\n Monitored Resource Descriptors for the Google Stackdriver Monitoring API (V3)_.\n .. _Google Stackdriver Monitoring API (V3): <a href=\"https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\">https://cloud.google.com/monitoring/api/ref_v3/rest/v3/</a> projects.monitoredResourceDescriptors", 
+  "examples": [], 
+  "id": "gcloud.monitoring.resource.resourcedescriptor", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.resource.ResourceDescriptor.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/resource.py/gcloud/monitoring/resource.py#L54", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Resourcedescriptor", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

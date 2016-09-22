@@ -1,0 +1,29 @@
+{
+  "description": "\n Google Cloud Bigtable HappyBase pool module.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.happybase.pool.connectionpool", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.pool.ConnectionPool.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/pool.py/gcloud/bigtable/happybase/pool.py#L65", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.pool.ConnectionPool.connection", 
+      "name": "connection", 
+      "params": [], 
+      "returns": [], 
+      "source": "#L82", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Connectionpool", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

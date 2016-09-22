@@ -1,0 +1,35 @@
+{
+  "description": "\n Log entries within the Google Stackdriver Logging API.", 
+  "examples": [], 
+  "id": "gcloud.logging.entries", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.entries.logger_name_from_path", 
+      "name": "logger_name_from_path", 
+      "params": [
+        {
+          "description": " URI path for a logger API request.", 
+          "name": "path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/entries.py/gcloud/logging/entries.py#L34", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Entries", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

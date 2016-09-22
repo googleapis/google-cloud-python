@@ -1,0 +1,39 @@
+{
+  "description": "\n Google Stackdriver Logging API wrapper.", 
+  "examples": [], 
+  "id": "gcloud.logging.__init__", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.__init__.ASCENDING", 
+      "name": "ASCENDING", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.__init__.DESCENDING", 
+      "name": "DESCENDING", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.__init__.SCOPE", 
+      "name": "SCOPE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }
+  ], 
+  "name": "__Init__", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

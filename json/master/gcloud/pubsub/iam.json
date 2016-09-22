@@ -1,0 +1,239 @@
+{
+  "description": "\n PubSub API IAM policy definitions\n For allowed roles / permissions, see: <a href=\"https://cloud.google.com/pubsub/access_control#permissions\">https://cloud.google.com/pubsub/access_control#permissions</a>", 
+  "examples": [], 
+  "id": "gcloud.pubsub.iam", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.EDITOR_ROLE", 
+      "name": "EDITOR_ROLE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.OWNER_ROLE", 
+      "name": "OWNER_ROLE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_ADMIN_ROLE", 
+      "name": "PUBSUB_ADMIN_ROLE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_EDITOR_ROLE", 
+      "name": "PUBSUB_EDITOR_ROLE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_PUBLISHER_ROLE", 
+      "name": "PUBSUB_PUBLISHER_ROLE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_SUBSCRIBER_ROLE", 
+      "name": "PUBSUB_SUBSCRIBER_ROLE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_CONSUME", 
+      "name": "PUBSUB_SUBSCRIPTIONS_CONSUME", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_CREATE", 
+      "name": "PUBSUB_SUBSCRIPTIONS_CREATE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_DELETE", 
+      "name": "PUBSUB_SUBSCRIPTIONS_DELETE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_GET", 
+      "name": "PUBSUB_SUBSCRIPTIONS_GET", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY", 
+      "name": "PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_LIST", 
+      "name": "PUBSUB_SUBSCRIPTIONS_LIST", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_SET_IAM_POLICY", 
+      "name": "PUBSUB_SUBSCRIPTIONS_SET_IAM_POLICY", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_UPDATE", 
+      "name": "PUBSUB_SUBSCRIPTIONS_UPDATE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_TOPICS_CONSUME", 
+      "name": "PUBSUB_TOPICS_CONSUME", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_TOPICS_CREATE", 
+      "name": "PUBSUB_TOPICS_CREATE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_TOPICS_DELETE", 
+      "name": "PUBSUB_TOPICS_DELETE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_TOPICS_GET", 
+      "name": "PUBSUB_TOPICS_GET", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_TOPICS_GET_IAM_POLICY", 
+      "name": "PUBSUB_TOPICS_GET_IAM_POLICY", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_TOPICS_LIST", 
+      "name": "PUBSUB_TOPICS_LIST", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_TOPICS_SET_IAM_POLICY", 
+      "name": "PUBSUB_TOPICS_SET_IAM_POLICY", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.PUBSUB_VIEWER_ROLE", 
+      "name": "PUBSUB_VIEWER_ROLE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.VIEWER_ROLE", 
+      "name": "VIEWER_ROLE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Iam", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

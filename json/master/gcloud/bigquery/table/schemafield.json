@@ -1,0 +1,19 @@
+{
+  "description": "\n Define API Datasets.", 
+  "examples": [], 
+  "id": "gcloud.bigquery.table.schemafield", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigquery.table.SchemaField.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/table.py/gcloud/bigquery/table.py#L57", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Schemafield", 
+  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}
