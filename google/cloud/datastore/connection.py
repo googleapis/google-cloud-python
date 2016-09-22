@@ -24,17 +24,18 @@ from google.cloud import connection as connection_module
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_HOST
 from google.cloud.exceptions import Conflict
-from google.cloud.exceptions import GrpcRendezvous
 from google.cloud.exceptions import make_exception
 from google.cloud.datastore._generated import datastore_pb2 as _datastore_pb2
 # pylint: disable=ungrouped-imports
 try:
     from grpc import StatusCode
+    from grpc._channel import _Rendezvous
     from google.cloud.datastore._generated import datastore_grpc_pb2
 except ImportError:  # pragma: NO COVER
     _HAVE_GRPC = False
     datastore_grpc_pb2 = None
     StatusCode = None
+    _Rendezvous = Exception
 else:
     _HAVE_GRPC = True
 # pylint: enable=ungrouped-imports
@@ -312,7 +313,7 @@ class _DatastoreAPIOverGRPC(object):
         request_pb.project_id = project
         try:
             return self._stub.Commit(request_pb)
-        except GrpcRendezvous as exc:
+        except _Rendezvous as exc:
             if exc.code() == StatusCode.ABORTED:
                 raise Conflict(exc.details())
             raise

@@ -302,7 +302,7 @@ class Table(object):
         samples would require space roughly equal to the difference in their
         ``offset_bytes`` fields.
 
-        :rtype: :class:`~google.cloud.exceptions.GrpcRendezvous`
+        :rtype: :class:`grpc._channel._Rendezvous`
         :returns: A cancel-able iterator. Can be consumed by calling ``next()``
                   or by casting to a :class:`list` and can be cancelled by
                   calling ``cancel()``.

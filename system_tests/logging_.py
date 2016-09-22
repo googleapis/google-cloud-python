@@ -73,9 +73,9 @@ class TestLogging(unittest.TestCase):
         return 'system-tests-logger' + unique_resource_id('-')
 
     def _list_entries(self, logger):
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
         inner = RetryResult(_has_entries)(logger.list_entries)
-        outer = RetryErrors(GrpcRendezvous, _retry_on_unavailable)(inner)
+        outer = RetryErrors(_Rendezvous, _retry_on_unavailable)(inner)
         return outer()
 
     def test_log_text(self):
