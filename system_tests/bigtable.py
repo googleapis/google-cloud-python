@@ -93,7 +93,7 @@ def _retry_on_unavailable(exc):
 
 
 def setUpModule():
-    from google.cloud.exceptions import GrpcRendezvous
+    from grpc._channel import _Rendezvous
 
     Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
 
@@ -106,7 +106,7 @@ def setUpModule():
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
 
     if not Config.IN_EMULATOR:
-        retry = RetryErrors(GrpcRendezvous,
+        retry = RetryErrors(_Rendezvous,
                             error_predicate=_retry_on_unavailable)
         instances, failed_locations = retry(Config.CLIENT.list_instances)()
 

@@ -123,12 +123,12 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_topic_create_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
 
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(_Rendezvous):
             api.topic_create(self.TOPIC_PATH)
 
         topic_path, options = gax_api._create_topic_called_with
@@ -160,12 +160,12 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_topic_get_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
 
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(_Rendezvous):
             api.topic_get(self.TOPIC_PATH)
 
         topic_path, options = gax_api._get_topic_called_with
@@ -195,12 +195,12 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_topic_delete_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
 
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(_Rendezvous):
             api.topic_delete(self.TOPIC_PATH)
 
         topic_path, options = gax_api._delete_topic_called_with
@@ -248,7 +248,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_publish_error(self):
         import base64
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
 
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
@@ -256,7 +256,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(_Rendezvous):
             api.topic_publish(self.TOPIC_PATH, [MESSAGE])
 
         topic_path, message_pbs, options = gax_api._publish_called_with
@@ -333,12 +333,12 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_list_subscriptions_error(self):
         from google.gax import INITIAL_PAGE
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
 
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(_Rendezvous):
             api.topic_list_subscriptions(self.TOPIC_PATH)
 
         topic_path, page_size, options = (
@@ -455,12 +455,12 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_subscription_create_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
 
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(_Rendezvous):
             api.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
 
         name, topic, push_config, ack_deadline, options = (
@@ -505,12 +505,12 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_subscription_get_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
 
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(_Rendezvous):
             api.subscription_get(self.SUB_PATH)
 
         sub_path, options = gax_api._get_subscription_called_with
@@ -540,12 +540,12 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_subscription_delete_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
 
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(_Rendezvous):
             api.subscription_delete(self.TOPIC_PATH)
 
         sub_path, options = gax_api._delete_subscription_called_with
@@ -578,12 +578,12 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_subscription_modify_push_config_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
 
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(_Rendezvous):
             api.subscription_modify_push_config(
                 self.SUB_PATH, self.PUSH_ENDPOINT)
 
@@ -645,12 +645,12 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_subscription_pull_defaults_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
 
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(_Rendezvous):
             api.subscription_pull(self.SUB_PATH)
 
         sub_path, max_messages, return_immediately, options = (
@@ -689,14 +689,14 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_subscription_acknowledge_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
 
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(_Rendezvous):
             api.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
 
         sub_path, ack_ids, options = gax_api._acknowledge_called_with
@@ -741,7 +741,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_subscription_modify_ack_deadline_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
+        from grpc._channel import _Rendezvous
 
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
@@ -749,7 +749,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(_Rendezvous):
             api.subscription_modify_ack_deadline(
                 self.SUB_PATH, [ACK_ID1, ACK_ID2], NEW_DEADLINE)
 
