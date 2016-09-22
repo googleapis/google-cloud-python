@@ -343,7 +343,7 @@ class TestDirectRow(unittest.TestCase):
         self.assertEqual(row._pb_mutations, [])
 
     def test_commit_too_many_mutations(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import row as MUT
 
         row_key = b'row_key'
@@ -481,7 +481,7 @@ class TestConditionalRow(unittest.TestCase):
         self.assertEqual(row._false_pb_mutations, [])
 
     def test_commit_too_many_mutations(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import row as MUT
 
         row_key = b'row_key'
@@ -572,7 +572,7 @@ class TestAppendRow(unittest.TestCase):
         self.assertEqual(row._rule_pb_list, [expected_pb])
 
     def test_commit(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from unit_tests.bigtable._testing import _FakeStub
         from google.cloud.bigtable import row as MUT
 
@@ -646,7 +646,7 @@ class TestAppendRow(unittest.TestCase):
         self.assertEqual(stub.method_calls, [])
 
     def test_commit_too_many_mutations(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import row as MUT
 
         row_key = b'row_key'

@@ -25,7 +25,7 @@ class Test__httplib2_debug_level(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_wo_loggable_body_wo_http(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
 
         request = _Request()
@@ -36,7 +36,7 @@ class Test__httplib2_debug_level(unittest.TestCase):
                 self.assertEqual(_httplib2.debuglevel, 0)
 
     def test_w_loggable_body_wo_http(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
 
         request = _Request(loggable_body=object())
@@ -48,7 +48,7 @@ class Test__httplib2_debug_level(unittest.TestCase):
         self.assertEqual(_httplib2.debuglevel, 0)
 
     def test_w_loggable_body_w_http(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
 
         class _Connection(object):
@@ -284,7 +284,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
         self.assertEqual(kw['connection_type'], connection_type)
 
     def test_defaults_wo_connections(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
@@ -304,7 +304,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
         self._verify_requested(_http, _request)
 
     def test_w_http_connections_miss(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
@@ -326,7 +326,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
         self._verify_requested(_http, _request)
 
     def test_w_http_connections_hit(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
@@ -348,7 +348,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
         self._verify_requested(_http, _request, connection_type=CONN_TYPE)
 
     def test_w_request_returning_None(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
         from google.cloud.streaming.exceptions import RequestError
         INFO = None
@@ -372,7 +372,7 @@ class Test_make_api_request(unittest.TestCase):
 
     def test_wo_exception(self):
         from google.cloud.streaming import http_wrapper as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         HTTP, REQUEST, RESPONSE = object(), object(), object()
         _created, _checked = [], []
@@ -393,7 +393,7 @@ class Test_make_api_request(unittest.TestCase):
     def test_w_exceptions_lt_max_retries(self):
         from google.cloud.streaming.exceptions import RetryAfterError
         from google.cloud.streaming import http_wrapper as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         HTTP, RESPONSE = object(), object()
         REQUEST = _Request()
@@ -419,7 +419,7 @@ class Test_make_api_request(unittest.TestCase):
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
 
     def test_w_exceptions_gt_max_retries(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import http_wrapper as MUT
         HTTP = object()
         REQUEST = _Request()

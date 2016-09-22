@@ -126,7 +126,7 @@ class TestQuery(unittest.TestCase):
 
     def test_constructor_default_end_time(self):
         import datetime
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.monitoring import query as MUT
 
         MINUTES = 5

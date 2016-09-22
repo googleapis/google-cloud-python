@@ -289,7 +289,7 @@ class Test_Download(unittest.TestCase):
 
     def test_initialize_download_w_autotransfer_failing(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.exceptions import HttpError
         request = _Request()
@@ -308,7 +308,7 @@ class Test_Download(unittest.TestCase):
 
     def test_initialize_download_w_autotransfer_w_content_location(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         REDIRECT_URL = 'http://example.com/other'
         request = _Request()
@@ -425,7 +425,7 @@ class Test_Download(unittest.TestCase):
 
     def test__get_chunk(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         http = object()
         download = self._makeOne(_Stream())
@@ -521,7 +521,7 @@ class Test_Download(unittest.TestCase):
 
     def test_get_range_wo_total_size_complete(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -548,7 +548,7 @@ class Test_Download(unittest.TestCase):
 
     def test_get_range_wo_total_size_wo_end(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -577,7 +577,7 @@ class Test_Download(unittest.TestCase):
 
     def test_get_range_w_total_size_partial(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -606,7 +606,7 @@ class Test_Download(unittest.TestCase):
 
     def test_get_range_w_empty_chunk(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.exceptions import TransferRetryError
         CONTENT = b'ABCDEFGHIJ'
@@ -637,7 +637,7 @@ class Test_Download(unittest.TestCase):
 
     def test_get_range_w_total_size_wo_use_chunks(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -665,7 +665,7 @@ class Test_Download(unittest.TestCase):
 
     def test_get_range_w_multiple_chunks(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         CONTENT = b'ABCDE'
         LEN = len(CONTENT)
@@ -726,7 +726,7 @@ class Test_Download(unittest.TestCase):
 
     def test_stream_file_w_initial_response_incomplete(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         CHUNK_SIZE = 3
         CONTENT = b'ABCDEF'
@@ -763,7 +763,7 @@ class Test_Download(unittest.TestCase):
 
     def test_stream_file_wo_initial_response_wo_total_size(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -1138,7 +1138,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_refresh_upload_state_w_OK(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
@@ -1165,7 +1165,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_refresh_upload_state_w_CREATED(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
@@ -1193,7 +1193,7 @@ class Test_Upload(unittest.TestCase):
     def test_refresh_upload_state_w_RESUME_INCOMPLETE_w_range(self):
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -1220,7 +1220,7 @@ class Test_Upload(unittest.TestCase):
     def test_refresh_upload_state_w_RESUME_INCOMPLETE_wo_range(self):
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -1244,7 +1244,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_refresh_upload_state_w_error(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.exceptions import HttpError
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
@@ -1304,7 +1304,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_initialize_upload_w_http_resumable_not_initialized_w_error(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.exceptions import HttpError
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
@@ -1320,7 +1320,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_initialize_upload_w_http_wo_auto_transfer_w_OK(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
         request = _Request()
@@ -1341,7 +1341,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_initialize_upload_w_granularity_w_auto_transfer_w_OK(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
@@ -1493,7 +1493,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_stream_file_incomplete(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
@@ -1537,7 +1537,7 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(request_2.body, CONTENT[6:])
 
     def test_stream_file_incomplete_w_transfer_error(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.exceptions import CommunicationError
         from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE
@@ -1575,7 +1575,7 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(request.body, CONTENT[:6])
 
     def test__send_media_request_wo_error(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE
         CONTENT = b'ABCDEFGHIJ'
@@ -1603,7 +1603,7 @@ class Test_Upload(unittest.TestCase):
 
     def test__send_media_request_w_error(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.streaming import transfer as MUT
         from google.cloud.streaming.exceptions import HttpError
         from google.cloud.streaming.http_wrapper import RESUME_INCOMPLETE

@@ -45,7 +45,7 @@ class TestClient(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor_defaults(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import client
 
         CREDENTIALS = object()
@@ -72,7 +72,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(client_obj.connection.http, HTTP)
 
     def test_from_service_account_json(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import client
 
         KLASS = self._getTargetClass()
@@ -91,7 +91,7 @@ class TestClient(unittest.TestCase):
                           credentials=CREDENTIALS)
 
     def test_from_service_account_p12(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import client
 
         KLASS = self._getTargetClass()
@@ -132,7 +132,7 @@ class TestJSONClient(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor_defaults(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import client
 
         PROJECT = 'PROJECT'
@@ -159,7 +159,7 @@ class TestJSONClient(unittest.TestCase):
             [(None, '_determine_default_project'), 'get_credentials'])
 
     def test_ctor_missing_project(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import client
 
         FUNC_CALLS = []

@@ -131,7 +131,7 @@ class Test__app_engine_id(unittest.TestCase):
         return _app_engine_id()
 
     def test_no_value(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import _helpers
 
         with _Monkey(_helpers, app_identity=None):
@@ -139,7 +139,7 @@ class Test__app_engine_id(unittest.TestCase):
             self.assertIsNone(dataset_id)
 
     def test_value_set(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import _helpers
 
         APP_ENGINE_ID = object()
@@ -157,8 +157,8 @@ class Test__file_project_id(unittest.TestCase):
 
     def test_success(self):
         from google.cloud.environment_vars import CREDENTIALS
-        from unit_tests._testing import _Monkey
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _Monkey
+        from google.cloud._testing import _NamedTemporaryFile
 
         project_id = 'test-project-id'
         payload = '{"%s":"%s"}' % ('project_id', project_id)
@@ -173,7 +173,7 @@ class Test__file_project_id(unittest.TestCase):
             self.assertEqual(result, project_id)
 
     def test_no_environment_variable_set(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         environ = {}
         with _Monkey(os, getenv=environ.get):
@@ -190,7 +190,7 @@ class Test__get_nix_config_path(unittest.TestCase):
 
     def test_it(self):
         from google.cloud import _helpers as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         user_root = 'a'
         config_file = 'b'
@@ -210,7 +210,7 @@ class Test__get_windows_config_path(unittest.TestCase):
 
     def test_it(self):
         from google.cloud import _helpers as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         appdata_dir = 'a'
         environ = {'APPDATA': appdata_dir}
@@ -233,8 +233,8 @@ class Test__default_service_project_id(unittest.TestCase):
 
     def test_nix(self):
         from google.cloud import _helpers as MUT
-        from unit_tests._testing import _Monkey
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _Monkey
+        from google.cloud._testing import _NamedTemporaryFile
 
         project_id = 'test-project-id'
         with _NamedTemporaryFile() as temp:
@@ -256,8 +256,8 @@ class Test__default_service_project_id(unittest.TestCase):
 
     def test_windows(self):
         from google.cloud import _helpers as MUT
-        from unit_tests._testing import _Monkey
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _Monkey
+        from google.cloud._testing import _NamedTemporaryFile
 
         project_id = 'test-project-id'
         with _NamedTemporaryFile() as temp:
@@ -279,7 +279,7 @@ class Test__default_service_project_id(unittest.TestCase):
 
     def test_gae(self):
         from google.cloud import _helpers as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         with _Monkey(os, name='not-nt'):
             with _Monkey(MUT, _USER_ROOT=None):
@@ -296,7 +296,7 @@ class Test__compute_engine_id(unittest.TestCase):
 
     def _monkeyConnection(self, connection):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         def _connection_factory(host, timeout):
             connection.host = host
@@ -332,7 +332,7 @@ class Test__get_production_project(unittest.TestCase):
         return _get_production_project()
 
     def test_no_value(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         environ = {}
         with _Monkey(os, getenv=environ.get):
@@ -340,7 +340,7 @@ class Test__get_production_project(unittest.TestCase):
             self.assertIsNone(project)
 
     def test_value_set(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud._helpers import PROJECT
 
         MOCK_PROJECT = object()
@@ -358,7 +358,7 @@ class Test__determine_default_project(unittest.TestCase):
 
     def _determine_default_helper(self, prod=None, gae=None, gce=None,
                                   file_id=None, srv_id=None, project=None):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import _helpers
 
         _callers = []
@@ -907,7 +907,7 @@ class Test_make_secure_stub(unittest.TestCase):
 
     def test_it(self):
         from six.moves import http_client
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import _helpers as MUT
 
         mock_result = object()
@@ -988,7 +988,7 @@ class Test_make_insecure_stub(unittest.TestCase):
         return make_insecure_stub(*args, **kwargs)
 
     def _helper(self, target, host, port=None):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import _helpers as MUT
 
         mock_result = object()

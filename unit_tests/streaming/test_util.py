@@ -23,13 +23,13 @@ class Test_calculate_wait_for_retry(unittest.TestCase):
 
     def test_w_negative_jitter_lt_max_wait(self):
         import random
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         with _Monkey(random, uniform=lambda lower, upper: lower):
             self.assertEqual(self._callFUT(1), 1.5)
 
     def test_w_positive_jitter_gt_max_wait(self):
         import random
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         with _Monkey(random, uniform=lambda lower, upper: upper):
             self.assertEqual(self._callFUT(4), 20)
 

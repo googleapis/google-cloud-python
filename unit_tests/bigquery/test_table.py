@@ -1465,7 +1465,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         import csv
         import datetime
         from six.moves.http_client import BAD_REQUEST
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _NamedTemporaryFile
         from google.cloud._helpers import UTC
         from google.cloud.exceptions import BadRequest
         WHEN_TS = 1437767599.006
@@ -1495,7 +1495,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         import datetime
         from six.moves.http_client import OK
         from google.cloud._helpers import UTC
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _NamedTemporaryFile
         from google.cloud.bigquery.table import SchemaField
 
         WHEN_TS = 1437767599.006
@@ -1604,8 +1604,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery import table as MUT
         from google.cloud.exceptions import BadRequest
         from google.cloud._helpers import UTC
-        from unit_tests._testing import _Monkey
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _Monkey
+        from google.cloud._testing import _NamedTemporaryFile
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
             tzinfo=UTC)
@@ -1643,7 +1643,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigquery import table as MUT
 
         UPLOAD_PATH = 'https://example.com/upload/test'

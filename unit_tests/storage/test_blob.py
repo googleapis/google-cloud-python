@@ -118,7 +118,7 @@ class Test_Blob(unittest.TestCase):
             'https://storage.googleapis.com/name/parent%2Fchild')
 
     def _basic_generate_signed_url_helper(self, credentials=None):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.storage import blob as MUT
 
         BLOB_NAME = 'blob-name'
@@ -157,7 +157,7 @@ class Test_Blob(unittest.TestCase):
         self._basic_generate_signed_url_helper()
 
     def test_generate_signed_url_w_content_type(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.storage import blob as MUT
 
         BLOB_NAME = 'blob-name'
@@ -195,7 +195,7 @@ class Test_Blob(unittest.TestCase):
         self._basic_generate_signed_url_helper(credentials=credentials)
 
     def test_generate_signed_url_w_slash_in_name(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.storage import blob as MUT
 
         BLOB_NAME = 'parent/child'
@@ -226,7 +226,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
     def test_generate_signed_url_w_method_arg(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.storage import blob as MUT
 
         BLOB_NAME = 'blob-name'
@@ -353,7 +353,7 @@ class Test_Blob(unittest.TestCase):
         import time
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _NamedTemporaryFile
 
         BLOB_NAME = 'blob-name'
         chunk1_response = {'status': PARTIAL_CONTENT,
@@ -388,7 +388,7 @@ class Test_Blob(unittest.TestCase):
         import time
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _NamedTemporaryFile
 
         BLOB_NAME = 'blob-name'
         KEY = 'aa426195405adee2c8081bb9e7e74b19'
@@ -468,7 +468,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _NamedTemporaryFile
 
         BLOB_NAME = 'blob-name'
         DATA = b'ABCDEF'
@@ -641,8 +641,8 @@ class Test_Blob(unittest.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from unit_tests._testing import _Monkey
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _Monkey
+        from google.cloud._testing import _NamedTemporaryFile
         from google.cloud.streaming import http_wrapper
         from google.cloud.streaming import transfer
 
@@ -725,8 +725,8 @@ class Test_Blob(unittest.TestCase):
         from six.moves.http_client import NOT_FOUND
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from unit_tests._testing import _Monkey
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _Monkey
+        from google.cloud._testing import _NamedTemporaryFile
         from google.cloud.streaming import transfer
         from google.cloud.streaming.exceptions import HttpError
 
@@ -779,7 +779,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _NamedTemporaryFile
         from google.cloud.streaming import http_wrapper
 
         BLOB_NAME = 'parent/child'
@@ -829,7 +829,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _NamedTemporaryFile
         from google.cloud.streaming import http_wrapper
 
         BLOB_NAME = 'blob-name'
@@ -888,7 +888,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from unit_tests._testing import _NamedTemporaryFile
+        from google.cloud._testing import _NamedTemporaryFile
         from google.cloud.streaming import http_wrapper
 
         BLOB_NAME = 'blob-name'

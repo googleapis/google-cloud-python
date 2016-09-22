@@ -22,7 +22,7 @@ class Test_get_credentials(unittest.TestCase):
         return credentials.get_credentials()
 
     def test_it(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import credentials as MUT
 
         client = _Client()
@@ -44,7 +44,7 @@ class Test_generate_signed_url(unittest.TestCase):
         import base64
         from six.moves.urllib.parse import parse_qs
         from six.moves.urllib.parse import urlsplit
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import credentials as MUT
 
         ENDPOINT = 'http://api.example.com'
@@ -196,7 +196,7 @@ class Test__get_expiration_seconds(unittest.TestCase):
 
     def test_w_timedelta_seconds(self):
         import datetime
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import credentials as MUT
 
         dummy_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
@@ -210,7 +210,7 @@ class Test__get_expiration_seconds(unittest.TestCase):
 
     def test_w_timedelta_days(self):
         import datetime
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud import credentials as MUT
 
         dummy_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
