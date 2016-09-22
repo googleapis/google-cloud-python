@@ -423,13 +423,12 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_logger_delete_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
-
+        from google.gax.errors import GaxError
         LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
         gax_api = _GAXLoggingAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(GaxError):
             api.logger_delete(self.PROJECT, self.LOG_NAME)
 
         log_name, options = gax_api._delete_log_called_with
@@ -504,12 +503,11 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, TOKEN)
 
     def test_sink_create_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
-
+        from google.gax.errors import GaxError
         gax_api = _GAXSinksAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(GaxError):
             api.sink_create(
                 self.PROJECT, self.SINK_NAME, self.FILTER,
                 self.DESTINATION_URI)
@@ -550,12 +548,11 @@ class Test_SinksAPI(_Base, unittest.TestCase):
             api.sink_get(self.PROJECT, self.SINK_NAME)
 
     def test_sink_get_miss(self):
-        from google.cloud.exceptions import GrpcRendezvous
-
+        from google.gax.errors import GaxError
         gax_api = _GAXSinksAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(GaxError):
             api.sink_get(self.PROJECT, self.SINK_NAME)
 
     def test_sink_get_hit(self):
@@ -578,12 +575,11 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_sink_update_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
-
+        from google.gax.errors import GaxError
         gax_api = _GAXSinksAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(GaxError):
             api.sink_update(
                 self.PROJECT, self.SINK_NAME, self.FILTER,
                 self.DESTINATION_URI)
@@ -618,12 +614,11 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_sink_delete_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
-
+        from google.gax.errors import GaxError
         gax_api = _GAXSinksAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(GaxError):
             api.sink_delete(self.PROJECT, self.SINK_NAME)
 
     def test_sink_delete_miss(self):
@@ -712,12 +707,11 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, TOKEN)
 
     def test_metric_create_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
-
+        from google.gax.errors import GaxError
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(GaxError):
             api.metric_create(
                 self.PROJECT, self.METRIC_NAME, self.FILTER,
                 self.DESCRIPTION)
@@ -758,12 +752,11 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
             api.metric_get(self.PROJECT, self.METRIC_NAME)
 
     def test_metric_get_miss(self):
-        from google.cloud.exceptions import GrpcRendezvous
-
+        from google.gax.errors import GaxError
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(GaxError):
             api.metric_get(self.PROJECT, self.METRIC_NAME)
 
     def test_metric_get_hit(self):
@@ -786,12 +779,11 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_metric_update_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
-
+        from google.gax.errors import GaxError
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(GaxError):
             api.metric_update(
                 self.PROJECT, self.METRIC_NAME, self.FILTER,
                 self.DESCRIPTION)
@@ -826,12 +818,11 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_metric_delete_error(self):
-        from google.cloud.exceptions import GrpcRendezvous
-
+        from google.gax.errors import GaxError
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
 
-        with self.assertRaises(GrpcRendezvous):
+        with self.assertRaises(GaxError):
             api.metric_delete(self.PROJECT, self.METRIC_NAME)
 
     def test_metric_delete_miss(self):
@@ -938,11 +929,12 @@ class _GAXLoggingAPI(_GAXBaseAPI):
             entries, log_name, resource, labels, partial_success, options)
 
     def delete_log(self, log_name, options):
+        from google.gax.errors import GaxError
         self._delete_log_called_with = log_name, options
         if self._random_gax_error:
-            raise self._make_grpc_error()
+            raise GaxError('error')
         if self._delete_not_found:
-            raise self._make_grpc_not_found()
+            raise GaxError('notfound', self._make_grpc_not_found())
 
 
 class _GAXSinksAPI(_GAXBaseAPI):
@@ -955,36 +947,40 @@ class _GAXSinksAPI(_GAXBaseAPI):
         return self._list_sinks_response
 
     def create_sink(self, parent, sink, options):
+        from google.gax.errors import GaxError
         self._create_sink_called_with = parent, sink, options
         if self._random_gax_error:
-            raise self._make_grpc_error()
+            raise GaxError('error')
         if self._create_sink_conflict:
-            raise self._make_grpc_failed_precondition()
+            raise GaxError('conflict', self._make_grpc_failed_precondition())
 
     def get_sink(self, sink_name, options):
+        from google.gax.errors import GaxError
         self._get_sink_called_with = sink_name, options
         if self._random_gax_error:
-            raise self._make_grpc_error()
+            raise GaxError('error')
         try:
             return self._get_sink_response
         except AttributeError:
-            raise self._make_grpc_not_found()
+            raise GaxError('notfound', self._make_grpc_not_found())
 
     def update_sink(self, sink_name, sink, options=None):
+        from google.gax.errors import GaxError
         self._update_sink_called_with = sink_name, sink, options
         if self._random_gax_error:
-            raise self._make_grpc_error()
+            raise GaxError('error')
         try:
             return self._update_sink_response
         except AttributeError:
-            raise self._make_grpc_not_found()
+            raise GaxError('notfound', self._make_grpc_not_found())
 
     def delete_sink(self, sink_name, options=None):
+        from google.gax.errors import GaxError
         self._delete_sink_called_with = sink_name, options
         if self._random_gax_error:
-            raise self._make_grpc_error()
+            raise GaxError('error')
         if self._sink_not_found:
-            raise self._make_grpc_not_found()
+            raise GaxError('notfound', self._make_grpc_not_found())
 
 
 class _GAXMetricsAPI(_GAXBaseAPI):
@@ -997,36 +993,40 @@ class _GAXMetricsAPI(_GAXBaseAPI):
         return self._list_log_metrics_response
 
     def create_log_metric(self, parent, metric, options):
+        from google.gax.errors import GaxError
         self._create_log_metric_called_with = parent, metric, options
         if self._random_gax_error:
-            raise self._make_grpc_error()
+            raise GaxError('error')
         if self._create_log_metric_conflict:
-            raise self._make_grpc_failed_precondition()
+            raise GaxError('conflict', self._make_grpc_failed_precondition())
 
     def get_log_metric(self, metric_name, options):
+        from google.gax.errors import GaxError
         self._get_log_metric_called_with = metric_name, options
         if self._random_gax_error:
-            raise self._make_grpc_error()
+            raise GaxError('error')
         try:
             return self._get_log_metric_response
         except AttributeError:
-            raise self._make_grpc_not_found()
+            raise GaxError('notfound', self._make_grpc_not_found())
 
     def update_log_metric(self, metric_name, metric, options=None):
+        from google.gax.errors import GaxError
         self._update_log_metric_called_with = metric_name, metric, options
         if self._random_gax_error:
-            raise self._make_grpc_error()
+            raise GaxError('error')
         try:
             return self._update_log_metric_response
         except AttributeError:
-            raise self._make_grpc_not_found()
+            raise GaxError('notfound', self._make_grpc_not_found())
 
     def delete_log_metric(self, metric_name, options=None):
+        from google.gax.errors import GaxError
         self._delete_log_metric_called_with = metric_name, options
         if self._random_gax_error:
-            raise self._make_grpc_error()
+            raise GaxError('error')
         if self._log_metric_not_found:
-            raise self._make_grpc_not_found()
+            raise GaxError('notfound', self._make_grpc_not_found())
 
 
 class _HTTPRequestPB(object):
