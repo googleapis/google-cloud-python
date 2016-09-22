@@ -41,7 +41,7 @@ class TestClient(unittest.TestCase):
     def test_logging_api_wo_gax(self):
         from google.cloud.logging.connection import _LoggingAPI
         from google.cloud.logging import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         client = self._makeOne(self.PROJECT, credentials=_Credentials())
         conn = client.connection = object()
 
@@ -56,7 +56,7 @@ class TestClient(unittest.TestCase):
 
     def test_logging_api_w_gax(self):
         from google.cloud.logging import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         wrapped = object()
         _called_with = []
@@ -88,7 +88,7 @@ class TestClient(unittest.TestCase):
     def test_sinks_api_wo_gax(self):
         from google.cloud.logging.connection import _SinksAPI
         from google.cloud.logging import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         client = self._makeOne(self.PROJECT, credentials=_Credentials())
         conn = client.connection = object()
 
@@ -103,7 +103,7 @@ class TestClient(unittest.TestCase):
 
     def test_sinks_api_w_gax(self):
         from google.cloud.logging import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         wrapped = object()
         _called_with = []
@@ -135,7 +135,7 @@ class TestClient(unittest.TestCase):
     def test_metrics_api_wo_gax(self):
         from google.cloud.logging.connection import _MetricsAPI
         from google.cloud.logging import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         client = self._makeOne(self.PROJECT, credentials=_Credentials())
         conn = client.connection = object()
 
@@ -150,7 +150,7 @@ class TestClient(unittest.TestCase):
 
     def test_metrics_api_w_gax(self):
         from google.cloud.logging import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         wrapped = object()
         _called_with = []

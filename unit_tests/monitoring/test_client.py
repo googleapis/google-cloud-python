@@ -184,7 +184,7 @@ class TestClient(unittest.TestCase):
 
     def test_timeseries_factory_gauge(self):
         import datetime
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         import google.cloud.monitoring.client
         from google.cloud._helpers import _datetime_to_rfc3339
         METRIC_TYPE = 'custom.googleapis.com/my_metric'

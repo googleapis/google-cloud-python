@@ -113,7 +113,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         return _DatastoreAPIOverGRPC
 
     def _makeOne(self, stub, connection=None, secure=True, mock_args=None):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.datastore import connection as MUT
 
         if connection is None:
@@ -316,7 +316,7 @@ class TestConnection(unittest.TestCase):
         return pb
 
     def _makeOne(self, credentials=None, http=None, use_grpc=False):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.datastore import connection as MUT
         with _Monkey(MUT, _USE_GRPC=use_grpc):
             return self._getTargetClass()(credentials=credentials, http=http)
@@ -336,7 +336,7 @@ class TestConnection(unittest.TestCase):
 
     def test_custom_url_from_env(self):
         import os
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.connection import API_BASE_URL
         from google.cloud.environment_vars import GCD_HOST
 
@@ -354,7 +354,7 @@ class TestConnection(unittest.TestCase):
         self.assertIsNone(conn.credentials)
 
     def test_ctor_without_grpc(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.datastore import connection as MUT
 
         connections = []
@@ -372,7 +372,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(connections, [conn])
 
     def test_ctor_with_grpc(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.datastore import connection as MUT
 
         api_args = []
@@ -866,7 +866,7 @@ class TestConnection(unittest.TestCase):
         request.ParseFromString(cw['body'])
 
     def test_commit_wo_transaction(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore import connection as MUT
         from google.cloud.datastore.helpers import _new_value_pb
@@ -912,7 +912,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(_parsed, [rsp_pb])
 
     def test_commit_w_transaction(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.datastore._generated import datastore_pb2
         from google.cloud.datastore import connection as MUT
         from google.cloud.datastore.helpers import _new_value_pb

@@ -32,7 +32,7 @@ class TestClient(unittest.TestCase):
     def test_publisher_api_wo_gax(self):
         from google.cloud.pubsub.connection import _PublisherAPI
         from google.cloud.pubsub import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = object()
@@ -48,7 +48,7 @@ class TestClient(unittest.TestCase):
 
     def test_publisher_api_w_gax(self):
         from google.cloud.pubsub import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         wrapped = object()
         _called_with = []
@@ -82,7 +82,7 @@ class TestClient(unittest.TestCase):
     def test_subscriber_api_wo_gax(self):
         from google.cloud.pubsub.connection import _SubscriberAPI
         from google.cloud.pubsub import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = object()
@@ -98,7 +98,7 @@ class TestClient(unittest.TestCase):
 
     def test_subscriber_api_w_gax(self):
         from google.cloud.pubsub import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         wrapped = object()
         _called_with = []
