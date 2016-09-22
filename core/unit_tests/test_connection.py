@@ -74,6 +74,37 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne()
         self.assertEqual(conn.USER_AGENT, expected_ua)
 
+    def test__create_scoped_credentials_with_scoped_credentials(self):
+        klass = self._getTargetClass()
+        scoped_creds = object()
+        scope = 'google-specific-scope'
+        credentials = _Credentials(scoped=scoped_creds)
+
+        result = klass._create_scoped_credentials(credentials, scope)
+        self.assertIs(result, scoped_creds)
+        self.assertEqual(credentials._create_scoped_calls, 1)
+        self.assertEqual(credentials._scopes, [scope])
+
+    def test__create_scoped_credentials_without_scope_required(self):
+        klass = self._getTargetClass()
+        credentials = _Credentials()
+
+        result = klass._create_scoped_credentials(credentials, None)
+        self.assertIs(result, credentials)
+        self.assertEqual(credentials._create_scoped_calls, 1)
+        self.assertEqual(credentials._scopes, [])
+
+    def test__create_scoped_credentials_non_scoped_credentials(self):
+        klass = self._getTargetClass()
+        credentials = object()
+        result = klass._create_scoped_credentials(credentials, None)
+        self.assertIs(result, credentials)
+
+    def test__create_scoped_credentials_no_credentials(self):
+        klass = self._getTargetClass()
+        result = klass._create_scoped_credentials(None, None)
+        self.assertIsNone(result)
+
 
 class TestJSONConnection(unittest.TestCase):
 
@@ -375,11 +406,12 @@ class _Http(object):
 
 class _Credentials(object):
 
-    _scopes = None
-
-    def __init__(self, authorized=None):
+    def __init__(self, authorized=None, scoped=None):
         self._authorized = authorized
+        self._scoped = scoped
+        self._scoped_required = scoped is not None
         self._create_scoped_calls = 0
+        self._scopes = []
 
     def authorize(self, http):
         self._called_with = http
@@ -387,4 +419,8 @@ class _Credentials(object):
 
     def create_scoped_required(self):
         self._create_scoped_calls += 1
-        return False
+        return self._scoped_required
+
+    def create_scoped(self, scope):
+        self._scopes.append(scope)
+        return self._scoped

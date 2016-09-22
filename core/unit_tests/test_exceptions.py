@@ -125,6 +125,17 @@ class Test_make_exception(unittest.TestCase):
         self.assertEqual(exception.message, content)
         self.assertEqual(list(exception.errors), [])
 
+    def test_without_use_json(self):
+        from google.cloud.exceptions import TooManyRequests
+
+        content = u'error-content'
+        response = _Response(TooManyRequests.code)
+        exception = self._callFUT(response, content, use_json=False)
+
+        self.assertIsInstance(exception, TooManyRequests)
+        self.assertEqual(exception.message, content)
+        self.assertEqual(list(exception.errors), [])
+
 
 class _Response(object):
     def __init__(self, status):
