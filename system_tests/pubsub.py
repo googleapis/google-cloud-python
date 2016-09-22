@@ -15,12 +15,13 @@
 import os
 import unittest
 
+from google.gax.errors import GaxError
+from google.gax.grpc import exc_to_code
 from grpc import StatusCode
 import httplib2
 
 # pylint: disable=ungrouped-imports
 from google.cloud.environment_vars import PUBSUB_EMULATOR
-from google.cloud.exceptions import GrpcRendezvous
 from google.cloud.pubsub import client
 # pylint: enable=ungrouped-imports
 
@@ -32,10 +33,10 @@ from system_test_utils import unique_resource_id
 
 
 def _unavailable(exc):
-    return exc.code() == StatusCode.UNAVAILABLE
+    return exc_to_code(exc) == StatusCode.UNAVAILABLE
 
 
-retry_unavailable = RetryErrors(GrpcRendezvous, _unavailable)
+retry_unavailable = RetryErrors(GaxError, _unavailable)
 
 
 class Config(object):
