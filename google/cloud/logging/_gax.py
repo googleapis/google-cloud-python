@@ -472,8 +472,8 @@ def _struct_pb_to_mapping(struct_pb):
     Performs "impedance matching" between the protobuf attrs and the keys
     expected in the JSON API.
     """
-    return dict([(key, _value_pb_to_value(struct_pb.fields[key]))
-                 for key in struct_pb.fields])
+    return {key: _value_pb_to_value(struct_pb.fields[key])
+            for key in struct_pb.fields}
 
 
 def _log_entry_pb_to_mapping(entry_pb):

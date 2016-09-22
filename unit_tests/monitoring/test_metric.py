@@ -254,7 +254,8 @@ class TestMetricDescriptor(unittest.TestCase):
             'valueType': VALUE_TYPE,
             'description': DESCRIPTION,
         }
-        RESPONSE = dict(REQUEST, name=NAME)
+        RESPONSE = REQUEST.copy()
+        RESPONSE['name'] = NAME
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)

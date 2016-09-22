@@ -55,7 +55,7 @@ class TestGroup(unittest.TestCase):
         self.PARENT_NAME = self.PATH + self.PARENT_ID
 
         FILTER_TEMPLATE = 'resource.metadata.tag."color"="%s"'
-        self.FILTER = FILTER_TEMPLATE % 'blue'
+        self.FILTER = FILTER_TEMPLATE % ('blue',)
 
         self.JSON_GROUP = {
             'name': self.GROUP_NAME,
@@ -227,7 +227,7 @@ class TestGroup(unittest.TestCase):
     def test_create(self):
         RESPONSE = self.JSON_GROUP
 
-        REQUEST = dict(RESPONSE)
+        REQUEST = RESPONSE.copy()
         REQUEST.pop('name')
 
         connection = _Connection(RESPONSE)
