@@ -243,24 +243,24 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
     def test_commit_failure_aborted(self):
         from grpc import StatusCode
-        from grpc._channel import _Rendezvous
         from grpc._channel import _RPCState
         from google.cloud.exceptions import Conflict
+        from google.cloud.exceptions import GrpcRendezvous
 
         details = 'Bad things.'
         exc_state = _RPCState((), None, None, StatusCode.ABORTED, details)
-        exc = _Rendezvous(exc_state, None, None, None)
+        exc = GrpcRendezvous(exc_state, None, None, None)
         self._commit_failure_helper(exc, Conflict)
 
     @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
     def test_commit_failure_cancelled(self):
         from grpc import StatusCode
-        from grpc._channel import _Rendezvous
         from grpc._channel import _RPCState
+        from google.cloud.exceptions import GrpcRendezvous
 
         exc_state = _RPCState((), None, None, StatusCode.CANCELLED, None)
-        exc = _Rendezvous(exc_state, None, None, None)
-        self._commit_failure_helper(exc, _Rendezvous)
+        exc = GrpcRendezvous(exc_state, None, None, None)
+        self._commit_failure_helper(exc, GrpcRendezvous)
 
     @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
     def test_commit_failure_non_grpc_err(self):

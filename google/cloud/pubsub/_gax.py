@@ -19,14 +19,14 @@ from google.cloud.gapic.pubsub.v1.subscriber_api import SubscriberApi
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
+from google.gax.grpc import exc_to_code
 from google.pubsub.v1.pubsub_pb2 import PubsubMessage
 from google.pubsub.v1.pubsub_pb2 import PushConfig
-from grpc.beta.implementations import insecure_channel
+from grpc import insecure_channel
 from grpc import StatusCode
 
 # pylint: disable=ungrouped-imports
 from google.cloud._helpers import _to_bytes
-from google.cloud._helpers import exc_to_code
 from google.cloud._helpers import _pb_timestamp_to_rfc3339
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
@@ -520,7 +520,7 @@ def make_gax_publisher_api(connection):
     """
     channel = None
     if connection.in_emulator:
-        channel = insecure_channel(connection.host, None)
+        channel = insecure_channel(connection.host)
     return PublisherApi(channel=channel)
 
 
@@ -540,5 +540,5 @@ def make_gax_subscriber_api(connection):
     """
     channel = None
     if connection.in_emulator:
-        channel = insecure_channel(connection.host, None)
+        channel = insecure_channel(connection.host)
     return SubscriberApi(channel=channel)

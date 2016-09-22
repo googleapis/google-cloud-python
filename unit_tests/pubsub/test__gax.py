@@ -787,8 +787,8 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
             channels.append(channel)
             return mock_result
 
-        def mock_insecure_channel(host, port):
-            insecure_args.append((host, port))
+        def mock_insecure_channel(host):
+            insecure_args.append(host)
             return mock_channel
 
         host = 'CURR_HOST:1234'
@@ -799,7 +799,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [mock_channel])
-        self.assertEqual(insecure_args, [(host, None)])
+        self.assertEqual(insecure_args, [host])
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
@@ -840,8 +840,8 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
             channels.append(channel)
             return mock_result
 
-        def mock_insecure_channel(host, port):
-            insecure_args.append((host, port))
+        def mock_insecure_channel(host):
+            insecure_args.append(host)
             return mock_channel
 
         host = 'CURR_HOST:1234'
@@ -852,7 +852,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [mock_channel])
-        self.assertEqual(insecure_args, [(host, None)])
+        self.assertEqual(insecure_args, [host])
 
 
 class _GAXPublisherAPI(_GAXBaseAPI):
