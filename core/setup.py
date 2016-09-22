@@ -50,26 +50,17 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core',
+    'httplib2 >= 0.9.1',
+    'googleapis-common-protos',
+    'oauth2client >= 2.0.1, < 3.0.0dev',
+    'protobuf >= 3.0.0',
+    'six',
 ]
-
-GRPC_PACKAGES = [
-    'grpcio >= 1.0.0',
-    'google-gax >= 0.14.1, < 0.15dev',
-    'gapic-google-pubsub-v1 >= 0.9.0, < 0.10dev',
-    'grpc-google-pubsub-v1 >= 0.9.0, < 0.10dev',
-    'gapic-google-logging-v2 >= 0.9.0, < 0.10dev',
-    'grpc-google-logging-v2 >= 0.9.0, < 0.10dev',
-]
-
-RTD_ENV_VAR = 'READTHEDOCS'
-if RTD_ENV_VAR not in os.environ:
-    REQUIREMENTS.extend(GRPC_PACKAGES)
 
 setup(
-    name='google-cloud',
+    name='google-cloud-core',
     version='0.20.0dev',
-    description='API Client library for Google Cloud',
+    description='API Client library for Google Cloud: Core Helpers',
     long_description=README,
     namespace_packages=[
         'google',
