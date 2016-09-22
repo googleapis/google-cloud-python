@@ -57,6 +57,9 @@ IGNORED_MODULES = frozenset([
     'google.cloud.vision.__init__',
     'google.cloud.vision.fixtures',
 ])
+PACKAGES = (
+    '',
+)
 
 
 class SphinxApp(object):
@@ -120,8 +123,8 @@ def get_public_modules(path, base_package=None):
     return result
 
 
-def main(build_root='_build'):
-    """Main script to verify modules included.
+def verify_modules(build_root='_build'):
+    """Verify modules included.
 
     :type build_root: str
     :param build_root: The root of the directory where docs are built into.
@@ -134,10 +137,12 @@ def main(build_root='_build'):
                                 object_inventory_relpath)
     sphinx_mods = set(inventory['py:module'].keys())
 
-    library_dir = os.path.join(BASE_DIR, 'google', 'cloud')
-    public_mods = get_public_modules(library_dir,
-                                     base_package='google.cloud')
-    public_mods = set(public_mods)
+    public_mods = set()
+    for package in PACKAGES:
+        library_dir = os.path.join(BASE_DIR, package, 'google', 'cloud')
+        package_mods = get_public_modules(library_dir,
+                                          base_package='google.cloud')
+        public_mods.update(package_mods)
 
     if not sphinx_mods <= public_mods:
         unexpected_mods = sphinx_mods - public_mods
@@ -172,7 +177,12 @@ def get_parser():
     return parser
 
 
-if __name__ == '__main__':
+def main():
+    """Main script to verify modules included."""
     parser = get_parser()
     args = parser.parse_args()
-    main(build_root=args.build_root)
+    verify_modules(build_root=args.build_root)
+
+
+if __name__ == '__main__':
+    main()
