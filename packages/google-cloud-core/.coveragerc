@@ -1,0 +1,13 @@
+[run]
+branch = True
+
+[report]
+omit =
+    */google/cloud/_testing.py
+fail_under = 100
+show_missing = True
+exclude_lines =
+    # Re-enable the standard pragma
+    pragma: NO COVER
+    # Ignore debug-only repr
+    def __repr__
