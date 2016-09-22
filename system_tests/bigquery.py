@@ -432,3 +432,37 @@ class TestBigQuery(unittest.TestCase):
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),
                          sorted(ROWS, key=by_age))
+
+    def test_job_cancel(self):
+        DATASET_NAME = _make_dataset_name('job_cancel')
+        JOB_NAME = 'fetch_' + DATASET_NAME
+        TABLE_NAME = 'test_table'
+        QUERY = 'SELECT * FROM %s.%s' % (DATASET_NAME, TABLE_NAME)
+
+        dataset = Config.CLIENT.dataset(DATASET_NAME)
+
+        retry_403(dataset.create)()
+        self.to_delete.append(dataset)
+
+        full_name = bigquery.SchemaField('full_name', 'STRING',
+                                         mode='REQUIRED')
+        age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = dataset.table(TABLE_NAME, schema=[full_name, age])
+        table.create()
+        self.to_delete.insert(0, table)
+
+        job = Config.CLIENT.run_async_query(JOB_NAME, QUERY)
+        job.begin()
+        job.cancel()
+
+        def _job_done(instance):
+            return instance.state in ('DONE', 'done')
+
+        retry = RetryInstanceState(_job_done, max_tries=8)
+        retry(job.reload)()
+
+        # The `cancel` API doesn't leave any reliable traces on
+        # the status of the job resource, so we can't really assert for
+        # them here.  The best we can do is not that the API call didn't
+        # raise an error, and that the job completed (in the `retry()`
+        # above).

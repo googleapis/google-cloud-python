@@ -601,8 +601,9 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
 
     def test_cancel_w_bound_client(self):
         PATH = 'projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_NAME)
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
+        RESOURCE = self._makeResource(ended=True)
+        RESPONSE = {'job': RESOURCE}
+        conn = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=conn)
         table = _Table()
         job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
@@ -617,10 +618,11 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
 
     def test_cancel_w_alternate_client(self):
         PATH = 'projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_NAME)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._makeResource(ended=True)
+        RESPONSE = {'job': RESOURCE}
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
+        conn2 = _Connection(RESPONSE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         table = _Table()
         job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client1)
