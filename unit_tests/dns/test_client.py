@@ -55,8 +55,8 @@ class TestClient(unittest.TestCase):
                 'totalRrdataSizePerChange': str(TOTAL_SIZE),
             }
         }
-        CONVERTED = dict([(key, int(value))
-                          for key, value in DATA['quota'].items()])
+        CONVERTED = {key: int(value)
+                     for key, value in DATA['quota'].items()}
         creds = _Credentials()
         client = self._makeOne(self.PROJECT, creds)
         conn = client.connection = _Connection(DATA)
@@ -88,8 +88,8 @@ class TestClient(unittest.TestCase):
                 'totalRrdataSizePerChange': str(TOTAL_SIZE),
             }
         }
-        CONVERTED = dict([(key, int(value))
-                          for key, value in DATA['quota'].items()])
+        CONVERTED = {key: int(value)
+                     for key, value in DATA['quota'].items()}
         WITH_KIND = {'quota': DATA['quota'].copy()}
         WITH_KIND['quota']['kind'] = 'dns#quota'
         creds = _Credentials()

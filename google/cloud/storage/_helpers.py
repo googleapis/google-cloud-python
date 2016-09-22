@@ -120,8 +120,8 @@ class _PropertyMixin(object):
         client = self._require_client(client)
         # Pass '?projection=full' here because 'PATCH' documented not
         # to work properly w/ 'noAcl'.
-        update_properties = dict((key, self._properties[key])
-                                 for key in self._changes)
+        update_properties = {key: self._properties[key]
+                             for key in self._changes}
         api_response = client.connection.api_request(
             method='PATCH', path=self.path, data=update_properties,
             query_params={'projection': 'full'}, _target_object=self)
