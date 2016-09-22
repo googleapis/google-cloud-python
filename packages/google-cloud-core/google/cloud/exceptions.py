@@ -1,0 +1,244 @@
+# Copyright 2014 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""Custom exceptions for :mod:`google.cloud` package.
+
+See: https://cloud.google.com/storage/docs/json_api/v1/status-codes
+"""
+
+import copy
+import json
+import six
+
+from google.cloud._helpers import _to_bytes
+
+_HTTP_CODE_TO_EXCEPTION = {}  # populated at end of module
+
+try:
+    from grpc._channel import _Rendezvous
+except ImportError:  # pragma: NO COVER
+    _Rendezvous = None
+
+
+# pylint: disable=invalid-name
+GrpcRendezvous = _Rendezvous
+"""Exception class raised by gRPC stable."""
+# pylint: enable=invalid-name
+
+
+class GoogleCloudError(Exception):
+    """Base error class for Google Cloud errors (abstract).
+
+    Each subclass represents a single type of HTTP error response.
+    """
+    code = None
+    """HTTP status code.  Concrete subclasses *must* define.
+
+    See: http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+    """
+
+    def __init__(self, message, errors=()):
+        super(GoogleCloudError, self).__init__(message)
+        self.message = message
+        self._errors = errors
+
+    def __str__(self):
+        result = u'%d %s' % (self.code, self.message)
+        if six.PY2:
+            result = _to_bytes(result, 'utf-8')
+        return result
+
+    @property
+    def errors(self):
+        """Detailed error information.
+
+        :rtype: list(dict)
+        :returns: a list of mappings describing each error.
+        """
+        return [copy.deepcopy(error) for error in self._errors]
+
+
+class Redirection(GoogleCloudError):
+    """Base for 3xx responses
+
+    This class is abstract.
+    """
+
+
+class MovedPermanently(Redirection):
+    """Exception mapping a '301 Moved Permanently' response."""
+    code = 301
+
+
+class NotModified(Redirection):
+    """Exception mapping a '304 Not Modified' response."""
+    code = 304
+
+
+class TemporaryRedirect(Redirection):
+    """Exception mapping a '307 Temporary Redirect' response."""
+    code = 307
+
+
+class ResumeIncomplete(Redirection):
+    """Exception mapping a '308 Resume Incomplete' response."""
+    code = 308
+
+
+class ClientError(GoogleCloudError):
+    """Base for 4xx responses
+
+    This class is abstract
+    """
+
+
+class BadRequest(ClientError):
+    """Exception mapping a '400 Bad Request' response."""
+    code = 400
+
+
+class Unauthorized(ClientError):
+    """Exception mapping a '401 Unauthorized' response."""
+    code = 401
+
+
+class Forbidden(ClientError):
+    """Exception mapping a '403 Forbidden' response."""
+    code = 403
+
+
+class NotFound(ClientError):
+    """Exception mapping a '404 Not Found' response."""
+    code = 404
+
+
+class MethodNotAllowed(ClientError):
+    """Exception mapping a '405 Method Not Allowed' response."""
+    code = 405
+
+
+class Conflict(ClientError):
+    """Exception mapping a '409 Conflict' response."""
+    code = 409
+
+
+class LengthRequired(ClientError):
+    """Exception mapping a '411 Length Required' response."""
+    code = 411
+
+
+class PreconditionFailed(ClientError):
+    """Exception mapping a '412 Precondition Failed' response."""
+    code = 412
+
+
+class RequestRangeNotSatisfiable(ClientError):
+    """Exception mapping a '416 Request Range Not Satisfiable' response."""
+    code = 416
+
+
+class TooManyRequests(ClientError):
+    """Exception mapping a '429 Too Many Requests' response."""
+    code = 429
+
+
+class ServerError(GoogleCloudError):
+    """Base for 5xx responses:  (abstract)"""
+
+
+class InternalServerError(ServerError):
+    """Exception mapping a '500 Internal Server Error' response."""
+    code = 500
+
+
+class MethodNotImplemented(ServerError):
+    """Exception mapping a '501 Not Implemented' response."""
+    code = 501
+
+
+class BadGateway(ServerError):
+    """Exception mapping a '502 Bad Gateway' response."""
+    code = 502
+
+
+class ServiceUnavailable(ServerError):
+    """Exception mapping a '503 Service Unavailable' response."""
+    code = 503
+
+
+def make_exception(response, content, error_info=None, use_json=True):
+    """Factory:  create exception based on HTTP response code.
+
+    :type response: :class:`httplib2.Response` or other HTTP response object
+    :param response: A response object that defines a status code as the
+                     status attribute.
+
+    :type content: string or dictionary
+    :param content: The body of the HTTP error response.
+
+    :type error_info: string
+    :param error_info: Optional string giving extra information about the
+                       failed request.
+
+    :type use_json: bool
+    :param use_json: Flag indicating if ``content`` is expected to be JSON.
+
+    :rtype: instance of :class:`GoogleCloudError`, or a concrete subclass.
+    :returns: Exception specific to the error response.
+    """
+    if isinstance(content, six.binary_type):
+        content = content.decode('utf-8')
+
+    if isinstance(content, six.string_types):
+        payload = None
+        if use_json:
+            try:
+                payload = json.loads(content)
+            except ValueError:
+                # Expected JSON but received something else.
+                pass
+        if payload is None:
+            payload = {'error': {'message': content}}
+    else:
+        payload = content
+
+    message = payload.get('error', {}).get('message', '')
+    errors = payload.get('error', {}).get('errors', ())
+
+    if error_info is not None:
+        message += ' (%s)' % (error_info,)
+
+    try:
+        klass = _HTTP_CODE_TO_EXCEPTION[response.status]
+    except KeyError:
+        error = GoogleCloudError(message, errors)
+        error.code = response.status
+    else:
+        error = klass(message, errors)
+    return error
+
+
+def _walk_subclasses(klass):
+    """Recursively walk subclass tree."""
+    for sub in klass.__subclasses__():
+        yield sub
+        for subsub in _walk_subclasses(sub):
+            yield subsub
+
+
+# Build the code->exception class mapping.
+for _eklass in _walk_subclasses(GoogleCloudError):
+    code = getattr(_eklass, 'code', None)
+    if code is not None:
+        _HTTP_CODE_TO_EXCEPTION[code] = _eklass
