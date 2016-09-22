@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.exceptions &mdash; google-cloud b60d498 documentation</title>
+  <title>google.cloud.exceptions &mdash; google-cloud e9660a8 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud b60d498 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud e9660a8 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -284,6 +284,8 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
+
 <span class="n">_HTTP_CODE_TO_EXCEPTION</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># populated at end of module</span>
 
 <span class="k">try</span><span class="p">:</span>
@@ -315,7 +317,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span> <span class="o">=</span> <span class="n">errors</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s1">u&#39;</span><span class="si">%d</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">six</span><span class="o">.</span><span class="n">PY2</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">errors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -533,7 +538,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'b60d498',
+            VERSION:'e9660a8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
