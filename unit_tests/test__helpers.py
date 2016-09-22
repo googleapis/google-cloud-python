@@ -1025,6 +1025,37 @@ class Test_make_insecure_stub(unittest.TestCase):
         self._helper(host, host)
 
 
+class Test_exc_to_code(unittest.TestCase):
+
+    def _callFUT(self, exc):
+        from google.cloud._helpers import exc_to_code
+        return exc_to_code(exc)
+
+    def test_with_stable(self):
+        from grpc._channel import _Rendezvous
+        from grpc._channel import _RPCState
+        from grpc import StatusCode
+
+        status_code = StatusCode.FAILED_PRECONDITION
+        exc_state = _RPCState((), None, None, status_code, None)
+        exc = _Rendezvous(exc_state, None, None, None)
+        result = self._callFUT(exc)
+        self.assertEqual(result, status_code)
+
+    def test_with_beta(self):
+        from grpc import StatusCode
+        from grpc.framework.interfaces.face.face import AbortionError
+
+        status_code = StatusCode.UNIMPLEMENTED
+        exc = AbortionError(None, None, status_code, None)
+        result = self._callFUT(exc)
+        self.assertEqual(result, status_code)
+
+    def test_with_none(self):
+        result = self._callFUT(None)
+        self.assertIsNone(result)
+
+
 class _AppIdentity(object):
 
     def __init__(self, app_id):
