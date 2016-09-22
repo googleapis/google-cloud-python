@@ -6,8 +6,6 @@ omit =
     */_generated/*.py
     # Packages in the "google.cloud" package that we don't own.
     */google/cloud/gapic/*
-fail_under = 100
-show_missing = True
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
