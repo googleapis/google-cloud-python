@@ -73,9 +73,10 @@ class TestLogging(unittest.TestCase):
         return 'system-tests-logger' + unique_resource_id('-')
 
     def _list_entries(self, logger):
-        from grpc._channel import _Rendezvous
+        from google.gax.errors import GaxError
+
         inner = RetryResult(_has_entries)(logger.list_entries)
-        outer = RetryErrors(_Rendezvous, _retry_on_unavailable)(inner)
+        outer = RetryErrors(GaxError, _retry_on_unavailable)(inner)
         return outer()
 
     def test_log_text(self):

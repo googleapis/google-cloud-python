@@ -19,6 +19,7 @@ import json
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
+from google.gax.grpc import exc_to_code
 from google.logging.type.log_severity_pb2 import LogSeverity
 from google.logging.v2.logging_config_pb2 import LogSink
 from google.logging.v2.logging_metrics_pb2 import LogMetric
@@ -29,7 +30,6 @@ from grpc import StatusCode
 # pylint: disable=ungrouped-imports
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_rfc3339
-from google.cloud._helpers import exc_to_code
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 # pylint: enable=ungrouped-imports
