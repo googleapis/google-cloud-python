@@ -62,6 +62,44 @@ class Test_make_exception(unittest.TestCase):
         self.assertEqual(exception.message, 'Not Found')
         self.assertEqual(list(exception.errors), [])
 
+    def test_hit_w_content_as_unicode(self):
+        import six
+        from google.cloud._helpers import _to_bytes
+        from google.cloud.exceptions import NotFound
+        error_message = u'That\u2019s not found.'
+        expected = u'404 %s' % (error_message,)
+
+        response = _Response(404)
+        content = u'{"error": {"message": "%s" }}' % (error_message,)
+
+        exception = self._callFUT(response, content)
+        if six.PY2:
+            self.assertEqual(str(exception),
+                             _to_bytes(expected, encoding='utf-8'))
+        else:  # pragma: NO COVER
+            self.assertEqual(str(exception), expected)
+
+        self.assertIsInstance(exception, NotFound)
+        self.assertEqual(exception.message, error_message)
+        self.assertEqual(list(exception.errors), [])
+
+    def test_hit_w_content_as_unicode_as_py3(self):
+        import six
+        from unit_tests._testing import _Monkey
+        from google.cloud.exceptions import NotFound
+        error_message = u'That is not found.'
+        expected = u'404 %s' % (error_message,)
+
+        with _Monkey(six, PY2=False):
+            response = _Response(404)
+            content = u'{"error": {"message": "%s" }}' % (error_message,)
+            exception = self._callFUT(response, content)
+
+            self.assertIsInstance(exception, NotFound)
+            self.assertEqual(exception.message, error_message)
+            self.assertEqual(list(exception.errors), [])
+            self.assertEqual(str(exception), expected)
+
     def test_miss_w_content_as_dict(self):
         from google.cloud.exceptions import GoogleCloudError
         ERROR = {
