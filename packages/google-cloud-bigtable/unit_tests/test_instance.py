@@ -190,7 +190,7 @@ class TestInstance(unittest.TestCase):
             instance_pb2 as data_v2_pb2)
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
 
         client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
@@ -233,7 +233,7 @@ class TestInstance(unittest.TestCase):
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
         from google.cloud.operation import Operation
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
         from google.cloud.bigtable.instance import (
@@ -287,7 +287,7 @@ class TestInstance(unittest.TestCase):
         from google.longrunning import operations_pb2
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
         from google.cloud.operation import Operation
 
         SERVE_NODES = 5
@@ -326,7 +326,7 @@ class TestInstance(unittest.TestCase):
     def test_update(self):
         from google.cloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
 
         client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
@@ -361,7 +361,7 @@ class TestInstance(unittest.TestCase):
         from google.protobuf import empty_pb2
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
 
         client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
@@ -394,7 +394,7 @@ class TestInstance(unittest.TestCase):
             instance_pb2 as instance_v2_pb2)
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
 
         FAILED_LOCATION = 'FAILED'
         FAILED_LOCATIONS = [FAILED_LOCATION]
@@ -451,7 +451,7 @@ class TestInstance(unittest.TestCase):
             table_pb2 as table_data_v2_pb2)
         from google.cloud.bigtable._generated import (
             bigtable_table_admin_pb2 as table_messages_v1_pb2)
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
 
         client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
