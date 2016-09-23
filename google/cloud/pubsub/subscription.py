@@ -24,7 +24,7 @@ class Subscription(object):
     """Subscriptions receive messages published to their topics.
 
     See:
-    https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions
+    https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions
 
     :type name: string
     :param name: the name of the subscription.
@@ -51,7 +51,7 @@ class Subscription(object):
     """Value of ``projects.subscriptions.topic`` when topic has been deleted.
 
     See:
-    https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions#Subscription.FIELDS.topic
+    https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions#Subscription.FIELDS.topic
     """
 
     def __init__(self, name, topic=None, ack_deadline=None, push_endpoint=None,
@@ -163,7 +163,7 @@ class Subscription(object):
         """API call:  create the subscription via a PUT request
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create
 
         Example:
 
@@ -186,7 +186,7 @@ class Subscription(object):
         """API call:  test existence of the subscription via a GET request
 
         See
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get
 
         Example:
 
@@ -215,7 +215,7 @@ class Subscription(object):
         """API call:  sync local subscription configuration via a GET request
 
         See
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get
 
         Example:
 
@@ -239,7 +239,7 @@ class Subscription(object):
         """API call:  delete the subscription via a DELETE request.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete
 
         Example:
 
@@ -260,7 +260,7 @@ class Subscription(object):
         """API call:  update the push endpoint for the subscription.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         Example:
 
@@ -291,7 +291,7 @@ class Subscription(object):
         """API call:  retrieve messages for the subscription.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/pull
 
         Example:
 
@@ -330,7 +330,7 @@ class Subscription(object):
         """API call:  acknowledge retrieved messages for the subscription.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/acknowledge
 
         Example:
 
@@ -354,7 +354,7 @@ class Subscription(object):
         """API call:  update acknowledgement deadline for a retrieved message.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
         :type ack_ids: list of string
         :param ack_ids: ack IDs of messages being updated
@@ -376,7 +376,7 @@ class Subscription(object):
         """Fetch the IAM policy for the subscription.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/getIamPolicy
 
         Example:
 
@@ -402,7 +402,7 @@ class Subscription(object):
         """Update the IAM policy for the subscription.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/setIamPolicy
 
         Example:
 
@@ -433,7 +433,7 @@ class Subscription(object):
         """Verify permissions allowed for the current user.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/testIamPermissions
 
         Example:
 

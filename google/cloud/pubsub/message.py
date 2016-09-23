@@ -23,7 +23,7 @@ class Message(object):
     """Messages can be published to a topic and received by subscribers.
 
     See:
-    https://cloud.google.com/pubsub/reference/rest/v1/PubsubMessage
+    https://cloud.google.com/pubsub/docs/reference/rest/v1/PubsubMessage
 
     :type data: bytes
     :param data: the payload of the message.
