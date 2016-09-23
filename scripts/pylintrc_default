@@ -1,26 +1,3 @@
-[REPORTS]
-
-# Tells whether to display a full report or only the messages
-# DEFAULT:  reports=yes
-# RATIONALE:  run from Travis / tox, and don't need / want to parse output.
-reports=no
-
-[FORMAT]
-
-# List of optional constructs for which whitespace checking is disabled
-# DEFAULT:  no-space-check=trailing-comma,dict-separator
-# RATIONALE: pylint ignores whitespace checks around the
-#            constructs "dict-separator" (cases like {1:2}) and
-#            "trailing-comma" (cases like {1: 2, }).
-#            By setting "no-space-check" to empty whitespace checks will be
-#            enforced around both constructs.
-no-space-check =
-
-# Maximum number of lines in a module
-# DEFAULT:  max-module-lines=1000
-# RATIONALE:  API-mapping
-max-module-lines=1200
-
 [BASIC]
 
 # Good variable names which should always be accepted, separated by a comma

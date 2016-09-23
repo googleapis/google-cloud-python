@@ -187,7 +187,9 @@ output-format=text
 files-output=no
 
 # Tells whether to display a full report or only the messages
-reports=yes
+# DEFAULT:  reports=yes
+# RATIONALE:  run from Travis / tox, and don't need / want to parse output.
+reports=no
 
 # Python expression which should return a note less than 10 (10 is the highest
 # note). You have access to the variables errors warning, statement which
@@ -372,10 +374,18 @@ single-line-if-stmt=no
 # separator` is used to allow tabulation in dicts, etc.: {1  : 1,\n222: 2}.
 # `trailing-comma` allows a space between comma and closing bracket: (a, ).
 # `empty-line` allows space-only lines.
-no-space-check=trailing-comma,dict-separator
+# DEFAULT:  no-space-check=trailing-comma,dict-separator
+# RATIONALE: pylint ignores whitespace checks around the
+#            constructs "dict-separator" (cases like {1:2}) and
+#            "trailing-comma" (cases like {1: 2, }).
+#            By setting "no-space-check" to empty whitespace checks will be
+#            enforced around both constructs.
+no-space-check =
 
 # Maximum number of lines in a module
-max-module-lines=1000
+# DEFAULT:  max-module-lines=1000
+# RATIONALE:  API-mapping
+max-module-lines=1200
 
 # String used as indentation unit. This is usually "    " (4 spaces) or "\t" (1
 # tab).
