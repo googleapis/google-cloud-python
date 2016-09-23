@@ -476,14 +476,18 @@ analyse-fallback-blocks=no
 [DESIGN]
 
 # Maximum number of arguments for function / method
-max-args=5
+# DEFAULT:  max-args=5
+# RATIONALE:  API-mapping
+max-args = 10
 
 # Argument names that match this expression will be ignored. Default to name
 # with leading underscore
 ignored-argument-names=_.*
 
 # Maximum number of locals for function / method body
-max-locals=15
+# DEFAULT:  max-locals=15
+# RATIONALE:  Extra thorny code with more locals.
+max-locals=20
 
 # Maximum number of return / yield for function / method body
 max-returns=6
@@ -498,13 +502,19 @@ max-statements=50
 max-parents=7
 
 # Maximum number of attributes for a class (see R0902).
-max-attributes=7
+# DEFAULT:  max-attributes=7
+# RATIONALE:  API mapping
+max-attributes=15
 
 # Minimum number of public methods for a class (see R0903).
-min-public-methods=2
+# DEFAULT:  min-public-methods=2
+# RATIONALE:  context mgrs may have *no* public methods
+min-public-methods=0
 
 # Maximum number of public methods for a class (see R0904).
-max-public-methods=20
+# DEFAULT:  max-public-methods=20
+# RATIONALE:  API mapping
+max-public-methods=40
 
 # Maximum number of boolean expressions in a if statement
 max-bool-expr=5
