@@ -1,8 +1,0 @@
-{
-  "description": "\n Create / interact with Stackdriver Monitoring connections.", 
-  "examples": [], 
-  "id": "gcloud.monitoring.connection", 
-  "methods": [], 
-  "name": "Connection", 
-  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
-}

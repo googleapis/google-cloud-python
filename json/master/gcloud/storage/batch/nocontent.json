@@ -1,8 +1,0 @@
-{
-  "description": "\n Batch updates / deletes of storage buckets / blobs.\n See: <a href=\"https://cloud.google.com/storage/docs/json_api/v1/how-tos/batch\">https://cloud.google.com/storage/docs/json_api/v1/how-tos/batch</a>", 
-  "examples": [], 
-  "id": "gcloud.storage.batch.nocontent", 
-  "methods": [], 
-  "name": "Nocontent", 
-  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
-}

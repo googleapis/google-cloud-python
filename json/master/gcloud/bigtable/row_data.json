@@ -1,8 +1,0 @@
-{
-  "description": "\n Container for Google Cloud Bigtable Cells and Streaming Row Contents.", 
-  "examples": [], 
-  "id": "gcloud.bigtable.row_data", 
-  "methods": [], 
-  "name": "Row_Data", 
-  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
-}
