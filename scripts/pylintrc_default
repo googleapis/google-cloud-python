@@ -1,21 +1,3 @@
-[BASIC]
-
-# Good variable names which should always be accepted, separated by a comma
-# DEFAULT:  good-names=i,j,k,ex,Run,_
-# RATIONALE:  'pb' and 'id' have well-understood meainings in the code.
-good-names = i, j, k, ex, Run, _,
-             pb,
-             id,
-
-# Regular expression matching correct method names
-# DEFAULT:  method-rgx=[a-z_][a-z0-9_]{2,30}$
-# RATIONALE:  mapping long API names onto connection methods
-method-rgx=[a-z_][a-z0-9_]{2,35}$
-
-# Regular expression which should only match function or class names that do
-# not require a docstring.
-no-docstring-rgx=__.*__
-
 [TYPECHECK]
 
 # List of module names for which member attributes should not be checked
