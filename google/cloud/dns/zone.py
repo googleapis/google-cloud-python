@@ -332,7 +332,7 @@ class ManagedZone(object):
 
         :rtype: tuple, (list, str)
         :returns: list of
-                  :class:`google.cloud.dns.resource_record_set.ResourceRecordSet`,
+                  :class:`~.resource_record_set.ResourceRecordSet`,
                   plus a "next page token" string:  if the token is not None,
                   indicates that more zones can be retrieved with another
                   call (pass that value as ``page_token``).
@@ -375,7 +375,7 @@ class ManagedZone(object):
 
         :rtype: tuple, (list, str)
         :returns: list of
-                  :class:`google.cloud.dns.resource_record_set.ResourceRecordSet`,
+                  :class:`~.resource_record_set.ResourceRecordSet`,
                   plus a "next page token" string:  if the token is not None,
                   indicates that more zones can be retrieved with another
                   call (pass that value as ``page_token``).
