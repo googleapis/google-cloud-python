@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.connection &mdash; google-cloud 67578df documentation</title>
+  <title>google.cloud.pubsub.connection &mdash; google-cloud d64839c documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 67578df documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud d64839c documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -563,9 +563,9 @@
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the new</span>
-<span class="sd">                                  subscription, in format</span>
-<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
+<span class="sd">        :param subscription_path:</span>
+<span class="sd">            the fully-qualified path of the new subscription, in format</span>
+<span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
 
 <span class="sd">        :type topic_path: string</span>
 <span class="sd">        :param topic_path: the fully-qualified path of the topic being</span>
@@ -603,9 +603,9 @@
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the subscription,</span>
-<span class="sd">                                  in format</span>
-<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
+<span class="sd">        :param subscription_path:</span>
+<span class="sd">            the fully-qualified path of the subscription, in format</span>
+<span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
 
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: ``Subscription`` resource returned from the API.</span>
@@ -621,9 +621,9 @@
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the subscription,</span>
-<span class="sd">                                  in format</span>
-<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
+<span class="sd">        :param subscription_path:</span>
+<span class="sd">            the fully-qualified path of the subscription, in format</span>
+<span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subscription_path</span><span class="p">,)</span>
@@ -637,9 +637,9 @@
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the new</span>
-<span class="sd">                                  subscription, in format</span>
-<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
+<span class="sd">        :param subscription_path:</span>
+<span class="sd">            the fully-qualified path of the new subscription, in format</span>
+<span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
 
 <span class="sd">        :type push_endpoint: string, or ``NoneType``</span>
 <span class="sd">        :param push_endpoint: URL to which messages will be pushed by the</span>
@@ -659,9 +659,9 @@
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the new</span>
-<span class="sd">                                  subscription, in format</span>
-<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
+<span class="sd">        :param subscription_path:</span>
+<span class="sd">            the fully-qualified path of the new subscription, in format</span>
+<span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
 
 <span class="sd">        :type return_immediately: boolean</span>
 <span class="sd">        :param return_immediately: if True, the back-end returns even if no</span>
@@ -691,9 +691,9 @@
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the new</span>
-<span class="sd">                                  subscription, in format</span>
-<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
+<span class="sd">        :param subscription_path:</span>
+<span class="sd">            the fully-qualified path of the new subscription, in format</span>
+<span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
 
 <span class="sd">        :type ack_ids: list of string</span>
 <span class="sd">        :param ack_ids: ack IDs of messages being acknowledged</span>
@@ -713,9 +713,9 @@
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the new</span>
-<span class="sd">                                  subscription, in format</span>
-<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
+<span class="sd">        :param subscription_path:</span>
+<span class="sd">            the fully-qualified path of the new subscription, in format</span>
+<span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
 
 <span class="sd">        :type ack_ids: list of string</span>
 <span class="sd">        :param ack_ids: ack IDs of messages being acknowledged</span>
@@ -835,7 +835,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'67578df',
+            VERSION:'d64839c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
