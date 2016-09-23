@@ -416,7 +416,10 @@ ignore-mixin-members=yes
 # (useful for modules/projects where namespaces are manipulated during runtime
 # and thus existing member attributes cannot be deduced by static analysis. It
 # supports qualified module names, as well as Unix pattern matching.
-ignored-modules=
+# DEFAULT:  ignored-modules=
+# RATIONALE:  six aliases stuff for compatibility.
+#             google.protobuf fixes up namespace package "late".
+ignored-modules = six, google.protobuf
 
 # List of class names for which member attributes should not be checked (useful
 # for classes with dynamically set attributes). This supports the use of
