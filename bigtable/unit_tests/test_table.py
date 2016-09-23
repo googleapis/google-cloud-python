@@ -134,7 +134,7 @@ class TestTable(unittest.TestCase):
 
     def _create_test_helper(self, initial_split_keys, column_families=()):
         from google.cloud._helpers import _to_bytes
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -201,7 +201,7 @@ class TestTable(unittest.TestCase):
                                  column_families=column_families)
 
     def _list_column_families_helper(self):
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -239,7 +239,7 @@ class TestTable(unittest.TestCase):
 
     def test_delete(self):
         from google.protobuf import empty_pb2
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -268,7 +268,7 @@ class TestTable(unittest.TestCase):
 
     def _read_row_helper(self, chunks, expected_result):
         from google.cloud._testing import _Monkey
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
         from google.cloud.bigtable import table as MUT
 
         client = _Client()
@@ -348,7 +348,7 @@ class TestTable(unittest.TestCase):
 
     def test_read_rows(self):
         from google.cloud._testing import _Monkey
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
         from google.cloud.bigtable.row_data import PartialRowsData
         from google.cloud.bigtable import table as MUT
 
@@ -398,7 +398,7 @@ class TestTable(unittest.TestCase):
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
     def test_sample_row_keys(self):
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)

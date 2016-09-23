@@ -553,7 +553,7 @@ class TestClient(unittest.TestCase):
             instance_pb2 as data_v2_pb2)
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
 
         LOCATION = 'projects/' + self.PROJECT + '/locations/locname'
         FAILED_LOCATION = 'FAILED'
