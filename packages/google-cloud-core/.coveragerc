@@ -3,9 +3,9 @@ branch = True
 
 [report]
 omit =
-    */google/cloud/_testing.py
-fail_under = 100
-show_missing = True
+    */_generated/*.py
+    # Packages in the "google.cloud" package that we don't own.
+    */google/cloud/gapic/*
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
