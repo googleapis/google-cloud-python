@@ -31,7 +31,7 @@ class Topic(object):
     Subscribers then receive those messages.
 
     See:
-    https://cloud.google.com/pubsub/reference/rest/v1/projects.topics
+    https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics
 
     :type name: string
     :param name: the name of the topic
@@ -138,7 +138,7 @@ class Topic(object):
         """API call:  create the topic via a PUT request
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create
 
         Example:
 
@@ -159,7 +159,7 @@ class Topic(object):
         """API call:  test for the existence of the topic via a GET request
 
         See
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/get
 
         Example:
 
@@ -189,7 +189,7 @@ class Topic(object):
         """API call:  delete the topic via a DELETE request
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/delete
 
         Example:
 
@@ -220,7 +220,7 @@ class Topic(object):
         """API call:  publish a message to a topic via a POST request
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/publish
 
         Example without message attributes:
 
@@ -287,7 +287,7 @@ class Topic(object):
         """List subscriptions for the project associated with this client.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list
 
         Example:
 
@@ -329,7 +329,7 @@ class Topic(object):
         """Fetch the IAM policy for the topic.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/getIamPolicy
 
         Example:
 
@@ -355,7 +355,7 @@ class Topic(object):
         """Update the IAM policy for the topic.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/setIamPolicy
 
         Example:
 
@@ -386,7 +386,7 @@ class Topic(object):
         """Verify permissions allowed for the current user.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/testIamPermissions
 
         Example:
 

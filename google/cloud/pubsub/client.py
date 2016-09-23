@@ -103,7 +103,7 @@ class Client(JSONClient):
         """List topics for the project associated with this client.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list
 
         Example:
 
@@ -137,7 +137,7 @@ class Client(JSONClient):
         """List subscriptions for the project associated with this client.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list
 
         Example:
 
