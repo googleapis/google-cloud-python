@@ -82,6 +82,35 @@ confidence=
 # --enable=similarities". If you want to run only the classes checker, but have
 # no Warning level messages displayed, use"--disable=all --enable=classes
 # --disable=W"
+# RATIONALE:
+# - maybe-no-member:  bi-modal functions confuse pylint type inference.
+# - no-member:  indirections in protobuf-generated code
+# - protected-access: helpers use '_foo' of classes from generated code.
+# - similarities:  'Bucket' and 'Blob' define 'metageneration' and 'owner' with
+#                  identical implementation but different docstrings.
+# - star-args:  standard Python idioms for varargs:
+#                  ancestor = Query().filter(*order_props)
+# - redefined-variable-type: This error is overzealous and complains at e.g.
+#                      if some_prop:
+#                          return int(value)
+#                      else:
+#                          return float(value)
+# - import-error: imports are checked via tests.
+# - wrong-import-position: This error is overzealous. It assumes imports are
+#                          completed whenever something non-trivial is
+#                          defined, e.g.
+#                              try:
+#                                  from foo import Bar
+#                              except ImportError:
+#                                  class Bar(object):
+#                                      """Hi everyone"""
+#                          and thus causes subsequent imports to be
+#                          diagnosed as out-of-order.
+# - no-name-in-module: Error gives a lot of false positives for names which
+#                      are defined dynamically. Also, any truly missing names
+#                      will be detected by our 100% code coverage.
+# - missing-raises-doc: New in PyLint 1.6, enforcing PEP 257 and flagged our
+#                       existing codebase.  See #1968 for eventual fixes.
 disable =
     import-star-module-level,
     old-octal-literal,
@@ -132,7 +161,17 @@ disable =
     round-builtin,
     hex-method,
     nonzero-method,
-    map-builtin-not-iterating
+    map-builtin-not-iterating,
+    maybe-no-member,
+    no-member,
+    protected-access,
+    similarities,
+    star-args,
+    redefined-variable-type,
+    import-error,
+    wrong-import-position,
+    no-name-in-module,
+    missing-raises-doc,
 
 [REPORTS]
 
