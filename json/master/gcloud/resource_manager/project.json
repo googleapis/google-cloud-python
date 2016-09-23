@@ -1,8 +1,0 @@
-{
-  "description": "\n Utility for managing projects via the Cloud Resource Manager API.", 
-  "examples": [], 
-  "id": "gcloud.resource_manager.project", 
-  "methods": [], 
-  "name": "Project", 
-  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
-}

@@ -1,8 +1,0 @@
-{
-  "description": "\n Client for interacting with the Google Stackdriver Monitoring API (V3)_.\n Example\n<pre><code>    >>> from gcloud import monitoring\n    >>> client = monitoring.Client()\n    >>> query = client.query(minutes=5)\n    >>> print(query.as_dataframe())  # Requires pandas.\n</code></pre>\n At present, the client supports querying of time series, metric descriptors, and monitored resource descriptors.\n .. _Google Stackdriver Monitoring API (V3): <a href=\"https://cloud.google.com/monitoring/api/v3/\">https://cloud.google.com/monitoring/api/v3/</a>", 
-  "examples": [], 
-  "id": "gcloud.monitoring.client", 
-  "methods": [], 
-  "name": "Client", 
-  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
-}

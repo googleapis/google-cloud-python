@@ -1,8 +1,0 @@
-{
-  "description": "\n Small helper class to provide a small slice of a stream.\n This class reads ahead to detect if we are at the end of the stream.", 
-  "examples": [], 
-  "id": "gcloud.streaming.buffered_stream", 
-  "methods": [], 
-  "name": "Buffered_Stream", 
-  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
-}

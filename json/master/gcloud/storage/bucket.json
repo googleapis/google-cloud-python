@@ -1,8 +1,0 @@
-{
-  "description": "\n Create / interact with gcloud storage buckets.", 
-  "examples": [], 
-  "id": "gcloud.storage.bucket", 
-  "methods": [], 
-  "name": "Bucket", 
-  "source": "/home/travis/build/GoogleCloudPlatform/google-cloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
-}
