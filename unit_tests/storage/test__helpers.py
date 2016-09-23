@@ -139,7 +139,7 @@ class Test__base64_md5hash(unittest.TestCase):
         self.assertEqual(SIGNED_CONTENT, b'kBiQqOnIz21aGlQrIp/r/w==')
 
     def test_it_with_stubs(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.storage import _helpers as MUT
 
         class _Buffer(object):

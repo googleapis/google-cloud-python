@@ -140,7 +140,7 @@ class TestTopic(unittest.TestCase):
         import datetime
         from google.cloud.pubsub import topic as MUT
         from google.cloud._helpers import _RFC3339_MICROS
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         NOW = datetime.datetime.utcnow()
 
         def _utcnow():

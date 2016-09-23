@@ -267,7 +267,7 @@ class TestTable(unittest.TestCase):
         )])
 
     def _read_row_helper(self, chunks, expected_result):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from unit_tests.bigtable._testing import _FakeStub
         from google.cloud.bigtable import table as MUT
 
@@ -347,7 +347,7 @@ class TestTable(unittest.TestCase):
             self._read_row_helper(chunks, None)
 
     def test_read_rows(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from unit_tests.bigtable._testing import _FakeStub
         from google.cloud.bigtable.row_data import PartialRowsData
         from google.cloud.bigtable import table as MUT

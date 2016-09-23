@@ -23,7 +23,7 @@ class Test__make_data_stub(unittest.TestCase):
         return _make_data_stub(client)
 
     def test_without_emulator(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         credentials = _Credentials()
@@ -51,7 +51,7 @@ class Test__make_data_stub(unittest.TestCase):
         ])
 
     def test_with_emulator(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         emulator_host = object()
@@ -83,7 +83,7 @@ class Test__make_instance_stub(unittest.TestCase):
         return _make_instance_stub(client)
 
     def test_without_emulator(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         credentials = _Credentials()
@@ -111,7 +111,7 @@ class Test__make_instance_stub(unittest.TestCase):
         ])
 
     def test_with_emulator(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         emulator_host = object()
@@ -143,7 +143,7 @@ class Test__make_operations_stub(unittest.TestCase):
         return _make_operations_stub(client)
 
     def test_without_emulator(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         credentials = _Credentials()
@@ -171,7 +171,7 @@ class Test__make_operations_stub(unittest.TestCase):
         ])
 
     def test_with_emulator(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         emulator_host = object()
@@ -203,7 +203,7 @@ class Test__make_table_stub(unittest.TestCase):
         return _make_table_stub(client)
 
     def test_without_emulator(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         credentials = _Credentials()
@@ -231,7 +231,7 @@ class Test__make_table_stub(unittest.TestCase):
         ])
 
     def test_with_emulator(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         emulator_host = object()
@@ -271,7 +271,7 @@ class TestClient(unittest.TestCase):
         return self._getTargetClass()(*args, **kwargs)
 
     def _makeOneWithMocks(self, *args, **kwargs):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         mock_make_data_stub = _MakeStubMock()
@@ -287,7 +287,7 @@ class TestClient(unittest.TestCase):
     def _constructor_test_helper(self, expected_scopes, creds,
                                  read_only=False, admin=False,
                                  user_agent=None, expected_creds=None):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         user_agent = user_agent or MUT.DEFAULT_USER_AGENT
@@ -373,7 +373,7 @@ class TestClient(unittest.TestCase):
                                           read_only=True)
 
     def test_constructor_implicit_credentials(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         creds = _Credentials()
@@ -392,7 +392,7 @@ class TestClient(unittest.TestCase):
         self._constructor_test_helper(expected_scopes, creds)
 
     def _copy_test_helper(self, read_only=False, admin=False):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
         credentials = _Credentials('value')

@@ -85,7 +85,7 @@ class Test_make_exception(unittest.TestCase):
 
     def test_hit_w_content_as_unicode_as_py3(self):
         import six
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.exceptions import NotFound
         error_message = u'That is not found.'
         expected = u'404 %s' % (error_message,)
