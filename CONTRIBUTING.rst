@@ -24,9 +24,9 @@ using a Git checkout:
 
 - Clone your fork of ``google-cloud-python`` from your GitHub account to your local
   computer, substituting your account username and specifying the destination
-  as "hack-on-google-cloud-python".  E.g.::
+  as ``hack-on-google-cloud-python``.  E.g.::
 
-   $ cd ~
+   $ cd ${HOME}
    $ git clone git@github.com:USERNAME/google-cloud-python.git hack-on-google-cloud-python
    $ cd hack-on-google-cloud-python
    # Configure remotes such that you can pull changes from the google-cloud-python
@@ -39,30 +39,81 @@ using a Git checkout:
 Now your local repo is set up such that you will push changes to your GitHub
 repo, from which you can submit a pull request.
 
-- Create a virtualenv in which to install ``google-cloud-python``::
+To work on the codebase and run the tests, we recommend using ``tox``,
+but you can also use a ``virtualenv`` of your own creation.
 
-   $ cd ~/hack-on-google-cloud-python
-   $ virtualenv --python python2.7 env
+Using a custom ``virtualenv``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Note that very old versions of virtualenv (virtualenv versions below, say,
-  1.10 or thereabouts) require you to pass a ``--no-site-packages`` flag to
-  get a completely isolated environment.
+- To create a virtualenv in which to install ``google-cloud-python``::
+
+    $ cd ${HOME}/hack-on-google-cloud-python
+    $ virtualenv --python python2.7 ${ENV_NAME}
 
   You can choose which Python version you want to use by passing a ``--python``
   flag to ``virtualenv``.  For example, ``virtualenv --python python2.7``
   chooses the Python 2.7 interpreter to be installed.
 
-  From here on in within these instructions, the ``~/hack-on-google-cloud-python/env``
-  virtual environment you created above will be referred to as ``$VENV``.
-  To use the instructions in the steps that follow literally, use the
-  ``export VENV=~/hack-on-google-cloud-python/env`` command.
+- From here on in within these instructions, the
+  ``${HOME}/hack-on-google-cloud-python/${ENV_NAME}`` virtual environment you
+  created above will be referred to as ``${VENV}``. To use the instructions
+  in the steps that follow literally, use::
 
-- Install ``google-cloud-python`` from the checkout into the virtualenv using
-  ``setup.py develop``.  Running ``setup.py develop`` *must* be done while
-  the current working directory is the ``google-cloud-python`` checkout directory::
+    $ export VENV=${HOME}/hack-on-google-cloud-python/${ENV_NAME}
 
-   $ cd ~/hack-on-google-cloud-python
-   $ $VENV/bin/python setup.py develop
+- To install ``google-cloud-python`` from your source checkout into
+  ``${VENV}``, run::
+
+    $ # Make sure you are in the same directory as setup.py
+    $ cd ${HOME}/hack-on-google-cloud-python
+    $ ${VENV}/bin/python setup.py install
+
+  Unfortunately using ``setup.py develop`` is not possible with this
+  project, because it uses `namespace packages`_.
+
+Using ``tox``
+~~~~~~~~~~~~~
+
+- To test your changes, run unit tests with ``tox``::
+
+    $ tox -e py27
+    $ tox -e py34
+    $ ...
+
+- If you'd like to poke around your code in an interpreter, let
+  ``tox`` install the environment of your choice::
+
+    $ # Install only; without running tests
+    $ tox -e ${ENV} --recreate --notest
+
+  After doing this, you can activate the virtual environment and
+  use the interpreter from that environment::
+
+    $ source .tox/${ENV}/bin/activate
+    (ENV) $ .tox/${ENV}/bin/python
+
+  Unfortunately, your changes to the source tree won't be picked up
+  by the ``tox`` environment, so if you make changes, you'll need
+  to again ``--recreate`` the environment.
+
+Note on Editable Installs / Develop Mode
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- As mentioned previously, using ``setuptools`` in `develop mode`_
+  or a ``pip`` `editable install`_ is not possible with this
+  library. This is because this library uses `namespace packages`_.
+  For context see `Issue #2316`_ and the relevant `PyPA issue`_.
+
+  Since ``editable`` / ``develop`` mode can't be used, packages
+  need to be installed directly. Hence your changes to the source
+  tree don't get incorporated into the **already installed**
+  package.
+
+.. _namespace packages: https://www.python.org/dev/peps/pep-0420/
+.. _Issue #2316: https://github.com/GoogleCloudPlatform/google-cloud-python/issues/2316
+.. _PyPA issue: https://github.com/pypa/packaging-problems/issues/12
+.. _develop mode: http://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode
+.. _editable install: https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs
 
 I'm getting weird errors... Can you help?
 -----------------------------------------
@@ -130,8 +181,8 @@ Running Tests
   platforms; while it runs, it creates a virtualenv for each version/platform
   combination.  For example::
 
-   $ sudo /usr/bin/pip install tox
-   $ cd ~/hack-on-google-cloud-python/
+   $ sudo --set-home /usr/bin/pip install tox
+   $ cd ${HOME}/hack-on-google-cloud-python/
    $ /usr/bin/tox
 
 Running System Tests
@@ -182,11 +233,7 @@ Running System Tests
   `tool <https://developers.google.com/cloud/sdk/gcloud/>`__::
 
    # Install the app (App Engine Command Line Interface) component.
-   $ gcloud components update app
-
-   # See https://cloud.google.com/sdk/crypto for details on PyOpenSSL and
-   # http://stackoverflow.com/a/25067729/1068170 for why we must persist.
-   $ export CLOUDSDK_PYTHON_SITEPACKAGES=1
+   $ gcloud components install app-engine-python
 
    # Authenticate the gcloud tool with your account.
    $ GOOGLE_APPLICATION_CREDENTIALS="path/to/app_credentials.json"
@@ -195,9 +242,6 @@ Running System Tests
 
    # Create the indexes
    $ gcloud preview datastore create-indexes system_tests/data/index.yaml
-
-   # Restore your environment to its previous state.
-   $ unset CLOUDSDK_PYTHON_SITEPACKAGES
 
 - For datastore query tests, you'll need stored data in your dataset.
   To populate this data, run::
@@ -291,20 +335,20 @@ documentation in this package which references that API or behavior must be
 changed to reflect the bug fix, ideally in the same commit that fixes the bug
 or adds the feature.
 
-To build and review docs (where ``$VENV`` refers to the virtualenv you're
+To build and review docs (where ``${VENV}`` refers to the virtualenv you're
 using to develop ``google-cloud-python``):
 
 1. After following the steps above in "Using a Development Checkout", install
    Sphinx and all development requirements in your virtualenv::
 
-     $ cd ~/hack-on-google-cloud-python
-     $ $VENV/bin/pip install Sphinx
+     $ cd ${HOME}/hack-on-google-cloud-python
+     $ ${VENV}/bin/pip install Sphinx
 
 2. Change into the ``docs`` directory within your ``google-cloud-python`` checkout and
    execute the ``make`` command with some flags::
 
-     $ cd ~/hack-on-google-cloud-python/google-cloud-python/docs
-     $ make clean html SPHINXBUILD=$VENV/bin/sphinx-build
+     $ cd ${HOME}/hack-on-google-cloud-python/google-cloud-python/docs
+     $ make clean html SPHINXBUILD=${VENV}/bin/sphinx-build
 
    The ``SPHINXBUILD=...`` argument tells Sphinx to use the virtualenv Python,
    which will have both Sphinx and ``google-cloud-python`` (for API documentation
@@ -335,8 +379,8 @@ Travis Configuration and Build Optimizations
 
 All build scripts in the ``.travis.yml`` configuration file which have
 Python dependencies are specified in the ``tox.ini`` configuration.
-They are executed in the Travis build via ``tox -e {ENV}`` where
-``{ENV}`` is the environment being tested.
+They are executed in the Travis build via ``tox -e ${ENV}`` where
+``${ENV}`` is the environment being tested.
 
 If new ``tox`` environments are added to be run in a Travis build, they
 should be listed in ``[tox].envlist`` as a default environment.
