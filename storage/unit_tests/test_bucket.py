@@ -534,6 +534,37 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
 
+    def test_copy_blobs_preserve_acl(self):
+        from google.cloud._testing import _Monkey
+        from google.cloud.storage.acl import ACL
+        from google.cloud.storage.acl import ObjectACL
+        SOURCE = 'source'
+        DEST = 'dest'
+        BLOB_NAME = 'blob-name'
+        NEW_NAME = 'new_name'
+
+        def save(self, client):  # pylint: disable=unused-argument
+            return
+
+        class _Blob(object):
+            name = BLOB_NAME
+            path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
+
+            def __init__(self):
+                self.acl = ACL()
+
+        connection = _Connection({})
+        client = _Client(connection)
+        source = self._makeOne(client=client, name=SOURCE)
+        dest = self._makeOne(client=client, name=DEST)
+        blob = _Blob()
+        with _Monkey(ACL, save=save):
+            new_blob = source.copy_blob(blob, dest, NEW_NAME, client=client,
+                                        preserve_acl=True)
+            self.assertIs(new_blob.bucket, dest)
+            self.assertEqual(new_blob.name, NEW_NAME)
+            self.assertIsInstance(new_blob.acl, ObjectACL)
+
     def test_copy_blobs_w_name(self):
         SOURCE = 'source'
         DEST = 'dest'
