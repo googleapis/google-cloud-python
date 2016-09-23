@@ -24,7 +24,7 @@ except ImportError:  # pragma: NO COVER
 else:
     _HAVE_GAX = True
 
-from unit_tests._testing import _GAXBaseAPI
+from google.cloud._testing import _GAXBaseAPI
 
 
 class _Base(object):
@@ -55,7 +55,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_list_topics_no_paging(self):
         from google.gax import INITIAL_PAGE
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
         TOKEN = 'TOKEN'
         response = _GAXPageIterator([_TopicPB(self.TOPIC_PATH)], TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
@@ -75,7 +75,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_list_topics_with_paging(self):
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
@@ -264,7 +264,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
         response = _GAXPageIterator([
             {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}], None)
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
@@ -287,7 +287,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_topic_list_subscriptions_with_paging(self):
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
@@ -359,7 +359,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
         response = _GAXPageIterator([_SubscriptionPB(
             self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)], None)
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
@@ -383,7 +383,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_list_subscriptions_with_paging(self):
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
@@ -757,7 +757,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         return make_gax_publisher_api(connection)
 
     def test_live_api(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.pubsub import _gax as MUT
 
         channels = []
@@ -775,7 +775,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         self.assertEqual(channels, [None])
 
     def test_emulator(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.pubsub import _gax as MUT
 
         channels = []
@@ -810,7 +810,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
         return make_gax_subscriber_api(connection)
 
     def test_live_api(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.pubsub import _gax as MUT
 
         channels = []
@@ -828,7 +828,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
         self.assertEqual(channels, [None])
 
     def test_emulator(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.pubsub import _gax as MUT
 
         channels = []

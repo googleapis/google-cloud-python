@@ -39,7 +39,7 @@ class Test__get_gcd_project(unittest.TestCase):
 
     def test_no_value(self):
         import os
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         environ = {}
         with _Monkey(os, getenv=environ.get):
@@ -48,7 +48,7 @@ class Test__get_gcd_project(unittest.TestCase):
 
     def test_value_set(self):
         import os
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.datastore.client import GCD_DATASET
 
         MOCK_PROJECT = object()
@@ -67,7 +67,7 @@ class Test__determine_default_project(unittest.TestCase):
 
     def _determine_default_helper(self, gcd=None, fallback=None,
                                   project_called=None):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.datastore import client
 
         _callers = []
@@ -140,7 +140,7 @@ class TestClient(unittest.TestCase):
                                       http=http)
 
     def test_ctor_w_project_no_environ(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.datastore import client as _MUT
 
         # Some environments (e.g. AppVeyor CI) run in GCE, so
@@ -149,7 +149,7 @@ class TestClient(unittest.TestCase):
             self.assertRaises(EnvironmentError, self._makeOne, None)
 
     def test_ctor_w_implicit_inputs(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.datastore import client as _MUT
         from google.cloud import client as _base_client
 
@@ -494,7 +494,7 @@ class TestClient(unittest.TestCase):
             client.get_multi([key1, key2])
 
     def test_get_multi_max_loops(self):
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.datastore import client as _MUT
         from google.cloud.datastore.key import Key
 
@@ -702,7 +702,7 @@ class TestClient(unittest.TestCase):
 
     def test_key_wo_project(self):
         from google.cloud.datastore import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         KIND = 'KIND'
         ID = 1234
@@ -723,7 +723,7 @@ class TestClient(unittest.TestCase):
 
     def test_key_w_namespace(self):
         from google.cloud.datastore import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         KIND = 'KIND'
         ID = 1234
@@ -744,7 +744,7 @@ class TestClient(unittest.TestCase):
 
     def test_key_w_namespace_collision(self):
         from google.cloud.datastore import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         KIND = 'KIND'
         ID = 1234
@@ -766,7 +766,7 @@ class TestClient(unittest.TestCase):
 
     def test_batch(self):
         from google.cloud.datastore import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -780,7 +780,7 @@ class TestClient(unittest.TestCase):
 
     def test_transaction_defaults(self):
         from google.cloud.datastore import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -812,7 +812,7 @@ class TestClient(unittest.TestCase):
 
     def test_query_w_defaults(self):
         from google.cloud.datastore import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -830,7 +830,7 @@ class TestClient(unittest.TestCase):
 
     def test_query_explicit(self):
         from google.cloud.datastore import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         KIND = 'KIND'
         NAMESPACE = 'NAMESPACE'
@@ -870,7 +870,7 @@ class TestClient(unittest.TestCase):
 
     def test_query_w_namespace(self):
         from google.cloud.datastore import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         KIND = 'KIND'
         NAMESPACE = object()
@@ -892,7 +892,7 @@ class TestClient(unittest.TestCase):
 
     def test_query_w_namespace_collision(self):
         from google.cloud.datastore import client as MUT
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
 
         KIND = 'KIND'
         NAMESPACE1 = object()

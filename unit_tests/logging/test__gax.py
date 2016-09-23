@@ -24,7 +24,7 @@ except ImportError:  # pragma: NO COVER
 else:
     _HAVE_GAX = True
 
-from unit_tests._testing import _GAXBaseAPI
+from google.cloud._testing import _GAXBaseAPI
 
 
 class _Base(object):
@@ -52,7 +52,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
     def test_list_entries_no_paging(self):
         from google.gax import INITIAL_PAGE
         from google.cloud.logging import DESCENDING
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
 
         TOKEN = 'TOKEN'
         TEXT = 'TEXT'
@@ -82,7 +82,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
     def test_list_entries_with_paging(self):
         from google.protobuf.struct_pb2 import Value
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
@@ -117,7 +117,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
     def test_list_entries_with_extra_properties(self):
         from datetime import datetime
         from google.logging.type.log_severity_pb2 import WARNING
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -454,7 +454,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_list_sinks_no_paging(self):
         from google.gax import INITIAL_PAGE
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
         TOKEN = 'TOKEN'
         SINKS = [{
             'name': self.SINK_PATH,
@@ -478,7 +478,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, INITIAL_PAGE)
 
     def test_list_sinks_w_paging(self):
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
         SINKS = [{
@@ -658,7 +658,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_list_metrics_no_paging(self):
         from google.gax import INITIAL_PAGE
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
         TOKEN = 'TOKEN'
         METRICS = [{
             'name': self.METRIC_PATH,
@@ -682,7 +682,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, INITIAL_PAGE)
 
     def test_list_metrics_w_paging(self):
-        from unit_tests._testing import _GAXPageIterator
+        from google.cloud._testing import _GAXPageIterator
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
         METRICS = [{

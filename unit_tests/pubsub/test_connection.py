@@ -42,7 +42,7 @@ class TestConnection(_Base):
 
     def test_custom_url_from_env(self):
         import os
-        from unit_tests._testing import _Monkey
+        from google.cloud._testing import _Monkey
         from google.cloud.environment_vars import PUBSUB_EMULATOR
 
         HOST = 'localhost:8187'
