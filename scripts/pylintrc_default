@@ -1,32 +1,3 @@
-# PyLint config for 'google-cloud' *library* code.
-#
-# NOTES:
-#
-# - Rules for test code are generated into 'pylintrc_reduced'
-#   as deltas from this configuration by the 'run_pylint.py' script.
-#
-# - 'RATIONALE:  API mapping' as a defense for non-default settings is
-#   based on the fact that this library maps APIs which are outside our
-#   control, and adhereing to the out-of-the-box defaults would induce
-#   breakage / complexity in those mappings
-#
-[MASTER]
-
-# Add files or directories to the blacklist. They should be base names, not
-# paths.
-# DEFAULT:  ignore=CVS
-# NOTE: This path must be relative due to the use of
-#       os.walk in astroid.modutils.get_module_files.
-# RATIONALE: No files to ignore.
-ignore=
-
-# List of plugins (as comma separated values of python modules names) to load,
-# usually to register additional checkers.
-# DEFAULT:  load-plugins=
-# RATIONALE: We want to make sure our docstrings match the objects
-#            they document.
-load-plugins=pylint.extensions.check_docs
-
 [MESSAGES CONTROL]
 
 # Disable the message, report, category or checker with the given id(s). You
