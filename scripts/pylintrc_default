@@ -5,10 +5,11 @@
 # - Rules for test code are generated into 'pylintrc_reduced'
 #   as deltas from this configuration by the 'run_pylint.py' script.
 #
-# - 'RATIONALE:  API mapping' as a defense for non-default settings is
-#   based on the fact that this library maps APIs which are outside our
-#   control, and adhereing to the out-of-the-box defaults would induce
-#   breakage / complexity in those mappings
+# - The majority of the content in this configuration is the
+#   default provided by "generate-rcfile" (from PyLint version 1.6.4). Any
+#   value that differs from the provided defaults will both specify
+#   the "DEFAULT" being replaced and a "RATIONALE" for the value
+#   we replace it with.
 #
 [MASTER]
 
