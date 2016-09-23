@@ -24,6 +24,20 @@ class Test_BufferedStream(unittest.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
+    def test_ctor_closed_stream(self):
+        class _Stream(object):
+            closed = True
+
+        start = 0
+        bufsize = 4
+        bufstream = self._makeOne(_Stream, start, bufsize)
+        self.assertIs(bufstream._stream, _Stream)
+        self.assertEqual(bufstream._start_pos, start)
+        self.assertEqual(bufstream._buffer_pos, 0)
+        self.assertEqual(bufstream._buffered_data, b'')
+        self.assertTrue(bufstream._stream_at_end)
+        self.assertEqual(bufstream._end_pos, 0)
+
     def test_ctor_start_zero_longer_than_buffer(self):
         from io import BytesIO
         CONTENT = b'CONTENT GOES HERE'
