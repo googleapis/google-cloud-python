@@ -145,7 +145,7 @@ receivers, Google Cloud Pub/Sub allows developers to communicate between
 independently written applications.
 
 .. _Cloud Pub/Sub: https://cloud.google.com/pubsub/docs
-.. _Pub/Sub API docs: https://cloud.google.com/pubsub/reference/rest/
+.. _Pub/Sub API docs: https://cloud.google.com/pubsub/docs/reference/rest/
 
 See the ``google-cloud-python`` API `Pub/Sub documentation`_ to learn how to connect
 to Cloud Pub/Sub using this Client Library.

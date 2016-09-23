@@ -46,7 +46,7 @@ class _PublisherAPI(object):
         """List topics for the project associated with this API.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list
 
         :type project: string
         :param project: project ID
@@ -80,7 +80,7 @@ class _PublisherAPI(object):
         """API call:  create a topic
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create
 
         :type topic_path: string
         :param topic_path: fully-qualified path of the new topic, in format
@@ -103,7 +103,7 @@ class _PublisherAPI(object):
         """API call:  retrieve a topic
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/get
 
         :type topic_path: string
         :param topic_path: fully-qualified path of the topic, in format
@@ -126,7 +126,7 @@ class _PublisherAPI(object):
         """API call:  delete a topic
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create
 
         :type topic_path: string
         :param topic_path: fully-qualified path of the new topic, in format
@@ -143,7 +143,7 @@ class _PublisherAPI(object):
         """API call:  publish one or more messages to a topic
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/publish
 
         :type topic_path: string
         :param topic_path: fully-qualified path of the topic, in format
@@ -174,7 +174,7 @@ class _PublisherAPI(object):
         """API call:  list subscriptions bound to a topic
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list
 
         :type topic_path: string
         :param topic_path: fully-qualified path of the topic, in format
@@ -223,7 +223,7 @@ class _SubscriberAPI(object):
         """List subscriptions for the project associated with this API.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/list
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/list
 
         :type project: string
         :param project: project ID
@@ -259,7 +259,7 @@ class _SubscriberAPI(object):
         """API call:  create a subscription
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create
 
         :type subscription_path: string
         :param subscription_path: the fully-qualified path of the new
@@ -304,7 +304,7 @@ class _SubscriberAPI(object):
         """API call:  retrieve a subscription
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get
 
         :type subscription_path: string
         :param subscription_path: the fully-qualified path of the subscription,
@@ -326,7 +326,7 @@ class _SubscriberAPI(object):
         """API call:  delete a subscription
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete
 
         :type subscription_path: string
         :param subscription_path: the fully-qualified path of the subscription,
@@ -345,7 +345,7 @@ class _SubscriberAPI(object):
         """API call:  update push config of a subscription
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: string
         :param subscription_path: the fully-qualified path of the new
@@ -370,7 +370,7 @@ class _SubscriberAPI(object):
         """API call:  retrieve messages for a subscription
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: string
         :param subscription_path: the fully-qualified path of the new
@@ -403,7 +403,7 @@ class _SubscriberAPI(object):
         """API call:  acknowledge retrieved messages
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: string
         :param subscription_path: the fully-qualified path of the new
@@ -425,7 +425,7 @@ class _SubscriberAPI(object):
         """API call:  update ack deadline for retrieved messages
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline
+        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
         :type subscription_path: string
         :param subscription_path: the fully-qualified path of the new
