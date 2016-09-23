@@ -98,8 +98,8 @@ class Policy(object):
     """Combined IAM Policy / Bindings.
 
     See:
-    https://cloud.google.com/pubsub/reference/rest/Shared.Types/Policy
-    https://cloud.google.com/pubsub/reference/rest/Shared.Types/Binding
+    https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Policy
+    https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Binding
 
     :type etag: string
     :param etag: ETag used to identify a unique of the policy
