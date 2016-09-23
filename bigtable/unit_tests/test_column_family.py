@@ -409,7 +409,7 @@ class TestColumnFamily(unittest.TestCase):
     def _create_test_helper(self, gc_rule=None):
         from google.cloud.bigtable._generated import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
 
         project_id = 'project-id'
         zone = 'zone'
@@ -465,7 +465,7 @@ class TestColumnFamily(unittest.TestCase):
         self._create_test_helper(gc_rule=gc_rule)
 
     def _update_test_helper(self, gc_rule=None):
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
         from google.cloud.bigtable._generated import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
 
@@ -526,7 +526,7 @@ class TestColumnFamily(unittest.TestCase):
         from google.protobuf import empty_pb2
         from google.cloud.bigtable._generated import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
-        from unit_tests.bigtable._testing import _FakeStub
+        from unit_tests._testing import _FakeStub
 
         project_id = 'project-id'
         zone = 'zone'
