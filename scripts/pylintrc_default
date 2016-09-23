@@ -370,7 +370,9 @@ ignore-imports=no
 [FORMAT]
 
 # Maximum number of characters on a single line.
-max-line-length=100
+# DEFAULT: max-line-length=100
+# RATIONALE: PEP8
+max-line-length=80
 
 # Regexp for a line that is allowed to be longer than the limit.
 ignore-long-lines=^\s*(# )?<?https?://\S+>?$
@@ -404,7 +406,9 @@ indent-string='    '
 indent-after-paren=4
 
 # Expected format of line ending, e.g. empty (any line ending), LF or CRLF.
-expected-line-ending-format=
+# DEFAULT:  expected-line-ending-format=
+# RATIONALE:  Uniform UNIX line endings.
+expected-line-ending-format=LF
 
 
 [TYPECHECK]
