@@ -252,7 +252,11 @@ logging-modules=logging
 [BASIC]
 
 # Good variable names which should always be accepted, separated by a comma
-good-names=i,j,k,ex,Run,_
+# DEFAULT:  good-names=i,j,k,ex,Run,_
+# RATIONALE:  'pb' and 'id' have well-understood meainings in the code.
+good-names = i, j, k, ex, Run, _,
+             pb,
+             id,
 
 # Bad variable names which should always be refused, separated by a comma
 bad-names=foo,bar,baz,toto,tutu,tata
@@ -323,14 +327,18 @@ module-rgx=(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$
 module-name-hint=(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$
 
 # Regular expression matching correct method names
-method-rgx=[a-z_][a-z0-9_]{2,30}$
+# DEFAULT:  method-rgx=[a-z_][a-z0-9_]{2,30}$
+# RATIONALE:  mapping long API names onto connection methods
+method-rgx=[a-z_][a-z0-9_]{2,35}$
 
 # Naming hint for method names
 method-name-hint=[a-z_][a-z0-9_]{2,30}$
 
 # Regular expression which should only match function or class names that do
 # not require a docstring.
-no-docstring-rgx=^_
+# DEFAULT: no-docstring-rgx=^_
+# RATIONALE: More documentation, even for non-public methods, is useful.
+no-docstring-rgx=__.*__
 
 # Minimum line length for functions/classes that require docstrings, shorter
 # ones are exempt.
