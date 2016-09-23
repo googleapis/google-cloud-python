@@ -262,9 +262,9 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualified path of the new
-                                  subscription, in format
-                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+        :param subscription_path:
+            the fully-qualified path of the new subscription, in format
+            ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type topic_path: string
         :param topic_path: the fully-qualified path of the topic being
@@ -307,9 +307,9 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualified path of the subscription,
-                                  in format
-                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+        :param subscription_path:
+            the fully-qualified path of the subscription, in format
+            ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :rtype: dict
         :returns: ``Subscription`` resource returned from the API.
@@ -329,9 +329,9 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualified path of the subscription,
-                                  in format
-                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+        :param subscription_path:
+            the fully-qualified path of the subscription, in format
+            ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
         """
         try:
             self._gax_api.delete_subscription(subscription_path)
@@ -348,9 +348,9 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualified path of the new
-                                  subscription, in format
-                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+        :param subscription_path:
+            the fully-qualified path of the new subscription, in format
+            ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type push_endpoint: string, or ``NoneType``
         :param push_endpoint: URL to which messages will be pushed by the
@@ -373,9 +373,9 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualified path of the new
-                                  subscription, in format
-                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+        :param subscription_path:
+            the fully-qualified path of the new subscription, in format
+            ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type return_immediately: boolean
         :param return_immediately: if True, the back-end returns even if no
@@ -406,9 +406,9 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualified path of the new
-                                  subscription, in format
-                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+        :param subscription_path:
+            the fully-qualified path of the new subscription, in format
+            ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type ack_ids: list of string
         :param ack_ids: ack IDs of messages being acknowledged
@@ -428,9 +428,9 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualified path of the new
-                                  subscription, in format
-                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+        :param subscription_path:
+            the fully-qualified path of the new subscription, in format
+            ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type ack_ids: list of string
         :param ack_ids: ack IDs of messages being acknowledged

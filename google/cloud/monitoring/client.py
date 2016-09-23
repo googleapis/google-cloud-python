@@ -227,7 +227,7 @@ class Client(JSONClient):
         :type labels: dict
         :param labels: A mapping from label names to values for all labels
                        enumerated in the associated
-                       :class:`~google.cloud.monitoring.metric.MetricDescriptor`.
+                       :class:`~.metric.MetricDescriptor`.
 
         :rtype: :class:`~google.cloud.monitoring.metric.Metric`
         :returns: The metric object.
@@ -254,7 +254,7 @@ class Client(JSONClient):
         :type labels: dict
         :param labels: A mapping from label names to values for all labels
                        enumerated in the associated
-                       :class:`~google.cloud.monitoring.resource.ResourceDescriptor`,
+                       :class:`~.resource.ResourceDescriptor`,
                        except that ``project_id`` can and should be omitted
                        when writing time series data.
 
