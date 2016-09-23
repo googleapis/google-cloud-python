@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Subscriptions &mdash; google-cloud e927026 documentation</title>
+  <title>Subscriptions &mdash; google-cloud b98aad3 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud e927026 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud b98aad3 documentation" href="index.html"/>
         <link rel="next" title="Message" href="pubsub-message.html"/>
         <link rel="prev" title="Topics" href="pubsub-topic.html"/> 
 
@@ -270,7 +270,7 @@
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Subscriptions receive messages published to their topics.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -368,7 +368,7 @@ the subscription will have a newly-created topic.</li>
 <code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.create" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  create the subscription via a PUT request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="n">SUB_NAME</span><span class="p">)</span>
     <span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>                               <span class="c1"># API request</span>
@@ -391,7 +391,7 @@ the subscription will have a newly-created topic.</li>
 <code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  test existence of the subscription via a GET request</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">subscription</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>                        <span class="c1"># API request</span>
 </pre></div>
@@ -417,7 +417,7 @@ the subscription will have a newly-created topic.</li>
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  sync local subscription configuration via a GET request</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>                               <span class="c1"># API request</span>
 </pre></div>
@@ -439,7 +439,7 @@ the subscription will have a newly-created topic.</li>
 <code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  delete the subscription via a DELETE request.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>                               <span class="c1"># API request</span>
 </pre></div>
@@ -461,7 +461,7 @@ the subscription will have a newly-created topic.</li>
 <code class="descname">modify_push_configuration</code><span class="sig-paren">(</span><em>push_endpoint</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.modify_push_configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.modify_push_configuration" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update the push endpoint for the subscription.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span><span class="n">push_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># API request</span>
 </pre></div>
@@ -493,7 +493,7 @@ messages.</li>
 <code class="descname">pull</code><span class="sig-paren">(</span><em>return_immediately=False</em>, <em>max_messages=1</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.pull" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  retrieve messages for the subscription.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/pull">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/pull</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">pulled</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">max_messages</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -532,7 +532,7 @@ is an instance of
 <code class="descname">acknowledge</code><span class="sig-paren">(</span><em>ack_ids</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.acknowledge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.acknowledge" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  acknowledge retrieved messages for the subscription.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/acknowledge">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/acknowledge</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">pulled</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
@@ -564,7 +564,7 @@ is an instance of
 <code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>ack_ids</em>, <em>ack_deadline</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update acknowledgement deadline for a retrieved message.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -587,7 +587,7 @@ is an instance of
 <code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.get_iam_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Fetch the IAM policy for the subscription.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/getIamPolicy">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/getIamPolicy</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>             <span class="c1"># API request</span>
 </pre></div>
@@ -614,7 +614,7 @@ is an instance of
 <code class="descname">set_iam_policy</code><span class="sig-paren">(</span><em>policy</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.set_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.set_iam_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Update the IAM policy for the subscription.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/setIamPolicy">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/setIamPolicy</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ALL_USERS</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">all_users</span><span class="p">()</span>
     <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ALL_USERS</span><span class="p">)</span>
@@ -652,7 +652,7 @@ is an instance of
 <code class="descname">check_iam_permissions</code><span class="sig-paren">(</span><em>permissions</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/subscription.html#Subscription.check_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.subscription.Subscription.check_iam_permissions" title="Permalink to this definition">#</a></dt>
 <dd><p>Verify permissions allowed for the current user.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/testIamPermissions">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/testIamPermissions</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
     <span class="n">TO_CHECK</span> <span class="o">=</span> <span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span><span class="p">]</span>
@@ -755,7 +755,7 @@ successfully processed, e.g.:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'e927026',
+            VERSION:'b98aad3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

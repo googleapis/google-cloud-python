@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Topics &mdash; google-cloud e927026 documentation</title>
+  <title>Topics &mdash; google-cloud b98aad3 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud e927026 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud b98aad3 documentation" href="index.html"/>
         <link rel="next" title="Subscriptions" href="pubsub-subscription.html"/>
         <link rel="prev" title="Pub/Sub Client" href="pubsub-client.html"/> 
 
@@ -271,7 +271,7 @@
 <p>Topics are targets to which messages can be published.</p>
 <p>Subscribers then receive those messages.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -376,7 +376,7 @@ from the client.</p>
 <code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Topic.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Topic.create" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  create the topic via a PUT request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="n">TOPIC_NAME</span><span class="p">)</span>
     <span class="n">topic</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>              <span class="c1"># API request</span>
@@ -399,7 +399,7 @@ from the client.</p>
 <code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Topic.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Topic.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  test for the existence of the topic via a GET request</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/get">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/get</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="ow">not</span> <span class="n">topic</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>   <span class="c1"># API request</span>
     <span class="n">topic</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>              <span class="c1"># API request</span>
@@ -427,7 +427,7 @@ from the client.</p>
 <code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Topic.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Topic.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  delete the topic via a DELETE request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/delete">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/delete</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">topic</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>       <span class="c1"># API request</span>
     <span class="n">topic</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
@@ -451,7 +451,7 @@ from the client.</p>
 <code class="descname">publish</code><span class="sig-paren">(</span><em>message</em>, <em>client=None</em>, <em>**attrs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Topic.publish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Topic.publish" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  publish a message to a topic via a POST request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/publish">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/publish</a></p>
 <p>Example without message attributes:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;This is the message payload&#39;</span><span class="p">)</span>               <span class="c1"># API request</span>
 </pre></div>
@@ -520,7 +520,7 @@ raising an exception.</p>
 <code class="descname">list_subscriptions</code><span class="sig-paren">(</span><em>page_size=None</em>, <em>page_token=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Topic.list_subscriptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Topic.list_subscriptions" title="Permalink to this definition">#</a></dt>
 <dd><p>List subscriptions for the project associated with this client.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscriptions</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">()</span>   <span class="c1"># API request</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -566,7 +566,7 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 <code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Topic.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Topic.get_iam_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Fetch the IAM policy for the topic.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/getIamPolicy">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/getIamPolicy</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">policy</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>             <span class="c1"># API request</span>
 </pre></div>
@@ -593,7 +593,7 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 <code class="descname">set_iam_policy</code><span class="sig-paren">(</span><em>policy</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Topic.set_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Topic.set_iam_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Update the IAM policy for the topic.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/setIamPolicy">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/setIamPolicy</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ALL_USERS</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">all_users</span><span class="p">()</span>
     <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ALL_USERS</span><span class="p">)</span>
@@ -631,7 +631,7 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 <code class="descname">check_iam_permissions</code><span class="sig-paren">(</span><em>permissions</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/pubsub/topic.html#Topic.check_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub.topic.Topic.check_iam_permissions" title="Permalink to this definition">#</a></dt>
 <dd><p>Verify permissions allowed for the current user.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/testIamPermissions">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/testIamPermissions</a></p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
     <span class="n">TO_CHECK</span> <span class="o">=</span> <span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span><span class="p">]</span>
@@ -760,7 +760,7 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'e927026',
+            VERSION:'b98aad3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

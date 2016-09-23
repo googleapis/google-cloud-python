@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.subscription &mdash; google-cloud e927026 documentation</title>
+  <title>google.cloud.pubsub.subscription &mdash; google-cloud b98aad3 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud e927026 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud b98aad3 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -287,7 +287,7 @@
     <span class="sd">&quot;&quot;&quot;Subscriptions receive messages published to their topics.</span>
 
 <span class="sd">    See:</span>
-<span class="sd">    https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions</span>
+<span class="sd">    https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions</span>
 
 <span class="sd">    :type name: string</span>
 <span class="sd">    :param name: the name of the subscription.</span>
@@ -314,7 +314,7 @@
     <span class="sd">&quot;&quot;&quot;Value of ``projects.subscriptions.topic`` when topic has been deleted.</span>
 
 <span class="sd">    See:</span>
-<span class="sd">    https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions#Subscription.FIELDS.topic</span>
+<span class="sd">    https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions#Subscription.FIELDS.topic</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -426,7 +426,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  create the subscription via a PUT request</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create</span>
 
 <span class="sd">        Example:</span>
 
@@ -449,7 +449,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  test existence of the subscription via a GET request</span>
 
 <span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get</span>
 
 <span class="sd">        Example:</span>
 
@@ -478,7 +478,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  sync local subscription configuration via a GET request</span>
 
 <span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get</span>
 
 <span class="sd">        Example:</span>
 
@@ -502,7 +502,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  delete the subscription via a DELETE request.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete</span>
 
 <span class="sd">        Example:</span>
 
@@ -523,7 +523,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  update the push endpoint for the subscription.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
 
 <span class="sd">        Example:</span>
 
@@ -554,7 +554,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  retrieve messages for the subscription.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/pull</span>
 
 <span class="sd">        Example:</span>
 
@@ -593,7 +593,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  acknowledge retrieved messages for the subscription.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/acknowledge</span>
 
 <span class="sd">        Example:</span>
 
@@ -617,7 +617,7 @@
         <span class="sd">&quot;&quot;&quot;API call:  update acknowledgement deadline for a retrieved message.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline</span>
 
 <span class="sd">        :type ack_ids: list of string</span>
 <span class="sd">        :param ack_ids: ack IDs of messages being updated</span>
@@ -639,7 +639,7 @@
         <span class="sd">&quot;&quot;&quot;Fetch the IAM policy for the subscription.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/getIamPolicy</span>
 
 <span class="sd">        Example:</span>
 
@@ -665,7 +665,7 @@
         <span class="sd">&quot;&quot;&quot;Update the IAM policy for the subscription.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/setIamPolicy</span>
 
 <span class="sd">        Example:</span>
 
@@ -696,7 +696,7 @@
         <span class="sd">&quot;&quot;&quot;Verify permissions allowed for the current user.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions</span>
+<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/testIamPermissions</span>
 
 <span class="sd">        Example:</span>
 
@@ -803,7 +803,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'e927026',
+            VERSION:'b98aad3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
