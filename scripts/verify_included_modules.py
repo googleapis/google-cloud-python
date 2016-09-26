@@ -71,6 +71,7 @@ PACKAGES = (
     'pubsub',
     'resource_manager',
     'storage',
+    'vision',
 )
 
 
