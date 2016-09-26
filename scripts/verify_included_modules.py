@@ -64,6 +64,7 @@ PACKAGES = (
     'core',
     'datastore',
     'dns',
+    'error_reporting',
     'language',
     'logging',
     'pubsub',
