@@ -68,6 +68,7 @@ PACKAGES = (
     'language',
     'logging',
     'pubsub',
+    'resource_manager',
     'storage',
 )
 
