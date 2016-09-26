@@ -16,6 +16,7 @@ script:
   - (cd dns && tox -e py27)
   - (cd language && tox -e py27)
   - (cd error_reporting && tox -e py27)
+  - (cd resource_manager && tox -e py27)
   - tox -e py34
   - (cd core && tox -e py34)
   - (cd bigtable && tox -e py34)
@@ -27,6 +28,7 @@ script:
   - (cd dns && tox -e py34)
   - (cd language && tox -e py34)
   - (cd error_reporting && tox -e py34)
+  - (cd resource_manager && tox -e py34)
   - tox -e lint
   - tox -e cover
   - (cd core && tox -e cover)
@@ -39,6 +41,7 @@ script:
   - (cd dns && tox -e cover)
   - (cd language && tox -e cover)
   - (cd error_reporting && tox -e cover)
+  - (cd resource_manager && tox -e cover)
   - tox -e system-tests
   - tox -e system-tests3
   - scripts/update_docs.sh
