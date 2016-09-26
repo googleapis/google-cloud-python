@@ -67,6 +67,7 @@ PACKAGES = (
     'error_reporting',
     'language',
     'logging',
+    'monitoring',
     'pubsub',
     'resource_manager',
     'storage',
