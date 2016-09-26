@@ -1,0 +1,49 @@
+Python Client for Stackdriver Error Reporting
+=============================================
+
+    Python idiomatic client for `Stackdriver Error Reporting`_
+
+.. _Stackdriver Error Reporting: https://cloud.google.com/error-reporting/
+
+-  `Homepage`_
+-  `API Documentation`_
+
+.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
+.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+
+Quick Start
+-----------
+
+::
+
+    $ pip install --upgrade google-cloud-error-reporting
+
+Authentication
+--------------
+
+With ``google-cloud-python`` we try to make authentication as painless as
+possible. Check out the `Authentication section`_ in our documentation to
+learn more. You may also find the `authentication document`_ shared by all
+the ``google-cloud-*`` libraries to be helpful.
+
+.. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
+
+Using the API
+-------------
+
+The Stackdriver `Error Reporting`_ API (`Error Reporting API docs`_)
+counts, analyzes and aggregates the crashes in your running cloud services.
+A centralized error management interface displays the results with sorting
+and filtering capabilities. A dedicated view shows the error details: time
+chart, occurrences, affected user count, first and last seen dates and a
+cleaned exception stack trace. Opt-in to receive email and mobile alerts
+on new errors.
+
+.. _Error Reporting: https://cloud.google.com/error-reporting/
+.. _Error Reporting API docs: https://cloud.google.com/error-reporting/reference/
+
+See the ``google-cloud-python`` API `Error Reporting documentation`_ to learn
+how to get started using this library.
+
+.. _Error Reporting documentation: https://google-cloud-python.readthedocs.io/en/stable/error-reporting-usage.html
