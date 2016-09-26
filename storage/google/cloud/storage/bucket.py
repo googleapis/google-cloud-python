@@ -211,9 +211,9 @@ class Bucket(_PropertyMixin):
           >>> from google.cloud import storage
           >>> client = storage.Client()
           >>> bucket = client.get_bucket('my-bucket')
-          >>> print bucket.get_blob('/path/to/blob.txt')
+          >>> print(bucket.get_blob('/path/to/blob.txt'))
           <Blob: my-bucket, /path/to/blob.txt>
-          >>> print bucket.get_blob('/does-not-exist.txt')
+          >>> print(bucket.get_blob('/does-not-exist.txt'))
           None
 
         :type blob_name: string
@@ -376,7 +376,7 @@ class Bucket(_PropertyMixin):
           >>> from google.cloud import storage
           >>> client = storage.Client()
           >>> bucket = client.get_bucket('my-bucket')
-          >>> print bucket.list_blobs()
+          >>> print(bucket.list_blobs())
           [<Blob: my-bucket, my-file.txt>]
           >>> bucket.delete_blob('my-file.txt')
           >>> try:

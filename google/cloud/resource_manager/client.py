@@ -104,7 +104,7 @@ class Client(BaseClient):
             >>> from google.cloud import resource_manager
             >>> client = resource_manager.Client()
             >>> for project in client.list_projects():
-            ...     print project.project_id
+            ...     print(project.project_id)
 
         List all projects with label ``'environment'`` set to ``'prod'``
         (filtering by labels)::
@@ -113,7 +113,7 @@ class Client(BaseClient):
             >>> client = resource_manager.Client()
             >>> env_filter = {'labels.environment': 'prod'}
             >>> for project in client.list_projects(env_filter):
-            ...     print project.project_id
+            ...     print(project.project_id)
 
         See:
         https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/list
