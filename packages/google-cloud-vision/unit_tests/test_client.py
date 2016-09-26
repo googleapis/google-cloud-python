@@ -40,7 +40,7 @@ class TestClient(unittest.TestCase):
 
     def test_face_annotation(self):
         from google.cloud.vision.feature import Feature, FeatureTypes
-        from unit_tests.vision._fixtures import FACE_DETECTION_RESPONSE
+        from unit_tests._fixtures import FACE_DETECTION_RESPONSE
 
         RETURNED = FACE_DETECTION_RESPONSE
         REQUEST = {
@@ -82,7 +82,7 @@ class TestClient(unittest.TestCase):
 
     def test_face_detection_from_source(self):
         from google.cloud.vision.face import Face
-        from unit_tests.vision._fixtures import FACE_DETECTION_RESPONSE
+        from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
@@ -99,7 +99,7 @@ class TestClient(unittest.TestCase):
 
     def test_face_detection_from_content(self):
         from google.cloud.vision.face import Face
-        from unit_tests.vision._fixtures import FACE_DETECTION_RESPONSE
+        from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
@@ -116,8 +116,9 @@ class TestClient(unittest.TestCase):
 
     def test_label_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests.vision._fixtures import (LABEL_DETECTION_RESPONSE as
-                                                 RETURNED)
+        from unit_tests._fixtures import (
+            LABEL_DETECTION_RESPONSE as RETURNED)
+
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
@@ -137,8 +138,9 @@ class TestClient(unittest.TestCase):
 
     def test_landmark_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests.vision._fixtures import (LANDMARK_DETECTION_RESPONSE as
-                                                 RETURNED)
+        from unit_tests._fixtures import (
+            LANDMARK_DETECTION_RESPONSE as RETURNED)
+
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
@@ -158,8 +160,9 @@ class TestClient(unittest.TestCase):
 
     def test_landmark_detection_from_content(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests.vision._fixtures import (LANDMARK_DETECTION_RESPONSE as
-                                                 RETURNED)
+        from unit_tests._fixtures import (
+            LANDMARK_DETECTION_RESPONSE as RETURNED)
+
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
@@ -175,7 +178,7 @@ class TestClient(unittest.TestCase):
 
     def test_logo_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests.vision._fixtures import LOGO_DETECTION_RESPONSE
+        from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
         RETURNED = LOGO_DETECTION_RESPONSE
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
@@ -192,7 +195,7 @@ class TestClient(unittest.TestCase):
 
     def test_logo_detection_from_content(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests.vision._fixtures import LOGO_DETECTION_RESPONSE
+        from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
         RETURNED = LOGO_DETECTION_RESPONSE
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
@@ -209,8 +212,9 @@ class TestClient(unittest.TestCase):
 
     def test_text_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
-        from unit_tests.vision._fixtures import (TEXT_DETECTION_RESPONSE as
-                                                 RETURNED)
+        from unit_tests._fixtures import (
+            TEXT_DETECTION_RESPONSE as RETURNED)
+
         credentials = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
@@ -230,7 +234,7 @@ class TestClient(unittest.TestCase):
 
     def test_safe_search_detection_from_source(self):
         from google.cloud.vision.safe import SafeSearchAnnotation
-        from unit_tests.vision._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
+        from unit_tests._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
 
         RETURNED = SAFE_SEARCH_DETECTION_RESPONSE
         credentials = _Credentials()
@@ -250,7 +254,7 @@ class TestClient(unittest.TestCase):
 
     def test_image_properties_detection_from_source(self):
         from google.cloud.vision.color import ImagePropertiesAnnotation
-        from unit_tests.vision._fixtures import IMAGE_PROPERTIES_RESPONSE
+        from unit_tests._fixtures import IMAGE_PROPERTIES_RESPONSE
 
         RETURNED = IMAGE_PROPERTIES_RESPONSE
         credentials = _Credentials()
