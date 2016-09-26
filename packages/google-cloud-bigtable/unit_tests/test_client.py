@@ -143,6 +143,8 @@ class Test__make_operations_stub(unittest.TestCase):
         return _make_operations_stub(client)
 
     def test_without_emulator(self):
+        from google.longrunning import operations_grpc
+
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
@@ -165,12 +167,14 @@ class Test__make_operations_stub(unittest.TestCase):
             (
                 client.credentials,
                 client.user_agent,
-                MUT.operations_grpc_pb2.OperationsStub,
+                operations_grpc.OperationsStub,
                 MUT.OPERATIONS_API_HOST,
             ),
         ])
 
     def test_with_emulator(self):
+        from google.longrunning import operations_grpc
+
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
@@ -190,7 +194,7 @@ class Test__make_operations_stub(unittest.TestCase):
         self.assertIs(result, fake_stub)
         self.assertEqual(make_insecure_stub_args, [
             (
-                MUT.operations_grpc_pb2.OperationsStub,
+                operations_grpc.OperationsStub,
                 emulator_host,
             ),
         ])

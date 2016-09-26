@@ -29,12 +29,13 @@ In the hierarchy of API concepts
 
 import os
 
+from google.longrunning import operations_grpc
+
 from google.cloud._helpers import make_insecure_stub
 from google.cloud._helpers import make_secure_stub
 from google.cloud.bigtable._generated import bigtable_instance_admin_pb2
 from google.cloud.bigtable._generated import bigtable_pb2
 from google.cloud.bigtable._generated import bigtable_table_admin_pb2
-from google.cloud.bigtable._generated import operations_grpc_pb2
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.instance import Instance
 from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
@@ -110,15 +111,15 @@ def _make_operations_stub(client):
     :type client: :class:`Client`
     :param client: The client that will hold the stub.
 
-    :rtype: :class:`._generated.operations_grpc_pb2.OperationsStub`
+    :rtype: :class:`google.longrunning.operations_grpc.OperationsStub`
     :returns: A gRPC stub object.
     """
     if client.emulator_host is None:
         return make_secure_stub(client.credentials, client.user_agent,
-                                operations_grpc_pb2.OperationsStub,
+                                operations_grpc.OperationsStub,
                                 OPERATIONS_API_HOST)
     else:
-        return make_insecure_stub(operations_grpc_pb2.OperationsStub,
+        return make_insecure_stub(operations_grpc.OperationsStub,
                                   client.emulator_host)
 
 
@@ -285,7 +286,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def _operations_stub(self):
         """Getter for the gRPC stub used for the Operations API.
 
-        :rtype: :class:`._generated.operations_grpc_pb2.OperationsStub`
+        :rtype: :class:`google.longrunning.operations_grpc.OperationsStub`
         :returns: A gRPC stub object.
         :raises: :class:`ValueError <exceptions.ValueError>` if the current
                  client is not an admin client or if it has not been
