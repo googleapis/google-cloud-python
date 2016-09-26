@@ -440,7 +440,7 @@ class Bucket(_PropertyMixin):
                     raise
 
     def copy_blob(self, blob, destination_bucket, new_name=None,
-                  client=None, preserve_acl=False):
+                  client=None, preserve_acl=True):
         """Copy the given blob to the given bucket, optionally with a new name.
 
         :type blob: :class:`google.cloud.storage.blob.Blob`
@@ -460,7 +460,7 @@ class Bucket(_PropertyMixin):
 
         :type preserve_acl: bool
         :param preserve_acl: Optional. Copies ACL from old blob to new blob.
-                             Default: False.
+                             Default: True.
 
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The new Blob.
@@ -470,14 +470,15 @@ class Bucket(_PropertyMixin):
             new_name = blob.name
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
+        if not preserve_acl:
+            new_blob.acl.reset()
+            new_blob.acl.save()
         copy_result = client.connection.api_request(
             method='POST', path=api_path, _target_object=new_blob)
         new_blob._set_properties(copy_result)
-        if preserve_acl:
-            new_blob.acl.save(blob.acl)
         return new_blob
 
-    def rename_blob(self, blob, new_name, client=None, preserve_acl=False):
+    def rename_blob(self, blob, new_name, client=None):
         """Rename the given blob using copy and delete operations.
 
         Effectively, copies blob to the same bucket with a new name, then
@@ -500,15 +501,10 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :type preserve_acl: bool
-        :param preserve_acl: Optional. Copies ACL from old blob to renamed
-                             blob. Default: False.
-
         :rtype: :class:`Blob`
         :returns: The newly-renamed blob.
         """
-        new_blob = self.copy_blob(blob, self, new_name, client=client,
-                                  preserve_acl=preserve_acl)
+        new_blob = self.copy_blob(blob, self, new_name, client=client)
         blob.delete(client=client)
         return new_blob
 
