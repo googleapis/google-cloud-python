@@ -71,7 +71,7 @@ object (whether it was created by a factory method or not) from a
 To get the list of ``entity`` and ``role`` for each unique pair, the
 :class:`ACL` class is iterable::
 
-  >>> print list(ACL)
+  >>> print(list(ACL))
   [{'role': 'OWNER', 'entity': 'allUsers'}, ...]
 
 This list of tuples can be used as the ``entity`` and ``role`` fields

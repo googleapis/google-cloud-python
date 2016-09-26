@@ -152,7 +152,7 @@ class Client(JSONClient):
           >>> try:
           >>>   bucket = client.get_bucket('my-bucket')
           >>> except google.cloud.exceptions.NotFound:
-          >>>   print 'Sorry, that bucket does not exist!'
+          >>>   print('Sorry, that bucket does not exist!')
 
         This implements "storage.buckets.get".
 
@@ -174,10 +174,10 @@ class Client(JSONClient):
         than catching an exception::
 
           >>> bucket = client.lookup_bucket('doesnt-exist')
-          >>> print bucket
+          >>> print(bucket)
           None
           >>> bucket = client.lookup_bucket('my-bucket')
-          >>> print bucket
+          >>> print(bucket)
           <Bucket: my-bucket>
 
         :type bucket_name: string
@@ -197,7 +197,7 @@ class Client(JSONClient):
         For example::
 
           >>> bucket = client.create_bucket('my-bucket')
-          >>> print bucket
+          >>> print(bucket)
           <Bucket: my-bucket>
 
         This implements "storage.buckets.insert".
@@ -223,7 +223,7 @@ class Client(JSONClient):
         bucket.
 
           >>> for bucket in client.list_buckets():
-          >>>   print bucket
+          ...   print(bucket)
 
         This implements "storage.buckets.list".
 
