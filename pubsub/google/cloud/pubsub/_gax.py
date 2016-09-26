@@ -25,12 +25,10 @@ from google.pubsub.v1.pubsub_pb2 import PushConfig
 from grpc import insecure_channel
 from grpc import StatusCode
 
-# pylint: disable=ungrouped-imports
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _pb_timestamp_to_rfc3339
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-# pylint: enable=ungrouped-imports
 
 
 class _PublisherAPI(object):

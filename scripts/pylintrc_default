@@ -112,6 +112,9 @@ confidence=
 #                      will be detected by our 100% code coverage.
 # - missing-raises-doc: New in PyLint 1.6, enforcing PEP 257 and flagged our
 #                       existing codebase.  See #1968 for eventual fixes.
+# - ungrouped-imports: We share the 'google' namespace with third-party
+#                      packages. PEP 8 wants those to be separate from "local"
+#                      imports.
 disable =
     import-star-module-level,
     old-octal-literal,
@@ -173,6 +176,7 @@ disable =
     wrong-import-position,
     no-name-in-module,
     missing-raises-doc,
+    ungrouped-imports,
 
 [REPORTS]
 
