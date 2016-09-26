@@ -32,7 +32,7 @@ import sys
 
 IGNORED_DIRECTORIES = [
     os.path.join('bigtable', 'google', 'cloud', 'bigtable', '_generated'),
-    os.path.join('google', 'cloud', 'datastore', '_generated'),
+    os.path.join('datastore', 'google', 'cloud', 'datastore', '_generated'),
 ]
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),
