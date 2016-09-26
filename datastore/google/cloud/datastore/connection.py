@@ -23,6 +23,7 @@ from google.cloud._helpers import make_secure_stub
 from google.cloud import connection as connection_module
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_HOST
+from google.cloud.exceptions import BadRequest
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import GrpcRendezvous
 from google.cloud.exceptions import make_exception
@@ -313,8 +314,11 @@ class _DatastoreAPIOverGRPC(object):
         try:
             return self._stub.Commit(request_pb)
         except GrpcRendezvous as exc:
-            if exc.code() == StatusCode.ABORTED:
+            error_code = exc.code()
+            if error_code == StatusCode.ABORTED:
                 raise Conflict(exc.details())
+            if error_code == StatusCode.INVALID_ARGUMENT:
+                raise BadRequest(exc.details())
             raise
 
     def rollback(self, project, request_pb):
