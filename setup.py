@@ -61,8 +61,6 @@ REQUIREMENTS = [
 GRPC_PACKAGES = [
     'grpcio >= 1.0.0',
     'google-gax >= 0.14.1, < 0.15dev',
-    'gapic-google-pubsub-v1 >= 0.9.0, < 0.10dev',
-    'grpc-google-pubsub-v1 >= 0.9.0, < 0.10dev',
     'gapic-google-logging-v2 >= 0.9.0, < 0.10dev',
     'grpc-google-logging-v2 >= 0.9.0, < 0.10dev',
 ]
