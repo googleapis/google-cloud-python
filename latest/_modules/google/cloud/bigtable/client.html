@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigtable.client &mdash; google-cloud 0c0c8ad documentation</title>
+  <title>google.cloud.bigtable.client &mdash; google-cloud eec16d0 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 0c0c8ad documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud eec16d0 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -292,12 +292,13 @@
 
 <span class="kn">import</span> <span class="nn">os</span>
 
+<span class="kn">from</span> <span class="nn">google.longrunning</span> <span class="k">import</span> <span class="n">operations_grpc</span>
+
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">make_insecure_stub</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">make_secure_stub</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable._generated</span> <span class="k">import</span> <span class="n">bigtable_instance_admin_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable._generated</span> <span class="k">import</span> <span class="n">bigtable_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable._generated</span> <span class="k">import</span> <span class="n">bigtable_table_admin_pb2</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigtable._generated</span> <span class="k">import</span> <span class="n">operations_grpc_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.cluster</span> <span class="k">import</span> <span class="n">DEFAULT_SERVE_NODES</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.instance</span> <span class="k">import</span> <span class="n">Instance</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.instance</span> <span class="k">import</span> <span class="n">_EXISTING_INSTANCE_LOCATION_ID</span>
@@ -373,15 +374,15 @@
 <span class="sd">    :type client: :class:`Client`</span>
 <span class="sd">    :param client: The client that will hold the stub.</span>
 
-<span class="sd">    :rtype: :class:`._generated.operations_grpc_pb2.OperationsStub`</span>
+<span class="sd">    :rtype: :class:`google.longrunning.operations_grpc.OperationsStub`</span>
 <span class="sd">    :returns: A gRPC stub object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">emulator_host</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">make_secure_stub</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">user_agent</span><span class="p">,</span>
-                                <span class="n">operations_grpc_pb2</span><span class="o">.</span><span class="n">OperationsStub</span><span class="p">,</span>
+                                <span class="n">operations_grpc</span><span class="o">.</span><span class="n">OperationsStub</span><span class="p">,</span>
                                 <span class="n">OPERATIONS_API_HOST</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">make_insecure_stub</span><span class="p">(</span><span class="n">operations_grpc_pb2</span><span class="o">.</span><span class="n">OperationsStub</span><span class="p">,</span>
+        <span class="k">return</span> <span class="n">make_insecure_stub</span><span class="p">(</span><span class="n">operations_grpc</span><span class="o">.</span><span class="n">OperationsStub</span><span class="p">,</span>
                                   <span class="n">client</span><span class="o">.</span><span class="n">emulator_host</span><span class="p">)</span>
 
 
@@ -548,7 +549,7 @@
     <span class="k">def</span> <span class="nf">_operations_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter for the gRPC stub used for the Operations API.</span>
 
-<span class="sd">        :rtype: :class:`._generated.operations_grpc_pb2.OperationsStub`</span>
+<span class="sd">        :rtype: :class:`google.longrunning.operations_grpc.OperationsStub`</span>
 <span class="sd">        :returns: A gRPC stub object.</span>
 <span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if the current</span>
 <span class="sd">                 client is not an admin client or if it has not been</span>
@@ -649,7 +650,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0c0c8ad',
+            VERSION:'eec16d0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
