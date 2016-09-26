@@ -50,21 +50,13 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-bigquery',
-    'google-cloud-bigtable',
     'google-cloud-core',
-    'google-cloud-datastore',
-    'google-cloud-dns',
-    'google-cloud-language',
-    'google-cloud-logging',
-    'google-cloud-pubsub',
-    'google-cloud-storage',
 ]
 
 setup(
-    name='google-cloud',
+    name='google-cloud-language',
     version='0.20.0dev',
-    description='API Client library for Google Cloud',
+    description='Python Client for Google Cloud Natural Language',
     long_description=README,
     namespace_packages=[
         'google',
