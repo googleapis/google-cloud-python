@@ -651,7 +651,7 @@ def main():
                             os.path.join(JSON_DOCS_DIR, 'types.json'))
     package_files(JSON_DOCS_DIR, DOCS_BUILD_DIR, BASE_JSON_DOCS_DIR)
     if args.show_toc:
-        print json.dumps(toc, indent=4)
+        print(json.dumps(toc, indent=4))
 
 if __name__ == '__main__':
     main()
