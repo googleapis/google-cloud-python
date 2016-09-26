@@ -26,11 +26,11 @@ class TestConnection(unittest.TestCase):
 
     def test_build_api_url(self):
         conn = self._makeOne()
+        method = 'speech:syncrecognize'
         uri = '/'.join([
             conn.API_BASE_URL,
             conn.API_VERSION,
-            'speech',
+            method,
         ])
-        method = 'syncrecognize'
-        uri += ':' + method
+
         self.assertEqual(conn.build_api_url(method), uri)
