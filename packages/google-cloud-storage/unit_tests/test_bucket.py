@@ -543,7 +543,7 @@ class Test_Bucket(unittest.TestCase):
         BLOB_NAME = 'blob-name'
         NEW_NAME = 'new_name'
 
-        def save(self, client):  # pylint: disable=unused-argument
+        def save(self):  # pylint: disable=unused-argument
             return
 
         class _Blob(object):
@@ -552,6 +552,8 @@ class Test_Bucket(unittest.TestCase):
 
             def __init__(self):
                 self.acl = ACL()
+                self.acl.loaded = True
+                self.acl.entity('type', 'id')
 
         connection = _Connection({})
         client = _Client(connection)
@@ -560,10 +562,12 @@ class Test_Bucket(unittest.TestCase):
         blob = _Blob()
         with _Monkey(ACL, save=save):
             new_blob = source.copy_blob(blob, dest, NEW_NAME, client=client,
-                                        preserve_acl=True)
+                                        preserve_acl=False)
             self.assertIs(new_blob.bucket, dest)
             self.assertEqual(new_blob.name, NEW_NAME)
             self.assertIsInstance(new_blob.acl, ObjectACL)
+            self.assertFalse(new_blob.acl.loaded)
+            self.assertEqual(new_blob.acl.entities, {})
 
     def test_copy_blobs_w_name(self):
         SOURCE = 'source'
