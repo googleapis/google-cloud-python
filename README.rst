@@ -101,7 +101,7 @@ to activate Cloud Datastore for your project.
     # Then query for entities
     query = datastore.Query(kind='EntityKind')
     for result in query.fetch():
-        print result
+        print(result)
 
 Google Cloud Storage
 --------------------
@@ -131,7 +131,7 @@ how to create a bucket.
     bucket = client.get_bucket('bucket-id-here')
     # Then do other things...
     blob = bucket.get_blob('remote/path/to/file.txt')
-    print blob.download_as_string()
+    print(blob.download_as_string())
     blob.upload_from_string('New contents!')
     blob2 = bucket.blob('remote/path/storage.txt')
     blob2.upload_from_filename(filename='/local/path.txt')
@@ -220,7 +220,7 @@ Perform a synchronous query
     query.run()
 
     for row in query.rows:
-        print row
+        print(row)
 
 
 See the ``google-cloud-python`` API `BigQuery documentation`_ to learn how to connect
@@ -265,7 +265,7 @@ Example of fetching entries:
 
     entries, token = logger.list_entries()
     for entry in entries:
-        print entry.payload
+        print(entry.payload)
 
 See the ``google-cloud-python`` API `logging documentation`_ to learn how to connect
 to Stackdriver Logging using this Client Library.

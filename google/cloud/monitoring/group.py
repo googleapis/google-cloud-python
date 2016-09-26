@@ -279,13 +279,13 @@ class Group(object):
         Example::
 
             >>> for member in group.list_members():
-            ...     print member
+            ...     print(member)
 
         List members that are Compute Engine VM instances::
 
             >>> filter_string = 'resource.type = "gce_instance"'
             >>> for member in group.list_members(filter_string=filter_string):
-            ...     print member
+            ...     print(member)
 
         List historical members that existed between 4 and 5 hours ago::
 
@@ -293,7 +293,7 @@ class Group(object):
             >>> t1 = datetime.datetime.utcnow() - datetime.timedelta(hours=4)
             >>> t0 = t1 - datetime.timedelta(hours=1)
             >>> for member in group.list_members(end_time=t1, start_time=t0):
-            ...     print member
+            ...     print(member)
 
 
         :type filter_string: string or None
