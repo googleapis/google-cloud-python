@@ -59,17 +59,6 @@ REQUIREMENTS = [
     'google-cloud-storage',
 ]
 
-GRPC_PACKAGES = [
-    'grpcio >= 1.0.0',
-    'google-gax >= 0.14.1, < 0.15dev',
-    'gapic-google-logging-v2 >= 0.9.0, < 0.10dev',
-    'grpc-google-logging-v2 >= 0.9.0, < 0.10dev',
-]
-
-RTD_ENV_VAR = 'READTHEDOCS'
-if RTD_ENV_VAR not in os.environ:
-    REQUIREMENTS.extend(GRPC_PACKAGES)
-
 setup(
     name='google-cloud',
     version='0.20.0dev',
