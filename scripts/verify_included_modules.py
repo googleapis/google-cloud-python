@@ -61,6 +61,7 @@ PACKAGES = (
     '',
     'bigtable',
     'core',
+    'datastore',
     'storage',
 )
 
