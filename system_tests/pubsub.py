@@ -20,10 +20,8 @@ from google.gax.grpc import exc_to_code
 from grpc import StatusCode
 import httplib2
 
-# pylint: disable=ungrouped-imports
 from google.cloud.environment_vars import PUBSUB_EMULATOR
 from google.cloud.pubsub import client
-# pylint: enable=ungrouped-imports
 
 from retry import RetryInstanceState
 from retry import RetryResult
