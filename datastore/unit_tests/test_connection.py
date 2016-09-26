@@ -253,6 +253,19 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self._commit_failure_helper(exc, Conflict)
 
     @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
+    def test_commit_failure_invalid_argument(self):
+        from grpc import StatusCode
+        from grpc._channel import _RPCState
+        from google.cloud.exceptions import BadRequest
+        from google.cloud.exceptions import GrpcRendezvous
+
+        details = 'Too long content.'
+        exc_state = _RPCState((), None, None,
+                              StatusCode.INVALID_ARGUMENT, details)
+        exc = GrpcRendezvous(exc_state, None, None, None)
+        self._commit_failure_helper(exc, BadRequest)
+
+    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
     def test_commit_failure_cancelled(self):
         from grpc import StatusCode
         from grpc._channel import _RPCState
