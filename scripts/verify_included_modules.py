@@ -59,6 +59,7 @@ IGNORED_MODULES = frozenset([
 ])
 PACKAGES = (
     '',
+    'bigtable',
     'core',
 )
 
