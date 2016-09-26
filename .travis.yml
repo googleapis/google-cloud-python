@@ -9,15 +9,18 @@ script:
   - (cd core && tox -e py27)
   - (cd bigtable && tox -e py27)
   - (cd storage && tox -e py27)
+  - (cd datastore && tox -e py27)
   - tox -e py34
   - (cd core && tox -e py34)
   - (cd bigtable && tox -e py34)
   - (cd storage && tox -e py34)
+  - (cd datastore && tox -e py34)
   - tox -e lint
   - tox -e cover
   - (cd core && tox -e cover)
   - (cd bigtable && tox -e cover)
   - (cd storage && tox -e cover)
+  - (cd datastore && tox -e cover)
   - tox -e system-tests
   - tox -e system-tests3
   - scripts/update_docs.sh
