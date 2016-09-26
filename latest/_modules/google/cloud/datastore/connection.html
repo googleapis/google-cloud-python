@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.connection &mdash; google-cloud 5e3a35e documentation</title>
+  <title>google.cloud.datastore.connection &mdash; google-cloud 79a5a78 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 5e3a35e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 79a5a78 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -286,6 +286,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">connection_module</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">GCD_HOST</span>
+<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">BadRequest</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">Conflict</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">GrpcRendezvous</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">make_exception</span>
@@ -576,8 +577,11 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">Commit</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">GrpcRendezvous</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">exc</span><span class="o">.</span><span class="n">code</span><span class="p">()</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">ABORTED</span><span class="p">:</span>
+            <span class="n">error_code</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">code</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">error_code</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">ABORTED</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">Conflict</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">details</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">error_code</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">INVALID_ARGUMENT</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">details</span><span class="p">())</span>
             <span class="k">raise</span>
 
     <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
@@ -966,7 +970,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5e3a35e',
+            VERSION:'79a5a78',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
