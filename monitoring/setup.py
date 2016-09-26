@@ -50,24 +50,13 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-bigquery',
-    'google-cloud-bigtable',
     'google-cloud-core',
-    'google-cloud-datastore',
-    'google-cloud-dns',
-    'google-cloud-error-reporting',
-    'google-cloud-language',
-    'google-cloud-logging',
-    'google-cloud-monitoring',
-    'google-cloud-pubsub',
-    'google-cloud-resource-manager',
-    'google-cloud-storage',
 ]
 
 setup(
-    name='google-cloud',
+    name='google-cloud-monitoring',
     version='0.20.0dev',
-    description='API Client library for Google Cloud',
+    description='Python Client for Stackdriver Monitoring',
     long_description=README,
     namespace_packages=[
         'google',
