@@ -13,6 +13,7 @@ script:
   - (cd bigquery && tox -e py27)
   - (cd pubsub && tox -e py27)
   - (cd logging && tox -e py27)
+  - (cd dns && tox -e py27)
   - tox -e py34
   - (cd core && tox -e py34)
   - (cd bigtable && tox -e py34)
@@ -21,6 +22,7 @@ script:
   - (cd bigquery && tox -e py34)
   - (cd pubsub && tox -e py34)
   - (cd logging && tox -e py34)
+  - (cd dns && tox -e py34)
   - tox -e lint
   - tox -e cover
   - (cd core && tox -e cover)
@@ -30,6 +32,7 @@ script:
   - (cd bigquery && tox -e cover)
   - (cd pubsub && tox -e cover)
   - (cd logging && tox -e cover)
+  - (cd dns && tox -e cover)
   - tox -e system-tests
   - tox -e system-tests3
   - scripts/update_docs.sh

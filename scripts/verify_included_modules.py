@@ -63,6 +63,7 @@ PACKAGES = (
     'bigtable',
     'core',
     'datastore',
+    'dns',
     'logging',
     'pubsub',
     'storage',
