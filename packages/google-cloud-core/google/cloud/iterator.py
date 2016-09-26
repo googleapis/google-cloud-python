@@ -39,7 +39,7 @@ you find what you're looking for (resulting in possibly fewer
 requests)::
 
     >>> for item in MyIterator(...):
-    >>>     print item.name
+    >>>     print(item.name)
     >>>     if not item.is_valid:
     >>>         break
 """
