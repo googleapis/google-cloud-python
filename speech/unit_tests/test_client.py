@@ -40,8 +40,8 @@ class TestClient(unittest.TestCase):
     def test_sync_recognize_content_with_optional_parameters(self):
         import base64
         from google.cloud._helpers import _to_bytes
-        from google.cloud.speech.client import Encoding
-        from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
+        from google.cloud.speech.encoding import Encoding
+        from unit_tests.speech._fixtures import SYNC_RECOGNIZE_RESPONSE
 
         _AUDIO_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
         _B64_AUDIO_CONTENT = base64.b64encode(_AUDIO_CONTENT)
@@ -82,14 +82,19 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(req), 3)
         self.assertEqual(req['data'], REQUEST)
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], 'syncrecognize')
+        self.assertEqual(req['path'], 'speech:syncrecognize')
 
         expected = SYNC_RECOGNIZE_RESPONSE['results'][0]['alternatives']
         self.assertEqual(response, expected)
 
     def test_sync_recognize_source_uri_without_optional_parameters(self):
+<<<<<<< b7f004e00f1ee021b0cb7ac9261fcc6c021dfacb:speech/unit_tests/test_client.py
         from google.cloud.speech.client import Encoding
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
+=======
+        from google.cloud.speech.encoding import Encoding
+        from unit_tests.speech._fixtures import SYNC_RECOGNIZE_RESPONSE
+>>>>>>> Add speech asynchronous recognize support.:unit_tests/speech/test_client.py
 
         RETURNED = SYNC_RECOGNIZE_RESPONSE
         REQUEST = {
@@ -116,13 +121,13 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(req), 3)
         self.assertEqual(req['data'], REQUEST)
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], 'syncrecognize')
+        self.assertEqual(req['path'], 'speech:syncrecognize')
 
         expected = SYNC_RECOGNIZE_RESPONSE['results'][0]['alternatives']
         self.assertEqual(response, expected)
 
     def test_sync_recognize_without_content_or_source_uri(self):
-        from google.cloud.speech.client import Encoding
+        from google.cloud.speech.encoding import Encoding
 
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials)
@@ -132,7 +137,7 @@ class TestClient(unittest.TestCase):
 
     def test_sync_recognize_with_content_and_source_uri(self):
         from google.cloud._helpers import _to_bytes
-        from google.cloud.speech.client import Encoding
+        from google.cloud.speech.encoding import Encoding
         _AUDIO_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
 
         credentials = _Credentials()
@@ -151,7 +156,7 @@ class TestClient(unittest.TestCase):
                                   self.SAMPLE_RATE)
 
     def test_sync_recognize_without_samplerate(self):
-        from google.cloud.speech.client import Encoding
+        from google.cloud.speech.encoding import Encoding
 
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials)
@@ -161,8 +166,13 @@ class TestClient(unittest.TestCase):
                                   None)
 
     def test_sync_recognize_with_empty_results(self):
+<<<<<<< b7f004e00f1ee021b0cb7ac9261fcc6c021dfacb:speech/unit_tests/test_client.py
         from google.cloud.speech.client import Encoding
         from unit_tests._fixtures import SYNC_RECOGNIZE_EMPTY_RESPONSE
+=======
+        from google.cloud.speech.encoding import Encoding
+        from unit_tests.speech._fixtures import SYNC_RECOGNIZE_EMPTY_RESPONSE
+>>>>>>> Add speech asynchronous recognize support.:unit_tests/speech/test_client.py
 
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials)
@@ -171,6 +181,24 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(ValueError):
             client.sync_recognize(None, self.AUDIO_SOURCE_URI, Encoding.FLAC,
                                   self.SAMPLE_RATE)
+
+    def test_async_recognize(self):
+        from unit_tests.speech._fixtures import ASYNC_RECOGNIZE_RESPONSE
+        from google.cloud.speech.encoding import Encoding
+        from google.cloud.speech.operation import Operation
+        RETURNED = ASYNC_RECOGNIZE_RESPONSE
+
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+        client.connection = _Connection(RETURNED)
+
+        encoding = Encoding.FLAC
+
+        operation = client.async_recognize(None, self.AUDIO_SOURCE_URI,
+                                           encoding,
+                                           self.SAMPLE_RATE)
+        self.assertIsInstance(operation, Operation)
+        self.assertFalse(operation.complete)
 
 
 class _Credentials(object):

@@ -1,5 +1,5 @@
 Speech Client
-================
+=============
 
 .. automodule:: google.cloud.speech.client
   :members:
