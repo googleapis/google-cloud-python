@@ -51,6 +51,7 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core',
+    'google-cloud-logging',
 ]
 
 setup(
