@@ -19,6 +19,7 @@ script:
   - (cd resource_manager && tox -e py27)
   - (cd monitoring && tox -e py27)
   - (cd vision && tox -e py27)
+  - (cd translate && tox -e py27)
   - tox -e py34
   - (cd core && tox -e py34)
   - (cd bigtable && tox -e py34)
@@ -33,6 +34,7 @@ script:
   - (cd resource_manager && tox -e py34)
   - (cd monitoring && tox -e py34)
   - (cd vision && tox -e py34)
+  - (cd translate && tox -e py34)
   - tox -e lint
   - tox -e cover
   - (cd core && tox -e cover)
@@ -48,6 +50,7 @@ script:
   - (cd resource_manager && tox -e cover)
   - (cd monitoring && tox -e cover)
   - (cd vision && tox -e cover)
+  - (cd translate && tox -e cover)
   - tox -e system-tests
   - tox -e system-tests3
   - scripts/update_docs.sh
