@@ -50,19 +50,17 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-bigquery',
-    'google-cloud-bigtable',
     'google-cloud-core',
-    'google-cloud-datastore',
-    'google-cloud-logging',
-    'google-cloud-pubsub',
-    'google-cloud-storage',
+    'grpcio >= 1.0.0',
+    'google-gax >= 0.14.1, < 0.15dev',
+    'gapic-google-logging-v2 >= 0.9.0, < 0.10dev',
+    'grpc-google-logging-v2 >= 0.9.0, < 0.10dev',
 ]
 
 setup(
-    name='google-cloud',
+    name='google-cloud-logging',
     version='0.20.0dev',
-    description='API Client library for Google Cloud',
+    description='Python Client for Stackdriver Logging',
     long_description=README,
     namespace_packages=[
         'google',
