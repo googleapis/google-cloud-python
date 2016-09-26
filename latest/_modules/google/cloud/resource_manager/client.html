@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.resource_manager.client &mdash; google-cloud eec16d0 documentation</title>
+  <title>google.cloud.resource_manager.client &mdash; google-cloud 5e3a35e documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud eec16d0 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 5e3a35e documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -367,7 +367,7 @@
 <span class="sd">            &gt;&gt;&gt; from google.cloud import resource_manager</span>
 <span class="sd">            &gt;&gt;&gt; client = resource_manager.Client()</span>
 <span class="sd">            &gt;&gt;&gt; for project in client.list_projects():</span>
-<span class="sd">            ...     print project.project_id</span>
+<span class="sd">            ...     print(project.project_id)</span>
 
 <span class="sd">        List all projects with label ``&#39;environment&#39;`` set to ``&#39;prod&#39;``</span>
 <span class="sd">        (filtering by labels)::</span>
@@ -376,7 +376,7 @@
 <span class="sd">            &gt;&gt;&gt; client = resource_manager.Client()</span>
 <span class="sd">            &gt;&gt;&gt; env_filter = {&#39;labels.environment&#39;: &#39;prod&#39;}</span>
 <span class="sd">            &gt;&gt;&gt; for project in client.list_projects(env_filter):</span>
-<span class="sd">            ...     print project.project_id</span>
+<span class="sd">            ...     print(project.project_id)</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/list</span>
@@ -482,7 +482,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'eec16d0',
+            VERSION:'5e3a35e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.group &mdash; google-cloud eec16d0 documentation</title>
+  <title>google.cloud.monitoring.group &mdash; google-cloud 5e3a35e documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud eec16d0 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 5e3a35e documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -542,13 +542,13 @@
 <span class="sd">        Example::</span>
 
 <span class="sd">            &gt;&gt;&gt; for member in group.list_members():</span>
-<span class="sd">            ...     print member</span>
+<span class="sd">            ...     print(member)</span>
 
 <span class="sd">        List members that are Compute Engine VM instances::</span>
 
 <span class="sd">            &gt;&gt;&gt; filter_string = &#39;resource.type = &quot;gce_instance&quot;&#39;</span>
 <span class="sd">            &gt;&gt;&gt; for member in group.list_members(filter_string=filter_string):</span>
-<span class="sd">            ...     print member</span>
+<span class="sd">            ...     print(member)</span>
 
 <span class="sd">        List historical members that existed between 4 and 5 hours ago::</span>
 
@@ -556,7 +556,7 @@
 <span class="sd">            &gt;&gt;&gt; t1 = datetime.datetime.utcnow() - datetime.timedelta(hours=4)</span>
 <span class="sd">            &gt;&gt;&gt; t0 = t1 - datetime.timedelta(hours=1)</span>
 <span class="sd">            &gt;&gt;&gt; for member in group.list_members(end_time=t1, start_time=t0):</span>
-<span class="sd">            ...     print member</span>
+<span class="sd">            ...     print(member)</span>
 
 
 <span class="sd">        :type filter_string: string or None</span>
@@ -790,7 +790,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'eec16d0',
+            VERSION:'5e3a35e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

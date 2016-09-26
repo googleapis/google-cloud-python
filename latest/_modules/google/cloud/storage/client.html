@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.client &mdash; google-cloud eec16d0 documentation</title>
+  <title>google.cloud.storage.client &mdash; google-cloud 5e3a35e documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud eec16d0 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 5e3a35e documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -415,7 +415,7 @@
 <span class="sd">          &gt;&gt;&gt; try:</span>
 <span class="sd">          &gt;&gt;&gt;   bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; except google.cloud.exceptions.NotFound:</span>
-<span class="sd">          &gt;&gt;&gt;   print &#39;Sorry, that bucket does not exist!&#39;</span>
+<span class="sd">          &gt;&gt;&gt;   print(&#39;Sorry, that bucket does not exist!&#39;)</span>
 
 <span class="sd">        This implements &quot;storage.buckets.get&quot;.</span>
 
@@ -437,10 +437,10 @@
 <span class="sd">        than catching an exception::</span>
 
 <span class="sd">          &gt;&gt;&gt; bucket = client.lookup_bucket(&#39;doesnt-exist&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket</span>
+<span class="sd">          &gt;&gt;&gt; print(bucket)</span>
 <span class="sd">          None</span>
 <span class="sd">          &gt;&gt;&gt; bucket = client.lookup_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket</span>
+<span class="sd">          &gt;&gt;&gt; print(bucket)</span>
 <span class="sd">          &lt;Bucket: my-bucket&gt;</span>
 
 <span class="sd">        :type bucket_name: string</span>
@@ -460,7 +460,7 @@
 <span class="sd">        For example::</span>
 
 <span class="sd">          &gt;&gt;&gt; bucket = client.create_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket</span>
+<span class="sd">          &gt;&gt;&gt; print(bucket)</span>
 <span class="sd">          &lt;Bucket: my-bucket&gt;</span>
 
 <span class="sd">        This implements &quot;storage.buckets.insert&quot;.</span>
@@ -486,7 +486,7 @@
 <span class="sd">        bucket.</span>
 
 <span class="sd">          &gt;&gt;&gt; for bucket in client.list_buckets():</span>
-<span class="sd">          &gt;&gt;&gt;   print bucket</span>
+<span class="sd">          ...   print(bucket)</span>
 
 <span class="sd">        This implements &quot;storage.buckets.list&quot;.</span>
 
@@ -603,7 +603,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'eec16d0',
+            VERSION:'5e3a35e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

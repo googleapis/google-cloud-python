@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Storage Client &mdash; google-cloud eec16d0 documentation</title>
+  <title>Storage Client &mdash; google-cloud 5e3a35e documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud eec16d0 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 5e3a35e documentation" href="index.html"/>
         <link rel="next" title="Blobs / Objects" href="storage-blobs.html"/>
         <link rel="prev" title="Helpers" href="datastore-helpers.html"/> 
 
@@ -360,7 +360,7 @@ if one is set.</td>
 <dd><p>Create a new bucket.</p>
 <p>For example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">bucket</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
 <span class="go">&lt;Bucket: my-bucket&gt;</span>
 </pre></div>
 </div>
@@ -408,7 +408,7 @@ no batch is active).</td>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
-<span class="gp">&gt;&gt;&gt; </span>  <span class="nb">print</span> <span class="s1">&#39;Sorry, that bucket does not exist!&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sorry, that bucket does not exist!&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This implements &#8220;storage.buckets.get&#8221;.</p>
@@ -435,7 +435,7 @@ no batch is active).</td>
 <p>This will not populate the list of blobs available in each
 bucket.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_buckets</span><span class="p">():</span>
-<span class="gp">&gt;&gt;&gt; </span>  <span class="nb">print</span> <span class="n">bucket</span>
+<span class="gp">... </span>  <span class="nb">print</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This implements &#8220;storage.buckets.list&#8221;.</p>
@@ -478,10 +478,10 @@ objects.</p>
 <p>You can use this if you would rather check for a None value
 than catching an exception:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">lookup_bucket</span><span class="p">(</span><span class="s1">&#39;doesnt-exist&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">bucket</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
 <span class="go">None</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">lookup_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">bucket</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
 <span class="go">&lt;Bucket: my-bucket&gt;</span>
 </pre></div>
 </div>
@@ -592,7 +592,7 @@ connection.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'eec16d0',
+            VERSION:'5e3a35e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Client &mdash; google-cloud eec16d0 documentation</title>
+  <title>Client &mdash; google-cloud 5e3a35e documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud eec16d0 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 5e3a35e documentation" href="index.html"/>
         <link rel="next" title="Projects" href="resource-manager-project.html"/>
         <link rel="prev" title="Resource Manager Overview" href="resource-manager-api.html"/> 
 
@@ -332,7 +332,7 @@ with metadata fetched from the API.</td>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">resource_manager</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">resource_manager</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_projects</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="nb">print</span> <span class="n">project</span><span class="o">.</span><span class="n">project_id</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">project_id</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>List all projects with label <code class="docutils literal"><span class="pre">'environment'</span></code> set to <code class="docutils literal"><span class="pre">'prod'</span></code>
@@ -341,7 +341,7 @@ with metadata fetched from the API.</td>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">resource_manager</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">env_filter</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;labels.environment&#39;</span><span class="p">:</span> <span class="s1">&#39;prod&#39;</span><span class="p">}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_projects</span><span class="p">(</span><span class="n">env_filter</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span> <span class="n">project</span><span class="o">.</span><span class="n">project_id</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">project_id</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>See:
@@ -509,7 +509,7 @@ connection.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'eec16d0',
+            VERSION:'5e3a35e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
