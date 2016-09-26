@@ -59,6 +59,7 @@ IGNORED_MODULES = frozenset([
 ])
 PACKAGES = (
     '',
+    'bigquery',
     'bigtable',
     'core',
     'datastore',
