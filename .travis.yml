@@ -5,7 +5,6 @@ install:
   - pip install --upgrade pip tox
 
 script:
-  - tox -e py27
   - (cd core && tox -e py27)
   - (cd bigtable && tox -e py27)
   - (cd storage && tox -e py27)
@@ -20,7 +19,7 @@ script:
   - (cd monitoring && tox -e py27)
   - (cd vision && tox -e py27)
   - (cd translate && tox -e py27)
-  - tox -e py34
+  - (cd speech && tox -e py27)
   - (cd core && tox -e py34)
   - (cd bigtable && tox -e py34)
   - (cd storage && tox -e py34)
@@ -35,6 +34,7 @@ script:
   - (cd monitoring && tox -e py34)
   - (cd vision && tox -e py34)
   - (cd translate && tox -e py34)
+  - (cd speech && tox -e py34)
   - tox -e lint
   - tox -e cover
   - (cd core && tox -e cover)
@@ -51,6 +51,7 @@ script:
   - (cd monitoring && tox -e cover)
   - (cd vision && tox -e cover)
   - (cd translate && tox -e cover)
+  - (cd speech && tox -e cover)
   - tox -e system-tests
   - tox -e system-tests3
   - scripts/update_docs.sh
