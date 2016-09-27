@@ -50,8 +50,8 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core',
-    'grpcio >= 1.0.0',
+    'google-cloud-core >= 0.20.0',
+    'grpcio >= 1.0.0, < 2.0dev',
     'google-gax >= 0.14.1, < 0.15dev',
     'gapic-google-logging-v2 >= 0.9.0, < 0.10dev',
     'grpc-google-logging-v2 >= 0.9.0, < 0.10dev',
@@ -59,7 +59,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-logging',
-    version='0.20.0dev',
+    version='0.20.0',
     description='Python Client for Stackdriver Logging',
     long_description=README,
     namespace_packages=[

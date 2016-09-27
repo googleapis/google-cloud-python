@@ -50,12 +50,12 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core',
+    'google-cloud-core >= 0.20.0',
 ]
 
 setup(
     name='google-cloud-language',
-    version='0.20.0dev',
+    version='0.20.0',
     description='Python Client for Google Cloud Natural Language',
     long_description=README,
     namespace_packages=[
