@@ -1,15 +1,15 @@
 GRPCIO_VIRTUALENV=$(shell pwd)/grpc_python_venv
 GENERATED_DIR=$(shell pwd)/generated_python
 GENERATED_SUBDIR=_generated
-BIGTABLE_DIR=$(shell pwd)/google/cloud/bigtable/$(GENERATED_SUBDIR)
+BIGTABLE_DIR=$(shell pwd)/bigtable/google/cloud/bigtable/$(GENERATED_SUBDIR)
 PROTOC_CMD=$(GRPCIO_VIRTUALENV)/bin/python -m grpc.tools.protoc
 GOOGLEAPIS_PROTOS_DIR=$(shell pwd)/googleapis-pb
 
 help:
-	@echo 'Makefile for google-cloud-python Bigtable protos                      '
-	@echo '                                                                '
-	@echo '   make generate                 Generates the protobuf modules '
-	@echo '   make clean                    Clean generated files          '
+	@echo 'Makefile for google-cloud-python Bigtable protos      '
+	@echo '                                                      '
+	@echo '   make generate        Generates the protobuf modules'
+	@echo '   make clean           Clean generated files         '
 
 generate:
 	# Ensure we have a virtualenv w/ up-to-date grpcio/grpcio-tools
