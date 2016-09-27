@@ -1,11 +1,11 @@
+core/
 bigquery/
 bigtable/
-core/
 datastore/
 dns/
-error_reporting/
 language/
 logging/
+error_reporting/
 monitoring/
 pubsub/
 resource_manager/
