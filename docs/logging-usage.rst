@@ -55,8 +55,8 @@ Write a dictionary entry to a logger.
    >>> client = logging.Client()
    >>> logger = client.logger('log_name')
    >>> logger.log_struct({
-   ...     'message':'My second entry',
-   ...     'weather':'partly cloudy'})  # API call
+   ...     'message': 'My second entry',
+   ...     'weather': 'partly cloudy'})  # API call
 
 
 Retrieving log entries
