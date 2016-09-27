@@ -668,7 +668,7 @@ DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\034com.google.bigtable.admin.v2B\032BigtableInstanceAdminProtoP\001'))
 _CREATEINSTANCEREQUEST_CLUSTERSENTRY.has_options = True
 _CREATEINSTANCEREQUEST_CLUSTERSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
-
+import grpc
 from grpc.beta import implementations as beta_implementations
 from grpc.beta import interfaces as beta_interfaces
 from grpc.framework.common import cardinality
