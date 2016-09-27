@@ -207,9 +207,14 @@ class TestMonitoring(unittest.TestCase):
             def _has_timeseries(result):
                 return len(list(result)) > 0
 
+            def _unknown_metric(result):
+                return ('The provided filter doesn\'t refer to any known '
+                        'metric.'in result.message)
+
             retry_result = RetryResult(_has_timeseries,
                                        max_tries=MAX_RETRIES)(client.query)
-            return RetryErrors(BadRequest, max_tries=MAX_RETRIES)(retry_result)
+            return RetryErrors(BadRequest, _unknown_metric,
+                               max_tries=MAX_RETRIES)(retry_result)
 
         query = _query_timeseries_with_retries()(METRIC_TYPE, minutes=5)
         timeseries_list = list(query)
