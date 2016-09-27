@@ -17,6 +17,13 @@ import os
 from setuptools import find_packages
 from setuptools import setup
 
+from shutil import copytree
+
+try:
+    copytree('../setup_base', './setup_base')
+except:
+    pass
+from setup_base.base import SETUP_BASE
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
