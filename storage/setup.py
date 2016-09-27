@@ -23,6 +23,7 @@ try:
     copytree('../setup_base', './setup_base')
 except:
     pass
+
 from setup_base.base import SETUP_BASE
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
