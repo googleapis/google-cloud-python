@@ -470,11 +470,10 @@ class Bucket(_PropertyMixin):
             new_name = blob.name
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
-        if not preserve_acl:
-            new_blob.acl.reset()
-            new_blob.acl.save()
         copy_result = client.connection.api_request(
             method='POST', path=api_path, _target_object=new_blob)
+        if not preserve_acl:
+            new_blob.acl.save(acl={}, client=client)
         new_blob._set_properties(copy_result)
         return new_blob
 
