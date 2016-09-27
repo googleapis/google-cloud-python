@@ -1,9 +1,9 @@
-Python Client for Google Cloud BigQuery
-=======================================
+Python Client for Google BigQuery
+=================================
 
-    Python idiomatic client for `Google Cloud BigQuery`_
+    Python idiomatic client for `Google BigQuery`_
 
-.. _Google Cloud BigQuery: https://cloud.google.com/bigquery/what-is-bigquery
+.. _Google BigQuery: https://cloud.google.com/bigquery/what-is-bigquery
 
 -  `Homepage`_
 -  `API Documentation`_
