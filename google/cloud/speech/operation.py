@@ -15,10 +15,14 @@
 """Long running operation representation for Google Speech API"""
 
 from google.cloud._helpers import _rfc3339_to_datetime
+from google.cloud import operation
 
 
-class Operation(object):
+class Operation(operation.Operation):
     """Representation of a Google API Long-Running Operation.
+
+    :type client: :class:`~google.cloud.speech.client.Client`
+    :param client: Instance of speech client.
 
     :type name: int
     :param name: ID assigned to an operation.
@@ -52,31 +56,21 @@ class Operation(object):
     def from_api_repr(cls, client, response):
         """Factory:  construct an instance from Google Speech API.
 
+        :type client: :class:`~google.cloud.speech.client.Client`
+        :param client: Instance of speech client.
+
         :type response: dict
         :param response: Dictionary response from Google Speech Operations API.
 
         :rtype: :class:`Operation`
         :returns: Instance of `~google.cloud.speech.operations.Operation`.
         """
-        last_updated = None
-        progress_percent = 0
-        results = None
-        start_time = None
-
         name = response['name']
-        metadata = response.get('metadata', None)
-
-        if metadata:
-            last_updated = _rfc3339_to_datetime(metadata.get('lastUpdateTime'))
-            start_time = _rfc3339_to_datetime(metadata.get('startTime'))
-            progress_percent = metadata.get('progressPercent')
-
-        if response.get('response'):
-            results = response.get('response').get('results')
         complete = response.get('done', False)
 
-        return cls(client, name, complete, last_updated, progress_percent,
-                   results, start_time)
+        operation_instance = cls(client, name, complete)
+        operation_instance._update(response)
+        return operation_instance
 
     @property
     def complete(self):
@@ -150,10 +144,46 @@ class Operation(object):
         :param response: Response from Speech API Operations endpoint.
                          See: `speech_operations`_.
         """
-        metadata = response['metadata']
-        results = response.get('response', {}).get('results')
-        self._last_updated = _rfc3339_to_datetime(metadata['lastUpdateTime'])
+        metadata = response.get('metadata', None)
+        raw_results = response.get('response', {}).get('results', None)
+        results = []
+        if raw_results:
+            for result in raw_results[0]['alternatives']:
+                results.append(Transcript(result))
+        if metadata:
+            self._last_updated = _rfc3339_to_datetime(
+                metadata['lastUpdateTime'])
+            self._start_time = _rfc3339_to_datetime(metadata['startTime'])
+            self._progress_percent = metadata.get('progressPercent', 0)
+
         self._results = results
-        self._start_time = _rfc3339_to_datetime(metadata['startTime'])
         self._complete = response.get('done', False)
-        self._progress_percent = metadata.get('progressPercent', 0)
+
+
+class Transcript(object):
+    """Representation of Speech Transcripts
+
+    :type result: dict
+    :param result: Dictionary of transcript and confidence of recognition.
+    """
+    def __init__(self, result):
+        self._transcript = result.get('transcript')
+        self._confidence = result.get('confidence')
+
+    @property
+    def transcript(self):
+        """Transcript text from audio.
+
+        :rtype: str
+        :returns: Text detected in audio.
+        """
+        return self._transcript
+
+    @property
+    def confidence(self):
+        """Confidence score for recognized speech.
+
+        :rtype: float
+        :returns: Confidence score of recognized speech [0-1].
+        """
+        return self._confidence

@@ -24,6 +24,7 @@ class OperationTests(unittest.TestCase):
 
     def test_from_api_repr(self):
         from unit_tests.speech._fixtures import OPERATION_COMPLETE_RESPONSE
+        from google.cloud.speech.operation import Transcript
         RESPONSE = OPERATION_COMPLETE_RESPONSE
 
         client = _Client()
@@ -34,11 +35,10 @@ class OperationTests(unittest.TestCase):
         self.assertEqual('123456789', operation.name)
         self.assertTrue(operation.complete)
 
-        alternatives = operation.results[0]['alternatives']
-
+        self.assertIsInstance(operation.results[0], Transcript)
         self.assertEqual('how old is the Brooklyn Bridge',
-                         alternatives[0]['transcript'])
-        self.assertEqual(0.98267895, alternatives[0]['confidence'])
+                         operation.results[0].transcript)
+        self.assertEqual(0.98267895, operation.results[0].confidence)
         self.assertTrue(operation.complete)
 
     def test_update_response(self):
@@ -84,8 +84,10 @@ class OperationTests(unittest.TestCase):
 class _Connection(object):
     def __init__(self, response):
         self.response = response
+        self._requested = []
 
     def api_request(self, method, path):
+        self._requested.append({'method': method, 'path': path})
         return self.response
 
 
