@@ -61,7 +61,6 @@ REQUIREMENTS = [
     'google-cloud-monitoring',
     'google-cloud-pubsub',
     'google-cloud-resource-manager',
-    'google-cloud-speech',
     'google-cloud-storage',
     'google-cloud-translate',
     'google-cloud-vision',
