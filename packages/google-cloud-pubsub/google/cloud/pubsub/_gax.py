@@ -293,7 +293,8 @@ class _SubscriberAPI(object):
 
         try:
             sub_pb = self._gax_api.create_subscription(
-                subscription_path, topic_path, push_config, ack_deadline)
+                subscription_path, topic_path,
+                push_config=push_config, ack_deadline_seconds=ack_deadline)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
                 raise Conflict(topic_path)
@@ -391,7 +392,8 @@ class _SubscriberAPI(object):
         """
         try:
             response_pb = self._gax_api.pull(
-                subscription_path, max_messages, return_immediately)
+                subscription_path, max_messages,
+                return_immediately=return_immediately)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
