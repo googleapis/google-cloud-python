@@ -50,13 +50,13 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core',
-    'google-cloud-logging',
+    'google-cloud-core >= 0.20.0',
+    'google-cloud-logging >= 0.20.0',
 ]
 
 setup(
     name='google-cloud-error-reporting',
-    version='0.20.0dev',
+    version='0.20.0',
     description='Python Client for Stackdriver Error Reporting',
     long_description=README,
     namespace_packages=[
