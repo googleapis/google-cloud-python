@@ -193,15 +193,6 @@ The ``google-cloud`` library is ``pip`` install-able:
 
     $ pip install google-cloud
 
-If you want to install ``google-cloud-python`` from source,
-you can clone the repository from GitHub:
-
-.. code-block:: console
-
-    $ git clone git://github.com/GoogleCloudPlatform/google-cloud-python.git
-    $ cd google-cloud-python
-    $ python setup.py install
-
 ----
 
 Cloud Datastore
