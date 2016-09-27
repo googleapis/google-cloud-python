@@ -8,6 +8,7 @@
 *.egg
 *.egg-info
 dist
+*/setup_base
 build
 eggs
 parts
