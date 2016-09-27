@@ -41,7 +41,7 @@ class TestClient(unittest.TestCase):
         import base64
         from google.cloud._helpers import _to_bytes
         from google.cloud.speech.client import Encoding
-        from unit_tests.speech._fixtures import SYNC_RECOGNIZE_RESPONSE
+        from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
 
         _AUDIO_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
         _B64_AUDIO_CONTENT = base64.b64encode(_AUDIO_CONTENT)
@@ -89,7 +89,7 @@ class TestClient(unittest.TestCase):
 
     def test_sync_recognize_source_uri_without_optional_parameters(self):
         from google.cloud.speech.client import Encoding
-        from unit_tests.speech._fixtures import SYNC_RECOGNIZE_RESPONSE
+        from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
 
         RETURNED = SYNC_RECOGNIZE_RESPONSE
         REQUEST = {
@@ -162,7 +162,7 @@ class TestClient(unittest.TestCase):
 
     def test_sync_recognize_with_empty_results(self):
         from google.cloud.speech.client import Encoding
-        from unit_tests.speech._fixtures import SYNC_RECOGNIZE_EMPTY_RESPONSE
+        from unit_tests._fixtures import SYNC_RECOGNIZE_EMPTY_RESPONSE
 
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials)
