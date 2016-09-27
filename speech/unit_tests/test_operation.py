@@ -1,3 +1,17 @@
+# Copyright 2016 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import unittest
 
 
@@ -17,13 +31,11 @@ class OperationTests(unittest.TestCase):
         operation = self._makeOne(client, self.OPERATION_NAME)
         self.assertEqual('123456789', operation.name)
         self.assertFalse(operation.complete)
-        self.assertIsNone(operation.last_updated)
-        self.assertEqual(0, operation.progress_percent)
+        self.assertIsNone(operation.metadata)
         self.assertIsNone(operation.results)
-        self.assertIsNone(operation.start_time)
 
     def test_from_api_repr(self):
-        from unit_tests.speech._fixtures import OPERATION_COMPLETE_RESPONSE
+        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
         from google.cloud.speech.operation import Transcript
         RESPONSE = OPERATION_COMPLETE_RESPONSE
 
@@ -42,8 +54,8 @@ class OperationTests(unittest.TestCase):
         self.assertTrue(operation.complete)
 
     def test_update_response(self):
-        from unit_tests.speech._fixtures import ASYNC_RECOGNIZE_RESPONSE
-        from unit_tests.speech._fixtures import OPERATION_COMPLETE_RESPONSE
+        from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
+        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
         RESPONSE = ASYNC_RECOGNIZE_RESPONSE
 
         client = _Client()
@@ -51,13 +63,13 @@ class OperationTests(unittest.TestCase):
         client.connection = connection
         operation = self._getTargetClass().from_api_repr(client, RESPONSE)
         self.assertEqual('123456789', operation.name)
-
         operation._update(OPERATION_COMPLETE_RESPONSE)
         self.assertTrue(operation.complete)
 
     def test_poll(self):
-        from unit_tests.speech._fixtures import ASYNC_RECOGNIZE_RESPONSE
-        from unit_tests.speech._fixtures import OPERATION_COMPLETE_RESPONSE
+        from google.cloud.speech.operation import Metadata
+        from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
+        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
         RESPONSE = ASYNC_RECOGNIZE_RESPONSE
         client = _Client()
         connection = _Connection(OPERATION_COMPLETE_RESPONSE)
@@ -67,9 +79,11 @@ class OperationTests(unittest.TestCase):
         self.assertFalse(operation.complete)
         operation.poll()
         self.assertTrue(operation.complete)
+        self.assertIsInstance(operation.metadata, Metadata)
+        self.assertEqual(100, operation.metadata.progress_percent)
 
     def test_poll_complete(self):
-        from unit_tests.speech._fixtures import OPERATION_COMPLETE_RESPONSE
+        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
         RESPONSE = OPERATION_COMPLETE_RESPONSE
         client = _Client()
         connection = _Connection(OPERATION_COMPLETE_RESPONSE)

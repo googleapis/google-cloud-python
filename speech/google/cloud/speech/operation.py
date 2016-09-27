@@ -14,7 +14,8 @@
 
 """Long running operation representation for Google Speech API"""
 
-from google.cloud._helpers import _rfc3339_to_datetime
+from google.cloud.speech.metadata import Metadata
+from google.cloud.speech.transcript import Transcript
 from google.cloud import operation
 
 
@@ -30,27 +31,19 @@ class Operation(operation.Operation):
     :type complete: bool
     :param complete: True if operation is complete, else False.
 
-    :type last_updated: datetime
-    :param last_updated: The last time the operation was updated.
-
-    :type progress_percent: int
-    :param progress_percent: Percentage of operation that has been completed.
+    :type metadata: :class:`~google.cloud.speech.metadata.Metadata`
+    :param metadata: Instance of ``Metadata`` with operation information.
 
     :type results: dict
     :param results: Dictionary with transcript and score of operation.
-
-    :type start_time: datetime
-    :param start_time: Datetime when operation was started.
     """
-    def __init__(self, client, name, complete=False, last_updated=None,
-                 progress_percent=0, results=None, start_time=None):
+    def __init__(self, client, name, complete=False, metadata=None,
+                 results=None):
         self.client = client
         self.name = name
         self._complete = complete
-        self._last_updated = last_updated
-        self._progress_percent = progress_percent
+        self._metadata = metadata
         self._results = results
-        self._start_time = start_time
 
     @classmethod
     def from_api_repr(cls, client, response):
@@ -82,22 +75,13 @@ class Operation(operation.Operation):
         return self._complete
 
     @property
-    def last_updated(self):
-        """Operation last updated time.
+    def metadata(self):
+        """Metadata of operation.
 
-        :rtype: datetime
-        :returns: RFC3339 last updated time of the operation.
+        :rtype: :class:`~google.cloud.speech.metadata.Metadata`
+        :returns: Instance of ``Metadata``.
         """
-        return self._last_updated
-
-    @property
-    def progress_percent(self):
-        """Progress percentage of operation.
-
-        :rtype: int
-        :returns: Percentage of operation completed. [0-100]
-        """
-        return self._progress_percent
+        return self._metadata
 
     @property
     def results(self):
@@ -107,15 +91,6 @@ class Operation(operation.Operation):
         :returns: Dictionary with transcript and confidence score.
         """
         return self._results
-
-    @property
-    def start_time(self):
-        """Operation start time.
-
-        :rtype: datetime
-        :returns: RFC3339 start time of the operation.
-        """
-        return self._start_time
 
     def poll(self):
         """Check if the operation has finished.
@@ -151,39 +126,7 @@ class Operation(operation.Operation):
             for result in raw_results[0]['alternatives']:
                 results.append(Transcript(result))
         if metadata:
-            self._last_updated = _rfc3339_to_datetime(
-                metadata['lastUpdateTime'])
-            self._start_time = _rfc3339_to_datetime(metadata['startTime'])
-            self._progress_percent = metadata.get('progressPercent', 0)
+            self._metadata = Metadata.from_api_repr(metadata)
 
         self._results = results
         self._complete = response.get('done', False)
-
-
-class Transcript(object):
-    """Representation of Speech Transcripts
-
-    :type result: dict
-    :param result: Dictionary of transcript and confidence of recognition.
-    """
-    def __init__(self, result):
-        self._transcript = result.get('transcript')
-        self._confidence = result.get('confidence')
-
-    @property
-    def transcript(self):
-        """Transcript text from audio.
-
-        :rtype: str
-        :returns: Text detected in audio.
-        """
-        return self._transcript
-
-    @property
-    def confidence(self):
-        """Confidence score for recognized speech.
-
-        :rtype: float
-        :returns: Confidence score of recognized speech [0-1].
-        """
-        return self._confidence
