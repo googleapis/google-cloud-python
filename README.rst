@@ -17,33 +17,46 @@ Google Cloud Python Client
 
 This client supports the following Google Cloud Platform services:
 
--  `Google Cloud Datastore`_
--  `Google Cloud Storage`_
--  `Google Cloud Pub/Sub`_
--  `Google BigQuery`_
--  `Google Cloud Resource Manager`_
--  `Stackdriver Logging`_
--  `Stackdriver Monitoring`_
--  `Google Cloud Bigtable`_
--  `Google Cloud DNS`_
--  `Stackdriver Error Reporting`_
--  `Google Cloud Natural Language`_
--  `Google Translate`_
--  `Google Cloud Vision`_
+-  `Google Cloud Datastore`_ (`Datastore README`_)
+-  `Google Cloud Storage`_ (`Storage README`_)
+-  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
+-  `Google BigQuery`_ (`BigQuery README`_)
+-  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
+-  `Stackdriver Logging`_ (`Logging README`_)
+-  `Stackdriver Monitoring`_ (`Monitoring README`_)
+-  `Google Cloud Bigtable`_ (`Bigtable README`_)
+-  `Google Cloud DNS`_ (`DNS README`_)
+-  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
+-  `Google Cloud Natural Language`_ (`Natural Language README`_)
+-  `Google Translate`_ (`Translate README`_)
+-  `Google Cloud Vision`_ (`Vision README`_)
 
-.. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
-.. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
-.. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/pubsub
-.. _Google BigQuery: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery
-.. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/resource_manager
-.. _Stackdriver Logging: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/logging
-.. _Stackdriver Monitoring: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/monitoring
-.. _Google Cloud Bigtable: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigtable
-.. _Google Cloud DNS: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/dns
-.. _Stackdriver Error Reporting: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/error_reporting
-.. _Google Cloud Natural Language: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/language
-.. _Google Translate: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/translate
-.. _Google Cloud Vision: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/vision
+.. _Google Cloud Datastore: https://pypi.python.org/pypi/google-cloud-datastore
+.. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
+.. _Google Cloud Storage: https://pypi.python.org/pypi/google-cloud-storage
+.. _Storage README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/storage
+.. _Google Cloud Pub/Sub: https://pypi.python.org/pypi/google-cloud-pubsub
+.. _Pub/Sub README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/pubsub
+.. _Google BigQuery: https://pypi.python.org/pypi/google-cloud-bigquery
+.. _BigQuery README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery
+.. _Google Cloud Resource Manager: https://pypi.python.org/pypi/google-cloud-resource-manager
+.. _Resource Manager README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/resource_manager
+.. _Stackdriver Logging: https://pypi.python.org/pypi/google-cloud-logging
+.. _Logging README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/logging
+.. _Stackdriver Monitoring: https://pypi.python.org/pypi/google-cloud-monitoring
+.. _Monitoring README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/monitoring
+.. _Google Cloud Bigtable: https://pypi.python.org/pypi/google-cloud-bigtable
+.. _Bigtable README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigtable
+.. _Google Cloud DNS: https://pypi.python.org/pypi/google-cloud-dns
+.. _DNS README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/dns
+.. _Stackdriver Error Reporting: https://pypi.python.org/pypi/google-cloud-error-reporting
+.. _Error Reporting README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/error_reporting
+.. _Google Cloud Natural Language: https://pypi.python.org/pypi/google-cloud-language
+.. _Natural Language README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/language
+.. _Google Translate: https://pypi.python.org/pypi/google-cloud-translate
+.. _Translate README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/translate
+.. _Google Cloud Vision: https://pypi.python.org/pypi/google-cloud-vision
+.. _Vision README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/vision
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
