@@ -55,9 +55,9 @@ See: `Speech Asynchronous Recognize`_
       ...     operation.poll()  # API call
       >>> operation.complete
       True
-      >>> operation.results[0]['alternatives'][0]['transcript']
-      "how old is the Brooklyn Bridge"
-      >>> operation.results[0]['alternatives'][0]['confidence']
+      >>> operation.results[0].transcript
+      'how old is the Brooklyn Bridge'
+      >>> operation.results[0].confidence
       0.98267895
 
 

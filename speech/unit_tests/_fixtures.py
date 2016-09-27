@@ -40,7 +40,7 @@ OPERATION_COMPLETE_RESPONSE = {
                   'google.cloud.speech.v1beta1.AsyncRecognizeMetadata'),
         'progressPercent': 100,
         'startTime': '2016-09-22T17:52:25.536964Z',
-        'lastUpdateTime': '2016-09-22T17:52:27.802902Z'
+        'lastUpdateTime': '2016-09-22T17:52:27.802902Z',
     },
     'done': True,
     'response': {
@@ -52,11 +52,11 @@ OPERATION_COMPLETE_RESPONSE = {
                     {
                         'transcript': 'how old is the Brooklyn Bridge',
                         'confidence': 0.98267895
-                    }
-                ]
-            }
-        ]
-    }
+                    },
+                ],
+            },
+        ],
+    },
 }
 
 OPERATION_INCOMPLETE_RESPONSE = {
@@ -66,7 +66,7 @@ OPERATION_INCOMPLETE_RESPONSE = {
                   'google.cloud.speech.v1beta1.AsyncRecognizeMetadata'),
         'progressPercent': 27,
         'startTime': '2016-09-22T17:52:25.536964Z',
-        'lastUpdateTime': '2016-09-22T17:52:27.802902Z'
+        'lastUpdateTime': '2016-09-22T17:52:27.802902Z',
     },
-    'done': False
+    'done': False,
 }
