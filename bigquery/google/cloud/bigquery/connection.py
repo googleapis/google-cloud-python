@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with Google Cloud BigQuery connections."""
+"""Create / interact with Google BigQuery connections."""
 
 from google.cloud import connection as base_connection
 
 
 class Connection(base_connection.JSONConnection):
-    """A connection to Google Cloud BigQuery via the JSON REST API."""
+    """A connection to Google BigQuery via the JSON REST API."""
 
     API_BASE_URL = 'https://www.googleapis.com'
     """The base of the API call URL."""
@@ -31,4 +31,4 @@ class Connection(base_connection.JSONConnection):
 
     SCOPE = ('https://www.googleapis.com/auth/bigquery',
              'https://www.googleapis.com/auth/cloud-platform')
-    """The scopes required for authenticating as a Cloud BigQuery consumer."""
+    """The scopes required for authenticating as a BigQuery consumer."""
