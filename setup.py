@@ -71,11 +71,6 @@ setup(
     version='0.20.0dev',
     description='API Client library for Google Cloud',
     long_description=README,
-    namespace_packages=[
-        'google',
-        'google.cloud',
-    ],
-    packages=find_packages(),
     install_requires=REQUIREMENTS,
     **SETUP_BASE
 )
