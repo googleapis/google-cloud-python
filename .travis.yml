@@ -5,7 +5,6 @@ install:
   - pip install --upgrade pip tox
 
 script:
-  - tox -e py27
   - (cd core && tox -e py27)
   - (cd bigtable && tox -e py27)
   - (cd storage && tox -e py27)
@@ -21,7 +20,6 @@ script:
   - (cd vision && tox -e py27)
   - (cd translate && tox -e py27)
   - (cd speech && tox -e py27)
-  - tox -e py34
   - (cd core && tox -e py34)
   - (cd bigtable && tox -e py34)
   - (cd storage && tox -e py34)
