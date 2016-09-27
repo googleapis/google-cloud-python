@@ -29,8 +29,6 @@ retry_404_500 = RetryErrors((NotFound, InternalServerError))
 retry_500 = RetryErrors(InternalServerError)
 retry_503 = RetryErrors(ServiceUnavailable)
 
-# Retry predicates
-
 
 def _has_timeseries(result):
     """Return True if a time series query has non-empty results."""
@@ -42,6 +40,8 @@ UNKNOWN_METRIC_ERROR = ('The provided filter doesn\'t refer to any known '
 
 def _unknown_metric(result):
     """Return True if the error describes writing to an unknown metric.."""
+    import sys
+    sys.stderr.write("WOW %s " % result.args)
     return UNKNOWN_METRIC_ERROR in result.message
 
 
