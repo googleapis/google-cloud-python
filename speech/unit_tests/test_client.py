@@ -41,7 +41,7 @@ class TestClient(unittest.TestCase):
         import base64
         from google.cloud._helpers import _to_bytes
         from google.cloud.speech.encoding import Encoding
-        from unit_tests.speech._fixtures import SYNC_RECOGNIZE_RESPONSE
+        from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
 
         _AUDIO_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
         _B64_AUDIO_CONTENT = base64.b64encode(_AUDIO_CONTENT)
@@ -88,13 +88,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(response, expected)
 
     def test_sync_recognize_source_uri_without_optional_parameters(self):
-<<<<<<< b7f004e00f1ee021b0cb7ac9261fcc6c021dfacb:speech/unit_tests/test_client.py
         from google.cloud.speech.client import Encoding
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
-=======
-        from google.cloud.speech.encoding import Encoding
-        from unit_tests.speech._fixtures import SYNC_RECOGNIZE_RESPONSE
->>>>>>> Add speech asynchronous recognize support.:unit_tests/speech/test_client.py
 
         RETURNED = SYNC_RECOGNIZE_RESPONSE
         REQUEST = {
@@ -166,13 +161,8 @@ class TestClient(unittest.TestCase):
                                   None)
 
     def test_sync_recognize_with_empty_results(self):
-<<<<<<< b7f004e00f1ee021b0cb7ac9261fcc6c021dfacb:speech/unit_tests/test_client.py
         from google.cloud.speech.client import Encoding
         from unit_tests._fixtures import SYNC_RECOGNIZE_EMPTY_RESPONSE
-=======
-        from google.cloud.speech.encoding import Encoding
-        from unit_tests.speech._fixtures import SYNC_RECOGNIZE_EMPTY_RESPONSE
->>>>>>> Add speech asynchronous recognize support.:unit_tests/speech/test_client.py
 
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials)
@@ -183,7 +173,7 @@ class TestClient(unittest.TestCase):
                                   self.SAMPLE_RATE)
 
     def test_async_recognize(self):
-        from unit_tests.speech._fixtures import ASYNC_RECOGNIZE_RESPONSE
+        from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
         from google.cloud.speech.encoding import Encoding
         from google.cloud.speech.operation import Operation
         RETURNED = ASYNC_RECOGNIZE_RESPONSE
@@ -199,6 +189,7 @@ class TestClient(unittest.TestCase):
                                            self.SAMPLE_RATE)
         self.assertIsInstance(operation, Operation)
         self.assertFalse(operation.complete)
+        self.assertIsNone(operation.metadata)
 
 
 class _Credentials(object):
