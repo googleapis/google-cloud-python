@@ -52,7 +52,7 @@ SETUP_BASE = {
 REQUIREMENTS = [
     'httplib2 >= 0.9.1',
     'googleapis-common-protos >= 1.3.4',
-    'oauth2client >= 2.0.1, < 3.0.0dev',
+    'oauth2client >= 3.0.0, < 4.0.0dev',
     'protobuf >= 3.0.0',
     'six',
 ]
