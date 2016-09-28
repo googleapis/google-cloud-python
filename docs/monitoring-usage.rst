@@ -249,8 +249,8 @@ more useful to retrieve time series data in the form of a
 single time series. For this, you must have :mod:`pandas` installed;
 it is not a required dependency of ``google-cloud-python``.
 
-You can display CPU utilization across your GCE instances during
-the last five minutes as follows::
+You can display CPU utilization across your GCE instances over a five minute duration ending at
+the start of the current minute as follows::
 
     >>> METRIC = 'compute.googleapis.com/instance/cpu/utilization'
     >>> query = client.query(METRIC, minutes=5)
