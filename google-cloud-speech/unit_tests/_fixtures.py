@@ -28,3 +28,45 @@ SYNC_RECOGNIZE_RESPONSE = {
 SYNC_RECOGNIZE_EMPTY_RESPONSE = {
     'results': [],
 }
+
+ASYNC_RECOGNIZE_RESPONSE = {
+    'name': '123456789'
+}
+
+OPERATION_COMPLETE_RESPONSE = {
+    'name': '123456789',
+    'metadata': {
+        '@type': ('type.googleapis.com/'
+                  'google.cloud.speech.v1beta1.AsyncRecognizeMetadata'),
+        'progressPercent': 100,
+        'startTime': '2016-09-22T17:52:25.536964Z',
+        'lastUpdateTime': '2016-09-22T17:52:27.802902Z',
+    },
+    'done': True,
+    'response': {
+        '@type': ('type.googleapis.com/'
+                  'google.cloud.speech.v1beta1.AsyncRecognizeResponse'),
+        'results': [
+            {
+                'alternatives': [
+                    {
+                        'transcript': 'how old is the Brooklyn Bridge',
+                        'confidence': 0.98267895
+                    },
+                ],
+            },
+        ],
+    },
+}
+
+OPERATION_INCOMPLETE_RESPONSE = {
+    'name': '123456789',
+    'metadata': {
+        '@type': ('type.googleapis.com/'
+                  'google.cloud.speech.v1beta1.AsyncRecognizeMetadata'),
+        'progressPercent': 27,
+        'startTime': '2016-09-22T17:52:25.536964Z',
+        'lastUpdateTime': '2016-09-22T17:52:27.802902Z',
+    },
+    'done': False,
+}
