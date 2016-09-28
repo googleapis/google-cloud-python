@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.bucket &mdash; google-cloud 94a596e documentation</title>
+  <title>google.cloud.storage.bucket &mdash; google-cloud a7cb215 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 94a596e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a7cb215 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -703,7 +703,7 @@
                     <span class="k">raise</span></div>
 
 <div class="viewcode-block" id="Bucket.copy_blob"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket.copy_blob">[docs]</a>    <span class="k">def</span> <span class="nf">copy_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">,</span> <span class="n">destination_bucket</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                  <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preserve_acl</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Copy the given blob to the given bucket, optionally with a new name.</span>
 
 <span class="sd">        :type blob: :class:`google.cloud.storage.blob.Blob`</span>
@@ -721,6 +721,10 @@
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
+<span class="sd">        :type preserve_acl: bool</span>
+<span class="sd">        :param preserve_acl: Optional. Copies ACL from old blob to new blob.</span>
+<span class="sd">                             Default: True.</span>
+
 <span class="sd">        :rtype: :class:`google.cloud.storage.blob.Blob`</span>
 <span class="sd">        :returns: The new Blob.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -731,6 +735,8 @@
         <span class="n">api_path</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/copyTo&#39;</span> <span class="o">+</span> <span class="n">new_blob</span><span class="o">.</span><span class="n">path</span>
         <span class="n">copy_result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">api_path</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="n">new_blob</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">preserve_acl</span><span class="p">:</span>
+            <span class="n">new_blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="p">{},</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="n">new_blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">copy_result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_blob</span></div>
 
@@ -1124,7 +1130,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'94a596e',
+            VERSION:'a7cb215',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
