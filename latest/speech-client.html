@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Speech Client &mdash; google-cloud a7cb215 documentation</title>
+  <title>Speech Client &mdash; google-cloud 5a0e492 documentation</title>
   
 
   
@@ -32,7 +32,8 @@
   
 
   
-    <link rel="top" title="google-cloud a7cb215 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 5a0e492 documentation" href="index.html"/>
+        <link rel="next" title="Speech Encoding" href="speech-encoding.html"/>
         <link rel="prev" title="Using the API" href="speech-usage.html"/> 
 
   
@@ -212,6 +213,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.speech.connection">Connection</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="speech-encoding.html">Speech Encoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-metadata.html">Speech Metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-operation.html">Speech Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-transcript.html">Speech Transcript</a></li>
 </ul>
 <p class="caption"><span class="caption-text">External Links</span></p>
 <ul>
@@ -293,6 +298,64 @@ from the environment.</li>
 </tbody>
 </table>
 <dl class="method">
+<dt id="google.cloud.speech.client.Client.async_recognize">
+<code class="descname">async_recognize</code><span class="sig-paren">(</span><em>content</em>, <em>source_uri</em>, <em>encoding</em>, <em>sample_rate</em>, <em>language_code=None</em>, <em>max_alternatives=None</em>, <em>profanity_filter=None</em>, <em>speech_context=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/client.html#Client.async_recognize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.client.Client.async_recognize" title="Permalink to this definition">#</a></dt>
+<dd><p>Asychronous Recognize request to Google Speech API.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize">async_recognize</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>content</strong> (<em>bytes</em>) &#8211; Byte stream of audio.</li>
+<li><strong>source_uri</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; URI that points to a file that contains audio
+data bytes as specified in RecognitionConfig.
+Currently, only Google Cloud Storage URIs are
+supported, which must be specified in the following
+format: <code class="docutils literal"><span class="pre">gs://bucket_name/object_name</span></code>.</li>
+<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; encoding of audio data sent in all RecognitionAudio
+messages, can be one of: <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.LINEAR16" title="google.cloud.speech.encoding.Encoding.LINEAR16"><code class="xref py py-attr docutils literal"><span class="pre">LINEAR16</span></code></a>,
+<a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.FLAC" title="google.cloud.speech.encoding.Encoding.FLAC"><code class="xref py py-attr docutils literal"><span class="pre">FLAC</span></code></a>, <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.MULAW" title="google.cloud.speech.encoding.Encoding.MULAW"><code class="xref py py-attr docutils literal"><span class="pre">MULAW</span></code></a>,
+<a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.AMR" title="google.cloud.speech.encoding.Encoding.AMR"><code class="xref py py-attr docutils literal"><span class="pre">AMR</span></code></a>, <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.AMR_WB" title="google.cloud.speech.encoding.Encoding.AMR_WB"><code class="xref py py-attr docutils literal"><span class="pre">AMR_WB</span></code></a></li>
+<li><strong>sample_rate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Sample rate in Hertz of the audio data sent in all
+requests. Valid values are: 8000-48000. For best
+results, set the sampling rate of the audio source
+to 16000 Hz. If that&#8217;s not possible, use the
+native sample rate of the audio source (instead of
+re-sampling).</li>
+<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The language of the supplied audio as
+BCP-47 language tag. Example: <code class="docutils literal"><span class="pre">'en-GB'</span></code>.
+If omitted, defaults to <code class="docutils literal"><span class="pre">'en-US'</span></code>.</li>
+<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of recognition
+hypotheses to be returned. The server may
+return fewer than maxAlternatives.
+Valid values are 0-30. A value of 0 or 1
+will return a maximum of 1. Defaults to 1</li>
+<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the server will attempt to filter
+out profanities, replacing all but the
+initial character in each filtered word with
+asterisks, e.g. <code class="docutils literal"><span class="pre">'f***'</span></code>. If False or
+omitted, profanities won&#8217;t be filtered out.</li>
+<li><strong>speech_context</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of strings (max 50) containing words and
+phrases &#8220;hints&#8221; so that the speech recognition
+is more likely to recognize them. This can be
+used to improve the accuracy for specific words
+and phrases. This can also be used to add new
+words to the vocabulary of the recognizer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><cite>~google.cloud.speech.operation.Operation</cite></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">Operation</span></code> for asynchronous request to Google Speech API.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="google.cloud.speech.client.Client.sync_recognize">
 <code class="descname">sync_recognize</code><span class="sig-paren">(</span><em>content</em>, <em>source_uri</em>, <em>encoding</em>, <em>sample_rate</em>, <em>language_code=None</em>, <em>max_alternatives=None</em>, <em>profanity_filter=None</em>, <em>speech_context=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/client.html#Client.sync_recognize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.client.Client.sync_recognize" title="Permalink to this definition">#</a></dt>
 <dd><p>Synchronous Speech Recognition.</p>
@@ -309,9 +372,9 @@ Currently, only Google Cloud Storage URIs are
 supported, which must be specified in the following
 format: <code class="docutils literal"><span class="pre">gs://bucket_name/object_name</span></code>.</li>
 <li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; encoding of audio data sent in all RecognitionAudio
-messages, can be one of: <a class="reference internal" href="#google.cloud.speech.client.Encoding.LINEAR16" title="google.cloud.speech.client.Encoding.LINEAR16"><code class="xref py py-attr docutils literal"><span class="pre">LINEAR16</span></code></a>,
-<a class="reference internal" href="#google.cloud.speech.client.Encoding.FLAC" title="google.cloud.speech.client.Encoding.FLAC"><code class="xref py py-attr docutils literal"><span class="pre">FLAC</span></code></a>, <a class="reference internal" href="#google.cloud.speech.client.Encoding.MULAW" title="google.cloud.speech.client.Encoding.MULAW"><code class="xref py py-attr docutils literal"><span class="pre">MULAW</span></code></a>,
-<a class="reference internal" href="#google.cloud.speech.client.Encoding.AMR" title="google.cloud.speech.client.Encoding.AMR"><code class="xref py py-attr docutils literal"><span class="pre">AMR</span></code></a>, <a class="reference internal" href="#google.cloud.speech.client.Encoding.AMR_WB" title="google.cloud.speech.client.Encoding.AMR_WB"><code class="xref py py-attr docutils literal"><span class="pre">AMR_WB</span></code></a></li>
+messages, can be one of: <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.LINEAR16" title="google.cloud.speech.encoding.Encoding.LINEAR16"><code class="xref py py-attr docutils literal"><span class="pre">LINEAR16</span></code></a>,
+<a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.FLAC" title="google.cloud.speech.encoding.Encoding.FLAC"><code class="xref py py-attr docutils literal"><span class="pre">FLAC</span></code></a>, <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.MULAW" title="google.cloud.speech.encoding.Encoding.MULAW"><code class="xref py py-attr docutils literal"><span class="pre">MULAW</span></code></a>,
+<a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.AMR" title="google.cloud.speech.encoding.Encoding.AMR"><code class="xref py py-attr docutils literal"><span class="pre">AMR</span></code></a>, <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.AMR_WB" title="google.cloud.speech.encoding.Encoding.AMR_WB"><code class="xref py py-attr docutils literal"><span class="pre">AMR_WB</span></code></a></li>
 <li><strong>sample_rate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Sample rate in Hertz of the audio data sent in all
 requests. Valid values are: 8000-48000. For best
 results, set the sampling rate of the audio source
@@ -360,45 +423,6 @@ between 0 and 1.</li>
 
 </dd></dl>
 
-<dl class="class">
-<dt id="google.cloud.speech.client.Encoding">
-<em class="property">class </em><code class="descclassname">google.cloud.speech.client.</code><code class="descname">Encoding</code><a class="reference internal" href="_modules/google/cloud/speech/client.html#Encoding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.client.Encoding" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Audio encoding types.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/speech/reference/rest/v1beta1/">https://cloud.google.com/speech/reference/rest/v1beta1/</a>    RecognitionConfig#AudioEncoding</p>
-<dl class="attribute">
-<dt id="google.cloud.speech.client.Encoding.AMR">
-<code class="descname">AMR</code><em class="property"> = 'AMR'</em><a class="headerlink" href="#google.cloud.speech.client.Encoding.AMR" title="Permalink to this definition">#</a></dt>
-<dd><p>AMR encoding type.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.speech.client.Encoding.AMR_WB">
-<code class="descname">AMR_WB</code><em class="property"> = 'AMR_WB'</em><a class="headerlink" href="#google.cloud.speech.client.Encoding.AMR_WB" title="Permalink to this definition">#</a></dt>
-<dd><p>AMR_WB encoding type.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.speech.client.Encoding.FLAC">
-<code class="descname">FLAC</code><em class="property"> = 'FLAC'</em><a class="headerlink" href="#google.cloud.speech.client.Encoding.FLAC" title="Permalink to this definition">#</a></dt>
-<dd><p>FLAC encoding type.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.speech.client.Encoding.LINEAR16">
-<code class="descname">LINEAR16</code><em class="property"> = 'LINEAR16'</em><a class="headerlink" href="#google.cloud.speech.client.Encoding.LINEAR16" title="Permalink to this definition">#</a></dt>
-<dd><p>LINEAR16 encoding type.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.speech.client.Encoding.MULAW">
-<code class="descname">MULAW</code><em class="property"> = 'MULAW'</em><a class="headerlink" href="#google.cloud.speech.client.Encoding.MULAW" title="Permalink to this definition">#</a></dt>
-<dd><p>MULAW encoding type.</p>
-</dd></dl>
-
-</dd></dl>
-
 <div class="section" id="module-google.cloud.speech.connection">
 <span id="connection"></span><h2>Connection<a class="headerlink" href="#module-google.cloud.speech.connection" title="Permalink to this headline">#</a></h2>
 <p>Create / interact with Google Cloud Speech connections.</p>
@@ -415,7 +439,7 @@ between 0 and 1.</li>
 
 <dl class="attribute">
 <dt id="google.cloud.speech.connection.Connection.API_URL_TEMPLATE">
-<code class="descname">API_URL_TEMPLATE</code><em class="property"> = '{api_base_url}/{api_version}/speech:{path}'</em><a class="headerlink" href="#google.cloud.speech.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
+<code class="descname">API_URL_TEMPLATE</code><em class="property"> = '{api_base_url}/{api_version}/{path}'</em><a class="headerlink" href="#google.cloud.speech.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
 <dd><p>A template for the URL of a particular API call.</p>
 </dd></dl>
 
@@ -442,6 +466,8 @@ between 0 and 1.</li>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="speech-encoding.html" class="btn btn-neutral float-right" title="Speech Encoding" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="speech-usage.html" class="btn btn-neutral" title="Using the API" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -475,7 +501,7 @@ between 0 and 1.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'a7cb215',
+            VERSION:'5a0e492',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

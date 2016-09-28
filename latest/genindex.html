@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; google-cloud a7cb215 documentation</title>
+  <title>Index &mdash; google-cloud 5a0e492 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
   
 
   
-    <link rel="top" title="google-cloud a7cb215 documentation" href="index.html"/> 
+    <link rel="top" title="google-cloud 5a0e492 documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -209,6 +209,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="speech-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-encoding.html">Speech Encoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-metadata.html">Speech Metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-operation.html">Speech Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-transcript.html">Speech Transcript</a></li>
 </ul>
 <p class="caption"><span class="caption-text">External Links</span></p>
 <ul>
@@ -405,14 +409,14 @@
   <dt><a href="vision-color.html#google.cloud.vision.color.Color.alpha">alpha (google.cloud.vision.color.Color attribute)</a>
   </dt>
 
+      
+  <dt><a href="speech-encoding.html#google.cloud.speech.encoding.Encoding.AMR">AMR (google.cloud.speech.encoding.Encoding attribute)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="speech-client.html#google.cloud.speech.client.Encoding.AMR">AMR (google.cloud.speech.client.Encoding attribute)</a>
-  </dt>
-
-      
-  <dt><a href="speech-client.html#google.cloud.speech.client.Encoding.AMR_WB">AMR_WB (google.cloud.speech.client.Encoding attribute)</a>
+  <dt><a href="speech-encoding.html#google.cloud.speech.encoding.Encoding.AMR_WB">AMR_WB (google.cloud.speech.encoding.Encoding attribute)</a>
   </dt>
 
       
@@ -655,6 +659,10 @@
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="speech-client.html#google.cloud.speech.client.Client.async_recognize">async_recognize() (google.cloud.speech.client.Client method)</a>
+  </dt>
+
       
   <dt><a href="pubsub-message.html#google.cloud.pubsub.message.Message.attributes">attributes (google.cloud.pubsub.message.Message attribute)</a>
   </dt>
@@ -1100,6 +1108,10 @@
   <dt><a href="operation-api.html#google.cloud.operation.Operation.complete">(google.cloud.operation.Operation attribute)</a>
   </dt>
 
+        
+  <dt><a href="speech-operation.html#google.cloud.speech.operation.Operation.complete">(google.cloud.speech.operation.Operation attribute)</a>
+  </dt>
+
       </dl></dd>
       
   <dt><a href="datastore-keys.html#google.cloud.datastore.key.Key.completed_key">completed_key() (google.cloud.datastore.key.Key method)</a>
@@ -1125,6 +1137,10 @@
 
       
   <dt><a href="bigtable-row-filters.html#google.cloud.bigtable.row_filters.ConditionalRowFilter">ConditionalRowFilter (class in google.cloud.bigtable.row_filters)</a>
+  </dt>
+
+      
+  <dt><a href="speech-transcript.html#google.cloud.speech.transcript.Transcript.confidence">confidence (google.cloud.speech.transcript.Transcript attribute)</a>
   </dt>
 
       
@@ -1795,7 +1811,7 @@
   </dt>
 
         
-  <dt><a href="speech-client.html#google.cloud.speech.client.Encoding">(class in google.cloud.speech.client)</a>
+  <dt><a href="speech-encoding.html#google.cloud.speech.encoding.Encoding">(class in google.cloud.speech.encoding)</a>
   </dt>
 
       </dl></dd>
@@ -2079,7 +2095,7 @@
   </dt>
 
       
-  <dt><a href="speech-client.html#google.cloud.speech.client.Encoding.FLAC">FLAC (google.cloud.speech.client.Encoding attribute)</a>
+  <dt><a href="speech-encoding.html#google.cloud.speech.encoding.Encoding.FLAC">FLAC (google.cloud.speech.encoding.Encoding attribute)</a>
   </dt>
 
       
@@ -2191,6 +2207,14 @@
 
         
   <dt><a href="resource-manager-project.html#google.cloud.resource_manager.project.Project.from_api_repr">(google.cloud.resource_manager.project.Project class method)</a>
+  </dt>
+
+        
+  <dt><a href="speech-metadata.html#google.cloud.speech.metadata.Metadata.from_api_repr">(google.cloud.speech.metadata.Metadata class method)</a>
+  </dt>
+
+        
+  <dt><a href="speech-operation.html#google.cloud.speech.operation.Operation.from_api_repr">(google.cloud.speech.operation.Operation class method)</a>
   </dt>
 
         
@@ -2560,8 +2584,6 @@
   <dt><a href="language-responses.html#module-google.cloud.language.syntax">google.cloud.language.syntax (module)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="logging-client.html#module-google.cloud.logging.client">google.cloud.logging.client (module)</a>
   </dt>
@@ -2570,6 +2592,8 @@
   <dt><a href="logging-client.html#module-google.cloud.logging.connection">google.cloud.logging.connection (module)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="logging-entries.html#module-google.cloud.logging.entries">google.cloud.logging.entries (module)</a>
   </dt>
@@ -2680,6 +2704,22 @@
 
       
   <dt><a href="speech-client.html#module-google.cloud.speech.connection">google.cloud.speech.connection (module)</a>
+  </dt>
+
+      
+  <dt><a href="speech-encoding.html#module-google.cloud.speech.encoding">google.cloud.speech.encoding (module)</a>
+  </dt>
+
+      
+  <dt><a href="speech-metadata.html#module-google.cloud.speech.metadata">google.cloud.speech.metadata (module)</a>
+  </dt>
+
+      
+  <dt><a href="speech-operation.html#module-google.cloud.speech.operation">google.cloud.speech.operation (module)</a>
+  </dt>
+
+      
+  <dt><a href="speech-transcript.html#module-google.cloud.speech.transcript">google.cloud.speech.transcript (module)</a>
   </dt>
 
       
@@ -3063,6 +3103,10 @@
   </dt>
 
       
+  <dt><a href="speech-metadata.html#google.cloud.speech.metadata.Metadata.last_update">last_update (google.cloud.speech.metadata.Metadata attribute)</a>
+  </dt>
+
+      
   <dt><a href="vision-image.html#google.cloud.vision.geometry.LocationInformation.latitude">latitude (google.cloud.vision.geometry.LocationInformation attribute)</a>
   </dt>
 
@@ -3123,7 +3167,7 @@
   </dt>
 
       
-  <dt><a href="speech-client.html#google.cloud.speech.client.Encoding.LINEAR16">LINEAR16 (google.cloud.speech.client.Encoding attribute)</a>
+  <dt><a href="speech-encoding.html#google.cloud.speech.encoding.Encoding.LINEAR16">LINEAR16 (google.cloud.speech.encoding.Encoding attribute)</a>
   </dt>
 
       
@@ -3162,6 +3206,8 @@
   <dt><a href="monitoring-group.html#google.cloud.monitoring.group.Group.list_descendants">list_descendants() (google.cloud.monitoring.group.Group method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="logging-client.html#google.cloud.logging.client.Client.list_entries">list_entries() (google.cloud.logging.client.Client method)</a>
   </dt>
@@ -3172,8 +3218,6 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="monitoring-client.html#google.cloud.monitoring.client.Client.list_groups">list_groups() (google.cloud.monitoring.client.Client method)</a>
   </dt>
@@ -3431,9 +3475,19 @@
   </dt>
 
       
-  <dt><a href="storage-blobs.html#google.cloud.storage.blob.Blob.metadata">metadata (google.cloud.storage.blob.Blob attribute)</a>
+  <dt><a href="speech-metadata.html#google.cloud.speech.metadata.Metadata">Metadata (class in google.cloud.speech.metadata)</a>
   </dt>
 
+      
+  <dt><a href="speech-operation.html#google.cloud.speech.operation.Operation.metadata">metadata (google.cloud.speech.operation.Operation attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="storage-blobs.html#google.cloud.storage.blob.Blob.metadata">(google.cloud.storage.blob.Blob attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="storage-blobs.html#google.cloud.storage.blob.Blob.metageneration">metageneration (google.cloud.storage.blob.Blob attribute)</a>
   </dt>
@@ -3545,7 +3599,7 @@
   </dt>
 
       
-  <dt><a href="speech-client.html#google.cloud.speech.client.Encoding.MULAW">MULAW (google.cloud.speech.client.Encoding attribute)</a>
+  <dt><a href="speech-encoding.html#google.cloud.speech.encoding.Encoding.MULAW">MULAW (google.cloud.speech.encoding.Encoding attribute)</a>
   </dt>
 
       
@@ -3692,6 +3746,12 @@
   <dt><a href="operation-api.html#google.cloud.operation.Operation">Operation (class in google.cloud.operation)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="speech-operation.html#google.cloud.speech.operation.Operation">(class in google.cloud.speech.operation)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="datastore-queries.html#google.cloud.datastore.query.Query.OPERATORS">OPERATORS (google.cloud.datastore.query.Query attribute)</a>
   </dt>
@@ -3894,6 +3954,12 @@
   <dt><a href="operation-api.html#google.cloud.operation.Operation.poll">poll() (google.cloud.operation.Operation method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="speech-operation.html#google.cloud.speech.operation.Operation.poll">(google.cloud.speech.operation.Operation method)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="vision-image.html#google.cloud.vision.geometry.Position">Position (class in google.cloud.vision.geometry)</a>
   </dt>
@@ -3924,6 +3990,10 @@
 
       
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.QueryJob.priority">priority (google.cloud.bigquery.job.QueryJob attribute)</a>
+  </dt>
+
+      
+  <dt><a href="speech-metadata.html#google.cloud.speech.metadata.Metadata.progress_percent">progress_percent (google.cloud.speech.metadata.Metadata attribute)</a>
   </dt>
 
       
@@ -3994,12 +4064,12 @@
   <dt><a href="google-cloud-api.html#google.cloud.environment_vars.PROJECT">PROJECT (in module google.cloud.environment_vars)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigtable-client.html#google.cloud.bigtable.client.Client.project_name">project_name (google.cloud.bigtable.client.Client attribute)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="storage-buckets.html#google.cloud.storage.bucket.Bucket.project_number">project_number (google.cloud.storage.bucket.Bucket attribute)</a>
   </dt>
@@ -4331,6 +4401,10 @@
   </dt>
 
       
+  <dt><a href="speech-operation.html#google.cloud.speech.operation.Operation.results">results (google.cloud.speech.operation.Operation attribute)</a>
+  </dt>
+
+      
   <dt><a href="bigquery-job.html#google.cloud.bigquery.job.QueryJob.results">results() (google.cloud.bigquery.job.QueryJob method)</a>
   </dt>
 
@@ -4346,12 +4420,12 @@
   <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_EAR_TRAGION">RIGHT_EAR_TRAGION (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_EYE">RIGHT_EYE (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="vision-face.html#google.cloud.vision.face.FaceLandmarkTypes.RIGHT_EYE_BOTTOM_BOUNDARY">RIGHT_EYE_BOTTOM_BOUNDARY (google.cloud.vision.face.FaceLandmarkTypes attribute)</a>
   </dt>
@@ -4668,8 +4742,6 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.set_iam_policy">set_iam_policy() (google.cloud.pubsub.subscription.Subscription method)</a>
   </dt>
@@ -4680,6 +4752,8 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="resource-manager-project.html#google.cloud.resource_manager.project.Project.set_properties_from_api_repr">set_properties_from_api_repr() (google.cloud.resource_manager.project.Project method)</a>
   </dt>
@@ -4730,6 +4804,10 @@
 
       
   <dt><a href="vision-safe-search.html#google.cloud.vision.safe.SafeSearchAnnotation.spoof">spoof (google.cloud.vision.safe.SafeSearchAnnotation attribute)</a>
+  </dt>
+
+      
+  <dt><a href="speech-metadata.html#google.cloud.speech.metadata.Metadata.start_time">start_time (google.cloud.speech.metadata.Metadata attribute)</a>
   </dt>
 
       
@@ -4872,12 +4950,12 @@
   <dt><a href="bigtable-row-filters.html#google.cloud.bigtable.row_filters.TimestampRange">TimestampRange (class in google.cloud.bigtable.row_filters)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="bigtable-row-filters.html#google.cloud.bigtable.row_filters.TimestampRangeFilter">TimestampRangeFilter (class in google.cloud.bigtable.row_filters)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pubsub-iam.html#google.cloud.pubsub.iam.Policy.to_api_repr">to_api_repr() (google.cloud.pubsub.iam.Policy method)</a>
   </dt>
@@ -5026,6 +5104,14 @@
 
       
   <dt><a href="datastore-client.html#google.cloud.datastore.client.Client.transaction">transaction() (google.cloud.datastore.client.Client method)</a>
+  </dt>
+
+      
+  <dt><a href="speech-transcript.html#google.cloud.speech.transcript.Transcript">Transcript (class in google.cloud.speech.transcript)</a>
+  </dt>
+
+      
+  <dt><a href="speech-transcript.html#google.cloud.speech.transcript.Transcript.transcript">transcript (google.cloud.speech.transcript.Transcript attribute)</a>
   </dt>
 
       
@@ -5378,7 +5464,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'a7cb215',
+            VERSION:'5a0e492',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

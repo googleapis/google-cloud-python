@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud a7cb215 documentation</title>
+  <title>Using the API &mdash; google-cloud 5a0e492 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud a7cb215 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 5a0e492 documentation" href="index.html"/>
         <link rel="next" title="Speech Client" href="speech-client.html"/>
         <link rel="prev" title="Natural Language Response Classes" href="language-responses.html"/> 
 
@@ -210,10 +210,15 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using the API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#client">Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#asychronous-recognition">Asychronous Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#synchronous-recognition">Synchronous Recognition</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="speech-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-encoding.html">Speech Encoding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-metadata.html">Speech Metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-operation.html">Speech Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speech-transcript.html">Speech Transcript</a></li>
 </ul>
 <p class="caption"><span class="caption-text">External Links</span></p>
 <ul>
@@ -268,7 +273,8 @@
   <div class="section" id="using-the-api">
 <h1>Using the API<a class="headerlink" href="#using-the-api" title="Permalink to this headline">#</a></h1>
 <p>The <a class="reference external" href="https://cloud.google.com/speech/docs/getting-started">Google Speech</a> API enables developers to convert audio to text.
-The API recognizes over 80 languages and variants, to support your global user base.</p>
+The API recognizes over 80 languages and variants, to support your global user
+base.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">This is a Beta release of Google Speech API. This
@@ -290,10 +296,37 @@ create an instance of <a class="reference internal" href="speech-client.html#goo
 </div>
 </div></blockquote>
 </div>
+<div class="section" id="asychronous-recognition">
+<h2>Asychronous Recognition<a class="headerlink" href="#asychronous-recognition" title="Permalink to this headline">#</a></h2>
+<p>The <code class="xref py py-meth docutils literal"><span class="pre">async_recognize()</span></code> sends audio data to the
+Speech API and initiates a Long Running Operation. Using this operation, you
+can periodically poll for recognition results. Use asynchronous requests for
+audio data of any duration up to 80 minutes.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize">Speech Asynchronous Recognize</a></p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">async_recognize</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;FLAC&#39;</span><span class="p">,</span> <span class="mi">16000</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">retry_count</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">retry_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">operation</span><span class="o">.</span><span class="n">complete</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">retry_count</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">operation</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span><span class="o">.</span><span class="n">complete</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span>
+<span class="go">&#39;how old is the Brooklyn Bridge&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">confidence</span>
+<span class="go">0.98267895</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
 <div class="section" id="synchronous-recognition">
 <h2>Synchronous Recognition<a class="headerlink" href="#synchronous-recognition" title="Permalink to this headline">#</a></h2>
-<p>The <code class="xref py py-meth docutils literal"><span class="pre">sync_recognize()</span></code> method converts speech data to text
-and returns alternative text transcriptons.</p>
+<p>The <code class="xref py py-meth docutils literal"><span class="pre">sync_recognize()</span></code> method converts speech
+data to text and returns alternative text transcriptons.</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alternatives</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sync_recognize</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="bp">None</span><span class="p">,</span> <span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span>
@@ -355,7 +388,7 @@ and returns alternative text transcriptons.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'a7cb215',
+            VERSION:'5a0e492',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
