@@ -173,6 +173,10 @@
 
   speech-usage
   Client <speech-client>
+  speech-encoding
+  speech-metadata
+  speech-operation
+  speech-transcript
 
 .. toctree::
   :maxdepth: 0
