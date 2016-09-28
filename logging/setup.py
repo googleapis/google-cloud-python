@@ -53,8 +53,8 @@ REQUIREMENTS = [
     'google-cloud-core >= 0.20.0',
     'grpcio >= 1.0.0, < 2.0dev',
     'google-gax >= 0.14.1, < 0.15dev',
-    'gapic-google-logging-v2 >= 0.9.0, < 0.10dev',
-    'grpc-google-logging-v2 >= 0.9.0, < 0.10dev',
+    'gapic-google-logging-v2 >= 0.10.1, < 0.11dev',
+    'grpc-google-logging-v2 >= 0.10.1, < 0.11dev',
 ]
 
 setup(

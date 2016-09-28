@@ -79,7 +79,8 @@ class _LoggingAPI(object):
             page_token = INITIAL_PAGE
         options = CallOptions(page_token=page_token)
         page_iter = self._gax_api.list_log_entries(
-            projects, filter_, order_by, page_size, options)
+            projects, filter_=filter_, order_by=order_by,
+            page_size=page_size, options=options)
         entries = [_log_entry_pb_to_mapping(entry_pb)
                    for entry_pb in page_iter.next()]
         token = page_iter.page_token or None
@@ -107,8 +108,9 @@ class _LoggingAPI(object):
         options = None
         partial_success = False
         entry_pbs = [_log_entry_mapping_to_pb(entry) for entry in entries]
-        self._gax_api.write_log_entries(entry_pbs, logger_name, resource,
-                                        labels, partial_success, options)
+        self._gax_api.write_log_entries(
+            entry_pbs, log_name=logger_name, resource=resource, labels=labels,
+            partial_success=partial_success, options=options)
 
     def logger_delete(self, project, logger_name):
         """API call:  delete all entries in a logger via a DELETE request
@@ -122,7 +124,7 @@ class _LoggingAPI(object):
         options = None
         path = 'projects/%s/logs/%s' % (project, logger_name)
         try:
-            self._gax_api.delete_log(path, options)
+            self._gax_api.delete_log(path, options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
@@ -163,7 +165,8 @@ class _SinksAPI(object):
             page_token = INITIAL_PAGE
         options = CallOptions(page_token=page_token)
         path = 'projects/%s' % (project,)
-        page_iter = self._gax_api.list_sinks(path, page_size, options)
+        page_iter = self._gax_api.list_sinks(path, page_size=page_size,
+                                             options=options)
         sinks = [_log_sink_pb_to_mapping(log_sink_pb)
                  for log_sink_pb in page_iter.next()]
         token = page_iter.page_token or None
@@ -194,7 +197,7 @@ class _SinksAPI(object):
         sink_pb = LogSink(name=sink_name, filter=filter_,
                           destination=destination)
         try:
-            self._gax_api.create_sink(parent, sink_pb, options)
+            self._gax_api.create_sink(parent, sink_pb, options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
                 path = 'projects/%s/sinks/%s' % (project, sink_name)
@@ -217,7 +220,7 @@ class _SinksAPI(object):
         options = None
         path = 'projects/%s/sinks/%s' % (project, sink_name)
         try:
-            sink_pb = self._gax_api.get_sink(path, options)
+            sink_pb = self._gax_api.get_sink(path, options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
@@ -249,7 +252,7 @@ class _SinksAPI(object):
         path = 'projects/%s/sinks/%s' % (project, sink_name)
         sink_pb = LogSink(name=path, filter=filter_, destination=destination)
         try:
-            self._gax_api.update_sink(path, sink_pb, options)
+            self._gax_api.update_sink(path, sink_pb, options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
@@ -268,7 +271,7 @@ class _SinksAPI(object):
         options = None
         path = 'projects/%s/sinks/%s' % (project, sink_name)
         try:
-            self._gax_api.delete_sink(path, options)
+            self._gax_api.delete_sink(path, options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
@@ -309,7 +312,8 @@ class _MetricsAPI(object):
             page_token = INITIAL_PAGE
         options = CallOptions(page_token=page_token)
         path = 'projects/%s' % (project,)
-        page_iter = self._gax_api.list_log_metrics(path, page_size, options)
+        page_iter = self._gax_api.list_log_metrics(
+            path, page_size=page_size, options=options)
         metrics = [_log_metric_pb_to_mapping(log_metric_pb)
                    for log_metric_pb in page_iter.next()]
         token = page_iter.page_token or None
@@ -339,7 +343,7 @@ class _MetricsAPI(object):
         metric_pb = LogMetric(name=metric_name, filter=filter_,
                               description=description)
         try:
-            self._gax_api.create_log_metric(parent, metric_pb, options)
+            self._gax_api.create_log_metric(parent, metric_pb, options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
                 path = 'projects/%s/metrics/%s' % (project, metric_name)
@@ -362,7 +366,7 @@ class _MetricsAPI(object):
         options = None
         path = 'projects/%s/metrics/%s' % (project, metric_name)
         try:
-            metric_pb = self._gax_api.get_log_metric(path, options)
+            metric_pb = self._gax_api.get_log_metric(path, options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
@@ -394,7 +398,7 @@ class _MetricsAPI(object):
         metric_pb = LogMetric(name=path, filter=filter_,
                               description=description)
         try:
-            self._gax_api.update_log_metric(path, metric_pb, options)
+            self._gax_api.update_log_metric(path, metric_pb, options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
@@ -413,7 +417,7 @@ class _MetricsAPI(object):
         options = None
         path = 'projects/%s/metrics/%s' % (project, metric_name)
         try:
-            self._gax_api.delete_log_metric(path, options)
+            self._gax_api.delete_log_metric(path, options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
