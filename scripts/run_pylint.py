@@ -33,6 +33,7 @@ import sys
 IGNORED_DIRECTORIES = [
     os.path.join('bigtable', 'google', 'cloud', 'bigtable', '_generated'),
     os.path.join('datastore', 'google', 'cloud', 'datastore', '_generated'),
+    'grpc-google-iam-v1-fake',
 ]
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),
