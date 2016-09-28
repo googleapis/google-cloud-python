@@ -534,6 +534,38 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
 
+    def test_copy_blobs_preserve_acl(self):
+        from google.cloud.storage.acl import ObjectACL
+        SOURCE = 'source'
+        DEST = 'dest'
+        BLOB_NAME = 'blob-name'
+        NEW_NAME = 'new_name'
+        BLOB_PATH = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
+        NEW_BLOB_PATH = '/b/%s/o/%s' % (DEST, NEW_NAME)
+        COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
+                                                     DEST, NEW_NAME)
+
+        class _Blob(object):
+            name = BLOB_NAME
+            path = BLOB_PATH
+
+        connection = _Connection({}, {})
+        client = _Client(connection)
+        source = self._makeOne(client=client, name=SOURCE)
+        dest = self._makeOne(client=client, name=DEST)
+        blob = _Blob()
+        new_blob = source.copy_blob(blob, dest, NEW_NAME, client=client,
+                                    preserve_acl=False)
+        self.assertIs(new_blob.bucket, dest)
+        self.assertEqual(new_blob.name, NEW_NAME)
+        self.assertIsInstance(new_blob.acl, ObjectACL)
+        kw = connection._requested
+        self.assertEqual(len(kw), 2)
+        self.assertEqual(kw[0]['method'], 'POST')
+        self.assertEqual(kw[0]['path'], COPY_PATH)
+        self.assertEqual(kw[1]['method'], 'PATCH')
+        self.assertEqual(kw[1]['path'], NEW_BLOB_PATH)
+
     def test_copy_blobs_w_name(self):
         SOURCE = 'source'
         DEST = 'dest'
