@@ -29,7 +29,7 @@ class OperationTests(unittest.TestCase):
     def test_ctor_defaults(self):
         client = _Client()
         operation = self._makeOne(client, self.OPERATION_NAME)
-        self.assertEqual('123456789', operation.name)
+        self.assertEqual(operation.name, '123456789')
         self.assertFalse(operation.complete)
         self.assertIsNone(operation.metadata)
         self.assertIsNone(operation.results)
@@ -37,21 +37,22 @@ class OperationTests(unittest.TestCase):
     def test_from_api_repr(self):
         from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
         from google.cloud.speech.operation import Transcript
+        from google.cloud.speech.metadata import Metadata
         RESPONSE = OPERATION_COMPLETE_RESPONSE
 
         client = _Client()
-        connection = _Connection(OPERATION_COMPLETE_RESPONSE)
-        client.connection = connection
         operation = self._getTargetClass().from_api_repr(client, RESPONSE)
 
         self.assertEqual('123456789', operation.name)
         self.assertTrue(operation.complete)
 
         self.assertIsInstance(operation.results[0], Transcript)
-        self.assertEqual('how old is the Brooklyn Bridge',
-                         operation.results[0].transcript)
-        self.assertEqual(0.98267895, operation.results[0].confidence)
+        self.assertEqual(operation.results[0].transcript,
+                         'how old is the Brooklyn Bridge')
+        self.assertEqual(operation.results[0].confidence, 0.98267895)
         self.assertTrue(operation.complete)
+        self.assertIsInstance(operation.metadata, Metadata)
+        self.assertEqual(operation.metadata.progress_percent, 100)
 
     def test_update_response(self):
         from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
@@ -59,10 +60,8 @@ class OperationTests(unittest.TestCase):
         RESPONSE = ASYNC_RECOGNIZE_RESPONSE
 
         client = _Client()
-        connection = _Connection(OPERATION_COMPLETE_RESPONSE)
-        client.connection = connection
         operation = self._getTargetClass().from_api_repr(client, RESPONSE)
-        self.assertEqual('123456789', operation.name)
+        self.assertEqual(operation.name, '123456789')
         operation._update(OPERATION_COMPLETE_RESPONSE)
         self.assertTrue(operation.complete)
 
@@ -80,23 +79,35 @@ class OperationTests(unittest.TestCase):
         operation.poll()
         self.assertTrue(operation.complete)
         self.assertIsInstance(operation.metadata, Metadata)
-        self.assertEqual(100, operation.metadata.progress_percent)
+        self.assertEqual(operation.metadata.progress_percent, 100)
+        requested = client.connection._requested
+        self.assertEqual(requested[0]['method'], 'GET')
+        self.assertEqual(requested[0]['path'],
+                         'operations/%s' % (operation.name,))
 
     def test_poll_complete(self):
         from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
-        RESPONSE = OPERATION_COMPLETE_RESPONSE
+        from unit_tests._fixtures import OPERATION_INCOMPLETE_RESPONSE
+        RESPONSE = OPERATION_INCOMPLETE_RESPONSE
+
         client = _Client()
         connection = _Connection(OPERATION_COMPLETE_RESPONSE)
         client.connection = connection
-
         operation = self._getTargetClass().from_api_repr(client, RESPONSE)
-        self.assertTrue(operation.complete)
+
+        self.assertFalse(operation.complete)
+        operation.poll()  # Update the operation with complete data.
+
         with self.assertRaises(ValueError):
             operation.poll()
+        requested = client.connection._requested
+        self.assertEqual(requested[0]['method'], 'GET')
+        self.assertEqual(requested[0]['path'],
+                         'operations/%s' % (operation.name,))
 
 
 class _Connection(object):
-    def __init__(self, response):
+    def __init__(self, response=None):
         self.response = response
         self._requested = []
 
