@@ -15,22 +15,18 @@
 import unittest
 
 
-class TestConnection(unittest.TestCase):
-
+class TestTranscript(unittest.TestCase):
     def _getTargetClass(self):
-        from google.cloud.speech.connection import Connection
-        return Connection
+        from google.cloud.speech.transcript import Transcript
+        return Transcript
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
 
-    def test_build_api_url(self):
-        conn = self._makeOne()
-        method = 'speech:syncrecognize'
-        uri = '/'.join([
-            conn.API_BASE_URL,
-            conn.API_VERSION,
-            method,
-        ])
-
-        self.assertEqual(conn.build_api_url(method), uri)
+    def test_ctor(self):
+        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE as DATA
+        TRANSCRIPT_DATA = DATA['response']['results'][0]['alternatives'][0]
+        transcript = self._makeOne(TRANSCRIPT_DATA)
+        self.assertEqual('how old is the Brooklyn Bridge',
+                         transcript.transcript)
+        self.assertEqual(0.98267895, transcript.confidence)
