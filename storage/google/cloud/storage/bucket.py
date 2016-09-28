@@ -440,7 +440,7 @@ class Bucket(_PropertyMixin):
                     raise
 
     def copy_blob(self, blob, destination_bucket, new_name=None,
-                  client=None):
+                  client=None, preserve_acl=True):
         """Copy the given blob to the given bucket, optionally with a new name.
 
         :type blob: :class:`google.cloud.storage.blob.Blob`
@@ -458,6 +458,10 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type preserve_acl: bool
+        :param preserve_acl: Optional. Copies ACL from old blob to new blob.
+                             Default: True.
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The new Blob.
         """
@@ -468,6 +472,8 @@ class Bucket(_PropertyMixin):
         api_path = blob.path + '/copyTo' + new_blob.path
         copy_result = client.connection.api_request(
             method='POST', path=api_path, _target_object=new_blob)
+        if not preserve_acl:
+            new_blob.acl.save(acl={}, client=client)
         new_blob._set_properties(copy_result)
         return new_blob
 
