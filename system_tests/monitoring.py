@@ -211,8 +211,8 @@ class TestMonitoring(unittest.TestCase):
         def _has_timeseries(results):
             return len(results) > 0
 
-        endtime = datetime.datetime.utcnow()
-        query = client.query(METRIC_TYPE, end_time=endtime, minutes=5)
+        end_time = datetime.datetime.utcnow()
+        query = client.query(METRIC_TYPE, end_time=end_time, minutes=5)
 
         retry_result = RetryResult(_has_timeseries, max_tries=MAX_RETRIES)(
             list_timeseries)
