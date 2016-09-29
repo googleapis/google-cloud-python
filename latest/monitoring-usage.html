@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 5a0e492 documentation</title>
+  <title>Using the API &mdash; google-cloud 938ac21 documentation</title>
   
 
   
@@ -32,7 +32,7 @@
   
 
   
-    <link rel="top" title="google-cloud 5a0e492 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 938ac21 documentation" href="index.html"/>
         <link rel="next" title="Stackdriver Monitoring Client" href="monitoring-client.html"/>
         <link rel="prev" title="Error Reporting Client" href="error-reporting-client.html"/> 
 
@@ -479,8 +479,8 @@ more useful to retrieve time series data in the form of a
 <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.18.1)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a>, where each column corresponds to a
 single time series. For this, you must have <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v0.18.1)"><code class="xref py py-mod docutils literal"><span class="pre">pandas</span></code></a> installed;
 it is not a required dependency of <code class="docutils literal"><span class="pre">google-cloud-python</span></code>.</p>
-<p>You can display CPU utilization across your GCE instances during
-the last five minutes as follows:</p>
+<p>You can display CPU utilization across your GCE instances over a five minute duration ending at
+the start of the current minute as follows:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">METRIC</span> <span class="o">=</span> <span class="s1">&#39;compute.googleapis.com/instance/cpu/utilization&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">METRIC</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">())</span>
@@ -616,7 +616,7 @@ the API must only include a single point.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5a0e492',
+            VERSION:'938ac21',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
