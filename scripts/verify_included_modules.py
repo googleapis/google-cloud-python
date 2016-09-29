@@ -58,7 +58,6 @@ IGNORED_MODULES = frozenset([
     'google.cloud.vision.fixtures',
 ])
 PACKAGES = (
-    '',
     'bigquery',
     'bigtable',
     'core',

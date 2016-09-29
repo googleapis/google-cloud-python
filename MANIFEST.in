@@ -1,3 +1,2 @@
 include README.rst
-graft google
 global-exclude *.pyc
