@@ -76,6 +76,12 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.order, ORDER)
         self.assertEqual(query.distinct_on, DISTINCT_ON)
 
+    def test_ctor_w_empty_client(self):
+      _PROJECT = 'OTHER_PROJECT'
+      query = self._makeOne(client=None, project=_PROJECT)
+      self.assertIs(query._client, None)
+      self.assertIs(query.namespace, None)
+
     def test_ctor_bad_projection(self):
         BAD_PROJECTION = object()
         self.assertRaises(TypeError, self._makeOne, self._makeClient(),
@@ -109,6 +115,11 @@ class TestQuery(unittest.TestCase):
         query = self._makeOne(self._makeClient())
         query.namespace = _NAMESPACE
         self.assertEqual(query.namespace, _NAMESPACE)
+
+    def test_namespace_getter_w_empty_client(self):
+      _PROJECT = 'OTHER_PROJECT'
+      query = self._makeOne(client=None, project=_PROJECT)
+      self.assertEqual(query.namespace, None)
 
     def test_kind_setter_w_non_string(self):
         query = self._makeOne(self._makeClient())

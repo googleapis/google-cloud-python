@@ -86,7 +86,7 @@ class Query(object):
         self._client = client
         self._kind = kind
         self._project = project or client.project
-        self._namespace = namespace or client.namespace
+        self._namespace = namespace or getattr(self._client, 'namespace', None)
         self._ancestor = ancestor
         self._filters = []
         # Verify filters passed in.
@@ -112,7 +112,7 @@ class Query(object):
         :rtype: string or None
         :returns: the namespace assigned to this query
         """
-        return self._namespace or self._client.namespace
+        return self._namespace or getattr(self._client, 'namespace', None)
 
     @namespace.setter
     def namespace(self, value):
