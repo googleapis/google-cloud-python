@@ -35,6 +35,9 @@ IGNORED_DIRECTORIES = (
     'scripts',
     'system_tests',
 )
+ENV_REMAP = {
+    'isolated-cover': 'cover',
+}
 
 
 def check_output(*args):
@@ -108,8 +111,8 @@ def get_parser():
     description = 'Run tox environment(s) in all sub-packages.'
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
-        '--tox-env', dest='tox_env', default='py27',
-        help='The tox environment(s) to run in sub-packages.')
+        '--tox-env-dir', dest='tox_env_dir',
+        help='The current tox environment directory.')
     return parser
 
 
@@ -121,7 +124,10 @@ def get_tox_env():
     """
     parser = get_parser()
     args = parser.parse_args()
-    return args.tox_env
+    env_dir = args.tox_env_dir
+    _, tox_env = os.path.split(env_dir)
+    tox_env = ENV_REMAP.get(tox_env, tox_env)
+    return tox_env
 
 
 def main():
