@@ -79,8 +79,8 @@ class TestQuery(unittest.TestCase):
     def test_ctor_w_empty_client(self):
       _PROJECT = 'OTHER_PROJECT'
       query = self._makeOne(client=None, project=_PROJECT)
-      self.assertIs(query._client, None)
-      self.assertIs(query.namespace, None)
+      self.assertIsNone(query._client)
+      self.assertIsNone(query.namespace)
 
     def test_ctor_bad_projection(self):
         BAD_PROJECTION = object()
@@ -119,7 +119,7 @@ class TestQuery(unittest.TestCase):
     def test_namespace_getter_w_empty_client(self):
       _PROJECT = 'OTHER_PROJECT'
       query = self._makeOne(client=None, project=_PROJECT)
-      self.assertEqual(query.namespace, None)
+      self.assertIsNone(query.namespace)
 
     def test_kind_setter_w_non_string(self):
         query = self._makeOne(self._makeClient())
