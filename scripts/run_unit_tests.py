@@ -35,8 +35,11 @@ IGNORED_DIRECTORIES = (
     'scripts',
     'system_tests',
 )
-ENV_REMAP = {
-    'isolated-cover': 'cover',
+TOX_ENV_VAR = 'TOXENV'
+ACCEPTED_VERSIONS = {
+    (2, 7): 'py27',
+    (3, 4): 'py34',
+    (3, 5): 'py35',
 }
 
 
@@ -111,22 +114,51 @@ def get_parser():
     description = 'Run tox environment(s) in all sub-packages.'
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
-        '--tox-env-dir', dest='tox_env_dir',
-        help='The current tox environment directory.')
+        '--tox-env', dest='tox_env',
+        help='The tox environment(s) to run in sub-packages.')
     return parser
+
+
+def get_tox_env_from_version():
+    """Get ``tox`` environment from the current Python version.
+
+    :rtype: str
+    :returns: The current ``tox`` environment to be used, e.g. ``"py27"``.
+    :raises: :class:`EnvironmentError` if the first two options
+             don't yield any value and the current version of
+             Python is not in ``ACCEPTED_VERSIONS``.
+    """
+    version_info = sys.version_info[:2]
+    try:
+        return ACCEPTED_VERSIONS[version_info]
+    except KeyError:
+        raise EnvironmentError(
+            'Invalid Python version', version_info,
+            'Accepted versions are',
+            sorted(ACCEPTED_VERSIONS.keys()))
 
 
 def get_tox_env():
     """Get the environment to be used with ``tox``.
+
+    Tries to infer the ``tox`` environment in the following order
+
+    * From the ``--tox-env`` command line flag
+    * From the ``TOXENV`` environment variable
+    * From the version of the current running Python
 
     :rtype: str
     :returns: The current ``tox`` environment to be used, e.g. ``"py27"``.
     """
     parser = get_parser()
     args = parser.parse_args()
-    env_dir = args.tox_env_dir
-    _, tox_env = os.path.split(env_dir)
-    tox_env = ENV_REMAP.get(tox_env, tox_env)
+    if args.tox_env is not None:
+        tox_env = args.tox_env
+    elif TOX_ENV_VAR in os.environ:
+        tox_env = os.environ[TOX_ENV_VAR]
+    else:
+        tox_env = get_tox_env_from_version()
+
     return tox_env
 
 
