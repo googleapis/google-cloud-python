@@ -112,7 +112,7 @@ Note on Editable Installs / Develop Mode
 .. _namespace packages: https://www.python.org/dev/peps/pep-0420/
 .. _Issue #2316: https://github.com/GoogleCloudPlatform/google-cloud-python/issues/2316
 .. _PyPA issue: https://github.com/pypa/packaging-problems/issues/12
-.. _develop mode: http://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode
+.. _develop mode: https://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode
 .. _editable install: https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs
 
 I'm getting weird errors... Can you help?
@@ -417,7 +417,7 @@ and lack of continuous integration `support`_.
 
 .. _Python 2.5: https://docs.python.org/2.5/
 .. _decreased usage: https://caremad.io/2013/10/a-look-at-pypi-downloads/
-.. _support: http://blog.travis-ci.com/2013-11-18-upcoming-build-environment-updates/
+.. _support: https://blog.travis-ci.com/2013-11-18-upcoming-build-environment-updates/
 
 We have `dropped 2.6`_ as a supported version as well since Python 2.6 is no
 longer supported by the core development team.
