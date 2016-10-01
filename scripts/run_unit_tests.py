@@ -41,6 +41,7 @@ ACCEPTED_VERSIONS = {
     (3, 4): 'py34',
     (3, 5): 'py35',
 }
+UNSET_SENTINEL = object()  # Sentinel for argparser
 
 
 def check_output(*args):
@@ -82,6 +83,47 @@ def get_package_directories():
     return result
 
 
+def verify_packages(subset, all_packages):
+    """Verify that a subset of packages are among all packages.
+
+    :type subset: list
+    :param subset: List of a subset of package names.
+
+    :type all_packages: list
+    :param all_packages: List of all package names.
+
+    :raises: :class:`~exceptions.ValueError` if there are unknown packages
+             in ``subset``
+    """
+    left_out = set(subset) - set(all_packages)
+    if left_out:
+        raise ValueError('Unknown packages',
+                         sorted(left_out))
+
+
+def get_test_packages():
+    """Get a list of packages which need tests run.
+
+    Filters the package list in the following order:
+
+    * Check command line for packages passed in as positional arguments
+    * Just use all packages
+
+    :rtype: list
+    :returns: A list of all package directories where tests
+              need be run.
+    """
+    all_packages = get_package_directories()
+
+    parser = get_parser()
+    args = parser.parse_args()
+    if args.packages is not UNSET_SENTINEL:
+        verify_packages(args.packages, all_packages)
+        return sorted(args.packages)
+    else:
+        return all_packages
+
+
 def run_package(package, tox_env):
     """Run tox environment for a given package.
 
@@ -116,6 +158,9 @@ def get_parser():
     parser.add_argument(
         '--tox-env', dest='tox_env',
         help='The tox environment(s) to run in sub-packages.')
+    packages_help = 'Optional list of sub-packages to be tested.'
+    parser.add_argument('packages', nargs='*',
+                        default=UNSET_SENTINEL, help=packages_help)
     return parser
 
 
@@ -164,7 +209,7 @@ def get_tox_env():
 
 def main():
     """Run all the unit tests that need to be run."""
-    packages_to_run = get_package_directories()
+    packages_to_run = get_test_packages()
     if not packages_to_run:
         print('No tests to run.')
         return
