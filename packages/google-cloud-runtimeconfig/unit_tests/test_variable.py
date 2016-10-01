@@ -1,0 +1,189 @@
+# Copyright 2016 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import base64
+import unittest
+
+from google.cloud.runtimeconfig.config import Config
+from google.cloud._helpers import _rfc3339_to_datetime
+
+
+class TestVariable(unittest.TestCase):
+    PROJECT = 'PROJECT'
+    CONFIG_NAME = 'config_name'
+    VARIABLE_NAME = 'variable_name'
+    PATH = 'projects/%s/configs/%s/variables/%s' % (
+        PROJECT, CONFIG_NAME, VARIABLE_NAME)
+
+    def _getTargetClass(self):
+        from google.cloud.runtimeconfig.variable import Variable
+        return Variable
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def _verifyResourceProperties(self, variable, resource):
+        if 'name' in resource:
+            self.assertEqual(variable.full_name, resource['name'])
+
+        if 'value' in resource:
+            self.assertEqual(
+                variable.value, base64.b64decode(resource['value']))
+        else:
+            self.assertIsNone(variable.value)
+
+        if 'state' in resource:
+            self.assertEqual(variable.state, resource['state'])
+
+        if 'updateTime' in resource:
+            self.assertEqual(
+                variable.update_time,
+                _rfc3339_to_datetime(resource['updateTime']))
+        else:
+            self.assertIsNone(variable.update_time)
+
+    def test_ctor(self):
+        client = _Client(project=self.PROJECT)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._makeOne(name=self.VARIABLE_NAME, config=config)
+        self.assertEqual(variable.name, self.VARIABLE_NAME)
+        self.assertEqual(variable.full_name, self.PATH)
+        self.assertEqual(variable.path, '/%s' % (self.PATH,))
+        self.assertIs(variable.client, client)
+
+    def test_ctor_w_no_name(self):
+        client = _Client(project=self.PROJECT)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._makeOne(name=None, config=config)
+        with self.assertRaises(ValueError):
+            _ = variable.full_name
+
+    def test_exists_miss_w_bound_client(self):
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._makeOne(name=self.VARIABLE_NAME, config=config)
+
+        self.assertFalse(variable.exists())
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % (self.PATH,))
+        self.assertEqual(req['query_params'], {'fields': 'name'})
+
+    def test_exists_hit_w_alternate_client(self):
+        conn1 = _Connection()
+        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
+        CONFIG1 = Config(name=self.CONFIG_NAME, client=CLIENT1)
+        conn2 = _Connection({})
+        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        variable = self._makeOne(name=self.VARIABLE_NAME, config=CONFIG1)
+
+        self.assertTrue(variable.exists(client=CLIENT2))
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % (self.PATH,))
+        self.assertEqual(req['query_params'], {'fields': 'name'})
+
+    def test_reload_w_bound_client(self):
+        RESOURCE = {
+            'name': self.PATH,
+            'value': 'bXktdmFyaWFibGUtdmFsdWU=',  # base64 my-variable-value
+            'updateTime': '2016-04-14T21:21:54.5000Z',
+            'state': 'VARIABLE_STATE_UNSPECIFIED',
+        }
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._makeOne(name=self.VARIABLE_NAME, config=config)
+
+        variable.reload()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % (self.PATH,))
+        self._verifyResourceProperties(variable, RESOURCE)
+
+    def test_reload_w_empty_resource(self):
+        RESOURCE = {}
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        config = Config(name=self.CONFIG_NAME, client=client)
+        variable = self._makeOne(name=self.VARIABLE_NAME, config=config)
+
+        variable.reload()
+
+        # Name should not be overwritten.
+        self.assertEqual(self.VARIABLE_NAME, variable.name)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % (self.PATH,))
+        self._verifyResourceProperties(variable, RESOURCE)
+
+    def test_reload_w_alternate_client(self):
+        RESOURCE = {
+            'name': self.PATH,
+            'value': 'bXktdmFyaWFibGUtdmFsdWU=',  # base64 my-variable-value
+            'updateTime': '2016-04-14T21:21:54.5000Z',
+            'state': 'VARIABLE_STATE_UNSPECIFIED',
+        }
+        conn1 = _Connection()
+        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
+        CONFIG1 = Config(name=self.CONFIG_NAME, client=CLIENT1)
+        conn2 = _Connection(RESOURCE)
+        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        variable = self._makeOne(name=self.VARIABLE_NAME, config=CONFIG1)
+
+        variable.reload(client=CLIENT2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % (self.PATH,))
+        self._verifyResourceProperties(variable, RESOURCE)
+
+
+class _Client(object):
+
+    connection = None
+
+    def __init__(self, project, connection=None):
+        self.project = project
+        self.connection = connection
+
+
+class _Connection(object):
+
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
+
+    def api_request(self, **kw):
+        from google.cloud.exceptions import NotFound
+        self._requested.append(kw)
+
+        try:
+            response, self._responses = self._responses[0], self._responses[1:]
+        except:
+            raise NotFound('miss')
+        else:
+            return response
