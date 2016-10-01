@@ -1,0 +1,44 @@
+Python Client for Google Cloud RuntimeConfig
+============================================
+
+    Python idiomatic client for `Google Cloud RuntimeConfig`_
+
+.. _Google Cloud RuntimeConfig: https://cloud.google.com/deployment-manager/runtime-configurator/
+
+-  `Documentation`_
+
+.. _Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+
+Quick Start
+-----------
+
+::
+
+    $ pip install --upgrade google-cloud-runtimeconfig
+
+Authentication
+--------------
+
+With ``google-cloud-python`` we try to make authentication as painless as
+possible. Check out the `Authentication section`_ in our documentation to
+learn more. You may also find the `authentication document`_ shared by all
+the ``google-cloud-*`` libraries to be helpful.
+
+.. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
+
+Using the API
+-------------
+
+The Google Cloud `RuntimeConfig`_ (`RuntimeConfig API docs`_) API enables
+developers to dynamically configure and expose variables through Google Cloud
+Platform. In addition, you can also set Watchers and Waiters that will watch
+for changes to your data and return based on certain conditions.
+
+.. _RuntimeConfig: https://cloud.google.com/deployment-manager/runtime-configurator/
+.. _RuntimeConfig API docs: https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/
+
+See the ``google-cloud-python`` API `runtimeconfig documentation`_ to learn
+how to interact with Cloud RuntimeConfig using this Client Library.
+
+.. _RuntimeConfig documentation: https://google-cloud-python.readthedocs.io/en/stable/runtimeconfig-usage.html

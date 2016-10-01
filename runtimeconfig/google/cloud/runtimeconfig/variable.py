@@ -1,0 +1,233 @@
+# Copyright 2016 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""Create / interact with Google Cloud RuntimeConfig variables.
+
+.. data:: STATE_UNSPECIFIED
+
+    The default variable state.  See:
+    https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables#VariableState
+
+.. data:: STATE_UPDATED
+
+    Indicates the variable was updated, while `variables.watch` was executing.
+    See:
+    https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables#VariableState
+
+.. data:: STATE_DELETED
+
+    Indicates the variable was deleted, while `variables.watch`_ was executing.
+    See:
+    https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables#VariableState
+
+.. _variables.watch:
+    https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables/watch
+"""
+
+import base64
+
+from google.cloud._helpers import _rfc3339_to_datetime
+from google.cloud.exceptions import NotFound
+from google.cloud.runtimeconfig._helpers import variable_name_from_full_name
+
+
+STATE_UNSPECIFIED = 'VARIABLE_STATE_UNSPECIFIED'
+STATE_UPDATED = 'UPDATED'
+STATE_DELETED = 'DELETED'
+
+
+class Variable(object):
+    """A variable in the Cloud RuntimeConfig service.
+
+    See:
+    https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables
+
+    :type name: str
+    :param name: The name of the variable.  This corresponds to the
+                 unique path of the variable in the config.
+
+    :type config: :class:`google.cloud.runtimeconfig.config.Config`
+    :param config: The config to which this variable belongs.
+    """
+
+    def __init__(self, name, config):
+        self.name = name
+        self.config = config
+        self._properties = {}
+
+    @classmethod
+    def from_api_repr(cls, resource, config):
+        """Factory:  construct a Variable given its API representation
+
+        :type resource: dict
+        :param resource: change set representation returned from the API.
+
+        :type config: :class:`google.cloud.runtimeconfig.config.Config`
+        :param config: The config to which this variable belongs.
+
+        :rtype: :class:`google.cloud.runtimeconfig.variable.Variable`
+        :returns: Variable parsed from ``resource``.
+        """
+        name = variable_name_from_full_name(resource.get('name'))
+        variable = cls(name=name, config=config)
+        variable._set_properties(resource=resource)
+        return variable
+
+    @property
+    def full_name(self):
+        """Fully-qualified name of this variable.
+
+        Example:
+        ``projects/my-project/configs/my-config/variables/my-var``
+
+        :rtype: str
+        :returns: The full name based on config and variable names.
+
+        :raises: :class:`ValueError` if the variable is missing a name.
+        """
+        if not self.name:
+            raise ValueError('Missing variable name.')
+        return '%s/variables/%s' % (self.config.full_name, self.name)
+
+    @property
+    def path(self):
+        """URL path for the variable's APIs.
+
+        :rtype: str
+        :returns: The URL path based on config and variable names.
+        """
+        return '/%s' % (self.full_name,)
+
+    @property
+    def client(self):
+        """The client bound to this variable."""
+        return self.config.client
+
+    @property
+    def value(self):
+        """Value of the variable, as bytes.
+
+        See:
+        https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables
+
+        :rtype: bytes or ``NoneType``
+        :returns: The value of the variable or ``None`` if the property
+                  is not set locally.
+        """
+        value = self._properties.get('value')
+        if value is not None:
+            value = base64.b64decode(value)
+        return value
+
+    @property
+    def state(self):
+        """Retrieve the state of the variable.
+
+        See:
+        https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables#VariableState
+
+        :rtype: str
+        :returns:
+            If set, one of "UPDATED", "DELETED", or
+            "VARIABLE_STATE_UNSPECIFIED", else ``None``.
+        """
+        return self._properties.get('state')
+
+    @property
+    def update_time(self):
+        """Retrieve the timestamp at which the variable was updated.
+
+        See:
+        https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp, or
+                  ``None`` if the property is not set locally.
+        """
+        value = self._properties.get('updateTime')
+        if value is not None:
+            value = _rfc3339_to_datetime(value)
+        return value
+
+    def _require_client(self, client):
+        """Check client or verify over-ride.
+
+        :type client: :class:`google.cloud.runtimconfig.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the current zone.
+
+        :rtype: :class:`google.cloud.runtimeconfig.client.Client`
+        :returns: The client passed in or the currently bound client.
+        """
+        if client is None:
+            client = self.client
+        return client
+
+    def _set_properties(self, resource):
+        """Update properties from resource in body of ``api_response``
+
+        :type resource: dict
+        :param resource: variable representation returned from the API.
+        """
+        self._properties.clear()
+        cleaned = resource.copy()
+        if 'name' in cleaned:
+            self.name = variable_name_from_full_name(cleaned.pop('name'))
+        self._properties.update(cleaned)
+
+    def exists(self, client=None):
+        """API call:  test for the existence of the variable via a GET request
+
+        See:
+        https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables/get
+
+        :type client: :class:`~google.cloud.runtimeconfig.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the variable's config.
+
+        :rtype: bool
+        :returns: True if the variable exists in Cloud RuntimeConfig.
+        """
+        client = self._require_client(client)
+        try:
+            # We only need the status code (200 or not) so we seek to
+            # minimize the returned payload.
+            query_params = {'fields': 'name'}
+            client.connection.api_request(method='GET', path=self.path,
+                                          query_params=query_params)
+            return True
+        except NotFound:
+            return False
+
+    def reload(self, client=None):
+        """API call:  reload the variable via a ``GET`` request.
+
+        This method will reload the newest data for the variable.
+
+        See:
+        https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs/get
+
+        :type client: :class:`google.cloud.runtimeconfig.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            client stored on the current config.
+        """
+        client = self._require_client(client)
+
+        # We assume the variable exists. If it doesn't it will raise a NotFound
+        # exception.
+        resp = client.connection.api_request(method='GET', path=self.path)
+        self._set_properties(resource=resp)
