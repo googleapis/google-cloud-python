@@ -35,6 +35,7 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery._helpers import _rows_from_json
 
 
+_TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'table.reload()'"
 _MARKER = object()
 
 
@@ -736,7 +737,11 @@ class Table(object):
                   identifies the row, and the "errors" key contains a list
                   of the mappings describing one or more problems with the
                   row.
+        :raises: ValueError if table's schema is not set
         """
+        if len(self._schema) == 0:
+            raise ValueError(_TABLE_HAS_NO_SCHEMA)
+
         client = self._require_client(client)
         rows_info = []
         data = {'rows': rows_info}
