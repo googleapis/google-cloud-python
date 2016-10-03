@@ -5,53 +5,11 @@ install:
   - pip install --upgrade pip tox
 
 script:
-  - (cd core && tox -e py27)
-  - (cd bigtable && tox -e py27)
-  - (cd storage && tox -e py27)
-  - (cd datastore && tox -e py27)
-  - (cd bigquery && tox -e py27)
-  - (cd pubsub && tox -e py27)
-  - (cd logging && tox -e py27)
-  - (cd dns && tox -e py27)
-  - (cd language && tox -e py27)
-  - (cd error_reporting && tox -e py27)
-  - (cd resource_manager && tox -e py27)
-  - (cd monitoring && tox -e py27)
-  - (cd vision && tox -e py27)
-  - (cd translate && tox -e py27)
-  - (cd speech && tox -e py27)
-  - (cd core && tox -e py34)
-  - (cd bigtable && tox -e py34)
-  - (cd storage && tox -e py34)
-  - (cd datastore && tox -e py34)
-  - (cd bigquery && tox -e py34)
-  - (cd pubsub && tox -e py34)
-  - (cd logging && tox -e py34)
-  - (cd dns && tox -e py34)
-  - (cd language && tox -e py34)
-  - (cd error_reporting && tox -e py34)
-  - (cd resource_manager && tox -e py34)
-  - (cd monitoring && tox -e py34)
-  - (cd vision && tox -e py34)
-  - (cd translate && tox -e py34)
-  - (cd speech && tox -e py34)
+  - tox -e py27
+  - tox -e py34
   - tox -e lint
   - tox -e cover
-  - (cd core && tox -e cover)
-  - (cd bigtable && tox -e cover)
-  - (cd storage && tox -e cover)
-  - (cd datastore && tox -e cover)
-  - (cd bigquery && tox -e cover)
-  - (cd pubsub && tox -e cover)
-  - (cd logging && tox -e cover)
-  - (cd dns && tox -e cover)
-  - (cd language && tox -e cover)
-  - (cd error_reporting && tox -e cover)
-  - (cd resource_manager && tox -e cover)
-  - (cd monitoring && tox -e cover)
-  - (cd vision && tox -e cover)
-  - (cd translate && tox -e cover)
-  - (cd speech && tox -e cover)
+  - tox -e isolated-cover
   - tox -e system-tests
   - tox -e system-tests3
   - scripts/update_docs.sh
