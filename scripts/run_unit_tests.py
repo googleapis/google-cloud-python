@@ -26,6 +26,12 @@ import os
 import subprocess
 import sys
 
+from script_utils import check_output
+from script_utils import get_changed_packages
+from script_utils import in_travis
+from script_utils import in_travis_pr
+from script_utils import travis_branch
+
 
 PROJECT_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..'))
@@ -42,24 +48,6 @@ ACCEPTED_VERSIONS = {
     (3, 5): 'py35',
 }
 UNSET_SENTINEL = object()  # Sentinel for argparser
-
-
-def check_output(*args):
-    """Run a command on the operation system.
-
-    :type args: tuple
-    :param args: Keyword arguments to pass to ``subprocess.check_output``.
-
-    :rtype: str
-    :returns: The raw STDOUT from the command (converted from bytes
-              if necessary).
-    """
-    cmd_output = subprocess.check_output(args)
-    # On Python 3, this returns bytes (from STDOUT), so we
-    # convert to a string.
-    cmd_output = cmd_output.decode('utf-8')
-    # Also strip the output since it usually has a trailing newline.
-    return cmd_output.strip()
 
 
 def get_package_directories():
@@ -81,6 +69,30 @@ def get_package_directories():
         if package not in IGNORED_DIRECTORIES:
             result.append(package)
     return result
+
+
+def get_travis_directories(package_list):
+    """Get list of packages that need to be tested on Travis CI.
+
+    See: https://travis-ci.com/
+
+    If the current Travis build is for a pull request (PR), this will
+    limit the directories to the ones impacted by the PR. Otherwise
+    it will just test all package directories.
+
+    :type package_list: list
+    :param package_list: The list of **all** valid packages with unit tests.
+
+    :rtype: list
+    :returns: A list of all package directories where tests
+              need to be run.
+    """
+    if in_travis_pr():
+        pr_against_branch = travis_branch()
+        return get_changed_packages('HEAD', pr_against_branch,
+                                    package_list)
+    else:
+        return package_list
 
 
 def verify_packages(subset, all_packages):
@@ -107,6 +119,9 @@ def get_test_packages():
     Filters the package list in the following order:
 
     * Check command line for packages passed in as positional arguments
+    * Check if in Travis, then limit the subset based on changes
+      in a Pull Request ("push" builds to branches may not have
+      any filtering)
     * Just use all packages
 
     :rtype: list
@@ -120,6 +135,8 @@ def get_test_packages():
     if args.packages is not UNSET_SENTINEL:
         verify_packages(args.packages, all_packages)
         return sorted(args.packages)
+    elif in_travis():
+        return get_travis_directories(all_packages)
     else:
         return all_packages
 
