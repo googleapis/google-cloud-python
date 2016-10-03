@@ -145,5 +145,82 @@ words to the vocabulary of the recognizer.
     transcript: Hello, this is a test
     confidence: 0.81
 
+
+Streaming Recognition
+---------------------
+
+The :meth:`~google.cloud.speech.Client.stream_recognize` method converts speech
+data to possible text alternatives on the fly.
+
+.. note::
+    Streaming recognition requests are limited to 1 minute of audio.
+
+    See: https://cloud.google.com/speech/limits#content
+
+    >>> import io
+    >>> from google.cloud import speech
+    >>> from google.cloud.speech.encoding import Encoding
+    >>> client = speech.Client()
+    >>> with io.open('./hello.wav', 'rb') as stream:
+    >>>     sample = client.sample(stream=stream, encoding=Encoding.LINEAR16,
+    ...                            sample_rate=16000)
+    >>>     stream_container = client.stream_recognize(sample)
+    >>> print(stream_container)
+    <google.cloud.speech.streaming.container.StreamingResponseContainer object at 0x10538ee10>
+    >>> print(stream_container.responses)
+    {0: <google.cloud.speech.streaming.response.StreamingSpeechResponse object at 0x10f9ac9d0>}
+    >>> print(stream_container.responses[0].results[0].alternatives[0].confidence)
+    0.698092460632
+    >>> print(stream_container.is_finished)
+    True
+    >>> print stream_container.get_full_text()
+    hello
+
+By default the recognizer will perform continuous recognition
+(continuing to process audio even if the user pauses speaking) until the client
+closes the output stream or when the maximum time limit has been reached.
+
+If you only want to recognize a single utterance you can set
+ ``single_utterance`` to ``True`` and only one result will be returned.
+
+See: `Single Utterance`_
+
+.. code-block:: python
+
+    >>> with io.open('./hello_pause_goodbye.wav', 'rb') as stream:
+    >>>     sample = client.sample(stream=stream, encoding=Encoding.LINEAR16,
+    ...                            sample_rate=16000)
+    >>>     stream_container = client.stream_recognize(sample,
+    ...                                                single_utterance=True)
+    >>> print(stream_container.get_full_text())
+    hello
+
+
+If ``interim_results`` is set to ``True``, interim results
+(tentative hypotheses) may be returned as they become available.
+
+  .. code-block:: python
+
+    >>> with io.open('./hello_pause_goodbye.wav', 'rb') as stream:
+    >>>     sample = client.sample(stream=stream, encoding=Encoding.LINEAR16,
+    ...                            sample_rate=16000)
+    >>>     stream_container = client.stream_recognize(sample,
+    ...                                                interim_results=True)
+    >>> print(stream_container.get_full_text())
+    hello
+
+    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
+    ...                        encoding=Encoding.FLAC,
+    ...                        sample_rate=44100)
+    >>> results = client.stream_recognize(sample, interim_results=True)
+    >>> print(stream_container.responses[0].results[0].alternatives[0].transcript)
+    how
+    print(stream_container.responses[1].results[0].alternatives[0].transcript)
+    hello
+    >>> print(stream_container.responses[1].results[2].is_final)
+    True
+
+
+.. _Single Utterance: https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#streamingrecognitionconfig
 .. _sync_recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize
 .. _Speech Asynchronous Recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize

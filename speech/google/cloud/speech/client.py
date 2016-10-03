@@ -14,15 +14,30 @@
 
 """Basic client for Google Cloud Speech API."""
 
+import os
 from base64 import b64encode
 
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
 from google.cloud import client as client_module
+from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.speech.connection import Connection
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
+from google.cloud.speech.streaming.request import _make_request_stream
 from google.cloud.speech.sample import Sample
+from google.cloud.speech.streaming.container import StreamingResponseContainer
+
+try:
+    from google.cloud.gapic.speech.v1beta1.speech_api import SpeechApi
+except ImportError:  # pragma: NO COVER
+    _HAVE_GAX = False
+else:
+    _HAVE_GAX = True
+
+
+_DISABLE_GAX = os.getenv(DISABLE_GRPC, False)
+_USE_GAX = _HAVE_GAX and not _DISABLE_GAX
 
 
 class Client(client_module.Client):
@@ -47,6 +62,7 @@ class Client(client_module.Client):
     """
 
     _connection_class = Connection
+    _speech_api = None
 
     def async_recognize(self, sample, language_code=None,
                         max_alternatives=None, profanity_filter=None,
@@ -104,7 +120,7 @@ class Client(client_module.Client):
         return Operation.from_api_repr(self, api_response)
 
     @staticmethod
-    def sample(content=None, source_uri=None, encoding=None,
+    def sample(content=None, source_uri=None, stream=None, encoding=None,
                sample_rate=None):
         """Factory: construct Sample to use when making recognize requests.
 
@@ -117,6 +133,9 @@ class Client(client_module.Client):
                            Currently, only Google Cloud Storage URIs are
                            supported, which must be specified in the following
                            format: ``gs://bucket_name/object_name``.
+
+        :type stream: :class:`io.BufferedReader`
+        :param stream: File like object to read audio data from.
 
         :type encoding: str
         :param encoding: encoding of audio data sent in all RecognitionAudio
@@ -135,7 +154,7 @@ class Client(client_module.Client):
         :rtype: :class:`~google.cloud.speech.sample.Sample`
         :returns: Instance of ``Sample``.
         """
-        return Sample(content=content, source_uri=source_uri,
+        return Sample(content=content, source_uri=source_uri, stream=stream,
                       encoding=encoding, sample_rate=sample_rate)
 
     def sync_recognize(self, sample, language_code=None,
@@ -198,6 +217,108 @@ class Client(client_module.Client):
             return api_response['results'][0]['alternatives']
         else:
             raise ValueError('result in api should have length 1')
+
+    def stream_recognize(self, sample, language_code=None,
+                         max_alternatives=None, profanity_filter=None,
+                         speech_context=None, single_utterance=False,
+                         interim_results=False):
+        """Streaming speech recognition.
+
+        .. note::
+            Streaming recognition requests are limited to 1 minute of audio.
+
+            See: https://cloud.google.com/speech/limits#content
+
+        :type sample: :class:`~google.cloud.speech.sample.Sample`
+        :param sample: Instance of ``Sample`` containing audio information.
+
+        :type language_code: str
+        :param language_code: (Optional) The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-GB'``.
+                              If omitted, defaults to ``'en-US'``.
+
+        :type max_alternatives: int
+        :param max_alternatives: (Optional) Maximum number of recognition
+                                 hypotheses to be returned. The server may
+                                 return fewer than maxAlternatives.
+                                 Valid values are 0-30. A value of 0 or 1
+                                 will return a maximum of 1. Defaults to 1
+
+        :type profanity_filter: bool
+        :param profanity_filter: If True, the server will attempt to filter
+                                 out profanities, replacing all but the
+                                 initial character in each filtered word with
+                                 asterisks, e.g. ``'f***'``. If False or
+                                 omitted, profanities won't be filtered out.
+
+        :type speech_context: list
+        :param speech_context: A list of strings (max 50) containing words and
+                               phrases "hints" so that the speech recognition
+                               is more likely to recognize them. This can be
+                               used to improve the accuracy for specific words
+                               and phrases. This can also be used to add new
+                               words to the vocabulary of the recognizer.
+
+        :type single_utterance: boolean
+        :param single_utterance: [Optional] If false or omitted, the recognizer
+                                 will perform continuous recognition
+                                 (continuing to process audio even if the user
+                                 pauses speaking) until the client closes the
+                                 output stream (gRPC API) or when the maximum
+                                 time limit has been reached. Multiple
+                                 SpeechRecognitionResults with the is_final
+                                 flag set to true may be returned.
+
+                                 If true, the recognizer will detect a single
+                                 spoken utterance. When it detects that the
+                                 user has paused or stopped speaking, it will
+                                 return an END_OF_UTTERANCE event and cease
+                                 recognition. It will return no more than one
+                                 SpeechRecognitionResult with the is_final flag
+                                 set to true.
+
+        :type interim_results: boolean
+        :param interim_results: [Optional] If true, interim results (tentative
+                                hypotheses) may be returned as they become
+                                available (these interim results are indicated
+                                with the is_final=false flag). If false or
+                                omitted, only is_final=true result(s) are
+                                returned.
+
+        :rtype: :class:`~streaming.StreamingResponseContainer`
+        :returns: An instance of ``StreamingReponseContainer``.
+
+        """
+        if not _USE_GAX:
+            raise EnvironmentError('GRPC is required to use this API.')
+
+        if sample.stream.closed:
+            raise ValueError('Stream is closed.')
+
+        requests = _make_request_stream(sample, language_code=language_code,
+                                        max_alternatives=max_alternatives,
+                                        profanity_filter=profanity_filter,
+                                        speech_context=speech_context,
+                                        single_utterance=single_utterance,
+                                        interim_results=interim_results)
+
+        responses = StreamingResponseContainer()
+        for response in self.speech_api.streaming_recognize(requests):
+            if response:
+                responses.add_response(response)
+
+        return responses
+
+    @property
+    def speech_api(self):
+        """Instance of Speech API.
+
+        :rtype: :class:`google.cloud.gapic.speech.v1beta1.speech_api.SpeechApi`
+        :returns: Instance of ``SpeechApi``.
+        """
+        if not self._speech_api:
+            self._speech_api = SpeechApi()
+        return self._speech_api
 
 
 def _build_request_data(sample, language_code=None, max_alternatives=None,

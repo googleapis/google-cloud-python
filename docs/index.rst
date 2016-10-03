@@ -176,6 +176,7 @@
   speech-encoding
   speech-metadata
   speech-operation
+  speech-streaming
   speech-sample
   speech-transcript
 
