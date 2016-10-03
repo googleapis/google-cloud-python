@@ -353,7 +353,7 @@ class Query(object):
             client = self._client
 
         if not self.project:
-            msg = ("Project cannot be emtpy, either provide it as query"
+            msg = ("Project cannot be empty, either provide it at query"
                    "construction time or through the client")
             raise ValueError(msg)
 
