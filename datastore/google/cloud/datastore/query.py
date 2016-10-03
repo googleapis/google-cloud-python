@@ -29,7 +29,8 @@ class Query(object):
     stored in the Cloud Datastore.
 
     :type client: :class:`google.cloud.datastore.client.Client`
-    :param client: The client used to connect to Datastore.
+    :param client: The client used to connect to Datastore. If the client is
+                   empty, it must be provided during the fetch call.
 
     :type kind: string
     :param kind: The kind to query.
@@ -85,7 +86,7 @@ class Query(object):
 
         self._client = client
         self._kind = kind
-        self._project = project or client.project
+        self._project = project or getattr(self._client, 'project', None)
         self._namespace = namespace or getattr(self._client, 'namespace', None)
         self._ancestor = ancestor
         self._filters = []
@@ -103,7 +104,7 @@ class Query(object):
         :rtype: str
         :returns: The project for the query.
         """
-        return self._project or self._client.project
+        return self._project or getattr(self._client, 'project', None)
 
     @property
     def namespace(self):
@@ -350,6 +351,11 @@ class Query(object):
         """
         if client is None:
             client = self._client
+
+        if not self.project:
+            msg = ("Project cannot be emtpy, either provide it as query"
+                   "construction time or through the client")
+            raise ValueError(msg)
 
         return Iterator(
             self, client, limit, offset, start_cursor, end_cursor)
