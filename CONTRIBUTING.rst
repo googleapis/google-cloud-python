@@ -151,8 +151,8 @@ Coding Style
 - In order to make ``tox -e lint`` run faster, you can set some environment
   variables::
 
-   export GOOGLE_CLOUD_REMOTE_FOR_LINT="upstream"
-   export GOOGLE_CLOUD_BRANCH_FOR_LINT="master"
+   export GOOGLE_CLOUD_TESTING_REMOTE="upstream"
+   export GOOGLE_CLOUD_TESTING_BRANCH="master"
 
   By doing this, you are specifying the location of the most up-to-date
   version of ``google-cloud-python``. The the suggested remote name ``upstream``

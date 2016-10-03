@@ -29,6 +29,12 @@ import os
 import subprocess
 import sys
 
+from script_utils import LOCAL_BRANCH_ENV
+from script_utils import LOCAL_REMOTE_ENV
+from script_utils import in_travis
+from script_utils import in_travis_pr
+from script_utils import travis_branch
+
 
 IGNORED_DIRECTORIES = [
     os.path.join('bigtable', 'google', 'cloud', 'bigtable', '_generated'),
@@ -143,14 +149,14 @@ def get_files_for_linting(allow_limited=True):
     against for changed files. (This requires ``allow_limited=True``.)
 
     To speed up linting on Travis pull requests against master, we manually
-    set the diff base to origin/master. We don't do this on non-pull requests
-    since origin/master will be equivalent to the currently checked out code.
-    One could potentially use ${TRAVIS_COMMIT_RANGE} to find a diff base but
-    this value is not dependable.
+    set the diff base to the branch the pull request is against. We don't do
+    this on "push" builds since "master" will be the currently checked out
+    code. One could potentially use ${TRAVIS_COMMIT_RANGE} to find a diff base
+    but this value is not dependable.
 
-    To allow faster local ``tox`` runs, the environment variables
-    ``GOOGLE_CLOUD_REMOTE_FOR_LINT`` and ``GOOGLE_CLOUD_BRANCH_FOR_LINT`` can
-    be set to specify a remote branch to diff against.
+    To allow faster local ``tox`` runs, the local remote and local branch
+    environment variables can be set to specify a remote branch to diff
+    against.
 
     :type allow_limited: bool
     :param allow_limited: Boolean indicating if a reduced set of files can
@@ -161,15 +167,15 @@ def get_files_for_linting(allow_limited=True):
               linted.
     """
     diff_base = None
-    if (os.getenv('TRAVIS_BRANCH') == 'master' and
-            os.getenv('TRAVIS_PULL_REQUEST') != 'false'):
-        # In the case of a pull request into master, we want to
-        # diff against HEAD in master.
-        diff_base = 'origin/master'
-    elif os.getenv('TRAVIS') is None:
+    if in_travis():
+        # In the case of a pull request into a branch, we want to
+        # diff against HEAD in that branch.
+        if in_travis_pr():
+            diff_base = travis_branch()
+    else:
         # Only allow specified remote and branch in local dev.
-        remote = os.getenv('GOOGLE_CLOUD_REMOTE_FOR_LINT')
-        branch = os.getenv('GOOGLE_CLOUD_BRANCH_FOR_LINT')
+        remote = os.getenv(LOCAL_REMOTE_ENV)
+        branch = os.getenv(LOCAL_BRANCH_ENV)
         if remote is not None and branch is not None:
             diff_base = '%s/%s' % (remote, branch)
 
