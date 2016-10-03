@@ -8,16 +8,29 @@ Contributing
 
 Here are some guidelines for hacking on ``google-cloud-python``.
 
+Adding Features
+---------------
+
+In order to add a feature to ``google-cloud-python``:
+
+- The feature must be documented in both the API and narrative
+  documentation (in ``docs/``).
+
+- The feature must work fully on the following CPython versions:  2.7,
+  3.4, and 3.5 on both UNIX and Windows.
+
+- The feature must not add unnecessary dependencies (where
+  "unnecessary" is of course subjective, but new dependencies should
+  be discussed).
+
 Using a Development Checkout
 ----------------------------
 
-You'll have to create a development environment to hack on ``google-cloud-python``,
-using a Git checkout:
+You'll have to create a development environment to hack on
+``google-cloud-python``, using a Git checkout:
 
-- While logged into your GitHub account, navigate to the ``google-cloud-python`` repo
-  on GitHub.
-
-  https://github.com/GoogleCloudPlatform/google-cloud-python
+- While logged into your GitHub account, navigate to the
+  ``google-cloud-python`` `repo`_ on GitHub.
 
 - Fork and clone the ``google-cloud-python`` repository to your GitHub account by
   clicking the "Fork" button.
@@ -41,6 +54,8 @@ repo, from which you can submit a pull request.
 
 To work on the codebase and run the tests, we recommend using ``tox``,
 but you can also use a ``virtualenv`` of your own creation.
+
+.. _repo: https://github.com/GoogleCloudPlatform/google-cloud-python
 
 Using a custom ``virtualenv``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -96,6 +111,19 @@ Using ``tox``
   by the ``tox`` environment, so if you make changes, you'll need
   to again ``--recreate`` the environment.
 
+- To run unit tests on a restricted set of packages::
+
+    $ tox -e py27 -- core datastore
+
+  Alternatively, you can just navigate directly to the package you are
+  currently developing and run tests there::
+
+    $ export GIT_ROOT=$(pwd)
+    $ cd ${GIT_ROOT}/core/
+    $ tox -e py27
+    $ cd ${GIT_ROOT}/datastore/
+    $ tox -e py27
+
 Note on Editable Installs / Develop Mode
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -123,21 +151,6 @@ install ``python-dev`` and try again.
 On Debian/Ubuntu::
 
   $ sudo apt-get install python-dev
-
-Adding Features
----------------
-
-In order to add a feature to ``google-cloud-python``:
-
-- The feature must be documented in both the API and narrative
-  documentation (in ``docs/``).
-
-- The feature must work fully on the following CPython versions:  2.7,
-  3.4, and 3.5 on both UNIX and Windows.
-
-- The feature must not add unnecessary dependencies (where
-  "unnecessary" is of course subjective, but new dependencies should
-  be discussed).
 
 Coding Style
 ------------
@@ -170,20 +183,24 @@ Running Tests
 
 - To run all tests for ``google-cloud-python`` on a single Python version, run
   ``py.test`` from your development virtualenv (See
-  *Using a Development Checkout* above).
+  `Using a Development Checkout`_ above).
+
+.. _Using a Development Checkout: #using-a-development-checkout
 
 - To run the full set of ``google-cloud-python`` tests on all platforms, install
-  ``tox`` (https://testrun.org/tox/) into a system Python.  The ``tox`` console
-  script will be installed into the scripts location for that Python.  While
-  ``cd``'ed to the ``google-cloud-python`` checkout root directory (it contains
-  ``tox.ini``), invoke the ``tox`` console script.  This will read the
-  ``tox.ini`` file and execute the tests on multiple Python versions and
-  platforms; while it runs, it creates a virtualenv for each version/platform
-  combination.  For example::
+  ``tox`` (https://tox.readthedocs.io/en/latest/) into a system Python.  The
+  ``tox`` console script will be installed into the scripts location for that
+  Python.  While ``cd``'-ed to the ``google-cloud-python`` checkout root
+  directory (it contains ``tox.ini``), invoke the ``tox`` console script.
+  This will read the ``tox.ini`` file and execute the tests on multiple
+  Python versions and platforms; while it runs, it creates a ``virtualenv`` for
+  each version/platform combination.  For example::
 
    $ sudo --set-home /usr/bin/pip install tox
    $ cd ${HOME}/hack-on-google-cloud-python/
    $ /usr/bin/tox
+
+.. _Using a Development Checkout: #using-a-development-checkout
 
 Running System Tests
 --------------------
