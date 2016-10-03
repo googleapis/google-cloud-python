@@ -16,6 +16,9 @@
 
 set -ev
 
+GH_OWNER="GoogleCloudPlatform"
+GH_PROJECT_NAME="google-cloud-python"
+
 #########################################
 # Only update docs if we are on Travis. #
 #########################################
