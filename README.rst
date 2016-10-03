@@ -12,8 +12,8 @@ Google Cloud Python Client
 -  `Read The Docs Documentation`_
 
 .. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
-.. _Read The Docs Documentation: http://google-cloud-python.readthedocs.io/en/stable/
+.. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/
+.. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/stable/
 
 This client supports the following Google Cloud Platform services:
 
@@ -30,6 +30,7 @@ This client supports the following Google Cloud Platform services:
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Translate`_ (`Translate README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)
+-  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 
 .. _Google Cloud Datastore: https://pypi.python.org/pypi/google-cloud-datastore
 .. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
@@ -57,6 +58,8 @@ This client supports the following Google Cloud Platform services:
 .. _Translate README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/translate
 .. _Google Cloud Vision: https://pypi.python.org/pypi/google-cloud-vision
 .. _Vision README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/vision
+.. _Google Cloud Bigtable - HappyBase: https://pypi.python.org/pypi/google-cloud-happybase/
+.. _HappyBase README: https://github.com/GoogleCloudPlatform/google-cloud-python-happybase
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
@@ -88,7 +91,7 @@ Check out the `Authentication section`_ in our documentation to learn more.
 You may also find the `authentication document`_ shared by all the
 ``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Contributing

@@ -52,6 +52,7 @@ SETUP_BASE = {
 REQUIREMENTS = [
     'google-cloud-bigquery >= 0.20.0',
     'google-cloud-bigtable >= 0.20.0',
+    'google-cloud-happybase >= 0.20.0',
     'google-cloud-core >= 0.20.0',
     'google-cloud-datastore >= 0.20.0',
     'google-cloud-dns >= 0.20.0',
