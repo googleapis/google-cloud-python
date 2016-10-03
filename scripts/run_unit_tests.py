@@ -150,7 +150,7 @@ def main():
             msg_parts.append('- ' + package)
         msg = '\n'.join(msg_parts)
         print(msg, file=sys.stderr)
-        sys.exit(len(failed_packages))
+        sys.exit(1)
 
 
 if __name__ == '__main__':
