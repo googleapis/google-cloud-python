@@ -35,9 +35,13 @@ IGNORED_DIRECTORIES = (
     'scripts',
     'system_tests',
 )
-ENV_REMAP = {
-    'isolated-cover': 'cover',
+TOX_ENV_VAR = 'TOXENV'
+ACCEPTED_VERSIONS = {
+    (2, 7): 'py27',
+    (3, 4): 'py34',
+    (3, 5): 'py35',
 }
+UNSET_SENTINEL = object()  # Sentinel for argparser
 
 
 def check_output(*args):
@@ -79,6 +83,47 @@ def get_package_directories():
     return result
 
 
+def verify_packages(subset, all_packages):
+    """Verify that a subset of packages are among all packages.
+
+    :type subset: list
+    :param subset: List of a subset of package names.
+
+    :type all_packages: list
+    :param all_packages: List of all package names.
+
+    :raises: :class:`~exceptions.ValueError` if there are unknown packages
+             in ``subset``
+    """
+    left_out = set(subset) - set(all_packages)
+    if left_out:
+        raise ValueError('Unknown packages',
+                         sorted(left_out))
+
+
+def get_test_packages():
+    """Get a list of packages which need tests run.
+
+    Filters the package list in the following order:
+
+    * Check command line for packages passed in as positional arguments
+    * Just use all packages
+
+    :rtype: list
+    :returns: A list of all package directories where tests
+              need be run.
+    """
+    all_packages = get_package_directories()
+
+    parser = get_parser()
+    args = parser.parse_args()
+    if args.packages is not UNSET_SENTINEL:
+        verify_packages(args.packages, all_packages)
+        return sorted(args.packages)
+    else:
+        return all_packages
+
+
 def run_package(package, tox_env):
     """Run tox environment for a given package.
 
@@ -111,28 +156,60 @@ def get_parser():
     description = 'Run tox environment(s) in all sub-packages.'
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
-        '--tox-env-dir', dest='tox_env_dir',
-        help='The current tox environment directory.')
+        '--tox-env', dest='tox_env',
+        help='The tox environment(s) to run in sub-packages.')
+    packages_help = 'Optional list of sub-packages to be tested.'
+    parser.add_argument('packages', nargs='*',
+                        default=UNSET_SENTINEL, help=packages_help)
     return parser
+
+
+def get_tox_env_from_version():
+    """Get ``tox`` environment from the current Python version.
+
+    :rtype: str
+    :returns: The current ``tox`` environment to be used, e.g. ``"py27"``.
+    :raises: :class:`EnvironmentError` if the first two options
+             don't yield any value and the current version of
+             Python is not in ``ACCEPTED_VERSIONS``.
+    """
+    version_info = sys.version_info[:2]
+    try:
+        return ACCEPTED_VERSIONS[version_info]
+    except KeyError:
+        raise EnvironmentError(
+            'Invalid Python version', version_info,
+            'Accepted versions are',
+            sorted(ACCEPTED_VERSIONS.keys()))
 
 
 def get_tox_env():
     """Get the environment to be used with ``tox``.
+
+    Tries to infer the ``tox`` environment in the following order
+
+    * From the ``--tox-env`` command line flag
+    * From the ``TOXENV`` environment variable
+    * From the version of the current running Python
 
     :rtype: str
     :returns: The current ``tox`` environment to be used, e.g. ``"py27"``.
     """
     parser = get_parser()
     args = parser.parse_args()
-    env_dir = args.tox_env_dir
-    _, tox_env = os.path.split(env_dir)
-    tox_env = ENV_REMAP.get(tox_env, tox_env)
+    if args.tox_env is not None:
+        tox_env = args.tox_env
+    elif TOX_ENV_VAR in os.environ:
+        tox_env = os.environ[TOX_ENV_VAR]
+    else:
+        tox_env = get_tox_env_from_version()
+
     return tox_env
 
 
 def main():
     """Run all the unit tests that need to be run."""
-    packages_to_run = get_package_directories()
+    packages_to_run = get_test_packages()
     if not packages_to_run:
         print('No tests to run.')
         return
@@ -150,7 +227,7 @@ def main():
             msg_parts.append('- ' + package)
         msg = '\n'.join(msg_parts)
         print(msg, file=sys.stderr)
-        sys.exit(len(failed_packages))
+        sys.exit(1)
 
 
 if __name__ == '__main__':
