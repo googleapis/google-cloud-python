@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.table &mdash; google-cloud 938ac21 documentation</title>
+  <title>google.cloud.bigquery.table &mdash; google-cloud 4cc1d03 documentation</title>
   
 
   
@@ -32,7 +32,10 @@
   
 
   
-    <link rel="top" title="google-cloud 938ac21 documentation" href="../../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="google-cloud 4cc1d03 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -302,6 +305,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_rows_from_json</span>
 
 
+<span class="n">_TABLE_HAS_NO_SCHEMA</span> <span class="o">=</span> <span class="s2">&quot;Table has no schema:  call &#39;table.reload()&#39;&quot;</span>
 <span class="n">_MARKER</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
 
 
@@ -1003,7 +1007,11 @@
 <span class="sd">                  identifies the row, and the &quot;errors&quot; key contains a list</span>
 <span class="sd">                  of the mappings describing one or more problems with the</span>
 <span class="sd">                  row.</span>
+<span class="sd">        :raises: ValueError if table&#39;s schema is not set</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_TABLE_HAS_NO_SCHEMA</span><span class="p">)</span>
+
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">rows_info</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rows&#39;</span><span class="p">:</span> <span class="n">rows_info</span><span class="p">}</span>
@@ -1391,7 +1399,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'938ac21',
+            VERSION:'4cc1d03',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
