@@ -23,14 +23,17 @@ import os
 import subprocess
 import sys
 
+from run_pylint import get_files_for_linting
+
 
 def main():
     """Run pycodestyle on all Python files in the repository."""
     git_root = subprocess.check_output(
         ['git', 'rev-parse', '--show-toplevel']).strip()
     os.chdir(git_root)
-    python_files = subprocess.check_output(['git', 'ls-files', '*py'])
-    python_files = python_files.strip().split()
+    candidates, _ = get_files_for_linting()
+    python_files = [
+        candidate for candidate in candidates if candidate.endswith('.py')]
 
     pycodestyle_command = ['pycodestyle'] + python_files
     status_code = subprocess.call(pycodestyle_command)
