@@ -16,6 +16,8 @@
 
 set -ev
 
+GH_OWNER="GoogleCloudPlatform"
+GH_PROJECT_NAME="google-cloud-python"
 
 function buildDocs () {
   echo "Building JSON documentation..."
