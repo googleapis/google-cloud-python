@@ -45,40 +45,84 @@ requests)::
 """
 
 
+import six
+
+
 class Iterator(object):
     """A generic class for iterating through Cloud JSON APIs list responses.
 
     :type client: :class:`google.cloud.client.Client`
     :param client: The client, which owns a connection to make requests.
 
-    :type path: string
+    :type path: str
     :param path: The path to query for the list of items.
+
+    :type page_token: str
+    :param page_token: (Optional) A token identifying a page in a result set.
+
+    :type max_results: int
+    :param max_results: (Optional) The maximum number of results to fetch.
 
     :type extra_params: dict or None
     :param extra_params: Extra query string parameters for the API call.
     """
 
     PAGE_TOKEN = 'pageToken'
-    RESERVED_PARAMS = frozenset([PAGE_TOKEN])
+    MAX_RESULTS = 'maxResults'
+    RESERVED_PARAMS = frozenset([PAGE_TOKEN, MAX_RESULTS])
 
-    def __init__(self, client, path, extra_params=None):
+    def __init__(self, client, path, page_token=None,
+                 max_results=None, extra_params=None):
         self.client = client
         self.path = path
         self.page_number = 0
-        self.next_page_token = None
+        self.next_page_token = page_token
+        self.max_results = max_results
+        self.num_results = 0
         self.extra_params = extra_params or {}
         reserved_in_use = self.RESERVED_PARAMS.intersection(
             self.extra_params)
         if reserved_in_use:
             raise ValueError(('Using a reserved parameter',
                               reserved_in_use))
+        self._curr_items = iter(())
 
     def __iter__(self):
-        """Iterate through the list of items."""
-        while self.has_next_page():
+        """The :class:`Iterator` is an iterator."""
+        return self
+
+    def _update_items(self):
+        """Replace the current items iterator.
+
+        Intended to be used when the current items iterator is exhausted.
+
+        After replacing the iterator, consumes the first value to make sure
+        it is valid.
+
+        :rtype: object
+        :returns: The first item in the next iterator.
+        :raises: :class:`~exceptions.StopIteration` if there is no next page.
+        """
+        if self.has_next_page():
             response = self.get_next_page_response()
-            for item in self.get_items_from_response(response):
-                yield item
+            items = self.get_items_from_response(response)
+            self._curr_items = iter(items)
+            return six.next(self._curr_items)
+        else:
+            raise StopIteration
+
+    def next(self):
+        """Get the next value in the iterator."""
+        try:
+            item = six.next(self._curr_items)
+        except StopIteration:
+            item = self._update_items()
+
+        self.num_results += 1
+        return item
+
+    # Alias needed for Python 2/3 support.
+    __next__ = next
 
     def has_next_page(self):
         """Determines whether or not this iterator has more pages.
@@ -89,6 +133,10 @@ class Iterator(object):
         if self.page_number == 0:
             return True
 
+        if self.max_results is not None:
+            if self.num_results >= self.max_results:
+                return False
+
         return self.next_page_token is not None
 
     def get_query_params(self):
@@ -97,8 +145,11 @@ class Iterator(object):
         :rtype: dict
         :returns: A dictionary of query parameters.
         """
-        result = ({self.PAGE_TOKEN: self.next_page_token}
-                  if self.next_page_token else {})
+        result = {}
+        if self.next_page_token is not None:
+            result[self.PAGE_TOKEN] = self.next_page_token
+        if self.max_results is not None:
+            result[self.MAX_RESULTS] = self.max_results - self.num_results
         result.update(self.extra_params)
         return result
 
@@ -123,6 +174,7 @@ class Iterator(object):
         """Resets the iterator to the beginning."""
         self.page_number = 0
         self.next_page_token = None
+        self.num_results = 0
 
     def get_items_from_response(self, response):
         """Factory method called while iterating. This should be overridden.
