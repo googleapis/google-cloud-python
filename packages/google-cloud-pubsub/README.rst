@@ -5,11 +5,9 @@ Python Client for Google Cloud Pub / Sub
 
 .. _Google Cloud Pub / Sub: https://cloud.google.com/pubsub/docs
 
--  `Homepage`_
--  `API Documentation`_
+-  `Documentation`_
 
-.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/pubsub-usage.html
 
 Quick Start
 -----------
