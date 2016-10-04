@@ -46,25 +46,16 @@ class Client(client_module.Client):
 
     _connection_class = Connection
 
-    def async_recognize(self, content, source_uri, encoding, sample_rate,
+    def async_recognize(self, encoding, sample_rate, content=None,
                         language_code=None, max_alternatives=None,
-                        profanity_filter=None, speech_context=None):
+                        profanity_filter=None, source_uri=None,
+                        speech_context=None):
         """Asychronous Recognize request to Google Speech API.
 
         .. _async_recognize: https://cloud.google.com/speech/reference/\
                              rest/v1beta1/speech/asyncrecognize
 
         See `async_recognize`_.
-
-        :type content: bytes
-        :param content: Byte stream of audio.
-
-        :type source_uri: str
-        :param source_uri: URI that points to a file that contains audio
-                           data bytes as specified in RecognitionConfig.
-                           Currently, only Google Cloud Storage URIs are
-                           supported, which must be specified in the following
-                           format: ``gs://bucket_name/object_name``.
 
         :type encoding: str
         :param encoding: encoding of audio data sent in all RecognitionAudio
@@ -79,6 +70,9 @@ class Client(client_module.Client):
                             to 16000 Hz. If that's not possible, use the
                             native sample rate of the audio source (instead of
                             re-sampling).
+
+        :type content: bytes
+        :param content: Byte stream of audio.
 
         :type language_code: str
         :param language_code: (Optional) The language of the supplied audio as
@@ -98,6 +92,13 @@ class Client(client_module.Client):
                                  initial character in each filtered word with
                                  asterisks, e.g. ``'f***'``. If False or
                                  omitted, profanities won't be filtered out.
+
+        :type source_uri: str
+        :param source_uri: URI that points to a file that contains audio
+                           data bytes as specified in RecognitionConfig.
+                           Currently, only Google Cloud Storage URIs are
+                           supported, which must be specified in the following
+                           format: ``gs://bucket_name/object_name``.
 
         :type speech_context: list
         :param speech_context: A list of strings (max 50) containing words and
@@ -121,25 +122,16 @@ class Client(client_module.Client):
 
         return Operation.from_api_repr(self, api_response)
 
-    def sync_recognize(self, content, source_uri, encoding, sample_rate,
+    def sync_recognize(self, encoding, sample_rate, content=None,
                        language_code=None, max_alternatives=None,
-                       profanity_filter=None, speech_context=None):
+                       profanity_filter=None, source_uri=None,
+                       speech_context=None):
         """Synchronous Speech Recognition.
 
         .. _sync_recognize: https://cloud.google.com/speech/reference/\
                             rest/v1beta1/speech/syncrecognize
 
         See `sync_recognize`_.
-
-        :type content: bytes
-        :param content: Byte stream of audio.
-
-        :type source_uri: str
-        :param source_uri: URI that points to a file that contains audio
-                           data bytes as specified in RecognitionConfig.
-                           Currently, only Google Cloud Storage URIs are
-                           supported, which must be specified in the following
-                           format: ``gs://bucket_name/object_name``.
 
         :type encoding: str
         :param encoding: encoding of audio data sent in all RecognitionAudio
@@ -154,6 +146,10 @@ class Client(client_module.Client):
                             to 16000 Hz. If that's not possible, use the
                             native sample rate of the audio source (instead of
                             re-sampling).
+
+        :type content: bytes
+        :param content: Byte stream of audio.
+
 
         :type language_code: str
         :param language_code: (Optional) The language of the supplied audio as
@@ -173,6 +169,13 @@ class Client(client_module.Client):
                                  initial character in each filtered word with
                                  asterisks, e.g. ``'f***'``. If False or
                                  omitted, profanities won't be filtered out.
+
+        :type source_uri: str
+        :param source_uri: URI that points to a file that contains audio
+                           data bytes as specified in RecognitionConfig.
+                           Currently, only Google Cloud Storage URIs are
+                           supported, which must be specified in the following
+                           format: ``gs://bucket_name/object_name``.
 
         :type speech_context: list
         :param speech_context: A list of strings (max 50) containing words and
@@ -206,20 +209,11 @@ class Client(client_module.Client):
             raise ValueError('result in api should have length 1')
 
 
-def _build_request_data(content, source_uri, encoding, sample_rate,
+def _build_request_data(encoding, sample_rate, content=None,
                         language_code=None, max_alternatives=None,
-                        profanity_filter=None, speech_context=None):
+                        profanity_filter=None, source_uri=None,
+                        speech_context=None):
     """Builds the request data before making API request.
-
-    :type content: bytes
-    :param content: Byte stream of audio.
-
-    :type source_uri: str
-    :param source_uri: URI that points to a file that contains audio
-                       data bytes as specified in RecognitionConfig.
-                       Currently, only Google Cloud Storage URIs are
-                       supported, which must be specified in the following
-                       format: ``gs://bucket_name/object_name``.
 
     :type encoding: str
     :param encoding: encoding of audio data sent in all RecognitionAudio
@@ -234,6 +228,10 @@ def _build_request_data(content, source_uri, encoding, sample_rate,
                         to 16000 Hz. If that's not possible, use the
                         native sample rate of the audio source (instead of
                         re-sampling).
+
+    :type content: bytes
+    :param content: Byte stream of audio.
+
 
     :type language_code: str
     :param language_code: (Optional) The language of the supplied audio as
@@ -253,6 +251,13 @@ def _build_request_data(content, source_uri, encoding, sample_rate,
                              initial character in each filtered word with
                              asterisks, e.g. ``'f***'``. If False or
                              omitted, profanities won't be filtered out.
+
+    :type source_uri: str
+    :param source_uri: URI that points to a file that contains audio
+                       data bytes as specified in RecognitionConfig.
+                       Currently, only Google Cloud Storage URIs are
+                       supported, which must be specified in the following
+                       format: ``gs://bucket_name/object_name``.
 
     :type speech_context: list
     :param speech_context: A list of strings (max 50) containing words and
