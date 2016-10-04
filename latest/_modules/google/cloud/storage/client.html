@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.client &mdash; google-cloud 1828fb2 documentation</title>
+  <title>google.cloud.storage.client &mdash; google-cloud 8c50e41 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 1828fb2 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 8c50e41 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -526,9 +526,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">}</span>
 
-        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
-
         <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span>
 
@@ -537,14 +534,10 @@
         <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fields</span>
 
-        <span class="n">result</span> <span class="o">=</span> <span class="n">_BucketIterator</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-                                 <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
-        <span class="c1"># Page token must be handled specially since the base `Iterator`</span>
-        <span class="c1"># class has it as a reserved property.</span>
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># pylint: disable=attribute-defined-outside-init</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
-            <span class="c1"># pylint: enable=attribute-defined-outside-init</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">_BucketIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">result</span></div></div>
 
 
@@ -558,13 +551,22 @@
 <span class="sd">    :type client: :class:`google.cloud.storage.client.Client`</span>
 <span class="sd">    :param client: The client to use for making connections.</span>
 
+<span class="sd">    :type page_token: str</span>
+<span class="sd">    :param page_token: (Optional) A token identifying a page in a result set.</span>
+
+<span class="sd">    :type max_results: int</span>
+<span class="sd">    :param max_results: (Optional) The maximum number of results to fetch.</span>
+
 <span class="sd">    :type extra_params: dict or ``NoneType``</span>
 <span class="sd">    :param extra_params: Extra query string parameters for the API call.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">_BucketIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/b&#39;</span><span class="p">,</span>
-                                              <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">_BucketIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/b&#39;</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method which yields :class:`.Bucket` items from a response.</span>
@@ -610,7 +612,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'1828fb2',
+            VERSION:'8c50e41',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.bucket &mdash; google-cloud 1828fb2 documentation</title>
+  <title>google.cloud.storage.bucket &mdash; google-cloud 8c50e41 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 1828fb2 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 8c50e41 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -307,6 +307,12 @@
 <span class="sd">    :type bucket: :class:`google.cloud.storage.bucket.Bucket`</span>
 <span class="sd">    :param bucket: The bucket from which to list blobs.</span>
 
+<span class="sd">    :type page_token: str</span>
+<span class="sd">    :param page_token: (Optional) A token identifying a page in a result set.</span>
+
+<span class="sd">    :type max_results: int</span>
+<span class="sd">    :param max_results: (Optional) The maximum number of results to fetch.</span>
+
 <span class="sd">    :type extra_params: dict or None</span>
 <span class="sd">    :param extra_params: Extra query string parameters for the API call.</span>
 
@@ -314,7 +320,8 @@
 <span class="sd">    :param client: Optional. The client to use for making connections.</span>
 <span class="sd">                   Defaults to the bucket&#39;s client.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
@@ -322,6 +329,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_prefixes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">_BlobIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/o&#39;</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
@@ -555,9 +563,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
-
         <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span>
 
@@ -573,13 +578,8 @@
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fields</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterator_class</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
-        <span class="c1"># Page token must be handled specially since the base `Iterator`</span>
-        <span class="c1"># class has it as a reserved property.</span>
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># pylint: disable=attribute-defined-outside-init</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
-            <span class="c1"># pylint: enable=attribute-defined-outside-init</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1137,7 +1137,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'1828fb2',
+            VERSION:'8c50e41',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
