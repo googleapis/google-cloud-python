@@ -163,6 +163,23 @@ def get_changed_packages(blob_name1, blob_name2, package_list):
     return sorted(result)
 
 
+def local_diff_branch():
+    """Get a remote branch to diff against in a local checkout.
+
+    Checks if the the local remote and local branch environment
+    variables specify a remote branch.
+
+    :rtype: str
+    :returns: The diffbase `{remote}/{branch}` if the environment
+              variables are defined. If not, returns ``None``.
+    """
+    # Only allow specified remote and branch in local dev.
+    remote = os.getenv(LOCAL_REMOTE_ENV)
+    branch = os.getenv(LOCAL_BRANCH_ENV)
+    if remote is not None and branch is not None:
+        return '%s/%s' % (remote, branch)
+
+
 def get_affected_files(allow_limited=True):
     """Gets a list of files in the repository.
 
@@ -195,11 +212,7 @@ def get_affected_files(allow_limited=True):
         if in_travis_pr():
             diff_base = travis_branch()
     else:
-        # Only allow specified remote and branch in local dev.
-        remote = os.getenv(LOCAL_REMOTE_ENV)
-        branch = os.getenv(LOCAL_BRANCH_ENV)
-        if remote is not None and branch is not None:
-            diff_base = '%s/%s' % (remote, branch)
+        diff_base = local_diff_branch()
 
     if diff_base is not None and allow_limited:
         result = subprocess.check_output(['git', 'diff', '--name-only',
