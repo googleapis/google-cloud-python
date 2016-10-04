@@ -16,6 +16,7 @@
 
 from __future__ import print_function
 
+import ast
 import os
 import subprocess
 
@@ -27,6 +28,9 @@ LOCAL_BRANCH_ENV = 'GOOGLE_CLOUD_TESTING_BRANCH'
 IN_TRAVIS_ENV = 'TRAVIS'
 TRAVIS_PR_ENV = 'TRAVIS_PULL_REQUEST'
 TRAVIS_BRANCH_ENV = 'TRAVIS_BRANCH'
+INST_REQS_KWARG = 'install_requires'
+REQ_VAR = 'REQUIREMENTS'
+PACKAGE_PREFIX = 'google-cloud-'
 
 
 def in_travis():
@@ -228,3 +232,114 @@ def get_affected_files(allow_limited=True):
         result = subprocess.check_output(['git', 'ls-files'])
 
     return result.rstrip('\n').split('\n'), diff_base
+
+
+def get_required_packages(file_contents):
+    """Get required packages from a ``setup.py`` file.
+
+    Makes the following assumptions:
+
+    * ``install_requires=REQUIREMENTS`` occurs in the call to
+      ``setup()`` in the ``file_contents``.
+    * The text ``install_requires`` occurs nowhere else in the file.
+    * The text ``REQUIREMENTS`` only appears when being passed to
+      ``setup()`` (as above) and when being defined.
+    * The ``REQUIREMENTS`` variable is a list and the text from the
+      ``setup.py`` file containing that list can be parsed using
+      ``ast.literal_eval()``.
+
+    :type file_contents: str
+    :param file_contents: The contents of a ``setup.py`` file.
+
+    :rtype: list
+    :returns: The list of required packages.
+    :raises: :class:`~exceptions.ValueError` if the file is in an
+             unexpected format.
+    """
+    # Make sure the only ``install_requires`` happens in the
+    # call to setup()
+    if file_contents.count(INST_REQS_KWARG) != 1:
+        raise ValueError('Expected only one use of keyword',
+                         INST_REQS_KWARG, file_contents)
+    # Make sure the only usage of ``install_requires`` is to set
+    # install_requires=REQUIREMENTS.
+    keyword_stmt = INST_REQS_KWARG + '=' + REQ_VAR
+    if file_contents.count(keyword_stmt) != 1:
+        raise ValueError('Expected keyword to be set with variable',
+                         INST_REQS_KWARG, REQ_VAR, file_contents)
+    # Split file on ``REQUIREMENTS`` variable while asserting that
+    # it only appear twice.
+    _, reqs_section, _ = file_contents.split(REQ_VAR)
+    # Find ``REQUIREMENTS`` list variable defined in ``reqs_section``.
+    reqs_begin = reqs_section.index('[')
+    reqs_end = reqs_section.index(']') + 1
+
+    # Convert the text to an actual list, but make sure no
+    # locals or globals can be used.
+    reqs_list_text = reqs_section[reqs_begin:reqs_end]
+    # We use literal_eval() because it limits to evaluating
+    # strings that only consist of a few Python literals: strings,
+    # numbers, tuples, lists, dicts, booleans, and None.
+    requirements = ast.literal_eval(reqs_list_text)
+
+    # Take the list of requirements and strip off the package name
+    # from each requirement.
+    result = []
+    for required in requirements:
+        parts = required.split()
+        result.append(parts[0])
+    return result
+
+
+def get_dependency_graph(package_list):
+    """Get a directed graph of package dependencies.
+
+    :type package_list: list
+    :param package_list: The list of **all** valid packages.
+
+    :rtype: dict
+    :returns: A dictionary where keys are packages and values are
+              the set of packages that depend on the key.
+    """
+    result = {package: set() for package in package_list}
+    for package in package_list:
+        setup_file = os.path.join(PROJECT_ROOT, package,
+                                  'setup.py')
+        with open(setup_file, 'r') as file_obj:
+            file_contents = file_obj.read()
+
+        requirements = get_required_packages(file_contents)
+        for requirement in requirements:
+            if not requirement.startswith(PACKAGE_PREFIX):
+                continue
+            _, req_package = requirement.split(PACKAGE_PREFIX)
+            req_package = req_package.replace('-', '_')
+            result[req_package].add(package)
+
+    return result
+
+
+def follow_dependencies(subset, package_list):
+    """Get a directed graph of package dependencies.
+
+    :type subset: list
+    :param subset: List of a subset of package names.
+
+    :type package_list: list
+    :param package_list: The list of **all** valid packages.
+
+    :rtype: list
+    :returns: An expanded list of packages containing everything
+              in ``subset`` and any packages that depend on those.
+    """
+    dependency_graph = get_dependency_graph(package_list)
+
+    curr_pkgs = None
+    updated_pkgs = set(subset)
+    while curr_pkgs != updated_pkgs:
+        curr_pkgs = updated_pkgs
+        updated_pkgs = set(curr_pkgs)
+        for package in curr_pkgs:
+            updated_pkgs.update(dependency_graph[package])
+
+    return sorted(curr_pkgs)
