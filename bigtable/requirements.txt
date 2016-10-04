@@ -1,0 +1,2 @@
+google-cloud-core >= 0.20.0
+grpcio >= 1.0.0, < 2.0dev
