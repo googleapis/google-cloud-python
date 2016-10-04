@@ -163,7 +163,7 @@ def get_changed_packages(blob_name1, blob_name2, package_list):
     return sorted(result)
 
 
-def get_files_for_linting(allow_limited=True):
+def get_affected_files(allow_limited=True):
     """Gets a list of files in the repository.
 
     By default, returns all files via ``git ls-files``. However, in some cases
@@ -185,7 +185,7 @@ def get_files_for_linting(allow_limited=True):
                           be used.
 
     :rtype: pair
-    :returns: Tuple of the diff base using the the list of filenames to be
+    :returns: Tuple of the diff base using the list of filenames to be
               linted.
     """
     diff_base = None

@@ -29,7 +29,7 @@ import os
 import subprocess
 import sys
 
-from script_utils import get_files_for_linting
+from script_utils import get_affected_files
 
 
 IGNORED_DIRECTORIES = [
@@ -140,7 +140,7 @@ def is_production_filename(filename):
 def get_python_files(all_files=None):
     """Gets a list of all Python files in the repository that need linting.
 
-    Relies on :func:`get_files_for_linting()` to determine which files should
+    Relies on :func:`get_affected_files()` to determine which files should
     be considered.
 
     NOTE: This requires ``git`` to be installed and requires that this
@@ -154,7 +154,7 @@ def get_python_files(all_files=None):
               contains all production files, the next all test files.
     """
     if all_files is None:
-        all_files, diff_base = get_files_for_linting()
+        all_files, diff_base = get_affected_files()
 
     library_files = []
     non_library_files = []
