@@ -20,6 +20,8 @@ import os
 import subprocess
 
 
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '..'))
 LOCAL_REMOTE_ENV = 'GOOGLE_CLOUD_TESTING_REMOTE'
 LOCAL_BRANCH_ENV = 'GOOGLE_CLOUD_TESTING_BRANCH'
 IN_TRAVIS_ENV = 'TRAVIS'

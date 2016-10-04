@@ -31,11 +31,10 @@ from script_utils import get_changed_packages
 from script_utils import in_travis
 from script_utils import in_travis_pr
 from script_utils import local_diff_branch
+from script_utils import PROJECT_ROOT
 from script_utils import travis_branch
 
 
-PROJECT_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..'))
 IGNORED_DIRECTORIES = (
     'appveyor',
     'docs',
