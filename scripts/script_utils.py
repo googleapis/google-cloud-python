@@ -14,6 +14,8 @@
 
 """Common helpers for testing scripts."""
 
+from __future__ import print_function
+
 import os
 import subprocess
 
@@ -159,3 +161,55 @@ def get_changed_packages(blob_name1, blob_name2, package_list):
             result.add(file_root)
 
     return sorted(result)
+
+
+def get_files_for_linting(allow_limited=True):
+    """Gets a list of files in the repository.
+
+    By default, returns all files via ``git ls-files``. However, in some cases
+    uses a specific commit or branch (a so-called diff base) to compare
+    against for changed files. (This requires ``allow_limited=True``.)
+
+    To speed up linting on Travis pull requests against master, we manually
+    set the diff base to the branch the pull request is against. We don't do
+    this on "push" builds since "master" will be the currently checked out
+    code. One could potentially use ${TRAVIS_COMMIT_RANGE} to find a diff base
+    but this value is not dependable.
+
+    To allow faster local ``tox`` runs, the local remote and local branch
+    environment variables can be set to specify a remote branch to diff
+    against.
+
+    :type allow_limited: bool
+    :param allow_limited: Boolean indicating if a reduced set of files can
+                          be used.
+
+    :rtype: pair
+    :returns: Tuple of the diff base using the the list of filenames to be
+              linted.
+    """
+    diff_base = None
+    if in_travis():
+        # In the case of a pull request into a branch, we want to
+        # diff against HEAD in that branch.
+        if in_travis_pr():
+            diff_base = travis_branch()
+    else:
+        # Only allow specified remote and branch in local dev.
+        remote = os.getenv(LOCAL_REMOTE_ENV)
+        branch = os.getenv(LOCAL_BRANCH_ENV)
+        if remote is not None and branch is not None:
+            diff_base = '%s/%s' % (remote, branch)
+
+    if diff_base is not None and allow_limited:
+        result = subprocess.check_output(['git', 'diff', '--name-only',
+                                          diff_base])
+        print('Using files changed relative to %s:' % (diff_base,))
+        print('-' * 60)
+        print(result.rstrip('\n'))  # Don't print trailing newlines.
+        print('-' * 60)
+    else:
+        print('Diff base not specified, listing all files in repository.')
+        result = subprocess.check_output(['git', 'ls-files'])
+
+    return result.rstrip('\n').split('\n'), diff_base
