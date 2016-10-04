@@ -6,3 +6,10 @@ google.auth package
     :undoc-members:
     :show-inheritance:
 
+Submodules
+----------
+
+.. toctree::
+
+   google.auth.crypt
+
