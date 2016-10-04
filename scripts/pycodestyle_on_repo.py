@@ -23,7 +23,7 @@ import os
 import subprocess
 import sys
 
-from script_utils import get_files_for_linting
+from script_utils import get_affected_files
 
 
 def main():
@@ -31,7 +31,7 @@ def main():
     git_root = subprocess.check_output(
         ['git', 'rev-parse', '--show-toplevel']).strip()
     os.chdir(git_root)
-    candidates, _ = get_files_for_linting()
+    candidates, _ = get_affected_files()
     python_files = [
         candidate for candidate in candidates if candidate.endswith('.py')]
 
