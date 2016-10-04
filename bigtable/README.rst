@@ -5,11 +5,9 @@ Python Client for Google Cloud Bigtable
 
 .. _Google Cloud Bigtable: https://cloud.google.com/bigtable/docs/
 
--  `Homepage`_
--  `API Documentation`_
+-  `Documentation`_
 
-.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigtable-usage.html
 
 Quick Start
 -----------

@@ -5,11 +5,9 @@ Python Client for Google Cloud Natural Language
 
 .. _Google Cloud Natural Language: https://cloud.google.com/natural-language/
 
--  `Homepage`_
--  `API Documentation`_
+-  `Documentation`_
 
-.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/language-usage.html
 
 Quick Start
 -----------
