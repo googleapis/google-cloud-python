@@ -5,11 +5,9 @@ Python Client for Google Cloud Storage
 
 .. _Google Cloud Storage: https://cloud.google.com/storage/docs
 
--  `Homepage`_
--  `API Documentation`_
+-  `Documentation`_
 
-.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/storage-client.html
 
 Quick Start
 -----------
