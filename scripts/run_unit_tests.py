@@ -27,14 +27,14 @@ import subprocess
 import sys
 
 from script_utils import check_output
+from script_utils import follow_dependencies
 from script_utils import get_changed_packages
 from script_utils import in_travis
 from script_utils import in_travis_pr
+from script_utils import PROJECT_ROOT
 from script_utils import travis_branch
 
 
-PROJECT_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..'))
 IGNORED_DIRECTORIES = (
     'appveyor',
     'docs',
@@ -121,7 +121,9 @@ def get_test_packages():
     * Check command line for packages passed in as positional arguments
     * Check if in Travis, then limit the subset based on changes
       in a Pull Request ("push" builds to branches may not have
-      any filtering)
+      any filtering). Once the filtered list of **changed** packages
+      is found, the package dependency graph is used to add any
+      additional packages which depend on the changed packages.
     * Just use all packages
 
     :rtype: list
@@ -136,7 +138,8 @@ def get_test_packages():
         verify_packages(args.packages, all_packages)
         return sorted(args.packages)
     elif in_travis():
-        return get_travis_directories(all_packages)
+        changed_packages = get_travis_directories(all_packages)
+        return follow_dependencies(changed_packages, all_packages)
     else:
         return all_packages
 

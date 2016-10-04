@@ -20,11 +20,14 @@ import os
 import subprocess
 
 
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '..'))
 LOCAL_REMOTE_ENV = 'GOOGLE_CLOUD_TESTING_REMOTE'
 LOCAL_BRANCH_ENV = 'GOOGLE_CLOUD_TESTING_BRANCH'
 IN_TRAVIS_ENV = 'TRAVIS'
 TRAVIS_PR_ENV = 'TRAVIS_PULL_REQUEST'
 TRAVIS_BRANCH_ENV = 'TRAVIS_BRANCH'
+PACKAGE_PREFIX = 'google-cloud-'
 
 
 def in_travis():
@@ -213,3 +216,79 @@ def get_affected_files(allow_limited=True):
         result = subprocess.check_output(['git', 'ls-files'])
 
     return result.rstrip('\n').split('\n'), diff_base
+
+
+def get_required_packages(file_contents):
+    """Get required packages from a requirements.txt file.
+
+    .. note::
+
+        This could be done in a bit more complete way via
+        https://pypi.python.org/pypi/requirements-parser
+
+    :type file_contents: str
+    :param file_contents: The contents of a requirements.txt file.
+
+    :rtype: list
+    :returns: The list of required packages.
+    """
+    requirements = file_contents.strip().split('\n')
+    result = []
+    for required in requirements:
+        parts = required.split()
+        result.append(parts[0])
+    return result
+
+
+def get_dependency_graph(package_list):
+    """Get a directed graph of package dependencies.
+
+    :type package_list: list
+    :param package_list: The list of **all** valid packages.
+
+    :rtype: dict
+    :returns: A dictionary where keys are packages and values are
+              the set of packages that depend on the key.
+    """
+    result = {package: set() for package in package_list}
+    for package in package_list:
+        reqs_file = os.path.join(PROJECT_ROOT, package,
+                                 'requirements.txt')
+        with open(reqs_file, 'r') as file_obj:
+            file_contents = file_obj.read()
+
+        requirements = get_required_packages(file_contents)
+        for requirement in requirements:
+            if not requirement.startswith(PACKAGE_PREFIX):
+                continue
+            _, req_package = requirement.split(PACKAGE_PREFIX)
+            req_package = req_package.replace('-', '_')
+            result[req_package].add(package)
+
+    return result
+
+
+def follow_dependencies(subset, package_list):
+    """Get a directed graph of packages dependency.
+
+    :type subset: list
+    :param subset: List of a subset of package names.
+
+    :type package_list: list
+    :param package_list: The list of **all** valid packages.
+
+    :rtype: list
+    :returns: An expanded list of packages containing everything
+              in ``subset`` and any packages that depend on those.
+    """
+    dependency_graph = get_dependency_graph(package_list)
+
+    curr_pkgs = None
+    updated_pkgs = set(subset)
+    while curr_pkgs != updated_pkgs:
+        curr_pkgs = updated_pkgs
+        updated_pkgs = set(curr_pkgs)
+        for package in curr_pkgs:
+            updated_pkgs.update(dependency_graph[package])
+
+    return sorted(curr_pkgs)
