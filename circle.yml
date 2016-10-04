@@ -6,16 +6,8 @@ dependencies:
 
 test:
   override:
-    - python2.7 scripts/run_unit_tests.py
-    - python3.4 scripts/run_unit_tests.py
-    - python3.5 scripts/run_unit_tests.py
-    - python scripts/run_unit_tests.py --tox-env cover
-    - tox -e lint
-    # - tox -e system-tests
-    # - tox -e system-tests3
-    # - scripts/update_docs.sh
-  post:
-    - scripts/coveralls.sh
+    - python scripts/print_env.py
+    - scripts/show_git_status.sh
 
 general:
   branches:
