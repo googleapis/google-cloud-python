@@ -30,6 +30,7 @@ from script_utils import check_output
 from script_utils import get_changed_packages
 from script_utils import in_travis
 from script_utils import in_travis_pr
+from script_utils import local_diff_branch
 from script_utils import travis_branch
 
 
@@ -119,6 +120,8 @@ def get_test_packages():
     Filters the package list in the following order:
 
     * Check command line for packages passed in as positional arguments
+    * Check if the the local remote and local branch environment variables
+      have been set to specify a remote branch to diff against.
     * Check if in Travis, then limit the subset based on changes
       in a Pull Request ("push" builds to branches may not have
       any filtering)
@@ -129,12 +132,15 @@ def get_test_packages():
               need be run.
     """
     all_packages = get_package_directories()
+    local_diff = local_diff_branch()
 
     parser = get_parser()
     args = parser.parse_args()
     if args.packages is not UNSET_SENTINEL:
         verify_packages(args.packages, all_packages)
         return sorted(args.packages)
+    elif local_diff is not None:
+        return get_changed_packages('HEAD', local_diff, all_packages)
     elif in_travis():
         return get_travis_directories(all_packages)
     else:
