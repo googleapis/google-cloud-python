@@ -27,6 +27,7 @@ import subprocess
 import sys
 
 from script_utils import check_output
+from script_utils import follow_dependencies
 from script_utils import get_changed_packages
 from script_utils import in_travis
 from script_utils import in_travis_pr
@@ -126,6 +127,12 @@ def get_test_packages():
       any filtering)
     * Just use all packages
 
+    An additional check is done for the cases when a diff is computed (i.e.
+    using local remote and local branch environment variables, and on Travis).
+    Once the filtered list of **changed** packages is found, the package
+    dependency graph is used to add any additional packages which depend on
+    the changed packages.
+
     :rtype: list
     :returns: A list of all package directories where tests
               need be run.
@@ -139,9 +146,12 @@ def get_test_packages():
         verify_packages(args.packages, all_packages)
         return sorted(args.packages)
     elif local_diff is not None:
-        return get_changed_packages('HEAD', local_diff, all_packages)
+        changed_packages = get_changed_packages(
+            'HEAD', local_diff, all_packages)
+        return follow_dependencies(changed_packages, all_packages)
     elif in_travis():
-        return get_travis_directories(all_packages)
+        changed_packages = get_travis_directories(all_packages)
+        return follow_dependencies(changed_packages, all_packages)
     else:
         return all_packages
 
