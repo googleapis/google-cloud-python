@@ -168,14 +168,22 @@ class _ProjectIterator(Iterator):
     :type client: :class:`~google.cloud.resource_manager.client.Client`
     :param client: The client to use for making connections.
 
+    :type page_token: str
+    :param page_token: (Optional) A token identifying a page in a result set.
+
+    :type max_results: int
+    :param max_results: (Optional) The maximum number of results to fetch.
+
     :type extra_params: dict
     :param extra_params: (Optional) Extra query string parameters for
                          the API call.
     """
 
-    def __init__(self, client, extra_params=None):
-        super(_ProjectIterator, self).__init__(client=client, path='/projects',
-                                               extra_params=extra_params)
+    def __init__(self, client, page_token=None,
+                 max_results=None, extra_params=None):
+        super(_ProjectIterator, self).__init__(
+            client=client, path='/projects', page_token=page_token,
+            max_results=max_results, extra_params=extra_params)
 
     def get_items_from_response(self, response):
         """Yield projects from response.
