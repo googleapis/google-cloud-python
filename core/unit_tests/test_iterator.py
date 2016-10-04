@@ -34,7 +34,21 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(iterator.page_number, 0)
         self.assertIsNone(iterator.next_page_token)
 
+    def test_constructor_w_extra_param_collision(self):
+        connection = _Connection()
+        client = _Client(connection)
+        PATH = '/foo'
+        extra_params = {'pageToken': 'val'}
+        self.assertRaises(ValueError, self._makeOne, client, PATH,
+                          extra_params=extra_params)
+
     def test___iter__(self):
+        iterator = self._makeOne(None, None)
+        self.assertIs(iter(iterator), iterator)
+
+    def test_iterate(self):
+        import six
+
         PATH = '/foo'
         KEY1 = 'key1'
         KEY2 = 'key2'
@@ -42,13 +56,27 @@ class TestIterator(unittest.TestCase):
         ITEMS = {KEY1: ITEM1, KEY2: ITEM2}
 
         def _get_items(response):
-            for item in response.get('items', []):
-                yield ITEMS[item['name']]
-        connection = _Connection({'items': [{'name': KEY1}, {'name': KEY2}]})
+            return [ITEMS[item['name']]
+                    for item in response.get('items', [])]
+
+        connection = _Connection(
+            {'items': [{'name': KEY1}, {'name': KEY2}]})
         client = _Client(connection)
         iterator = self._makeOne(client, PATH)
         iterator.get_items_from_response = _get_items
-        self.assertEqual(list(iterator), [ITEM1, ITEM2])
+        self.assertEqual(iterator.num_results, 0)
+
+        val1 = six.next(iterator)
+        self.assertEqual(val1, ITEM1)
+        self.assertEqual(iterator.num_results, 1)
+
+        val2 = six.next(iterator)
+        self.assertEqual(val2, ITEM2)
+        self.assertEqual(iterator.num_results, 2)
+
+        with self.assertRaises(StopIteration):
+            six.next(iterator)
+
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], PATH)
@@ -79,6 +107,19 @@ class TestIterator(unittest.TestCase):
         iterator.next_page_token = TOKEN
         self.assertTrue(iterator.has_next_page())
 
+    def test_has_next_page_w_max_results_not_done(self):
+        iterator = self._makeOne(None, None, max_results=3,
+                                 page_token='definitely-not-none')
+        iterator.page_number = 1
+        self.assertLess(iterator.num_results, iterator.max_results)
+        self.assertTrue(iterator.has_next_page())
+
+    def test_has_next_page_w_max_results_done(self):
+        iterator = self._makeOne(None, None, max_results=3)
+        iterator.page_number = 1
+        iterator.num_results = iterator.max_results
+        self.assertFalse(iterator.has_next_page())
+
     def test_get_query_params_no_token(self):
         connection = _Connection()
         client = _Client(connection)
@@ -95,6 +136,18 @@ class TestIterator(unittest.TestCase):
         iterator.next_page_token = TOKEN
         self.assertEqual(iterator.get_query_params(),
                          {'pageToken': TOKEN})
+
+    def test_get_query_params_w_max_results(self):
+        connection = _Connection()
+        client = _Client(connection)
+        path = '/foo'
+        max_results = 3
+        iterator = self._makeOne(client, path,
+                                 max_results=max_results)
+        iterator.num_results = 1
+        local_max = max_results - iterator.num_results
+        self.assertEqual(iterator.get_query_params(),
+                         {'maxResults': local_max})
 
     def test_get_query_params_extra_params(self):
         connection = _Connection()
@@ -116,14 +169,6 @@ class TestIterator(unittest.TestCase):
         expected_query = extra_params.copy()
         expected_query.update({'pageToken': TOKEN})
         self.assertEqual(iterator.get_query_params(), expected_query)
-
-    def test_get_query_params_w_token_collision(self):
-        connection = _Connection()
-        client = _Client(connection)
-        PATH = '/foo'
-        extra_params = {'pageToken': 'val'}
-        self.assertRaises(ValueError, self._makeOne, client, PATH,
-                          extra_params=extra_params)
 
     def test_get_next_page_response_new_no_token_in_response(self):
         PATH = '/foo'
