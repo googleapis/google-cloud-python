@@ -5,11 +5,9 @@ Python Client for Google Translate
 
 .. _Google Translate: https://cloud.google.com/translate/
 
--  `Homepage`_
--  `API Documentation`_
+-  `Documentation`_
 
-.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/translate-usage.html
 
 Quick Start
 -----------
