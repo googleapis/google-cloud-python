@@ -276,7 +276,13 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return self._stub.RunQuery(request_pb)
+        try:
+            return self._stub.RunQuery(request_pb)
+        except GrpcRendezvous as exc:
+            error_code = exc.code()
+            if error_code == StatusCode.INVALID_ARGUMENT:
+                raise BadRequest(exc.details())
+            raise
 
     def begin_transaction(self, project, request_pb):
         """Perform a ``beginTransaction`` request.

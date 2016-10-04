@@ -200,6 +200,43 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertEqual(stub.method_calls,
                          [(request_pb, 'RunQuery')])
 
+    def _run_query_failure_helper(self, exc, err_class):
+        stub = _GRPCStub(side_effect=exc)
+        datastore_api = self._makeOne(stub=stub)
+
+        request_pb = _RequestPB()
+        project = 'PROJECT'
+        with self.assertRaises(err_class):
+            datastore_api.run_query(project, request_pb)
+
+        self.assertEqual(request_pb.project_id, project)
+        self.assertEqual(stub.method_calls,
+                         [(request_pb, 'RunQuery')])
+
+    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
+    def test_run_query_invalid_argument(self):
+        from grpc import StatusCode
+        from grpc._channel import _RPCState
+        from google.cloud.exceptions import BadRequest
+        from google.cloud.exceptions import GrpcRendezvous
+
+        details = ('Cannot have inequality filters on multiple '
+                   'properties: [created, priority]')
+        exc_state = _RPCState((), None, None,
+                              StatusCode.INVALID_ARGUMENT, details)
+        exc = GrpcRendezvous(exc_state, None, None, None)
+        self._run_query_failure_helper(exc, BadRequest)
+
+    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
+    def test_run_query_cancelled(self):
+        from grpc import StatusCode
+        from grpc._channel import _RPCState
+        from google.cloud.exceptions import GrpcRendezvous
+
+        exc_state = _RPCState((), None, None, StatusCode.CANCELLED, None)
+        exc = GrpcRendezvous(exc_state, None, None, None)
+        self._run_query_failure_helper(exc, GrpcRendezvous)
+
     def test_begin_transaction(self):
         return_val = object()
         stub = _GRPCStub(return_val)
@@ -1130,7 +1167,11 @@ class _GRPCStub(object):
         return self._method(request_pb, 'Lookup')
 
     def RunQuery(self, request_pb):
-        return self._method(request_pb, 'RunQuery')
+        result = self._method(request_pb, 'RunQuery')
+        if self.side_effect is Exception:
+            return result
+        else:
+            raise self.side_effect
 
     def BeginTransaction(self, request_pb):
         return self._method(request_pb, 'BeginTransaction')
