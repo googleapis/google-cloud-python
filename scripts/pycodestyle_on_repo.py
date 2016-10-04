@@ -23,7 +23,7 @@ import os
 import subprocess
 import sys
 
-from run_pylint import get_files_for_linting
+from script_utils import get_files_for_linting
 
 
 def main():
