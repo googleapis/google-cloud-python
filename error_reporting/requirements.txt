@@ -1,0 +1,2 @@
+google-cloud-core >= 0.20.0
+google-cloud-logging >= 0.20.0

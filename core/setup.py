@@ -49,13 +49,12 @@ SETUP_BASE = {
 }
 
 
-REQUIREMENTS = [
-    'httplib2 >= 0.9.1',
-    'googleapis-common-protos >= 1.3.4',
-    'oauth2client >= 3.0.0, < 4.0.0dev',
-    'protobuf >= 3.0.0',
-    'six',
-]
+# NOTE: This assumes that no comments or other extra text
+#       is in the requirements.txt file.
+with open(os.path.join(PACKAGE_ROOT, 'requirements.txt')) as file_obj:
+    REQUIREMENTS = file_obj.read()
+    REQUIREMENTS = REQUIREMENTS.strip().split('\n')
+
 
 setup(
     name='google-cloud-core',

@@ -49,13 +49,12 @@ SETUP_BASE = {
 }
 
 
-REQUIREMENTS = [
-    'google-cloud-core >= 0.20.0',
-    'grpcio >= 1.0.0, < 2.0dev',
-    'google-gax >= 0.14.1, < 0.15dev',
-    'gapic-google-pubsub-v1 >= 0.10.1, < 0.11dev',
-    'grpc-google-pubsub-v1 >= 0.10.1, < 0.11dev',
-]
+# NOTE: This assumes that no comments or other extra text
+#       is in the requirements.txt file.
+with open(os.path.join(PACKAGE_ROOT, 'requirements.txt')) as file_obj:
+    REQUIREMENTS = file_obj.read()
+    REQUIREMENTS = REQUIREMENTS.strip().split('\n')
+
 
 setup(
     name='google-cloud-pubsub',

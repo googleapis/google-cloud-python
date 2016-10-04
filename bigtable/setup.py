@@ -49,10 +49,12 @@ SETUP_BASE = {
 }
 
 
-REQUIREMENTS = [
-    'google-cloud-core >= 0.20.0',
-    'grpcio >= 1.0.0, < 2.0dev',
-]
+# NOTE: This assumes that no comments or other extra text
+#       is in the requirements.txt file.
+with open(os.path.join(PACKAGE_ROOT, 'requirements.txt')) as file_obj:
+    REQUIREMENTS = file_obj.read()
+    REQUIREMENTS = REQUIREMENTS.strip().split('\n')
+
 
 setup(
     name='google-cloud-bigtable',

@@ -26,6 +26,7 @@ from parinx.parser import parse_docstring
 from parinx.errors import MethodParsingException
 import six
 
+from script_utils import PROJECT_ROOT
 from verify_included_modules import get_public_modules
 
 
@@ -601,7 +602,7 @@ def main():
     parser.add_argument('--tag', help='The version of the documentation.',
                         default='master')
     parser.add_argument('--basepath', help='Path to the library.',
-                        default=os.path.join(os.path.dirname(__file__), '..'))
+                        default=PROJECT_ROOT)
     parser.add_argument('--show-toc', help='Prints partial table of contents',
                         default=False)
     args = parser.parse_args()
@@ -635,10 +636,9 @@ def main():
         }
     }
 
-    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    BASE_JSON_DOCS_DIR = os.path.join(BASE_DIR, 'docs', 'json')
+    BASE_JSON_DOCS_DIR = os.path.join(PROJECT_ROOT, 'docs', 'json')
 
-    DOCS_BUILD_DIR = os.path.join(BASE_DIR, 'docs', '_build')
+    DOCS_BUILD_DIR = os.path.join(PROJECT_ROOT, 'docs', '_build')
     JSON_DOCS_DIR = os.path.join(DOCS_BUILD_DIR, 'json', args.tag)
     LIB_DIR = os.path.abspath(args.basepath)
 
@@ -646,7 +646,7 @@ def main():
     public_mods = get_public_modules(library_dir,
                                      base_package='google.cloud')
 
-    generate_module_docs(public_mods, JSON_DOCS_DIR, BASE_DIR, toc)
+    generate_module_docs(public_mods, JSON_DOCS_DIR, PROJECT_ROOT, toc)
     generate_doc_types_json(public_mods,
                             os.path.join(JSON_DOCS_DIR, 'types.json'))
     package_files(JSON_DOCS_DIR, DOCS_BUILD_DIR, BASE_JSON_DOCS_DIR)
