@@ -27,12 +27,10 @@ from google.logging.v2.log_entry_pb2 import LogEntry
 from google.protobuf.json_format import Parse
 from grpc import StatusCode
 
-# pylint: disable=ungrouped-imports
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_rfc3339
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-# pylint: enable=ungrouped-imports
 
 
 class _LoggingAPI(object):
