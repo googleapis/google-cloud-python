@@ -20,13 +20,13 @@ import subprocess
 import sys
 import tempfile
 
+from script_utils import PROJECT_ROOT
 
-ROOT_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..'))
-PROTOS_DIR = os.path.join(ROOT_DIR, 'googleapis-pb')
+
+PROTOS_DIR = os.path.join(PROJECT_ROOT, 'googleapis-pb')
 PROTO_PATH = os.path.join(PROTOS_DIR, 'google', 'datastore',
                           'v1', 'datastore.proto')
-GRPC_ONLY_FILE = os.path.join(ROOT_DIR, 'datastore',
+GRPC_ONLY_FILE = os.path.join(PROJECT_ROOT, 'datastore',
                               'google', 'cloud', 'datastore',
                               '_generated', 'datastore_grpc_pb2.py')
 GRPCIO_VIRTUALENV = os.getenv('GRPCIO_VIRTUALENV')

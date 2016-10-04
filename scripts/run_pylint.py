@@ -30,6 +30,7 @@ import subprocess
 import sys
 
 from script_utils import get_affected_files
+from script_utils import PROJECT_ROOT
 
 
 IGNORED_DIRECTORIES = [
@@ -44,7 +45,7 @@ IGNORED_POSTFIXES = [
     os.path.join('google', 'cloud', '__init__.py'),
     'setup.py',
 ]
-SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
+SCRIPTS_DIR = os.path.join(PROJECT_ROOT, 'scripts')
 PRODUCTION_RC = os.path.join(SCRIPTS_DIR, 'pylintrc_default')
 TEST_RC = os.path.join(SCRIPTS_DIR, 'pylintrc_reduced')
 TEST_DISABLED_MESSAGES = [
