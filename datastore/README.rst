@@ -5,11 +5,9 @@ Python Client for Google Cloud Datastore
 
 .. _Google Cloud Datastore: https://cloud.google.com/datastore/docs
 
--  `Homepage`_
--  `API Documentation`_
+-  `Documentation`_
 
-.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/datastore-client.html
 
 Quick Start
 -----------

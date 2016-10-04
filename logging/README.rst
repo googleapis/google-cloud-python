@@ -5,11 +5,9 @@ Python Client for Stackdriver Logging
 
 .. _Stackdriver Logging: https://cloud.google.com/logging/
 
--  `Homepage`_
--  `API Documentation`_
+-  `Documentation`_
 
-.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/logging-usage.html
 
 Quick Start
 -----------
