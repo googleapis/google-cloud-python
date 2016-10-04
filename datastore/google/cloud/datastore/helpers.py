@@ -24,13 +24,11 @@ from google.protobuf import struct_pb2
 from google.type import latlng_pb2
 import six
 
-# pylint: disable=ungrouped-imports
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud.datastore._generated import entity_pb2 as _entity_pb2
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
-# pylint: enable=ungrouped-imports
 
 __all__ = ('entity_from_protobuf', 'key_from_protobuf')
 

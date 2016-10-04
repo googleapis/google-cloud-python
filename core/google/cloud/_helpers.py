@@ -38,10 +38,8 @@ import six
 from six.moves import http_client
 from six.moves import configparser
 
-# pylint: disable=ungrouped-imports
 from google.cloud.environment_vars import PROJECT
 from google.cloud.environment_vars import CREDENTIALS
-# pylint: enable=ungrouped-imports
 
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.

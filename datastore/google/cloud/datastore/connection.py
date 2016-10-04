@@ -28,7 +28,6 @@ from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import GrpcRendezvous
 from google.cloud.exceptions import make_exception
 from google.cloud.datastore._generated import datastore_pb2 as _datastore_pb2
-# pylint: disable=ungrouped-imports
 try:
     from grpc import StatusCode
     from google.cloud.datastore._generated import datastore_grpc_pb2
@@ -38,7 +37,6 @@ except ImportError:  # pragma: NO COVER
     StatusCode = None
 else:
     _HAVE_GRPC = True
-# pylint: enable=ungrouped-imports
 
 
 DATASTORE_API_HOST = 'datastore.googleapis.com'
