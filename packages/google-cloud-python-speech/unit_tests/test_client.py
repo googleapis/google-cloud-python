@@ -69,9 +69,8 @@ class TestClient(unittest.TestCase):
 
         encoding = Encoding.FLAC
 
-        response = client.sync_recognize(_AUDIO_CONTENT, None,
-                                         encoding,
-                                         self.SAMPLE_RATE,
+        response = client.sync_recognize(encoding, self.SAMPLE_RATE,
+                                         content=_AUDIO_CONTENT,
                                          language_code='EN',
                                          max_alternatives=2,
                                          profanity_filter=True,
@@ -107,9 +106,8 @@ class TestClient(unittest.TestCase):
 
         encoding = Encoding.FLAC
 
-        response = client.sync_recognize(None, self.AUDIO_SOURCE_URI,
-                                         encoding,
-                                         self.SAMPLE_RATE)
+        response = client.sync_recognize(encoding, self.SAMPLE_RATE,
+                                         source_uri=self.AUDIO_SOURCE_URI)
 
         self.assertEqual(len(client.connection._requested), 1)
         req = client.connection._requested[0]
@@ -128,7 +126,8 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(credentials=credentials)
 
         with self.assertRaises(ValueError):
-            client.sync_recognize(None, None, Encoding.FLAC, self.SAMPLE_RATE)
+            client.sync_recognize(Encoding.FLAC, self.SAMPLE_RATE,
+                                  content=None, source_uri=None)
 
     def test_sync_recognize_with_content_and_source_uri(self):
         from google.cloud._helpers import _to_bytes
@@ -139,16 +138,18 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(credentials=credentials)
 
         with self.assertRaises(ValueError):
-            client.sync_recognize(_AUDIO_CONTENT, self.AUDIO_SOURCE_URI,
-                                  Encoding.FLAC, self.SAMPLE_RATE)
+            client.sync_recognize(Encoding.FLAC, self.SAMPLE_RATE,
+                                  content=_AUDIO_CONTENT,
+                                  source_uri=self.AUDIO_SOURCE_URI)
 
     def test_sync_recognize_without_encoding(self):
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials)
 
         with self.assertRaises(ValueError):
-            client.sync_recognize(None, self.AUDIO_SOURCE_URI, None,
-                                  self.SAMPLE_RATE)
+            client.sync_recognize(None, self.SAMPLE_RATE,
+                                  content=None,
+                                  source_uri=self.AUDIO_SOURCE_URI)
 
     def test_sync_recognize_without_samplerate(self):
         from google.cloud.speech.encoding import Encoding
@@ -157,8 +158,10 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(credentials=credentials)
 
         with self.assertRaises(ValueError):
-            client.sync_recognize(None, self.AUDIO_SOURCE_URI, Encoding.FLAC,
-                                  None)
+            client.sync_recognize(content=None,
+                                  source_uri=self.AUDIO_SOURCE_URI,
+                                  encoding=Encoding.FLAC,
+                                  sample_rate=None)
 
     def test_sync_recognize_with_empty_results(self):
         from google.cloud.speech.client import Encoding
@@ -169,8 +172,9 @@ class TestClient(unittest.TestCase):
         client.connection = _Connection(SYNC_RECOGNIZE_EMPTY_RESPONSE)
 
         with self.assertRaises(ValueError):
-            client.sync_recognize(None, self.AUDIO_SOURCE_URI, Encoding.FLAC,
-                                  self.SAMPLE_RATE)
+            client.sync_recognize(Encoding.FLAC, self.SAMPLE_RATE,
+                                  content=None,
+                                  source_uri=self.AUDIO_SOURCE_URI)
 
     def test_async_recognize(self):
         from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
@@ -184,9 +188,9 @@ class TestClient(unittest.TestCase):
 
         encoding = Encoding.FLAC
 
-        operation = client.async_recognize(None, self.AUDIO_SOURCE_URI,
-                                           encoding,
-                                           self.SAMPLE_RATE)
+        operation = client.async_recognize(encoding, self.SAMPLE_RATE,
+                                           content=None,
+                                           source_uri=self.AUDIO_SOURCE_URI)
         self.assertIsInstance(operation, Operation)
         self.assertFalse(operation.complete)
         self.assertIsNone(operation.metadata)
