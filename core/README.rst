@@ -5,12 +5,9 @@ This library is not meant to stand-alone. Instead it defines
 common helpers (e.g. base ``Client`` and ``Connection`` classes)
 used by all of the ``google-cloud-*``.
 
+-  `Documentation`_
 
--  `Homepage`_
--  `API Documentation`_
-
-.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/google-cloud-api.html
 
 Quick Start
 -----------

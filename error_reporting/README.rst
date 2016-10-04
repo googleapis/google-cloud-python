@@ -5,11 +5,9 @@ Python Client for Stackdriver Error Reporting
 
 .. _Stackdriver Error Reporting: https://cloud.google.com/error-reporting/
 
--  `Homepage`_
--  `API Documentation`_
+-  `Documentation`_
 
-.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/error-reporting-usage.html
 
 Quick Start
 -----------

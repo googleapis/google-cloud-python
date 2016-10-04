@@ -5,11 +5,9 @@ Python Client for Google Cloud Speech
 
 .. _Google Cloud Speech: https://cloud.google.com/speech/
 
--  `Homepage`_
--  `API Documentation`_
+-  `Documentation`_
 
-.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech-usage.html
 
 Quick Start
 -----------

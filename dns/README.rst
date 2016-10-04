@@ -5,11 +5,9 @@ Python Client for Google Cloud DNS
 
 .. _Google Cloud DNS: https://cloud.google.com/dns/
 
--  `Homepage`_
--  `API Documentation`_
+-  `Documentation`_
 
-.. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/dns-usage.html
 
 Quick Start
 -----------
