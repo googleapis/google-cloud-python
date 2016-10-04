@@ -256,9 +256,6 @@ class Client(JSONClient):
         """
         extra_params = {'project': self.project}
 
-        if max_results is not None:
-            extra_params['maxResults'] = max_results
-
         if prefix is not None:
             extra_params['prefix'] = prefix
 
@@ -267,14 +264,10 @@ class Client(JSONClient):
         if fields is not None:
             extra_params['fields'] = fields
 
-        result = _BucketIterator(client=self,
-                                 extra_params=extra_params)
-        # Page token must be handled specially since the base `Iterator`
-        # class has it as a reserved property.
-        if page_token is not None:
-            # pylint: disable=attribute-defined-outside-init
-            result.next_page_token = page_token
-            # pylint: enable=attribute-defined-outside-init
+        result = _BucketIterator(
+            client=self, page_token=page_token,
+            max_results=max_results, extra_params=extra_params)
+
         return result
 
 
@@ -288,13 +281,22 @@ class _BucketIterator(Iterator):
     :type client: :class:`google.cloud.storage.client.Client`
     :param client: The client to use for making connections.
 
+    :type page_token: str
+    :param page_token: (Optional) A token identifying a page in a result set.
+
+    :type max_results: int
+    :param max_results: (Optional) The maximum number of results to fetch.
+
     :type extra_params: dict or ``NoneType``
     :param extra_params: Extra query string parameters for the API call.
     """
 
-    def __init__(self, client, extra_params=None):
-        super(_BucketIterator, self).__init__(client=client, path='/b',
-                                              extra_params=extra_params)
+    def __init__(self, client, page_token=None,
+                 max_results=None, extra_params=None):
+        super(_BucketIterator, self).__init__(
+            client=client, path='/b',
+            page_token=page_token, max_results=max_results,
+            extra_params=extra_params)
 
     def get_items_from_response(self, response):
         """Factory method which yields :class:`.Bucket` items from a response.
