@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.connection &mdash; google-cloud 83c197c documentation</title>
+  <title>google.cloud.datastore.connection &mdash; google-cloud 2acda27 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 83c197c documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 2acda27 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -546,7 +546,13 @@
 <span class="sd">        :returns: The returned protobuf response object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_pb</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">RunQuery</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">RunQuery</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">GrpcRendezvous</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">error_code</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">code</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">error_code</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">INVALID_ARGUMENT</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">details</span><span class="p">())</span>
+            <span class="k">raise</span>
 
     <span class="k">def</span> <span class="nf">begin_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``beginTransaction`` request.</span>
@@ -975,7 +981,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'83c197c',
+            VERSION:'2acda27',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
