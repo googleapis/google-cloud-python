@@ -74,7 +74,7 @@ Great Britian.
 
      >>> alternatives = client.sync_recognize(
      ...     'FLAC', 16000, source_uri='gs://my-bucket/recording.flac',
-     ...     language_code='en-GB', max_alternatives=2, )
+     ...     language_code='en-GB', max_alternatives=2)
      >>> for alternative in alternatives:
      ...     print('=' * 20)
      ...     print('transcript: ' + alternative['transcript'])
