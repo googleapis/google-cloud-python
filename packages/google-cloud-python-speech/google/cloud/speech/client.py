@@ -19,7 +19,6 @@ from base64 import b64encode
 from google.cloud._helpers import _to_bytes
 from google.cloud import client as client_module
 from google.cloud.speech.connection import Connection
-from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
 
 
@@ -46,8 +45,7 @@ class Client(client_module.Client):
 
     _connection_class = Connection
 
-    def async_recognize(self, encoding, sample_rate, content=None,
-                        source_uri=None, language_code=None,
+    def async_recognize(self, sample, language_code=None,
                         max_alternatives=None, profanity_filter=None,
                         speech_context=None):
         """Asychronous Recognize request to Google Speech API.
@@ -57,29 +55,8 @@ class Client(client_module.Client):
 
         See `async_recognize`_.
 
-        :type encoding: str
-        :param encoding: encoding of audio data sent in all RecognitionAudio
-                         messages, can be one of: :attr:`~.Encoding.LINEAR16`,
-                         :attr:`~.Encoding.FLAC`, :attr:`~.Encoding.MULAW`,
-                         :attr:`~.Encoding.AMR`, :attr:`~.Encoding.AMR_WB`
-
-        :type sample_rate: int
-        :param sample_rate: Sample rate in Hertz of the audio data sent in all
-                            requests. Valid values are: 8000-48000. For best
-                            results, set the sampling rate of the audio source
-                            to 16000 Hz. If that's not possible, use the
-                            native sample rate of the audio source (instead of
-                            re-sampling).
-
-        :type content: bytes
-        :param content: (Optional) Byte stream of audio.
-
-        :type source_uri: str
-        :param source_uri: (Optional) URI that points to a file that contains
-                           audio data bytes as specified in RecognitionConfig.
-                           Currently, only Google Cloud Storage URIs are
-                           supported, which must be specified in the following
-                           format: ``gs://bucket_name/object_name``.
+        :type sample: :class:`~google.cloud.speech.sample.Sample`
+        :param sample: Instance of ``Sample`` containing audio information.
 
         :type language_code: str
         :param language_code: (Optional) The language of the supplied audio as
@@ -112,8 +89,7 @@ class Client(client_module.Client):
         :returns: ``Operation`` for asynchronous request to Google Speech API.
         """
 
-        data = _build_request_data(encoding, sample_rate, content, source_uri,
-                                   language_code, max_alternatives,
+        data = _build_request_data(sample, language_code, max_alternatives,
                                    profanity_filter, speech_context)
 
         api_response = self.connection.api_request(
@@ -121,8 +97,7 @@ class Client(client_module.Client):
 
         return Operation.from_api_repr(self, api_response)
 
-    def sync_recognize(self, encoding, sample_rate, content=None,
-                       source_uri=None, language_code=None,
+    def sync_recognize(self, sample, language_code=None,
                        max_alternatives=None, profanity_filter=None,
                        speech_context=None):
         """Synchronous Speech Recognition.
@@ -132,29 +107,8 @@ class Client(client_module.Client):
 
         See `sync_recognize`_.
 
-        :type encoding: str
-        :param encoding: encoding of audio data sent in all RecognitionAudio
-                         messages, can be one of: :attr:`~.Encoding.LINEAR16`,
-                         :attr:`~.Encoding.FLAC`, :attr:`~.Encoding.MULAW`,
-                         :attr:`~.Encoding.AMR`, :attr:`~.Encoding.AMR_WB`
-
-        :type sample_rate: int
-        :param sample_rate: Sample rate in Hertz of the audio data sent in all
-                            requests. Valid values are: 8000-48000. For best
-                            results, set the sampling rate of the audio source
-                            to 16000 Hz. If that's not possible, use the
-                            native sample rate of the audio source (instead of
-                            re-sampling).
-
-        :type content: bytes
-        :param content: (Optional) Byte stream of audio.
-
-        :type source_uri: str
-        :param source_uri: (Optional) URI that points to a file that contains
-                           audio data bytes as specified in RecognitionConfig.
-                           Currently, only Google Cloud Storage URIs are
-                           supported, which must be specified in the following
-                           format: ``gs://bucket_name/object_name``.
+        :type sample: :class:`~google.cloud.speech.sample.Sample`
+        :param sample: Instance of ``Sample`` containing audio information.
 
         :type language_code: str
         :param language_code: (Optional) The language of the supplied audio as
@@ -193,8 +147,7 @@ class Client(client_module.Client):
                     between 0 and 1.
         """
 
-        data = _build_request_data(encoding, sample_rate, content, source_uri,
-                                   language_code, max_alternatives,
+        data = _build_request_data(sample, language_code, max_alternatives,
                                    profanity_filter, speech_context)
 
         api_response = self.connection.api_request(
@@ -206,34 +159,12 @@ class Client(client_module.Client):
             raise ValueError('result in api should have length 1')
 
 
-def _build_request_data(encoding, sample_rate, content=None, source_uri=None,
-                        language_code=None, max_alternatives=None,
+def _build_request_data(sample, language_code=None, max_alternatives=None,
                         profanity_filter=None, speech_context=None):
     """Builds the request data before making API request.
 
-    :type encoding: str
-    :param encoding: encoding of audio data sent in all RecognitionAudio
-                     messages, can be one of: :attr:`~.Encoding.LINEAR16`,
-                     :attr:`~.Encoding.FLAC`, :attr:`~.Encoding.MULAW`,
-                     :attr:`~.Encoding.AMR`, :attr:`~.Encoding.AMR_WB`
-
-    :type sample_rate: int
-    :param sample_rate: Sample rate in Hertz of the audio data sent in all
-                        requests. Valid values are: 8000-48000. For best
-                        results, set the sampling rate of the audio source
-                        to 16000 Hz. If that's not possible, use the
-                        native sample rate of the audio source (instead of
-                        re-sampling).
-
-    :type content: bytes
-    :param content: (Optional) Byte stream of audio.
-
-    :type source_uri: str
-    :param source_uri: (Optional) URI that points to a file that contains audio
-                       data bytes as specified in RecognitionConfig.
-                       Currently, only Google Cloud Storage URIs are
-                       supported, which must be specified in the following
-                       format: ``gs://bucket_name/object_name``.
+    :type sample: :class:`~google.cloud.speech.sample.Sample`
+    :param sample: Instance of ``Sample`` containing audio information.
 
     :type language_code: str
     :param language_code: (Optional) The language of the supplied audio as
@@ -265,29 +196,13 @@ def _build_request_data(encoding, sample_rate, content=None, source_uri=None,
     :rtype: dict
     :returns: Dictionary with required data for Google Speech API.
     """
-    if content is None and source_uri is None:
-        raise ValueError('content and source_uri cannot be both '
-                         'equal to None')
-
-    if content is not None and source_uri is not None:
-        raise ValueError('content and source_uri cannot be both '
-                         'different from None')
-
-    if encoding is None:
-        raise ValueError('encoding cannot be None')
-
-    encoding_value = getattr(Encoding, encoding)
-
-    if sample_rate is None:
-        raise ValueError('sample_rate cannot be None')
-
-    if content is not None:
-        audio = {'content': b64encode(_to_bytes(content))}
+    if sample.content is not None:
+        audio = {'content': b64encode(_to_bytes(sample.content))}
     else:
-        audio = {'uri': source_uri}
+        audio = {'uri': sample.source_uri}
 
-    config = {'encoding': encoding_value,
-              'sampleRate': sample_rate}
+    config = {'encoding': sample.encoding,
+              'sampleRate': sample.sample_rate}
 
     if language_code is not None:
         config['languageCode'] = language_code
