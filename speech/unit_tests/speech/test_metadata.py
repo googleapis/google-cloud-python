@@ -37,7 +37,7 @@ class TestMetadata(unittest.TestCase):
     def test_from_api_repr(self):
         import datetime
         from google.cloud._helpers import _rfc3339_to_datetime
-        from unit_tests._fixtures import OPERATION_INCOMPLETE_RESPONSE as DATA
+        from unit_tests.speech._fixtures import OPERATION_INCOMPLETE_RESPONSE as DATA
         METADATA = DATA['metadata']
 
         start_time = _rfc3339_to_datetime(METADATA['startTime'])
