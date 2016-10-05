@@ -7,8 +7,8 @@ base.
 
 .. warning::
 
-   This is a Beta release of Google Speech API. This
-   API is not intended for real-time usage in critical applications.
+    This is a Beta release of Google Speech API. This
+    API is not intended for real-time usage in critical applications.
 
 .. _Google Speech: https://cloud.google.com/speech/docs/getting-started
 
@@ -25,10 +25,10 @@ For an overview of authentication in ``google-cloud-python``, see
 Assuming your environment is set up as described in that document,
 create an instance of :class:`~google.cloud.speech.client.Client`.
 
-  .. code-block:: python
+.. code-block:: python
 
-     >>> from google.cloud import speech
-     >>> client = speech.Client()
+    >>> from google.cloud import speech
+    >>> client = speech.Client()
 
 
 Asychronous Recognition
@@ -42,23 +42,26 @@ audio data of any duration up to 80 minutes.
 See: `Speech Asynchronous Recognize`_
 
 
-  .. code-block:: python
+.. code-block:: python
 
-      >>> import time
-      >>> operation = client.async_recognize(
-      ...     'FLAC', 16000, source_uri='gs://my-bucket/recording.flac',
-      ...     max_alternatives=2)
-      >>> retry_count = 100
-      >>> while retry_count > 0 and not operation.complete:
-      ...     retry_count -= 1
-      ...     time.sleep(10)
-      ...     operation.poll()  # API call
-      >>> operation.complete
-      True
-      >>> operation.results[0].transcript
-      'how old is the Brooklyn Bridge'
-      >>> operation.results[0].confidence
-      0.98267895
+    >>> import time
+    >>> from google.cloud.speech.sample import Sample
+    >>> from google.cloud.speech.encoding import Encoding
+    >>> sample = Sample(source_uri='gs://my-bucket/recording.flac',
+    ...                 encoding=Encoding.FLAC,
+    ...                 sample_rate=44100)
+    >>> operation = client.async_recognize(sample, max_alternatives=2)
+    >>> retry_count = 100
+    >>> while retry_count > 0 and not operation.complete:
+    ...     retry_count -= 1
+    ...     time.sleep(10)
+    ...     operation.poll()  # API call
+    >>> operation.complete
+    True
+    >>> operation.results[0].transcript
+    'how old is the Brooklyn Bridge'
+    >>> operation.results[0].confidence
+    0.98267895
 
 
 Synchronous Recognition
@@ -70,8 +73,14 @@ data to text and returns alternative text transcriptons.
 This example uses ``language_code='en-GB'`` to better recognize a dialect from
 Great Britian.
 
-  .. code-block:: python
+.. code-block:: python
 
+    >>> from google.cloud.speech.sample import Sample
+    >>> from google.cloud.speech.encoding import Encoding
+    >>> sample = Sample(source_uri='gs://my-bucket/recording.flac',
+    ...                 encoding=Encoding.FLAC,
+    ...                 sample_rate=44100)
+    >>> operation = client.async_recognize(sample, max_alternatives=2)
      >>> alternatives = client.sync_recognize(
      ...     'FLAC', 16000, source_uri='gs://my-bucket/recording.flac',
      ...     language_code='en-GB', max_alternatives=2)
@@ -88,36 +97,44 @@ Great Britian.
 
 Example of using the profanity filter.
 
-  .. code-block:: python
+.. code-block:: python
 
-  >>> alternatives = client.sync_recognize(
-  ...     'FLAC', 16000, source_uri='gs://my-bucket/recording.flac',
-  ...     max_alternatives=1, profanity_filter=True)
-  >>> for alternative in alternatives:
-  ...     print('=' * 20)
-  ...     print('transcript: ' + alternative['transcript'])
-  ...     print('confidence: ' + alternative['confidence'])
-  ====================
-  transcript: Hello, this is a f****** test
-  confidence: 0.81
+    >>> from google.cloud.speech.sample import Sample
+    >>> from google.cloud.speech.encoding import Encoding
+    >>> sample = Sample(source_uri='gs://my-bucket/recording.flac',
+    ...                 encoding=Encoding.FLAC,
+    ...                 sample_rate=44100)
+    >>> alternatives = client.sync_recognize(sample, max_alternatives=1,
+    ...                                      profanity_filter=True)
+    >>> for alternative in alternatives:
+    ...     print('=' * 20)
+    ...     print('transcript: ' + alternative['transcript'])
+    ...     print('confidence: ' + alternative['confidence'])
+    ====================
+    transcript: Hello, this is a f****** test
+    confidence: 0.81
 
 Using speech context hints to get better results. This can be used to improve
 the accuracy for specific words and phrases. This can also be used to add new
 words to the vocabulary of the recognizer.
 
-  .. code-block:: python
+.. code-block:: python
 
-  >>> hints = ['hi', 'good afternoon']
-  >>> alternatives = client.sync_recognize(
-  ...     'FLAC', 16000, source_uri='gs://my-bucket/recording.flac',
-  ...     max_alternatives=2, speech_context=hints)
-  >>> for alternative in alternatives:
-  ...     print('=' * 20)
-  ...     print('transcript: ' + alternative['transcript'])
-  ...     print('confidence: ' + alternative['confidence'])
-  ====================
-  transcript: Hello, this is a test
-  confidence: 0.81
+    >>> from google.cloud.speech.sample import Sample
+    >>> from google.cloud.speech.encoding import Encoding
+    >>> sample = Sample(source_uri='gs://my-bucket/recording.flac',
+    ...                 encoding=Encoding.FLAC,
+    ...                 sample_rate=44100)
+    >>> hints = ['hi', 'good afternoon']
+    >>> alternatives = client.sync_recognize(sample, max_alternatives=2,
+    ...                                      speech_context=hints)
+    >>> for alternative in alternatives:
+    ...     print('=' * 20)
+    ...     print('transcript: ' + alternative['transcript'])
+    ...     print('confidence: ' + alternative['confidence'])
+    ====================
+    transcript: Hello, this is a test
+    confidence: 0.81
 
 
 .. _sync_recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize
