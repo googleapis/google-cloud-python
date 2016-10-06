@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Blobs / Objects &mdash; google-cloud 894d251 documentation</title>
+  <title>Blobs / Objects &mdash; google-cloud cc4c929 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 894d251 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud cc4c929 documentation" href="index.html"/>
         <link rel="next" title="Buckets" href="storage-buckets.html"/>
         <link rel="prev" title="Storage Client" href="storage-client.html"/> 
 
@@ -274,7 +274,7 @@
 <p>Create / interact with Google Cloud Storage blobs.</p>
 <dl class="class">
 <dt id="google.cloud.storage.blob.Blob">
-<em class="property">class </em><code class="descclassname">google.cloud.storage.blob.</code><code class="descname">Blob</code><span class="sig-paren">(</span><em>name</em>, <em>bucket</em>, <em>chunk_size=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.storage.blob.</code><code class="descname">Blob</code><span class="sig-paren">(</span><em>name</em>, <em>bucket</em>, <em>chunk_size=None</em>, <em>encryption_key=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage._helpers._PropertyMixin</span></code></p>
 <p>A wrapper around Cloud Storage&#8217;s concept of an <code class="docutils literal"><span class="pre">Object</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -288,6 +288,8 @@ unique path of the object in the bucket.</li>
 <li><strong>chunk_size</strong> (<em>integer</em>) &#8211; The size of a chunk of data whenever iterating (1 MB).
 This must be a multiple of 256 KB per the API
 specification.</li>
+<li><strong>encryption_key</strong> (<em>bytes</em>) &#8211; Optional 32 byte encryption key for customer-supplied encryption.
+See <a class="reference external" href="https://cloud.google.com/storage/docs/encryption#customer-supplied">https://cloud.google.com/storage/docs/encryption#customer-supplied</a></li>
 </ul>
 </td>
 </tr>
@@ -504,29 +506,21 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.download_as_string">
-<code class="descname">download_as_string</code><span class="sig-paren">(</span><em>encryption_key=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.download_as_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.download_as_string" title="Permalink to this definition">#</a></dt>
+<code class="descname">download_as_string</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.download_as_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.download_as_string" title="Permalink to this definition">#</a></dt>
 <dd><p>Download the contents of this blob as a string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>encryption_key</strong> (<em>str or bytes</em>) &#8211; Optional 32 byte encryption key for
-customer-supplied encryption.</li>
-<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
-</ul>
-</td>
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bytes</p>
-</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bytes</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The data stored in this blob.</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The data stored in this blob.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a></p>
-</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -534,7 +528,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.download_to_file">
-<code class="descname">download_to_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>encryption_key=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.download_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.download_to_file" title="Permalink to this definition">#</a></dt>
+<code class="descname">download_to_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.download_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.download_to_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Download the contents of this blob into a file-like object.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -549,10 +543,10 @@ encryption key:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">encryption_key</span> <span class="o">=</span> <span class="s1">&#39;aa426195405adee2c8081bb9e7e74b19&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="s1">&#39;secure-data&#39;</span><span class="p">,</span> <span class="n">bucket</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="s1">&#39;secure-data&#39;</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/tmp/my-secure-file&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">blob</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span>
-<span class="gp">... </span>                          <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">blob</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -564,8 +558,6 @@ least 32.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>file_obj</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; A file handle to which to write the blob&#8217;s data.</li>
-<li><strong>encryption_key</strong> (<em>str or bytes</em>) &#8211; Optional 32 byte encryption key for
-customer-supplied encryption.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
@@ -581,7 +573,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.download_to_filename">
-<code class="descname">download_to_filename</code><span class="sig-paren">(</span><em>filename</em>, <em>encryption_key=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.download_to_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.download_to_filename" title="Permalink to this definition">#</a></dt>
+<code class="descname">download_to_filename</code><span class="sig-paren">(</span><em>filename</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.download_to_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.download_to_filename" title="Permalink to this definition">#</a></dt>
 <dd><p>Download the contents of this blob into a named file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -589,8 +581,6 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; A filename to be passed to <code class="docutils literal"><span class="pre">open</span></code>.</li>
-<li><strong>encryption_key</strong> (<em>str or bytes</em>) &#8211; Optional 32 byte encryption key for
-customer-supplied encryption.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
@@ -996,7 +986,7 @@ not been deleted, this will never be set.</td>
 
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.upload_from_file">
-<code class="descname">upload_from_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>encryption_key=None</em>, <em>content_type=None</em>, <em>num_retries=6</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.upload_from_file" title="Permalink to this definition">#</a></dt>
+<code class="descname">upload_from_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em>, <em>num_retries=6</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.upload_from_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload the contents of this blob from a file-like object.</p>
 <p>The content type of the upload will either be
 - The value passed in to the function (if any)
@@ -1019,10 +1009,10 @@ API documents for details.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">encryption_key</span> <span class="o">=</span> <span class="s1">&#39;aa426195405adee2c8081bb9e7e74b19&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="s1">&#39;secure-data&#39;</span><span class="p">,</span> <span class="n">bucket</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="s1">&#39;secure-data&#39;</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;my-file&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">my_file</span><span class="p">:</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">my_file</span><span class="p">,</span>
-<span class="gp">... </span>                          <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">encryption_key</span></code> should be a str or bytes with a length of at
@@ -1039,8 +1029,6 @@ writing the file to Cloud Storage.</li>
 If not provided, we&#8217;ll try to guess the size using
 <a class="reference external" href="https://docs.python.org/2/library/os.html#os.fstat" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">os.fstat()</span></code></a>. (If the file handle is not from the
 filesystem this won&#8217;t be possible.)</li>
-<li><strong>encryption_key</strong> (<em>str or bytes</em>) &#8211; Optional 32 byte encryption key for
-customer-supplied encryption.</li>
 <li><strong>content_type</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional type of content being uploaded.</li>
 <li><strong>num_retries</strong> (<em>integer</em>) &#8211; Number of upload retries. Defaults to 6.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
@@ -1060,7 +1048,7 @@ if the upload response returns an error status.</p>
 
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.upload_from_filename">
-<code class="descname">upload_from_filename</code><span class="sig-paren">(</span><em>filename</em>, <em>content_type=None</em>, <em>encryption_key=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.upload_from_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.upload_from_filename" title="Permalink to this definition">#</a></dt>
+<code class="descname">upload_from_filename</code><span class="sig-paren">(</span><em>filename</em>, <em>content_type=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.upload_from_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.upload_from_filename" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload this blob&#8217;s contents from the content of a named file.</p>
 <p>The content type of the upload will either be
 - The value passed in to the function (if any)
@@ -1083,8 +1071,6 @@ API documents for details.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to the file.</li>
 <li><strong>content_type</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional type of content being uploaded.</li>
-<li><strong>encryption_key</strong> (<em>str or bytes</em>) &#8211; Optional 32 byte encryption key for
-customer-supplied encryption.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
@@ -1097,7 +1083,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 
 <dl class="method">
 <dt id="google.cloud.storage.blob.Blob.upload_from_string">
-<code class="descname">upload_from_string</code><span class="sig-paren">(</span><em>data</em>, <em>content_type='text/plain'</em>, <em>encryption_key=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.upload_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.upload_from_string" title="Permalink to this definition">#</a></dt>
+<code class="descname">upload_from_string</code><span class="sig-paren">(</span><em>data</em>, <em>content_type='text/plain'</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/blob.html#Blob.upload_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.upload_from_string" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload contents of this blob from the provided string.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -1118,8 +1104,6 @@ API documents for details.</p>
 text, it will be encoded as UTF-8.</li>
 <li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Optional type of content being uploaded. Defaults
 to <code class="docutils literal"><span class="pre">'text/plain'</span></code>.</li>
-<li><strong>encryption_key</strong> (<em>str or bytes</em>) &#8211; Optional 32 byte encryption key for
-customer-supplied encryption.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
@@ -1175,7 +1159,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'894d251',
+            VERSION:'cc4c929',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

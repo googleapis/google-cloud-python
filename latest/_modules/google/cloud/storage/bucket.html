@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.bucket &mdash; google-cloud 894d251 documentation</title>
+  <title>google.cloud.storage.bucket &mdash; google-cloud cc4c929 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 894d251 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud cc4c929 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -382,7 +382,7 @@
         <span class="sd">&quot;&quot;&quot;The client bound to this bucket.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
 
-<div class="viewcode-block" id="Bucket.blob"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket.blob">[docs]</a>    <span class="k">def</span> <span class="nf">blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.blob"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket.blob">[docs]</a>    <span class="k">def</span> <span class="nf">blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory constructor for blob object.</span>
 
 <span class="sd">        .. note::</span>
@@ -397,10 +397,15 @@
 <span class="sd">                           (1 MB). This must be a multiple of 256 KB per the</span>
 <span class="sd">                           API specification.</span>
 
+<span class="sd">        :type encryption_key: bytes</span>
+<span class="sd">        :param encryption_key:</span>
+<span class="sd">            Optional 32 byte encryption key for customer-supplied encryption.</span>
+
 <span class="sd">        :rtype: :class:`google.cloud.storage.blob.Blob`</span>
 <span class="sd">        :returns: The blob object created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span>
+                    <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Bucket.exists"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this bucket exists.</span>
@@ -1138,7 +1143,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'894d251',
+            VERSION:'cc4c929',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

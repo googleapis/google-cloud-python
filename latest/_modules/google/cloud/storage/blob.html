@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud 894d251 documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud cc4c929 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 894d251 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud cc4c929 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -332,6 +332,11 @@
 <span class="sd">    :param chunk_size: The size of a chunk of data whenever iterating (1 MB).</span>
 <span class="sd">                       This must be a multiple of 256 KB per the API</span>
 <span class="sd">                       specification.</span>
+
+<span class="sd">    :type encryption_key: bytes</span>
+<span class="sd">    :param encryption_key:</span>
+<span class="sd">        Optional 32 byte encryption key for customer-supplied encryption.</span>
+<span class="sd">        See https://cloud.google.com/storage/docs/encryption#customer-supplied</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_chunk_size</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Default value for each instance.</span>
@@ -339,12 +344,13 @@
     <span class="n">_CHUNK_SIZE_MULTIPLE</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">1024</span>
     <span class="sd">&quot;&quot;&quot;Number (256 KB, in bytes) that must divide the chunk size.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Blob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="n">chunk_size</span>  <span class="c1"># Check that setter accepts value.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="o">=</span> <span class="n">ObjectACL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span> <span class="o">=</span> <span class="n">encryption_key</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">chunk_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -555,7 +561,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a file-like object.</span>
 
 <span class="sd">        .. note::</span>
@@ -572,10 +578,10 @@
 <span class="sd">            &gt;&gt;&gt; client = storage.Client(project=&#39;my-project&#39;)</span>
 <span class="sd">            &gt;&gt;&gt; bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">            &gt;&gt;&gt; encryption_key = &#39;aa426195405adee2c8081bb9e7e74b19&#39;</span>
-<span class="sd">            &gt;&gt;&gt; blob = Blob(&#39;secure-data&#39;, bucket)</span>
+<span class="sd">            &gt;&gt;&gt; blob = Blob(&#39;secure-data&#39;, bucket,</span>
+<span class="sd">            ...             encryption_key=encryption_key)</span>
 <span class="sd">            &gt;&gt;&gt; with open(&#39;/tmp/my-secure-file&#39;, &#39;wb&#39;) as file_obj:</span>
-<span class="sd">            &gt;&gt;&gt;     blob.download_to_file(file_obj,</span>
-<span class="sd">            ...                           encryption_key=encryption_key)</span>
+<span class="sd">            &gt;&gt;&gt;     blob.download_to_file(file_obj)</span>
 
 <span class="sd">        The ``encryption_key`` should be a str or bytes with a length of at</span>
 <span class="sd">        least 32.</span>
@@ -585,10 +591,6 @@
 
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle to which to write the blob&#39;s data.</span>
-
-<span class="sd">        :type encryption_key: str or bytes</span>
-<span class="sd">        :param encryption_key: Optional 32 byte encryption key for</span>
-<span class="sd">                               customer-supplied encryption.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -609,9 +611,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">download</span><span class="o">.</span><span class="n">chunksize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
 
-        <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="n">encryption_key</span><span class="p">:</span>
-            <span class="n">_set_encryption_headers</span><span class="p">(</span><span class="n">encryption_key</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
 
@@ -623,15 +623,11 @@
         <span class="c1"># it has all three (http, API_BASE_URL and build_api_url).</span>
         <span class="n">download</span><span class="o">.</span><span class="n">initialize_download</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
 
 <span class="sd">        :type filename: string</span>
 <span class="sd">        :param filename: A filename to be passed to ``open``.</span>
-
-<span class="sd">        :type encryption_key: str or bytes</span>
-<span class="sd">        :param encryption_key: Optional 32 byte encryption key for</span>
-<span class="sd">                               customer-supplied encryption.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -641,18 +637,13 @@
 <span class="sd">        :raises: :class:`google.cloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span>
-                                  <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 
         <span class="n">mtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updated</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
         <span class="n">os</span><span class="o">.</span><span class="n">utime</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">mtime</span><span class="p">,</span> <span class="n">mtime</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob as a string.</span>
-
-<span class="sd">        :type encryption_key: str or bytes</span>
-<span class="sd">        :param encryption_key: Optional 32 byte encryption key for</span>
-<span class="sd">                               customer-supplied encryption.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -664,8 +655,7 @@
 <span class="sd">        :raises: :class:`google.cloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span>
-                              <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
 
     <span class="nd">@staticmethod</span>
@@ -680,8 +670,7 @@
 
     <span class="c1"># pylint: disable=too-many-locals</span>
 <div class="viewcode-block" id="Blob.upload_from_file"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-                         <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                         <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of this blob from a file-like object.</span>
 
 <span class="sd">        The content type of the upload will either be</span>
@@ -708,10 +697,10 @@
 <span class="sd">            &gt;&gt;&gt; client = storage.Client(project=&#39;my-project&#39;)</span>
 <span class="sd">            &gt;&gt;&gt; bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">            &gt;&gt;&gt; encryption_key = &#39;aa426195405adee2c8081bb9e7e74b19&#39;</span>
-<span class="sd">            &gt;&gt;&gt; blob = Blob(&#39;secure-data&#39;, bucket)</span>
+<span class="sd">            &gt;&gt;&gt; blob = Blob(&#39;secure-data&#39;, bucket,</span>
+<span class="sd">            ...             encryption_key=encryption_key)</span>
 <span class="sd">            &gt;&gt;&gt; with open(&#39;my-file&#39;, &#39;rb&#39;) as my_file:</span>
-<span class="sd">            &gt;&gt;&gt;     blob.upload_from_file(my_file,</span>
-<span class="sd">            ...                           encryption_key=encryption_key)</span>
+<span class="sd">            &gt;&gt;&gt;     blob.upload_from_file(my_file)</span>
 
 <span class="sd">        The ``encryption_key`` should be a str or bytes with a length of at</span>
 <span class="sd">        least 32.</span>
@@ -731,10 +720,6 @@
 <span class="sd">                     If not provided, we&#39;ll try to guess the size using</span>
 <span class="sd">                     :func:`os.fstat`. (If the file handle is not from the</span>
 <span class="sd">                     filesystem this won&#39;t be possible.)</span>
-
-<span class="sd">        :type encryption_key: str or bytes</span>
-<span class="sd">        :param encryption_key: Optional 32 byte encryption key for</span>
-<span class="sd">                               customer-supplied encryption.</span>
 
 <span class="sd">        :type content_type: string or ``NoneType``</span>
 <span class="sd">        :param content_type: Optional type of content being uploaded.</span>
@@ -781,8 +766,7 @@
             <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="n">encryption_key</span><span class="p">:</span>
-            <span class="n">_set_encryption_headers</span><span class="p">(</span><span class="n">encryption_key</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+        <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">))</span>
 
         <span class="n">upload</span> <span class="o">=</span> <span class="n">Upload</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">total_bytes</span><span class="p">,</span>
                         <span class="n">auto_transfer</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -832,8 +816,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response_content</span><span class="p">))</span></div>
     <span class="c1"># pylint: enable=too-many-locals</span>
 
-<div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload this blob&#39;s contents from the content of a named file.</span>
 
 <span class="sd">        The content type of the upload will either be</span>
@@ -858,10 +841,6 @@
 <span class="sd">        :type content_type: string or ``NoneType``</span>
 <span class="sd">        :param content_type: Optional type of content being uploaded.</span>
 
-<span class="sd">        :type encryption_key: str or bytes</span>
-<span class="sd">        :param encryption_key: Optional 32 byte encryption key for</span>
-<span class="sd">                               customer-supplied encryption.</span>
-
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
@@ -872,11 +851,10 @@
             <span class="n">content_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
-                                  <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span>
+                <span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.upload_from_string"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span>
-                           <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.upload_from_string"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload contents of this blob from the provided string.</span>
 
 <span class="sd">        .. note::</span>
@@ -898,10 +876,6 @@
 <span class="sd">        :param content_type: Optional type of content being uploaded. Defaults</span>
 <span class="sd">                             to ``&#39;text/plain&#39;``.</span>
 
-<span class="sd">        :type encryption_key: str or bytes</span>
-<span class="sd">        :param encryption_key: Optional 32 byte encryption key for</span>
-<span class="sd">                               customer-supplied encryption.</span>
-
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
@@ -911,9 +885,9 @@
             <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
         <span class="n">string_buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                              <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
-                              <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span>
+            <span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+            <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this blob public giving all users read access.</span>
@@ -1235,22 +1209,28 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_relative_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
 
-<span class="k">def</span> <span class="nf">_set_encryption_headers</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_encryption_headers</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Builds customer encryption key headers</span>
 
-<span class="sd">    :type key: str or bytes</span>
+<span class="sd">    :type key: bytes</span>
 <span class="sd">    :param key: 32 byte key to build request key and hash.</span>
 
-<span class="sd">    :type headers: dict</span>
-<span class="sd">    :param headers: dict of HTTP headers being sent in request.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :returns: dict of HTTP headers being sent in request.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
     <span class="n">key</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-    <span class="n">sha256_key</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
-    <span class="n">key_hash</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">sha256_key</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
-    <span class="n">encoded_key</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
-    <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-Goog-Encryption-Algorithm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;AES256&#39;</span>
-    <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-Goog-Encryption-Key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">encoded_key</span><span class="p">)</span>
-    <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-Goog-Encryption-Key-Sha256&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">key_hash</span><span class="p">)</span>
+    <span class="n">key_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+    <span class="n">key_hash</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">key_hash</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;X-Goog-Encryption-Algorithm&#39;</span><span class="p">:</span> <span class="s1">&#39;AES256&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;X-Goog-Encryption-Key&#39;</span><span class="p">:</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+        <span class="s1">&#39;X-Goog-Encryption-Key-Sha256&#39;</span><span class="p">:</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">key_hash</span><span class="p">),</span>
+    <span class="p">}</span>
 </pre></div>
 
            </div>
@@ -1284,7 +1264,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'894d251',
+            VERSION:'cc4c929',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
