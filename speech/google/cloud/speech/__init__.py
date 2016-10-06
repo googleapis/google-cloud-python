@@ -15,5 +15,4 @@
 """Google Cloud Speech API wrapper."""
 
 from google.cloud.speech.client import Client
-from google.cloud.speech.client import Encoding
 from google.cloud.speech.connection import Connection
