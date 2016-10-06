@@ -19,6 +19,7 @@ class TestClient(unittest.TestCase):
     SAMPLE_RATE = 16000
     HINTS = ['hi']
     AUDIO_SOURCE_URI = 'gs://sample-bucket/sample-recording.flac'
+    AUDIO_CONTENT = '/9j/4QNURXhpZgAASUkq'
 
     def _getTargetClass(self):
         from google.cloud.speech.client import Client
@@ -37,6 +38,28 @@ class TestClient(unittest.TestCase):
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
 
+    def test_create_sample_from_client(self):
+        from google.cloud.speech.encoding import Encoding
+        from google.cloud.speech.sample import Sample
+
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+
+        sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
+                               encoding=Encoding.FLAC,
+                               sample_rate=self.SAMPLE_RATE)
+        self.assertIsInstance(sample, Sample)
+        self.assertEqual(sample.source_uri, self.AUDIO_SOURCE_URI)
+        self.assertEqual(sample.sample_rate, self.SAMPLE_RATE)
+        self.assertEqual(sample.encoding, Encoding.FLAC)
+
+        content_sample = client.sample(content=self.AUDIO_CONTENT,
+                                       encoding=Encoding.FLAC,
+                                       sample_rate=self.SAMPLE_RATE)
+        self.assertEqual(content_sample.content, self.AUDIO_CONTENT)
+        self.assertEqual(content_sample.sample_rate, self.SAMPLE_RATE)
+        self.assertEqual(content_sample.encoding, Encoding.FLAC)
+
     def test_sync_recognize_content_with_optional_parameters(self):
         import base64
         from google.cloud._helpers import _to_bytes
@@ -44,8 +67,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech.sample import Sample
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
 
-        _AUDIO_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
-        _B64_AUDIO_CONTENT = base64.b64encode(_AUDIO_CONTENT)
+        _B64_AUDIO_CONTENT = base64.b64encode(_to_bytes(self.AUDIO_CONTENT))
         RETURNED = SYNC_RECOGNIZE_RESPONSE
         REQUEST = {
             'config': {
@@ -70,7 +92,7 @@ class TestClient(unittest.TestCase):
 
         encoding = Encoding.FLAC
 
-        sample = Sample(content=_AUDIO_CONTENT, encoding=encoding,
+        sample = Sample(content=self.AUDIO_CONTENT, encoding=encoding,
                         sample_rate=self.SAMPLE_RATE)
         response = client.sync_recognize(sample,
                                          language_code='EN',

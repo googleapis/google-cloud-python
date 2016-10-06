@@ -45,11 +45,12 @@ See: `Speech Asynchronous Recognize`_
 .. code-block:: python
 
     >>> import time
-    >>> from google.cloud.speech.sample import Sample
+    >>> from google.cloud import speech
     >>> from google.cloud.speech.encoding import Encoding
-    >>> sample = Sample(source_uri='gs://my-bucket/recording.flac',
-    ...                 encoding=Encoding.FLAC,
-    ...                 sample_rate=44100)
+    >>> client = speech.Client()
+    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
+    ...                        encoding=Encoding.FLAC,
+    ...                        sample_rate=44100)
     >>> operation = client.async_recognize(sample, max_alternatives=2)
     >>> retry_count = 100
     >>> while retry_count > 0 and not operation.complete:
@@ -75,11 +76,12 @@ Great Britian.
 
 .. code-block:: python
 
-    >>> from google.cloud.speech.sample import Sample
+    >>> from google.cloud import speech
     >>> from google.cloud.speech.encoding import Encoding
-    >>> sample = Sample(source_uri='gs://my-bucket/recording.flac',
-    ...                 encoding=Encoding.FLAC,
-    ...                 sample_rate=44100)
+    >>> client = speech.Client()
+    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
+    ...                        encoding=Encoding.FLAC,
+    ...                        sample_rate=44100)
     >>> operation = client.async_recognize(sample, max_alternatives=2)
      >>> alternatives = client.sync_recognize(
      ...     'FLAC', 16000, source_uri='gs://my-bucket/recording.flac',
@@ -99,11 +101,12 @@ Example of using the profanity filter.
 
 .. code-block:: python
 
-    >>> from google.cloud.speech.sample import Sample
+    >>> from google.cloud import speech
     >>> from google.cloud.speech.encoding import Encoding
-    >>> sample = Sample(source_uri='gs://my-bucket/recording.flac',
-    ...                 encoding=Encoding.FLAC,
-    ...                 sample_rate=44100)
+    >>> client = speech.Client()
+    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
+    ...                        encoding=Encoding.FLAC,
+    ...                        sample_rate=44100)
     >>> alternatives = client.sync_recognize(sample, max_alternatives=1,
     ...                                      profanity_filter=True)
     >>> for alternative in alternatives:
@@ -120,11 +123,12 @@ words to the vocabulary of the recognizer.
 
 .. code-block:: python
 
-    >>> from google.cloud.speech.sample import Sample
+    >>> from google.cloud import speech
     >>> from google.cloud.speech.encoding import Encoding
-    >>> sample = Sample(source_uri='gs://my-bucket/recording.flac',
-    ...                 encoding=Encoding.FLAC,
-    ...                 sample_rate=44100)
+    >>> client = speech.Client()
+    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
+    ...                        encoding=Encoding.FLAC,
+    ...                        sample_rate=44100)
     >>> hints = ['hi', 'good afternoon']
     >>> alternatives = client.sync_recognize(sample, max_alternatives=2,
     ...                                      speech_context=hints)
