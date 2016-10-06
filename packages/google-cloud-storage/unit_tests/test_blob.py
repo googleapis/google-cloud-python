@@ -24,7 +24,7 @@ class Test_Blob(unittest.TestCase):
         blob._properties = properties or {}
         return blob
 
-    def test_ctor(self):
+    def test_ctor_wo_encryption_key(self):
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
         properties = {'key': 'value'}
@@ -34,6 +34,14 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob._properties, properties)
         self.assertFalse(blob._acl.loaded)
         self.assertIs(blob._acl.blob, blob)
+        self.assertEqual(blob._encryption_key, None)
+
+    def test_ctor_w_encryption_key(self):
+        KEY = b'01234567890123456789012345678901'  # 32 bytes
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        blob = self._makeOne(BLOB_NAME, bucket=bucket, encryption_key=KEY)
+        self.assertEqual(blob._encryption_key, KEY)
 
     def test_chunk_size_ctor(self):
         from google.cloud.storage.blob import Blob
@@ -391,7 +399,7 @@ class Test_Blob(unittest.TestCase):
         from google.cloud._testing import _NamedTemporaryFile
 
         BLOB_NAME = 'blob-name'
-        KEY = 'aa426195405adee2c8081bb9e7e74b19'
+        KEY = b'aa426195405adee2c8081bb9e7e74b19'
         HEADER_KEY_VALUE = 'YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk='
         HEADER_KEY_HASH_VALUE = 'V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0='
         chunk1_response = {'status': PARTIAL_CONTENT,
@@ -407,12 +415,13 @@ class Test_Blob(unittest.TestCase):
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK,
                       'updated': '2014-12-06T13:13:50.690Z'}
-        blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties,
+                             encryption_key=KEY)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
 
         with _NamedTemporaryFile() as temp:
-            blob.download_to_filename(temp.name, encryption_key=KEY)
+            blob.download_to_filename(temp.name)
             with open(temp.name, 'rb') as file_obj:
                 wrote = file_obj.read()
                 mtime = os.path.getmtime(temp.name)
@@ -835,7 +844,7 @@ class Test_Blob(unittest.TestCase):
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = b'ABCDEF'
-        KEY = 'aa426195405adee2c8081bb9e7e74b19'
+        KEY = b'aa426195405adee2c8081bb9e7e74b19'
         HEADER_KEY_VALUE = 'YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk='
         HEADER_KEY_HASH_VALUE = 'V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0='
         EXPECTED_CONTENT_TYPE = 'foo/bar'
@@ -852,7 +861,7 @@ class Test_Blob(unittest.TestCase):
         client = _Client(connection)
         bucket = _Bucket(client)
         blob = self._makeOne(BLOB_NAME, bucket=bucket,
-                             properties=properties)
+                             properties=properties, encryption_key=KEY)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
 
@@ -860,8 +869,7 @@ class Test_Blob(unittest.TestCase):
             with open(temp.name, 'wb') as file_obj:
                 file_obj.write(DATA)
             blob.upload_from_filename(temp.name,
-                                      content_type=EXPECTED_CONTENT_TYPE,
-                                      encryption_key=KEY)
+                                      content_type=EXPECTED_CONTENT_TYPE)
 
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
@@ -1040,7 +1048,7 @@ class Test_Blob(unittest.TestCase):
         from six.moves.urllib.parse import urlsplit
         from google.cloud.streaming import http_wrapper
         BLOB_NAME = 'blob-name'
-        KEY = 'aa426195405adee2c8081bb9e7e74b19'
+        KEY = b'aa426195405adee2c8081bb9e7e74b19'
         HEADER_KEY_VALUE = 'YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk='
         HEADER_KEY_HASH_VALUE = 'V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0='
         UPLOAD_URL = 'http://example.com/upload/name/key'
@@ -1057,10 +1065,10 @@ class Test_Blob(unittest.TestCase):
         )
         client = _Client(connection)
         bucket = _Bucket(client=client)
-        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket, encryption_key=KEY)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
-        blob.upload_from_string(DATA, encryption_key=KEY)
+        blob.upload_from_string(DATA)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
