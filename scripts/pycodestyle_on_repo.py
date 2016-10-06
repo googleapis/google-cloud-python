@@ -19,6 +19,8 @@ This runs pycodestyle as a script via subprocess but only runs it on the
 """
 
 
+from __future__ import print_function
+
 import os
 import subprocess
 import sys
@@ -35,9 +37,12 @@ def main():
     python_files = [
         candidate for candidate in candidates if candidate.endswith('.py')]
 
-    pycodestyle_command = ['pycodestyle'] + python_files
-    status_code = subprocess.call(pycodestyle_command)
-    sys.exit(status_code)
+    if not python_files:
+        print('No Python files to lint, exiting.')
+    else:
+        pycodestyle_command = ['pycodestyle'] + python_files
+        status_code = subprocess.call(pycodestyle_command)
+        sys.exit(status_code)
 
 
 if __name__ == '__main__':
