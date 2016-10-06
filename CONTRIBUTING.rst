@@ -44,7 +44,7 @@ You'll have to create a development environment to hack on
    $ cd hack-on-google-cloud-python
    # Configure remotes such that you can pull changes from the google-cloud-python
    # repository into your local repository.
-   $ git remote add upstream https://github.com:GoogleCloudPlatform/google-cloud-python
+   $ git remote add upstream git@github.com:GoogleCloudPlatform/google-cloud-python.git
    # fetch and merge changes from upstream into master
    $ git fetch upstream
    $ git merge upstream/master
