@@ -1202,6 +1202,159 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['path'], '/b/name/o/%s/compose' % DESTINATION)
         self.assertEqual(kw[0]['data'], SENT)
 
+    def test_rewrite_other_bucket_other_name_no_encryption_partial(self):
+        from six.moves.http_client import OK
+        SOURCE_BLOB = 'source'
+        DEST_BLOB = 'dest'
+        DEST_BUCKET = 'other-bucket'
+        TOKEN = 'TOKEN'
+        RESPONSE = {
+            'totalBytesRewritten': 33,
+            'objectSize': 42,
+            'done': False,
+            'rewriteToken': TOKEN,
+            'resource': {'etag': 'DEADBEEF'},
+        }
+        response = ({'status': OK}, RESPONSE)
+        connection = _Connection(response)
+        client = _Client(connection)
+        source_bucket = _Bucket(client=client)
+        source_blob = self._makeOne(SOURCE_BLOB, bucket=source_bucket)
+        dest_bucket = _Bucket(client=client, name=DEST_BUCKET)
+        dest_blob = self._makeOne(DEST_BLOB, bucket=dest_bucket)
+
+        token, rewritten, size = dest_blob.rewrite(source_blob)
+
+        self.assertEqual(token, TOKEN)
+        self.assertEqual(rewritten, 33)
+        self.assertEqual(size, 42)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'POST')
+        PATH = '/b/name/o/%s/rewriteTo/b/%s/o/%s' % (
+            SOURCE_BLOB, DEST_BUCKET, DEST_BLOB)
+        self.assertEqual(kw[0]['path'], PATH)
+        self.assertEqual(kw[0]['query_params'], {})
+        SENT = {}
+        self.assertEqual(kw[0]['data'], SENT)
+
+        headers = {
+            key.title(): str(value) for key, value in kw[0]['headers'].items()}
+        self.assertNotIn('X-Goog-Copy-Source-Encryption-Algorithm', headers)
+        self.assertNotIn('X-Goog-Copy-Source-Encryption-Key', headers)
+        self.assertNotIn('X-Goog-Copy-Source-Encryption-Key-Sha256', headers)
+        self.assertNotIn('X-Goog-Encryption-Algorithm', headers)
+        self.assertNotIn('X-Goog-Encryption-Key', headers)
+        self.assertNotIn('X-Goog-Encryption-Key-Sha256', headers)
+
+    def test_rewrite_same_name_no_old_key_new_key_done(self):
+        import base64
+        import hashlib
+        from six.moves.http_client import OK
+        KEY = b'01234567890123456789012345678901'  # 32 bytes
+        KEY_B64 = base64.b64encode(KEY).rstrip().decode('ascii')
+        KEY_HASH = hashlib.sha256(KEY).digest()
+        KEY_HASH_B64 = base64.b64encode(KEY_HASH).rstrip().decode('ascii')
+        BLOB_NAME = 'blob'
+        RESPONSE = {
+            'totalBytesRewritten': 42,
+            'objectSize': 42,
+            'done': True,
+            'resource': {'etag': 'DEADBEEF'},
+        }
+        response = ({'status': OK}, RESPONSE)
+        connection = _Connection(response)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        plain = self._makeOne(BLOB_NAME, bucket=bucket)
+        encrypted = self._makeOne(BLOB_NAME, bucket=bucket, encryption_key=KEY)
+
+        token, rewritten, size = encrypted.rewrite(plain)
+
+        self.assertIsNone(token)
+        self.assertEqual(rewritten, 42)
+        self.assertEqual(size, 42)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'POST')
+        PATH = '/b/name/o/%s/rewriteTo/b/name/o/%s' % (BLOB_NAME, BLOB_NAME)
+        self.assertEqual(kw[0]['path'], PATH)
+        self.assertEqual(kw[0]['query_params'], {})
+        SENT = {}
+        self.assertEqual(kw[0]['data'], SENT)
+
+        headers = {
+            key.title(): str(value) for key, value in kw[0]['headers'].items()}
+        self.assertNotIn('X-Goog-Copy-Source-Encryption-Algorithm', headers)
+        self.assertNotIn('X-Goog-Copy-Source-Encryption-Key', headers)
+        self.assertNotIn('X-Goog-Copy-Source-Encryption-Key-Sha256', headers)
+        self.assertEqual(headers['X-Goog-Encryption-Algorithm'], 'AES256')
+        self.assertEqual(headers['X-Goog-Encryption-Key'], KEY_B64)
+        self.assertEqual(headers['X-Goog-Encryption-Key-Sha256'], KEY_HASH_B64)
+
+    def test_rewrite_same_name_no_key_new_key_w_token(self):
+        import base64
+        import hashlib
+        from six.moves.http_client import OK
+        SOURCE_KEY = b'01234567890123456789012345678901'  # 32 bytes
+        SOURCE_KEY_B64 = base64.b64encode(SOURCE_KEY).rstrip().decode('ascii')
+        SOURCE_KEY_HASH = hashlib.sha256(SOURCE_KEY).digest()
+        SOURCE_KEY_HASH_B64 = base64.b64encode(
+            SOURCE_KEY_HASH).rstrip().decode('ascii')
+        DEST_KEY = b'90123456789012345678901234567890'  # 32 bytes
+        DEST_KEY_B64 = base64.b64encode(DEST_KEY).rstrip().decode('ascii')
+        DEST_KEY_HASH = hashlib.sha256(DEST_KEY).digest()
+        DEST_KEY_HASH_B64 = base64.b64encode(
+            DEST_KEY_HASH).rstrip().decode('ascii')
+        BLOB_NAME = 'blob'
+        TOKEN = 'TOKEN'
+        RESPONSE = {
+            'totalBytesRewritten': 42,
+            'objectSize': 42,
+            'done': True,
+            'resource': {'etag': 'DEADBEEF'},
+        }
+        response = ({'status': OK}, RESPONSE)
+        connection = _Connection(response)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        source = self._makeOne(
+            BLOB_NAME, bucket=bucket, encryption_key=SOURCE_KEY)
+        dest = self._makeOne(BLOB_NAME, bucket=bucket, encryption_key=DEST_KEY)
+
+        token, rewritten, size = dest.rewrite(source, token=TOKEN)
+
+        self.assertIsNone(token)
+        self.assertEqual(rewritten, 42)
+        self.assertEqual(size, 42)
+
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'POST')
+        PATH = '/b/name/o/%s/rewriteTo/b/name/o/%s' % (BLOB_NAME, BLOB_NAME)
+        self.assertEqual(kw[0]['path'], PATH)
+        self.assertEqual(kw[0]['query_params'], {'rewriteToken': TOKEN})
+        SENT = {}
+        self.assertEqual(kw[0]['data'], SENT)
+
+        headers = {
+            key.title(): str(value) for key, value in kw[0]['headers'].items()}
+        self.assertEqual(
+            headers['X-Goog-Copy-Source-Encryption-Algorithm'], 'AES256')
+        self.assertEqual(
+            headers['X-Goog-Copy-Source-Encryption-Key'], SOURCE_KEY_B64)
+        self.assertEqual(
+            headers['X-Goog-Copy-Source-Encryption-Key-Sha256'],
+            SOURCE_KEY_HASH_B64)
+        self.assertEqual(
+            headers['X-Goog-Encryption-Algorithm'], 'AES256')
+        self.assertEqual(
+            headers['X-Goog-Encryption-Key'], DEST_KEY_B64)
+        self.assertEqual(
+            headers['X-Goog-Encryption-Key-Sha256'], DEST_KEY_HASH_B64)
+
     def test_cache_control_getter(self):
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
@@ -1555,10 +1708,8 @@ class _HTTP(_Responder):
 
 
 class _Bucket(object):
-    path = '/b/name'
-    name = 'name'
 
-    def __init__(self, client=None):
+    def __init__(self, client=None, name='name'):
         if client is None:
             connection = _Connection()
             client = _Client(connection)
@@ -1566,6 +1717,8 @@ class _Bucket(object):
         self._blobs = {}
         self._copied = []
         self._deleted = []
+        self.name = name
+        self.path = '/b/' + name
 
     def delete_blob(self, blob_name, client=None):
         del self._blobs[blob_name]
