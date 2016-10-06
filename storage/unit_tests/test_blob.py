@@ -1102,6 +1102,98 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': permissive})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
+    def test_compose_wo_content_type_set(self):
+        SOURCE_1 = 'source-1'
+        SOURCE_2 = 'source-2'
+        DESTINATION = 'destinaton'
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        source_1 = self._makeOne(SOURCE_1, bucket=bucket)
+        source_2 = self._makeOne(SOURCE_2, bucket=bucket)
+        destination = self._makeOne(DESTINATION, bucket=bucket)
+
+        with self.assertRaises(ValueError):
+            destination.compose(sources=[source_1, source_2])
+
+    def test_compose_minimal(self):
+        from six.moves.http_client import OK
+        SOURCE_1 = 'source-1'
+        SOURCE_2 = 'source-2'
+        DESTINATION = 'destinaton'
+        RESOURCE = {
+            'etag': 'DEADBEEF'
+        }
+        after = ({'status': OK}, RESOURCE)
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        source_1 = self._makeOne(SOURCE_1, bucket=bucket)
+        source_2 = self._makeOne(SOURCE_2, bucket=bucket)
+        destination = self._makeOne(DESTINATION, bucket=bucket)
+        destination.content_type = 'text/plain'
+
+        destination.compose(sources=[source_1, source_2])
+
+        self.assertEqual(destination.etag, 'DEADBEEF')
+
+        SENT = {
+            'sourceObjects': [
+                {'name': source_1.name},
+                {'name': source_2.name},
+            ],
+            'destination': {
+                'contentType': 'text/plain',
+            },
+        }
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'POST')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s/compose' % DESTINATION)
+        self.assertEqual(kw[0]['data'], SENT)
+
+    def test_compose_w_additional_property_changes(self):
+        from six.moves.http_client import OK
+        SOURCE_1 = 'source-1'
+        SOURCE_2 = 'source-2'
+        DESTINATION = 'destinaton'
+        RESOURCE = {
+            'etag': 'DEADBEEF'
+        }
+        after = ({'status': OK}, RESOURCE)
+        connection = _Connection(after)
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        source_1 = self._makeOne(SOURCE_1, bucket=bucket)
+        source_2 = self._makeOne(SOURCE_2, bucket=bucket)
+        destination = self._makeOne(DESTINATION, bucket=bucket)
+        destination.content_type = 'text/plain'
+        destination.content_language = 'en-US'
+        destination.metadata = {'my-key': 'my-value'}
+
+        destination.compose(sources=[source_1, source_2])
+
+        self.assertEqual(destination.etag, 'DEADBEEF')
+
+        SENT = {
+            'sourceObjects': [
+                {'name': source_1.name},
+                {'name': source_2.name},
+            ],
+            'destination': {
+                'contentType': 'text/plain',
+                'contentLanguage': 'en-US',
+                'metadata': {
+                    'my-key': 'my-value',
+                }
+            },
+        }
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'POST')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s/compose' % DESTINATION)
+        self.assertEqual(kw[0]['data'], SENT)
+
     def test_cache_control_getter(self):
         BLOB_NAME = 'blob-name'
         bucket = _Bucket()
