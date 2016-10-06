@@ -97,6 +97,7 @@ Great Britian.
      transcript: Hello, this is one test
      confidence: 0
 
+
 Example of using the profanity filter.
 
 .. code-block:: python
@@ -141,5 +142,69 @@ words to the vocabulary of the recognizer.
     confidence: 0.81
 
 
+Streaming Recognition
+---------------------
+
+The :meth:`~google.cloud.speech.Client.stream_recognize` method converts speech
+data to possible text alternatives on the fly.
+
+.. note::
+    Streaming recognition requests are limited to 1 minute of audio.
+
+    See: https://cloud.google.com/speech/limits#content
+
+
+    >>> from google.cloud import speech
+    >>> from google.cloud.speech.encoding import Encoding
+    >>> client = speech.Client()
+    >>> with open('hello.flac', 'rb') as content:
+    >>>     sample = client.sample(content=content.read(),
+    ...                            encoding=Encoding.FLAC,
+    ...                            sample_rate=44100)
+    >>>     results = client.stream_recognize(sample)
+    >>> results[0].is_final
+    False
+    >>> results[2].is_final
+    True
+    >>> results[2].alternatives[0].transcript
+    hello
+    >>> results[2].alternatives[0].confidence
+    0.96976006031
+
+For continuous speech containing more than one word, the ``single_utterance``
+option should be disabled.
+
+See: `Single Utterance`_
+
+.. code-block:: python
+
+    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
+    ...                        encoding=Encoding.FLAC,
+    ...                        sample_rate=44100)
+    >>> results = client.stream_recognize(sample, single_utterance=False)
+
+
+If you would like interim results to be returned as well as the final results,
+you can set the ``interim_results`` option to ``True``.
+
+  .. code-block:: python
+
+    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
+    ...                        encoding=Encoding.FLAC,
+    ...                        sample_rate=44100)
+    >>> results = client.stream_recognize(sample, interim_results=True)
+    >>> print results[0].alternatives.transcript
+    'how'
+    >>> print results[0].stability
+    0.00999999977648
+    >>> print results[2].alternatives.transcript
+    'hello'
+    >>> print results[2].alternatives.confidence
+    0.96976006031
+    >>> print results[2].is_final
+    True
+
+
+.. _Single Utterance: https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#streamingrecognitionconfig
 .. _sync_recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize
 .. _Speech Asynchronous Recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize
