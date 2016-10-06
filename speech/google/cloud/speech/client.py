@@ -20,6 +20,7 @@ from google.cloud._helpers import _to_bytes
 from google.cloud import client as client_module
 from google.cloud.speech.connection import Connection
 from google.cloud.speech.operation import Operation
+from google.cloud.speech.sample import Sample
 
 
 class Client(client_module.Client):
@@ -96,6 +97,41 @@ class Client(client_module.Client):
             method='POST', path='speech:asyncrecognize', data=data)
 
         return Operation.from_api_repr(self, api_response)
+
+    @staticmethod
+    def sample(content=None, source_uri=None, encoding=None,
+               sample_rate=None):
+        """Factory: construct Sample to use when making recognize requests.
+
+        :type content: bytes
+        :param content: (Optional) Byte stream of audio.
+
+        :type source_uri: str
+        :param source_uri: (Optional) URI that points to a file that contains
+                           audio data bytes as specified in RecognitionConfig.
+                           Currently, only Google Cloud Storage URIs are
+                           supported, which must be specified in the following
+                           format: ``gs://bucket_name/object_name``.
+
+        :type encoding: str
+        :param encoding: encoding of audio data sent in all RecognitionAudio
+                         messages, can be one of: :attr:`~.Encoding.LINEAR16`,
+                         :attr:`~.Encoding.FLAC`, :attr:`~.Encoding.MULAW`,
+                         :attr:`~.Encoding.AMR`, :attr:`~.Encoding.AMR_WB`
+
+        :type sample_rate: int
+        :param sample_rate: Sample rate in Hertz of the audio data sent in all
+                            requests. Valid values are: 8000-48000. For best
+                            results, set the sampling rate of the audio source
+                            to 16000 Hz. If that's not possible, use the
+                            native sample rate of the audio source (instead of
+                            re-sampling).
+
+        :rtype: :class:`~google.cloud.speech.sample.Sample`
+        :returns: Instance of ``Sample``.
+        """
+        return Sample(content=content, source_uri=source_uri,
+                      encoding=encoding, sample_rate=sample_rate)
 
     def sync_recognize(self, sample, language_code=None,
                        max_alternatives=None, profanity_filter=None,
