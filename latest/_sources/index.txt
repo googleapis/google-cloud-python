@@ -176,6 +176,7 @@
   speech-encoding
   speech-metadata
   speech-operation
+  speech-sample
   speech-transcript
 
 .. toctree::

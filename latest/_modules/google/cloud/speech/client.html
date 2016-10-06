@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.client &mdash; google-cloud 8717bf2 documentation</title>
+  <title>google.cloud.speech.client &mdash; google-cloud fb10016 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 8717bf2 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud fb10016 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -215,6 +215,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-encoding.html">Speech Encoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-metadata.html">Speech Metadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-operation.html">Speech Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech-sample.html">Speech Sample</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-transcript.html">Speech Transcript</a></li>
 </ul>
 <p class="caption"><span class="caption-text">External Links</span></p>
@@ -289,8 +290,8 @@
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">client</span> <span class="k">as</span> <span class="n">client_module</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.connection</span> <span class="k">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">google.cloud.speech.encoding</span> <span class="k">import</span> <span class="n">Encoding</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.operation</span> <span class="k">import</span> <span class="n">Operation</span>
+<span class="kn">from</span> <span class="nn">google.cloud.speech.sample</span> <span class="k">import</span> <span class="n">Sample</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">client_module</span><span class="o">.</span><span class="n">Client</span><span class="p">):</span>
@@ -316,9 +317,9 @@
 
     <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
 
-<div class="viewcode-block" id="Client.async_recognize"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client.async_recognize">[docs]</a>    <span class="k">def</span> <span class="nf">async_recognize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">source_uri</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span>
-                        <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">profanity_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.async_recognize"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client.async_recognize">[docs]</a>    <span class="k">def</span> <span class="nf">async_recognize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">max_alternatives</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">profanity_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Asychronous Recognize request to Google Speech API.</span>
 
 <span class="sd">        .. _async_recognize: https://cloud.google.com/speech/reference/\</span>
@@ -326,29 +327,8 @@
 
 <span class="sd">        See `async_recognize`_.</span>
 
-<span class="sd">        :type content: bytes</span>
-<span class="sd">        :param content: Byte stream of audio.</span>
-
-<span class="sd">        :type source_uri: str</span>
-<span class="sd">        :param source_uri: URI that points to a file that contains audio</span>
-<span class="sd">                           data bytes as specified in RecognitionConfig.</span>
-<span class="sd">                           Currently, only Google Cloud Storage URIs are</span>
-<span class="sd">                           supported, which must be specified in the following</span>
-<span class="sd">                           format: ``gs://bucket_name/object_name``.</span>
-
-<span class="sd">        :type encoding: str</span>
-<span class="sd">        :param encoding: encoding of audio data sent in all RecognitionAudio</span>
-<span class="sd">                         messages, can be one of: :attr:`~.Encoding.LINEAR16`,</span>
-<span class="sd">                         :attr:`~.Encoding.FLAC`, :attr:`~.Encoding.MULAW`,</span>
-<span class="sd">                         :attr:`~.Encoding.AMR`, :attr:`~.Encoding.AMR_WB`</span>
-
-<span class="sd">        :type sample_rate: int</span>
-<span class="sd">        :param sample_rate: Sample rate in Hertz of the audio data sent in all</span>
-<span class="sd">                            requests. Valid values are: 8000-48000. For best</span>
-<span class="sd">                            results, set the sampling rate of the audio source</span>
-<span class="sd">                            to 16000 Hz. If that&#39;s not possible, use the</span>
-<span class="sd">                            native sample rate of the audio source (instead of</span>
-<span class="sd">                            re-sampling).</span>
+<span class="sd">        :type sample: :class:`~google.cloud.speech.sample.Sample`</span>
+<span class="sd">        :param sample: Instance of ``Sample`` containing audio information.</span>
 
 <span class="sd">        :type language_code: str</span>
 <span class="sd">        :param language_code: (Optional) The language of the supplied audio as</span>
@@ -381,32 +361,25 @@
 <span class="sd">        :returns: ``Operation`` for asynchronous request to Google Speech API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">data</span> <span class="o">=</span> <span class="n">_build_request_data</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">source_uri</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span>
-                                   <span class="n">sample_rate</span><span class="p">,</span> <span class="n">language_code</span><span class="p">,</span>
-                                   <span class="n">max_alternatives</span><span class="p">,</span> <span class="n">profanity_filter</span><span class="p">,</span>
-                                   <span class="n">speech_context</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">_build_request_data</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="p">,</span>
+                                   <span class="n">profanity_filter</span><span class="p">,</span> <span class="n">speech_context</span><span class="p">)</span>
 
         <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;speech:asyncrecognize&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Operation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.sync_recognize"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client.sync_recognize">[docs]</a>    <span class="k">def</span> <span class="nf">sync_recognize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">source_uri</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span>
-                       <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">profanity_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Synchronous Speech Recognition.</span>
-
-<span class="sd">        .. _sync_recognize: https://cloud.google.com/speech/reference/\</span>
-<span class="sd">                            rest/v1beta1/speech/syncrecognize</span>
-
-<span class="sd">        See `sync_recognize`_.</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Client.sample"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_uri</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">sample_rate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct Sample to use when making recognize requests.</span>
 
 <span class="sd">        :type content: bytes</span>
-<span class="sd">        :param content: Byte stream of audio.</span>
+<span class="sd">        :param content: (Optional) Byte stream of audio.</span>
 
 <span class="sd">        :type source_uri: str</span>
-<span class="sd">        :param source_uri: URI that points to a file that contains audio</span>
-<span class="sd">                           data bytes as specified in RecognitionConfig.</span>
+<span class="sd">        :param source_uri: (Optional) URI that points to a file that contains</span>
+<span class="sd">                           audio data bytes as specified in RecognitionConfig.</span>
 <span class="sd">                           Currently, only Google Cloud Storage URIs are</span>
 <span class="sd">                           supported, which must be specified in the following</span>
 <span class="sd">                           format: ``gs://bucket_name/object_name``.</span>
@@ -424,6 +397,25 @@
 <span class="sd">                            to 16000 Hz. If that&#39;s not possible, use the</span>
 <span class="sd">                            native sample rate of the audio source (instead of</span>
 <span class="sd">                            re-sampling).</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.speech.sample.Sample`</span>
+<span class="sd">        :returns: Instance of ``Sample``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Sample</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">source_uri</span><span class="o">=</span><span class="n">source_uri</span><span class="p">,</span>
+                      <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.sync_recognize"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client.sync_recognize">[docs]</a>    <span class="k">def</span> <span class="nf">sync_recognize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">max_alternatives</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">profanity_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Synchronous Speech Recognition.</span>
+
+<span class="sd">        .. _sync_recognize: https://cloud.google.com/speech/reference/\</span>
+<span class="sd">                            rest/v1beta1/speech/syncrecognize</span>
+
+<span class="sd">        See `sync_recognize`_.</span>
+
+<span class="sd">        :type sample: :class:`~google.cloud.speech.sample.Sample`</span>
+<span class="sd">        :param sample: Instance of ``Sample`` containing audio information.</span>
 
 <span class="sd">        :type language_code: str</span>
 <span class="sd">        :param language_code: (Optional) The language of the supplied audio as</span>
@@ -462,10 +454,8 @@
 <span class="sd">                    between 0 and 1.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">data</span> <span class="o">=</span> <span class="n">_build_request_data</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">source_uri</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span>
-                                   <span class="n">sample_rate</span><span class="p">,</span> <span class="n">language_code</span><span class="p">,</span>
-                                   <span class="n">max_alternatives</span><span class="p">,</span> <span class="n">profanity_filter</span><span class="p">,</span>
-                                   <span class="n">speech_context</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">_build_request_data</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="p">,</span>
+                                   <span class="n">profanity_filter</span><span class="p">,</span> <span class="n">speech_context</span><span class="p">)</span>
 
         <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;speech:syncrecognize&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
@@ -476,34 +466,12 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;result in api should have length 1&#39;</span><span class="p">)</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">_build_request_data</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">source_uri</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span>
-                        <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">_build_request_data</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">profanity_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Builds the request data before making API request.</span>
 
-<span class="sd">    :type content: bytes</span>
-<span class="sd">    :param content: Byte stream of audio.</span>
-
-<span class="sd">    :type source_uri: str</span>
-<span class="sd">    :param source_uri: URI that points to a file that contains audio</span>
-<span class="sd">                       data bytes as specified in RecognitionConfig.</span>
-<span class="sd">                       Currently, only Google Cloud Storage URIs are</span>
-<span class="sd">                       supported, which must be specified in the following</span>
-<span class="sd">                       format: ``gs://bucket_name/object_name``.</span>
-
-<span class="sd">    :type encoding: str</span>
-<span class="sd">    :param encoding: encoding of audio data sent in all RecognitionAudio</span>
-<span class="sd">                     messages, can be one of: :attr:`~.Encoding.LINEAR16`,</span>
-<span class="sd">                     :attr:`~.Encoding.FLAC`, :attr:`~.Encoding.MULAW`,</span>
-<span class="sd">                     :attr:`~.Encoding.AMR`, :attr:`~.Encoding.AMR_WB`</span>
-
-<span class="sd">    :type sample_rate: int</span>
-<span class="sd">    :param sample_rate: Sample rate in Hertz of the audio data sent in all</span>
-<span class="sd">                        requests. Valid values are: 8000-48000. For best</span>
-<span class="sd">                        results, set the sampling rate of the audio source</span>
-<span class="sd">                        to 16000 Hz. If that&#39;s not possible, use the</span>
-<span class="sd">                        native sample rate of the audio source (instead of</span>
-<span class="sd">                        re-sampling).</span>
+<span class="sd">    :type sample: :class:`~google.cloud.speech.sample.Sample`</span>
+<span class="sd">    :param sample: Instance of ``Sample`` containing audio information.</span>
 
 <span class="sd">    :type language_code: str</span>
 <span class="sd">    :param language_code: (Optional) The language of the supplied audio as</span>
@@ -535,29 +503,13 @@
 <span class="sd">    :rtype: dict</span>
 <span class="sd">    :returns: Dictionary with required data for Google Speech API.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">content</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">source_uri</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;content and source_uri cannot be both &#39;</span>
-                         <span class="s1">&#39;equal to None&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">source_uri</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;content and source_uri cannot be both &#39;</span>
-                         <span class="s1">&#39;different from None&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;encoding cannot be None&#39;</span><span class="p">)</span>
-
-    <span class="n">encoding_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Encoding</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">sample_rate</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;sample_rate cannot be None&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">audio</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">b64encode</span><span class="p">(</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">content</span><span class="p">))}</span>
+    <span class="k">if</span> <span class="n">sample</span><span class="o">.</span><span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">audio</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">b64encode</span><span class="p">(</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">content</span><span class="p">))}</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">audio</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;uri&#39;</span><span class="p">:</span> <span class="n">source_uri</span><span class="p">}</span>
+        <span class="n">audio</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;uri&#39;</span><span class="p">:</span> <span class="n">sample</span><span class="o">.</span><span class="n">source_uri</span><span class="p">}</span>
 
-    <span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;encoding&#39;</span><span class="p">:</span> <span class="n">encoding_value</span><span class="p">,</span>
-              <span class="s1">&#39;sampleRate&#39;</span><span class="p">:</span> <span class="n">sample_rate</span><span class="p">}</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;encoding&#39;</span><span class="p">:</span> <span class="n">sample</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
+              <span class="s1">&#39;sampleRate&#39;</span><span class="p">:</span> <span class="n">sample</span><span class="o">.</span><span class="n">sample_rate</span><span class="p">}</span>
 
     <span class="k">if</span> <span class="n">language_code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span><span class="p">[</span><span class="s1">&#39;languageCode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">language_code</span>
@@ -607,7 +559,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'8717bf2',
+            VERSION:'fb10016',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

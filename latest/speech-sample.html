@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Schemas &mdash; google-cloud fb10016 documentation</title>
+  <title>Speech Sample &mdash; google-cloud fb10016 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="google-cloud fb10016 documentation" href="index.html"/>
-        <link rel="next" title="Using the API" href="bigtable-usage.html"/>
-        <link rel="prev" title="Query" href="bigquery-query.html"/> 
+        <link rel="next" title="Speech Transcript" href="speech-transcript.html"/>
+        <link rel="prev" title="Speech Operation" href="speech-operation.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -117,14 +117,14 @@
 <li class="toctree-l1"><a class="reference internal" href="pubsub-iam.html">IAM Policy</a></li>
 </ul>
 <p class="caption"><span class="caption-text">BigQuery</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigquery-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigquery-dataset.html">Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigquery-job.html">Jobs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigquery-table.html">Tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigquery-query.html">Query</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-schema.html">Schemas</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Cloud Bigtable</span></p>
 <ul>
@@ -210,13 +210,13 @@
 <li class="toctree-l1"><a class="reference internal" href="language-responses.html">Natural Language Response Classes</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Speech</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="speech-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-encoding.html">Speech Encoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-metadata.html">Speech Metadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-operation.html">Speech Operation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="speech-sample.html">Speech Sample</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Speech Sample</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-transcript.html">Speech Transcript</a></li>
 </ul>
 <p class="caption"><span class="caption-text">External Links</span></p>
@@ -255,11 +255,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Schemas</li>
+    <li>Speech Sample</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/bigquery-schema.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/speech-sample.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -269,31 +269,114 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-google.cloud.bigquery.schema">
-<span id="schemas"></span><h1>Schemas<a class="headerlink" href="#module-google.cloud.bigquery.schema" title="Permalink to this headline">#</a></h1>
-<p>Scheamas for BigQuery tables / queries.</p>
+  <div class="section" id="module-google.cloud.speech.sample">
+<span id="speech-sample"></span><h1>Speech Sample<a class="headerlink" href="#module-google.cloud.speech.sample" title="Permalink to this headline">#</a></h1>
+<p>Sample class to handle content for Google Cloud Speech API.</p>
 <dl class="class">
-<dt id="google.cloud.bigquery.schema.SchemaField">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.schema.</code><code class="descname">SchemaField</code><span class="sig-paren">(</span><em>name</em>, <em>field_type</em>, <em>mode='NULLABLE'</em>, <em>description=None</em>, <em>fields=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/schema.html#SchemaField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.speech.sample.Sample">
+<em class="property">class </em><code class="descclassname">google.cloud.speech.sample.</code><code class="descname">Sample</code><span class="sig-paren">(</span><em>content=None</em>, <em>source_uri=None</em>, <em>encoding=None</em>, <em>sample_rate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/sample.html#Sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.sample.Sample" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Describe a single field within a table schema.</p>
+<p>Representation of an audio sample to be used with Google Speech API.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the field.</li>
-<li><strong>field_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the type of the field (one of &#8216;STRING&#8217;, &#8216;INTEGER&#8217;,
-&#8216;FLOAT&#8217;, &#8216;BOOLEAN&#8217;, &#8216;TIMESTAMP&#8217; or &#8216;RECORD&#8217;).</li>
-<li><strong>mode</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the type of the field (one of &#8216;NULLABLE&#8217;, &#8216;REQUIRED&#8217;,
-or &#8216;REPEATED&#8217;).</li>
-<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; optional description for the field.</li>
-<li><strong>fields</strong> (list of <a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code></a>, or None) &#8211; subfields (requires <code class="docutils literal"><span class="pre">field_type</span></code> of &#8216;RECORD&#8217;).</li>
+<li><strong>content</strong> (<em>bytes</em>) &#8211; (Optional) Byte stream of audio.</li>
+<li><strong>source_uri</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) URI that points to a file that contains
+audio data bytes as specified in RecognitionConfig.
+Currently, only Google Cloud Storage URIs are
+supported, which must be specified in the following
+format: <code class="docutils literal"><span class="pre">gs://bucket_name/object_name</span></code>.</li>
+<li><strong>encoding</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; encoding of audio data sent in all RecognitionAudio
+messages, can be one of: <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.LINEAR16" title="google.cloud.speech.encoding.Encoding.LINEAR16"><code class="xref py py-attr docutils literal"><span class="pre">LINEAR16</span></code></a>,
+<a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.FLAC" title="google.cloud.speech.encoding.Encoding.FLAC"><code class="xref py py-attr docutils literal"><span class="pre">FLAC</span></code></a>, <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.MULAW" title="google.cloud.speech.encoding.Encoding.MULAW"><code class="xref py py-attr docutils literal"><span class="pre">MULAW</span></code></a>,
+<a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.AMR" title="google.cloud.speech.encoding.Encoding.AMR"><code class="xref py py-attr docutils literal"><span class="pre">AMR</span></code></a>, <a class="reference internal" href="speech-encoding.html#google.cloud.speech.encoding.Encoding.AMR_WB" title="google.cloud.speech.encoding.Encoding.AMR_WB"><code class="xref py py-attr docutils literal"><span class="pre">AMR_WB</span></code></a></li>
+<li><strong>sample_rate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Sample rate in Hertz of the audio data sent in all
+requests. Valid values are: 8000-48000. For best
+results, set the sampling rate of the audio source
+to 16000 Hz. If that&#8217;s not possible, use the
+native sample rate of the audio source (instead of
+re-sampling).</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.content">
+<code class="descname">content</code><a class="headerlink" href="#google.cloud.speech.sample.Sample.content" title="Permalink to this definition">#</a></dt>
+<dd><p>Bytes of audio content.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bytes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Byte stream of audio content.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.default_encoding">
+<code class="descname">default_encoding</code><em class="property"> = 'FLAC'</em><a class="headerlink" href="#google.cloud.speech.sample.Sample.default_encoding" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.default_sample_rate">
+<code class="descname">default_sample_rate</code><em class="property"> = 16000</em><a class="headerlink" href="#google.cloud.speech.sample.Sample.default_sample_rate" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.encoding">
+<code class="descname">encoding</code><a class="headerlink" href="#google.cloud.speech.sample.Sample.encoding" title="Permalink to this definition">#</a></dt>
+<dd><p>Audio encoding type</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">String value of Encoding type.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.sample_rate">
+<code class="descname">sample_rate</code><a class="headerlink" href="#google.cloud.speech.sample.Sample.sample_rate" title="Permalink to this definition">#</a></dt>
+<dd><p>Sample rate integer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)">int</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Integer between 8000 and 48,000.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.speech.sample.Sample.source_uri">
+<code class="descname">source_uri</code><a class="headerlink" href="#google.cloud.speech.sample.Sample.source_uri" title="Permalink to this definition">#</a></dt>
+<dd><p>Google Cloud Storage URI of audio source.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Google Cloud Storage URI string.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -305,10 +388,10 @@ or &#8216;REPEATED&#8217;).</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="bigtable-usage.html" class="btn btn-neutral float-right" title="Using the API" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="speech-transcript.html" class="btn btn-neutral float-right" title="Speech Transcript" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="bigquery-query.html" class="btn btn-neutral" title="Query" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="speech-operation.html" class="btn btn-neutral" title="Speech Operation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

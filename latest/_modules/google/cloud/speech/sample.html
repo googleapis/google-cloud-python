@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.connection &mdash; google-cloud fb10016 documentation</title>
+  <title>google.cloud.speech.sample &mdash; google-cloud fb10016 documentation</title>
   
 
   
@@ -256,7 +256,7 @@
       
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
       
-    <li>google.cloud.bigquery.connection</li>
+    <li>google.cloud.speech.sample</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -268,8 +268,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for google.cloud.bigquery.connection</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2015 Google Inc.</span>
+  <h1>Source code for google.cloud.speech.sample</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2016 Google Inc.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -283,26 +283,97 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Create / interact with Google BigQuery connections.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Sample class to handle content for Google Cloud Speech API.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
+<span class="kn">from</span> <span class="nn">google.cloud.speech.encoding</span> <span class="k">import</span> <span class="n">Encoding</span>
 
 
-<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../../bigquery-client.html#google.cloud.bigquery.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A connection to Google BigQuery via the JSON REST API.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Sample"><a class="viewcode-back" href="../../../../speech-sample.html#google.cloud.speech.sample.Sample">[docs]</a><span class="k">class</span> <span class="nc">Sample</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of an audio sample to be used with Google Speech API.</span>
 
-    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com&#39;</span>
-    <span class="sd">&quot;&quot;&quot;The base of the API call URL.&quot;&quot;&quot;</span>
+<span class="sd">    :type content: bytes</span>
+<span class="sd">    :param content: (Optional) Byte stream of audio.</span>
 
-    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s1">&#39;v2&#39;</span>
-    <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
+<span class="sd">    :type source_uri: str</span>
+<span class="sd">    :param source_uri: (Optional) URI that points to a file that contains</span>
+<span class="sd">                       audio data bytes as specified in RecognitionConfig.</span>
+<span class="sd">                       Currently, only Google Cloud Storage URIs are</span>
+<span class="sd">                       supported, which must be specified in the following</span>
+<span class="sd">                       format: ``gs://bucket_name/object_name``.</span>
 
-    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{api_base_url}</span><span class="s1">/bigquery/</span><span class="si">{api_version}{path}</span><span class="s1">&#39;</span>
-    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
+<span class="sd">    :type encoding: str</span>
+<span class="sd">    :param encoding: encoding of audio data sent in all RecognitionAudio</span>
+<span class="sd">                     messages, can be one of: :attr:`~.Encoding.LINEAR16`,</span>
+<span class="sd">                     :attr:`~.Encoding.FLAC`, :attr:`~.Encoding.MULAW`,</span>
+<span class="sd">                     :attr:`~.Encoding.AMR`, :attr:`~.Encoding.AMR_WB`</span>
 
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/bigquery&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a BigQuery consumer.&quot;&quot;&quot;</span></div>
+<span class="sd">    :type sample_rate: int</span>
+<span class="sd">    :param sample_rate: Sample rate in Hertz of the audio data sent in all</span>
+<span class="sd">                        requests. Valid values are: 8000-48000. For best</span>
+<span class="sd">                        results, set the sampling rate of the audio source</span>
+<span class="sd">                        to 16000 Hz. If that&#39;s not possible, use the</span>
+<span class="sd">                        native sample rate of the audio source (instead of</span>
+<span class="sd">                        re-sampling).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">default_encoding</span> <span class="o">=</span> <span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span>
+    <span class="n">default_sample_rate</span> <span class="o">=</span> <span class="mi">16000</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_uri</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_rate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="n">no_source</span> <span class="o">=</span> <span class="n">content</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">source_uri</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="n">both_source</span> <span class="o">=</span> <span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">source_uri</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">no_source</span> <span class="ow">or</span> <span class="n">both_source</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Supply one of </span><span class="se">\&#39;</span><span class="s1">content</span><span class="se">\&#39;</span><span class="s1"> or </span><span class="se">\&#39;</span><span class="s1">source_uri</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_content</span> <span class="o">=</span> <span class="n">content</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_source_uri</span> <span class="o">=</span> <span class="n">source_uri</span>
+
+        <span class="k">if</span> <span class="n">sample_rate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="mi">8000</span> <span class="o">&lt;=</span> <span class="n">sample_rate</span> <span class="o">&lt;=</span> <span class="mi">48000</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The value of sample_rate must be between 8000&#39;</span>
+                             <span class="s1">&#39; and 48000.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sample_rate</span> <span class="o">=</span> <span class="n">sample_rate</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_sample_rate</span>
+
+        <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Encoding</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_encoding</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Encoding</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid encoding: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">encoding</span><span class="p">,))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">source_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Google Cloud Storage URI of audio source.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: Google Cloud Storage URI string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_uri</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Bytes of audio content.</span>
+
+<span class="sd">        :rtype: bytes</span>
+<span class="sd">        :returns: Byte stream of audio content.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sample_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sample rate integer.</span>
+
+<span class="sd">        :rtype: int</span>
+<span class="sd">        :returns: Integer between 8000 and 48,000.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_rate</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">encoding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Audio encoding type</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: String value of Encoding type.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_encoding</span></div>
 </pre></div>
 
            </div>
