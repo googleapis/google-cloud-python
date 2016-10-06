@@ -24,7 +24,8 @@ class TestTranscript(unittest.TestCase):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_ctor(self):
-        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE as DATA
+        from unit_tests.speech._fixtures import (
+            OPERATION_COMPLETE_RESPONSE as DATA)
         TRANSCRIPT_DATA = DATA['response']['results'][0]['alternatives'][0]
         transcript = self._makeOne(TRANSCRIPT_DATA)
         self.assertEqual('how old is the Brooklyn Bridge',

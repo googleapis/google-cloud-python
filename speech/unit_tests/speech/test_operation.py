@@ -35,7 +35,7 @@ class OperationTests(unittest.TestCase):
         self.assertIsNone(operation.results)
 
     def test_from_api_repr(self):
-        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
+        from unit_tests.speech._fixtures import OPERATION_COMPLETE_RESPONSE
         from google.cloud.speech.operation import Transcript
         from google.cloud.speech.metadata import Metadata
         RESPONSE = OPERATION_COMPLETE_RESPONSE
@@ -55,8 +55,8 @@ class OperationTests(unittest.TestCase):
         self.assertEqual(operation.metadata.progress_percent, 100)
 
     def test_update_response(self):
-        from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
-        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
+        from unit_tests.speech._fixtures import ASYNC_RECOGNIZE_RESPONSE
+        from unit_tests.speech._fixtures import OPERATION_COMPLETE_RESPONSE
         RESPONSE = ASYNC_RECOGNIZE_RESPONSE
 
         client = _Client()
@@ -67,8 +67,8 @@ class OperationTests(unittest.TestCase):
 
     def test_poll(self):
         from google.cloud.speech.operation import Metadata
-        from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
-        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
+        from unit_tests.speech._fixtures import ASYNC_RECOGNIZE_RESPONSE
+        from unit_tests.speech._fixtures import OPERATION_COMPLETE_RESPONSE
         RESPONSE = ASYNC_RECOGNIZE_RESPONSE
         client = _Client()
         connection = _Connection(OPERATION_COMPLETE_RESPONSE)
@@ -86,8 +86,8 @@ class OperationTests(unittest.TestCase):
                          'operations/%s' % (operation.name,))
 
     def test_poll_complete(self):
-        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
-        from unit_tests._fixtures import OPERATION_INCOMPLETE_RESPONSE
+        from unit_tests.speech._fixtures import OPERATION_COMPLETE_RESPONSE
+        from unit_tests.speech._fixtures import OPERATION_INCOMPLETE_RESPONSE
         RESPONSE = OPERATION_INCOMPLETE_RESPONSE
 
         client = _Client()

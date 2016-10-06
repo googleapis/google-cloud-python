@@ -35,7 +35,8 @@ def main():
     os.chdir(git_root)
     candidates, _ = get_affected_files()
     python_files = [
-        candidate for candidate in candidates if candidate.endswith('.py')]
+        candidate for candidate in candidates
+        if candidate.endswith('.py') and os.path.exists(candidate)]
 
     if not python_files:
         print('No Python files to lint, exiting.')
