@@ -12,4 +12,5 @@ Submodules
 .. toctree::
 
    google.auth.crypt
+   google.auth.jwt
 

@@ -14,7 +14,32 @@
 
 """Helper functions for commonly used utilities."""
 
+
+import calendar
+import datetime
+
 import six
+
+
+def utcnow():
+    """Returns the current UTC datetime.
+
+    Returns:
+        datetime: The current time in UTC.
+    """
+    return datetime.datetime.utcnow()
+
+
+def datetime_to_secs(value):
+    """Convert a datetime object to the number of seconds since the UNIX epoch.
+
+    Args:
+        value (datetime): The datetime to convert.
+
+    Returns:
+        int: The number of seconds since the UNIX epoch.
+    """
+    return calendar.timegm(value.utctimetuple())
 
 
 def to_bytes(value, encoding='utf-8'):

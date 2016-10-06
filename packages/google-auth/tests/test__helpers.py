@@ -12,10 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 
 import pytest
 
 from google.auth import _helpers
+
+
+def test_utcnow():
+    assert isinstance(_helpers.utcnow(), datetime.datetime)
+
+
+def test_datetime_to_secs():
+    assert _helpers.datetime_to_secs(
+        datetime.datetime(1970, 1, 1)) == 0
+    assert _helpers.datetime_to_secs(
+        datetime.datetime(1990, 5, 29)) == 643939200
 
 
 def test_to_bytes_with_bytes():
