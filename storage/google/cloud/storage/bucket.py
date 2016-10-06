@@ -111,7 +111,7 @@ class Bucket(_PropertyMixin):
         """The client bound to this bucket."""
         return self._client
 
-    def blob(self, blob_name, chunk_size=None):
+    def blob(self, blob_name, chunk_size=None, encryption_key=None):
         """Factory constructor for blob object.
 
         .. note::
@@ -126,10 +126,15 @@ class Bucket(_PropertyMixin):
                            (1 MB). This must be a multiple of 256 KB per the
                            API specification.
 
+        :type encryption_key: bytes
+        :param encryption_key:
+            Optional 32 byte encryption key for customer-supplied encryption.
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The blob object created.
         """
-        return Blob(name=blob_name, bucket=self, chunk_size=chunk_size)
+        return Blob(name=blob_name, bucket=self, chunk_size=chunk_size,
+                    encryption_key=encryption_key)
 
     def exists(self, client=None):
         """Determines whether or not this bucket exists.
