@@ -395,3 +395,44 @@ class TestStorageSignURLs(TestStorageFiles):
 
         # Check that the blob has actually been deleted.
         self.assertFalse(blob.exists())
+
+
+class TestStorageCompose(TestStorageFiles):
+
+    FILES = {}
+
+    def test_compose_create_new_blob(self):
+        SOURCE_1 = 'AAA\n'
+        source_1 = self.bucket.blob('source-1')
+        source_1.upload_from_string(SOURCE_1)
+        self.case_blobs_to_delete.append(source_1)
+
+        SOURCE_2 = 'BBB\n'
+        source_2 = self.bucket.blob('source-2')
+        source_2.upload_from_string(SOURCE_2)
+        self.case_blobs_to_delete.append(source_2)
+
+        destination = self.bucket.blob('destination')
+        destination.content_type = 'text/plain'
+        destination.compose([source_1, source_2])
+        self.case_blobs_to_delete.append(destination)
+
+        composed = destination.download_as_string()
+        self.assertEqual(composed, SOURCE_1 + SOURCE_2)
+
+    def test_compose_replace_existing_blob(self):
+        BEFORE = 'AAA\n'
+        original = self.bucket.blob('original')
+        original.content_type = 'text/plain'
+        original.upload_from_string(BEFORE)
+        self.case_blobs_to_delete.append(original)
+
+        TO_APPEND = 'BBB\n'
+        to_append = self.bucket.blob('to_append')
+        to_append.upload_from_string(TO_APPEND)
+        self.case_blobs_to_delete.append(to_append)
+
+        original.compose([original, to_append])
+
+        composed = original.download_as_string()
+        self.assertEqual(composed, BEFORE + TO_APPEND)
