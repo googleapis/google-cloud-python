@@ -655,6 +655,32 @@ class Blob(_PropertyMixin):
         self.acl.all().grant_read()
         self.acl.save(client=client)
 
+    def compose(self, sources, client=None):
+        """Concatenate source blobs into this one.
+
+        :type sources: list of :class:`Blob`
+        :param sources: blobs whose contents will be composed into this blob.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+
+        :raises: :exc:`ValueError` if this blob does not have its
+                 :attr:`content_type` set.
+        """
+        if self.content_type is None:
+            raise ValueError("Destination 'content_type' not set.")
+        client = self._require_client(client)
+        request = {
+            'sourceObjects': [{'name': source.name} for source in sources],
+            'destination': self._properties.copy(),
+        }
+        api_response = client.connection.api_request(
+            method='POST', path=self.path + '/compose', data=request,
+            _target_object=self)
+        self._set_properties(api_response)
+
     cache_control = _scalar_property('cacheControl')
     """HTTP 'Cache-Control' header for this object.
 
