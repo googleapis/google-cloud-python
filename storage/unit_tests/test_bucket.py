@@ -113,14 +113,17 @@ class Test_Bucket(unittest.TestCase):
         BUCKET_NAME = 'BUCKET_NAME'
         BLOB_NAME = 'BLOB_NAME'
         CHUNK_SIZE = 1024 * 1024
+        KEY = b'01234567890123456789012345678901'  # 32 bytes
 
         bucket = self._makeOne(name=BUCKET_NAME)
-        blob = bucket.blob(BLOB_NAME, chunk_size=CHUNK_SIZE)
+        blob = bucket.blob(
+            BLOB_NAME, chunk_size=CHUNK_SIZE, encryption_key=KEY)
         self.assertIsInstance(blob, Blob)
         self.assertIs(blob.bucket, bucket)
         self.assertIs(blob.client, bucket.client)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(blob.chunk_size, CHUNK_SIZE)
+        self.assertEqual(blob._encryption_key, KEY)
 
     def test_exists_miss(self):
         from google.cloud.exceptions import NotFound

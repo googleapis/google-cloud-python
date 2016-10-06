@@ -61,6 +61,11 @@ class Blob(_PropertyMixin):
     :param chunk_size: The size of a chunk of data whenever iterating (1 MB).
                        This must be a multiple of 256 KB per the API
                        specification.
+
+    :type encryption_key: bytes
+    :param encryption_key:
+        Optional 32 byte encryption key for customer-supplied encryption.
+        See https://cloud.google.com/storage/docs/encryption#customer-supplied
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -68,12 +73,13 @@ class Blob(_PropertyMixin):
     _CHUNK_SIZE_MULTIPLE = 256 * 1024
     """Number (256 KB, in bytes) that must divide the chunk size."""
 
-    def __init__(self, name, bucket, chunk_size=None):
+    def __init__(self, name, bucket, chunk_size=None, encryption_key=None):
         super(Blob, self).__init__(name=name)
 
         self.chunk_size = chunk_size  # Check that setter accepts value.
         self.bucket = bucket
         self._acl = ObjectACL(self)
+        self._encryption_key = encryption_key
 
     @property
     def chunk_size(self):
@@ -284,7 +290,7 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.delete_blob(self.name, client=client)
 
-    def download_to_file(self, file_obj, encryption_key=None, client=None):
+    def download_to_file(self, file_obj, client=None):
         """Download the contents of this blob into a file-like object.
 
         .. note::
@@ -301,10 +307,10 @@ class Blob(_PropertyMixin):
             >>> client = storage.Client(project='my-project')
             >>> bucket = client.get_bucket('my-bucket')
             >>> encryption_key = 'aa426195405adee2c8081bb9e7e74b19'
-            >>> blob = Blob('secure-data', bucket)
+            >>> blob = Blob('secure-data', bucket,
+            ...             encryption_key=encryption_key)
             >>> with open('/tmp/my-secure-file', 'wb') as file_obj:
-            >>>     blob.download_to_file(file_obj,
-            ...                           encryption_key=encryption_key)
+            >>>     blob.download_to_file(file_obj)
 
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.
@@ -314,10 +320,6 @@ class Blob(_PropertyMixin):
 
         :type file_obj: file
         :param file_obj: A file handle to which to write the blob's data.
-
-        :type encryption_key: str or bytes
-        :param encryption_key: Optional 32 byte encryption key for
-                               customer-supplied encryption.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -338,9 +340,7 @@ class Blob(_PropertyMixin):
         if self.chunk_size is not None:
             download.chunksize = self.chunk_size
 
-        headers = {}
-        if encryption_key:
-            _set_encryption_headers(encryption_key, headers)
+        headers = _get_encryption_headers(self._encryption_key)
 
         request = Request(download_url, 'GET', headers)
 
@@ -352,15 +352,11 @@ class Blob(_PropertyMixin):
         # it has all three (http, API_BASE_URL and build_api_url).
         download.initialize_download(request, client._connection.http)
 
-    def download_to_filename(self, filename, encryption_key=None, client=None):
+    def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
 
         :type filename: string
         :param filename: A filename to be passed to ``open``.
-
-        :type encryption_key: str or bytes
-        :param encryption_key: Optional 32 byte encryption key for
-                               customer-supplied encryption.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -370,18 +366,13 @@ class Blob(_PropertyMixin):
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         with open(filename, 'wb') as file_obj:
-            self.download_to_file(file_obj, encryption_key=encryption_key,
-                                  client=client)
+            self.download_to_file(file_obj, client=client)
 
         mtime = time.mktime(self.updated.timetuple())
         os.utime(file_obj.name, (mtime, mtime))
 
-    def download_as_string(self, encryption_key=None, client=None):
+    def download_as_string(self, client=None):
         """Download the contents of this blob as a string.
-
-        :type encryption_key: str or bytes
-        :param encryption_key: Optional 32 byte encryption key for
-                               customer-supplied encryption.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -393,8 +384,7 @@ class Blob(_PropertyMixin):
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         string_buffer = BytesIO()
-        self.download_to_file(string_buffer, encryption_key=encryption_key,
-                              client=client)
+        self.download_to_file(string_buffer, client=client)
         return string_buffer.getvalue()
 
     @staticmethod
@@ -409,8 +399,7 @@ class Blob(_PropertyMixin):
 
     # pylint: disable=too-many-locals
     def upload_from_file(self, file_obj, rewind=False, size=None,
-                         encryption_key=None, content_type=None, num_retries=6,
-                         client=None):
+                         content_type=None, num_retries=6, client=None):
         """Upload the contents of this blob from a file-like object.
 
         The content type of the upload will either be
@@ -437,10 +426,10 @@ class Blob(_PropertyMixin):
             >>> client = storage.Client(project='my-project')
             >>> bucket = client.get_bucket('my-bucket')
             >>> encryption_key = 'aa426195405adee2c8081bb9e7e74b19'
-            >>> blob = Blob('secure-data', bucket)
+            >>> blob = Blob('secure-data', bucket,
+            ...             encryption_key=encryption_key)
             >>> with open('my-file', 'rb') as my_file:
-            >>>     blob.upload_from_file(my_file,
-            ...                           encryption_key=encryption_key)
+            >>>     blob.upload_from_file(my_file)
 
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.
@@ -460,10 +449,6 @@ class Blob(_PropertyMixin):
                      If not provided, we'll try to guess the size using
                      :func:`os.fstat`. (If the file handle is not from the
                      filesystem this won't be possible.)
-
-        :type encryption_key: str or bytes
-        :param encryption_key: Optional 32 byte encryption key for
-                               customer-supplied encryption.
 
         :type content_type: string or ``NoneType``
         :param content_type: Optional type of content being uploaded.
@@ -510,8 +495,7 @@ class Blob(_PropertyMixin):
             'User-Agent': connection.USER_AGENT,
         }
 
-        if encryption_key:
-            _set_encryption_headers(encryption_key, headers)
+        headers.update(_get_encryption_headers(self._encryption_key))
 
         upload = Upload(file_obj, content_type, total_bytes,
                         auto_transfer=False)
@@ -561,8 +545,7 @@ class Blob(_PropertyMixin):
         self._set_properties(json.loads(response_content))
     # pylint: enable=too-many-locals
 
-    def upload_from_filename(self, filename, content_type=None,
-                             encryption_key=None, client=None):
+    def upload_from_filename(self, filename, content_type=None, client=None):
         """Upload this blob's contents from the content of a named file.
 
         The content type of the upload will either be
@@ -587,10 +570,6 @@ class Blob(_PropertyMixin):
         :type content_type: string or ``NoneType``
         :param content_type: Optional type of content being uploaded.
 
-        :type encryption_key: str or bytes
-        :param encryption_key: Optional 32 byte encryption key for
-                               customer-supplied encryption.
-
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -601,11 +580,10 @@ class Blob(_PropertyMixin):
             content_type, _ = mimetypes.guess_type(filename)
 
         with open(filename, 'rb') as file_obj:
-            self.upload_from_file(file_obj, content_type=content_type,
-                                  encryption_key=encryption_key, client=client)
+            self.upload_from_file(
+                file_obj, content_type=content_type, client=client)
 
-    def upload_from_string(self, data, content_type='text/plain',
-                           encryption_key=None, client=None):
+    def upload_from_string(self, data, content_type='text/plain', client=None):
         """Upload contents of this blob from the provided string.
 
         .. note::
@@ -627,10 +605,6 @@ class Blob(_PropertyMixin):
         :param content_type: Optional type of content being uploaded. Defaults
                              to ``'text/plain'``.
 
-        :type encryption_key: str or bytes
-        :param encryption_key: Optional 32 byte encryption key for
-                               customer-supplied encryption.
-
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -640,9 +614,9 @@ class Blob(_PropertyMixin):
             data = data.encode('utf-8')
         string_buffer = BytesIO()
         string_buffer.write(data)
-        self.upload_from_file(file_obj=string_buffer, rewind=True,
-                              size=len(data), content_type=content_type,
-                              encryption_key=encryption_key, client=client)
+        self.upload_from_file(
+            file_obj=string_buffer, rewind=True, size=len(data),
+            content_type=content_type, client=client)
 
     def make_public(self, client=None):
         """Make this blob public giving all users read access.
@@ -964,19 +938,25 @@ class _UrlBuilder(object):
         self._relative_path = ''
 
 
-def _set_encryption_headers(key, headers):
+def _get_encryption_headers(key):
     """Builds customer encryption key headers
 
-    :type key: str or bytes
+    :type key: bytes
     :param key: 32 byte key to build request key and hash.
 
-    :type headers: dict
-    :param headers: dict of HTTP headers being sent in request.
+    :rtype: dict
+    :returns: dict of HTTP headers being sent in request.
     """
+    if key is None:
+        return {}
+
     key = _to_bytes(key)
-    sha256_key = hashlib.sha256(key).digest()
-    key_hash = base64.b64encode(sha256_key).rstrip()
-    encoded_key = base64.b64encode(key).rstrip()
-    headers['X-Goog-Encryption-Algorithm'] = 'AES256'
-    headers['X-Goog-Encryption-Key'] = _bytes_to_unicode(encoded_key)
-    headers['X-Goog-Encryption-Key-Sha256'] = _bytes_to_unicode(key_hash)
+    key_hash = hashlib.sha256(key).digest()
+    key_hash = base64.b64encode(key_hash).rstrip()
+    key = base64.b64encode(key).rstrip()
+
+    return {
+        'X-Goog-Encryption-Algorithm': 'AES256',
+        'X-Goog-Encryption-Key': _bytes_to_unicode(key),
+        'X-Goog-Encryption-Key-Sha256': _bytes_to_unicode(key_hash),
+    }
