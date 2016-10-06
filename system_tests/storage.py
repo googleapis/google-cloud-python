@@ -436,3 +436,52 @@ class TestStorageCompose(TestStorageFiles):
 
         composed = original.download_as_string()
         self.assertEqual(composed, BEFORE + TO_APPEND)
+
+
+class TestStorageRewrite(TestStorageFiles):
+
+    FILENAMES = (
+        'file01.txt',
+    )
+
+    def test_rewrite_create_new_blob_add_encryption_key(self):
+        file_data = self.FILES['simple']
+
+        source = self.bucket.blob('source')
+        source.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(source)
+        source_data = source.download_as_string()
+
+        KEY = os.urandom(32)
+        dest = self.bucket.blob('dest', encryption_key=KEY)
+        token, rewritten, total = dest.rewrite(source)
+        self.case_blobs_to_delete.append(dest)
+
+        self.assertEqual(token, None)
+        self.assertEqual(rewritten, len(source_data))
+        self.assertEqual(total, len(source_data))
+
+        self.assertEqual(source.download_as_string(),
+                         dest.download_as_string())
+
+    def test_rewrite_rotate_encryption_key(self):
+        BLOB_NAME = 'rotating-keys'
+        file_data = self.FILES['simple']
+
+        SOURCE_KEY = os.urandom(32)
+        source = self.bucket.blob(BLOB_NAME, encryption_key=SOURCE_KEY)
+        source.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(source)
+        source_data = source.download_as_string()
+
+        DEST_KEY = os.urandom(32)
+        dest = self.bucket.blob(BLOB_NAME, encryption_key=DEST_KEY)
+        token, rewritten, total = dest.rewrite(source)
+        # Not adding 'dest' to 'self.case_blobs_to_delete':  it is the
+        # same object as 'source'.
+
+        self.assertEqual(token, None)
+        self.assertEqual(rewritten, len(source_data))
+        self.assertEqual(total, len(source_data))
+
+        self.assertEqual(dest.download_as_string(), source_data)

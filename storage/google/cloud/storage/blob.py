@@ -655,6 +655,52 @@ class Blob(_PropertyMixin):
             _target_object=self)
         self._set_properties(api_response)
 
+    def rewrite(self, source, token=None, client=None):
+        """Rewrite source blob into this one.
+
+        :type source: :class:`Blob`
+        :param source: blob whose contents will be rewritten into this blob.
+
+        :type token: str
+        :param token: Optional. Token returned from an earlier, not-completed
+                       call to rewrite the same source blob.  If passed,
+                       result will include updated status, total bytes written.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+
+        :rtype: tuple
+        :returns: ``(token, bytes_rewritten, total_bytes)``, where ``token``
+                  is a rewrite token (``None`` if the rewrite is complete),
+                  ``bytes_rewritten`` is the number of bytes rewritten so far,
+                  and ``total_bytes`` is the total number of bytes to be
+                  rewritten.
+        """
+        client = self._require_client(client)
+        headers = _get_encryption_headers(self._encryption_key)
+        headers.update(_get_encryption_headers(
+            source._encryption_key, source=True))
+
+        if token:
+            query_params = {'rewriteToken': token}
+        else:
+            query_params = {}
+
+        api_response = client.connection.api_request(
+            method='POST', path=source.path + '/rewriteTo' + self.path,
+            query_params=query_params, data=self._properties, headers=headers,
+            _target_object=self)
+        self._set_properties(api_response['resource'])
+        rewritten = int(api_response['totalBytesRewritten'])
+        size = int(api_response['objectSize'])
+
+        if api_response['done']:
+            return None, rewritten, size
+
+        return api_response['rewriteToken'], rewritten, size
+
     cache_control = _scalar_property('cacheControl')
     """HTTP 'Cache-Control' header for this object.
 
@@ -938,11 +984,15 @@ class _UrlBuilder(object):
         self._relative_path = ''
 
 
-def _get_encryption_headers(key):
+def _get_encryption_headers(key, source=False):
     """Builds customer encryption key headers
 
     :type key: bytes
     :param key: 32 byte key to build request key and hash.
+
+    :type source: bool
+    :param source: If true, return headers for the "source" blob; otherwise,
+                   return headers for the "destination" blob.
 
     :rtype: dict
     :returns: dict of HTTP headers being sent in request.
@@ -955,8 +1005,13 @@ def _get_encryption_headers(key):
     key_hash = base64.b64encode(key_hash).rstrip()
     key = base64.b64encode(key).rstrip()
 
+    if source:
+        prefix = 'X-Goog-Copy-Source-Encryption-'
+    else:
+        prefix = 'X-Goog-Encryption-'
+
     return {
-        'X-Goog-Encryption-Algorithm': 'AES256',
-        'X-Goog-Encryption-Key': _bytes_to_unicode(key),
-        'X-Goog-Encryption-Key-Sha256': _bytes_to_unicode(key_hash),
+        prefix + 'Algorithm': 'AES256',
+        prefix + 'Key': _bytes_to_unicode(key),
+        prefix + 'Key-Sha256': _bytes_to_unicode(key_hash),
     }
