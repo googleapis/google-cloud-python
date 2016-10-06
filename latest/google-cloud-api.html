@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Shared Core Modules &mdash; google-cloud fb10016 documentation</title>
+  <title>Shared Core Modules &mdash; google-cloud 894d251 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud fb10016 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 894d251 documentation" href="index.html"/>
         <link rel="next" title="Configuration" href="google-cloud-config.html"/>
         <link rel="prev" title="Getting started" href="index.html"/> 
 
@@ -743,7 +743,7 @@ API request and API requests are created elsewhere.</p>
 
 <dl class="method">
 <dt id="google.cloud.connection.JSONConnection.api_request">
-<code class="descname">api_request</code><span class="sig-paren">(</span><em>method</em>, <em>path</em>, <em>query_params=None</em>, <em>data=None</em>, <em>content_type=None</em>, <em>api_base_url=None</em>, <em>api_version=None</em>, <em>expect_json=True</em>, <em>_target_object=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/connection.html#JSONConnection.api_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.connection.JSONConnection.api_request" title="Permalink to this definition">#</a></dt>
+<code class="descname">api_request</code><span class="sig-paren">(</span><em>method</em>, <em>path</em>, <em>query_params=None</em>, <em>data=None</em>, <em>content_type=None</em>, <em>headers=None</em>, <em>api_base_url=None</em>, <em>api_version=None</em>, <em>expect_json=True</em>, <em>_target_object=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/connection.html#JSONConnection.api_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.connection.JSONConnection.api_request" title="Permalink to this definition">#</a></dt>
 <dd><p>Make a request over the HTTP transport to the API.</p>
 <p>You shouldn&#8217;t need to use this method, but if you plan to
 interact with the API using these primitives, this is the
@@ -764,6 +764,7 @@ string of the URL.</li>
 the empty string.</li>
 <li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The proper MIME type of the data provided. Default
 is None.</li>
+<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; extra HTTP headers to be sent with the request.</li>
 <li><strong>api_base_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The base URL for the API endpoint.
 Typically you won&#8217;t have to provide this.
 Default is the standard API base URL.</li>
@@ -1144,7 +1145,7 @@ exist.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'fb10016',
+            VERSION:'894d251',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
