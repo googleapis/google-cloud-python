@@ -318,6 +318,37 @@ class TestJSONConnection(unittest.TestCase):
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
+    def test_api_request_w_headers(self):
+        from six.moves.urllib.parse import urlsplit
+        conn = self._makeMockOne()
+        http = conn._http = _Http(
+            {'status': '200', 'content-type': 'application/json'},
+            b'{}',
+        )
+        self.assertEqual(
+            conn.api_request('GET', '/', headers={'X-Foo': 'bar'}), {})
+        self.assertEqual(http._called_with['method'], 'GET')
+        uri = http._called_with['uri']
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
+        # Intended to emulate self.mock_template
+        PATH = '/'.join([
+            '',
+            'mock',
+            conn.API_VERSION,
+            '',
+        ])
+        self.assertEqual(path, PATH)
+        self.assertEqual(qs, '')
+        self.assertIsNone(http._called_with['body'])
+        expected_headers = {
+            'Accept-Encoding': 'gzip',
+            'Content-Length': '0',
+            'User-Agent': conn.USER_AGENT,
+            'X-Foo': 'bar',
+        }
+        self.assertEqual(http._called_with['headers'], expected_headers)
+
     def test_api_request_w_data(self):
         import json
         DATA = {'foo': 'bar'}

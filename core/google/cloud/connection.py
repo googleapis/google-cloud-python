@@ -273,7 +273,7 @@ class JSONConnection(Connection):
                                  body=data)
 
     def api_request(self, method, path, query_params=None,
-                    data=None, content_type=None,
+                    data=None, content_type=None, headers=None,
                     api_base_url=None, api_version=None,
                     expect_json=True, _target_object=None):
         """Make a request over the HTTP transport to the API.
@@ -302,6 +302,9 @@ class JSONConnection(Connection):
         :type content_type: string
         :param content_type: The proper MIME type of the data provided. Default
                              is None.
+
+        :type headers: dict
+        :param headers: extra HTTP headers to be sent with the request.
 
         :type api_base_url: string
         :param api_base_url: The base URL for the API endpoint.
@@ -343,7 +346,7 @@ class JSONConnection(Connection):
 
         response, content = self._make_request(
             method=method, url=url, data=data, content_type=content_type,
-            target_object=_target_object)
+            headers=headers, target_object=_target_object)
 
         if not 200 <= response.status < 300:
             raise make_exception(response, content,
