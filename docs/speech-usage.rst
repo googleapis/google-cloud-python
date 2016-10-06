@@ -154,8 +154,14 @@ data to possible text alternatives on the fly.
     See: https://cloud.google.com/speech/limits#content
 
 
+    >>> from google.cloud import speech
+    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
-    >>> results = client.stream_recognize('hello.flac', 'FLAC', 44100)
+    >>> with open('hello.flac', 'rb') as content:
+    >>>     sample = client.sample(content=content.read(),
+    ...                            encoding=Encoding.FLAC,
+    ...                            sample_rate=44100)
+    >>>     results = client.stream_recognize(sample)
     >>> results[0].is_final
     False
     >>> results[2].is_final
@@ -172,8 +178,10 @@ See: `Single Utterance`_
 
 .. code-block:: python
 
-    >>> results = client.stream_recognize('hello.flac', 'FLAC', 44100,
-    ...                                   single_utterance=False)
+    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
+    ...                        encoding=Encoding.FLAC,
+    ...                        sample_rate=44100)
+    >>> results = client.stream_recognize(sample, single_utterance=False)
 
 
 If you would like interim results to be returned as well as the final results,
@@ -181,29 +189,20 @@ you can set the ``interim_results`` option to ``True``.
 
   .. code-block:: python
 
-    >>> results = client.stream_recognize('hello.flac', 'FLAC', 44100,
-    ...                                   interim_results=True)
-    >>> print results
-    [{
-        alternatives: {
-            transcript: 'how'
-        },
-        stability: 0.00999999977648
-    },
-    {
-        alternatives: {
-            transcript: 'hello'
-        }
-        stability: 0.00999999977648
-    },
-    {
-        alternatives: {
-            transcript: 'hello'
-            confidence: 0.96976006031
-        }
-        is_final: true
-    }
-    ]
+    >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
+    ...                        encoding=Encoding.FLAC,
+    ...                        sample_rate=44100)
+    >>> results = client.stream_recognize(sample, interim_results=True)
+    >>> print results[0].alternatives.transcript
+    'how'
+    >>> print results[0].stability
+    0.00999999977648
+    >>> print results[2].alternatives.transcript
+    'hello'
+    >>> print results[2].alternatives.confidence
+    0.96976006031
+    >>> print results[2].is_final
+    True
 
 
 .. _Single Utterance: https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#streamingrecognitionconfig
