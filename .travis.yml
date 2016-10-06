@@ -7,9 +7,8 @@ install:
 script:
   - python2.7 scripts/run_unit_tests.py
   - python3.4 scripts/run_unit_tests.py
-  - tox -e lint
-  - tox -e cover
   - python scripts/run_unit_tests.py --tox-env cover
+  - tox -e lint
   - tox -e system-tests
   - tox -e system-tests3
   - scripts/update_docs.sh
