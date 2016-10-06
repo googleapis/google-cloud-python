@@ -303,7 +303,7 @@ class JSONConnection(Connection):
         :param content_type: The proper MIME type of the data provided. Default
                              is None.
 
-        :type headers: dist
+        :type headers: dict
         :param headers: extra HTTP headers to be sent with the request.
 
         :type api_base_url: string
