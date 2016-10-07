@@ -24,10 +24,10 @@ import warnings
 
 from sphinx.ext.intersphinx import fetch_inventory
 
+from script_utils import PROJECT_ROOT
 
-BASE_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..'))
-DOCS_DIR = os.path.join(BASE_DIR, 'docs')
+
+DOCS_DIR = os.path.join(PROJECT_ROOT, 'docs')
 IGNORED_PREFIXES = ('test_', '_')
 IGNORED_MODULES = frozenset([
     'google.cloud.__init__',
@@ -153,7 +153,7 @@ def verify_modules(build_root='_build'):
 
     public_mods = set()
     for package in PACKAGES:
-        library_dir = os.path.join(BASE_DIR, package, 'google', 'cloud')
+        library_dir = os.path.join(PROJECT_ROOT, package, 'google', 'cloud')
         package_mods = get_public_modules(library_dir,
                                           base_package='google.cloud')
         public_mods.update(package_mods)
