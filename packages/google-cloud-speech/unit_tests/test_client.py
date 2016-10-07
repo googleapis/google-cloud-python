@@ -160,6 +160,20 @@ class TestClient(unittest.TestCase):
                             sample_rate=self.SAMPLE_RATE)
             client.sync_recognize(sample)
 
+    def test_async_supported_encodings(self):
+        from google.cloud.speech.encoding import Encoding
+        from google.cloud.speech.sample import Sample
+
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+        client.connection = _Connection({})
+
+        sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
+                        encoding=Encoding.FLAC,
+                        sample_rate=self.SAMPLE_RATE)
+        with self.assertRaises(ValueError):
+            client.async_recognize(sample)
+
     def test_async_recognize(self):
         from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
         from google.cloud.speech.encoding import Encoding
@@ -172,7 +186,7 @@ class TestClient(unittest.TestCase):
         client.connection = _Connection(RETURNED)
 
         sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
-                        encoding=Encoding.FLAC,
+                        encoding=Encoding.LINEAR16,
                         sample_rate=self.SAMPLE_RATE)
         operation = client.async_recognize(sample)
         self.assertIsInstance(operation, Operation)

@@ -19,6 +19,7 @@ from base64 import b64encode
 from google.cloud._helpers import _to_bytes
 from google.cloud import client as client_module
 from google.cloud.speech.connection import Connection
+from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
 from google.cloud.speech.sample import Sample
 
@@ -89,6 +90,9 @@ class Client(client_module.Client):
         :rtype: `~google.cloud.speech.operation.Operation`
         :returns: ``Operation`` for asynchronous request to Google Speech API.
         """
+        if sample.encoding is not Encoding.LINEAR16:
+            raise ValueError('Only LINEAR16 encoding is supported by '
+                             'asynchronous speech requests.')
 
         data = _build_request_data(sample, language_code, max_alternatives,
                                    profanity_filter, speech_context)
