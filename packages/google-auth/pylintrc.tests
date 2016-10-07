@@ -125,7 +125,7 @@ reports=no
 # DEFAULT:  good-names=i,j,k,ex,Run,_
 # RATIONALE:  'fh' is a well-known file handle variable name.
 good-names = i, j, k, ex, Run, _,
-             fh,
+             fh
 
 # Regular expression matching correct method names
 # DEFAULT:  method-rgx=[a-z_][a-z0-9_]{2,30}$

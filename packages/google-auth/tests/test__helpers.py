@@ -15,6 +15,7 @@
 import datetime
 
 import pytest
+from six.moves import urllib
 
 from google.auth import _helpers
 
@@ -60,3 +61,35 @@ def test_from_bytes_with_bytes():
 def test_from_bytes_with_nonstring_type():
     with pytest.raises(ValueError):
         _helpers.from_bytes(object())
+
+
+def _assert_query(url, expected):
+    parts = urllib.parse.urlsplit(url)
+    query = urllib.parse.parse_qs(parts.query)
+    assert query == expected
+
+
+def test_update_query_params_no_params():
+    uri = 'http://www.google.com'
+    updated = _helpers.update_query(uri, {'a': 'b'})
+    assert updated == uri + '?a=b'
+
+
+def test_update_query_existing_params():
+    uri = 'http://www.google.com?x=y'
+    updated = _helpers.update_query(uri, {'a': 'b', 'c': 'd&'})
+    _assert_query(updated, {'x': ['y'], 'a': ['b'], 'c': ['d&']})
+
+
+def test_update_query_replace_param():
+    base_uri = 'http://www.google.com'
+    uri = base_uri + '?x=a'
+    updated = _helpers.update_query(uri, {'x': 'b', 'y': 'c'})
+    _assert_query(updated, {'x': ['b'], 'y': ['c']})
+
+
+def test_update_query_remove_param():
+    base_uri = 'http://www.google.com'
+    uri = base_uri + '?x=a'
+    updated = _helpers.update_query(uri, {'y': 'c'}, remove=['x'])
+    _assert_query(updated, {'y': ['c']})
