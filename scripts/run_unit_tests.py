@@ -28,9 +28,13 @@ import sys
 
 from script_utils import check_output
 from script_utils import get_changed_packages
+from script_utils import get_github_changes
+from script_utils import get_pr_from_latest_commit
 from script_utils import in_travis
 from script_utils import in_travis_pr
+from script_utils import in_travis_tag
 from script_utils import local_diff_branch
+from script_utils import packages_from_files
 from script_utils import travis_branch
 
 
@@ -72,14 +76,50 @@ def get_package_directories():
     return result
 
 
+def travis_directories_push_build(package_list):
+    """Get list of packages that changed in a Travis push build.
+
+    .. note::
+
+        This assumes we already know we are running in a
+        Travis push build.
+
+    We determine this by trying to match the ``HEAD`` commit in the
+    current checkout with a PR on GitHub. If we fail to match them,
+    the entire ``package_list`` is returned for testing. Otherwise,
+    the matched GitHub PR is used to get a list of changed files
+    which we use to determine the changed packages.
+
+    :type package_list: list
+    :param package_list: The list of **all** valid packages with unit tests.
+
+    :rtype: list
+    :returns: A list of all package directories where tests
+              need to be run.
+    """
+    pr_id = get_pr_from_latest_commit()
+    if pr_id == -1:
+        return package_list
+    else:
+        changed_files = get_github_changes(pr_id)
+        if changed_files is None:
+            return package_list
+        else:
+            return packages_from_files(changed_files, package_list)
+
+
 def get_travis_directories(package_list):
     """Get list of packages that need to be tested on Travis CI.
 
     See: https://travis-ci.com/
 
-    If the current Travis build is for a pull request (PR), this will
-    limit the directories to the ones impacted by the PR. Otherwise
-    it will just test all package directories.
+    * If the current Travis build is for a pull request (PR),
+      will limit the directories to the ones impacted by the PR.
+    * If the current Travis build is for a new tag it will test
+      all package directories.
+    * If the current Travis build is a regular "push" build (other
+      than a tag build), will attempt to determine a corresponding
+      merged PR and ascertain a list of changed files from there.
 
     :type package_list: list
     :param package_list: The list of **all** valid packages with unit tests.
@@ -92,8 +132,11 @@ def get_travis_directories(package_list):
         pr_against_branch = travis_branch()
         return get_changed_packages('HEAD', pr_against_branch,
                                     package_list)
-    else:
+    elif in_travis_tag():
         return package_list
+    else:
+        # Here we are in a "push" build that isn't also a tag build.
+        return travis_directories_push_build(package_list)
 
 
 def verify_packages(subset, all_packages):

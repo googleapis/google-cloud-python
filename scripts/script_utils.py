@@ -16,8 +16,22 @@
 
 from __future__ import print_function
 
+import json
 import os
+import re
+import sys
 import subprocess
+
+# Mimic six here, but avoid any dependencies outside
+# the standard library.
+try:
+    import httplib as http_client
+except ImportError:
+    import http.client as http_client
+try:
+    from urllib2 import urlopen
+except ImportError:
+    from urllib.request import urlopen
 
 
 LOCAL_REMOTE_ENV = 'GOOGLE_CLOUD_TESTING_REMOTE'
@@ -25,6 +39,11 @@ LOCAL_BRANCH_ENV = 'GOOGLE_CLOUD_TESTING_BRANCH'
 IN_TRAVIS_ENV = 'TRAVIS'
 TRAVIS_PR_ENV = 'TRAVIS_PULL_REQUEST'
 TRAVIS_BRANCH_ENV = 'TRAVIS_BRANCH'
+TRAVIS_TAG_ENV = 'TRAVIS_TAG'
+PR_ID_REGEX = re.compile(r'#(\d+)')
+GITHUB_API_PR_TEMPLATE = ('https://api.github.com/repos/GoogleCloudPlatform/'
+                          'google-cloud-python/pulls/%d')
+GITHUB_FILE_CHG_TEMPLATE = GITHUB_API_PR_TEMPLATE + '/files'
 
 
 def in_travis():
@@ -65,6 +84,26 @@ def in_travis_pr():
         return True
     except ValueError:
         return False
+
+
+def in_travis_tag():
+    """Detect if we are running in a Travis tag build.
+
+    .. _Travis env docs: https://docs.travis-ci.com/user/\
+                         environment-variables\
+                         #Default-Environment-Variables
+
+    See `Travis env docs`_.
+
+    .. note::
+
+        This assumes we already know we are running in Travis.
+
+    :rtype: bool
+    :returns: Flag indicating if we are in Travis tag build.
+    """
+    tag_val = os.getenv(TRAVIS_TAG_ENV, '')
+    return tag_val != ''
 
 
 def travis_branch():
@@ -130,6 +169,28 @@ def rootname(filename):
         return file_root
 
 
+def packages_from_files(changed_files, package_list):
+    """Determine a list of packages from a list of files.
+
+    :type changed_files: list
+    :param changed_files: A list of filenames.
+
+    :type package_list: list
+    :param package_list: The list of **all** valid packages with unit tests.
+
+    :rtype: list
+    :returns: The list of packages with changes among the files
+              in ``changed_files``.
+    """
+    result = set()
+    for filename in changed_files:
+        file_root = rootname(filename)
+        if file_root in package_list:
+            result.add(file_root)
+
+    return sorted(result)
+
+
 def get_changed_packages(blob_name1, blob_name2, package_list):
     """Get a list of packages which have changed between two changesets.
 
@@ -153,14 +214,7 @@ def get_changed_packages(blob_name1, blob_name2, package_list):
     changed_files = check_output(
         'git', 'diff', '--name-only', blob_name1, blob_name2)
     changed_files = changed_files.split('\n')
-
-    result = set()
-    for filename in changed_files:
-        file_root = rootname(filename)
-        if file_root in package_list:
-            result.add(file_root)
-
-    return sorted(result)
+    return packages_from_files(changed_files, package_list)
 
 
 def local_diff_branch():
@@ -226,3 +280,102 @@ def get_affected_files(allow_limited=True):
         result = subprocess.check_output(['git', 'ls-files'])
 
     return result.rstrip('\n').split('\n'), diff_base
+
+
+def get_pr_from_latest_commit():
+    """Attempt to determine a pull request from the latest commit.
+
+    Checks that there is only one ``#`` character in the commit subject
+    and then reads the integer that comes after.
+
+    If a valid integer is found, confirms that such a PR exists and has
+    the same ``merge_commit_sha`` as the ``HEAD`` commit.
+
+    :rtype: int
+    :returns: The ID of the pull request found in the latest commit.
+              If none can be found, returns -1.
+    """
+    commit_info = check_output(
+        'git', 'log', '-1', 'HEAD', '--pretty=%H|%s')
+    head_commit_sha, commit_subject = commit_info.split('|', 1)
+
+    # First, attempt to determine the PR ID from the commit subject.
+    matches = PR_ID_REGEX.findall(commit_subject)
+    if len(matches) != 1:
+        msg = '\n'.join([
+            'Cannot uniquely determine a commit ID from commit subject:',
+            commit_subject])
+        print(msg, file=sys.stderr)
+        return -1
+
+    # Then, use the computed ID to get PR info from GitHub.
+    id_val = int(matches[0])
+    api_url = GITHUB_API_PR_TEMPLATE % (id_val,)
+
+    response = urlopen(api_url)
+    if response.getcode() != http_client.OK:
+        msg = '\n'.join([
+            'GitHub API request failed:',
+            'URL: %r' % (api_url,)])
+        print(msg, file=sys.stderr)
+        return -1
+
+    # NOTE: We assume the GitHub API will always return valid
+    #       JSON when the response status code is OK.
+    content = response.read().decode('utf-8')
+    response.close()
+    api_response = json.loads(content)
+
+    # Then, check if the PR has been merged.
+    if not api_response['merged']:
+        msg = 'Matched GitHub PR (%d) has not been merged.' % (id_val,)
+        print(msg, file=sys.stderr)
+        return -1
+
+    merge_commit_sha = api_response['merge_commit_sha']
+
+    # Finally, check if the merge commit SHA from GitHub agrees with
+    # the current HEAD commit.
+    if merge_commit_sha == head_commit_sha:
+        return id_val
+    else:
+        msg = '\n'.join([
+            'GitHub PR merge commit SHA does not match HEAD:',
+            '        HEAD commit: %s' % (head_commit_sha,),
+            'GitHub merge commit: %s' % (merge_commit_sha,)])
+        print(msg, file=sys.stderr)
+        return -1
+
+
+def get_github_changes(pr_id):
+    """Get list of changed files in a GitHub PR.
+
+    .. note::
+
+        This assumes ``pr_id`` corresponds to a valid merged
+        pull request.
+
+    :type pr_id: int
+    :param pr_id: The ID of a GitHub pull request.
+
+    :rtype: list
+    :returns: List of filenames changed in the PR. If the GitHub
+              API request fails, will return ``None``.
+    """
+    api_url = GITHUB_FILE_CHG_TEMPLATE % (pr_id,)
+
+    # Make GitHub API request.
+    response = urlopen(api_url)
+    if response.getcode() != http_client.OK:
+        msg = '\n'.join([
+            'GitHub API request failed:',
+            'URL: %r' % (api_url,)])
+        print(msg, file=sys.stderr)
+        return
+
+    # NOTE: We assume the GitHub API will always return valid
+    #       JSON when the response status code is OK.
+    content = response.read().decode('utf-8')
+    response.close()
+    api_response = json.loads(content)
+    return [info['filename'] for info in api_response]
