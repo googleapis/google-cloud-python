@@ -105,6 +105,7 @@ disable =
     wrong-import-position,
     no-name-in-module,
     locally-disabled,
+    locally-enabled,
     missing-docstring,
     redefined-outer-name,
     no-self-use,

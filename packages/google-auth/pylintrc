@@ -115,6 +115,7 @@ disable =
     wrong-import-position,
     no-name-in-module,
     locally-disabled,
+    locally-enabled,
     fixme
 
 
