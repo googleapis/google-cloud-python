@@ -39,6 +39,10 @@ Speech API and initiates a Long Running Operation. Using this operation, you
 can periodically poll for recognition results. Use asynchronous requests for
 audio data of any duration up to 80 minutes.
 
+.. note::
+
+    Only the LINEAR16 encoding type is supported by asynchronous recognition.
+
 See: `Speech Asynchronous Recognize`_
 
 
@@ -49,7 +53,7 @@ See: `Speech Asynchronous Recognize`_
     >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.FLAC,
+    ...                        encoding=Encoding.LINEAR16,
     ...                        sample_rate=44100)
     >>> operation = client.async_recognize(sample, max_alternatives=2)
     >>> retry_count = 100
