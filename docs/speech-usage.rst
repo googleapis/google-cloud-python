@@ -41,7 +41,8 @@ audio data of any duration up to 80 minutes.
 
 .. note::
 
-    Only the `LINEAR16`_ encoding type is supported by asynchronous recognition.
+    Only the :attr:`Encoding.LINEAR16` encoding type is supported by
+    asynchronous recognition.
 
 See: `Speech Asynchronous Recognize`_
 
@@ -144,6 +145,5 @@ words to the vocabulary of the recognizer.
     transcript: Hello, this is a test
     confidence: 0.81
 
-.. _LINEAR16: https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#audioencoding
 .. _sync_recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize
 .. _Speech Asynchronous Recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize
