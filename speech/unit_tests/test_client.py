@@ -67,7 +67,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech.sample import Sample
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
 
-        _B64_AUDIO_CONTENT = base64.b64encode(_to_bytes(self.AUDIO_CONTENT))
+        _B64_AUDIO_CONTENT = (base64.b64encode(_to_bytes(self.AUDIO_CONTENT))
+                              .decode('ascii'))
         RETURNED = SYNC_RECOGNIZE_RESPONSE
         REQUEST = {
             'config': {
