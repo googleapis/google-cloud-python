@@ -237,7 +237,8 @@ def _build_request_data(sample, language_code=None, max_alternatives=None,
     :returns: Dictionary with required data for Google Speech API.
     """
     if sample.content is not None:
-        audio = {'content': b64encode(_to_bytes(sample.content))}
+        audio = {'content':
+                 b64encode(_to_bytes(sample.content)).decode('ascii')}
     else:
         audio = {'uri': sample.source_uri}
 
