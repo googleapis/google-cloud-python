@@ -6,3 +6,10 @@ google.auth.transport package
     :undoc-members:
     :show-inheritance:
 
+Submodules
+----------
+
+.. toctree::
+
+   google.auth.transport.urllib3
+

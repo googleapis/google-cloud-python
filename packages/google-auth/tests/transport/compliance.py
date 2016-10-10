@@ -25,7 +25,7 @@ NXDOMAIN = 'test.invalid'
 
 class RequestResponseTests(object):
 
-    @pytest.fixture
+    @pytest.fixture(scope='module')
     def server(self):
         """Provides a test HTTP server.
 

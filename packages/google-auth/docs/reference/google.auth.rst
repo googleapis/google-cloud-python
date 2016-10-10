@@ -11,6 +11,7 @@ Subpackages
 
 .. toctree::
 
+    google.auth.compute_engine
     google.auth.transport
 
 Submodules

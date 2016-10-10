@@ -24,7 +24,7 @@ from google.auth import transport
 
 
 class Response(transport.Response):
-    """http.client transport request adapter.
+    """http.client transport response adapter.
 
     Args:
         response (http.client.HTTPResponse): The raw http client response.
