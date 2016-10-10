@@ -16,13 +16,11 @@ mechanisms to access Google APIs.
 Installing
 ----------
 
-You can install directly from `GitHub`_::
+You can install using `pip`_::
 
-    $ pip install git+https://github.com/GoogleCloudPlatform/google-auth-library-python.git
+    $ pip install google-auth
 
-This package is not currently available from PyPI because it is experimental.
-
-.. _GitHub: https://github.com/GoogleCloudPlatform/google-auth-library-python
+.. _pip: https://pip.pypa.io/en/stable/
 
 Documentation
 -------------

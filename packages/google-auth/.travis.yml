@@ -23,3 +23,12 @@ install:
 - pip install --upgrade tox
 script:
 - tox
+deploy:
+  provider: pypi
+  user: google_opensource
+  password:
+    secure: Pbj0eXpOrBvRcBAevX86T1gS54d19yRUv/3e1DEj4+3KKiOP6JH5OLXNCUrd+rqZrdg/3bC1PLtIUWh3oecy7Ngi9ya6kHk3QCTQ6fnl0CfvUlCMPM+Y6tGwA4aSNl2qZQnZSubaMiMUEg92UIPclfrq92fnQvCML+pqedh8BCZgEaPnOJKOtS8FRUrXRZHZ/fKEZpw71gXoWCYj5gzZ1HSoXQkfnqKukAes9mqMax84MKy0NPY7FHxejfH3O5BqJ+InSKG2F6EVZ/9uKQ4NxnUjMcNTU0YBVNkEhjagmSE+7+Xs3EiZbcZMseZXbVTeZSBLBX9+25eW2naMIHlzh7atelYktGnlwjlWi/lf8V8JJ4oY9K8Z2/Lau/5Cdtlq9mmyeKEJt9ltRI8Ll0619EKiJtc/Racg0F9qRR+C+yliPsIEZyopnm8bQVIfDr7RmSYzwOkP9eM+YRerD3cvGprLMkq+t/56zM2YUXxGKoqAve1Cu4oj91TjK4DxJ9Lm4fO9fosLhb8I719mBtZifDFQm1TLgOdyHJ5/+APqaVrWnKrbpCPxt+sYyqXVH1dXEULIDNqm3AwgLWjqAA9dxEV5Uats1LDoM6LaT1CgKc/O/FAQgTTJHPV2cWCVntdXGsZDCs/G9IcxBoXzBqz8TdQ5BEyOS2A8Ws/yjVk7tpw=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: GoogleCloudPlatform/google-auth-library-python
