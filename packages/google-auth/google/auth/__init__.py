@@ -13,3 +13,9 @@
 # limitations under the License.
 
 """Google Auth Library for Python."""
+
+import logging
+
+
+# Set default logging handler to avoid "No handler found" warnings.
+logging.getLogger(__name__).addHandler(logging.NullHandler())

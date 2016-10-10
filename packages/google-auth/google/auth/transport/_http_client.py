@@ -14,6 +14,7 @@
 
 """Transport adapter for http.client, for internal use only."""
 
+import logging
 import socket
 
 from six.moves import http_client
@@ -21,6 +22,8 @@ from six.moves import urllib
 
 from google.auth import exceptions
 from google.auth import transport
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class Response(transport.Response):
@@ -94,11 +97,15 @@ class Request(transport.Request):
         connection = http_client.HTTPConnection(parts.netloc)
 
         try:
+            _LOGGER.debug('Making request: %s %s', method, url)
+
             connection.request(
                 method, path, body=body, headers=headers, **kwargs)
             response = connection.getresponse()
             return Response(response)
+
         except (http_client.HTTPException, socket.error) as exc:
             raise exceptions.TransportError(exc)
+
         finally:
             connection.close()

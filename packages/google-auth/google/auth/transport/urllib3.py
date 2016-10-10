@@ -16,11 +16,15 @@
 
 from __future__ import absolute_import
 
+import logging
+
 import urllib3
 import urllib3.exceptions
 
 from google.auth import exceptions
 from google.auth import transport
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class Response(transport.Response):
@@ -84,6 +88,7 @@ class Request(transport.Request):
             kwargs['timeout'] = timeout
 
         try:
+            _LOGGER.debug('Making request: %s %s', method, url)
             response = self.http.request(
                 method, url, body=body, headers=headers, **kwargs)
             return Response(response)

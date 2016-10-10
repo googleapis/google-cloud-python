@@ -19,6 +19,7 @@ See https://cloud.google.com/compute/docs/metadata for more details.
 
 import datetime
 import json
+import logging
 import os
 
 from six.moves import http_client
@@ -26,6 +27,8 @@ from six.moves.urllib import parse as urlparse
 
 from google.auth import _helpers
 from google.auth import exceptions
+
+_LOGGER = logging.getLogger(__name__)
 
 _METADATA_ROOT = 'http://metadata.google.internal/computeMetadata/v1/'
 
@@ -71,6 +74,7 @@ def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT):
                 metadata_flavor == _METADATA_FLAVOR_VALUE)
 
     except exceptions.TransportError:
+        _LOGGER.info('Compute Engine Metadata server unavailable.')
         return False
 
 
