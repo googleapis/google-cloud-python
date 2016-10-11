@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud bd80996 documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud afcafd8 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud bd80996 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud afcafd8 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -926,6 +926,52 @@
             <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Blob.rewrite"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.rewrite">[docs]</a>    <span class="k">def</span> <span class="nf">rewrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Rewrite source blob into this one.</span>
+
+<span class="sd">        :type source: :class:`Blob`</span>
+<span class="sd">        :param source: blob whose contents will be rewritten into this blob.</span>
+
+<span class="sd">        :type token: str</span>
+<span class="sd">        :param token: Optional. Token returned from an earlier, not-completed</span>
+<span class="sd">                       call to rewrite the same source blob.  If passed,</span>
+<span class="sd">                       result will include updated status, total bytes written.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
+<span class="sd">                      ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
+
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        :returns: ``(token, bytes_rewritten, total_bytes)``, where ``token``</span>
+<span class="sd">                  is a rewrite token (``None`` if the rewrite is complete),</span>
+<span class="sd">                  ``bytes_rewritten`` is the number of bytes rewritten so far,</span>
+<span class="sd">                  and ``total_bytes`` is the total number of bytes to be</span>
+<span class="sd">                  rewritten.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_encryption_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">)</span>
+        <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_get_encryption_headers</span><span class="p">(</span>
+            <span class="n">source</span><span class="o">.</span><span class="n">_encryption_key</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">token</span><span class="p">:</span>
+            <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rewriteToken&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/rewriteTo&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">])</span>
+        <span class="n">rewritten</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;totalBytesRewritten&#39;</span><span class="p">])</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;objectSize&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;done&#39;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span>
+
+        <span class="k">return</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;rewriteToken&#39;</span><span class="p">],</span> <span class="n">rewritten</span><span class="p">,</span> <span class="n">size</span></div>
+
     <span class="n">cache_control</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;cacheControl&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Cache-Control&#39; header for this object.</span>
 
@@ -1209,11 +1255,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_relative_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
 
-<span class="k">def</span> <span class="nf">_get_encryption_headers</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_encryption_headers</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Builds customer encryption key headers</span>
 
 <span class="sd">    :type key: bytes</span>
 <span class="sd">    :param key: 32 byte key to build request key and hash.</span>
+
+<span class="sd">    :type source: bool</span>
+<span class="sd">    :param source: If true, return headers for the &quot;source&quot; blob; otherwise,</span>
+<span class="sd">                   return headers for the &quot;destination&quot; blob.</span>
 
 <span class="sd">    :rtype: dict</span>
 <span class="sd">    :returns: dict of HTTP headers being sent in request.</span>
@@ -1226,10 +1276,15 @@
     <span class="n">key_hash</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">key_hash</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
 
+    <span class="k">if</span> <span class="n">source</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;X-Goog-Copy-Source-Encryption-&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;X-Goog-Encryption-&#39;</span>
+
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s1">&#39;X-Goog-Encryption-Algorithm&#39;</span><span class="p">:</span> <span class="s1">&#39;AES256&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;X-Goog-Encryption-Key&#39;</span><span class="p">:</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-        <span class="s1">&#39;X-Goog-Encryption-Key-Sha256&#39;</span><span class="p">:</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">key_hash</span><span class="p">),</span>
+        <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;Algorithm&#39;</span><span class="p">:</span> <span class="s1">&#39;AES256&#39;</span><span class="p">,</span>
+        <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;Key&#39;</span><span class="p">:</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+        <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;Key-Sha256&#39;</span><span class="p">:</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">key_hash</span><span class="p">),</span>
     <span class="p">}</span>
 </pre></div>
 
@@ -1264,7 +1319,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'bd80996',
+            VERSION:'afcafd8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
