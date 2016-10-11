@@ -12,18 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
 import base64
+import unittest
 
 from google.cloud._helpers import _to_bytes
+from google.cloud._helpers import _bytes_to_unicode
+
+IMAGE_SOURCE = 'gs://some/image.jpg'
+IMAGE_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
+B64_IMAGE_CONTENT = _bytes_to_unicode(base64.b64encode(IMAGE_CONTENT))
+CLIENT_MOCK = {'source': ''}
 
 
 class TestVisionImage(unittest.TestCase):
-    _IMAGE_SOURCE = 'gs://some/image.jpg'
-    _IMAGE_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
-    _B64_IMAGE_CONTENT = base64.b64encode(_IMAGE_CONTENT)
-    _CLIENT_MOCK = {'source': ''}
-
     def _getTargetClass(self):
         from google.cloud.vision.image import Image
         return Image
@@ -32,37 +33,37 @@ class TestVisionImage(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_image_source_type_content(self):
-        image = self._makeOne(self._CLIENT_MOCK, content=self._IMAGE_CONTENT)
+        image = self._makeOne(CLIENT_MOCK, content=IMAGE_CONTENT)
 
         _AS_DICT = {
-            'content': self._B64_IMAGE_CONTENT
+            'content': B64_IMAGE_CONTENT
         }
 
-        self.assertEqual(self._B64_IMAGE_CONTENT, image.content)
+        self.assertEqual(B64_IMAGE_CONTENT, image.content)
         self.assertEqual(None, image.source)
         self.assertEqual(_AS_DICT, image.as_dict())
 
     def test_image_source_type_google_cloud_storage(self):
-        image = self._makeOne(self._CLIENT_MOCK, source_uri=self._IMAGE_SOURCE)
+        image = self._makeOne(CLIENT_MOCK, source_uri=IMAGE_SOURCE)
 
         _AS_DICT = {
             'source': {
-                'gcs_image_uri': self._IMAGE_SOURCE
+                'gcs_image_uri': IMAGE_SOURCE
             }
         }
 
-        self.assertEqual(self._IMAGE_SOURCE, image.source)
+        self.assertEqual(IMAGE_SOURCE, image.source)
         self.assertEqual(None, image.content)
         self.assertEqual(_AS_DICT, image.as_dict())
 
     def test_cannot_set_both_source_and_content(self):
-        image = self._makeOne(self._CLIENT_MOCK, content=self._IMAGE_CONTENT)
+        image = self._makeOne(CLIENT_MOCK, content=IMAGE_CONTENT)
 
-        self.assertEqual(self._B64_IMAGE_CONTENT, image.content)
+        self.assertEqual(B64_IMAGE_CONTENT, image.content)
         with self.assertRaises(AttributeError):
-            image.source = self._IMAGE_SOURCE
+            image.source = IMAGE_SOURCE
 
-        image = self._makeOne(self._CLIENT_MOCK, source_uri=self._IMAGE_SOURCE)
-        self.assertEqual(self._IMAGE_SOURCE, image.source)
+        image = self._makeOne(CLIENT_MOCK, source_uri=IMAGE_SOURCE)
+        self.assertEqual(IMAGE_SOURCE, image.source)
         with self.assertRaises(AttributeError):
-            image.content = self._IMAGE_CONTENT
+            image.content = IMAGE_CONTENT

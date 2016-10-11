@@ -18,6 +18,7 @@
 from base64 import b64encode
 
 from google.cloud._helpers import _to_bytes
+from google.cloud._helpers import _bytes_to_unicode
 from google.cloud.vision.entity import EntityAnnotation
 from google.cloud.vision.face import Face
 from google.cloud.vision.feature import Feature
@@ -47,7 +48,7 @@ class Image(object):
         if source_uri:
             self._source = source_uri
         else:
-            self._content = b64encode(_to_bytes(content))
+            self._content = _bytes_to_unicode(b64encode(_to_bytes(content)))
 
     def as_dict(self):
         """Generate dictionary structure for request.
