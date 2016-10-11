@@ -17,6 +17,7 @@
 from base64 import b64encode
 
 from google.cloud._helpers import _to_bytes
+from google.cloud._helpers import _bytes_to_unicode
 from google.cloud import client as client_module
 from google.cloud.speech.connection import Connection
 from google.cloud.speech.encoding import Encoding
@@ -237,7 +238,8 @@ def _build_request_data(sample, language_code=None, max_alternatives=None,
     :returns: Dictionary with required data for Google Speech API.
     """
     if sample.content is not None:
-        audio = {'content': b64encode(_to_bytes(sample.content))}
+        audio = {'content':
+                 _bytes_to_unicode(b64encode(_to_bytes(sample.content)))}
     else:
         audio = {'uri': sample.source_uri}
 
