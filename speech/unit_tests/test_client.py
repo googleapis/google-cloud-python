@@ -61,13 +61,15 @@ class TestClient(unittest.TestCase):
         self.assertEqual(content_sample.encoding, Encoding.FLAC)
 
     def test_sync_recognize_content_with_optional_parameters(self):
-        import base64
+        from base64 import b64encode
         from google.cloud._helpers import _to_bytes
+        from google.cloud._helpers import _bytes_to_unicode
+
         from google.cloud.speech.encoding import Encoding
         from google.cloud.speech.sample import Sample
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
-
-        _B64_AUDIO_CONTENT = base64.b64encode(_to_bytes(self.AUDIO_CONTENT))
+        _AUDIO_CONTENT = _to_bytes(self.AUDIO_CONTENT)
+        _B64_AUDIO_CONTENT = _bytes_to_unicode(b64encode(_AUDIO_CONTENT))
         RETURNED = SYNC_RECOGNIZE_RESPONSE
         REQUEST = {
             'config': {
