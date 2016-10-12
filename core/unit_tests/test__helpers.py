@@ -254,6 +254,26 @@ class Test__default_service_project_id(unittest.TestCase):
 
             self.assertEqual(result, project_id)
 
+    def test_nix_missing_prject_key(self):
+        from google.cloud import _helpers as MUT
+        from google.cloud._testing import _Monkey
+        from google.cloud._testing import _NamedTemporaryFile
+
+        with _NamedTemporaryFile() as temp:
+            config_value = '[%s]' % (MUT._GCLOUD_CONFIG_SECTION,)
+            with open(temp.name, 'w') as config_file:
+                config_file.write(config_value)
+
+            def mock_get_path():
+                return temp.name
+
+            with _Monkey(os, name='not-nt'):
+                with _Monkey(MUT, _get_nix_config_path=mock_get_path,
+                             _USER_ROOT='not-None'):
+                    result = self._callFUT()
+
+            self.assertEqual(result, None)
+
     def test_windows(self):
         from google.cloud import _helpers as MUT
         from google.cloud._testing import _Monkey
@@ -694,7 +714,6 @@ class Test__datetime_to_rfc3339(unittest.TestCase):
 
     def test_w_non_utc_datetime(self):
         import datetime
-        from google.cloud._helpers import _UTC
 
         zone = self._make_timezone(offset=datetime.timedelta(hours=-1))
         TIMESTAMP = datetime.datetime(2016, 4, 5, 13, 30, 0, tzinfo=zone)
@@ -703,7 +722,6 @@ class Test__datetime_to_rfc3339(unittest.TestCase):
 
     def test_w_non_utc_datetime_and_ignore_zone(self):
         import datetime
-        from google.cloud._helpers import _UTC
 
         zone = self._make_timezone(offset=datetime.timedelta(hours=-1))
         TIMESTAMP = datetime.datetime(2016, 4, 5, 13, 30, 0, tzinfo=zone)

@@ -240,7 +240,10 @@ def _default_service_project_id():
     config.read(search_paths)
 
     if config.has_section(_GCLOUD_CONFIG_SECTION):
-        return config.get(_GCLOUD_CONFIG_SECTION, _GCLOUD_CONFIG_KEY)
+        try:
+            return config.get(_GCLOUD_CONFIG_SECTION, _GCLOUD_CONFIG_KEY)
+        except configparser.NoOptionError:
+            return None
 
 
 def _compute_engine_id():
