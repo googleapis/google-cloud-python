@@ -15,8 +15,6 @@
 """Client for interacting with the Google Cloud Storage API."""
 
 
-import six
-
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import JSONClient
 from google.cloud.exceptions import NotFound
