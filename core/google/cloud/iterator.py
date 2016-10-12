@@ -217,7 +217,7 @@ class Iterator(object):
         if self.page is not None and self.page.remaining > 0:
             return
         if self.has_next_page():
-            response = self.get_next_page_response()
+            response = self._get_next_page_response()
             self._page = self.PAGE_CLASS(self, response)
         else:
             raise StopIteration
@@ -247,7 +247,7 @@ class Iterator(object):
 
         return self.next_page_token is not None
 
-    def get_query_params(self):
+    def _get_query_params(self):
         """Getter for query parameters for the next request.
 
         :rtype: dict
@@ -261,14 +261,15 @@ class Iterator(object):
         result.update(self.extra_params)
         return result
 
-    def get_next_page_response(self):
+    def _get_next_page_response(self):
         """Requests the next page from the path provided.
 
         :rtype: dict
         :returns: The parsed JSON response of the next page's contents.
         """
         response = self.client.connection.api_request(
-            method='GET', path=self.path, query_params=self.get_query_params())
+            method='GET', path=self.path,
+            query_params=self._get_query_params())
 
         self.page_number += 1
         self.next_page_token = response.get('nextPageToken')
