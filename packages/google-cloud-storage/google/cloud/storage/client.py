@@ -284,13 +284,6 @@ class _BucketPage(Page):
     :param response: The JSON API response for a page of buckets.
     """
 
-    def __init__(self, parent, response):
-        super(_BucketPage, self).__init__(parent)
-        items = response.get('items', ())
-        self._num_items = len(items)
-        self._remaining = self._num_items
-        self._item_iter = iter(items)
-
     def _next_item(self):
         """Get the next blob in the page.
 

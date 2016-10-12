@@ -40,15 +40,10 @@ class _BlobPage(Page):
     """
 
     def __init__(self, parent, response):
-        super(_BlobPage, self).__init__(parent)
-        # First, grab the prefixes from the response
+        super(_BlobPage, self).__init__(parent, response)
+        # Grab the prefixes from the response.
         self._prefixes = tuple(response.get('prefixes', ()))
         parent.prefixes.update(self._prefixes)
-
-        items = response.get('items', ())
-        self._num_items = len(items)
-        self._remaining = self._num_items
-        self._item_iter = iter(items)
 
     def _next_item(self):
         """Get the next blob in the page.
