@@ -67,15 +67,20 @@ class TestPage(unittest.TestCase):
                 return self.values.pop(0)
 
         page = CountItPage(None)
+        page._remaining = 100
         page.values = [10, 11, 12]
 
         self.assertEqual(page.calls, 0)
+        self.assertEqual(page.remaining, 100)
         self.assertEqual(six.next(page), 10)
         self.assertEqual(page.calls, 1)
+        self.assertEqual(page.remaining, 99)
         self.assertEqual(six.next(page), 11)
         self.assertEqual(page.calls, 2)
+        self.assertEqual(page.remaining, 98)
         self.assertEqual(six.next(page), 12)
         self.assertEqual(page.calls, 3)
+        self.assertEqual(page.remaining, 97)
 
 
 class TestIterator(unittest.TestCase):
