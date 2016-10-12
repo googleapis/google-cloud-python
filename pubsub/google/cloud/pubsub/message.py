@@ -89,5 +89,5 @@ class Message(object):
         instance = cls(
             data=data, message_id=api_repr['messageId'],
             attributes=api_repr.get('attributes'))
-        instance._service_timestamp = api_repr.get('publishTimestamp')
+        instance._service_timestamp = api_repr.get('publishTime')
         return instance

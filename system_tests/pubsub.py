@@ -198,10 +198,14 @@ class TestPubsub(unittest.TestCase):
 
         message1, message2 = sorted(hoover.received,
                                     key=operator.attrgetter('timestamp'))
+
         self.assertEqual(message1.data, MESSAGE_1)
         self.assertEqual(message1.attributes['extra'], EXTRA_1)
+        self.assertIsNotNone(message1.service_timestamp)
+
         self.assertEqual(message2.data, MESSAGE_2)
         self.assertEqual(message2.attributes['extra'], EXTRA_2)
+        self.assertIsNotNone(message2.service_timestamp)
 
     def _maybe_emulator_skip(self):
         # NOTE: This method is necessary because ``Config.IN_EMULATOR``
