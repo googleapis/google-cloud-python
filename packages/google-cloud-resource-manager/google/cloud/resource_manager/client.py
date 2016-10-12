@@ -171,12 +171,7 @@ class _ProjectPage(Page):
     :param response: The JSON API response for a page of projects.
     """
 
-    def __init__(self, parent, response):
-        super(_ProjectPage, self).__init__(parent)
-        items = response.get('projects', ())
-        self._num_items = len(items)
-        self._remaining = self._num_items
-        self._item_iter = iter(items)
+    ITEMS_KEY = 'projects'
 
     def _next_item(self):
         """Get the next project in the page.
