@@ -370,6 +370,41 @@ class TestClient(unittest.TestCase):
         self.assertEqual(parse_qs(uri_parts.query), EXPECTED_QUERY)
 
 
+class Test__BucketPage(unittest.TestCase):
+
+    def _getTargetClass(self):
+        from google.cloud.storage.client import _BucketPage
+        return _BucketPage
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_empty_response(self):
+        from google.cloud.storage.client import _BucketIterator
+
+        connection = object()
+        client = _Client(connection)
+        iterator = _BucketIterator(client)
+        page = self._makeOne(iterator, {})
+        self.assertEqual(list(page), [])
+
+    def test_non_empty_response(self):
+        from google.cloud.storage.bucket import Bucket
+        from google.cloud.storage.client import _BucketIterator
+
+        BLOB_NAME = 'blob-name'
+        response = {'items': [{'name': BLOB_NAME}]}
+        connection = object()
+        client = _Client(connection)
+        iterator = _BucketIterator(client)
+        page = self._makeOne(iterator, response)
+        self.assertEqual(page.num_items, 1)
+        bucket = page.next()
+        self.assertEqual(page.remaining, 0)
+        self.assertIsInstance(bucket, Bucket)
+        self.assertEqual(bucket.name, BLOB_NAME)
+
+
 class Test__BucketIterator(unittest.TestCase):
 
     def _getTargetClass(self):
@@ -387,25 +422,6 @@ class Test__BucketIterator(unittest.TestCase):
         self.assertEqual(iterator.page_number, 0)
         self.assertIsNone(iterator.next_page_token)
         self.assertIs(iterator.client, client)
-
-    def test_get_items_from_response_empty(self):
-        connection = object()
-        client = _Client(connection)
-        iterator = self._makeOne(client)
-        self.assertEqual(list(iterator.get_items_from_response({})), [])
-
-    def test_get_items_from_response_non_empty(self):
-        from google.cloud.storage.bucket import Bucket
-        BLOB_NAME = 'blob-name'
-        response = {'items': [{'name': BLOB_NAME}]}
-        connection = object()
-        client = _Client(connection)
-        iterator = self._makeOne(client)
-        buckets = list(iterator.get_items_from_response(response))
-        self.assertEqual(len(buckets), 1)
-        bucket = buckets[0]
-        self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BLOB_NAME)
 
 
 class _Credentials(object):
