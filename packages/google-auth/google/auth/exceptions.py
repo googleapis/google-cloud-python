@@ -19,7 +19,7 @@ class GoogleAuthError(Exception):
     """Base class for all google.auth errors."""
 
 
-class TransportError(Exception):
+class TransportError(GoogleAuthError):
     """Used to indicate an error occurred during an HTTP request."""
 
 

@@ -40,7 +40,7 @@ class Response(object):
 
     @abc.abstractproperty
     def headers(self):
-        """Mapping: The HTTP response headers."""
+        """Mapping[str, str]: The HTTP response headers."""
         raise NotImplementedError('headers must be implemented.')
 
     @abc.abstractproperty
@@ -55,6 +55,8 @@ class Request(object):
 
     Specific transport implementations should provide an implementation of
     this that adapts their specific request / response API.
+
+    .. automethod:: __call__
     """
 
     @abc.abstractmethod
@@ -67,8 +69,8 @@ class Request(object):
             method (str): The HTTP method to use for the request. Defaults
                 to 'GET'.
             body (bytes): The payload / body in HTTP request.
-            headers (Mapping): Request headers.
-            timeout (Optional(int)): The number of seconds to wait for a
+            headers (Mapping[str, str]): Request headers.
+            timeout (Optional[int]): The number of seconds to wait for a
                 response from the server. If not specified or if None, the
                 transport-specific default timeout will be used.
             kwargs: Additionally arguments passed on to the transport's

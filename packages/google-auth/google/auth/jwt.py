@@ -19,7 +19,7 @@ especially JWTs generated and consumed by Google infrastructure.
 
 See `rfc7519`_ for more details on JWTs.
 
-To encode a JWT::
+To encode a JWT use :func:`encode`::
 
     from google.auth import crypto
     from google.auth import jwt
@@ -28,7 +28,7 @@ To encode a JWT::
     payload = {'some': 'payload'}
     encoded = jwt.encode(signer, payload)
 
-To decode a JWT and verify claims::
+To decode a JWT and verify claims use :func:`decode`::
 
     claims = jwt.decode(encoded, certs=public_certs)
 
@@ -57,8 +57,8 @@ def encode(signer, payload, header=None, key_id=None):
 
     Args:
         signer (google.auth.crypt.Signer): The signer used to sign the JWT.
-        payload (Mapping): The JWT payload.
-        header (Mapping): Additional JWT header payload.
+        payload (Mapping[str, str]): The JWT payload.
+        header (Mapping[str, str]): Additional JWT header payload.
         key_id (str): The key id to add to the JWT header. If the
             signer has a key id it will be used as the default. If this is
             specified it will override the signer's key id.
@@ -146,11 +146,11 @@ def decode_header(token):
 
 
 def _verify_iat_and_exp(payload):
-    """Verifies the iat (Issued At) and exp (Expires) claims in a token
+    """Verifies the ``iat`` (Issued At) and ``exp`` (Expires) claims in a token
     payload.
 
     Args:
-        payload (mapping): The JWT payload.
+        payload (Mapping[str, str]): The JWT payload.
 
     Raises:
         ValueError: if any checks failed.
@@ -180,19 +180,20 @@ def decode(token, certs=None, verify=True, audience=None):
     """Decode and verify a JWT.
 
     Args:
-        token (string): The encoded JWT.
-        certs (Union[str, bytes, Mapping]): The certificate used to
-            validate. If bytes or string, it must the the public key
-            certificate in PEM format. If a mapping, it must be a mapping of
-            key IDs to public key certificates in PEM format. The mapping must
-            contain the same key ID that's specified in the token's header.
+        token (str): The encoded JWT.
+        certs (Union[str, bytes, Mapping[str, Union[str, bytes]]]): The
+            certificate used to validate the JWT signatyre. If bytes or string,
+            it must the the public key certificate in PEM format. If a mapping,
+            it must be a mapping of key IDs to public key certificates in PEM
+            format. The mapping must contain the same key ID that's specified
+            in the token's header.
         verify (bool): Whether to perform signature and claim validation.
             Verification is done by default.
         audience (str): The audience claim, 'aud', that this JWT should
             contain. If None then the JWT's 'aud' parameter is not verified.
 
     Returns:
-        Mapping: The deserialized JSON payload in the JWT.
+        Mapping[str, str]: The deserialized JSON payload in the JWT.
 
     Raises:
         ValueError: if any verification checks failed.

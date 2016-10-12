@@ -53,9 +53,11 @@ class Request(transport.Request):
     """urllib3 request adapter
 
     Args:
-        http (urllib3.requests.RequestMethods): An instance of any urllib3
-            class that implements :class:`~urllib3.requests.RequestMethods`,
+        http (urllib3.request.RequestMethods): An instance of any urllib3
+            class that implements :class:`~urllib3.request.RequestMethods`,
             usually :class:`urllib3.PoolManager`.
+
+    .. automethod:: __call__
     """
     def __init__(self, http):
         self.http = http
@@ -69,8 +71,8 @@ class Request(transport.Request):
             method (str): The HTTP method to use for the request. Defaults
                 to 'GET'.
             body (bytes): The payload / body in HTTP request.
-            headers (Mapping): Request headers.
-            timeout (Optional(int)): The number of seconds to wait for a
+            headers (Mapping[str, str]): Request headers.
+            timeout (Optional[int]): The number of seconds to wait for a
                 response from the server. If not specified or if None, the
                 urllib3 default timeout will be used.
             kwargs: Additional arguments passed throught to the underlying
