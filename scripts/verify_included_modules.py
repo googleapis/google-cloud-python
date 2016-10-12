@@ -36,7 +36,6 @@ IGNORED_MODULES = frozenset([
     'google.cloud.datastore.__init__',
     'google.cloud.dns.__init__',
     'google.cloud.error_reporting.__init__',
-    'google.cloud.iterator',
     'google.cloud.language.__init__',
     'google.cloud.logging.__init__',
     'google.cloud.logging.handlers.__init__',
