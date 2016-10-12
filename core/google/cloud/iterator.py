@@ -20,7 +20,6 @@ where the response is a list of results with a ``nextPageToken``.
 To make an iterator work, just override the ``PAGE_CLASS`` class
 attribute so that given a response (containing a page of results) can
 be parsed into an iterable page of the actual objects you want::
-those results into an iterable of the actual
 
   class MyPage(Page):
 
@@ -47,6 +46,29 @@ requests)::
     ...     print(my_item.name)
     ...     if not my_item.is_valid:
     ...         break
+
+When iterating, not every new item will send a request to the server.
+To monitor these requests, track the current page of the iterator::
+
+    >>> iterator = MyIterator(...)
+    >>> iterator.page_number
+    0
+    >>> next(iterator)
+    <MyItemClass at 0x7f1d3cccf690>
+    >>> iterator.page_number
+    1
+    >>> iterator.page.remaining
+    1
+    >>> next(iterator)
+    <MyItemClass at 0x7f1d3cccfe90>
+    >>> iterator.page.remaining
+    0
+    >>> next(iterator)
+    <MyItemClass at 0x7f1d3cccffd0>
+    >>> iterator.page_number
+    2
+    >>> iterator.page.remaining
+    19
 """
 
 
@@ -149,52 +171,60 @@ class Iterator(object):
 
     def __init__(self, client, page_token=None, max_results=None,
                  extra_params=None, path=None):
+        self.extra_params = extra_params or {}
+        self._verify_params()
         self.client = client
-        if path is None:
-            path = self.PATH
-        self.path = path
+        self.path = path or self.PATH
         self.page_number = 0
         self.next_page_token = page_token
         self.max_results = max_results
         self.num_results = 0
-        self.extra_params = extra_params or {}
+        self._page = None
+
+    def _verify_params(self):
+        """Verifies the parameters don't use any reserved parameter.
+
+        :raises ValueError: If a reserved parameter is used.
+        """
         reserved_in_use = self.RESERVED_PARAMS.intersection(
             self.extra_params)
         if reserved_in_use:
-            raise ValueError(('Using a reserved parameter',
-                              reserved_in_use))
-        self._curr_items = iter(())
+            raise ValueError('Using a reserved parameter',
+                             reserved_in_use)
+
+    @property
+    def page(self):
+        """The current page of results that has been retrieved.
+
+        :rtype: :class:`Page`
+        :returns: The page of items that has been retrieved.
+        """
+        return self._page
 
     def __iter__(self):
         """The :class:`Iterator` is an iterator."""
         return self
 
-    def _update_items(self):
-        """Replace the current items iterator.
+    def _update_page(self):
+        """Replace the current page.
 
-        Intended to be used when the current items iterator is exhausted.
+        Does nothing if the current page is non-null and has items
+        remaining.
 
-        After replacing the iterator, consumes the first value to make sure
-        it is valid.
-
-        :rtype: object
-        :returns: The first item in the next iterator.
         :raises: :class:`~exceptions.StopIteration` if there is no next page.
         """
+        if self.page is not None and self.page.remaining > 0:
+            return
         if self.has_next_page():
             response = self.get_next_page_response()
-            self._curr_items = self.PAGE_CLASS(self, response)
-            return six.next(self._curr_items)
+            self._page = self.PAGE_CLASS(self, response)
         else:
             raise StopIteration
 
     def next(self):
         """Get the next value in the iterator."""
-        try:
-            item = six.next(self._curr_items)
-        except StopIteration:
-            item = self._update_items()
-
+        self._update_page()
+        item = six.next(self.page)
         self.num_results += 1
         return item
 
