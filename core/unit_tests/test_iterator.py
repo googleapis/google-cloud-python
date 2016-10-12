@@ -206,24 +206,24 @@ class TestIterator(unittest.TestCase):
         iterator.num_results = iterator.max_results
         self.assertFalse(iterator.has_next_page())
 
-    def test_get_query_params_no_token(self):
+    def test__get_query_params_no_token(self):
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
         iterator = self._makeOne(client, path=path)
-        self.assertEqual(iterator.get_query_params(), {})
+        self.assertEqual(iterator._get_query_params(), {})
 
-    def test_get_query_params_w_token(self):
+    def test__get_query_params_w_token(self):
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
         token = 'token'
         iterator = self._makeOne(client, path=path)
         iterator.next_page_token = token
-        self.assertEqual(iterator.get_query_params(),
+        self.assertEqual(iterator._get_query_params(),
                          {'pageToken': token})
 
-    def test_get_query_params_w_max_results(self):
+    def test__get_query_params_w_max_results(self):
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
@@ -232,18 +232,18 @@ class TestIterator(unittest.TestCase):
                                  max_results=max_results)
         iterator.num_results = 1
         local_max = max_results - iterator.num_results
-        self.assertEqual(iterator.get_query_params(),
+        self.assertEqual(iterator._get_query_params(),
                          {'maxResults': local_max})
 
-    def test_get_query_params_extra_params(self):
+    def test__get_query_params_extra_params(self):
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
         extra_params = {'key': 'val'}
         iterator = self._makeOne(client, path=path, extra_params=extra_params)
-        self.assertEqual(iterator.get_query_params(), extra_params)
+        self.assertEqual(iterator._get_query_params(), extra_params)
 
-    def test_get_query_params_w_token_and_extra_params(self):
+    def test__get_query_params_w_token_and_extra_params(self):
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
@@ -254,9 +254,9 @@ class TestIterator(unittest.TestCase):
 
         expected_query = extra_params.copy()
         expected_query.update({'pageToken': token})
-        self.assertEqual(iterator.get_query_params(), expected_query)
+        self.assertEqual(iterator._get_query_params(), expected_query)
 
-    def test_get_next_page_response_new_no_token_in_response(self):
+    def test__get_next_page_response_new_no_token_in_response(self):
         path = '/foo'
         token = 'token'
         key1 = 'key1'
@@ -265,7 +265,7 @@ class TestIterator(unittest.TestCase):
                                   'nextPageToken': token})
         client = _Client(connection)
         iterator = self._makeOne(client, path=path)
-        response = iterator.get_next_page_response()
+        response = iterator._get_next_page_response()
         self.assertEqual(response['items'], [{'name': key1}, {'name': key2}])
         self.assertEqual(iterator.page_number, 1)
         self.assertEqual(iterator.next_page_token, token)
