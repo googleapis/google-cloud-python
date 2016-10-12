@@ -1062,6 +1062,8 @@ class QueryJob(_AsyncJob):
            the client's project.
         """
         configuration = cleaned['configuration']['query']
+
+        self.query = configuration['query']
         dest_remote = configuration.get('destinationTable')
 
         if dest_remote is None:
