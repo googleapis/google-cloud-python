@@ -317,20 +317,11 @@ class _BucketIterator(Iterator):
     :param extra_params: Extra query string parameters for the API call.
     """
 
+    PAGE_CLASS = _BucketPage
+
     def __init__(self, client, page_token=None,
                  max_results=None, extra_params=None):
         super(_BucketIterator, self).__init__(
             client=client, path='/b',
             page_token=page_token, max_results=max_results,
             extra_params=extra_params)
-
-    def get_items_from_response(self, response):
-        """Factory method which yields :class:`.Bucket` items from a response.
-
-        :type response: dict
-        :param response: The JSON API response for a page of buckets.
-
-        :rtype: :class:`_BucketPage`
-        :returns: The next page of buckets.
-        """
-        return _BucketPage(self, response)
