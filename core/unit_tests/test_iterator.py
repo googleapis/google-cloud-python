@@ -25,30 +25,32 @@ class TestPage(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_constructor(self):
+        klass = self._getTargetClass()
         parent = object()
-        page = self._makeOne(parent)
+        response = {klass.ITEMS_KEY: (1, 2, 3)}
+        page = self._makeOne(parent, response)
         self.assertIs(page._parent, parent)
-        self.assertEqual(page._num_items, 0)
-        self.assertEqual(page._remaining, 0)
+        self.assertEqual(page._num_items, 3)
+        self.assertEqual(page._remaining, 3)
 
     def test_num_items_property(self):
-        page = self._makeOne(None)
+        page = self._makeOne(None, {})
         num_items = 42
         page._num_items = num_items
         self.assertEqual(page.num_items, num_items)
 
     def test_remaining_property(self):
-        page = self._makeOne(None)
+        page = self._makeOne(None, {})
         remaining = 1337
         page._remaining = remaining
         self.assertEqual(page.remaining, remaining)
 
     def test___iter__(self):
-        page = self._makeOne(None)
+        page = self._makeOne(None, {})
         self.assertIs(iter(page), page)
 
     def test__next_item_virtual(self):
-        page = self._makeOne(None)
+        page = self._makeOne(None, {})
         with self.assertRaises(NotImplementedError):
             page._next_item()
 
@@ -66,7 +68,7 @@ class TestPage(unittest.TestCase):
                 self.calls += 1
                 return self.values.pop(0)
 
-        page = CountItPage(None)
+        page = CountItPage(None, {})
         page._remaining = 100
         page.values = [10, 11, 12]
 
