@@ -56,7 +56,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-datastore',
-    version='0.20.0',
+    version='0.20.1',
     description='Python Client for Google Cloud Datastore',
     long_description=README,
     namespace_packages=[
