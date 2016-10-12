@@ -118,6 +118,7 @@ class TestIterator(unittest.TestCase):
 
     def test_iterate(self):
         import six
+        from google.cloud.iterator import Page
 
         PATH = '/foo'
         KEY1 = 'key1'
@@ -125,15 +126,17 @@ class TestIterator(unittest.TestCase):
         ITEM1, ITEM2 = object(), object()
         ITEMS = {KEY1: ITEM1, KEY2: ITEM2}
 
-        def _get_items(response):
-            return [ITEMS[item['name']]
-                    for item in response.get('items', [])]
+        class _Page(Page):
+
+            def _next_item(self):
+                item = six.next(self._item_iter)
+                return ITEMS[item['name']]
 
         connection = _Connection(
             {'items': [{'name': KEY1}, {'name': KEY2}]})
         client = _Client(connection)
         iterator = self._makeOne(client, PATH)
-        iterator.get_items_from_response = _get_items
+        iterator.PAGE_CLASS = _Page
         self.assertEqual(iterator.num_results, 0)
 
         val1 = six.next(iterator)
@@ -277,14 +280,6 @@ class TestIterator(unittest.TestCase):
         iterator.reset()
         self.assertEqual(iterator.page_number, 0)
         self.assertIsNone(iterator.next_page_token)
-
-    def test_get_items_from_response_raises_NotImplementedError(self):
-        PATH = '/foo'
-        connection = _Connection()
-        client = _Client(connection)
-        iterator = self._makeOne(client, PATH)
-        self.assertRaises(NotImplementedError,
-                          iterator.get_items_from_response, object())
 
 
 class TestMethodIterator(unittest.TestCase):
