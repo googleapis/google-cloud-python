@@ -17,17 +17,23 @@
 These iterators simplify the process of paging through API responses
 where the response is a list of results with a ``nextPageToken``.
 
-To make an iterator work, just override the ``get_items_from_response``
-method so that given a response (containing a page of results) it parses
-those results into an iterable of the actual objects you want::
+To make an iterator work, just override the ``PAGE_CLASS`` class
+attribute so that given a response (containing a page of results) can
+be parsed into an iterable page of the actual objects you want::
+those results into an iterable of the actual
+
+  class MyPage(Page):
+
+      def _next_item(self):
+          item = six.next(self._item_iter)
+          my_item = MyItemClass(other_arg=True)
+          my_item._set_properties(item)
+          return my_item
+
 
   class MyIterator(Iterator):
-      def get_items_from_response(self, response):
-          items = response.get('items', [])
-          for item in items:
-              my_item = MyItemClass(other_arg=True)
-              my_item._set_properties(item)
-              yield my_item
+
+      PAGE_CLASS = MyPage
 
 You then can use this to get **all** the results from a resource::
 
@@ -38,9 +44,9 @@ Or you can walk your way through items and call off the search early if
 you find what you're looking for (resulting in possibly fewer
 requests)::
 
-    >>> for item in MyIterator(...):
-    ...     print(item.name)
-    ...     if not item.is_valid:
+    >>> for my_item in MyIterator(...):
+    ...     print(my_item.name)
+    ...     if not my_item.is_valid:
     ...         break
 """
 
@@ -117,6 +123,8 @@ class Page(object):
 class Iterator(object):
     """A generic class for iterating through Cloud JSON APIs list responses.
 
+    Sub-classes need to over-write ``PAGE_CLASS``.
+
     :type client: :class:`google.cloud.client.Client`
     :param client: The client, which owns a connection to make requests.
 
@@ -136,6 +144,7 @@ class Iterator(object):
     PAGE_TOKEN = 'pageToken'
     MAX_RESULTS = 'maxResults'
     RESERVED_PARAMS = frozenset([PAGE_TOKEN, MAX_RESULTS])
+    PAGE_CLASS = Page
 
     def __init__(self, client, path, page_token=None,
                  max_results=None, extra_params=None):
@@ -171,8 +180,7 @@ class Iterator(object):
         """
         if self.has_next_page():
             response = self.get_next_page_response()
-            items = self.get_items_from_response(response)
-            self._curr_items = iter(items)
+            self._curr_items = self.PAGE_CLASS(self, response)
             return six.next(self._curr_items)
         else:
             raise StopIteration
@@ -241,21 +249,6 @@ class Iterator(object):
         self.page_number = 0
         self.next_page_token = None
         self.num_results = 0
-
-    def get_items_from_response(self, response):
-        """Factory method called while iterating. This should be overridden.
-
-        This method should be overridden by a subclass.  It should
-        accept the API response of a request for the next page of items,
-        and return a list (or other iterable) of items.
-
-        Typically this method will construct a Bucket or a Blob from the
-        page of results in the response.
-
-        :type response: dict
-        :param response: The response of asking for the next page of items.
-        """
-        raise NotImplementedError
 
 
 class MethodIterator(object):

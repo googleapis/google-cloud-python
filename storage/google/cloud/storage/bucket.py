@@ -80,6 +80,9 @@ class _BlobIterator(Iterator):
     :param client: Optional. The client to use for making connections.
                    Defaults to the bucket's client.
     """
+
+    PAGE_CLASS = _BlobPage
+
     def __init__(self, bucket, page_token=None, max_results=None,
                  extra_params=None, client=None):
         if client is None:
@@ -90,17 +93,6 @@ class _BlobIterator(Iterator):
             client=client, path=bucket.path + '/o',
             page_token=page_token, max_results=max_results,
             extra_params=extra_params)
-
-    def get_items_from_response(self, response):
-        """Yield :class:`.storage.blob.Blob` items from response.
-
-        :type response: dict
-        :param response: The JSON API response for a page of blobs.
-
-        :rtype: :class:`_BlobPage`
-        :returns: The next page of blobs.
-        """
-        return _BlobPage(self, response)
 
 
 class Bucket(_PropertyMixin):

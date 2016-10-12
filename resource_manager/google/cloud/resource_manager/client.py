@@ -204,19 +204,10 @@ class _ProjectIterator(Iterator):
                          the API call.
     """
 
+    PAGE_CLASS = _ProjectPage
+
     def __init__(self, client, page_token=None,
                  max_results=None, extra_params=None):
         super(_ProjectIterator, self).__init__(
             client=client, path='/projects', page_token=page_token,
             max_results=max_results, extra_params=extra_params)
-
-    def get_items_from_response(self, response):
-        """Yield projects from response.
-
-        :type response: dict
-        :param response: The JSON API response for a page of projects.
-
-        :rtype: :class:`_ProjectPage`
-        :returns: The next page of projects.
-        """
-        return _ProjectPage(self, response)
