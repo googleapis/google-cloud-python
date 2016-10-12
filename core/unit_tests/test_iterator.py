@@ -282,9 +282,12 @@ class TestIterator(unittest.TestCase):
         iterator = self._makeOne(client, path=path)
         iterator.page_number = 1
         iterator.next_page_token = token
+        iterator._page = object()
         iterator.reset()
         self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.num_results, 0)
         self.assertIsNone(iterator.next_page_token)
+        self.assertIsNone(iterator.page)
 
 
 class TestMethodIterator(unittest.TestCase):

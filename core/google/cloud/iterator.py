@@ -173,11 +173,12 @@ class Iterator(object):
                  extra_params=None, path=None):
         self.extra_params = extra_params or {}
         self._verify_params()
+        self.max_results = max_results
         self.client = client
         self.path = path or self.PATH
+        # The attributes below will change over the life of the iterator.
         self.page_number = 0
         self.next_page_token = page_token
-        self.max_results = max_results
         self.num_results = 0
         self._page = None
 
@@ -279,6 +280,7 @@ class Iterator(object):
         self.page_number = 0
         self.next_page_token = None
         self.num_results = 0
+        self._page = None
 
 
 class MethodIterator(object):
