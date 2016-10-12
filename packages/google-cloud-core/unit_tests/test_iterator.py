@@ -15,6 +15,69 @@
 import unittest
 
 
+class TestPage(unittest.TestCase):
+
+    def _getTargetClass(self):
+        from google.cloud.iterator import Page
+        return Page
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_constructor(self):
+        parent = object()
+        page = self._makeOne(parent)
+        self.assertIs(page._parent, parent)
+        self.assertEqual(page._num_items, 0)
+        self.assertEqual(page._remaining, 0)
+
+    def test_num_items_property(self):
+        page = self._makeOne(None)
+        num_items = 42
+        page._num_items = num_items
+        self.assertEqual(page.num_items, num_items)
+
+    def test_remaining_property(self):
+        page = self._makeOne(None)
+        remaining = 1337
+        page._remaining = remaining
+        self.assertEqual(page.remaining, remaining)
+
+    def test___iter__(self):
+        page = self._makeOne(None)
+        self.assertIs(iter(page), page)
+
+    def test__next_item_virtual(self):
+        page = self._makeOne(None)
+        with self.assertRaises(NotImplementedError):
+            page._next_item()
+
+    def test_iterator_calls__next_item(self):
+        import six
+
+        klass = self._getTargetClass()
+
+        class CountItPage(klass):
+
+            calls = 0
+            values = None
+
+            def _next_item(self):
+                self.calls += 1
+                return self.values.pop(0)
+
+        page = CountItPage(None)
+        page.values = [10, 11, 12]
+
+        self.assertEqual(page.calls, 0)
+        self.assertEqual(six.next(page), 10)
+        self.assertEqual(page.calls, 1)
+        self.assertEqual(six.next(page), 11)
+        self.assertEqual(page.calls, 2)
+        self.assertEqual(six.next(page), 12)
+        self.assertEqual(page.calls, 3)
+
+
 class TestIterator(unittest.TestCase):
 
     def _getTargetClass(self):
