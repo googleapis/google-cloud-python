@@ -128,9 +128,6 @@ class Iterator(object):
     :type client: :class:`google.cloud.client.Client`
     :param client: The client, which owns a connection to make requests.
 
-    :type path: str
-    :param path: The path to query for the list of items.
-
     :type page_token: str
     :param page_token: (Optional) A token identifying a page in a result set.
 
@@ -139,16 +136,22 @@ class Iterator(object):
 
     :type extra_params: dict or None
     :param extra_params: Extra query string parameters for the API call.
+
+    :type path: str
+    :param path: The path to query for the list of items.
     """
 
     PAGE_TOKEN = 'pageToken'
     MAX_RESULTS = 'maxResults'
     RESERVED_PARAMS = frozenset([PAGE_TOKEN, MAX_RESULTS])
     PAGE_CLASS = Page
+    PATH = None
 
-    def __init__(self, client, path, page_token=None,
-                 max_results=None, extra_params=None):
+    def __init__(self, client, page_token=None, max_results=None,
+                 extra_params=None, path=None):
         self.client = client
+        if path is None:
+            path = self.PATH
         self.path = path
         self.page_number = 0
         self.next_page_token = page_token

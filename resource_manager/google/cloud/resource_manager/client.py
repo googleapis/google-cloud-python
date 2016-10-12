@@ -205,9 +205,4 @@ class _ProjectIterator(Iterator):
     """
 
     PAGE_CLASS = _ProjectPage
-
-    def __init__(self, client, page_token=None,
-                 max_results=None, extra_params=None):
-        super(_ProjectIterator, self).__init__(
-            client=client, path='/projects', page_token=page_token,
-            max_results=max_results, extra_params=extra_params)
+    PATH = '/projects'
