@@ -15,8 +15,6 @@
 """A Client for interacting with the Resource Manager API."""
 
 
-import six
-
 from google.cloud.client import Client as BaseClient
 from google.cloud.iterator import Iterator
 from google.cloud.iterator import Page
