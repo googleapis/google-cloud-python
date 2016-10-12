@@ -173,13 +173,15 @@ class _ProjectPage(Page):
 
     ITEMS_KEY = 'projects'
 
-    def _next_item(self):
-        """Get the next project in the page.
+    def _item_to_value(self, resource):
+        """Convert a JSON project to the native object.
+
+        :type resource: dict
+        :param resource: An resource to be converted to a project.
 
         :rtype: :class:`.Project`
         :returns: The next project in the page.
         """
-        resource = six.next(self._item_iter)
         return Project.from_api_repr(resource, client=self._parent.client)
 
 
