@@ -968,7 +968,6 @@ class Test_Bucket(unittest.TestCase):
         self._make_public_w_future_helper(default_object_acl_loaded=False)
 
     def test_make_public_recursive(self):
-        import six
         from google.cloud.storage.acl import _ACLEntity
         from google.cloud.storage.bucket import _BlobIterator
         from google.cloud.storage.bucket import _BlobPage
