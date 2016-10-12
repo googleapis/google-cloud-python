@@ -53,12 +53,19 @@ class Page(object):
 
     :type parent: :class:`Iterator`
     :param parent: The iterator that owns the current page.
+
+    :type response: dict
+    :param response: The JSON API response for a page.
     """
 
-    def __init__(self, parent):
+    ITEMS_KEY = 'items'
+
+    def __init__(self, parent, response):
         self._parent = parent
-        self._num_items = 0
-        self._remaining = 0
+        items = response.get(self.ITEMS_KEY, ())
+        self._num_items = len(items)
+        self._remaining = self._num_items
+        self._item_iter = iter(items)
 
     @property
     def num_items(self):
