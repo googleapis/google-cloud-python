@@ -98,7 +98,7 @@ class TestMessage(unittest.TestCase):
         api_repr = {
             'data': B64_DATA,
             'messageId': MESSAGE_ID,
-            'publishTimestamp': TIMESTAMP,
+            'publishTime': TIMESTAMP,
         }
         message = self._getTargetClass().from_api_repr(api_repr)
         self.assertEqual(message.data, DATA)
@@ -116,7 +116,7 @@ class TestMessage(unittest.TestCase):
         api_repr = {
             'data': B64_DATA,
             'messageId': MESSAGE_ID,
-            'publishTimestamp': TIMESTAMP,
+            'publishTime': TIMESTAMP,
             'attributes': ATTRS,
         }
         message = self._getTargetClass().from_api_repr(api_repr)
