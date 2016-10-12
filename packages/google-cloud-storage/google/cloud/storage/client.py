@@ -15,10 +15,13 @@
 """Client for interacting with the Google Cloud Storage API."""
 
 
+import six
+
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import JSONClient
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import Iterator
+from google.cloud.iterator import Page
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.connection import Connection
@@ -271,6 +274,36 @@ class Client(JSONClient):
         return result
 
 
+class _BucketPage(Page):
+    """Iterator for a single page of results.
+
+    :type parent: :class:`_BucketIterator`
+    :param parent: The iterator that owns the current page.
+
+    :type response: dict
+    :param response: The JSON API response for a page of buckets.
+    """
+
+    def __init__(self, parent, response):
+        super(_BucketPage, self).__init__(parent)
+        items = response.get('items', ())
+        self._num_items = len(items)
+        self._remaining = self._num_items
+        self._item_iter = iter(items)
+
+    def _next_item(self):
+        """Get the next blob in the page.
+
+        :rtype: :class:`.Blob`
+        :returns: The next blob in the page.
+        """
+        item = six.next(self._item_iter)
+        name = item.get('name')
+        bucket = Bucket(self._parent.client, name)
+        bucket._set_properties(item)
+        return bucket
+
+
 class _BucketIterator(Iterator):
     """An iterator listing all buckets.
 
@@ -303,9 +336,8 @@ class _BucketIterator(Iterator):
 
         :type response: dict
         :param response: The JSON API response for a page of buckets.
+
+        :rtype: :class:`_BucketPage`
+        :returns: The next page of buckets.
         """
-        for item in response.get('items', []):
-            name = item.get('name')
-            bucket = Bucket(self.client, name)
-            bucket._set_properties(item)
-            yield bucket
+        return _BucketPage(self, response)

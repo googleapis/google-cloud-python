@@ -21,11 +21,46 @@ import six
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import Iterator
+from google.cloud.iterator import Page
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
+
+
+class _BlobPage(Page):
+    """Iterator for a single page of results.
+
+    :type parent: :class:`_BlobIterator`
+    :param parent: The iterator that owns the current page.
+
+    :type response: dict
+    :param response: The JSON API response for a page of blobs.
+    """
+
+    def __init__(self, parent, response):
+        super(_BlobPage, self).__init__(parent)
+        # First, grab the prefixes from the response
+        self._prefixes = tuple(response.get('prefixes', ()))
+        parent.prefixes.update(self._prefixes)
+
+        items = response.get('items', ())
+        self._num_items = len(items)
+        self._remaining = self._num_items
+        self._item_iter = iter(items)
+
+    def _next_item(self):
+        """Get the next blob in the page.
+
+        :rtype: :class:`.Blob`
+        :returns: The next blob in the page.
+        """
+        item = six.next(self._item_iter)
+        name = item.get('name')
+        blob = Blob(name, bucket=self._parent.bucket)
+        blob._set_properties(item)
+        return blob
 
 
 class _BlobIterator(Iterator):
@@ -56,7 +91,6 @@ class _BlobIterator(Iterator):
             client = bucket.client
         self.bucket = bucket
         self.prefixes = set()
-        self._current_prefixes = None
         super(_BlobIterator, self).__init__(
             client=client, path=bucket.path + '/o',
             page_token=page_token, max_results=max_results,
@@ -67,14 +101,11 @@ class _BlobIterator(Iterator):
 
         :type response: dict
         :param response: The JSON API response for a page of blobs.
+
+        :rtype: :class:`_BlobPage`
+        :returns: The next page of blobs.
         """
-        self._current_prefixes = tuple(response.get('prefixes', ()))
-        self.prefixes.update(self._current_prefixes)
-        for item in response.get('items', []):
-            name = item.get('name')
-            blob = Blob(name, bucket=self.bucket)
-            blob._set_properties(item)
-            yield blob
+        return _BlobPage(self, response)
 
 
 class Bucket(_PropertyMixin):
