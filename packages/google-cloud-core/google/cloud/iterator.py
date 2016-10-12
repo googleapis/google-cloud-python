@@ -266,9 +266,6 @@ class Iterator(object):
         :rtype: dict
         :returns: The parsed JSON response of the next page's contents.
         """
-        if not self.has_next_page():
-            raise RuntimeError('No more pages. Try resetting the iterator.')
-
         response = self.client.connection.api_request(
             method='GET', path=self.path, query_params=self.get_query_params())
 
