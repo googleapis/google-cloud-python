@@ -274,14 +274,6 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(kw['path'], path)
         self.assertEqual(kw['query_params'], {})
 
-    def test_get_next_page_response_no_token(self):
-        connection = _Connection()
-        client = _Client(connection)
-        path = '/foo'
-        iterator = self._makeOne(client, path=path)
-        iterator.page_number = 1
-        self.assertRaises(RuntimeError, iterator.get_next_page_response)
-
     def test_reset(self):
         connection = _Connection()
         client = _Client(connection)
