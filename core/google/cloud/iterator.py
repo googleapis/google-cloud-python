@@ -39,13 +39,68 @@ you find what you're looking for (resulting in possibly fewer
 requests)::
 
     >>> for item in MyIterator(...):
-    >>>     print(item.name)
-    >>>     if not item.is_valid:
-    >>>         break
+    ...     print(item.name)
+    ...     if not item.is_valid:
+    ...         break
 """
 
 
 import six
+
+
+class Page(object):
+    """Single page of results in an iterator.
+
+    :type parent: :class:`Iterator`
+    :param parent: The iterator that owns the current page.
+    """
+
+    def __init__(self, parent):
+        self._parent = parent
+        self._num_items = 0
+        self._remaining = 0
+
+    @property
+    def num_items(self):
+        """Total items in the page.
+
+        :rtype: int
+        :returns: The number of items in this page of items.
+        """
+        return self._num_items
+
+    @property
+    def remaining(self):
+        """Remaining items in the page.
+
+        :rtype: int
+        :returns: The number of items remaining this page.
+        """
+        return self._remaining
+
+    def __iter__(self):
+        """The :class:`Page` is an iterator."""
+        return self
+
+    def _next_item(self):
+        """Get the next item in the page.
+
+        This method (along with the constructor) is the workhorse
+        of this class. Subclasses will need to implement this method.
+
+        It is separate from :meth:`next` since that method needs
+        to be aliased as ``__next__`` in Python 3.
+
+        :raises NotImplementedError: Always
+        """
+        raise NotImplementedError
+
+    def next(self):
+        """Get the next value in the iterator."""
+        return self._next_item()
+
+    # Alias needed for Python 2/3 support.
+    __next__ = next
 
 
 class Iterator(object):
