@@ -15,8 +15,11 @@
 """A Client for interacting with the Resource Manager API."""
 
 
+import six
+
 from google.cloud.client import Client as BaseClient
 from google.cloud.iterator import Iterator
+from google.cloud.iterator import Page
 from google.cloud.resource_manager.connection import Connection
 from google.cloud.resource_manager.project import Project
 
@@ -158,6 +161,33 @@ class Client(BaseClient):
         return _ProjectIterator(self, extra_params=extra_params)
 
 
+class _ProjectPage(Page):
+    """Iterator for a single page of results.
+
+    :type parent: :class:`_ProjectIterator`
+    :param parent: The iterator that owns the current page.
+
+    :type response: dict
+    :param response: The JSON API response for a page of projects.
+    """
+
+    def __init__(self, parent, response):
+        super(_ProjectPage, self).__init__(parent)
+        items = response.get('projects', ())
+        self._num_items = len(items)
+        self._remaining = self._num_items
+        self._item_iter = iter(items)
+
+    def _next_item(self):
+        """Get the next project in the page.
+
+        :rtype: :class:`.Project`
+        :returns: The next project in the page.
+        """
+        resource = six.next(self._item_iter)
+        return Project.from_api_repr(resource, client=self._parent.client)
+
+
 class _ProjectIterator(Iterator):
     """An iterator over a list of Project resources.
 
@@ -190,7 +220,8 @@ class _ProjectIterator(Iterator):
 
         :type response: dict
         :param response: The JSON API response for a page of projects.
+
+        :rtype: :class:`_ProjectPage`
+        :returns: The next page of projects.
         """
-        for resource in response.get('projects', []):
-            item = Project.from_api_repr(resource, client=self.client)
-            yield item
+        return _ProjectPage(self, response)
