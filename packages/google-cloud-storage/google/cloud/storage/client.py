@@ -284,13 +284,15 @@ class _BucketPage(Page):
     :param response: The JSON API response for a page of buckets.
     """
 
-    def _next_item(self):
-        """Get the next blob in the page.
+    def _item_to_value(self, item):
+        """Convert a JSON bucket to the native object.
 
-        :rtype: :class:`.Blob`
-        :returns: The next blob in the page.
+        :type item: dict
+        :param item: An item to be converted to a bucket.
+
+        :rtype: :class:`.Bucket`
+        :returns: The next bucket in the page.
         """
-        item = six.next(self._item_iter)
         name = item.get('name')
         bucket = Bucket(self._parent.client, name)
         bucket._set_properties(item)
