@@ -49,12 +49,12 @@ class TestPage(unittest.TestCase):
         page = self._makeOne(None, {})
         self.assertIs(iter(page), page)
 
-    def test__next_item_virtual(self):
+    def test__item_to_value(self):
         page = self._makeOne(None, {})
         with self.assertRaises(NotImplementedError):
-            page._next_item()
+            page._item_to_value(None)
 
-    def test_iterator_calls__next_item(self):
+    def test_iterator_calls__item_to_value(self):
         import six
 
         klass = self._getTargetClass()
@@ -64,13 +64,13 @@ class TestPage(unittest.TestCase):
             calls = 0
             values = None
 
-            def _next_item(self):
+            def _item_to_value(self, item):
                 self.calls += 1
-                return self.values.pop(0)
+                return item
 
-        page = CountItPage(None, {})
+        response = {klass.ITEMS_KEY: [10, 11, 12]}
+        page = CountItPage(None, response)
         page._remaining = 100
-        page.values = [10, 11, 12]
 
         self.assertEqual(page.calls, 0)
         self.assertEqual(page.remaining, 100)
@@ -142,8 +142,7 @@ class TestIterator(unittest.TestCase):
 
         class _Page(Page):
 
-            def _next_item(self):
-                item = six.next(self._item_iter)
+            def _item_to_value(self, item):
                 return ITEMS[item['name']]
 
         connection = _Connection(

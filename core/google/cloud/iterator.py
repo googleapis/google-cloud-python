@@ -24,8 +24,7 @@ those results into an iterable of the actual
 
   class MyPage(Page):
 
-      def _next_item(self):
-          item = six.next(self._item_iter)
+      def _item_to_value(self, item):
           my_item = MyItemClass(other_arg=True)
           my_item._set_properties(item)
           return my_item
@@ -95,14 +94,14 @@ class Page(object):
         """The :class:`Page` is an iterator."""
         return self
 
-    def _next_item(self):
+    def _item_to_value(self, item):
         """Get the next item in the page.
 
         This method (along with the constructor) is the workhorse
         of this class. Subclasses will need to implement this method.
 
-        It is separate from :meth:`next` since that method needs
-        to be aliased as ``__next__`` in Python 3.
+        :type item: dict
+        :param item: An item to be converted to a native object.
 
         :raises NotImplementedError: Always
         """
@@ -110,7 +109,8 @@ class Page(object):
 
     def next(self):
         """Get the next value in the iterator."""
-        result = self._next_item()
+        item = six.next(self._item_iter)
+        result = self._item_to_value(item)
         # Since we've successfully got the next value from the
         # iterator, we update the number of remaining.
         self._remaining -= 1

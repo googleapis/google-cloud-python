@@ -45,13 +45,15 @@ class _BlobPage(Page):
         self._prefixes = tuple(response.get('prefixes', ()))
         parent.prefixes.update(self._prefixes)
 
-    def _next_item(self):
-        """Get the next blob in the page.
+    def _item_to_value(self, item):
+        """Convert a JSON blob to the native object.
+
+        :type item: dict
+        :param item: An item to be converted to a blob.
 
         :rtype: :class:`.Blob`
         :returns: The next blob in the page.
         """
-        item = six.next(self._item_iter)
         name = item.get('name')
         blob = Blob(name, bucket=self._parent.bucket)
         blob._set_properties(item)

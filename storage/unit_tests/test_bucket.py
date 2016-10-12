@@ -998,8 +998,7 @@ class Test_Bucket(unittest.TestCase):
                     (self._bucket, self._name, self._granted, client))
 
         class _Page(_BlobPage):
-            def _next_item(self):
-                item = six.next(self._item_iter)
+            def _item_to_value(self, item):
                 return _Blob(self._parent.bucket, item['name'])
 
         class _Iterator(_BlobIterator):
