@@ -97,7 +97,11 @@ class Page(object):
 
     def next(self):
         """Get the next value in the iterator."""
-        return self._next_item()
+        result = self._next_item()
+        # Since we've successfully got the next value from the
+        # iterator, we update the number of remaining.
+        self._remaining -= 1
+        return result
 
     # Alias needed for Python 2/3 support.
     __next__ = next
