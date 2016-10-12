@@ -1290,6 +1290,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._verifyBooleanResourceProperties(job, config)
         self._verifyIntegerResourceProperties(job, config)
 
+        self.assertEqual(job.query, config['query'])
         if 'createDisposition' in config:
             self.assertEqual(job.create_disposition,
                              config['createDisposition'])
@@ -1596,7 +1597,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+        job = self._makeOne(self.JOB_NAME, None, client)
 
         dataset = Dataset(DS_NAME, client)
         table = Table(DEST_TABLE, dataset)
