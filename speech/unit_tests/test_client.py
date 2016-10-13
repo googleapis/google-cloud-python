@@ -218,23 +218,6 @@ class TestClient(unittest.TestCase):
             speech_api = client.speech_api
             self.assertIsInstance(speech_api, _MockGAPICSpeechAPI)
 
-    def test_streaming_closed_stream(self):
-        from io import BytesIO
-        from google.cloud.speech.encoding import Encoding
-
-        stream = BytesIO(b'Some audio data...')
-        credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
-        client.connection = _Connection()
-        client._speech_api = _MockGAPICSpeechAPI()
-
-        stream.close()
-        sample = client.sample(stream=stream,
-                               encoding=Encoding.LINEAR16,
-                               sample_rate=self.SAMPLE_RATE)
-        with self.assertRaises(ValueError):
-            next(client.stream_recognize(sample))
-
     def test_streaming_with_empty_response(self):
         from io import BytesIO
         from google.cloud.speech.encoding import Encoding
@@ -256,7 +239,7 @@ class TestClient(unittest.TestCase):
     def test_stream_recognize(self):
         from io import BytesIO
         from google.cloud.speech.encoding import Encoding
-        from google.cloud.speech.streaming.response import (
+        from google.cloud.speech.streaming_response import (
             StreamingSpeechResponse)
 
         stream = BytesIO(b'Some audio data...')

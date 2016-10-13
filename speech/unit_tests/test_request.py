@@ -20,7 +20,7 @@ class TestStreamingSpeechRequestHelpers(unittest.TestCase):
         from io import BytesIO
         from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
             StreamingRecognizeRequest)
-        from google.cloud.speech.streaming.request import _make_request_stream
+        from google.cloud.speech.client import _make_request_stream
         from google.cloud.speech.sample import Sample
 
         stream = BytesIO(b'g' * 1702)  # Something bigger than a chunk.
@@ -36,10 +36,10 @@ class TestStreamingSpeechRequestHelpers(unittest.TestCase):
         from io import BytesIO
         from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
             StreamingRecognizeRequest)
-        from google.cloud.speech.streaming.request import _make_request_stream
+        from google.cloud.speech.client import _make_request_stream
         from google.cloud.speech.sample import Sample
 
-        stream = BytesIO(b'g' * (1599 * 2))  # Something bigger than a chunk.
+        stream = BytesIO(b'g' * (1599 * 4))  # Something bigger than a chunk.
         sample = Sample(stream=stream, encoding='LINEAR16')
 
         request_count = 0
@@ -47,4 +47,4 @@ class TestStreamingSpeechRequestHelpers(unittest.TestCase):
             request_count += 1
             self.assertIsInstance(req, StreamingRecognizeRequest)
 
-        self.assertEqual(request_count, 3)
+        self.assertEqual(request_count, 5)

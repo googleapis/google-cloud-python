@@ -14,8 +14,7 @@
 
 """Representation of a GAPIC Speech API response."""
 
-from google.cloud.speech.streaming.endpointer_type import EndpointerType
-from google.cloud.speech.streaming.result import StreamingSpeechResult
+from google.cloud.speech.streaming_result import StreamingSpeechResult
 
 
 class StreamingSpeechResponse(object):
@@ -71,7 +70,7 @@ class StreamingSpeechResponse(object):
         :returns: Confidence score of recognized speech [0.0-1.0].
         """
         if self.results and self.results[0].alternatives:
-                return self.results[0].alternatives[0].confidence
+            return self.results[0].alternatives[0].confidence
         else:
             return 0.0
 
@@ -91,8 +90,8 @@ class StreamingSpeechResponse(object):
         :rtype: bool
         :returns: True if the result has completed it's processing.
         """
-        if len(self.results):
-            return self.results[0].is_final
+        if self.results:
+            return bool(self.results[0].is_final)
         else:
             return False
 
@@ -122,6 +121,28 @@ class StreamingSpeechResponse(object):
         :returns: Transcript text from response.
         """
         if self.results and self.results[0].alternatives:
-                return self.results[0].alternatives[0].transcript
+            return self.results[0].alternatives[0].transcript
         else:
             return ''
+
+
+class EndpointerType(object):
+    """Endpointer type for tracking state of Speech API detection.
+
+    See:
+    https://cloud.google.com/speech/reference/rpc/\
+    google.cloud.speech.v1beta1#endpointertype
+    """
+    ENDPOINTER_EVENT_UNSPECIFIED = 0
+    START_OF_SPEECH = 1
+    END_OF_SPEECH = 2
+    END_OF_AUDIO = 3
+    END_OF_UTTERANCE = 4
+
+    reverse_map = {
+        0: 'ENDPOINTER_EVENT_UNSPECIFIED',
+        1: 'START_OF_SPEECH',
+        2: 'END_OF_SPEECH',
+        3: 'END_OF_AUDIO',
+        4: 'END_OF_UTTERANCE'
+    }
