@@ -52,7 +52,7 @@ class Sample(object):
 
     def __init__(self, content=None, source_uri=None, stream=None,
                  encoding=None, sample_rate=None):
-        if [content, source_uri, stream].count(None) != 2:
+        if (content, source_uri, stream).count(None) != 2:
             raise ValueError('Supply only one of \'content\', \'source_uri\''
                              ' or stream.')
 

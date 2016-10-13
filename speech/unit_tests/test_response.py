@@ -17,7 +17,7 @@ import unittest
 
 class TestStreamingSpeechResponse(unittest.TestCase):
     def _getTargetClass(self):
-        from google.cloud.speech.streaming.response import (
+        from google.cloud.speech.streaming_response import (
             StreamingSpeechResponse)
         return StreamingSpeechResponse
 

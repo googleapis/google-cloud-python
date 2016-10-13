@@ -1,33 +1,23 @@
-Speech StreamingResponseContainer
-=================================
+Streaming Speech Response
+=========================
 
-.. automodule:: google.cloud.speech.streaming.container
+.. automodule:: google.cloud.speech.streaming_response
   :members:
   :undoc-members:
   :show-inheritance:
 
-Speech Streaming Request helpers
-================================
+Streaming Speech Result
+=======================
 
-.. automodule:: google.cloud.speech.streaming.request
+.. automodule:: google.cloud.speech.streaming_result
   :members:
   :undoc-members:
   :show-inheritance:
 
-Speech StreamingSpeechResponse
-==============================
+Streaming Endpointer Type
+=========================
 
-.. automodule:: google.cloud.speech.streaming.response
-  :members:
-  :undoc-members:
-  :show-inheritance:
-
-
-
-Speech StreamingSpeechResult
-============================
-
-.. automodule:: google.cloud.speech.streaming.result
+.. automodule:: google.cloud.speech.endpointer_type
   :members:
   :undoc-members:
   :show-inheritance:

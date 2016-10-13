@@ -51,10 +51,9 @@ See: `Speech Asynchronous Recognize`_
 
     >>> import time
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.LINEAR16,
+    ...                        encoding=speech.Encoding.LINEAR16,
     ...                        sample_rate=44100)
     >>> operation = client.async_recognize(sample, max_alternatives=2)
     >>> retry_count = 100
@@ -82,10 +81,9 @@ Great Britian.
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.FLAC,
+    ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
     >>> operation = client.async_recognize(sample, max_alternatives=2)
      >>> alternatives = client.sync_recognize(
@@ -107,10 +105,9 @@ Example of using the profanity filter.
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.FLAC,
+    ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
     >>> alternatives = client.sync_recognize(sample, max_alternatives=1,
     ...                                      profanity_filter=True)
@@ -129,10 +126,9 @@ words to the vocabulary of the recognizer.
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.FLAC,
+    ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
     >>> hints = ['hi', 'good afternoon']
     >>> alternatives = client.sync_recognize(sample, max_alternatives=2,
@@ -161,12 +157,11 @@ data to possible text alternatives on the fly.
 
     >>> import io
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> with io.open('./hello.wav', 'rb') as stream:
-    >>>     sample = client.sample(stream=stream, encoding=Encoding.LINEAR16,
+    ...     sample = client.sample(stream=stream, encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    >>>     for response in client.stream_recognize(sample):
+    ...     for response in client.stream_recognize(sample):
     ...         print(response.transcript)
     hello
     ...         print(response.is_final)
@@ -182,12 +177,11 @@ result(s) are returned.
 
     >>> import io
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> with io.open('./hello.wav', 'rb') as stream:
-    >>>     sample = client.sample(stream=stream, encoding=Encoding.LINEAR16,
+    >>>     sample = client.sample(stream=stream, encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    >>>     for response in client.stream_recognize(sample,
+    ...     for response in client.stream_recognize(sample,
     ...                                             interim_results=True):
     ...         print(response.transcript)
     hell
@@ -211,9 +205,9 @@ See: `Single Utterance`_
 .. code-block:: python
 
     >>> with io.open('./hello_pause_goodbye.wav', 'rb') as stream:
-    >>>     sample = client.sample(stream=stream, encoding=Encoding.LINEAR16,
+    >>>     sample = client.sample(stream=stream, encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    >>>     stream_container = client.stream_recognize(sample,
+    ...     stream_container = client.stream_recognize(sample,
     ...                                                single_utterance=True)
     >>> print(stream_container.get_full_text())
     hello
