@@ -204,7 +204,7 @@ class TestClient(unittest.TestCase):
 
         with _Monkey(MUT, _USE_GAX=False):
             with self.assertRaises(EnvironmentError):
-                client.stream_recognize({})
+                next(client.stream_recognize({}))
 
     def test_set_speech_api(self):
         from google.cloud.speech import client as MUT
@@ -233,13 +233,31 @@ class TestClient(unittest.TestCase):
                                encoding=Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
         with self.assertRaises(ValueError):
-            client.stream_recognize(sample)
+            next(client.stream_recognize(sample))
+
+    def test_streaming_with_empty_response(self):
+        from io import BytesIO
+        from google.cloud.speech.encoding import Encoding
+
+        stream = BytesIO(b'Some audio data...')
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+        client.connection = _Connection()
+        client._speech_api = _MockGAPICSpeechAPI()
+        client._speech_api._responses = []
+
+        sample = client.sample(stream=stream,
+                               encoding=Encoding.LINEAR16,
+                               sample_rate=self.SAMPLE_RATE)
+        results = client.stream_recognize(sample)
+        with self.assertRaises(StopIteration):
+            next(results)
 
     def test_stream_recognize(self):
         from io import BytesIO
         from google.cloud.speech.encoding import Encoding
-        from google.cloud.speech.streaming.container import (
-            StreamingResponseContainer)
+        from google.cloud.speech.streaming.response import (
+            StreamingSpeechResponse)
 
         stream = BytesIO(b'Some audio data...')
         credentials = _Credentials()
@@ -252,7 +270,7 @@ class TestClient(unittest.TestCase):
                                sample_rate=self.SAMPLE_RATE)
         results = client.stream_recognize(sample)
 
-        self.assertIsInstance(results, StreamingResponseContainer)
+        self.assertIsInstance(next(results), StreamingSpeechResponse)
         requests = []
         for req in client.speech_api._requests:
             requests.append(req)
@@ -268,10 +286,11 @@ class _MockGAPICSpeechResponse(object):
 
 class _MockGAPICSpeechAPI(object):
     _requests = None
+    _responses = [None, _MockGAPICSpeechResponse()]
 
     def streaming_recognize(self, requests):
         self._requests = requests
-        return [None, _MockGAPICSpeechResponse()]
+        return self._responses
 
 
 class _Credentials(object):

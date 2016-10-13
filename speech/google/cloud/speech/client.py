@@ -26,7 +26,7 @@ from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
 from google.cloud.speech.streaming.request import _make_request_stream
 from google.cloud.speech.sample import Sample
-from google.cloud.speech.streaming.container import StreamingResponseContainer
+from google.cloud.speech.streaming.response import StreamingSpeechResponse
 
 try:
     from google.cloud.gapic.speech.v1beta1.speech_api import SpeechApi
@@ -302,12 +302,9 @@ class Client(client_module.Client):
                                         single_utterance=single_utterance,
                                         interim_results=interim_results)
 
-        responses = StreamingResponseContainer()
         for response in self.speech_api.streaming_recognize(requests):
-            if response:
-                responses.add_response(response)
-
-        return responses
+            if hasattr(response, 'results') or interim_results:
+                yield StreamingSpeechResponse.from_pb(response)
 
     @property
     def speech_api(self):
