@@ -25,12 +25,17 @@ from google.cloud.speech.connection import Connection
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
 from google.cloud.speech.sample import Sample
+from google.cloud.speech.transcript import Transcript
 from google.cloud.speech.streaming_response import StreamingSpeechResponse
 
 try:
     from google.cloud.gapic.speech.v1beta1.speech_api import SpeechApi
     from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+        SpeechContext)
+    from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
         RecognitionConfig)
+    from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+        RecognitionAudio)
     from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
         StreamingRecognitionConfig)
     from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
@@ -211,17 +216,21 @@ class Client(client_module.Client):
                   * ``confidence``: The confidence in language detection, float
                     between 0 and 1.
         """
+        if _USE_GAX:
+            config = RecognitionConfig(
+                encoding=sample.encoding, sample_rate=sample.sample_rate,
+                language_code=language_code, max_alternatives=max_alternatives,
+                profanity_filter=profanity_filter,
+                speech_context=SpeechContext(phrases=speech_context))
 
-        data = _build_request_data(sample, language_code, max_alternatives,
-                                   profanity_filter, speech_context)
+            audio = RecognitionAudio(content=sample.content,
+                                     uri=sample.source_uri)
 
-        api_response = self.connection.api_request(
-            method='POST', path='speech:syncrecognize', data=data)
-
-        if len(api_response['results']) == 1:
-            return api_response['results'][0]['alternatives']
+            return self._sync_recognize(config, audio)
         else:
-            raise ValueError('result in api should have length 1')
+            data = _build_request_data(sample, language_code, max_alternatives,
+                                       profanity_filter, speech_context)
+            return self._sync_recognize(data=data)
 
     def stream_recognize(self, sample, language_code=None,
                          max_alternatives=None, profanity_filter=None,
@@ -314,6 +323,37 @@ class Client(client_module.Client):
         if not self._speech_api:
             self._speech_api = SpeechApi()
         return self._speech_api
+
+    def _sync_recognize(self, config=None, audio=None, data=None):
+        """Handler for sync_recognize requests with or without GAPIC.
+
+        :type config: :class:`~RecognitionConfig
+        :param config: Instance of ``RecognitionConfig`` with recognition
+                       settings.
+
+        :type audio: :class:`~RecognitionAudio`
+        :param audio: Instance of ``RecognitionAudio`` with audio source data.
+
+        :type data: dict
+        :param data: Mapped configuration paramters for the request.
+
+        :rtype: list of :class:`~transcript.Transcript`
+        :returns: List of ``Transcript`` with recognition results.
+        """
+        if config and audio and _USE_GAX:
+            api_response = self.speech_api.sync_recognize(config=config,
+                                                          audio=audio)
+            results = api_response.results.pop()
+            alternatives = results.alternatives
+            return [Transcript.from_pb(alternative)
+                    for alternative in alternatives]
+        elif data:
+            api_response = self.connection.api_request(
+                method='POST', path='speech:syncrecognize', data=data)
+
+            return [Transcript.from_api_repr(alternative)
+                    for alternative
+                    in api_response['results'][0]['alternatives']]
 
 
 def _build_request_data(sample, language_code=None, max_alternatives=None,

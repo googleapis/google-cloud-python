@@ -29,8 +29,21 @@ class Transcript(object):
         self._confidence = confidence
 
     @classmethod
+    def from_api_repr(cls, transcript):
+        """Factory: construct ``Transcript`` from JSON response.
+
+        :type transcript: :class:`~SpeechRecognitionAlternative`
+        :param transcript: Instance of ``SpeechRecognitionAlternative``
+                           from protobuf.
+
+        :rtype: :class:`~Transcript`
+        :returns: Instance of ``Transcript``.
+        """
+        return cls(transcript['transcript'], transcript['confidence'])
+
+    @classmethod
     def from_pb(cls, transcript):
-        """Factory: construct ``Transcript`` from protobuf response
+        """Factory: construct ``Transcript`` from protobuf response.
 
         :type transcript: :class:`~SpeechRecognitionAlternative`
         :param transcript: Instance of ``SpeechRecognitionAlternative``
