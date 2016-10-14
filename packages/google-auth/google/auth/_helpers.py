@@ -35,7 +35,7 @@ def copy_docstring(source_class):
         """Decorator implementation.
 
         Args:
-            method: The method to copy the docstring to.
+            method (Callable): The method to copy the docstring to.
 
         Returns:
             Callable: the same method passed in with an updated docstring.
