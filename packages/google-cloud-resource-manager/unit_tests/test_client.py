@@ -15,59 +15,6 @@
 import unittest
 
 
-class Test__ProjectPage(unittest.TestCase):
-
-    def _getTargetClass(self):
-        from google.cloud.resource_manager.client import _ProjectPage
-        return _ProjectPage
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
-
-    def test_empty_response(self):
-        from google.cloud.resource_manager.client import _ProjectIterator
-
-        client = object()
-        iterator = _ProjectIterator(client)
-        page = self._makeOne(iterator, {})
-        self.assertEqual(page.num_items, 0)
-        self.assertEqual(page.remaining, 0)
-        self.assertEqual(list(page), [])
-
-    def test_non_empty_response(self):
-        from google.cloud.resource_manager.client import _ProjectIterator
-        from google.cloud.resource_manager.project import Project
-
-        project_id = 'project-id'
-        project_name = 'My Project Name'
-        project_number = 12345678
-        project_labels = {'env': 'prod'}
-        project_lifecycle_state = 'ACTIVE'
-        api_resource = {
-            'projectId': project_id,
-            'name': project_name,
-            'projectNumber': project_number,
-            'labels': project_labels,
-            'lifecycleState': project_lifecycle_state,
-        }
-        response = {'projects': [api_resource]}
-
-        client = object()
-        iterator = _ProjectIterator(client)
-        page = self._makeOne(iterator, response)
-
-        self.assertEqual(page.num_items, 1)
-        project = page.next()
-        self.assertEqual(page.remaining, 0)
-        self.assertIsInstance(project, Project)
-        self.assertEqual(project.project_id, project_id)
-        self.assertEqual(project._client, client)
-        self.assertEqual(project.name, project_name)
-        self.assertEqual(project.number, project_number)
-        self.assertEqual(project.labels, project_labels)
-        self.assertEqual(project.status, project_lifecycle_state)
-
-
 class Test__ProjectIterator(unittest.TestCase):
 
     def _getTargetClass(self):
@@ -85,6 +32,53 @@ class Test__ProjectIterator(unittest.TestCase):
         self.assertIsNone(iterator.next_page_token)
         self.assertIs(iterator.client, client)
         self.assertEqual(iterator.extra_params, {})
+
+    def test_page_empty_response(self):
+        from google.cloud.iterator import Page
+
+        client = object()
+        iterator = self._makeOne(client)
+        page = Page(iterator, {}, iterator.ITEMS_KEY)
+        iterator._page = page
+        self.assertEqual(page.num_items, 0)
+        self.assertEqual(page.remaining, 0)
+        self.assertEqual(list(page), [])
+
+    def test_page_non_empty_response(self):
+        from google.cloud.resource_manager.project import Project
+
+        project_id = 'project-id'
+        project_name = 'My Project Name'
+        project_number = 12345678
+        project_labels = {'env': 'prod'}
+        project_lifecycle_state = 'ACTIVE'
+        api_resource = {
+            'projectId': project_id,
+            'name': project_name,
+            'projectNumber': project_number,
+            'labels': project_labels,
+            'lifecycleState': project_lifecycle_state,
+        }
+        response = {'projects': [api_resource]}
+        client = object()
+
+        def dummy_response():
+            return response
+
+        iterator = self._makeOne(client)
+        iterator._get_next_page_response = dummy_response
+
+        page = iterator.page
+        self.assertEqual(page.num_items, 1)
+        project = iterator.next()
+        self.assertEqual(page.remaining, 0)
+        self.assertIsInstance(project, Project)
+        self.assertEqual(project.project_id, project_id)
+        self.assertEqual(project._client, client)
+        self.assertEqual(project.name, project_name)
+        self.assertEqual(project.number, project_number)
+        self.assertEqual(project.labels, project_labels)
+        self.assertEqual(project.status, project_lifecycle_state)
 
 
 class TestClient(unittest.TestCase):
