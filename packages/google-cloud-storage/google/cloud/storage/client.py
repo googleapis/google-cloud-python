@@ -19,7 +19,6 @@ from google.cloud._helpers import _LocalStack
 from google.cloud.client import JSONClient
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import Iterator
-from google.cloud.iterator import Page
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.connection import Connection
@@ -272,39 +271,14 @@ class Client(JSONClient):
         return result
 
 
-class _BucketPage(Page):
-    """Iterator for a single page of results.
-
-    :type parent: :class:`_BucketIterator`
-    :param parent: The iterator that owns the current page.
-
-    :type response: dict
-    :param response: The JSON API response for a page of buckets.
-    """
-
-    def _item_to_value(self, item):
-        """Convert a JSON bucket to the native object.
-
-        :type item: dict
-        :param item: An item to be converted to a bucket.
-
-        :rtype: :class:`.Bucket`
-        :returns: The next bucket in the page.
-        """
-        name = item.get('name')
-        bucket = Bucket(self._parent.client, name)
-        bucket._set_properties(item)
-        return bucket
-
-
 class _BucketIterator(Iterator):
     """An iterator listing all buckets.
 
     You shouldn't have to use this directly, but instead should use the
-    helper methods on :class:`google.cloud.storage.connection.Connection`
+    helper methods on :class:`~google.cloud.storage.connection.Connection`
     objects.
 
-    :type client: :class:`google.cloud.storage.client.Client`
+    :type client: :class:`~google.cloud.storage.client.Client`
     :param client: The client to use for making connections.
 
     :type page_token: str
@@ -317,5 +291,18 @@ class _BucketIterator(Iterator):
     :param extra_params: Extra query string parameters for the API call.
     """
 
-    PAGE_CLASS = _BucketPage
     PATH = '/b'
+
+    def _item_to_value(self, item):
+        """Convert a JSON bucket to the native object.
+
+        :type item: dict
+        :param item: An item to be converted to a bucket.
+
+        :rtype: :class:`.Bucket`
+        :returns: The next bucket in the page.
+        """
+        name = item.get('name')
+        bucket = Bucket(self.client, name)
+        bucket._set_properties(item)
+        return bucket

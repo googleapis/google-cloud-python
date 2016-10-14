@@ -15,48 +15,6 @@
 import unittest
 
 
-class Test__BlobPage(unittest.TestCase):
-
-    def _getTargetClass(self):
-        from google.cloud.storage.bucket import _BlobPage
-        return _BlobPage
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
-
-    def test_empty_response(self):
-        from google.cloud.storage.bucket import _BlobIterator
-
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket()
-        iterator = _BlobIterator(bucket, client=client)
-        page = self._makeOne(iterator, {})
-        blobs = list(page)
-        self.assertEqual(blobs, [])
-        self.assertEqual(iterator.prefixes, set())
-
-    def test_non_empty_response(self):
-        from google.cloud.storage.blob import Blob
-        from google.cloud.storage.bucket import _BlobIterator
-
-        blob_name = 'blob-name'
-        response = {'items': [{'name': blob_name}], 'prefixes': ['foo']}
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket()
-        iterator = _BlobIterator(bucket, client=client)
-        page = self._makeOne(iterator, response)
-
-        self.assertEqual(page._prefixes, ('foo',))
-        self.assertEqual(page.num_items, 1)
-        blob = page.next()
-        self.assertEqual(page.remaining, 0)
-        self.assertIsInstance(blob, Blob)
-        self.assertEqual(blob.name, blob_name)
-        self.assertEqual(iterator.prefixes, set(['foo']))
-
-
 class Test__BlobIterator(unittest.TestCase):
 
     def _getTargetClass(self):
@@ -78,9 +36,45 @@ class Test__BlobIterator(unittest.TestCase):
         self.assertIsNone(iterator.next_page_token)
         self.assertEqual(iterator.prefixes, set())
 
+    def test_page_empty_response(self):
+        from google.cloud.iterator import Page
+
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = _Bucket()
+        iterator = self._makeOne(bucket, client=client)
+        page = Page(iterator, {}, iterator.ITEMS_KEY)
+        iterator._page = page
+        blobs = list(page)
+        self.assertEqual(blobs, [])
+        self.assertEqual(iterator.prefixes, set())
+
+    def test_page_non_empty_response(self):
+        from google.cloud.storage.blob import Blob
+
+        blob_name = 'blob-name'
+        response = {'items': [{'name': blob_name}], 'prefixes': ['foo']}
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = _Bucket()
+
+        def dummy_response():
+            return response
+
+        iterator = self._makeOne(bucket, client=client)
+        iterator._get_next_page_response = dummy_response
+
+        page = iterator.page
+        self.assertEqual(page.prefixes, ('foo',))
+        self.assertEqual(page.num_items, 1)
+        blob = iterator.next()
+        self.assertEqual(page.remaining, 0)
+        self.assertIsInstance(blob, Blob)
+        self.assertEqual(blob.name, blob_name)
+        self.assertEqual(iterator.prefixes, set(['foo']))
+
     def test_cumulative_prefixes(self):
         from google.cloud.storage.blob import Blob
-        from google.cloud.storage.bucket import _BlobPage
 
         BLOB_NAME = 'blob-name1'
         response1 = {
@@ -94,19 +88,26 @@ class Test__BlobIterator(unittest.TestCase):
         connection = _Connection()
         client = _Client(connection)
         bucket = _Bucket()
+        responses = [response1, response2]
+
+        def dummy_response():
+            return responses.pop(0)
+
         iterator = self._makeOne(bucket, client=client)
+        iterator._get_next_page_response = dummy_response
+
         # Parse first response.
-        page1 = _BlobPage(iterator, response1)
-        self.assertEqual(page1._prefixes, ('foo',))
+        page1 = iterator.page
+        self.assertEqual(page1.prefixes, ('foo',))
         self.assertEqual(page1.num_items, 1)
-        blob = page1.next()
+        blob = iterator.next()
         self.assertEqual(page1.remaining, 0)
         self.assertIsInstance(blob, Blob)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(iterator.prefixes, set(['foo']))
         # Parse second response.
-        page2 = _BlobPage(iterator, response2)
-        self.assertEqual(page2._prefixes, ('bar',))
+        page2 = iterator.page
+        self.assertEqual(page2.prefixes, ('bar',))
         self.assertEqual(page2.num_items, 0)
         self.assertEqual(iterator.prefixes, set(['foo', 'bar']))
 
@@ -970,7 +971,6 @@ class Test_Bucket(unittest.TestCase):
     def test_make_public_recursive(self):
         from google.cloud.storage.acl import _ACLEntity
         from google.cloud.storage.bucket import _BlobIterator
-        from google.cloud.storage.bucket import _BlobPage
 
         _saved = []
 
@@ -996,12 +996,9 @@ class Test_Bucket(unittest.TestCase):
                 _saved.append(
                     (self._bucket, self._name, self._granted, client))
 
-        class _Page(_BlobPage):
-            def _item_to_value(self, item):
-                return _Blob(self._parent.bucket, item['name'])
-
         class _Iterator(_BlobIterator):
-            PAGE_CLASS = _Page
+            def _item_to_value(self, item):
+                return _Blob(self.bucket, item['name'])
 
         NAME = 'name'
         BLOB_NAME = 'blob-name'
