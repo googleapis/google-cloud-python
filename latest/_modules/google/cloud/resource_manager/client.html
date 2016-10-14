@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.resource_manager.client &mdash; google-cloud 484d469 documentation</title>
+  <title>google.cloud.resource_manager.client &mdash; google-cloud 9a5ddd5 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 484d469 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 9a5ddd5 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -288,6 +288,7 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">Client</span> <span class="k">as</span> <span class="n">BaseClient</span>
 <span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">Iterator</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">Page</span>
 <span class="kn">from</span> <span class="nn">google.cloud.resource_manager.connection</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.resource_manager.project</span> <span class="k">import</span> <span class="n">Project</span>
 
@@ -429,6 +430,30 @@
         <span class="k">return</span> <span class="n">_ProjectIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span></div></div>
 
 
+<span class="k">class</span> <span class="nc">_ProjectPage</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterator for a single page of results.</span>
+
+<span class="sd">    :type parent: :class:`_ProjectIterator`</span>
+<span class="sd">    :param parent: The iterator that owns the current page.</span>
+
+<span class="sd">    :type response: dict</span>
+<span class="sd">    :param response: The JSON API response for a page of projects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ITEMS_KEY</span> <span class="o">=</span> <span class="s1">&#39;projects&#39;</span>
+
+    <span class="k">def</span> <span class="nf">_item_to_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert a JSON project to the native object.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: An resource to be converted to a project.</span>
+
+<span class="sd">        :rtype: :class:`.Project`</span>
+<span class="sd">        :returns: The next project in the page.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Project</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+
 <span class="k">class</span> <span class="nc">_ProjectIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An iterator over a list of Project resources.</span>
 
@@ -450,21 +475,8 @@
 <span class="sd">                         the API call.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">_ProjectIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/projects&#39;</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
-            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Yield projects from response.</span>
-
-<span class="sd">        :type response: dict</span>
-<span class="sd">        :param response: The JSON API response for a page of projects.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;projects&#39;</span><span class="p">,</span> <span class="p">[]):</span>
-            <span class="n">item</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
-            <span class="k">yield</span> <span class="n">item</span>
+    <span class="n">PAGE_CLASS</span> <span class="o">=</span> <span class="n">_ProjectPage</span>
+    <span class="n">PATH</span> <span class="o">=</span> <span class="s1">&#39;/projects&#39;</span>
 </pre></div>
 
            </div>
@@ -498,7 +510,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'484d469',
+            VERSION:'9a5ddd5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
