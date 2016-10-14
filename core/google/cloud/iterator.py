@@ -17,21 +17,18 @@
 These iterators simplify the process of paging through API responses
 where the response is a list of results with a ``nextPageToken``.
 
-To make an iterator work, just override the ``PAGE_CLASS`` class
-attribute so that given a response (containing a page of results) can
-be parsed into an iterable page of the actual objects you want::
+To make an iterator work, you may need to override the
+``ITEMS_KEY`` class attribute so that given a response (containing a page of
+results) can be parsed into an iterable page of the actual objects you want::
 
-  class MyPage(Page):
+  class MyIterator(Iterator):
+
+      ITEMS_KEY = 'blocks'
 
       def _item_to_value(self, item):
           my_item = MyItemClass(other_arg=True)
           my_item._set_properties(item)
           return my_item
-
-
-  class MyIterator(Iterator):
-
-      PAGE_CLASS = MyPage
 
 You then can use this to get **all** the results from a resource::
 
@@ -69,6 +66,30 @@ To monitor these requests, track the current page of the iterator::
     2
     >>> iterator.page.remaining
     19
+
+It's also possible to consume an entire page and handle the paging process
+manually::
+
+    >>> iterator = MyIterator(...)
+    >>> items = list(iterator.page)
+    >>> items
+    [
+        <MyItemClass at 0x7fd64a098ad0>,
+        <MyItemClass at 0x7fd64a098ed0>,
+        <MyItemClass at 0x7fd64a098e90>,
+    ]
+    >>> iterator.page.remaining
+    0
+    >>> iterator.page.num_items
+    3
+    >>> iterator.next_page_token
+    'eav1OzQB0OM8rLdGXOEsyQWSG'
+    >>> # And just do the same thing to consume the next page.
+    >>> list(iterator.page)
+    [
+        <MyItemClass at 0x7fea740abdd0>,
+        <MyItemClass at 0x7fea740abe50>,
+    ]
 """
 
 
@@ -83,16 +104,19 @@ class Page(object):
 
     :type response: dict
     :param response: The JSON API response for a page.
+
+    :type items_key: str
+    :param items_key: The dictionary key used to retrieve items
+                      from the response.
     """
 
-    ITEMS_KEY = 'items'
-
-    def __init__(self, parent, response):
+    def __init__(self, parent, response, items_key):
         self._parent = parent
-        items = response.get(self.ITEMS_KEY, ())
+        items = response.get(items_key, ())
         self._num_items = len(items)
         self._remaining = self._num_items
         self._item_iter = iter(items)
+        self.response = response
 
     @property
     def num_items(self):
@@ -116,23 +140,10 @@ class Page(object):
         """The :class:`Page` is an iterator."""
         return self
 
-    def _item_to_value(self, item):
-        """Get the next item in the page.
-
-        This method (along with the constructor) is the workhorse
-        of this class. Subclasses will need to implement this method.
-
-        :type item: dict
-        :param item: An item to be converted to a native object.
-
-        :raises NotImplementedError: Always
-        """
-        raise NotImplementedError
-
     def next(self):
         """Get the next value in the iterator."""
         item = six.next(self._item_iter)
-        result = self._item_to_value(item)
+        result = self._parent._item_to_value(item)
         # Since we've successfully got the next value from the
         # iterator, we update the number of remaining.
         self._remaining -= 1
@@ -145,7 +156,8 @@ class Page(object):
 class Iterator(object):
     """A generic class for iterating through Cloud JSON APIs list responses.
 
-    Sub-classes need to over-write ``PAGE_CLASS``.
+    Sub-classes need to over-write :attr:`ITEMS_KEY` and to define
+    :meth:`_item_to_value`.
 
     :type client: :class:`google.cloud.client.Client`
     :param client: The client, which owns a connection to make requests.
@@ -166,8 +178,9 @@ class Iterator(object):
     PAGE_TOKEN = 'pageToken'
     MAX_RESULTS = 'maxResults'
     RESERVED_PARAMS = frozenset([PAGE_TOKEN, MAX_RESULTS])
-    PAGE_CLASS = Page
     PATH = None
+    ITEMS_KEY = 'items'
+    """The dictionary key used to retrieve items from each response."""
 
     def __init__(self, client, page_token=None, max_results=None,
                  extra_params=None, path=None):
@@ -200,6 +213,7 @@ class Iterator(object):
         :rtype: :class:`Page`
         :returns: The page of items that has been retrieved.
         """
+        self._update_page()
         return self._page
 
     def __iter__(self):
@@ -207,24 +221,38 @@ class Iterator(object):
         return self
 
     def _update_page(self):
-        """Replace the current page.
+        """Update the current page if needed.
 
-        Does nothing if the current page is non-null and has items
-        remaining.
+        Subclasses will need to implement this method if they
+        use data from the ``response`` other than the items.
 
+        :rtype: bool
+        :returns: Flag indicated if the page was updated.
         :raises: :class:`~exceptions.StopIteration` if there is no next page.
         """
-        if self.page is not None and self.page.remaining > 0:
-            return
-        if self.has_next_page():
+        if self._page is not None and self._page.remaining > 0:
+            return False
+        elif self.has_next_page():
             response = self._get_next_page_response()
-            self._page = self.PAGE_CLASS(self, response)
+            self._page = Page(self, response, self.ITEMS_KEY)
+            return True
         else:
             raise StopIteration
 
+    def _item_to_value(self, item):
+        """Get the next item in the page.
+
+        Subclasses will need to implement this method.
+
+        :type item: dict
+        :param item: An item to be converted to a native object.
+
+        :raises NotImplementedError: Always
+        """
+        raise NotImplementedError
+
     def next(self):
         """Get the next value in the iterator."""
-        self._update_page()
         item = six.next(self.page)
         self.num_results += 1
         return item

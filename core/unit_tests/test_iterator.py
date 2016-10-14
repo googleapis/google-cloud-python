@@ -25,41 +25,34 @@ class TestPage(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_constructor(self):
-        klass = self._getTargetClass()
         parent = object()
-        response = {klass.ITEMS_KEY: (1, 2, 3)}
-        page = self._makeOne(parent, response)
+        items_key = 'potatoes'
+        response = {items_key: (1, 2, 3)}
+        page = self._makeOne(parent, response, items_key)
         self.assertIs(page._parent, parent)
         self.assertEqual(page._num_items, 3)
         self.assertEqual(page._remaining, 3)
 
     def test_num_items_property(self):
-        page = self._makeOne(None, {})
+        page = self._makeOne(None, {}, '')
         num_items = 42
         page._num_items = num_items
         self.assertEqual(page.num_items, num_items)
 
     def test_remaining_property(self):
-        page = self._makeOne(None, {})
+        page = self._makeOne(None, {}, '')
         remaining = 1337
         page._remaining = remaining
         self.assertEqual(page.remaining, remaining)
 
     def test___iter__(self):
-        page = self._makeOne(None, {})
+        page = self._makeOne(None, {}, '')
         self.assertIs(iter(page), page)
-
-    def test__item_to_value(self):
-        page = self._makeOne(None, {})
-        with self.assertRaises(NotImplementedError):
-            page._item_to_value(None)
 
     def test_iterator_calls__item_to_value(self):
         import six
 
-        klass = self._getTargetClass()
-
-        class CountItPage(klass):
+        class Parent(object):
 
             calls = 0
             values = None
@@ -68,20 +61,22 @@ class TestPage(unittest.TestCase):
                 self.calls += 1
                 return item
 
-        response = {klass.ITEMS_KEY: [10, 11, 12]}
-        page = CountItPage(None, response)
+        items_key = 'turkeys'
+        response = {items_key: [10, 11, 12]}
+        parent = Parent()
+        page = self._makeOne(parent, response, items_key)
         page._remaining = 100
 
-        self.assertEqual(page.calls, 0)
+        self.assertEqual(parent.calls, 0)
         self.assertEqual(page.remaining, 100)
         self.assertEqual(six.next(page), 10)
-        self.assertEqual(page.calls, 1)
+        self.assertEqual(parent.calls, 1)
         self.assertEqual(page.remaining, 99)
         self.assertEqual(six.next(page), 11)
-        self.assertEqual(page.calls, 2)
+        self.assertEqual(parent.calls, 2)
         self.assertEqual(page.remaining, 98)
         self.assertEqual(six.next(page), 12)
-        self.assertEqual(page.calls, 3)
+        self.assertEqual(parent.calls, 3)
         self.assertEqual(page.remaining, 97)
 
 
@@ -132,7 +127,6 @@ class TestIterator(unittest.TestCase):
 
     def test_iterate(self):
         import six
-        from google.cloud.iterator import Page
 
         path = '/foo'
         key1 = 'key1'
@@ -140,7 +134,9 @@ class TestIterator(unittest.TestCase):
         item1, item2 = object(), object()
         ITEMS = {key1: item1, key2: item2}
 
-        class _Page(Page):
+        klass = self._getTargetClass()
+
+        class WithItemToValue(klass):
 
             def _item_to_value(self, item):
                 return ITEMS[item['name']]
@@ -148,8 +144,7 @@ class TestIterator(unittest.TestCase):
         connection = _Connection(
             {'items': [{'name': key1}, {'name': key2}]})
         client = _Client(connection)
-        iterator = self._makeOne(client, path=path)
-        iterator.PAGE_CLASS = _Page
+        iterator = WithItemToValue(client, path=path)
         self.assertEqual(iterator.num_results, 0)
 
         val1 = six.next(iterator)
@@ -274,6 +269,11 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(kw['path'], path)
         self.assertEqual(kw['query_params'], {})
 
+    def test__item_to_value_virtual(self):
+        iterator = self._makeOne(None)
+        with self.assertRaises(NotImplementedError):
+            iterator._item_to_value({})
+
     def test_reset(self):
         connection = _Connection()
         client = _Client(connection)
@@ -287,7 +287,7 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.num_results, 0)
         self.assertIsNone(iterator.next_page_token)
-        self.assertIsNone(iterator.page)
+        self.assertIsNone(iterator._page)
 
 
 class _Connection(object):
