@@ -21,6 +21,20 @@ import six
 from six.moves import urllib
 
 
+def copy_docstring(source_class):
+    """Decorator that copies a method's docstring from another class."""
+    def decorator(method):
+        """Decorator implementation."""
+        if method.__doc__:
+            raise ValueError('Method already has a docstring.')
+
+        source_method = getattr(source_class, method.__name__)
+        method.__doc__ = source_method.__doc__
+
+        return method
+    return decorator
+
+
 def utcnow():
     """Returns the current UTC datetime.
 

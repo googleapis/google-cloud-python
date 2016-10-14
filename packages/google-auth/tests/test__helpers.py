@@ -20,6 +20,38 @@ from six.moves import urllib
 from google.auth import _helpers
 
 
+class SourceClass(object):
+    def func(self):  # pragma: NO COVER
+        """example docstring"""
+        pass
+
+
+def test_copy_docstring_success():
+    def func():  # pragma: NO COVER
+        pass
+
+    _helpers.copy_docstring(SourceClass)(func)
+
+    assert func.__doc__ == SourceClass.func.__doc__
+
+
+def test_copy_docstring_conflict():
+    def func():  # pragma: NO COVER
+        """existing docstring"""
+        pass
+
+    with pytest.raises(ValueError):
+        _helpers.copy_docstring(SourceClass)(func)
+
+
+def test_copy_docstring_non_existing():
+    def func2():  # pragma: NO COVER
+        pass
+
+    with pytest.raises(AttributeError):
+        _helpers.copy_docstring(SourceClass)(func2)
+
+
 def test_utcnow():
     assert isinstance(_helpers.utcnow(), datetime.datetime)
 
