@@ -23,7 +23,6 @@ from google.auth import _helpers
 class SourceClass(object):
     def func(self):  # pragma: NO COVER
         """example docstring"""
-        pass
 
 
 def test_copy_docstring_success():
