@@ -93,3 +93,30 @@ def test_update_query_remove_param():
     uri = base_uri + '?x=a'
     updated = _helpers.update_query(uri, {'y': 'c'}, remove=['x'])
     _assert_query(updated, {'y': ['c']})
+
+
+def test_scopes_to_string():
+    cases = [
+        ('', ()),
+        ('', []),
+        ('', ('',)),
+        ('', ['', ]),
+        ('a', ('a',)),
+        ('b', ['b', ]),
+        ('a b', ['a', 'b']),
+        ('a b', ('a', 'b')),
+        ('a b', (s for s in ['a', 'b'])),
+    ]
+    for expected, case in cases:
+        assert _helpers.scopes_to_string(case) == expected
+
+
+def test_string_to_scopes():
+    cases = [
+        ('', []),
+        ('a', ['a']),
+        ('a b c d e f', ['a', 'b', 'c', 'd', 'e', 'f']),
+    ]
+
+    for case, expected in cases:
+        assert _helpers.string_to_scopes(case) == expected

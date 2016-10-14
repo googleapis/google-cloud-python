@@ -19,6 +19,7 @@ Submodules
 
 .. toctree::
 
+   google.auth.credentials
    google.auth.crypt
    google.auth.exceptions
    google.auth.jwt
