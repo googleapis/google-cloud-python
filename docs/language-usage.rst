@@ -232,8 +232,8 @@ three arguments ``include_syntax``, ``include_entities`` and
 arguments to :data:`False`.
 
 When ``include_syntax=False``, ``sentences`` and ``tokens`` in the
-response is :data:`None`. When ``include_sentiment``, ``sentiment`` in
-the response is :data:`None`. When ``include_entities``, ``entities`` in
+response is :data:`None`. When ``include_sentiment=False``, ``sentiment`` in
+the response is :data:`None`. When ``include_entities=False``, ``entities`` in
 the response is :data:`None`.
 
   .. code-block:: python
