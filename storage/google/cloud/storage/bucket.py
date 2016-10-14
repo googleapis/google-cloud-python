@@ -21,11 +21,43 @@ import six
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import Iterator
+from google.cloud.iterator import Page
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
+
+
+class _BlobPage(Page):
+    """Iterator for a single page of results.
+
+    :type parent: :class:`_BlobIterator`
+    :param parent: The iterator that owns the current page.
+
+    :type response: dict
+    :param response: The JSON API response for a page of blobs.
+    """
+
+    def __init__(self, parent, response):
+        super(_BlobPage, self).__init__(parent, response)
+        # Grab the prefixes from the response.
+        self._prefixes = tuple(response.get('prefixes', ()))
+        parent.prefixes.update(self._prefixes)
+
+    def _item_to_value(self, item):
+        """Convert a JSON blob to the native object.
+
+        :type item: dict
+        :param item: An item to be converted to a blob.
+
+        :rtype: :class:`.Blob`
+        :returns: The next blob in the page.
+        """
+        name = item.get('name')
+        blob = Blob(name, bucket=self._parent.bucket)
+        blob._set_properties(item)
+        return blob
 
 
 class _BlobIterator(Iterator):
@@ -50,31 +82,19 @@ class _BlobIterator(Iterator):
     :param client: Optional. The client to use for making connections.
                    Defaults to the bucket's client.
     """
+
+    PAGE_CLASS = _BlobPage
+
     def __init__(self, bucket, page_token=None, max_results=None,
                  extra_params=None, client=None):
         if client is None:
             client = bucket.client
         self.bucket = bucket
         self.prefixes = set()
-        self._current_prefixes = None
         super(_BlobIterator, self).__init__(
             client=client, path=bucket.path + '/o',
             page_token=page_token, max_results=max_results,
             extra_params=extra_params)
-
-    def get_items_from_response(self, response):
-        """Yield :class:`.storage.blob.Blob` items from response.
-
-        :type response: dict
-        :param response: The JSON API response for a page of blobs.
-        """
-        self._current_prefixes = tuple(response.get('prefixes', ()))
-        self.prefixes.update(self._current_prefixes)
-        for item in response.get('items', []):
-            name = item.get('name')
-            blob = Blob(name, bucket=self.bucket)
-            blob._set_properties(item)
-            yield blob
 
 
 class Bucket(_PropertyMixin):

@@ -36,3 +36,10 @@ Environment Variables
 .. automodule:: google.cloud.environment_vars
   :members:
   :show-inheritance:
+
+Base Iterator Class
+~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: google.cloud.iterator
+  :members:
+  :show-inheritance:

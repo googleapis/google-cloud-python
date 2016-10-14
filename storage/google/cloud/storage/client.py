@@ -19,6 +19,7 @@ from google.cloud._helpers import _LocalStack
 from google.cloud.client import JSONClient
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import Iterator
+from google.cloud.iterator import Page
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.connection import Connection
@@ -271,6 +272,31 @@ class Client(JSONClient):
         return result
 
 
+class _BucketPage(Page):
+    """Iterator for a single page of results.
+
+    :type parent: :class:`_BucketIterator`
+    :param parent: The iterator that owns the current page.
+
+    :type response: dict
+    :param response: The JSON API response for a page of buckets.
+    """
+
+    def _item_to_value(self, item):
+        """Convert a JSON bucket to the native object.
+
+        :type item: dict
+        :param item: An item to be converted to a bucket.
+
+        :rtype: :class:`.Bucket`
+        :returns: The next bucket in the page.
+        """
+        name = item.get('name')
+        bucket = Bucket(self._parent.client, name)
+        bucket._set_properties(item)
+        return bucket
+
+
 class _BucketIterator(Iterator):
     """An iterator listing all buckets.
 
@@ -291,21 +317,5 @@ class _BucketIterator(Iterator):
     :param extra_params: Extra query string parameters for the API call.
     """
 
-    def __init__(self, client, page_token=None,
-                 max_results=None, extra_params=None):
-        super(_BucketIterator, self).__init__(
-            client=client, path='/b',
-            page_token=page_token, max_results=max_results,
-            extra_params=extra_params)
-
-    def get_items_from_response(self, response):
-        """Factory method which yields :class:`.Bucket` items from a response.
-
-        :type response: dict
-        :param response: The JSON API response for a page of buckets.
-        """
-        for item in response.get('items', []):
-            name = item.get('name')
-            bucket = Bucket(self.client, name)
-            bucket._set_properties(item)
-            yield bucket
+    PAGE_CLASS = _BucketPage
+    PATH = '/b'
