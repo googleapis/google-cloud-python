@@ -18,7 +18,7 @@ These iterators simplify the process of paging through API responses
 where the response is a list of results with a ``nextPageToken``.
 
 To make an iterator work, you may need to override the
-``ITEMS_KEY`` class attribute so that given a response (containing a page of
+``ITEMS_KEY`` class attribute so that a given response (containing a page of
 results) can be parsed into an iterable page of the actual objects you want::
 
   class MyIterator(Iterator):
@@ -71,6 +71,13 @@ It's also possible to consume an entire page and handle the paging process
 manually::
 
     >>> iterator = MyIterator(...)
+    >>> # No page of results before the iterator has started.
+    >>> iterator.page is None
+    True
+    >>>
+    >>> # Manually pull down the next page.
+    >>> iterator.next_page()  # Returns "updated" status of page
+    True
     >>> items = list(iterator.page)
     >>> items
     [
@@ -84,16 +91,32 @@ manually::
     3
     >>> iterator.next_page_token
     'eav1OzQB0OM8rLdGXOEsyQWSG'
-    >>> # And just do the same thing to consume the next page.
+    >>>
+    >>> iterator.next_page()
+    True
     >>> list(iterator.page)
     [
         <MyItemClass at 0x7fea740abdd0>,
         <MyItemClass at 0x7fea740abe50>,
     ]
+    >>>
+    >>> # When there are no more results
+    >>> iterator.next_page()
+    True
+    >>> iterator.page is google.cloud.iterator.NO_MORE_PAGES
+    True
 """
 
 
 import six
+
+
+NO_MORE_PAGES = object()
+"""Sentinel object indicating an iterator has no more pages."""
+_NO_MORE_PAGES_ERR = 'Iterator has no more pages.'
+_PAGE_ERR_TEMPLATE = (
+    'Tried to get next_page() while current page (%r) still has %d '
+    'items remaining.')
 
 
 class Page(object):
@@ -123,7 +146,7 @@ class Page(object):
         """Total items in the page.
 
         :rtype: int
-        :returns: The number of items in this page of items.
+        :returns: The number of items in this page.
         """
         return self._num_items
 
@@ -132,7 +155,7 @@ class Page(object):
         """Remaining items in the page.
 
         :rtype: int
-        :returns: The number of items remaining this page.
+        :returns: The number of items remaining in this page.
         """
         return self._remaining
 
@@ -141,7 +164,7 @@ class Page(object):
         return self
 
     def next(self):
-        """Get the next value in the iterator."""
+        """Get the next value in the page."""
         item = six.next(self._item_iter)
         result = self._parent._item_to_value(item)
         # Since we've successfully got the next value from the
@@ -159,7 +182,7 @@ class Iterator(object):
     Sub-classes need to over-write :attr:`ITEMS_KEY` and to define
     :meth:`_item_to_value`.
 
-    :type client: :class:`google.cloud.client.Client`
+    :type client: :class:`~google.cloud.client.Client`
     :param client: The client, which owns a connection to make requests.
 
     :type page_token: str
@@ -168,7 +191,7 @@ class Iterator(object):
     :type max_results: int
     :param max_results: (Optional) The maximum number of results to fetch.
 
-    :type extra_params: dict or None
+    :type extra_params: :class:`dict` or :data:`None`
     :param extra_params: Extra query string parameters for the API call.
 
     :type path: str
@@ -181,6 +204,7 @@ class Iterator(object):
     PATH = None
     ITEMS_KEY = 'items'
     """The dictionary key used to retrieve items from each response."""
+    _PAGE_CLASS = Page
 
     def __init__(self, client, page_token=None, max_results=None,
                  extra_params=None, path=None):
@@ -213,31 +237,54 @@ class Iterator(object):
         :rtype: :class:`Page`
         :returns: The page of items that has been retrieved.
         """
-        self._update_page()
         return self._page
 
     def __iter__(self):
         """The :class:`Iterator` is an iterator."""
         return self
 
-    def _update_page(self):
-        """Update the current page if needed.
+    def next_page(self, require_empty=True):
+        """Move to the next page in the result set.
 
-        Subclasses will need to implement this method if they
-        use data from the ``response`` other than the items.
+        If the current page is not empty and ``require_empty`` is :data:`True`
+        then an exception will be raised. If the current page is not empty
+        and ``require_empty`` is :data:`False`, then this will return
+        without updating the current page (and will return an ``updated``
+        value of :data:`False`).
+
+        If the current page **is** empty, but there are no more results,
+        sets the current page to :attr:`NO_MORE_PAGES`.
+
+        If the current page is :attr:`NO_MORE_PAGES`, throws an exception.
+
+        :type require_empty: bool
+        :param require_empty: (Optional) Flag to indicate if the current page
+                              must be empty before updating.
 
         :rtype: bool
         :returns: Flag indicated if the page was updated.
-        :raises: :class:`~exceptions.StopIteration` if there is no next page.
+        :raises ValueError: If ``require_empty`` is :data:`True` but the
+                            current page is not empty.
+        :raises ValueError: If the current page is :attr:`NO_MORE_PAGES`.
         """
-        if self._page is not None and self._page.remaining > 0:
-            return False
-        elif self.has_next_page():
-            response = self._get_next_page_response()
-            self._page = Page(self, response, self.ITEMS_KEY)
+        if self._page is NO_MORE_PAGES:
+            raise ValueError(_NO_MORE_PAGES_ERR)
+
+        # NOTE: This assumes Page.remaining can never go below 0.
+        page_empty = self._page is None or self._page.remaining == 0
+        if page_empty:
+            if self.has_next_page():
+                response = self._get_next_page_response()
+                self._page = self._PAGE_CLASS(self, response, self.ITEMS_KEY)
+            else:
+                self._page = NO_MORE_PAGES
+
             return True
         else:
-            raise StopIteration
+            if require_empty:
+                msg = _PAGE_ERR_TEMPLATE % (self._page, self.page.remaining)
+                raise ValueError(msg)
+            return False
 
     def _item_to_value(self, item):
         """Get the next item in the page.
@@ -252,7 +299,10 @@ class Iterator(object):
         raise NotImplementedError
 
     def next(self):
-        """Get the next value in the iterator."""
+        """Get the next item from the request."""
+        self.next_page(require_empty=False)
+        if self.page is NO_MORE_PAGES:
+            raise StopIteration
         item = six.next(self.page)
         self.num_results += 1
         return item
@@ -261,10 +311,10 @@ class Iterator(object):
     __next__ = next
 
     def has_next_page(self):
-        """Determines whether or not this iterator has more pages.
+        """Determines whether or not there are more pages with results.
 
         :rtype: boolean
-        :returns: Whether the iterator has more pages or not.
+        :returns: Whether the iterator has more pages.
         """
         if self.page_number == 0:
             return True
