@@ -121,6 +121,63 @@ class TestIterator(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._makeOne(client, path=path, extra_params=extra_params)
 
+    def test_next_page_no_more(self):
+        from google.cloud.iterator import NO_MORE_PAGES
+
+        iterator = self._makeOne(None)
+        iterator._page = NO_MORE_PAGES
+        with self.assertRaises(ValueError):
+            iterator.next_page()
+
+    def test_next_page_not_empty_success(self):
+        from google.cloud.iterator import Page
+
+        iterator = self._makeOne(None)
+        iterator._page = Page(None, {}, '')
+        iterator._page._remaining = 1
+        updated = iterator.next_page(require_empty=False)
+        self.assertFalse(updated)
+
+    def test_next_page_not_empty_fail(self):
+        from google.cloud.iterator import Page
+
+        iterator = self._makeOne(None)
+        iterator._page = Page(None, {}, '')
+        iterator._page._remaining = 1
+        with self.assertRaises(ValueError):
+            iterator.next_page(require_empty=True)
+
+    def test_next_page_empty_then_no_more(self):
+        from google.cloud.iterator import NO_MORE_PAGES
+
+        iterator = self._makeOne(None)
+        # Fake that there are no more pages.
+        iterator.page_number = 1
+        iterator.next_page_token = None
+        updated = iterator.next_page()
+        self.assertTrue(updated)
+        self.assertIs(iterator.page, NO_MORE_PAGES)
+
+    def test_next_page_empty_then_another(self):
+        iterator = self._makeOne(None)
+        # Fake the next page class.
+        fake_page = object()
+        page_args = []
+
+        def dummy_response():
+            return {}
+
+        def dummy_page_class(*args):
+            page_args.append(args)
+            return fake_page
+
+        iterator._get_next_page_response = dummy_response
+        iterator._PAGE_CLASS = dummy_page_class
+        updated = iterator.next_page()
+        self.assertTrue(updated)
+        self.assertIs(iterator.page, fake_page)
+        self.assertEqual(page_args, [(iterator, {}, iterator.ITEMS_KEY)])
+
     def test___iter__(self):
         iterator = self._makeOne(None, None)
         self.assertIs(iter(iterator), iterator)

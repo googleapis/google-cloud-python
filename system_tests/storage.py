@@ -257,12 +257,12 @@ class TestStorageListFiles(TestStorageFiles):
         truncation_size = 1
         count = len(self.FILENAMES) - truncation_size
         iterator = self.bucket.list_blobs(max_results=count)
-        iterator._update_page()
+        iterator.next_page()
         blobs = list(iterator.page)
         self.assertEqual(len(blobs), count)
         self.assertIsNotNone(iterator.next_page_token)
 
-        iterator._update_page()
+        iterator.next_page()
         last_blobs = list(iterator.page)
         self.assertEqual(len(last_blobs), truncation_size)
 
@@ -301,7 +301,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
     @RetryErrors(unittest.TestCase.failureException)
     def test_root_level_w_delimiter(self):
         iterator = self.bucket.list_blobs(delimiter='/')
-        iterator._update_page()
+        iterator.next_page()
         blobs = list(iterator.page)
         self.assertEqual([blob.name for blob in blobs], ['file01.txt'])
         self.assertIsNone(iterator.next_page_token)
@@ -310,7 +310,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
     @RetryErrors(unittest.TestCase.failureException)
     def test_first_level(self):
         iterator = self.bucket.list_blobs(delimiter='/', prefix='parent/')
-        iterator._update_page()
+        iterator.next_page()
         blobs = list(iterator.page)
         self.assertEqual([blob.name for blob in blobs], ['parent/file11.txt'])
         self.assertIsNone(iterator.next_page_token)
@@ -325,7 +325,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
 
         iterator = self.bucket.list_blobs(delimiter='/',
                                           prefix='parent/child/')
-        iterator._update_page()
+        iterator.next_page()
         blobs = list(iterator.page)
         self.assertEqual([blob.name for blob in blobs],
                          expected_names)
@@ -341,7 +341,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         # Exercise a layer deeper to illustrate this.
         iterator = self.bucket.list_blobs(delimiter='/',
                                           prefix='parent/child/grand/')
-        iterator._update_page()
+        iterator.next_page()
         blobs = list(iterator.page)
         self.assertEqual([blob.name for blob in blobs],
                          ['parent/child/grand/file31.txt'])
