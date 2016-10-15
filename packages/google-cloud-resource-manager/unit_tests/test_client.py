@@ -68,6 +68,7 @@ class Test__ProjectIterator(unittest.TestCase):
         iterator = self._makeOne(client)
         iterator._get_next_page_response = dummy_response
 
+        iterator.next_page()
         page = iterator.page
         self.assertEqual(page.num_items, 1)
         project = iterator.next()
