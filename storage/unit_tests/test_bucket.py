@@ -64,6 +64,7 @@ class Test__BlobIterator(unittest.TestCase):
         iterator = self._makeOne(bucket, client=client)
         iterator._get_next_page_response = dummy_response
 
+        iterator.next_page()
         page = iterator.page
         self.assertEqual(page.prefixes, ('foo',))
         self.assertEqual(page.num_items, 1)
@@ -97,6 +98,7 @@ class Test__BlobIterator(unittest.TestCase):
         iterator._get_next_page_response = dummy_response
 
         # Parse first response.
+        iterator.next_page()
         page1 = iterator.page
         self.assertEqual(page1.prefixes, ('foo',))
         self.assertEqual(page1.num_items, 1)
@@ -106,6 +108,7 @@ class Test__BlobIterator(unittest.TestCase):
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(iterator.prefixes, set(['foo']))
         # Parse second response.
+        iterator.next_page()
         page2 = iterator.page
         self.assertEqual(page2.prefixes, ('bar',))
         self.assertEqual(page2.num_items, 0)
