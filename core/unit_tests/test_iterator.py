@@ -121,44 +121,54 @@ class TestIterator(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._makeOne(client, path=path, extra_params=extra_params)
 
-    def test_next_page_no_more(self):
-        from google.cloud.iterator import NO_MORE_PAGES
+    def test_page_property(self):
+        iterator = self._makeOne(None)
+        page = object()
+        iterator._page = page
+        self.assertIs(iterator.page, page)
+
+    def test_page_property_unset(self):
+        from google.cloud.iterator import _UNSET
 
         iterator = self._makeOne(None)
-        iterator._page = NO_MORE_PAGES
-        with self.assertRaises(ValueError):
-            iterator.next_page()
+        self.assertIs(iterator._page, _UNSET)
+        with self.assertRaises(AttributeError):
+            getattr(iterator, 'page')
 
-    def test_next_page_not_empty_success(self):
+    def test_update_page_no_more(self):
+        iterator = self._makeOne(None)
+        iterator._page = None
+        with self.assertRaises(ValueError):
+            iterator.update_page()
+
+    def test_update_page_not_empty_success(self):
+        from google.cloud.iterator import Page
+
+        iterator = self._makeOne(None)
+        page = Page(None, {}, '')
+        iterator._page = page
+        iterator._page._remaining = 1
+        iterator.update_page(require_empty=False)
+        self.assertIs(iterator._page, page)
+
+    def test_update_page_not_empty_fail(self):
         from google.cloud.iterator import Page
 
         iterator = self._makeOne(None)
         iterator._page = Page(None, {}, '')
         iterator._page._remaining = 1
-        updated = iterator.next_page(require_empty=False)
-        self.assertFalse(updated)
-
-    def test_next_page_not_empty_fail(self):
-        from google.cloud.iterator import Page
-
-        iterator = self._makeOne(None)
-        iterator._page = Page(None, {}, '')
-        iterator._page._remaining = 1
         with self.assertRaises(ValueError):
-            iterator.next_page(require_empty=True)
+            iterator.update_page(require_empty=True)
 
-    def test_next_page_empty_then_no_more(self):
-        from google.cloud.iterator import NO_MORE_PAGES
-
+    def test_update_page_empty_then_no_more(self):
         iterator = self._makeOne(None)
         # Fake that there are no more pages.
         iterator.page_number = 1
         iterator.next_page_token = None
-        updated = iterator.next_page()
-        self.assertTrue(updated)
-        self.assertIs(iterator.page, NO_MORE_PAGES)
+        iterator.update_page()
+        self.assertIsNone(iterator.page)
 
-    def test_next_page_empty_then_another(self):
+    def test_update_page_empty_then_another(self):
         iterator = self._makeOne(None)
         # Fake the next page class.
         fake_page = object()
@@ -173,8 +183,7 @@ class TestIterator(unittest.TestCase):
 
         iterator._get_next_page_response = dummy_response
         iterator._PAGE_CLASS = dummy_page_class
-        updated = iterator.next_page()
-        self.assertTrue(updated)
+        iterator.update_page()
         self.assertIs(iterator.page, fake_page)
         self.assertEqual(page_args, [(iterator, {}, iterator.ITEMS_KEY)])
 
@@ -332,6 +341,8 @@ class TestIterator(unittest.TestCase):
             iterator._item_to_value({})
 
     def test_reset(self):
+        from google.cloud.iterator import _UNSET
+
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
@@ -344,7 +355,7 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.num_results, 0)
         self.assertIsNone(iterator.next_page_token)
-        self.assertIsNone(iterator._page)
+        self.assertIs(iterator._page, _UNSET)
 
 
 class _Connection(object):
