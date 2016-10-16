@@ -229,22 +229,22 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(kw['path'], path)
         self.assertEqual(kw['query_params'], {})
 
-    def test_has_next_page_new(self):
+    def test__has_next_page_new(self):
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
         iterator = self._makeOne(client, path=path)
-        self.assertTrue(iterator.has_next_page())
+        self.assertTrue(iterator._has_next_page())
 
-    def test_has_next_page_w_number_no_token(self):
+    def test__has_next_page_w_number_no_token(self):
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
         iterator = self._makeOne(client, path=path)
         iterator.page_number = 1
-        self.assertFalse(iterator.has_next_page())
+        self.assertFalse(iterator._has_next_page())
 
-    def test_has_next_page_w_number_w_token(self):
+    def test__has_next_page_w_number_w_token(self):
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
@@ -252,20 +252,20 @@ class TestIterator(unittest.TestCase):
         iterator = self._makeOne(client, path=path)
         iterator.page_number = 1
         iterator.next_page_token = token
-        self.assertTrue(iterator.has_next_page())
+        self.assertTrue(iterator._has_next_page())
 
-    def test_has_next_page_w_max_results_not_done(self):
+    def test__has_next_page_w_max_results_not_done(self):
         iterator = self._makeOne(None, path=None, max_results=3,
                                  page_token='definitely-not-none')
         iterator.page_number = 1
         self.assertLess(iterator.num_results, iterator.max_results)
-        self.assertTrue(iterator.has_next_page())
+        self.assertTrue(iterator._has_next_page())
 
-    def test_has_next_page_w_max_results_done(self):
+    def test__has_next_page_w_max_results_done(self):
         iterator = self._makeOne(None, None, max_results=3)
         iterator.page_number = 1
         iterator.num_results = iterator.max_results
-        self.assertFalse(iterator.has_next_page())
+        self.assertFalse(iterator._has_next_page())
 
     def test__get_query_params_no_token(self):
         connection = _Connection()

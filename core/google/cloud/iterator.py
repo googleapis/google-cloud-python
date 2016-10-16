@@ -273,7 +273,7 @@ class Iterator(object):
         # NOTE: This assumes Page.remaining can never go below 0.
         page_empty = self._page is _UNSET or self._page.remaining == 0
         if page_empty:
-            if self.has_next_page():
+            if self._has_next_page():
                 response = self._get_next_page_response()
                 self._page = self._PAGE_CLASS(self, response, self.ITEMS_KEY)
             else:
@@ -307,7 +307,7 @@ class Iterator(object):
     # Alias needed for Python 2/3 support.
     __next__ = next
 
-    def has_next_page(self):
+    def _has_next_page(self):
         """Determines whether or not there are more pages with results.
 
         :rtype: boolean
