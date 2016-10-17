@@ -76,6 +76,11 @@ class Client(JSONClient):
     _connection_class = Connection
     _logging_api = _sinks_api = _metrics_api = None
 
+    def __init__(self, project=None, credentials=None,
+                 http=None, use_gax=True):
+        super(Client, self).__init__(project, credentials, http)
+        self.use_gax = use_gax
+
     @property
     def logging_api(self):
         """Helper for logging-related API calls.
@@ -85,7 +90,7 @@ class Client(JSONClient):
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs
         """
         if self._logging_api is None:
-            if _USE_GAX:
+            if _USE_GAX and self.use_gax:
                 generated = GeneratedLoggingAPI()
                 self._logging_api = GAXLoggingAPI(generated)
             else:
