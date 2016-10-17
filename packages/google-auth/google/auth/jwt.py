@@ -310,8 +310,12 @@ class Credentials(credentials.Signing,
         self._issuer = issuer
         self._subject = subject
         self._audience = audience
-        self._additional_claims = additional_claims or {}
         self._token_lifetime = token_lifetime
+
+        if additional_claims is not None:
+            self._additional_claims = additional_claims
+        else:
+            self._additional_claims = {}
 
     @classmethod
     def from_service_account_info(cls, info, **kwargs):
