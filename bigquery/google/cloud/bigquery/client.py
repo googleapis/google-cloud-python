@@ -23,6 +23,7 @@ from google.cloud.bigquery.job import ExtractTableToStorageJob
 from google.cloud.bigquery.job import LoadTableFromStorageJob
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.query import QueryResults
+from google.cloud.iterator import Iterator
 
 
 class Project(object):
@@ -87,26 +88,12 @@ class Client(JSONClient):
                            not passed, the API will return the first page of
                            projects.
 
-        :rtype: tuple, (list, str)
-        :returns: list of :class:`~google.cloud.bigquery.client.Project`,
-                  plus a "next page token" string:  if the token is not None,
-                  indicates that more projects can be retrieved with another
-                  call (pass that value as ``page_token``).
+        :rtype: :class:`_ProjectIterator`
+        :returns: Iterable of :class:`~google.cloud.bigquery.client.Project`.
+                  See :class:`~google.cloud.iterator.Iterator` for details.
         """
-        params = {}
-
-        if max_results is not None:
-            params['maxResults'] = max_results
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/projects'
-        resp = self.connection.api_request(method='GET', path=path,
-                                           query_params=params)
-        projects = [Project.from_api_repr(resource)
-                    for resource in resp.get('projects', ())]
-        return projects, resp.get('nextPageToken')
+        return _ProjectIterator(self, page_token=page_token,
+                                max_results=max_results)
 
     def list_datasets(self, include_all=False, max_results=None,
                       page_token=None):
@@ -127,29 +114,16 @@ class Client(JSONClient):
                            not passed, the API will return the first page of
                            datasets.
 
-        :rtype: tuple, (list, str)
-        :returns: list of :class:`~google.cloud.bigquery.dataset.Dataset`,
-                  plus a "next page token" string:  if the token is not None,
-                  indicates that more datasets can be retrieved with another
-                  call (pass that value as ``page_token``).
+        :rtype: :class:`_DatasetIterator`
+        :returns: Iterable of :class:`~google.cloud.bigquery.dataset.Dataset`.
+                  See :class:`~google.cloud.iterator.Iterator` for details.
         """
-        params = {}
-
+        extra_params = {}
         if include_all:
-            params['all'] = True
-
-        if max_results is not None:
-            params['maxResults'] = max_results
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/projects/%s/datasets' % (self.project,)
-        resp = self.connection.api_request(method='GET', path=path,
-                                           query_params=params)
-        datasets = [Dataset.from_api_repr(resource, self)
-                    for resource in resp.get('datasets', ())]
-        return datasets, resp.get('nextPageToken')
+            extra_params['all'] = True
+        return _DatasetIterator(self, page_token=page_token,
+                                max_results=max_results,
+                                extra_params=extra_params)
 
     def dataset(self, dataset_name):
         """Construct a dataset bound to this client.
@@ -215,32 +189,21 @@ class Client(JSONClient):
                              * ``"pending"``
                              * ``"running"``
 
-        :rtype: tuple, (list, str)
-        :returns: list of job instances, plus a "next page token" string:
-                  if the token is not ``None``, indicates that more jobs can be
-                  retrieved with another call, passing that value as
-                  ``page_token``).
+        :rtype: :class:`_JobsIterator`
+        :returns: Iterable of job instances. See
+                  :class:`~google.cloud.iterator.Iterator` for details.
         """
-        params = {'projection': 'full'}
-
-        if max_results is not None:
-            params['maxResults'] = max_results
-
-        if page_token is not None:
-            params['pageToken'] = page_token
+        extra_params = {'projection': 'full'}
 
         if all_users is not None:
-            params['allUsers'] = all_users
+            extra_params['allUsers'] = all_users
 
         if state_filter is not None:
-            params['stateFilter'] = state_filter
+            extra_params['stateFilter'] = state_filter
 
-        path = '/projects/%s/jobs' % (self.project,)
-        resp = self.connection.api_request(method='GET', path=path,
-                                           query_params=params)
-        jobs = [self.job_from_resource(resource)
-                for resource in resp.get('jobs', ())]
-        return jobs, resp.get('nextPageToken')
+        return _JobsIterator(self, page_token=page_token,
+                             max_results=max_results,
+                             extra_params=extra_params)
 
     def load_table_from_storage(self, job_name, destination, *source_uris):
         """Construct a job for loading data into a table from CloudStorage.
@@ -334,3 +297,117 @@ class Client(JSONClient):
         :returns: a new ``QueryResults`` instance
         """
         return QueryResults(query, client=self)
+
+
+class _ProjectIterator(Iterator):
+    """An iterator listing all projects.
+
+    You shouldn't have to use this directly.
+
+    :type client: :class:`~google.cloud.bigquery.client.Client`
+    :param client: The client to use for making connections.
+
+    :type page_token: str
+    :param page_token: (Optional) A token identifying a page in a result set.
+
+    :type max_results: int
+    :param max_results: (Optional) The maximum number of results to fetch.
+
+    :type extra_params: dict
+    :param extra_params: (Optional) Extra query string parameters for
+                         the API call.
+    """
+
+    PATH = '/projects'
+    ITEMS_KEY = 'projects'
+
+    def _item_to_value(self, resource):
+        """Convert a JSON project to the native object.
+
+        :type resource: dict
+        :param resource: An item to be converted to a project.
+
+        :rtype: :class:`.Project`
+        :returns: The next project in the page.
+        """
+        return Project.from_api_repr(resource)
+
+
+class _DatasetIterator(Iterator):
+    """An iterator listing all datasets.
+
+    You shouldn't have to use this directly.
+
+    :type client: :class:`~google.cloud.bigquery.client.Client`
+    :param client: The client to use for making connections.
+
+    :type page_token: str
+    :param page_token: (Optional) A token identifying a page in a result set.
+
+    :type max_results: int
+    :param max_results: (Optional) The maximum number of results to fetch.
+
+    :type extra_params: dict
+    :param extra_params: (Optional) Extra query string parameters for
+                         the API call.
+    """
+
+    ITEMS_KEY = 'datasets'
+
+    def __init__(self, client, page_token=None, max_results=None,
+                 extra_params=None):
+        path = '/projects/%s/datasets' % (client.project,)
+        super(_DatasetIterator, self).__init__(
+            client=client, path=path, page_token=page_token,
+            max_results=max_results, extra_params=extra_params)
+
+    def _item_to_value(self, resource):
+        """Convert a JSON dataset to the native object.
+
+        :type resource: dict
+        :param resource: An item to be converted to a dataset.
+
+        :rtype: :class:`.Dataset`
+        :returns: The next dataset in the page.
+        """
+        return Dataset.from_api_repr(resource, self.client)
+
+
+class _JobsIterator(Iterator):
+    """An iterator listing all jobs.
+
+    You shouldn't have to use this directly.
+
+    :type client: :class:`~google.cloud.bigquery.client.Client`
+    :param client: The client to use for making connections.
+
+    :type page_token: str
+    :param page_token: (Optional) A token identifying a page in a result set.
+
+    :type max_results: int
+    :param max_results: (Optional) The maximum number of results to fetch.
+
+    :type extra_params: dict
+    :param extra_params: (Optional) Extra query string parameters for
+                         the API call.
+    """
+
+    ITEMS_KEY = 'jobs'
+
+    def __init__(self, client, page_token=None, max_results=None,
+                 extra_params=None):
+        path = '/projects/%s/jobs' % (client.project,)
+        super(_JobsIterator, self).__init__(
+            client=client, path=path, page_token=page_token,
+            max_results=max_results, extra_params=extra_params)
+
+    def _item_to_value(self, resource):
+        """Convert a JSON job to the native object.
+
+        :type resource: dict
+        :param resource: An item to be converted to a job.
+
+        :rtype: job instance.
+        :returns: The next job in the page.
+        """
+        return self.client.job_from_resource(resource)
