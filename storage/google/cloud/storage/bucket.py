@@ -115,7 +115,8 @@ class Bucket(_PropertyMixin):
     This is used in Bucket.delete() and Bucket.make_public().
     """
 
-    _STORAGE_CLASSES = ('STANDARD', 'NEARLINE', 'DURABLE_REDUCED_AVAILABILITY')
+    _STORAGE_CLASSES = ('STANDARD', 'NEARLINE', 'DURABLE_REDUCED_AVAILABILITY',
+                        'MULTI_REGIONAL', 'REGIONAL', 'COLDLINE')
 
     def __init__(self, client, name=None):
         super(Bucket, self).__init__(name=name)
@@ -700,11 +701,10 @@ class Bucket(_PropertyMixin):
         """Retrieve the storage class for the bucket.
 
         See: https://cloud.google.com/storage/docs/storage-classes
-        https://cloud.google.com/storage/docs/nearline-storage
-        https://cloud.google.com/storage/docs/durable-reduced-availability
 
         :rtype: string or ``NoneType``
-        :returns: If set, one of "STANDARD", "NEARLINE", or
+        :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
+                  "NEARLINE", "COLDLINE", "STANDARD", or
                   "DURABLE_REDUCED_AVAILABILITY", else ``None``.
         """
         return self._properties.get('storageClass')
@@ -714,12 +714,10 @@ class Bucket(_PropertyMixin):
         """Set the storage class for the bucket.
 
         See: https://cloud.google.com/storage/docs/storage-classes
-        https://cloud.google.com/storage/docs/nearline-storage
-        https://cloud.google.com/storage/docs/durable-reduced-availability
 
         :type value: string
-        :param value: one of "STANDARD", "NEARLINE", or
-                      "DURABLE_REDUCED_AVAILABILITY"
+        :param value: one of "MULTI_REGIONAL", "REGIONAL", "NEARLINE",
+                      "COLDLINE", "STANDARD", or "DURABLE_REDUCED_AVAILABILITY"
         """
         if value not in self._STORAGE_CLASSES:
             raise ValueError('Invalid storage class: %s' % (value,))
