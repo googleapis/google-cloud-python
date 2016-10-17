@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.client &mdash; google-cloud a8b0c19 documentation</title>
+  <title>google.cloud.storage.client &mdash; google-cloud 0aca3f6 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud a8b0c19 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 0aca3f6 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -290,7 +290,6 @@
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">JSONClient</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">Iterator</span>
-<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">Page</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.batch</span> <span class="k">import</span> <span class="n">Batch</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.bucket</span> <span class="k">import</span> <span class="n">Bucket</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.connection</span> <span class="k">import</span> <span class="n">Connection</span>
@@ -543,39 +542,14 @@
         <span class="k">return</span> <span class="n">result</span></div></div>
 
 
-<span class="k">class</span> <span class="nc">_BucketPage</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Iterator for a single page of results.</span>
-
-<span class="sd">    :type parent: :class:`_BucketIterator`</span>
-<span class="sd">    :param parent: The iterator that owns the current page.</span>
-
-<span class="sd">    :type response: dict</span>
-<span class="sd">    :param response: The JSON API response for a page of buckets.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">_item_to_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert a JSON bucket to the native object.</span>
-
-<span class="sd">        :type item: dict</span>
-<span class="sd">        :param item: An item to be converted to a bucket.</span>
-
-<span class="sd">        :rtype: :class:`.Bucket`</span>
-<span class="sd">        :returns: The next bucket in the page.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
-        <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="n">bucket</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">bucket</span>
-
-
 <span class="k">class</span> <span class="nc">_BucketIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An iterator listing all buckets.</span>
 
 <span class="sd">    You shouldn&#39;t have to use this directly, but instead should use the</span>
-<span class="sd">    helper methods on :class:`google.cloud.storage.connection.Connection`</span>
+<span class="sd">    helper methods on :class:`~google.cloud.storage.connection.Connection`</span>
 <span class="sd">    objects.</span>
 
-<span class="sd">    :type client: :class:`google.cloud.storage.client.Client`</span>
+<span class="sd">    :type client: :class:`~google.cloud.storage.client.Client`</span>
 <span class="sd">    :param client: The client to use for making connections.</span>
 
 <span class="sd">    :type page_token: str</span>
@@ -588,8 +562,21 @@
 <span class="sd">    :param extra_params: Extra query string parameters for the API call.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">PAGE_CLASS</span> <span class="o">=</span> <span class="n">_BucketPage</span>
     <span class="n">PATH</span> <span class="o">=</span> <span class="s1">&#39;/b&#39;</span>
+
+    <span class="k">def</span> <span class="nf">_item_to_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert a JSON bucket to the native object.</span>
+
+<span class="sd">        :type item: dict</span>
+<span class="sd">        :param item: An item to be converted to a bucket.</span>
+
+<span class="sd">        :rtype: :class:`.Bucket`</span>
+<span class="sd">        :returns: The next bucket in the page.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">bucket</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bucket</span>
 </pre></div>
 
            </div>
@@ -623,7 +610,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'a8b0c19',
+            VERSION:'0aca3f6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
