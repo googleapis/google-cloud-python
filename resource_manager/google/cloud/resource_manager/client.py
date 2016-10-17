@@ -17,7 +17,6 @@
 
 from google.cloud.client import Client as BaseClient
 from google.cloud.iterator import Iterator
-from google.cloud.iterator import Page
 from google.cloud.resource_manager.connection import Connection
 from google.cloud.resource_manager.project import Project
 
@@ -159,30 +158,6 @@ class Client(BaseClient):
         return _ProjectIterator(self, extra_params=extra_params)
 
 
-class _ProjectPage(Page):
-    """Iterator for a single page of results.
-
-    :type parent: :class:`_ProjectIterator`
-    :param parent: The iterator that owns the current page.
-
-    :type response: dict
-    :param response: The JSON API response for a page of projects.
-    """
-
-    ITEMS_KEY = 'projects'
-
-    def _item_to_value(self, resource):
-        """Convert a JSON project to the native object.
-
-        :type resource: dict
-        :param resource: An resource to be converted to a project.
-
-        :rtype: :class:`.Project`
-        :returns: The next project in the page.
-        """
-        return Project.from_api_repr(resource, client=self._parent.client)
-
-
 class _ProjectIterator(Iterator):
     """An iterator over a list of Project resources.
 
@@ -204,5 +179,16 @@ class _ProjectIterator(Iterator):
                          the API call.
     """
 
-    PAGE_CLASS = _ProjectPage
     PATH = '/projects'
+    ITEMS_KEY = 'projects'
+
+    def _item_to_value(self, resource):
+        """Convert a JSON project to the native object.
+
+        :type resource: dict
+        :param resource: An resource to be converted to a project.
+
+        :rtype: :class:`.Project`
+        :returns: The next project in the page.
+        """
+        return Project.from_api_repr(resource, client=self.client)
