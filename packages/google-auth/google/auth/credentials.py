@@ -102,7 +102,7 @@ class Credentials(object):
         apply the token to the authentication header.
 
         Args:
-            request (google.auth.transport.Request): the object used to make
+            request (google.auth.transport.Request): The object used to make
                 HTTP requests.
             method (str): The request's HTTP method.
             url (str): The request's URI.
