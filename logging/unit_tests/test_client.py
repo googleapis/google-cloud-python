@@ -16,7 +16,6 @@ import unittest
 
 
 class TestClient(unittest.TestCase):
-
     PROJECT = 'PROJECT'
     LOGGER_NAME = 'LOGGER_NAME'
     SINK_NAME = 'SINK_NAME'
@@ -42,10 +41,10 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging.connection import _LoggingAPI
         from google.cloud.logging import client as MUT
         from google.cloud._testing import _Monkey
-        client = self._makeOne(self.PROJECT, credentials=_Credentials())
-        conn = client.connection = object()
 
         with _Monkey(MUT, _USE_GAX=False):
+            client = self._makeOne(self.PROJECT, credentials=_Credentials())
+            conn = client.connection = object()
             api = client.logging_api
 
         self.assertIsInstance(api, _LoggingAPI)
@@ -66,7 +65,6 @@ class TestClient(unittest.TestCase):
             return wrapped
 
         class _GaxLoggingAPI(object):
-
             def __init__(self, _wrapped):
                 self._wrapped = _wrapped
 
@@ -84,6 +82,20 @@ class TestClient(unittest.TestCase):
         # API instance is cached
         again = client.logging_api
         self.assertIs(again, api)
+
+    def test_no_gax_ctor(self):
+        from google.cloud.logging.connection import _LoggingAPI
+        from google.cloud.logging import client as MUT
+        from google.cloud._testing import _Monkey
+
+        creds = _Credentials()
+        with _Monkey(MUT,
+                     _USE_GAX=True):
+            client = self._makeOne(project=self.PROJECT, credentials=creds,
+                                   use_gax=False)
+
+        api = client.logging_api
+        self.assertIsInstance(api, _LoggingAPI)
 
     def test_sinks_api_wo_gax(self):
         from google.cloud.logging.connection import _SinksAPI

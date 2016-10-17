@@ -71,15 +71,22 @@ class Client(JSONClient):
     :param http: An optional HTTP object to make requests. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
+
+    :type use_gax: bool or :class:`NoneType`
+    :param use_gax: An optional parameter that explicitly specifies whether
+                    to use the gRPC transport (gax) or HTTP
     """
 
     _connection_class = Connection
     _logging_api = _sinks_api = _metrics_api = None
 
     def __init__(self, project=None, credentials=None,
-                 http=None, use_gax=True):
+                 http=None, use_gax=None):
         super(Client, self).__init__(project, credentials, http)
-        self.use_gax = use_gax
+        if use_gax is None:
+            self._use_gax = _USE_GAX
+        else:
+            self._use_gax = use_gax
 
     @property
     def logging_api(self):
@@ -90,7 +97,7 @@ class Client(JSONClient):
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs
         """
         if self._logging_api is None:
-            if _USE_GAX and self.use_gax:
+            if self._use_gax:
                 generated = GeneratedLoggingAPI()
                 self._logging_api = GAXLoggingAPI(generated)
             else:
