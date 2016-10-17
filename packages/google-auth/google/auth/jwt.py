@@ -48,9 +48,9 @@ import json
 
 from six.moves import urllib
 
+from google.auth import _helpers
 from google.auth import credentials
 from google.auth import crypt
-from google.auth import _helpers
 
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in sections
