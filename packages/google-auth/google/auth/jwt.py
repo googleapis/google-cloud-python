@@ -42,8 +42,13 @@ You can also skip verification::
 
 import base64
 import collections
+import datetime
+import io
 import json
 
+from six.moves import urllib
+
+from google.auth import credentials
 from google.auth import crypt
 from google.auth import _helpers
 
@@ -234,3 +239,240 @@ def decode(token, certs=None, verify=True, audience=None):
                     claim_audience, audience))
 
     return payload
+
+
+class Credentials(credentials.Signing,
+                  credentials.Credentials):
+    """Credentials that use a JWT as the bearer token.
+
+    These credentials require an "audience" claim. This claim identifies the
+    intended recipient of the bearer token. You can set the audience when
+    you construct these credentials, however, these credentials can also set
+    the audience claim automatically if not specified. In this case, whenever
+    a request is made the credentials will automatically generate a one-time
+    JWT with the request URI as the audience.
+
+    The constructor arguments determine the claims for the JWT that is
+    sent with requests. Usually, you'll construct these credentials with
+    one of the helper constructors as shown in the next section.
+
+    To create JWT credentials using a Google service account private key
+    JSON file::
+
+        credentials = jwt.Credentials.from_service_account_file(
+            'service-account.json')
+
+    If you already have the service account file loaded and parsed::
+
+        service_account_info = json.load(open('service_account.json'))
+        credentials = jwt.Credentials.from_service_account_info(
+            service_account_info)
+
+    Both helper methods pass on arguments to the constructor, so you can
+    specify the JWT claims::
+
+        credentials = jwt.Credentials.from_service_account_file(
+            'service-account.json',
+            audience='https://speech.googleapis.com',
+            additional_claims={'meta': 'data'})
+
+    You can also construct the credentials directly if you have a
+    :class:`~google.auth.crypt.Signer` instance::
+
+        credentials = jwt.Credentials(
+            signer, issuer='your-issuer', subject='your-subject')
+
+    The claims are considered immutable. If you want to modify the claims,
+    you can easily create another instance using :meth:`with_claims`::
+
+        new_credentials = credentials.with_claims(
+            audience='https://vision.googleapis.com')
+    """
+
+    def __init__(self, signer, issuer=None, subject=None, audience=None,
+                 additional_claims=None,
+                 token_lifetime=_DEFAULT_TOKEN_LIFETIME_SECS):
+        """
+        Args:
+            signer (google.auth.crypt.Signer): The signer used to sign JWTs.
+            issuer (str): The `iss` claim.
+            subject (str): The `sub` claim.
+            audience (str): the `aud` claim. The intended audience for the
+                credentials. If not specified, a new JWT will be generated for
+                every request and will use the request URI as the audience.
+            additional_claims (Mapping[str, str]): Any additional claims for
+                the JWT payload.
+            token_lifetime (int): The amount of time in seconds for
+                which the token is valid. Defaults to 1 hour.
+        """
+        super(Credentials, self).__init__()
+        self._signer = signer
+        self._issuer = issuer
+        self._subject = subject
+        self._audience = audience
+        self._additional_claims = additional_claims or {}
+        self._token_lifetime = token_lifetime
+
+    @classmethod
+    def from_service_account_info(cls, info, **kwargs):
+        """Creates a Credentials instance from parsed service account info.
+
+        Args:
+            info (Mapping[str, str]): The service account info in Google
+                format.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            google.auth.jwt.Credentials: The constructed credentials.
+
+        Raises:
+            ValueError: If the info is not in the expected format.
+        """
+
+        try:
+            email = info['client_email']
+            key_id = info['private_key_id']
+            private_key = info['private_key']
+        except KeyError:
+            raise ValueError(
+                'Service account info was not in the expected format.')
+
+        signer = crypt.Signer.from_string(private_key, key_id)
+
+        kwargs.setdefault('subject', email)
+        return cls(signer, issuer=email, **kwargs)
+
+    @classmethod
+    def from_service_account_file(cls, filename, **kwargs):
+        """Creates a Credentials instance from a service account json file.
+
+        Args:
+            filename (str): The path to the service account json file.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            google.auth.jwt.Credentials: The constructed credentials.
+        """
+        with io.open(filename, 'r', encoding='utf-8') as json_file:
+            info = json.load(json_file)
+        return cls.from_service_account_info(info, **kwargs)
+
+    def with_claims(self, issuer=None, subject=None, audience=None,
+                    additional_claims=None):
+        """Returns a copy of these credentials with modified claims.
+
+        Args:
+            issuer (str): The `iss` claim. If unspecified the current issuer
+                claim will be used.
+            subject (str): The `sub` claim. If unspecified the current subject
+                claim will be used.
+            audience (str): the `aud` claim. If not specified, a new
+                JWT will be generated for every request and will use
+                the request URI as the audience.
+            additional_claims (Mapping[str, str]): Any additional claims for
+                the JWT payload. This will be merged with the current
+                additional claims.
+
+        Returns:
+            google.auth.jwt.Credentials: A new credentials instance.
+        """
+        return Credentials(
+            self._signer,
+            issuer=issuer if issuer is not None else self._issuer,
+            subject=subject if subject is not None else self._subject,
+            audience=audience if audience is not None else self._audience,
+            additional_claims=self._additional_claims.copy().update(
+                additional_claims or {}))
+
+    def _make_jwt(self, audience=None):
+        """Make a signed JWT.
+
+        Args:
+            audience (str): Overrides the instance's current audience claim.
+
+        Returns:
+            Tuple(bytes, datetime): The encoded JWT and the expiration.
+        """
+        now = _helpers.utcnow()
+        lifetime = datetime.timedelta(seconds=self._token_lifetime)
+        expiry = now + lifetime
+
+        payload = {
+            'iss': self._issuer,
+            'sub': self._subject or self._issuer,
+            'iat': _helpers.datetime_to_secs(now),
+            'exp': _helpers.datetime_to_secs(expiry),
+            'aud': audience or self._audience,
+        }
+
+        payload.update(self._additional_claims)
+
+        jwt = encode(self._signer, payload)
+
+        return jwt, expiry
+
+    def _make_one_time_jwt(self, uri):
+        """Makes a one-off JWT with the URI as the audience.
+
+        Args:
+            uri (str): The request URI.
+
+        Returns:
+            bytes: The encoded JWT.
+        """
+        parts = urllib.parse.urlsplit(uri)
+        # Strip query string and fragment
+        audience = urllib.parse.urlunsplit(
+            (parts.scheme, parts.netloc, parts.path, None, None))
+        token, _ = self._make_jwt(audience=audience)
+        return token
+
+    def refresh(self, request):
+        """Refreshes the access token.
+
+        Args:
+            request (Any): Unused.
+        """
+        # pylint: disable=unused-argument
+        # (pylint doesn't correctly recognize overridden methods.)
+        self.token, self.expiry = self._make_jwt()
+
+    def sign_bytes(self, message):
+        """Signs the given message.
+
+        Args:
+            message (bytes): The message to sign.
+
+        Returns:
+            bytes: The message signature.
+        """
+        return self._signer.sign(message)
+
+    def before_request(self, request, method, url, headers):
+        """Performs credential-specific before request logic.
+
+        If an audience is specified it will refresh the credentials if
+        necessary. If no audience is specified it will generate a one-time
+        token for the request URI. In either case, it will set the
+        authorization header in headers to the token.
+
+        Args:
+            request (Any): Unused.
+            method (str): The request's HTTP method.
+            url (str): The request's URI.
+            headers (Mapping): The request's headers.
+        """
+        # pylint: disable=unused-argument
+        # (pylint doesn't correctly recognize overridden methods.)
+
+        # If this set of credentials has a pre-set audience, just ensure that
+        # there is a valid token and apply the auth headers.
+        if self._audience:
+            if not self.valid:
+                self.refresh(request)
+            self.apply(headers)
+        # Otherwise, generate a one-time token using the URL
+        # (without the query string and fragment) as the audience.
+        else:
+            token = self._make_one_time_jwt(url)
+            self.apply(headers, token=token)
