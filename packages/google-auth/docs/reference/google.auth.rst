@@ -3,7 +3,7 @@ google.auth package
 
 .. automodule:: google.auth
     :members:
-    :undoc-members:
+    :inherited-members:
     :show-inheritance:
 
 Subpackages

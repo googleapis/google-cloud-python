@@ -3,7 +3,7 @@ google.auth.transport package
 
 .. automodule:: google.auth.transport
     :members:
-    :undoc-members:
+    :inherited-members:
     :show-inheritance:
 
 Submodules

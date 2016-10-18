@@ -3,7 +3,7 @@ google package
 
 .. automodule:: google
     :members:
-    :undoc-members:
+    :inherited-members:
     :show-inheritance:
 
 Subpackages

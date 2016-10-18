@@ -3,5 +3,5 @@ google.auth.jwt module
 
 .. automodule:: google.auth.jwt
     :members:
-    :undoc-members:
+    :inherited-members:
     :show-inheritance:
