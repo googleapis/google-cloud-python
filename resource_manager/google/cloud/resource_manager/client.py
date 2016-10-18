@@ -141,11 +141,10 @@ class Client(BaseClient):
                           single page. If not passed, defaults to a value set
                           by the API.
 
-        :rtype: :class:`_ProjectIterator`
-        :returns: A project iterator. The iterator will make multiple API
-                  requests if you continue iterating and there are more
-                  pages of results. Each item returned will be a.
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of all
                   :class:`~google.cloud.resource_manager.project.Project`.
+                  that the current user has access to.
         """
         extra_params = {}
 
@@ -155,40 +154,21 @@ class Client(BaseClient):
         if filter_params is not None:
             extra_params['filter'] = filter_params
 
-        return _ProjectIterator(self, extra_params=extra_params)
+        return Iterator(
+            client=self, path='/projects', item_to_value=_item_to_project,
+            items_key='projects', extra_params=extra_params)
 
 
-class _ProjectIterator(Iterator):
-    """An iterator over a list of Project resources.
+def _item_to_project(iterator, resource):
+    """Convert a JSON project to the native object.
 
-    You shouldn't have to use this directly, but instead should use the
-    helper methods on :class:`~google.cloud.resource_manager.client.Client`
-    objects.
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that has retrieved the item.
 
-    :type client: :class:`~google.cloud.resource_manager.client.Client`
-    :param client: The client to use for making connections.
+    :type resource: dict
+    :param resource: A resource to be converted to a project.
 
-    :type page_token: str
-    :param page_token: (Optional) A token identifying a page in a result set.
-
-    :type max_results: int
-    :param max_results: (Optional) The maximum number of results to fetch.
-
-    :type extra_params: dict
-    :param extra_params: (Optional) Extra query string parameters for
-                         the API call.
+    :rtype: :class:`.Project`
+    :returns: The next project in the page.
     """
-
-    PATH = '/projects'
-    ITEMS_KEY = 'projects'
-
-    def _item_to_value(self, resource):
-        """Convert a JSON project to the native object.
-
-        :type resource: dict
-        :param resource: An resource to be converted to a project.
-
-        :rtype: :class:`.Project`
-        :returns: The next project in the page.
-        """
-        return Project.from_api_repr(resource, client=self.client)
+    return Project.from_api_repr(resource, client=iterator.client)
