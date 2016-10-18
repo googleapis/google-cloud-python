@@ -17,38 +17,45 @@ import unittest
 
 class TestSpeechClient(unittest.TestCase):
 
-    def test_sync_recognize_local_file(self):
-        import io
+    def _make_sync_request(self, content=None, source_uri=None,
+                           max_alternatives=None):
+        from google.cloud.speech.encoding import Encoding
         from google.cloud import speech
+
         client = speech.Client()
+        sample = client.sample(content=content,
+                               source_uri=source_uri,
+                               encoding=Encoding.LINEAR16,
+                               sample_rate=16000)
+        result = client.sync_recognize(sample,
+                                       language_code='en-US',
+                                       max_alternatives=max_alternatives,
+                                       profanity_filter=True,
+                                       speech_context=['Google',
+                                                       'cloud'])
+        return result
+
+    def test_sync_recognize_local_file(self):
         file_name = 'system_tests/data/hello.wav'
 
-        with io.open(file_name, 'rb') as file_obj:
-            sample = client.sample(content=file_obj.read(),
-                                   encoding=speech.Encoding.LINEAR16,
-                                   sample_rate=16000)
-            res = client.sync_recognize(sample,
-                                        language_code='en-US',
-                                        max_alternatives=2,
-                                        profanity_filter=True,
-                                        speech_context=['Google', 'cloud'])
-            self.assertEqual(res[0].transcript,
+        with open(file_name, 'rb') as file_obj:
+            result = self._make_sync_request(content=file_obj.read(),
+                                             max_alternatives=2)
+
+            self.assertEqual(result[0]['transcript'],
                              'hello thank you for using Google Cloud platform')
-            self.assertEqual(len(res), 2)
+            self.assertGreater(result[0]['confidence'], .90)
+            self.assertEqual(result[1]['transcript'],
+                             'thank you for using Google Cloud platform')
+            self.assertEqual(len(result), 2)
 
     def test_sync_recognize_gcs_file(self):
-        from google.cloud import speech
-        client = speech.Client()
-        source_uri = 'gs://ferrous-arena-my-test-bucket/hello.wav'
+        import os
 
-        sample = client.sample(source_uri=source_uri,
-                               encoding=speech.Encoding.LINEAR16,
-                               sample_rate=16000)
-        res = client.sync_recognize(sample,
-                                    language_code='en-US',
-                                    max_alternatives=1,
-                                    profanity_filter=True,
-                                    speech_context=['Google', 'cloud'])
-        self.assertEqual(res[0].transcript,
+        source_uri = os.getenv('SPEECH_GCS_URI')
+        result = self._make_sync_request(source_uri=source_uri,
+                                         max_alternatives=1)
+        self.assertEqual(result[0]['transcript'],
                          'hello thank you for using Google Cloud platform')
-        self.assertEqual(len(res), 1)
+        self.assertGreater(result[0]['confidence'], .90)
+        self.assertEqual(len(result), 1)
