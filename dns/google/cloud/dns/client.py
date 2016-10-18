@@ -18,6 +18,7 @@
 from google.cloud.client import JSONClient
 from google.cloud.dns.connection import Connection
 from google.cloud.dns.zone import ManagedZone
+from google.cloud.iterator import Iterator
 
 
 class Client(JSONClient):
@@ -75,26 +76,12 @@ class Client(JSONClient):
                            not passed, the API will return the first page of
                            zones.
 
-        :rtype: tuple, (list, str)
-        :returns: list of :class:`google.cloud.dns.zone.ManagedZone`, plus a
-                  "next page token" string:  if the token is not None,
-                  indicates that more zones can be retrieved with another
-                  call (pass that value as ``page_token``).
+        :rtype: :class:`_ManagedZoneIterator`
+        :returns: An iterator of :class:`~google.cloud.dns.zone.ManagedZone`
+                  objects.
         """
-        params = {}
-
-        if max_results is not None:
-            params['maxResults'] = max_results
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/projects/%s/managedZones' % (self.project,)
-        resp = self.connection.api_request(method='GET', path=path,
-                                           query_params=params)
-        zones = [ManagedZone.from_api_repr(resource, self)
-                 for resource in resp['managedZones']]
-        return zones, resp.get('nextPageToken')
+        return _ManagedZoneIterator(self, page_token=page_token,
+                                    max_results=max_results)
 
     def zone(self, name, dns_name=None, description=None):
         """Construct a zone bound to this client.
@@ -115,3 +102,40 @@ class Client(JSONClient):
         """
         return ManagedZone(name, dns_name, client=self,
                            description=description)
+
+
+class _ManagedZoneIterator(Iterator):
+    """An iterator listing all managed zones.
+
+    :type client: :class:`~google.cloud.dns.client.Client`
+    :param client: The client to use for making connections.
+
+    :type page_token: str
+    :param page_token: (Optional) A token identifying a page in a result set.
+
+    :type max_results: int
+    :param max_results: (Optional) The maximum number of results to fetch.
+
+    :type extra_params: dict or ``NoneType``
+    :param extra_params: Extra query string parameters for the API call.
+    """
+
+    ITEMS_KEY = 'managedZones'
+
+    def __init__(self, client, page_token=None, max_results=None,
+                 extra_params=None):
+        path = '/projects/%s/managedZones' % (client.project,)
+        super(_ManagedZoneIterator, self).__init__(
+            client=client, path=path, page_token=page_token,
+            max_results=max_results, extra_params=extra_params)
+
+    def _item_to_value(self, resource):
+        """Convert a JSON managed zone to the native object.
+
+        :type resource: dict
+        :param resource: An item to be converted to a managed zone.
+
+        :rtype: :class:`.ManagedZone`
+        :returns: The next managed zone in the page.
+        """
+        return ManagedZone.from_api_repr(resource, self.client)

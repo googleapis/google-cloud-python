@@ -440,7 +440,10 @@ class TestManagedZone(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=conn)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
 
-        rrsets, token = zone.list_resource_record_sets()
+        iterator = zone.list_resource_record_sets()
+        iterator.update_page()
+        rrsets = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(rrsets), len(DATA['rrsets']))
         for found, expected in zip(rrsets, DATA['rrsets']):
@@ -489,8 +492,11 @@ class TestManagedZone(unittest.TestCase):
         client2 = _Client(project=self.PROJECT, connection=conn2)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client1)
 
-        rrsets, token = zone.list_resource_record_sets(
+        iterator = zone.list_resource_record_sets(
             max_results=3, page_token=TOKEN, client=client2)
+        iterator.update_page()
+        rrsets = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(rrsets), len(DATA['rrsets']))
         for found, expected in zip(rrsets, DATA['rrsets']):
@@ -551,7 +557,10 @@ class TestManagedZone(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=conn)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
 
-        changes, token = zone.list_changes()
+        iterator = zone.list_changes()
+        iterator.update_page()
+        changes = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(changes), len(DATA['changes']))
         for found, expected in zip(changes, DATA['changes']):
@@ -628,8 +637,11 @@ class TestManagedZone(unittest.TestCase):
         client2 = _Client(project=self.PROJECT, connection=conn2)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client1)
 
-        changes, token = zone.list_changes(
+        iterator = zone.list_changes(
             max_results=3, page_token=TOKEN, client=client2)
+        iterator.update_page()
+        changes = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(changes), len(DATA['changes']))
         for found, expected in zip(changes, DATA['changes']):
