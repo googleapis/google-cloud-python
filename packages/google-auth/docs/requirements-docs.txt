@@ -1,1 +1,2 @@
 sphinx-docstring-typing
+urllib3
