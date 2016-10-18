@@ -517,45 +517,53 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(req['query_params'],
                          {'maxResults': 3, 'pageToken': TOKEN})
 
-    def test_list_changes_defaults(self):
+    def _get_changes(self, token, changes_name):
         from google.cloud._helpers import _datetime_to_rfc3339
-        from google.cloud.dns.changes import Changes
-        from google.cloud.dns.resource_record_set import ResourceRecordSet
-        self._setUpConstants()
-        PATH = 'projects/%s/managedZones/%s/changes' % (
-            self.PROJECT, self.ZONE_NAME)
-        TOKEN = 'TOKEN'
-        NAME_1 = 'www.example.com'
-        TYPE_1 = 'A'
-        TTL_1 = '86400'
-        RRDATAS_1 = ['123.45.67.89']
-        NAME_2 = 'alias.example.com'
-        TYPE_2 = 'CNAME'
-        TTL_2 = '3600'
-        RRDATAS_2 = ['www.example.com']
-        CHANGES_NAME = 'changeset_id'
-        DATA = {
-            'nextPageToken': TOKEN,
+
+        name_1 = 'www.example.com'
+        type_1 = 'A'
+        ttl_1 = '86400'
+        rrdatas_1 = ['123.45.67.89']
+        name_2 = 'alias.example.com'
+        type_2 = 'CNAME'
+        ttl_2 = '3600'
+        rrdatas_2 = ['www.example.com']
+        result = {
             'changes': [{
                 'kind': 'dns#change',
-                'id': CHANGES_NAME,
+                'id': changes_name,
                 'status': 'pending',
                 'startTime': _datetime_to_rfc3339(self.WHEN),
                 'additions': [
                     {'kind': 'dns#resourceRecordSet',
-                     'name': NAME_1,
-                     'type': TYPE_1,
-                     'ttl': TTL_1,
-                     'rrdatas': RRDATAS_1}],
+                     'name': name_1,
+                     'type': type_1,
+                     'ttl': ttl_1,
+                     'rrdatas': rrdatas_1}],
                 'deletions': [
                     {'kind': 'dns#change',
-                     'name': NAME_2,
-                     'type': TYPE_2,
-                     'ttl': TTL_2,
-                     'rrdatas': RRDATAS_2}],
+                     'name': name_2,
+                     'type': type_2,
+                     'ttl': ttl_2,
+                     'rrdatas': rrdatas_2}],
             }]
         }
-        conn = _Connection(DATA)
+        if token is not None:
+            result['nextPageToken'] = token
+        return result
+
+    def test_list_changes_defaults(self):
+        from google.cloud.dns.changes import Changes
+        from google.cloud.dns.resource_record_set import ResourceRecordSet
+
+        self._setUpConstants()
+        path = 'projects/%s/managedZones/%s/changes' % (
+            self.PROJECT, self.ZONE_NAME)
+        token = 'TOKEN'
+        changes_name = 'changeset_id'
+        data = self._get_changes(token, changes_name)
+
+        conn = _Connection(data)
         client = _Client(project=self.PROJECT, connection=conn)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
 
@@ -565,10 +573,10 @@ class TestManagedZone(unittest.TestCase):
         changes = list(iterator.page)
         token = iterator.next_page_token
 
-        self.assertEqual(len(changes), len(DATA['changes']))
-        for found, expected in zip(changes, DATA['changes']):
+        self.assertEqual(len(changes), len(data['changes']))
+        for found, expected in zip(changes, data['changes']):
             self.assertIsInstance(found, Changes)
-            self.assertEqual(found.name, CHANGES_NAME)
+            self.assertEqual(found.name, changes_name)
             self.assertEqual(found.status, 'pending')
             self.assertEqual(found.started, self.WHEN)
 
@@ -590,67 +598,40 @@ class TestManagedZone(unittest.TestCase):
                 self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
                 self.assertEqual(found_rr.rrdatas, expected_rr['rrdatas'])
 
-        self.assertEqual(token, TOKEN)
+        self.assertEqual(token, token)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], '/%s' % (path,))
 
     def test_list_changes_explicit(self):
-        from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud.dns.changes import Changes
         from google.cloud.dns.resource_record_set import ResourceRecordSet
+
         self._setUpConstants()
-        PATH = 'projects/%s/managedZones/%s/changes' % (
+        path = 'projects/%s/managedZones/%s/changes' % (
             self.PROJECT, self.ZONE_NAME)
-        TOKEN = 'TOKEN'
-        NAME_1 = 'www.example.com'
-        TYPE_1 = 'A'
-        TTL_1 = '86400'
-        RRDATAS_1 = ['123.45.67.89']
-        NAME_2 = 'alias.example.com'
-        TYPE_2 = 'CNAME'
-        TTL_2 = '3600'
-        RRDATAS_2 = ['www.example.com']
-        CHANGES_NAME = 'changeset_id'
-        DATA = {
-            'changes': [{
-                'kind': 'dns#change',
-                'id': CHANGES_NAME,
-                'status': 'pending',
-                'startTime': _datetime_to_rfc3339(self.WHEN),
-                'additions': [
-                    {'kind': 'dns#resourceRecordSet',
-                     'name': NAME_1,
-                     'type': TYPE_1,
-                     'ttl': TTL_1,
-                     'rrdatas': RRDATAS_1}],
-                'deletions': [
-                    {'kind': 'dns#change',
-                     'name': NAME_2,
-                     'type': TYPE_2,
-                     'ttl': TTL_2,
-                     'rrdatas': RRDATAS_2}],
-            }]
-        }
+        changes_name = 'changeset_id'
+        data = self._get_changes(None, changes_name)
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(DATA)
+        conn2 = _Connection(data)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client1)
 
+        page_token = 'TOKEN'
         iterator = zone.list_changes(
-            max_results=3, page_token=TOKEN, client=client2)
+            max_results=3, page_token=page_token, client=client2)
         self.assertIs(zone, iterator.zone)
         iterator.update_page()
         changes = list(iterator.page)
         token = iterator.next_page_token
 
-        self.assertEqual(len(changes), len(DATA['changes']))
-        for found, expected in zip(changes, DATA['changes']):
+        self.assertEqual(len(changes), len(data['changes']))
+        for found, expected in zip(changes, data['changes']):
             self.assertIsInstance(found, Changes)
-            self.assertEqual(found.name, CHANGES_NAME)
+            self.assertEqual(found.name, changes_name)
             self.assertEqual(found.status, 'pending')
             self.assertEqual(found.started, self.WHEN)
 
@@ -678,9 +659,9 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], '/%s' % (path,))
         self.assertEqual(req['query_params'],
-                         {'maxResults': 3, 'pageToken': TOKEN})
+                         {'maxResults': 3, 'pageToken': page_token})
 
 
 class _Client(object):
