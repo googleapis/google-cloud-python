@@ -250,9 +250,9 @@ class Client(JSONClient):
                        and the language of each bucket returned:
                        'items/id,nextPageToken'
 
-        :rtype: iterable of :class:`google.cloud.storage.bucket.Bucket`
-                objects.
-        :returns: All buckets belonging to this project.
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of all :class:`~google.cloud.storage.bucket.Bucket`
+                  belonging to this project.
         """
         extra_params = {'project': self.project}
 
@@ -264,45 +264,25 @@ class Client(JSONClient):
         if fields is not None:
             extra_params['fields'] = fields
 
-        result = _BucketIterator(
-            client=self, page_token=page_token,
-            max_results=max_results, extra_params=extra_params)
+        return Iterator(
+            client=self, path='/b', item_to_value=_item_to_bucket,
+            page_token=page_token, max_results=max_results,
+            extra_params=extra_params)
 
-        return result
 
+def _item_to_bucket(iterator, item):
+    """Convert a JSON bucket to the native object.
 
-class _BucketIterator(Iterator):
-    """An iterator listing all buckets.
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that has retrieved the item.
 
-    You shouldn't have to use this directly, but instead should use the
-    helper methods on :class:`~google.cloud.storage.connection.Connection`
-    objects.
+    :type item: dict
+    :param item: An item to be converted to a bucket.
 
-    :type client: :class:`~google.cloud.storage.client.Client`
-    :param client: The client to use for making connections.
-
-    :type page_token: str
-    :param page_token: (Optional) A token identifying a page in a result set.
-
-    :type max_results: int
-    :param max_results: (Optional) The maximum number of results to fetch.
-
-    :type extra_params: dict or ``NoneType``
-    :param extra_params: Extra query string parameters for the API call.
+    :rtype: :class:`.Bucket`
+    :returns: The next bucket in the page.
     """
-
-    PATH = '/b'
-
-    def _item_to_value(self, item):
-        """Convert a JSON bucket to the native object.
-
-        :type item: dict
-        :param item: An item to be converted to a bucket.
-
-        :rtype: :class:`.Bucket`
-        :returns: The next bucket in the page.
-        """
-        name = item.get('name')
-        bucket = Bucket(self.client, name)
-        bucket._set_properties(item)
-        return bucket
+    name = item.get('name')
+    bucket = Bucket(iterator.client, name)
+    bucket._set_properties(item)
+    return bucket

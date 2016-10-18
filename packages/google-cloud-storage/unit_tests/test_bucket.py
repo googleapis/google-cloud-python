@@ -15,106 +15,6 @@
 import unittest
 
 
-class Test__BlobIterator(unittest.TestCase):
-
-    def _getTargetClass(self):
-        from google.cloud.storage.bucket import _BlobIterator
-        return _BlobIterator
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
-
-    def test_ctor(self):
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket()
-        iterator = self._makeOne(bucket, client=client)
-        self.assertIs(iterator.bucket, bucket)
-        self.assertIs(iterator.client, client)
-        self.assertEqual(iterator.path, '%s/o' % bucket.path)
-        self.assertEqual(iterator.page_number, 0)
-        self.assertIsNone(iterator.next_page_token)
-        self.assertEqual(iterator.prefixes, set())
-
-    def test_page_empty_response(self):
-        from google.cloud.iterator import Page
-
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket()
-        iterator = self._makeOne(bucket, client=client)
-        page = Page(iterator, {}, iterator.ITEMS_KEY)
-        iterator._page = page
-        blobs = list(page)
-        self.assertEqual(blobs, [])
-        self.assertEqual(iterator.prefixes, set())
-
-    def test_page_non_empty_response(self):
-        from google.cloud.storage.blob import Blob
-
-        blob_name = 'blob-name'
-        response = {'items': [{'name': blob_name}], 'prefixes': ['foo']}
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket()
-
-        def dummy_response():
-            return response
-
-        iterator = self._makeOne(bucket, client=client)
-        iterator._get_next_page_response = dummy_response
-
-        iterator.update_page()
-        page = iterator.page
-        self.assertEqual(page.prefixes, ('foo',))
-        self.assertEqual(page.num_items, 1)
-        blob = iterator.next()
-        self.assertEqual(page.remaining, 0)
-        self.assertIsInstance(blob, Blob)
-        self.assertEqual(blob.name, blob_name)
-        self.assertEqual(iterator.prefixes, set(['foo']))
-
-    def test_cumulative_prefixes(self):
-        from google.cloud.storage.blob import Blob
-
-        BLOB_NAME = 'blob-name1'
-        response1 = {
-            'items': [{'name': BLOB_NAME}],
-            'prefixes': ['foo'],
-        }
-        response2 = {
-            'items': [],
-            'prefixes': ['bar'],
-        }
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket()
-        responses = [response1, response2]
-
-        def dummy_response():
-            return responses.pop(0)
-
-        iterator = self._makeOne(bucket, client=client)
-        iterator._get_next_page_response = dummy_response
-
-        # Parse first response.
-        iterator.update_page()
-        page1 = iterator.page
-        self.assertEqual(page1.prefixes, ('foo',))
-        self.assertEqual(page1.num_items, 1)
-        blob = iterator.next()
-        self.assertEqual(page1.remaining, 0)
-        self.assertIsInstance(blob, Blob)
-        self.assertEqual(blob.name, BLOB_NAME)
-        self.assertEqual(iterator.prefixes, set(['foo']))
-        # Parse second response.
-        iterator.update_page()
-        page2 = iterator.page
-        self.assertEqual(page2.prefixes, ('bar',))
-        self.assertEqual(page2.num_items, 0)
-        self.assertEqual(iterator.prefixes, set(['foo', 'bar']))
-
-
 class Test_Bucket(unittest.TestCase):
 
     def _makeOne(self, client=None, name=None, properties=None):
@@ -972,8 +872,9 @@ class Test_Bucket(unittest.TestCase):
         self._make_public_w_future_helper(default_object_acl_loaded=False)
 
     def test_make_public_recursive(self):
+        from google.cloud._testing import _Monkey
         from google.cloud.storage.acl import _ACLEntity
-        from google.cloud.storage.bucket import _BlobIterator
+        from google.cloud.storage import bucket as MUT
 
         _saved = []
 
@@ -999,9 +900,8 @@ class Test_Bucket(unittest.TestCase):
                 _saved.append(
                     (self._bucket, self._name, self._granted, client))
 
-        class _Iterator(_BlobIterator):
-            def _item_to_value(self, item):
-                return _Blob(self.bucket, item['name'])
+        def item_to_blob(self, item):
+            return _Blob(self.bucket, item['name'])
 
         NAME = 'name'
         BLOB_NAME = 'blob-name'
@@ -1012,8 +912,9 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._makeOne(client=client, name=NAME)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
-        bucket._iterator_class = _Iterator
-        bucket.make_public(recursive=True)
+
+        with _Monkey(MUT, _item_to_blob=item_to_blob):
+            bucket.make_public(recursive=True)
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
         self.assertEqual(_saved, [(bucket, BLOB_NAME, True, None)])
@@ -1054,6 +955,87 @@ class Test_Bucket(unittest.TestCase):
         bucket._MAX_OBJECTS_FOR_ITERATION = 1
         self.assertRaises(ValueError, bucket.make_public, recursive=True)
 
+    def test_page_empty_response(self):
+        from google.cloud.iterator import Page
+
+        connection = _Connection()
+        client = _Client(connection)
+        name = 'name'
+        bucket = self._makeOne(client=client, name=name)
+        iterator = bucket.list_blobs()
+        page = Page(iterator, {}, iterator._items_key, None)
+        iterator._page = page
+        blobs = list(page)
+        self.assertEqual(blobs, [])
+        self.assertEqual(iterator.prefixes, set())
+
+    def test_page_non_empty_response(self):
+        from google.cloud.storage.blob import Blob
+
+        blob_name = 'blob-name'
+        response = {'items': [{'name': blob_name}], 'prefixes': ['foo']}
+        connection = _Connection()
+        client = _Client(connection)
+        name = 'name'
+        bucket = self._makeOne(client=client, name=name)
+
+        def dummy_response():
+            return response
+
+        iterator = bucket.list_blobs()
+        iterator._get_next_page_response = dummy_response
+
+        iterator.update_page()
+        page = iterator.page
+        self.assertEqual(page.prefixes, ('foo',))
+        self.assertEqual(page.num_items, 1)
+        blob = iterator.next()
+        self.assertEqual(page.remaining, 0)
+        self.assertIsInstance(blob, Blob)
+        self.assertEqual(blob.name, blob_name)
+        self.assertEqual(iterator.prefixes, set(['foo']))
+
+    def test_cumulative_prefixes(self):
+        from google.cloud.storage.blob import Blob
+
+        BLOB_NAME = 'blob-name1'
+        response1 = {
+            'items': [{'name': BLOB_NAME}],
+            'prefixes': ['foo'],
+        }
+        response2 = {
+            'items': [],
+            'prefixes': ['bar'],
+        }
+        connection = _Connection()
+        client = _Client(connection)
+        name = 'name'
+        bucket = self._makeOne(client=client, name=name)
+        responses = [response1, response2]
+
+        def dummy_response():
+            return responses.pop(0)
+
+        iterator = bucket.list_blobs()
+        iterator._get_next_page_response = dummy_response
+
+        # Parse first response.
+        iterator.update_page()
+        page1 = iterator.page
+        self.assertEqual(page1.prefixes, ('foo',))
+        self.assertEqual(page1.num_items, 1)
+        blob = iterator.next()
+        self.assertEqual(page1.remaining, 0)
+        self.assertIsInstance(blob, Blob)
+        self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(iterator.prefixes, set(['foo']))
+        # Parse second response.
+        iterator.update_page()
+        page2 = iterator.page
+        self.assertEqual(page2.prefixes, ('bar',))
+        self.assertEqual(page2.num_items, 0)
+        self.assertEqual(iterator.prefixes, set(['foo', 'bar']))
+
 
 class _Connection(object):
     _delete_bucket = False
@@ -1087,14 +1069,6 @@ class _Connection(object):
             raise NotFound('miss')
         else:
             return response
-
-
-class _Bucket(object):
-    path = '/b/name'
-    name = 'name'
-
-    def __init__(self, client=None):
-        self.client = client
 
 
 class _Client(object):
