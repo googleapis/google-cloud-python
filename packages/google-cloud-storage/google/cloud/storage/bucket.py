@@ -20,7 +20,6 @@ import six
 
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
-from google.cloud.iterator import Page
 from google.cloud.iterator import Iterator
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
@@ -29,76 +28,43 @@ from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
 
 
-class _BlobPage(Page):
-    """Iterator for a single page of results.
+def _blobs_page_start(iterator, page, response):
+    """Grab prefixes after a :class:`~google.cloud.iterator.Page` started.
 
-    :type parent: :class:`_BlobIterator`
-    :param parent: The iterator that owns the current page.
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type page: :class:`~google.cloud.iterator.Page`
+    :param page: The page that was just created.
 
     :type response: dict
     :param response: The JSON API response for a page of blobs.
-
-    :type items_key: str
-    :param items_key: The dictionary key used to retrieve items
-                      from the response.
     """
-
-    def __init__(self, parent, response, items_key):
-        super(_BlobPage, self).__init__(parent, response, items_key)
-        # Grab the prefixes from the response.
-        self.prefixes = tuple(response.get('prefixes', ()))
-        parent.prefixes.update(self.prefixes)
+    page.prefixes = tuple(response.get('prefixes', ()))
+    iterator.prefixes.update(page.prefixes)
 
 
-class _BlobIterator(Iterator):
-    """An iterator listing blobs in a bucket
+def _item_to_blob(iterator, item):
+    """Convert a JSON blob to the native object.
 
-    You shouldn't have to use this directly, but instead should use the
-    :class:`google.cloud.storage.blob.Bucket.list_blobs` method.
+    .. note::
 
-    :type bucket: :class:`google.cloud.storage.bucket.Bucket`
-    :param bucket: The bucket from which to list blobs.
+        This assumes that the ``bucket`` attribute has been
+        added to the iterator after being created.
 
-    :type page_token: str
-    :param page_token: (Optional) A token identifying a page in a result set.
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that has retrieved the item.
 
-    :type max_results: int
-    :param max_results: (Optional) The maximum number of results to fetch.
+    :type item: dict
+    :param item: An item to be converted to a blob.
 
-    :type extra_params: dict or None
-    :param extra_params: Extra query string parameters for the API call.
-
-    :type client: :class:`google.cloud.storage.client.Client`
-    :param client: Optional. The client to use for making connections.
-                   Defaults to the bucket's client.
+    :rtype: :class:`.Blob`
+    :returns: The next blob in the page.
     """
-
-    _PAGE_CLASS = _BlobPage
-
-    def __init__(self, bucket, page_token=None, max_results=None,
-                 extra_params=None, client=None):
-        if client is None:
-            client = bucket.client
-        self.bucket = bucket
-        self.prefixes = set()
-        super(_BlobIterator, self).__init__(
-            client=client, path=bucket.path + '/o',
-            page_token=page_token, max_results=max_results,
-            extra_params=extra_params)
-
-    def _item_to_value(self, item):
-        """Convert a JSON blob to the native object.
-
-        :type item: dict
-        :param item: An item to be converted to a blob.
-
-        :rtype: :class:`.Blob`
-        :returns: The next blob in the page.
-        """
-        name = item.get('name')
-        blob = Blob(name, bucket=self.bucket)
-        blob._set_properties(item)
-        return blob
+    name = item.get('name')
+    blob = Blob(name, bucket=iterator.bucket)
+    blob._set_properties(item)
+    return blob
 
 
 class Bucket(_PropertyMixin):
@@ -111,7 +77,6 @@ class Bucket(_PropertyMixin):
     :type name: string
     :param name: The name of the bucket.
     """
-    _iterator_class = _BlobIterator
 
     _MAX_OBJECTS_FOR_ITERATION = 256
     """Maximum number of existing objects allowed in iteration.
@@ -283,42 +248,44 @@ class Bucket(_PropertyMixin):
                    projection='noAcl', fields=None, client=None):
         """Return an iterator used to find blobs in the bucket.
 
-        :type max_results: integer or ``NoneType``
-        :param max_results: maximum number of blobs to return.
+        :type max_results: int
+        :param max_results: (Optional) Maximum number of blobs to return.
 
-        :type page_token: string
-        :param page_token: opaque marker for the next "page" of blobs. If not
-                           passed, will return the first page of blobs.
+        :type page_token: str
+        :param page_token: (Optional) Opaque marker for the next "page" of
+                           blobs. If not passed, will return the first page
+                           of blobs.
 
-        :type prefix: string or ``NoneType``
-        :param prefix: optional prefix used to filter blobs.
+        :type prefix: str
+        :param prefix: (Optional) prefix used to filter blobs.
 
-        :type delimiter: string or ``NoneType``
-        :param delimiter: optional delimter, used with ``prefix`` to
+        :type delimiter: str
+        :param delimiter: (Optional) Delimiter, used with ``prefix`` to
                           emulate hierarchy.
 
-        :type versions: boolean or ``NoneType``
-        :param versions: whether object versions should be returned as
-                         separate blobs.
+        :type versions: bool
+        :param versions: (Optional) Whether object versions should be returned
+                         as separate blobs.
 
-        :type projection: string or ``NoneType``
-        :param projection: If used, must be 'full' or 'noAcl'. Defaults to
-                           'noAcl'. Specifies the set of properties to return.
+        :type projection: str
+        :param projection: (Optional) If used, must be 'full' or 'noAcl'.
+                           Defaults to ``'noAcl'``. Specifies the set of
+                           properties to return.
 
-        :type fields: string or ``NoneType``
-        :param fields: Selector specifying which fields to include in a
-                       partial response. Must be a list of fields. For example
-                       to get a partial response with just the next page token
-                       and the language of each blob returned:
-                       'items/contentLanguage,nextPageToken'
+        :type fields: str
+        :param fields: (Optional) Selector specifying which fields to include
+                       in a partial response. Must be a list of fields. For
+                       example to get a partial response with just the next
+                       page token and the language of each blob returned:
+                       ``'items/contentLanguage,nextPageToken'``.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: :class:`_BlobIterator`.
-        :returns: An iterator of blobs.
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
+                  in this bucket matching the arguments.
         """
         extra_params = {}
 
@@ -336,10 +303,15 @@ class Bucket(_PropertyMixin):
         if fields is not None:
             extra_params['fields'] = fields
 
-        result = self._iterator_class(
-            self, page_token=page_token, max_results=max_results,
-            extra_params=extra_params, client=client)
-        return result
+        client = self._require_client(client)
+        path = self.path + '/o'
+        iterator = Iterator(
+            client=client, path=path, item_to_value=_item_to_blob,
+            page_token=page_token, max_results=max_results,
+            extra_params=extra_params, page_start=_blobs_page_start)
+        iterator.bucket = self
+        iterator.prefixes = set()
+        return iterator
 
     def delete(self, force=False, client=None):
         """Delete this bucket.
