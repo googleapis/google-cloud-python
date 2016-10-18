@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.resource_manager.client &mdash; google-cloud 0aca3f6 documentation</title>
+  <title>google.cloud.resource_manager.client &mdash; google-cloud e575f81 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0aca3f6 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud e575f81 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -412,11 +412,10 @@
 <span class="sd">                          single page. If not passed, defaults to a value set</span>
 <span class="sd">                          by the API.</span>
 
-<span class="sd">        :rtype: :class:`_ProjectIterator`</span>
-<span class="sd">        :returns: A project iterator. The iterator will make multiple API</span>
-<span class="sd">                  requests if you continue iterating and there are more</span>
-<span class="sd">                  pages of results. Each item returned will be a.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :returns: Iterator of all</span>
 <span class="sd">                  :class:`~google.cloud.resource_manager.project.Project`.</span>
+<span class="sd">                  that the current user has access to.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -426,43 +425,24 @@
         <span class="k">if</span> <span class="n">filter_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_params</span>
 
-        <span class="k">return</span> <span class="n">_ProjectIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">Iterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/projects&#39;</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_project</span><span class="p">,</span>
+            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;projects&#39;</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span></div></div>
 
 
-<span class="k">class</span> <span class="nc">_ProjectIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An iterator over a list of Project resources.</span>
+<span class="k">def</span> <span class="nf">_item_to_project</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON project to the native object.</span>
 
-<span class="sd">    You shouldn&#39;t have to use this directly, but instead should use the</span>
-<span class="sd">    helper methods on :class:`~google.cloud.resource_manager.client.Client`</span>
-<span class="sd">    objects.</span>
+<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
 
-<span class="sd">    :type client: :class:`~google.cloud.resource_manager.client.Client`</span>
-<span class="sd">    :param client: The client to use for making connections.</span>
+<span class="sd">    :type resource: dict</span>
+<span class="sd">    :param resource: A resource to be converted to a project.</span>
 
-<span class="sd">    :type page_token: str</span>
-<span class="sd">    :param page_token: (Optional) A token identifying a page in a result set.</span>
-
-<span class="sd">    :type max_results: int</span>
-<span class="sd">    :param max_results: (Optional) The maximum number of results to fetch.</span>
-
-<span class="sd">    :type extra_params: dict</span>
-<span class="sd">    :param extra_params: (Optional) Extra query string parameters for</span>
-<span class="sd">                         the API call.</span>
+<span class="sd">    :rtype: :class:`.Project`</span>
+<span class="sd">    :returns: The next project in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">PATH</span> <span class="o">=</span> <span class="s1">&#39;/projects&#39;</span>
-    <span class="n">ITEMS_KEY</span> <span class="o">=</span> <span class="s1">&#39;projects&#39;</span>
-
-    <span class="k">def</span> <span class="nf">_item_to_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert a JSON project to the native object.</span>
-
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource: An resource to be converted to a project.</span>
-
-<span class="sd">        :rtype: :class:`.Project`</span>
-<span class="sd">        :returns: The next project in the page.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Project</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Project</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -496,7 +476,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0aca3f6',
+            VERSION:'e575f81',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

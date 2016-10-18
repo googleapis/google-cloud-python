@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.bucket &mdash; google-cloud 0aca3f6 documentation</title>
+  <title>google.cloud.storage.bucket &mdash; google-cloud e575f81 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0aca3f6 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud e575f81 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -291,7 +291,6 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_to_datetime</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">Page</span>
 <span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">Iterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_scalar_property</span>
@@ -300,76 +299,43 @@
 <span class="kn">from</span> <span class="nn">google.cloud.storage.blob</span> <span class="k">import</span> <span class="n">Blob</span>
 
 
-<span class="k">class</span> <span class="nc">_BlobPage</span><span class="p">(</span><span class="n">Page</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Iterator for a single page of results.</span>
+<span class="k">def</span> <span class="nf">_blobs_page_start</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Grab prefixes after a :class:`~google.cloud.iterator.Page` started.</span>
 
-<span class="sd">    :type parent: :class:`_BlobIterator`</span>
-<span class="sd">    :param parent: The iterator that owns the current page.</span>
+<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">    :type page: :class:`~google.cloud.iterator.Page`</span>
+<span class="sd">    :param page: The page that was just created.</span>
 
 <span class="sd">    :type response: dict</span>
 <span class="sd">    :param response: The JSON API response for a page of blobs.</span>
-
-<span class="sd">    :type items_key: str</span>
-<span class="sd">    :param items_key: The dictionary key used to retrieve items</span>
-<span class="sd">                      from the response.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">items_key</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">_BlobPage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">items_key</span><span class="p">)</span>
-        <span class="c1"># Grab the prefixes from the response.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;prefixes&#39;</span><span class="p">,</span> <span class="p">()))</span>
-        <span class="n">parent</span><span class="o">.</span><span class="n">prefixes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span><span class="p">)</span>
+    <span class="n">page</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;prefixes&#39;</span><span class="p">,</span> <span class="p">()))</span>
+    <span class="n">iterator</span><span class="o">.</span><span class="n">prefixes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">prefixes</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">_BlobIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An iterator listing blobs in a bucket</span>
+<span class="k">def</span> <span class="nf">_item_to_blob</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON blob to the native object.</span>
 
-<span class="sd">    You shouldn&#39;t have to use this directly, but instead should use the</span>
-<span class="sd">    :class:`google.cloud.storage.blob.Bucket.list_blobs` method.</span>
+<span class="sd">    .. note::</span>
 
-<span class="sd">    :type bucket: :class:`google.cloud.storage.bucket.Bucket`</span>
-<span class="sd">    :param bucket: The bucket from which to list blobs.</span>
+<span class="sd">        This assumes that the ``bucket`` attribute has been</span>
+<span class="sd">        added to the iterator after being created.</span>
 
-<span class="sd">    :type page_token: str</span>
-<span class="sd">    :param page_token: (Optional) A token identifying a page in a result set.</span>
+<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
 
-<span class="sd">    :type max_results: int</span>
-<span class="sd">    :param max_results: (Optional) The maximum number of results to fetch.</span>
+<span class="sd">    :type item: dict</span>
+<span class="sd">    :param item: An item to be converted to a blob.</span>
 
-<span class="sd">    :type extra_params: dict or None</span>
-<span class="sd">    :param extra_params: Extra query string parameters for the API call.</span>
-
-<span class="sd">    :type client: :class:`google.cloud.storage.client.Client`</span>
-<span class="sd">    :param client: Optional. The client to use for making connections.</span>
-<span class="sd">                   Defaults to the bucket&#39;s client.</span>
+<span class="sd">    :rtype: :class:`.Blob`</span>
+<span class="sd">    :returns: The next blob in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">_PAGE_CLASS</span> <span class="o">=</span> <span class="n">_BlobPage</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">_BlobIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/o&#39;</span><span class="p">,</span>
-            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
-            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_item_to_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert a JSON blob to the native object.</span>
-
-<span class="sd">        :type item: dict</span>
-<span class="sd">        :param item: An item to be converted to a blob.</span>
-
-<span class="sd">        :rtype: :class:`.Blob`</span>
-<span class="sd">        :returns: The next blob in the page.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
-        <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span>
-        <span class="n">blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">blob</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+    <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span>
+    <span class="n">blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">blob</span>
 
 
 <div class="viewcode-block" id="Bucket"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket">[docs]</a><span class="k">class</span> <span class="nc">Bucket</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
@@ -382,7 +348,6 @@
 <span class="sd">    :type name: string</span>
 <span class="sd">    :param name: The name of the bucket.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">_iterator_class</span> <span class="o">=</span> <span class="n">_BlobIterator</span>
 
     <span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">=</span> <span class="mi">256</span>
     <span class="sd">&quot;&quot;&quot;Maximum number of existing objects allowed in iteration.</span>
@@ -554,42 +519,44 @@
                    <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;noAcl&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an iterator used to find blobs in the bucket.</span>
 
-<span class="sd">        :type max_results: integer or ``NoneType``</span>
-<span class="sd">        :param max_results: maximum number of blobs to return.</span>
+<span class="sd">        :type max_results: int</span>
+<span class="sd">        :param max_results: (Optional) Maximum number of blobs to return.</span>
 
-<span class="sd">        :type page_token: string</span>
-<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of blobs. If not</span>
-<span class="sd">                           passed, will return the first page of blobs.</span>
+<span class="sd">        :type page_token: str</span>
+<span class="sd">        :param page_token: (Optional) Opaque marker for the next &quot;page&quot; of</span>
+<span class="sd">                           blobs. If not passed, will return the first page</span>
+<span class="sd">                           of blobs.</span>
 
-<span class="sd">        :type prefix: string or ``NoneType``</span>
-<span class="sd">        :param prefix: optional prefix used to filter blobs.</span>
+<span class="sd">        :type prefix: str</span>
+<span class="sd">        :param prefix: (Optional) prefix used to filter blobs.</span>
 
-<span class="sd">        :type delimiter: string or ``NoneType``</span>
-<span class="sd">        :param delimiter: optional delimter, used with ``prefix`` to</span>
+<span class="sd">        :type delimiter: str</span>
+<span class="sd">        :param delimiter: (Optional) Delimiter, used with ``prefix`` to</span>
 <span class="sd">                          emulate hierarchy.</span>
 
-<span class="sd">        :type versions: boolean or ``NoneType``</span>
-<span class="sd">        :param versions: whether object versions should be returned as</span>
-<span class="sd">                         separate blobs.</span>
+<span class="sd">        :type versions: bool</span>
+<span class="sd">        :param versions: (Optional) Whether object versions should be returned</span>
+<span class="sd">                         as separate blobs.</span>
 
-<span class="sd">        :type projection: string or ``NoneType``</span>
-<span class="sd">        :param projection: If used, must be &#39;full&#39; or &#39;noAcl&#39;. Defaults to</span>
-<span class="sd">                           &#39;noAcl&#39;. Specifies the set of properties to return.</span>
+<span class="sd">        :type projection: str</span>
+<span class="sd">        :param projection: (Optional) If used, must be &#39;full&#39; or &#39;noAcl&#39;.</span>
+<span class="sd">                           Defaults to ``&#39;noAcl&#39;``. Specifies the set of</span>
+<span class="sd">                           properties to return.</span>
 
-<span class="sd">        :type fields: string or ``NoneType``</span>
-<span class="sd">        :param fields: Selector specifying which fields to include in a</span>
-<span class="sd">                       partial response. Must be a list of fields. For example</span>
-<span class="sd">                       to get a partial response with just the next page token</span>
-<span class="sd">                       and the language of each blob returned:</span>
-<span class="sd">                       &#39;items/contentLanguage,nextPageToken&#39;</span>
+<span class="sd">        :type fields: str</span>
+<span class="sd">        :param fields: (Optional) Selector specifying which fields to include</span>
+<span class="sd">                       in a partial response. Must be a list of fields. For</span>
+<span class="sd">                       example to get a partial response with just the next</span>
+<span class="sd">                       page token and the language of each blob returned:</span>
+<span class="sd">                       ``&#39;items/contentLanguage,nextPageToken&#39;``.</span>
 
-<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client`</span>
+<span class="sd">        :param client: (Optional) The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
-<span class="sd">        :rtype: :class:`_BlobIterator`.</span>
-<span class="sd">        :returns: An iterator of blobs.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`</span>
+<span class="sd">                  in this bucket matching the arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -607,10 +574,15 @@
         <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fields</span>
 
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterator_class</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
-            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span></div>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/o&#39;</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">Iterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_blob</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span> <span class="n">page_start</span><span class="o">=</span><span class="n">_blobs_page_start</span><span class="p">)</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
 
 <div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this bucket.</span>
@@ -1167,7 +1139,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0aca3f6',
+            VERSION:'e575f81',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

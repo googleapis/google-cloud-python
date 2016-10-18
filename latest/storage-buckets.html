@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Buckets &mdash; google-cloud 0aca3f6 documentation</title>
+  <title>Buckets &mdash; google-cloud e575f81 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0aca3f6 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud e575f81 documentation" href="index.html"/>
         <link rel="next" title="ACL" href="storage-acl.html"/>
         <link rel="prev" title="Blobs / Objects" href="storage-blobs.html"/> 
 
@@ -735,31 +735,33 @@ set locally.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>max_results</strong> (integer or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; maximum number of blobs to return.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of blobs. If not
-passed, will return the first page of blobs.</li>
-<li><strong>prefix</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; optional prefix used to filter blobs.</li>
-<li><strong>delimiter</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; optional delimter, used with <code class="docutils literal"><span class="pre">prefix</span></code> to
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of blobs to return.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Opaque marker for the next &#8220;page&#8221; of
+blobs. If not passed, will return the first page
+of blobs.</li>
+<li><strong>prefix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) prefix used to filter blobs.</li>
+<li><strong>delimiter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Delimiter, used with <code class="docutils literal"><span class="pre">prefix</span></code> to
 emulate hierarchy.</li>
-<li><strong>versions</strong> (boolean or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; whether object versions should be returned as
-separate blobs.</li>
-<li><strong>projection</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; If used, must be &#8216;full&#8217; or &#8216;noAcl&#8217;. Defaults to
-&#8216;noAcl&#8217;. Specifies the set of properties to return.</li>
-<li><strong>fields</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Selector specifying which fields to include in a
-partial response. Must be a list of fields. For example
-to get a partial response with just the next page token
-and the language of each blob returned:
-&#8216;items/contentLanguage,nextPageToken&#8217;</li>
-<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+<li><strong>versions</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Whether object versions should be returned
+as separate blobs.</li>
+<li><strong>projection</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) If used, must be &#8216;full&#8217; or &#8216;noAcl&#8217;.
+Defaults to <code class="docutils literal"><span class="pre">'noAcl'</span></code>. Specifies the set of
+properties to return.</li>
+<li><strong>fields</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Selector specifying which fields to include
+in a partial response. Must be a list of fields. For
+example to get a partial response with just the next
+page token and the language of each blob returned:
+<code class="docutils literal"><span class="pre">'items/contentLanguage,nextPageToken'</span></code>.</li>
+<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">_BlobIterator</span></code>.</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="google-cloud-api.html#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An iterator of blobs.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of all <a class="reference internal" href="storage-blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a>
+in this bucket matching the arguments.</p>
 </td>
 </tr>
 </tbody>
@@ -1041,7 +1043,7 @@ details.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0aca3f6',
+            VERSION:'e575f81',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
