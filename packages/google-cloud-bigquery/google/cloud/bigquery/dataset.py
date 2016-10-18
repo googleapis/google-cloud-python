@@ -18,6 +18,7 @@ import six
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.table import Table
+from google.cloud.iterator import Iterator
 
 
 class AccessGrant(object):
@@ -542,35 +543,24 @@ class Dataset(object):
         https://cloud.google.com/bigquery/docs/reference/v2/tables/list
 
         :type max_results: int
-        :param max_results: maximum number of tables to return, If not
-                            passed, defaults to a value set by the API.
+        :param max_results: (Optional) Maximum number of tables to return.
+                            If not passed, defaults to a value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of datasets. If
-                           not passed, the API will return the first page of
-                           datasets.
+        :param page_token: (Optional) Opaque marker for the next "page" of
+                           datasets. If not passed, the API will return the
+                           first page of datasets.
 
-        :rtype: tuple, (list, str)
-        :returns: list of :class:`google.cloud.bigquery.table.Table`, plus a
-                  "next page token" string:  if not ``None``, indicates that
-                  more tables can be retrieved with another call (pass that
-                  value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
+                  contained within the current dataset.
         """
-        params = {}
-
-        if max_results is not None:
-            params['maxResults'] = max_results
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
         path = '/projects/%s/datasets/%s/tables' % (self.project, self.name)
-        connection = self._client.connection
-        resp = connection.api_request(method='GET', path=path,
-                                      query_params=params)
-        tables = [Table.from_api_repr(resource, self)
-                  for resource in resp.get('tables', ())]
-        return tables, resp.get('nextPageToken')
+        result = Iterator(client=self._client, path=path,
+                          item_to_value=_item_to_table, items_key='tables',
+                          page_token=page_token, max_results=max_results)
+        result.dataset = self
+        return result
 
     def table(self, name, schema=()):
         """Construct a table bound to this dataset.
@@ -585,3 +575,18 @@ class Dataset(object):
         :returns: a new ``Table`` instance
         """
         return Table(name, dataset=self, schema=schema)
+
+
+def _item_to_table(iterator, resource):
+    """Convert a JSON table to the native object.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type resource: dict
+    :param resource: An item to be converted to a table.
+
+    :rtype: :class:`~google.cloud.bigquery.table.Table`
+    :returns: The next table in the page.
+    """
+    return Table.from_api_repr(resource, iterator.dataset)
