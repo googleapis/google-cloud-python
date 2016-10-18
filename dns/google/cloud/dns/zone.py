@@ -13,12 +13,14 @@
 # limitations under the License.
 
 """Define API ManagedZones."""
+
 import six
 
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.dns.changes import Changes
 from google.cloud.dns.resource_record_set import ResourceRecordSet
+from google.cloud.iterator import Iterator
 
 
 class ManagedZone(object):
@@ -330,29 +332,19 @@ class ManagedZone(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current zone.
 
-        :rtype: tuple, (list, str)
-        :returns: list of
-                  :class:`~.resource_record_set.ResourceRecordSet`,
-                  plus a "next page token" string:  if the token is not None,
-                  indicates that more zones can be retrieved with another
-                  call (pass that value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~.resource_record_set.ResourceRecordSet`
+                  belonging to this zone.
         """
-        params = {}
-
-        if max_results is not None:
-            params['maxResults'] = max_results
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
+        client = self._require_client(client)
         path = '/projects/%s/managedZones/%s/rrsets' % (
             self.project, self.name)
-        client = self._require_client(client)
-        conn = client.connection
-        resp = conn.api_request(method='GET', path=path, query_params=params)
-        zones = [ResourceRecordSet.from_api_repr(resource, self)
-                 for resource in resp['rrsets']]
-        return zones, resp.get('nextPageToken')
+        iterator = Iterator(
+            client=client, path=path, items_key='rrsets',
+            item_to_value=_item_to_resource_record_set,
+            page_token=page_token, max_results=max_results)
+        iterator.zone = self
+        return iterator
 
     def list_changes(self, max_results=None, page_token=None, client=None):
         """List change sets for this zone.
@@ -373,26 +365,46 @@ class ManagedZone(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current zone.
 
-        :rtype: tuple, (list, str)
-        :returns: list of
-                  :class:`~.resource_record_set.ResourceRecordSet`,
-                  plus a "next page token" string:  if the token is not None,
-                  indicates that more zones can be retrieved with another
-                  call (pass that value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~.changes.Changes`
+                  belonging to this zone.
         """
-        params = {}
-
-        if max_results is not None:
-            params['maxResults'] = max_results
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
+        client = self._require_client(client)
         path = '/projects/%s/managedZones/%s/changes' % (
             self.project, self.name)
-        client = self._require_client(client)
-        conn = client.connection
-        resp = conn.api_request(method='GET', path=path, query_params=params)
-        zones = [Changes.from_api_repr(resource, self)
-                 for resource in resp['changes']]
-        return zones, resp.get('nextPageToken')
+        iterator = Iterator(
+            client=client, path=path, items_key='changes',
+            item_to_value=_item_to_changes,
+            page_token=page_token, max_results=max_results)
+        iterator.zone = self
+        return iterator
+
+
+def _item_to_resource_record_set(iterator, resource):
+    """Convert a JSON resource record set value to the native object.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that has retrieved the item.
+
+    :type resource: dict
+    :param resource: An item to be converted to a resource record set.
+
+    :rtype: :class:`~.resource_record_set.ResourceRecordSet`
+    :returns: The next resource record set in the page.
+    """
+    return ResourceRecordSet.from_api_repr(resource, iterator.zone)
+
+
+def _item_to_changes(iterator, resource):
+    """Convert a JSON "changes" value to the native object.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that has retrieved the item.
+
+    :type resource: dict
+    :param resource: An item to be converted to a "changes".
+
+    :rtype: :class:`.Changes`
+    :returns: The next "changes" in the page.
+    """
+    return Changes.from_api_repr(resource, iterator.zone)
