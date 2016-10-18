@@ -155,8 +155,8 @@ class Client(BaseClient):
             extra_params['filter'] = filter_params
 
         return Iterator(
-            client=self, items_key='projects', path='/projects',
-            item_to_value=_item_to_project, extra_params=extra_params)
+            client=self, path='/projects', item_to_value=_item_to_project,
+            items_key='projects', extra_params=extra_params)
 
 
 def _item_to_project(iterator, resource):
