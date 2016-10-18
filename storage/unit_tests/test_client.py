@@ -369,47 +369,31 @@ class TestClient(unittest.TestCase):
         uri_parts = urlparse(URI)
         self.assertEqual(parse_qs(uri_parts.query), EXPECTED_QUERY)
 
-
-class Test__BucketIterator(unittest.TestCase):
-
-    def _getTargetClass(self):
-        from google.cloud.storage.client import _BucketIterator
-        return _BucketIterator
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
-
-    def test_ctor(self):
-        connection = object()
-        client = _Client(connection)
-        iterator = self._makeOne(client)
-        self.assertEqual(iterator.path, '/b')
-        self.assertEqual(iterator.page_number, 0)
-        self.assertIsNone(iterator.next_page_token)
-        self.assertIs(iterator.client, client)
-
     def test_page_empty_response(self):
         from google.cloud.iterator import Page
 
-        connection = object()
-        client = _Client(connection)
-        iterator = self._makeOne(client)
-        page = Page(iterator, {}, iterator.ITEMS_KEY)
+        project = 'PROJECT'
+        credentials = _Credentials()
+        client = self._makeOne(project=project, credentials=credentials)
+        iterator = client.list_buckets()
+        page = Page(iterator, {}, iterator._items_key, None)
         iterator._page = page
         self.assertEqual(list(page), [])
 
     def test_page_non_empty_response(self):
         from google.cloud.storage.bucket import Bucket
 
-        BLOB_NAME = 'blob-name'
-        response = {'items': [{'name': BLOB_NAME}]}
-        connection = object()
-        client = _Client(connection)
+        project = 'PROJECT'
+        credentials = _Credentials()
+        client = self._makeOne(project=project, credentials=credentials)
+
+        blob_name = 'blob-name'
+        response = {'items': [{'name': blob_name}]}
 
         def dummy_response():
             return response
 
-        iterator = self._makeOne(client)
+        iterator = client.list_buckets()
         iterator._get_next_page_response = dummy_response
 
         iterator.update_page()
@@ -418,7 +402,7 @@ class Test__BucketIterator(unittest.TestCase):
         bucket = iterator.next()
         self.assertEqual(page.remaining, 0)
         self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BLOB_NAME)
+        self.assertEqual(bucket.name, blob_name)
 
 
 class _Credentials(object):
@@ -446,9 +430,3 @@ class _Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._response, self._content
-
-
-class _Client(object):
-
-    def __init__(self, connection):
-        self.connection = connection
