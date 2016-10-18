@@ -86,20 +86,34 @@ _CELLDATA_FROM_JSON = {
 }
 
 
+def _row_from_json(row, schema):
+    """Convert JSON row data to row w/ appropriate types.
+
+    :type row: dict
+    :param row:
+
+    :type schema: tuple
+    :param schema: A tuple of
+                   :class:`~google.cloud.bigquery.schema.SchemaField`.
+
+    :rtype: tuple
+    :returns: A tuple of data converted to native types.
+    """
+    row_data = []
+    for field, cell in zip(schema, row['f']):
+        converter = _CELLDATA_FROM_JSON[field.field_type]
+        if field.mode == 'REPEATED':
+            row_data.append([converter(item, field)
+                             for item in cell['v']])
+        else:
+            row_data.append(converter(cell['v'], field))
+
+    return tuple(row_data)
+
+
 def _rows_from_json(rows, schema):
     """Convert JSON row data to rows w/ appropriate types."""
-    rows_data = []
-    for row in rows:
-        row_data = []
-        for field, cell in zip(schema, row['f']):
-            converter = _CELLDATA_FROM_JSON[field.field_type]
-            if field.mode == 'REPEATED':
-                row_data.append([converter(item, field)
-                                 for item in cell['v']])
-            else:
-                row_data.append(converter(cell['v'], field))
-        rows_data.append(tuple(row_data))
-    return rows_data
+    return [_row_from_json(row, schema) for row in rows]
 
 
 class _ConfigurationProperty(object):
