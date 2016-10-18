@@ -186,9 +186,10 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.append(dataset)
 
         # Retrieve tables before any are created for the dataset.
-        all_tables, token = dataset.list_tables()
+        iterator = dataset.list_tables()
+        all_tables = list(iterator)
         self.assertEqual(all_tables, [])
-        self.assertIsNone(token)
+        self.assertIsNone(iterator.next_page_token)
 
         # Insert some tables to be listed.
         tables_to_create = [
@@ -205,8 +206,9 @@ class TestBigQuery(unittest.TestCase):
             self.to_delete.insert(0, table)
 
         # Retrieve the tables.
-        all_tables, token = dataset.list_tables()
-        self.assertIsNone(token)
+        iterator = dataset.list_tables()
+        all_tables = list(iterator)
+        self.assertIsNone(iterator.next_page_token)
         created = [table for table in all_tables
                    if (table.name in tables_to_create and
                        table.dataset_name == DATASET_NAME)]

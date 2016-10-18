@@ -200,13 +200,12 @@ def dataset_list_tables(client, to_delete):
     to_delete.append(dataset)
 
     # [START dataset_list_tables]
-    tables, token = dataset.list_tables()   # API request
+    tables = list(dataset.list_tables())  # API request(s)
     assert len(tables) == 0
-    assert token is None
     table = dataset.table(TABLE_NAME)
     table.view_query = QUERY
     table.create()                          # API request
-    tables, token = dataset.list_tables()   # API request
+    tables = list(dataset.list_tables())  # API request(s)
     assert len(tables) == 1
     assert tables[0].name == TABLE_NAME
     # [END dataset_list_tables]

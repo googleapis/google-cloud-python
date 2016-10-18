@@ -639,7 +639,13 @@ class TestDataset(unittest.TestCase):
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = self._makeOne(self.DS_NAME, client=client)
-        tables, token = dataset.list_tables()
+
+        iterator = dataset.list_tables()
+        self.assertIs(iterator.dataset, dataset)
+        iterator.update_page()
+        tables = list(iterator.page)
+        token = iterator.next_page_token
+
         self.assertEqual(tables, [])
         self.assertIsNone(token)
         self.assertEqual(len(conn._requested), 1)
@@ -677,7 +683,11 @@ class TestDataset(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = self._makeOne(self.DS_NAME, client=client)
 
-        tables, token = dataset.list_tables()
+        iterator = dataset.list_tables()
+        self.assertIs(iterator.dataset, dataset)
+        iterator.update_page()
+        tables = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(tables), len(DATA['tables']))
         for found, expected in zip(tables, DATA['tables']):
@@ -719,7 +729,11 @@ class TestDataset(unittest.TestCase):
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = self._makeOne(self.DS_NAME, client=client)
 
-        tables, token = dataset.list_tables(max_results=3, page_token=TOKEN)
+        iterator = dataset.list_tables(max_results=3, page_token=TOKEN)
+        self.assertIs(iterator.dataset, dataset)
+        iterator.update_page()
+        tables = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(tables), len(DATA['tables']))
         for found, expected in zip(tables, DATA['tables']):
