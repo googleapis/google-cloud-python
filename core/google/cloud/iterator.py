@@ -120,23 +120,6 @@ DEFAULT_ITEMS_KEY = 'items'
 
 
 # pylint: disable=unused-argument
-def _not_implemented_item_to_value(iterator, item):
-    """Helper to convert an item into the native object.
-
-    This is a virtual stand-in as the default value, effectively
-    causing callers to pass in their own callable.
-
-    :type iterator: :class:`Iterator`
-    :param iterator: An iterator that holds some request info.
-
-    :type item: dict
-    :param item: A JSON object to be converted into a native object.
-
-    :raises NotImplementedError: Always.
-    """
-    raise NotImplementedError
-
-
 def _do_nothing_page_start(iterator, page, response):
     """Helper to provide custom behavior after a :class:`Page` is started.
 
@@ -227,15 +210,15 @@ class Iterator(object):
     :param path: The path to query for the list of items. Defaults
                  to :attr:`PATH` on the current iterator class.
 
-    :type items_key: str
-    :param items_key: The key used to grab retrieved items from an API
-                      response. Defaults to :data:`DEFAULT_ITEMS_KEY`.
-
     :type item_to_value: callable
-    :param item_to_value: (Optional) Callable to convert an item from JSON
+    :param item_to_value: Callable to convert an item from JSON
                           into the native object. Assumed signature
                           takes an :class:`Iterator` and a dictionary
                           holding a single item.
+
+    :type items_key: str
+    :param items_key: (Optional) The key used to grab retrieved items from an
+                      API response. Defaults to :data:`DEFAULT_ITEMS_KEY`.
 
     :type page_token: str
     :param page_token: (Optional) A token identifying a page in a result set.
@@ -259,8 +242,8 @@ class Iterator(object):
     _MAX_RESULTS = 'maxResults'
     _RESERVED_PARAMS = frozenset([_PAGE_TOKEN, _MAX_RESULTS])
 
-    def __init__(self, client, path, items_key=DEFAULT_ITEMS_KEY,
-                 item_to_value=_not_implemented_item_to_value,
+    def __init__(self, client, path, item_to_value,
+                 items_key=DEFAULT_ITEMS_KEY,
                  page_token=None, max_results=None, extra_params=None,
                  page_start=_do_nothing_page_start):
         self.client = client
