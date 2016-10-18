@@ -132,7 +132,10 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(self.PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
-        zones, token = client.list_zones()
+        iterator = client.list_zones()
+        iterator.update_page()
+        zones = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(zones), len(DATA['managedZones']))
         for found, expected in zip(zones, DATA['managedZones']):
@@ -173,7 +176,10 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(self.PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
-        zones, token = client.list_zones(max_results=3, page_token=TOKEN)
+        iterator = client.list_zones(max_results=3, page_token=TOKEN)
+        iterator.update_page()
+        zones = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(zones), len(DATA['managedZones']))
         for found, expected in zip(zones, DATA['managedZones']):
