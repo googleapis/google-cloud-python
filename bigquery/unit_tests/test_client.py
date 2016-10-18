@@ -59,7 +59,10 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(PROJECT_1, creds)
         conn = client.connection = _Connection(DATA)
 
-        projects, token = client.list_projects()
+        iterator = client.list_projects()
+        iterator.update_page()
+        projects = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(projects), len(DATA['projects']))
         for found, expected in zip(projects, DATA['projects']):
@@ -83,7 +86,10 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
-        projects, token = client.list_projects(max_results=3, page_token=TOKEN)
+        iterator = client.list_projects(max_results=3, page_token=TOKEN)
+        iterator.update_page()
+        projects = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(projects), 0)
         self.assertIsNone(token)
@@ -121,7 +127,10 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
-        datasets, token = client.list_datasets()
+        iterator = client.list_datasets()
+        iterator.update_page()
+        datasets = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(datasets), len(DATA['datasets']))
         for found, expected in zip(datasets, DATA['datasets']):
@@ -144,8 +153,11 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
-        datasets, token = client.list_datasets(
+        iterator = client.list_datasets(
             include_all=True, max_results=3, page_token=TOKEN)
+        iterator.update_page()
+        datasets = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(datasets), 0)
         self.assertIsNone(token)
@@ -288,7 +300,10 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
-        jobs, token = client.list_jobs()
+        iterator = client.list_jobs()
+        iterator.update_page()
+        jobs = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(jobs), len(DATA['jobs']))
         for found, expected in zip(jobs, DATA['jobs']):
@@ -340,7 +355,10 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
-        jobs, token = client.list_jobs()
+        iterator = client.list_jobs()
+        iterator.update_page()
+        jobs = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(jobs), len(DATA['jobs']))
         for found, expected in zip(jobs, DATA['jobs']):
@@ -364,8 +382,11 @@ class TestClient(unittest.TestCase):
         client = self._makeOne(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
-        jobs, token = client.list_jobs(max_results=1000, page_token=TOKEN,
-                                       all_users=True, state_filter='done')
+        iterator = client.list_jobs(max_results=1000, page_token=TOKEN,
+                                    all_users=True, state_filter='done')
+        iterator.update_page()
+        jobs = list(iterator.page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(jobs), 0)
         self.assertIsNone(token)
