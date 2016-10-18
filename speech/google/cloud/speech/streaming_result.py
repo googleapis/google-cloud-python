@@ -70,4 +70,4 @@ class StreamingSpeechResult(object):
         :rtype: bool
         :returns: True if the result has completed it's processing.
         """
-        return bool(self._is_final)
+        return self._is_final

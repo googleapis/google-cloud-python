@@ -251,19 +251,30 @@ class TestClient(unittest.TestCase):
         sample = client.sample(stream=stream,
                                encoding=Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
-        results = client.stream_recognize(sample)
+        responses = client.stream_recognize(sample)
 
-        self.assertIsInstance(next(results), StreamingSpeechResponse)
+        self.assertIsInstance(next(responses), StreamingSpeechResponse)
         requests = []
         for req in client.speech_api._requests:
             requests.append(req)
         self.assertEqual(len(requests), 2)
 
 
+class _MockSpeechGAPICAlternative(object):
+    transcript = 'hello there!'
+    confidence = 0.9704365
+
+
+class _MockSpeechGAPICResult(object):
+    alternatives = [_MockSpeechGAPICAlternative()]
+    is_final = False
+    stability = 0.0
+
+
 class _MockGAPICSpeechResponse(object):
     error = None
     endpointer_type = None
-    results = []
+    results = [_MockSpeechGAPICResult()]
     result_index = 0
 
 

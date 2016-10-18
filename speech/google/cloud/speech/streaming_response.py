@@ -15,6 +15,7 @@
 """Representation of a GAPIC Speech API response."""
 
 from google.cloud.speech.streaming_result import StreamingSpeechResult
+from google.cloud.gapic.speech.v1beta1.enums import StreamingRecognizeResponse
 
 
 class StreamingSpeechResponse(object):
@@ -38,7 +39,7 @@ class StreamingSpeechResponse(object):
                  result_index=None):
         results = results or []
         self._error = error
-        self._endpointer_type = EndpointerType.reverse_map.get(
+        self._endpointer_type = EndpointerType.REVERSE_MAP.get(
             endpointer_type, None)
         self._result_index = result_index
         self._results = [StreamingSpeechResult.from_pb(result)
@@ -91,7 +92,7 @@ class StreamingSpeechResponse(object):
         :returns: True if the result has completed it's processing.
         """
         if self.results:
-            return bool(self.results[0].is_final)
+            return self.results[0].is_final
         else:
             return False
 
@@ -123,26 +124,27 @@ class StreamingSpeechResponse(object):
         if self.results and self.results[0].alternatives:
             return self.results[0].alternatives[0].transcript
         else:
-            return ''
+            return None
 
 
-class EndpointerType(object):
+class EndpointerType(StreamingRecognizeResponse.EndpointerType):
     """Endpointer type for tracking state of Speech API detection.
+
+    ENDPOINTER_EVENT_UNSPECIFIED (int): No endpointer event specified.
+    START_OF_SPEECH (int): Speech has been detected in the audio stream.
+    END_OF_SPEECH (int): Speech has ceased to be detected in the audio
+    stream.
+    END_OF_AUDIO (int): The end of the audio stream has been reached. and
+    it is being processed.
+    END_OF_UTTERANCE (int): This event is only sent when
+    ``single_utterance`` is ``true``. It indicates that the server has
+    detected the end of the user's speech utterance and expects no
+    additional speech. Therefore, the server will not process additional
+    audio. The client should stop sending additional audio data.
 
     See:
     https://cloud.google.com/speech/reference/rpc/\
     google.cloud.speech.v1beta1#endpointertype
     """
-    ENDPOINTER_EVENT_UNSPECIFIED = 0
-    START_OF_SPEECH = 1
-    END_OF_SPEECH = 2
-    END_OF_AUDIO = 3
-    END_OF_UTTERANCE = 4
-
-    reverse_map = {
-        0: 'ENDPOINTER_EVENT_UNSPECIFIED',
-        1: 'START_OF_SPEECH',
-        2: 'END_OF_SPEECH',
-        3: 'END_OF_AUDIO',
-        4: 'END_OF_UTTERANCE'
-    }
+    REVERSE_MAP = {v: k for k, v
+                   in vars(StreamingRecognizeResponse.EndpointerType).items()}

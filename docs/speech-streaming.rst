@@ -13,11 +13,3 @@ Streaming Speech Result
   :members:
   :undoc-members:
   :show-inheritance:
-
-Streaming Endpointer Type
-=========================
-
-.. automodule:: google.cloud.speech.endpointer_type
-  :members:
-  :undoc-members:
-  :show-inheritance:

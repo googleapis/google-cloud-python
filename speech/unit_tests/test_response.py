@@ -30,7 +30,7 @@ class TestStreamingSpeechResponse(unittest.TestCase):
         self.assertEqual(response.confidence, 0.0)
         self.assertEqual(response.endpointer_type, None)
         self.assertEqual(response.results, [])
-        self.assertEqual(response.transcript, '')
+        self.assertEqual(response.transcript, None)
         self.assertFalse(response.is_final)
 
     def test_from_pb(self):

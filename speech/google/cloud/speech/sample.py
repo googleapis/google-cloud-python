@@ -77,7 +77,7 @@ class Sample(object):
         :rtype: int
         :returns: Optimized chunk size.
         """
-        return int(self.sample_rate / 10)
+        return int(self.sample_rate / 10.0)
 
     @property
     def source_uri(self):

@@ -234,6 +234,9 @@ class Client(client_module.Client):
 
             See: https://cloud.google.com/speech/limits#content
 
+        Yields :class:`~streaming_response.StreamingSpeechResponse` containing
+        results and metadata from the streaming request.
+
         :type sample: :class:`~google.cloud.speech.sample.Sample`
         :param sample: Instance of ``Sample`` containing audio information.
 
@@ -264,8 +267,8 @@ class Client(client_module.Client):
                                and phrases. This can also be used to add new
                                words to the vocabulary of the recognizer.
 
-        :type single_utterance: boolean
-        :param single_utterance: [Optional] If false or omitted, the recognizer
+        :type single_utterance: bool
+        :param single_utterance: (Optional) If false or omitted, the recognizer
                                  will perform continuous recognition
                                  (continuing to process audio even if the user
                                  pauses speaking) until the client closes the
@@ -282,13 +285,15 @@ class Client(client_module.Client):
                                  SpeechRecognitionResult with the is_final flag
                                  set to true.
 
-        :type interim_results: boolean
-        :param interim_results: [Optional] If true, interim results (tentative
+        :type interim_results: bool
+        :param interim_results: (Optional) If true, interim results (tentative
                                 hypotheses) may be returned as they become
                                 available (these interim results are indicated
                                 with the is_final=false flag). If false or
                                 omitted, only is_final=true result(s) are
                                 returned.
+
+        :raises: :class:`EnvironmentError` if gRPC is not enabled.
         """
         if not _USE_GAX:
             raise EnvironmentError('gRPC is required to use this API.')
@@ -301,7 +306,7 @@ class Client(client_module.Client):
                                         interim_results=interim_results)
 
         for response in self.speech_api.streaming_recognize(requests):
-            if hasattr(response, 'results') or interim_results:
+            if getattr(response, 'results', None) or interim_results:
                 yield StreamingSpeechResponse.from_pb(response)
 
     @property
@@ -414,8 +419,8 @@ def _make_request_stream(sample, language_code=None, max_alternatives=None,
                            and phrases. This can also be used to add new
                            words to the vocabulary of the recognizer.
 
-    :type single_utterance: boolean
-    :param single_utterance: [Optional] If false or omitted, the recognizer
+    :type single_utterance: bool
+    :param single_utterance: (Optional) If false or omitted, the recognizer
                              will perform continuous recognition
                              (continuing to process audio even if the user
                              pauses speaking) until the client closes the
@@ -432,8 +437,8 @@ def _make_request_stream(sample, language_code=None, max_alternatives=None,
                              SpeechRecognitionResult with the is_final flag
                              set to true.
 
-    :type interim_results: boolean
-    :param interim_results: [Optional] If true, interim results (tentative
+    :type interim_results: bool
+    :param interim_results: (Optional) If true, interim results (tentative
                             hypotheses) may be returned as they become
                             available (these interim results are indicated
                             with the is_final=false flag). If false or
@@ -452,7 +457,6 @@ def _make_request_stream(sample, language_code=None, max_alternatives=None,
         data = sample.stream.read(sample.chunk_size)
         if not data:
             break
-        # Optimize the request data size to around 100ms.
         yield StreamingRecognizeRequest(audio_content=data)
 
 
@@ -466,12 +470,12 @@ def _make_streaming_config(sample, language_code,
     :param sample: Instance of ``Sample`` containing audio information.
 
     :type language_code: str
-    :param language_code: (Optional) The language of the supplied audio as
+    :param language_code: The language of the supplied audio as
                           BCP-47 language tag. Example: ``'en-GB'``.
                           If omitted, defaults to ``'en-US'``.
 
     :type max_alternatives: int
-    :param max_alternatives: (Optional) Maximum number of recognition
+    :param max_alternatives: Maximum number of recognition
                              hypotheses to be returned. The server may
                              return fewer than maxAlternatives.
                              Valid values are 0-30. A value of 0 or 1
@@ -492,8 +496,8 @@ def _make_streaming_config(sample, language_code,
                            and phrases. This can also be used to add new
                            words to the vocabulary of the recognizer.
 
-    :type single_utterance: boolean
-    :param single_utterance: [Optional] If false or omitted, the recognizer
+    :type single_utterance: bool
+    :param single_utterance: If false or omitted, the recognizer
                              will perform continuous recognition
                              (continuing to process audio even if the user
                              pauses speaking) until the client closes the
@@ -510,8 +514,8 @@ def _make_streaming_config(sample, language_code,
                              SpeechRecognitionResult with the is_final flag
                              set to true.
 
-    :type interim_results: boolean
-    :param interim_results: [Optional] If true, interim results (tentative
+    :type interim_results: bool
+    :param interim_results: If true, interim results (tentative
                             hypotheses) may be returned as they become
                             available (these interim results are indicated
                             with the is_final=false flag). If false or

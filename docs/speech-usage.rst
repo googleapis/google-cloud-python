@@ -155,41 +155,43 @@ data to possible text alternatives on the fly.
 
 .. code-block:: python
 
-    >>> import io
     >>> from google.cloud import speech
     >>> client = speech.Client()
-    >>> with io.open('./hello.wav', 'rb') as stream:
+    >>> with open('./hello.wav', 'rb') as stream:
     ...     sample = client.sample(stream=stream, encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
     ...     for response in client.stream_recognize(sample):
     ...         print(response.transcript)
-    hello
     ...         print(response.is_final)
+    hello
     True
 
 
-By setting ``interim_results`` to true, interim results (tentative hypotheses)
+By setting ``interim_results`` to :data:`True`, interim results (tentative hypotheses)
 may be returned as they become available (these interim results are indicated
-with the is_final=false flag). If false or omitted, only is_final=true
+with the ``is_final=false`` flag). If :data:`False` or omitted, only ``is_final=true``
 result(s) are returned.
 
 .. code-block:: python
 
-    >>> import io
     >>> from google.cloud import speech
     >>> client = speech.Client()
-    >>> with io.open('./hello.wav', 'rb') as stream:
-    >>>     sample = client.sample(stream=stream, encoding=speech.Encoding.LINEAR16,
+    >>> with open('./hello.wav', 'rb') as stream:
+    ...     sample = client.sample(stream=stream, encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
     ...     for response in client.stream_recognize(sample,
     ...                                             interim_results=True):
+    ...         print('====Response====')
     ...         print(response.transcript)
-    hell
     ...         print(response.is_final)
+    ====Response====
+    he
     False
-    ...         print(response.transcript)
+    ====Response====
+    hell
+    False
+    ====Repsonse====
     hello
-    ...         print(response.is_final)
     True
 
 
@@ -204,13 +206,15 @@ See: `Single Utterance`_
 
 .. code-block:: python
 
-    >>> with io.open('./hello_pause_goodbye.wav', 'rb') as stream:
-    >>>     sample = client.sample(stream=stream, encoding=speech.Encoding.LINEAR16,
+    >>> with open('./hello_pause_goodbye.wav', 'rb') as stream:
+    ...     sample = client.sample(stream=stream, encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    ...     stream_container = client.stream_recognize(sample,
-    ...                                                single_utterance=True)
-    >>> print(stream_container.get_full_text())
+    ...     for response in client.stream_recognize(sample,
+    ...                                             single_utterance=True):
+    ...         print(response.transcript)
+    ...         print(response.is_final)
     hello
+    True
 
 .. _Single Utterance: https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#streamingrecognitionconfig
 .. _sync_recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize
