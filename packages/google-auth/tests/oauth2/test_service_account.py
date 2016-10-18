@@ -85,19 +85,6 @@ class TestCredentials(object):
         assert credentials._subject == subject
         assert credentials._additional_claims == additional_claims
 
-    def test_from_service_account_bad_key(self):
-        info = SERVICE_ACCOUNT_INFO.copy()
-        info['private_key'] = 'garbage'
-
-        with pytest.raises(ValueError) as excinfo:
-            service_account.Credentials.from_service_account_info(info)
-
-        assert excinfo.match(r'No key could be detected')
-
-    def test_from_service_account_bad_format(self):
-        with pytest.raises(ValueError):
-            service_account.Credentials.from_service_account_info({})
-
     def test_from_service_account_file(self):
         info = SERVICE_ACCOUNT_INFO.copy()
 

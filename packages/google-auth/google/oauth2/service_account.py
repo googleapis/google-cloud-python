@@ -71,12 +71,10 @@ specific subject using :meth:`~Credentials.with_subject`.
 """
 
 import datetime
-import io
-import json
 
 from google.auth import _helpers
+from google.auth import _service_account_info
 from google.auth import credentials
-from google.auth import crypt
 from google.auth import jwt
 from google.oauth2 import _client
 
@@ -150,6 +148,27 @@ class Credentials(credentials.Signing,
             self._additional_claims = {}
 
     @classmethod
+    def _from_signer_and_info(cls, signer, info, **kwargs):
+        """Creates a Credentials instance from a signer and service account
+        info.
+
+        Args:
+            signer (google.auth.crypt.Signer): The signer used to sign JWTs.
+            info (Mapping[str, str]): The service account info.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            google.auth.jwt.Credentials: The constructed credentials.
+
+        Raises:
+            ValueError: If the info is not in the expected format.
+        """
+        return cls(
+            signer,
+            service_account_email=info['client_email'],
+            token_uri=info['token_uri'], **kwargs)
+
+    @classmethod
     def from_service_account_info(cls, info, **kwargs):
         """Creates a Credentials instance from parsed service account info.
 
@@ -165,19 +184,9 @@ class Credentials(credentials.Signing,
         Raises:
             ValueError: If the info is not in the expected format.
         """
-        try:
-            email = info['client_email']
-            key_id = info['private_key_id']
-            private_key = info['private_key']
-            token_uri = info['token_uri']
-        except KeyError:
-            raise ValueError(
-                'Service account info was not in the expected format.')
-
-        signer = crypt.Signer.from_string(private_key, key_id)
-
-        return cls(
-            signer, service_account_email=email, token_uri=token_uri, **kwargs)
+        signer = _service_account_info.from_dict(
+            info, require=['client_email', 'token_uri'])
+        return cls._from_signer_and_info(signer, info, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename, **kwargs):
@@ -191,9 +200,9 @@ class Credentials(credentials.Signing,
             google.auth.service_account.Credentials: The constructed
                 credentials.
         """
-        with io.open(filename, 'r', encoding='utf-8') as json_file:
-            info = json.load(json_file)
-        return cls.from_service_account_info(info, **kwargs)
+        info, signer = _service_account_info.from_filename(
+            filename, require=['client_email', 'token_uri'])
+        return cls._from_signer_and_info(signer, info, **kwargs)
 
     @property
     def requires_scopes(self):

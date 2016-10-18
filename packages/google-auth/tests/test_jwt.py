@@ -231,19 +231,6 @@ class TestCredentials:
         assert credentials._audience == self.AUDIENCE
         assert credentials._additional_claims == self.ADDITIONAL_CLAIMS
 
-    def test_from_service_account_bad_private_key(self):
-        info = SERVICE_ACCOUNT_INFO.copy()
-        info['private_key'] = 'garbage'
-
-        with pytest.raises(ValueError) as excinfo:
-            jwt.Credentials.from_service_account_info(info)
-
-        assert excinfo.match(r'No key could be detected')
-
-    def test_from_service_account_bad_format(self):
-        with pytest.raises(ValueError):
-            jwt.Credentials.from_service_account_info({})
-
     def test_from_service_account_file(self):
         info = SERVICE_ACCOUNT_INFO.copy()
 
