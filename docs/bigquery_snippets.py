@@ -75,13 +75,8 @@ def client_list_datasets(client, _):
         pass
 
     # [START client_list_datasets]
-    datasets, token = client.list_datasets()   # API request
-    while True:
-        for dataset in datasets:
-            do_something_with(dataset)
-        if token is None:
-            break
-        datasets, token = client.list_datasets(page_token=token)  # API request
+    for dataset in client.list_datasets():  # API request(s)
+        do_something_with(dataset)
     # [END client_list_datasets]
 
 

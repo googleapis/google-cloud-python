@@ -151,8 +151,9 @@ class TestBigQuery(unittest.TestCase):
             self.to_delete.append(dataset)
 
         # Retrieve the datasets.
-        all_datasets, token = Config.CLIENT.list_datasets()
-        self.assertIsNone(token)
+        iterator = Config.CLIENT.list_datasets()
+        all_datasets = list(iterator)
+        self.assertIsNone(iterator.next_page_token)
         created = [dataset for dataset in all_datasets
                    if dataset.name in datasets_to_create and
                    dataset.project == Config.CLIENT.project]
