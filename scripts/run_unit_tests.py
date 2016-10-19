@@ -37,6 +37,7 @@ from script_utils import travis_branch
 
 
 IGNORED_DIRECTORIES = (
+    '.github',
     'appveyor',
     'docs',
     'scripts',
