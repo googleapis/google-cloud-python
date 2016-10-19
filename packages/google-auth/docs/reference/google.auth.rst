@@ -21,6 +21,7 @@ Submodules
 
    google.auth.credentials
    google.auth.crypt
+   google.auth.environment_vars
    google.auth.exceptions
    google.auth.jwt
 
