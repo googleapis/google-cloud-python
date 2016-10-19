@@ -842,7 +842,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.storage_class, 'NEARLINE')
         self.assertTrue('storageClass' in bucket._changes)
 
-    def test_storage_class_setter_COLDINE(self):
+    def test_storage_class_setter_COLDLINE(self):
         NAME = 'name'
         bucket = self._makeOne(name=NAME)
         bucket.storage_class = 'COLDLINE'
