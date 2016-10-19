@@ -18,6 +18,7 @@
 from google.cloud.client import JSONClient
 from google.cloud.dns.connection import Connection
 from google.cloud.dns.zone import ManagedZone
+from google.cloud.iterator import Iterator
 
 
 class Client(JSONClient):
@@ -70,31 +71,19 @@ class Client(JSONClient):
         :param max_results: maximum number of zones to return, If not
                             passed, defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of zones. If
                            not passed, the API will return the first page of
                            zones.
 
-        :rtype: tuple, (list, str)
-        :returns: list of :class:`google.cloud.dns.zone.ManagedZone`, plus a
-                  "next page token" string:  if the token is not None,
-                  indicates that more zones can be retrieved with another
-                  call (pass that value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.dns.zone.ManagedZone`
+                  belonging to this project.
         """
-        params = {}
-
-        if max_results is not None:
-            params['maxResults'] = max_results
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
         path = '/projects/%s/managedZones' % (self.project,)
-        resp = self.connection.api_request(method='GET', path=path,
-                                           query_params=params)
-        zones = [ManagedZone.from_api_repr(resource, self)
-                 for resource in resp['managedZones']]
-        return zones, resp.get('nextPageToken')
+        return Iterator(client=self, path=path, items_key='managedZones',
+                        item_to_value=_item_to_zone, page_token=page_token,
+                        max_results=max_results)
 
     def zone(self, name, dns_name=None, description=None):
         """Construct a zone bound to this client.
@@ -115,3 +104,18 @@ class Client(JSONClient):
         """
         return ManagedZone(name, dns_name, client=self,
                            description=description)
+
+
+def _item_to_zone(iterator, resource):
+    """Convert a JSON managed zone to the native object.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that has retrieved the item.
+
+    :type resource: dict
+    :param resource: An item to be converted to a managed zone.
+
+    :rtype: :class:`.ManagedZone`
+    :returns: The next managed zone in the page.
+    """
+    return ManagedZone.from_api_repr(resource, iterator.client)
