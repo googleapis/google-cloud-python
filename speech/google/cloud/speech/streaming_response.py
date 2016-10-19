@@ -71,7 +71,8 @@ class StreamingSpeechResponse(object):
         :returns: Confidence score of recognized speech [0.0-1.0].
         """
         if self.results and self.results[0].alternatives:
-            return self.results[0].alternatives[0].confidence
+            top_alternative = self.results[0].alternatives[0]
+            return top_alternative.confidence
         else:
             return 0.0
 
@@ -122,7 +123,8 @@ class StreamingSpeechResponse(object):
         :returns: Transcript text from response.
         """
         if self.results and self.results[0].alternatives:
-            return self.results[0].alternatives[0].transcript
+            top_alternative = self.results[0].alternatives[0]
+            return top_alternative.transcript
         else:
             return None
 

@@ -405,19 +405,19 @@ def _make_request_stream(sample, language_code=None, max_alternatives=None,
                              will return a maximum of 1. Defaults to 1
 
     :type profanity_filter: bool
-    :param profanity_filter: If True, the server will attempt to filter
-                             out profanities, replacing all but the
+    :param profanity_filter: (Optional) If True, the server will attempt to
+                             filter out profanities, replacing all but the
                              initial character in each filtered word with
                              asterisks, e.g. ``'f***'``. If False or
                              omitted, profanities won't be filtered out.
 
     :type speech_context: list
-    :param speech_context: A list of strings (max 50) containing words and
-                           phrases "hints" so that the speech recognition
-                           is more likely to recognize them. This can be
-                           used to improve the accuracy for specific words
-                           and phrases. This can also be used to add new
-                           words to the vocabulary of the recognizer.
+    :param speech_context: (Optional) A list of strings (max 50) containing
+                           words and phrases "hints" so that the speech
+                           recognition is more likely to recognize them.
+                           This can be used to improve the accuracy for
+                           specific words and phrases. This can also be used to
+                           add new words to the vocabulary of the recognizer.
 
     :type single_utterance: bool
     :param single_utterance: (Optional) If false or omitted, the recognizer
