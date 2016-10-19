@@ -297,6 +297,7 @@ class HTTPIterator(Iterator):
 
     _PAGE_TOKEN = 'pageToken'
     _MAX_RESULTS = 'maxResults'
+    _NEXT_TOKEN = 'nextPageToken'
     _RESERVED_PARAMS = frozenset([_PAGE_TOKEN, _MAX_RESULTS])
     _HTTP_METHOD = 'GET'
 
