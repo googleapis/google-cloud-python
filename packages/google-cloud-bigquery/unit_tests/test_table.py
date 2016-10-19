@@ -1068,7 +1068,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, age, joined])
 
-        rows, total_rows, page_token = table.fetch_data()
+        iterator = table.fetch_data()
+        iterator.update_page()
+        rows = list(iterator.page)
+        total_rows = iterator.page.total_rows
+        page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0], ('Phred Phlyntstone', 32, WHEN))
@@ -1129,9 +1133,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, age, voter, score])
 
-        rows, total_rows, page_token = table.fetch_data(client=client2,
-                                                        max_results=MAX,
-                                                        page_token=TOKEN)
+        iterator = table.fetch_data(
+            client=client2, max_results=MAX, page_token=TOKEN)
+        iterator.update_page()
+        rows = list(iterator.page)
+        total_rows = getattr(iterator.page, 'total_rows', None)
+        page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0], ('Phred Phlyntstone', 32, True, 3.1415926))
@@ -1177,7 +1184,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, struct])
 
-        rows, total_rows, page_token = table.fetch_data()
+        iterator = table.fetch_data()
+        iterator.update_page()
+        rows = list(iterator.page)
+        total_rows = iterator.page.total_rows
+        page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0][0], ['red', 'green'])
@@ -1227,7 +1238,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, phone])
 
-        rows, total_rows, page_token = table.fetch_data()
+        iterator = table.fetch_data()
+        iterator.update_page()
+        rows = list(iterator.page)
+        total_rows = iterator.page.total_rows
+        page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 3)
         self.assertEqual(rows[0][0], 'Phred Phlyntstone')
