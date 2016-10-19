@@ -209,8 +209,9 @@ Run a query which can be expected to complete within bounded time:
    :start-after: [START client_run_sync_query]
    :end-before: [END client_run_sync_query]
 
-If the rows returned by the query do not fit into the inital response,
-then we need to fetch the remaining rows via ``fetch_data``:
+If the rows returned by the query do not fit into the initial response,
+then we need to fetch the remaining rows via
+:meth:`~google.cloud.bigquery.query.QueryResults.fetch_data`:
 
 .. literalinclude:: bigquery_snippets.py
    :start-after: [START client_run_sync_query_paged]
@@ -218,7 +219,7 @@ then we need to fetch the remaining rows via ``fetch_data``:
 
 If the query takes longer than the timeout allowed, ``query.complete``
 will be ``False``.  In that case, we need to poll the associated job until
-it is done, and then fetch the reuslts:
+it is done, and then fetch the results:
 
 .. literalinclude:: bigquery_snippets.py
    :start-after: [START client_run_sync_query_timeout]
