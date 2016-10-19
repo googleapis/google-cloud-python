@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.iterator &mdash; google-cloud 5ee7df7 documentation</title>
+  <title>google.cloud.iterator &mdash; google-cloud 392f0f8 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud 5ee7df7 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 392f0f8 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -86,6 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../google-cloud-api.html">Shared Core Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../google-cloud-config.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../google-cloud-auth.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../iterators.html">Iterators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../operation-api.html">Long-Running Operations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
@@ -408,7 +409,7 @@
 <span class="c1"># pylint: enable=unused-argument</span>
 
 
-<div class="viewcode-block" id="Page"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.iterator.Page">[docs]</a><span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Page"><a class="viewcode-back" href="../../../iterators.html#google.cloud.iterator.Page">[docs]</a><span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Single page of results in an iterator.</span>
 
 <span class="sd">    :type parent: :class:`Iterator`</span>
@@ -458,7 +459,7 @@
         <span class="sd">&quot;&quot;&quot;The :class:`Page` is an iterator.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-<div class="viewcode-block" id="Page.next"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.iterator.Page.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Page.next"><a class="viewcode-back" href="../../../iterators.html#google.cloud.iterator.Page.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the next value in the page.&quot;&quot;&quot;</span>
         <span class="n">item</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_item_iter</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
@@ -471,7 +472,7 @@
     <span class="n">__next__</span> <span class="o">=</span> <span class="nb">next</span></div>
 
 
-<div class="viewcode-block" id="Iterator"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.iterator.Iterator">[docs]</a><span class="k">class</span> <span class="nc">Iterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Iterator"><a class="viewcode-back" href="../../../iterators.html#google.cloud.iterator.Iterator">[docs]</a><span class="k">class</span> <span class="nc">Iterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A generic class for iterating through Cloud JSON APIs list responses.</span>
 
 <span class="sd">    :type client: :class:`~google.cloud.client.Client`</span>
@@ -562,7 +563,7 @@
         <span class="sd">&quot;&quot;&quot;The :class:`Iterator` is an iterator.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-<div class="viewcode-block" id="Iterator.update_page"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.iterator.Iterator.update_page">[docs]</a>    <span class="k">def</span> <span class="nf">update_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">require_empty</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Iterator.update_page"><a class="viewcode-back" href="../../../iterators.html#google.cloud.iterator.Iterator.update_page">[docs]</a>    <span class="k">def</span> <span class="nf">update_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">require_empty</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Move to the next page in the result set.</span>
 
 <span class="sd">        If the current page is not empty and ``require_empty`` is :data:`True`</span>
@@ -601,7 +602,7 @@
                 <span class="n">msg</span> <span class="o">=</span> <span class="n">_PAGE_ERR_TEMPLATE</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_page</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">remaining</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Iterator.next"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.iterator.Iterator.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Iterator.next"><a class="viewcode-back" href="../../../iterators.html#google.cloud.iterator.Iterator.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the next item from the request.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_page</span><span class="p">(</span><span class="n">require_empty</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -657,7 +658,7 @@
 
         <span class="k">return</span> <span class="n">response</span>
 
-<div class="viewcode-block" id="Iterator.reset"><a class="viewcode-back" href="../../../google-cloud-api.html#google.cloud.iterator.Iterator.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Iterator.reset"><a class="viewcode-back" href="../../../iterators.html#google.cloud.iterator.Iterator.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Resets the iterator to the beginning.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="kc">None</span>
@@ -696,7 +697,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'5ee7df7',
+            VERSION:'392f0f8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
