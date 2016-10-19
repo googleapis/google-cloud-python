@@ -341,7 +341,9 @@ def _warm_up_inserted_table_data(table):
 
     while len(rows) == 0 and counter > 0:
         counter -= 1
-        rows, _, _ = table.fetch_data()
+        iterator = table.fetch_data()
+        iterator.update_page()
+        rows = list(iterator.page)
         if len(rows) == 0:
             time.sleep(5)
 
@@ -376,13 +378,8 @@ def table_insert_fetch_data(client, to_delete):
         found_rows.append(row)
 
     # [START table_fetch_data]
-    rows, _, token = table.fetch_data()
-    while True:
-        for row in rows:
-            do_something(row)
-        if token is None:
-            break
-        rows, _, token = table.fetch_data(page_token=token)
+    for row in table.fetch_data():
+        do_something(row)
     # [END table_fetch_data]
 
     assert len(found_rows) == len(ROWS_TO_INSERT)
@@ -424,7 +421,11 @@ def table_upload_from_file(client, to_delete):
 
     _warm_up_inserted_table_data(table)
 
-    rows, total, token = table.fetch_data()
+    iterator = table.fetch_data()
+    iterator.update_page()
+    rows = list(iterator.page)
+    total = iterator.page.total_rows
+    token = iterator.next_page_token
 
     assert len(rows) == total == 2
     assert token is None

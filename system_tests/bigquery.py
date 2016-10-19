@@ -263,6 +263,12 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(found.field_type, expected.field_type)
             self.assertEqual(found.mode, expected.mode)
 
+    @staticmethod
+    def _fetch_single_page(table):
+        iterator = table.fetch_data()
+        iterator.update_page()
+        return list(iterator.page)
+
     def test_insert_data_then_dump_table(self):
         import datetime
         from google.cloud._helpers import UTC
@@ -303,11 +309,11 @@ class TestBigQuery(unittest.TestCase):
         def _has_rows(result):
             return len(result[0]) > 0
 
-        # Allow for 90 seconds of "warm up" before rows visible.  See:
+        # Allow for "warm up" before rows visible.  See:
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
         retry = RetryResult(_has_rows, max_tries=8)
-        rows, _, _ = retry(table.fetch_data)()
+        rows = retry(self._fetch_single_page)(table)
 
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),
@@ -361,7 +367,7 @@ class TestBigQuery(unittest.TestCase):
 
         self.assertEqual(job.output_rows, len(ROWS))
 
-        rows, _, _ = table.fetch_data()
+        rows = self._fetch_single_page(table)
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),
                          sorted(ROWS, key=by_age))
@@ -431,7 +437,7 @@ class TestBigQuery(unittest.TestCase):
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
 
-        rows, _, _ = table.fetch_data()
+        rows = self._fetch_single_page(table)
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),
                          sorted(ROWS, key=by_age))
