@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.dns.client &mdash; google-cloud e575f81 documentation</title>
+  <title>google.cloud.dns.client &mdash; google-cloud 3d28a5c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud e575f81 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 3d28a5c documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -289,6 +289,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">JSONClient</span>
 <span class="kn">from</span> <span class="nn">google.cloud.dns.connection</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.dns.zone</span> <span class="k">import</span> <span class="n">ManagedZone</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">Iterator</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../dns-client.html#google.cloud.dns.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
@@ -341,31 +342,19 @@
 <span class="sd">        :param max_results: maximum number of zones to return, If not</span>
 <span class="sd">                            passed, defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of zones. If</span>
 <span class="sd">                           not passed, the API will return the first page of</span>
 <span class="sd">                           zones.</span>
 
-<span class="sd">        :rtype: tuple, (list, str)</span>
-<span class="sd">        :returns: list of :class:`google.cloud.dns.zone.ManagedZone`, plus a</span>
-<span class="sd">                  &quot;next page token&quot; string:  if the token is not None,</span>
-<span class="sd">                  indicates that more zones can be retrieved with another</span>
-<span class="sd">                  call (pass that value as ``page_token``).</span>
+<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :returns: Iterator of :class:`~google.cloud.dns.zone.ManagedZone`</span>
+<span class="sd">                  belonging to this project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
-
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
-
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/managedZones&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-                                           <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">zones</span> <span class="o">=</span> <span class="p">[</span><span class="n">ManagedZone</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-                 <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;managedZones&#39;</span><span class="p">]]</span>
-        <span class="k">return</span> <span class="n">zones</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Iterator</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;managedZones&#39;</span><span class="p">,</span>
+                        <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_zone</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+                        <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.zone"><a class="viewcode-back" href="../../../../dns-client.html#google.cloud.dns.client.Client.zone">[docs]</a>    <span class="k">def</span> <span class="nf">zone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dns_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a zone bound to this client.</span>
@@ -386,6 +375,21 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">ManagedZone</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dns_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
                            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_item_to_zone</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON managed zone to the native object.</span>
+
+<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
+
+<span class="sd">    :type resource: dict</span>
+<span class="sd">    :param resource: An item to be converted to a managed zone.</span>
+
+<span class="sd">    :rtype: :class:`.ManagedZone`</span>
+<span class="sd">    :returns: The next managed zone in the page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ManagedZone</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -419,7 +423,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'e575f81',
+            VERSION:'3d28a5c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

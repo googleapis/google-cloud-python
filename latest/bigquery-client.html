@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>BigQuery Client &mdash; google-cloud e575f81 documentation</title>
+  <title>BigQuery Client &mdash; google-cloud 3d28a5c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud e575f81 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 3d28a5c documentation" href="index.html"/>
         <link rel="next" title="Datasets" href="bigquery-dataset.html"/>
         <link rel="prev" title="Using the API" href="bigquery-usage.html"/> 
 
@@ -418,13 +418,11 @@ datasets.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="google-cloud-api.html#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">Dataset</span></code></a>,
-plus a &#8220;next page token&#8221; string:  if the token is not None,
-indicates that more datasets can be retrieved with another
-call (pass that value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <a class="reference internal" href="bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">Dataset</span></code></a>.
+accessible to the current client.</p>
 </td>
 </tr>
 </tbody>
@@ -460,13 +458,10 @@ state.  One of</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="google-cloud-api.html#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of job instances, plus a &#8220;next page token&#8221; string:
-if the token is not <code class="docutils literal"><span class="pre">None</span></code>, indicates that more jobs can be
-retrieved with another call, passing that value as
-<code class="docutils literal"><span class="pre">page_token</span></code>).</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterable of job instances.</p>
 </td>
 </tr>
 </tbody>
@@ -492,13 +487,11 @@ projects.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="google-cloud-api.html#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="#google.cloud.bigquery.client.Project" title="google.cloud.bigquery.client.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a>,
-plus a &#8220;next page token&#8221; string:  if the token is not None,
-indicates that more projects can be retrieved with another
-call (pass that value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <a class="reference internal" href="#google.cloud.bigquery.client.Project" title="google.cloud.bigquery.client.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a>
+accessible to the current client.</p>
 </td>
 </tr>
 </tbody>
@@ -683,7 +676,7 @@ call (pass that value as <code class="docutils literal"><span class="pre">page_t
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'e575f81',
+            VERSION:'3d28a5c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
