@@ -6,6 +6,7 @@
   google-cloud-api
   google-cloud-config
   google-cloud-auth
+  iterators
   operation-api
 
 .. toctree::
