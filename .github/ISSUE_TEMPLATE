@@ -1,0 +1,20 @@
+# Thank you for reporting an issue to google-cloud-python!
+
+If you are reporting an issue or requesting a feature, please search the
+existing open and closed issues to see if there is already work being done.
+
+- https://github.com/GoogleCloudPlatform/google-cloud-python/issues
+- http://stackoverflow.com/questions/tagged/google-cloud-python
+
+If you can provide us with as much of the following information as possible it
+will help us identify the cause of your issue more quickly.
+
+1. OS type and version
+2. Python version and virtual environment information `python --version`
+3. google-cloud-python version `pip show google-cloud`, `pip show google-<service>` or `pip freeze`
+4. Stacktrace if available
+5. Steps to reproduce
+6. Code example
+
+Using GitHub flavored markdown can help make your request clearer.
+See: https://guides.github.com/features/mastering-markdown/
