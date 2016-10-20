@@ -163,7 +163,7 @@ class _Transfer(object):
     def url(self):
         """URL to / from which data is downloaded/uploaded.
 
-        :rtype: string
+        :rtype: str
         :returns: The URL where data is sent/received.
         """
         return self._url
@@ -318,7 +318,7 @@ class Download(_Transfer):
     def encoding(self):
         """'Content-Encoding' used to transfer the file
 
-        :rtype: string or None
+        :rtype: str or None
         :returns: The encoding of the downloaded content.
         """
         return self._encoding
@@ -732,7 +732,7 @@ class Upload(_Transfer):
     def mime_type(self):
         """MIMEtype of the file being uploaded.
 
-        :rtype: string
+        :rtype: str
         :returns: The mime-type of the upload.
         """
         return self._mime_type
@@ -750,7 +750,7 @@ class Upload(_Transfer):
     def strategy(self):
         """Upload strategy to use
 
-        :rtype: string or None
+        :rtype: str or None
         :returns: The strategy used to upload the data.
         """
         return self._strategy
@@ -972,7 +972,7 @@ class Upload(_Transfer):
         :type response: :class:`google.cloud.streaming.http_wrapper.Response`
         :param response: response to be queried
 
-        :rtype: string
+        :rtype: str
         :returns: The header used to determine the bytes range.
         """
         # NOTE: Per RFC 2616[1]/7233[2][3], 'Range' is a request header,
