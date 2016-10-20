@@ -93,7 +93,7 @@ class _Transfer(object):
     def close_stream(self):
         """Should this instance close the stream when deleted.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: Boolean indicated if the stream should be closed.
         """
         return self._close_stream
@@ -190,7 +190,7 @@ class _Transfer(object):
     def initialized(self):
         """Has the instance been initialized
 
-        :rtype: boolean
+        :rtype: bool
         :returns: Boolean indicating if the current transfer
                   has been initialized.
         """
@@ -723,7 +723,7 @@ class Upload(_Transfer):
     def complete(self):
         """Has the entire stream been uploaded.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: Boolean indicated if the upload is complete.
         """
         return self._complete

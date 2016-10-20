@@ -53,7 +53,7 @@ def acceptable_mime_type(accept_patterns, mime_type):
     :type mime_type: str
     :param mime_type: the MIME being checked
 
-    :rtype: boolean
+    :rtype: bool
     :returns: True if the supplied MIME type matches at least one of the
               patterns, else False.
     """

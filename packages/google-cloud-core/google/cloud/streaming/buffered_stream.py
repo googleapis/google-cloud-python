@@ -55,7 +55,7 @@ class BufferedStream(object):
     def stream_exhausted(self):
         """Does the stream have bytes remaining beyond the buffer
 
-        :rtype: boolean
+        :rtype: bool
         :returns: Boolean indicating if the stream is exhausted.
         """
         return self._stream_at_end
