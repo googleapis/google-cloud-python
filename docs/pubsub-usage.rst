@@ -85,10 +85,6 @@ Test permissions allowed by the current IAM policy on a topic:
 Publish messages to a topic
 ---------------------------
 
-.. note::
-    If you're publishing a message from console.cloud.google.com, you will need
-    to base64 encode the message first.
-
 Publish a single message to a topic, without attributes:
 
 .. literalinclude:: pubsub_snippets.py

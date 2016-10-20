@@ -89,27 +89,12 @@ class TestMessage(unittest.TestCase):
         self.assertEqual(message.attributes, {})
         self.assertIsNone(message.service_timestamp)
 
-    def test_from_api_repr_bad_b64_data(self):
-        DATA = b'wefwefw'
-        BAD_B64_DATA = b'd2Vmd2Vmdw='
-        MESSAGE_ID = '12345'
-        TIMESTAMP = '2016-03-18-19:38:22.001393427Z'
-        api_repr = {
-            'data': BAD_B64_DATA,
-            'messageId': MESSAGE_ID,
-            'publishTimestamp': TIMESTAMP,
-        }
-        message = self._getTargetClass().from_api_repr(api_repr)
-        self.assertEqual(message.data, DATA)
-
     def test_from_api_repr_no_attributes(self):
-        from base64 import b64encode as b64
         DATA = b'DEADBEEF'
-        B64_DATA = b64(DATA)
         MESSAGE_ID = '12345'
         TIMESTAMP = '2016-03-18-19:38:22.001393427Z'
         api_repr = {
-            'data': B64_DATA,
+            'data': DATA,
             'messageId': MESSAGE_ID,
             'publishTime': TIMESTAMP,
         }
@@ -120,14 +105,12 @@ class TestMessage(unittest.TestCase):
         self.assertEqual(message.service_timestamp, TIMESTAMP)
 
     def test_from_api_repr_w_attributes(self):
-        from base64 import b64encode as b64
         DATA = b'DEADBEEF'
-        B64_DATA = b64(DATA)
         MESSAGE_ID = '12345'
         ATTRS = {'a': 'b'}
         TIMESTAMP = '2016-03-18-19:38:22.001393427Z'
         api_repr = {
-            'data': B64_DATA,
+            'data': DATA,
             'messageId': MESSAGE_ID,
             'publishTime': TIMESTAMP,
             'attributes': ATTRS,
