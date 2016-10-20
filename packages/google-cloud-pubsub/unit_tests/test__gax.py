@@ -764,6 +764,24 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertFalse(return_immediately)
         self.assertIsNone(options)
 
+    def test_subscription_pull_deadline_exceeded(self):
+        client = _Client(self.PROJECT)
+        gax_api = _GAXSubscriberAPI(_deadline_exceeded_gax_error=True)
+        api = self._make_one(gax_api, client)
+
+        result = api.subscription_pull(self.SUB_PATH)
+        self.assertEqual(result, [])
+
+    def test_subscription_pull_deadline_exceeded_return_immediately(self):
+        from google.gax.errors import GaxError
+
+        client = _Client(self.PROJECT)
+        gax_api = _GAXSubscriberAPI(_deadline_exceeded_gax_error=True)
+        api = self._make_one(gax_api, client)
+
+        with self.assertRaises(GaxError):
+            api.subscription_pull(self.SUB_PATH, return_immediately=True)
+
     def test_subscription_acknowledge_hit(self):
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
@@ -1075,6 +1093,7 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
     _modify_push_config_ok = False
     _acknowledge_ok = False
     _modify_ack_deadline_ok = False
+    _deadline_exceeded_gax_error = False
 
     def list_subscriptions(self, project, page_size, options=None):
         self._list_subscriptions_called_with = (project, page_size, options)
@@ -1124,6 +1143,9 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
             name, max_messages, return_immediately, options)
         if self._random_gax_error:
             raise GaxError('error')
+        if self._deadline_exceeded_gax_error:
+            raise GaxError('deadline exceeded',
+                           self._make_grpc_deadline_exceeded())
         try:
             return self._pull_response
         except AttributeError:
