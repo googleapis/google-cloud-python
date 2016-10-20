@@ -438,7 +438,7 @@ def _datetime_to_rfc3339(value, ignore_zone=True):
     :type value: :class:`datetime.datetime`
     :param value: The datetime object to be converted to a string.
 
-    :type ignore_zone: boolean
+    :type ignore_zone: bool
     :param ignore_zone: If True, then the timezone (if any) of the datetime
                         object is ignored.
 

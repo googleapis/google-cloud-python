@@ -52,13 +52,13 @@ class _Transfer(object):
     :type stream: file-like object
     :param stream: stream to/from which data is downloaded/uploaded.
 
-    :type close_stream: boolean
+    :type close_stream: bool
     :param close_stream: should this instance close the stream when deleted
 
     :type chunksize: integer
     :param chunksize: the size of chunks used to download/upload a file.
 
-    :type auto_transfer: boolean
+    :type auto_transfer: bool
     :param auto_transfer: should this instance automatically begin transfering
                           data when initialized
 
@@ -253,10 +253,10 @@ class Download(_Transfer):
         :type filename: str
         :param filename: path/filename for the target file
 
-        :type overwrite: boolean
+        :type overwrite: bool
         :param overwrite: should an existing file be overwritten
 
-        :type auto_transfer: boolean
+        :type auto_transfer: bool
         :param auto_transfer: should the transfer be started immediately
 
         :type kwds: dict
@@ -283,7 +283,7 @@ class Download(_Transfer):
         :type total_size: integer or None
         :param total_size: total size of the file to be downloaded
 
-        :type auto_transfer: boolean
+        :type auto_transfer: bool
         :param auto_transfer: should the transfer be started immediately
 
         :type kwds: dict
@@ -460,7 +460,7 @@ class Download(_Transfer):
         :type end: integer or None
         :param end: suggested last byte of the range.
 
-        :type use_chunks: boolean
+        :type use_chunks: bool
         :param use_chunks: If False, ignore :attr:`chunksize`.
 
         :rtype: str
@@ -558,7 +558,7 @@ class Download(_Transfer):
         :type end: integer or ``None``
         :param end: Where to stop fetching bytes. (See above.)
 
-        :type use_chunks: boolean
+        :type use_chunks: bool
         :param use_chunks: If False, ignore :attr:`chunksize`
                            and fetch this range in a single request.
                            If True, streams via chunks.
@@ -594,7 +594,7 @@ class Download(_Transfer):
 
         Writes retrieved bytes into :attr:`stream`.
 
-        :type use_chunks: boolean
+        :type use_chunks: bool
         :param use_chunks: If False, ignore :attr:`chunksize`
                            and stream this download in a single request.
                            If True, streams via chunks.
@@ -631,10 +631,10 @@ class Upload(_Transfer):
     :type http: :class:`httplib2.Http` (or workalike)
     :param http: Http instance used to perform requests.
 
-    :type close_stream: boolean
+    :type close_stream: bool
     :param close_stream: should this instance close the stream when deleted
 
-    :type auto_transfer: boolean
+    :type auto_transfer: bool
     :param auto_transfer: should this instance automatically begin transfering
                           data when initialized
 
@@ -669,7 +669,7 @@ class Upload(_Transfer):
         :type mime_type: str
         :param mime_type:  MIMEtype of the file being uploaded
 
-        :type auto_transfer: boolean or None
+        :type auto_transfer: bool or None
         :param auto_transfer: should the transfer be started immediately
 
         :type kwds: dict
@@ -703,7 +703,7 @@ class Upload(_Transfer):
         :type total_size: integer or None
         :param total_size:  Size of the file being uploaded
 
-        :type auto_transfer: boolean or None
+        :type auto_transfer: bool or None
         :param auto_transfer: should the transfer be started immediately
 
         :type kwds: dict
@@ -1065,7 +1065,7 @@ class Upload(_Transfer):
     def stream_file(self, use_chunks=True):
         """Upload the stream.
 
-        :type use_chunks: boolean
+        :type use_chunks: bool
         :param use_chunks: If False, send the stream in a single request.
                            Otherwise, send it in chunks.
 
