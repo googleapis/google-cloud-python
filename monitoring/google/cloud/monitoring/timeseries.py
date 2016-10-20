@@ -44,13 +44,13 @@ class TimeSeries(collections.namedtuple(
     :type resource: :class:`~google.cloud.monitoring.resource.Resource`
     :param resource: A resource object.
 
-    :type metric_kind: string
+    :type metric_kind: str
     :param metric_kind:
         The kind of measurement: :data:`MetricKind.GAUGE`,
         :data:`MetricKind.DELTA`, or :data:`MetricKind.CUMULATIVE`.
         See :class:`~google.cloud.monitoring.metric.MetricKind`.
 
-    :type value_type: string
+    :type value_type: str
     :param value_type:
         The value type of the metric: :data:`ValueType.BOOL`,
         :data:`ValueType.INT64`, :data:`ValueType.DOUBLE`,
@@ -176,10 +176,10 @@ def _make_typed_value(value):
 class Point(collections.namedtuple('Point', 'end_time start_time value')):
     """A single point in a time series.
 
-    :type end_time: string
+    :type end_time: str
     :param end_time: The end time in RFC3339 UTC "Zulu" format.
 
-    :type start_time: string or None
+    :type start_time: str or None
     :param start_time: An optional start time in RFC3339 UTC "Zulu" format.
 
     :type value: object

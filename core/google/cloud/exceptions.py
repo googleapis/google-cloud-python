@@ -184,10 +184,10 @@ def make_exception(response, content, error_info=None, use_json=True):
     :param response: A response object that defines a status code as the
                      status attribute.
 
-    :type content: string or dictionary
+    :type content: str or dictionary
     :param content: The body of the HTTP error response.
 
-    :type error_info: string
+    :type error_info: str
     :param error_info: Optional string giving extra information about the
                        failed request.
 

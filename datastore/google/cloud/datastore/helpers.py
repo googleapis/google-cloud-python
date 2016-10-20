@@ -80,7 +80,7 @@ def _new_value_pb(entity_pb, name):
     :type entity_pb: :class:`.datastore._generated.entity_pb2.Entity`
     :param entity_pb: An entity protobuf to add a new property to.
 
-    :type name: string
+    :type name: str
     :param name: The name of the new property.
 
     :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Value`
@@ -162,7 +162,7 @@ def _set_pb_meaning_from_entity(entity, name, value, value_pb,
     :type entity: :class:`google.cloud.datastore.entity.Entity`
     :param entity: The entity to be turned into a protobuf.
 
-    :type name: string
+    :type name: str
     :param name: The name of the property.
 
     :type value: object

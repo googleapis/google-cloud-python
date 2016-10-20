@@ -23,10 +23,10 @@ class ResourceRecordSet(object):
     See:
     https://cloud.google.com/dns/api/v1/resourceRecordSets
 
-    :type name: string
+    :type name: str
     :param name: the name of the record set.
 
-    :type record_type: string
+    :type record_type: str
     :param record_type: the RR type of the zone.
 
     :type ttl: integer

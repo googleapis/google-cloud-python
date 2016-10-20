@@ -25,7 +25,7 @@ class Logger(object):
     See:
     https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs
 
-    :type name: string
+    :type name: str
     :param name: the name of the logger
 
     :type client: :class:`google.cloud.logging.client.Client`
@@ -99,7 +99,7 @@ class Logger(object):
 
         Only one of ``text``, ``info``, or ``message`` should be passed.
 
-        :type text: string or :class:`NoneType`
+        :type text: str or :class:`NoneType`
         :param text: text payload
 
         :type info: dict or :class:`NoneType`
@@ -111,10 +111,10 @@ class Logger(object):
         :type labels: dict or :class:`NoneType`
         :param labels: labels passed in to calling method.
 
-        :type insert_id: string or :class:`NoneType`
+        :type insert_id: str or :class:`NoneType`
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: string or :class:`NoneType`
+        :type severity: str or :class:`NoneType`
         :param severity: (optional) severity of event being logged.
 
         :type http_request: dict or :class:`NoneType`
@@ -175,10 +175,10 @@ class Logger(object):
         :type labels: dict or :class:`NoneType`
         :param labels: (optional) mapping of labels for the entry.
 
-        :type insert_id: string or :class:`NoneType`
+        :type insert_id: str or :class:`NoneType`
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: string or :class:`NoneType`
+        :type severity: str or :class:`NoneType`
         :param severity: (optional) severity of event being logged.
 
         :type http_request: dict or :class:`NoneType`
@@ -209,10 +209,10 @@ class Logger(object):
         :type labels: dict or :class:`NoneType`
         :param labels: (optional) mapping of labels for the entry.
 
-        :type insert_id: string or :class:`NoneType`
+        :type insert_id: str or :class:`NoneType`
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: string or :class:`NoneType`
+        :type severity: str or :class:`NoneType`
         :param severity: (optional) severity of event being logged.
 
         :type http_request: dict or :class:`NoneType`
@@ -243,10 +243,10 @@ class Logger(object):
         :type labels: dict or :class:`NoneType`
         :param labels: (optional) mapping of labels for the entry.
 
-        :type insert_id: string or :class:`NoneType`
+        :type insert_id: str or :class:`NoneType`
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: string or :class:`NoneType`
+        :type severity: str or :class:`NoneType`
         :param severity: (optional) severity of event being logged.
 
         :type http_request: dict or :class:`NoneType`
@@ -284,11 +284,11 @@ class Logger(object):
         :param projects: project IDs to include. If not passed,
                             defaults to the project bound to the client.
 
-        :type filter_: string
+        :type filter_: str
         :param filter_: a filter expression. See:
                         https://cloud.google.com/logging/docs/view/advanced_filters
 
-        :type order_by: string
+        :type order_by: str
         :param order_by: One of :data:`~google.cloud.logging.ASCENDING`
                          or :data:`~google.cloud.logging.DESCENDING`.
 
@@ -296,7 +296,7 @@ class Logger(object):
         :param page_size: maximum number of entries to return, If not passed,
                           defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of entries. If not
                            passed, the API will return the first page of
                            entries.
@@ -344,16 +344,16 @@ class Batch(object):
                  http_request=None):
         """Add a text entry to be logged during :meth:`commit`.
 
-        :type text: string
+        :type text: str
         :param text: the text entry
 
         :type labels: dict or :class:`NoneType`
         :param labels: (optional) mapping of labels for the entry.
 
-        :type insert_id: string or :class:`NoneType`
+        :type insert_id: str or :class:`NoneType`
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: string or :class:`NoneType`
+        :type severity: str or :class:`NoneType`
         :param severity: (optional) severity of event being logged.
 
         :type http_request: dict or :class:`NoneType`
@@ -373,10 +373,10 @@ class Batch(object):
         :type labels: dict or :class:`NoneType`
         :param labels: (optional) mapping of labels for the entry.
 
-        :type insert_id: string or :class:`NoneType`
+        :type insert_id: str or :class:`NoneType`
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: string or :class:`NoneType`
+        :type severity: str or :class:`NoneType`
         :param severity: (optional) severity of event being logged.
 
         :type http_request: dict or :class:`NoneType`
@@ -396,10 +396,10 @@ class Batch(object):
         :type labels: dict or :class:`NoneType`
         :param labels: (optional) mapping of labels for the entry.
 
-        :type insert_id: string or :class:`NoneType`
+        :type insert_id: str or :class:`NoneType`
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: string or :class:`NoneType`
+        :type severity: str or :class:`NoneType`
         :param severity: (optional) severity of event being logged.
 
         :type http_request: dict or :class:`NoneType`

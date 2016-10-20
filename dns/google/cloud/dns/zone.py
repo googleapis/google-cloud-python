@@ -29,10 +29,10 @@ class ManagedZone(object):
     See:
     https://cloud.google.com/dns/api/v1/managedZones
 
-    :type name: string
+    :type name: str
     :param name: the name of the zone
 
-    :type dns_name: string or :class:`NoneType`
+    :type dns_name: str or :class:`NoneType`
     :param dns_name: the DNS name of the zone.  If not passed, then calls
                      to :meth:`create` will fail.
 
@@ -40,7 +40,7 @@ class ManagedZone(object):
     :param client: A client which holds credentials and project configuration
                    for the zone (which requires a project).
 
-    :type description: string or :class:`NoneType`
+    :type description: str or :class:`NoneType`
     :param description: the description for the zone.  If not passed, defaults
                         to the value of 'dns_name'.
     """
@@ -135,7 +135,7 @@ class ManagedZone(object):
     def description(self, value):
         """Update description of the zone.
 
-        :type value: string, or ``NoneType``
+        :type value: str, or ``NoneType``
         :param value: new description
 
         :raises: ValueError for invalid value types.
@@ -162,7 +162,7 @@ class ManagedZone(object):
     def name_server_set(self, value):
         """Update named set of DNS name servers.
 
-        :type value: string, or ``NoneType``
+        :type value: str, or ``NoneType``
         :param value: new title
 
         :raises: ValueError for invalid value types.
@@ -174,10 +174,10 @@ class ManagedZone(object):
     def resource_record_set(self, name, record_type, ttl, rrdatas):
         """Construct a resource record set bound to this zone.
 
-        :type name: string
+        :type name: str
         :param name: Name of the record set.
 
-        :type record_type: string
+        :type record_type: str
         :param record_type: RR type
 
         :type ttl: integer
@@ -323,7 +323,7 @@ class ManagedZone(object):
         :param max_results: maximum number of zones to return, If not
                             passed, defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of zones. If
                            not passed, the API will return the first page of
                            zones.
@@ -356,7 +356,7 @@ class ManagedZone(object):
         :param max_results: maximum number of zones to return, If not
                             passed, defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of zones. If
                            not passed, the API will return the first page of
                            zones.
