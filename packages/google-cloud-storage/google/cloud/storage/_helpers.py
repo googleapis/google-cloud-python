@@ -151,7 +151,7 @@ def _write_buffer_to_hash(buffer_object, hash_obj, digest_block_size=8192):
     :type hash_obj: object that implements update
     :param hash_obj: A hash object (MD5 or CRC32-C).
 
-    :type digest_block_size: integer
+    :type digest_block_size: int
     :param digest_block_size: The block size to write to the hash.
                               Defaults to 8192.
     """
