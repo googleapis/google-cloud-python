@@ -77,7 +77,7 @@ def _httplib2_debug_level(http_request, level, http=None):
     :type http_request: :class:`Request`
     :param http_request: the request to be logged.
 
-    :type level: integer
+    :type level: int
     :param level: the debuglevel for logging.
 
     :type http: :class:`httplib2.Http`, or ``None``
@@ -319,7 +319,7 @@ def _make_api_request_no_retry(http, http_request, redirections=_REDIRECTIONS):
     :type http_request: :class:`Request`
     :param http_request: the request to send.
 
-    :type redirections: integer
+    :type redirections: int
     :param redirections: Number of redirects to follow.
 
     :rtype: :class:`Response`
@@ -363,11 +363,11 @@ def make_api_request(http, http_request, retries=7,
     :type http_request: :class:`Request`
     :param http_request: the request to send.
 
-    :type retries: integer
+    :type retries: int
     :param retries: Number of retries to attempt on retryable
                     responses (such as 429 or 5XX).
 
-    :type redirections: integer
+    :type redirections: int
     :param redirections: Number of redirects to follow.
 
     :rtype: :class:`Response`

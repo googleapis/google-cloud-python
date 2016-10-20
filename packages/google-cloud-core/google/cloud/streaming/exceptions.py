@@ -97,7 +97,7 @@ class RetryAfterError(HttpError):
     :type url: string
     :param url: URL of the response which returned the error.
 
-    :type retry_after: integer
+    :type retry_after: int
     :param retry_after: seconds to wait before retrying.
     """
     def __init__(self, response, content, url, retry_after):
