@@ -40,7 +40,7 @@ class Topic(object):
     :param client: A client which holds credentials and project configuration
                    for the topic (which requires a project).
 
-    :type timestamp_messages: boolean
+    :type timestamp_messages: bool
     :param timestamp_messages: If true, the topic will add a ``timestamp`` key
                                to the attributes of each published message:
                                the value will be an RFC 3339 timestamp.

@@ -127,7 +127,7 @@ class Subscription(object):
     def auto_ack(self, return_immediately=False, max_messages=1, client=None):
         """:class:`AutoAck` factory
 
-        :type return_immediately: boolean
+        :type return_immediately: bool
         :param return_immediately: passed through to :meth:`Subscription.pull`
 
         :type max_messages: int
@@ -299,7 +299,7 @@ class Subscription(object):
            :start-after: [START subscription_pull]
            :end-before: [END subscription_pull]
 
-        :type return_immediately: boolean
+        :type return_immediately: bool
         :param return_immediately: if True, the back-end returns even if no
                                    messages are available;  if False, the API
                                    call blocks until one or more messages are
@@ -480,7 +480,7 @@ class AutoAck(dict):
     :type subscription: :class:`Subscription`
     :param subscription: subscription to be pulled.
 
-    :type return_immediately: boolean
+    :type return_immediately: bool
     :param return_immediately: passed through to :meth:`Subscription.pull`
 
     :type max_messages: int
