@@ -29,7 +29,7 @@ class Connection(base_connection.JSONConnection):
     :type http: :class:`httplib2.Http` or class that defines ``request()``.
     :param http: (Optional) HTTP object to make requests.
 
-    :type api_base_url: string
+    :type api_base_url: str
     :param api_base_url: The base of the API call URL. Defaults to the value
                          :attr:`Connection.API_BASE_URL`.
     """
