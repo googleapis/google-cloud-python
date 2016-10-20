@@ -120,7 +120,7 @@ class _BaseJob(object):
 class _AsyncJob(_BaseJob):
     """Base class for asynchronous jobs.
 
-    :type name: string
+    :type name: str
     :param name: the name of the job
 
     :type client: :class:`google.cloud.bigquery.client.Client`
@@ -399,7 +399,7 @@ class _LoadConfiguration(object):
 class LoadTableFromStorageJob(_AsyncJob):
     """Asynchronous job for loading data into a table from CloudStorage.
 
-    :type name: string
+    :type name: str
     :param name: the name of the job
 
     :type destination: :class:`google.cloud.bigquery.table.Table`
@@ -648,7 +648,7 @@ class _CopyConfiguration(object):
 class CopyJob(_AsyncJob):
     """Asynchronous job: copy data into a table from other tables.
 
-    :type name: string
+    :type name: str
     :param name: the name of the job
 
     :type destination: :class:`google.cloud.bigquery.table.Table`
@@ -763,7 +763,7 @@ class _ExtractConfiguration(object):
 class ExtractTableToStorageJob(_AsyncJob):
     """Asynchronous job: extract data from a table into Cloud Storage.
 
-    :type name: string
+    :type name: str
     :param name: the name of the job
 
     :type source: :class:`google.cloud.bigquery.table.Table`
@@ -894,10 +894,10 @@ class _AsyncQueryConfiguration(object):
 class QueryJob(_AsyncJob):
     """Asynchronous job: query tables.
 
-    :type name: string
+    :type name: str
     :param name: the name of the job
 
-    :type query: string
+    :type query: str
     :param query: SQL query string
 
     :type client: :class:`google.cloud.bigquery.client.Client`
