@@ -50,7 +50,7 @@ _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
 class Blob(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``.
 
-    :type name: string
+    :type name: str
     :param name: The name of the blob.  This corresponds to the
                  unique path of the object in the bucket.
 
@@ -109,10 +109,10 @@ class Blob(_PropertyMixin):
     def path_helper(bucket_path, blob_name):
         """Relative URL path for a blob.
 
-        :type bucket_path: string
+        :type bucket_path: str
         :param bucket_path: The URL path for a bucket.
 
-        :type blob_name: string
+        :type blob_name: str
         :param blob_name: The name of the blob.
 
         :rtype: str
@@ -355,7 +355,7 @@ class Blob(_PropertyMixin):
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
 
-        :type filename: string
+        :type filename: str
         :param filename: A filename to be passed to ``open``.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -450,7 +450,7 @@ class Blob(_PropertyMixin):
                      :func:`os.fstat`. (If the file handle is not from the
                      filesystem this won't be possible.)
 
-        :type content_type: string or ``NoneType``
+        :type content_type: str or ``NoneType``
         :param content_type: Optional type of content being uploaded.
 
         :type num_retries: integer
@@ -564,10 +564,10 @@ class Blob(_PropertyMixin):
            `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
            API documents for details.
 
-        :type filename: string
+        :type filename: str
         :param filename: The path to the file.
 
-        :type content_type: string or ``NoneType``
+        :type content_type: str or ``NoneType``
         :param content_type: Optional type of content being uploaded.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -601,7 +601,7 @@ class Blob(_PropertyMixin):
         :param data: The data to store in this blob.  If the value is
                      text, it will be encoded as UTF-8.
 
-        :type content_type: string
+        :type content_type: str
         :param content_type: Optional type of content being uploaded. Defaults
                              to ``'text/plain'``.
 

@@ -74,7 +74,7 @@ class Bucket(_PropertyMixin):
     :param client: A client which holds credentials and project configuration
                    for the bucket (which requires a project).
 
-    :type name: string
+    :type name: str
     :param name: The name of the bucket.
     """
 
@@ -108,7 +108,7 @@ class Bucket(_PropertyMixin):
           This will not make an HTTP request; it simply instantiates
           a blob object owned by this bucket.
 
-        :type blob_name: string
+        :type blob_name: str
         :param blob_name: The name of the blob to be instantiated.
 
         :type chunk_size: integer
@@ -190,7 +190,7 @@ class Bucket(_PropertyMixin):
     def path_helper(bucket_name):
         """Relative URL path for a bucket.
 
-        :type bucket_name: string
+        :type bucket_name: str
         :param bucket_name: The bucket name in the path.
 
         :rtype: str
@@ -219,7 +219,7 @@ class Bucket(_PropertyMixin):
           >>> print(bucket.get_blob('/does-not-exist.txt'))
           None
 
-        :type blob_name: string
+        :type blob_name: str
         :param blob_name: The name of the blob to retrieve.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -386,7 +386,7 @@ class Bucket(_PropertyMixin):
           ... except NotFound:
           ...   pass
 
-        :type blob_name: string
+        :type blob_name: str
         :param blob_name: A blob name to delete.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -452,7 +452,7 @@ class Bucket(_PropertyMixin):
         :param destination_bucket: The bucket into which the blob should be
                                    copied.
 
-        :type new_name: string
+        :type new_name: str
         :param new_name: (optional) the new name for the copied file.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -494,7 +494,7 @@ class Bucket(_PropertyMixin):
         :type blob: :class:`google.cloud.storage.blob.Blob`
         :param blob: The blob to be renamed.
 
-        :type new_name: string
+        :type new_name: str
         :param new_name: The new name for this blob.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -604,10 +604,10 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/accesslogs#delivery
 
-        :type bucket_name: string
+        :type bucket_name: str
         :param bucket_name: name of bucket in which to store access logs
 
-        :type object_prefix: string
+        :type object_prefix: str
         :param object_prefix: prefix for access log filenames
         """
         info = {'logBucket': bucket_name, 'logObjectPrefix': object_prefix}
@@ -691,7 +691,7 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/storage-classes
 
-        :type value: string
+        :type value: str
         :param value: one of "MULTI_REGIONAL", "REGIONAL", "NEARLINE",
                       "COLDLINE", "STANDARD", or "DURABLE_REDUCED_AVAILABILITY"
         """
@@ -764,12 +764,12 @@ class Bucket(_PropertyMixin):
         the bucket, and anything else I add to the bucket.  Just make it
         all public."
 
-        :type main_page_suffix: string
+        :type main_page_suffix: str
         :param main_page_suffix: The page to use as the main page
                                  of a directory.
                                  Typically something like index.html.
 
-        :type not_found_page: string
+        :type not_found_page: str
         :param not_found_page: The file to use when a page isn't found.
         """
         data = {
