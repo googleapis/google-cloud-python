@@ -65,14 +65,14 @@ class _DatastoreAPIOverHttp(object):
     def _request(self, project, method, data):
         """Make a request over the Http transport to the Cloud Datastore API.
 
-        :type project: string
+        :type project: str
         :param project: The project to make the request for.
 
-        :type method: string
+        :type method: str
         :param method: The API call method name (ie, ``runQuery``,
                        ``lookup``, etc)
 
-        :type data: string
+        :type data: str
         :param data: The data to send with the API call.
                      Typically this is a serialized Protobuf string.
 
@@ -100,11 +100,11 @@ class _DatastoreAPIOverHttp(object):
     def _rpc(self, project, method, request_pb, response_pb_cls):
         """Make a protobuf RPC request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
-        :type method: string
+        :type method: str
         :param method: The name of the method to invoke.
 
         :type request_pb: :class:`google.protobuf.message.Message` instance
@@ -125,7 +125,7 @@ class _DatastoreAPIOverHttp(object):
     def lookup(self, project, request_pb):
         """Perform a ``lookup`` request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
@@ -141,7 +141,7 @@ class _DatastoreAPIOverHttp(object):
     def run_query(self, project, request_pb):
         """Perform a ``runQuery`` request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
@@ -157,7 +157,7 @@ class _DatastoreAPIOverHttp(object):
     def begin_transaction(self, project, request_pb):
         """Perform a ``beginTransaction`` request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
@@ -174,7 +174,7 @@ class _DatastoreAPIOverHttp(object):
     def commit(self, project, request_pb):
         """Perform a ``commit`` request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
@@ -190,7 +190,7 @@ class _DatastoreAPIOverHttp(object):
     def rollback(self, project, request_pb):
         """Perform a ``rollback`` request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
@@ -206,7 +206,7 @@ class _DatastoreAPIOverHttp(object):
     def allocate_ids(self, project, request_pb):
         """Perform an ``allocateIds`` request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
@@ -249,7 +249,7 @@ class _DatastoreAPIOverGRPC(object):
     def lookup(self, project, request_pb):
         """Perform a ``lookup`` request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
@@ -265,7 +265,7 @@ class _DatastoreAPIOverGRPC(object):
     def run_query(self, project, request_pb):
         """Perform a ``runQuery`` request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
@@ -287,7 +287,7 @@ class _DatastoreAPIOverGRPC(object):
     def begin_transaction(self, project, request_pb):
         """Perform a ``beginTransaction`` request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
@@ -304,7 +304,7 @@ class _DatastoreAPIOverGRPC(object):
     def commit(self, project, request_pb):
         """Perform a ``commit`` request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
@@ -328,7 +328,7 @@ class _DatastoreAPIOverGRPC(object):
     def rollback(self, project, request_pb):
         """Perform a ``rollback`` request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
@@ -344,7 +344,7 @@ class _DatastoreAPIOverGRPC(object):
     def allocate_ids(self, project, request_pb):
         """Perform an ``allocateIds`` request.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
@@ -407,18 +407,18 @@ class Connection(connection_module.Connection):
         This method is used internally to come up with the URL to use when
         making RPCs to the Cloud Datastore API.
 
-        :type project: string
+        :type project: str
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
-        :type method: string
+        :type method: str
         :param method: The API method to call (e.g. 'runQuery', 'lookup').
 
-        :type base_url: string
+        :type base_url: str
         :param base_url: The base URL where the API lives.
                          You shouldn't have to provide this.
 
-        :type api_version: string
+        :type api_version: str
         :param api_version: The version of the API to connect to.
                             You shouldn't have to provide this.
 
@@ -453,7 +453,7 @@ class Connection(connection_module.Connection):
         >>> connection.lookup('project', [key.to_protobuf()])
         [<Entity protobuf>]
 
-        :type project: string
+        :type project: str
         :param project: The project to look up the keys in.
 
         :type key_pbs: list of
@@ -465,7 +465,7 @@ class Connection(connection_module.Connection):
                          consistency.  If True, request ``EVENTUAL`` read
                          consistency.
 
-        :type transaction_id: string
+        :type transaction_id: str
         :param transaction_id: If passed, make the request in the scope of
                                the given transaction.  Incompatible with
                                ``eventual==True``.
@@ -504,13 +504,13 @@ class Connection(connection_module.Connection):
         Under the hood, the :class:`google.cloud.datastore.query.Query` class
         uses this method to fetch data.
 
-        :type project: string
+        :type project: str
         :param project: The project over which to run the query.
 
         :type query_pb: :class:`.datastore._generated.query_pb2.Query`
         :param query_pb: The Protobuf representing the query to run.
 
-        :type namespace: string
+        :type namespace: str
         :param namespace: The namespace over which to run the query.
 
         :type eventual: bool
@@ -518,7 +518,7 @@ class Connection(connection_module.Connection):
                          consistency.  If True, request ``EVENTUAL`` read
                          consistency.
 
-        :type transaction_id: string
+        :type transaction_id: str
         :param transaction_id: If passed, make the request in the scope of
                                the given transaction.  Incompatible with
                                ``eventual==True``.
@@ -548,7 +548,7 @@ class Connection(connection_module.Connection):
 
         Maps the ``DatastoreService.BeginTransaction`` protobuf RPC.
 
-        :type project: string
+        :type project: str
         :param project: The project to which the transaction applies.
 
         :rtype: bytes
@@ -563,13 +563,13 @@ class Connection(connection_module.Connection):
 
         Maps the ``DatastoreService.Commit`` protobuf RPC.
 
-        :type project: string
+        :type project: str
         :param project: The project to which the transaction applies.
 
         :type request: :class:`._generated.datastore_pb2.CommitRequest`
         :param request: The protobuf with the mutations being committed.
 
-        :type transaction_id: string or None
+        :type transaction_id: str or None
         :param transaction_id: The transaction ID returned from
                                :meth:`begin_transaction`.  Non-transactional
                                batches must pass ``None``.
@@ -597,10 +597,10 @@ class Connection(connection_module.Connection):
 
         Maps the ``DatastoreService.Rollback`` protobuf RPC.
 
-        :type project: string
+        :type project: str
         :param project: The project to which the transaction belongs.
 
-        :type transaction_id: string
+        :type transaction_id: str
         :param transaction_id: The transaction ID returned from
                                :meth:`begin_transaction`.
         """
@@ -614,7 +614,7 @@ class Connection(connection_module.Connection):
 
         Maps the ``DatastoreService.AllocateIds`` protobuf RPC.
 
-        :type project: string
+        :type project: str
         :param project: The project to which the transaction belongs.
 
         :type key_pbs: list of

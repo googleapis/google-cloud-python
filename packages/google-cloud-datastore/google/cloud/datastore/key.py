@@ -207,7 +207,7 @@ class Key(object):
     def completed_key(self, id_or_name):
         """Creates new key from existing partial key by adding final ID/name.
 
-        :type id_or_name: string or integer
+        :type id_or_name: str or integer
         :param id_or_name: ID or name to be added to the key.
 
         :rtype: :class:`google.cloud.datastore.key.Key`
@@ -385,7 +385,7 @@ def _validate_project(project, parent):
 
     If ``project`` is unset, attempt to infer the project from the environment.
 
-    :type project: string
+    :type project: str
     :param project: A project.
 
     :type parent: :class:`google.cloud.datastore.key.Key` or ``NoneType``
