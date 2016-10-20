@@ -50,7 +50,7 @@ class HttpError(CommunicationError):
     def status_code(self):
         """Status code for the response.
 
-        :rtype: integer
+        :rtype: int
         :returns: the code
         """
         return int(self.response['status'])

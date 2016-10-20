@@ -191,7 +191,7 @@ def _process_content_range(content_range):
     :type content_range: str
     :param content_range: the header value being parsed.
 
-    :rtype: integer
+    :rtype: int
     :returns: the length of the response chunk.
     """
     _, _, range_spec = content_range.partition(' ')
@@ -221,7 +221,7 @@ class Response(_ResponseTuple):
         Exposed as an attribute since using ``len()`` directly can fail
         for responses larger than ``sys.maxint``.
 
-        :rtype: integer or long
+        :rtype: int or long
         :returns: The length of the response.
         """
         if 'content-encoding' in self.info and 'content-range' in self.info:
@@ -239,7 +239,7 @@ class Response(_ResponseTuple):
     def status_code(self):
         """HTTP status code
 
-        :rtype: integer
+        :rtype: int
         :returns: The response status code.
         """
         return int(self.info['status'])
@@ -248,7 +248,7 @@ class Response(_ResponseTuple):
     def retry_after(self):
         """Retry interval (if set).
 
-        :rtype: integer
+        :rtype: int
         :returns: interval in seconds
         """
         if 'retry-after' in self.info:
