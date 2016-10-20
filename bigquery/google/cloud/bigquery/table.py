@@ -714,10 +714,10 @@ class Table(object):
         :param row_ids: Unique ids, one per row being inserted.  If not
                         passed, no de-duplication occurs.
 
-        :type skip_invalid_rows: boolean or ``NoneType``
+        :type skip_invalid_rows: bool or ``NoneType``
         :param skip_invalid_rows: skip rows w/ invalid data?
 
-        :type ignore_unknown_values: boolean or ``NoneType``
+        :type ignore_unknown_values: bool or ``NoneType``
         :param ignore_unknown_values: ignore columns beyond schema?
 
         :type template_suffix: str or ``NoneType``
@@ -826,7 +826,7 @@ class Table(object):
                               job configuration option; see
                               :meth:`google.cloud.bigquery.job.LoadJob`
 
-        :type rewind: boolean
+        :type rewind: bool
         :param rewind: If True, seek to the beginning of the file handle before
                        writing the file to Cloud Storage.
 
@@ -839,11 +839,11 @@ class Table(object):
         :type num_retries: integer
         :param num_retries: Number of upload retries. Defaults to 6.
 
-        :type allow_jagged_rows: boolean
+        :type allow_jagged_rows: bool
         :param allow_jagged_rows: job configuration option;  see
                                   :meth:`google.cloud.bigquery.job.LoadJob`.
 
-        :type allow_quoted_newlines: boolean
+        :type allow_quoted_newlines: bool
         :param allow_quoted_newlines: job configuration option; see
                                       :meth:`google.cloud.bigquery.job.LoadJob`.
 
@@ -859,7 +859,7 @@ class Table(object):
         :param field_delimiter: job configuration option; see
                                 :meth:`google.cloud.bigquery.job.LoadJob`.
 
-        :type ignore_unknown_values: boolean
+        :type ignore_unknown_values: bool
         :param ignore_unknown_values: job configuration option; see
                                       :meth:`google.cloud.bigquery.job.LoadJob`.
 
