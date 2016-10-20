@@ -68,18 +68,18 @@ class MetricDescriptor(object):
     :type client: :class:`google.cloud.monitoring.client.Client`
     :param client: A client for operating on the metric descriptor.
 
-    :type type_: string
+    :type type_: str
     :param type_:
         The metric type including a DNS name prefix. For example:
         ``"compute.googleapis.com/instance/cpu/utilization"``
 
-    :type metric_kind: string
+    :type metric_kind: str
     :param metric_kind:
         The kind of measurement. It must be one of
         :data:`MetricKind.GAUGE`, :data:`MetricKind.DELTA`,
         or :data:`MetricKind.CUMULATIVE`. See :class:`MetricKind`.
 
-    :type value_type: string
+    :type value_type: str
     :param value_type:
         The value type of the metric. It must be one of
         :data:`ValueType.BOOL`, :data:`ValueType.INT64`,
@@ -93,16 +93,16 @@ class MetricDescriptor(object):
         A sequence of zero or more label descriptors specifying the labels
         used to identify a specific instance of this metric.
 
-    :type unit: string
+    :type unit: str
     :param unit: An optional unit in which the metric value is reported.
 
-    :type description: string
+    :type description: str
     :param description: An optional detailed description of the metric.
 
-    :type display_name: string
+    :type display_name: str
     :param display_name: An optional concise name for the metric.
 
-    :type name: string or None
+    :type name: str or None
     :param name:
         The "resource name" of the metric descriptor. For example:
         ``"projects/<project_id>/metricDescriptors/<type>"``. As
@@ -176,7 +176,7 @@ class MetricDescriptor(object):
         :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
-        :type metric_type: string
+        :type metric_type: str
         :param metric_type: The metric type name.
 
         :rtype: :class:`MetricDescriptor`
@@ -198,12 +198,12 @@ class MetricDescriptor(object):
         :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
-        :type filter_string: string or None
+        :type filter_string: str or None
         :param filter_string:
             An optional filter expression describing the metric descriptors
             to be returned. See the `filter documentation`_.
 
-        :type type_prefix: string or None
+        :type type_prefix: str or None
         :param type_prefix: An optional prefix constraining the selected
             metric types. This adds ``metric.type = starts_with("<prefix>")``
             to the filter.
@@ -324,7 +324,7 @@ class Metric(collections.namedtuple('Metric', 'type labels')):
     :meth:`~google.cloud.monitoring.client.Client.metric` factory method
     of the :class:`~google.cloud.monitoring.client.Client` class.
 
-    :type type: string
+    :type type: str
     :param type: The metric type name.
 
     :type labels: dict

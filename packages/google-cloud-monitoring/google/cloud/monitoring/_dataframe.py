@@ -34,7 +34,7 @@ def _build_dataframe(time_series_iterable,
     :param time_series_iterable:
         An iterable (e.g., a query object) yielding time series.
 
-    :type label: string or None
+    :type label: str or None
     :param label:
         The label name to use for the dataframe header. This can be the name
         of a resource label or metric label (e.g., ``"instance_name"``), or
