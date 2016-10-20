@@ -626,7 +626,7 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The metageneration of the bucket or ``None`` if the property
                   is not set locally.
         """
@@ -652,7 +652,7 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The project number that owns the bucket or ``None`` if the
                   property is not set locally.
         """

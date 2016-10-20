@@ -85,7 +85,7 @@ class Blob(_PropertyMixin):
     def chunk_size(self):
         """Get the blob's default chunk size.
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The current blob's chunk size, if it is set.
         """
         return self._chunk_size
@@ -773,7 +773,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The component count (in case of a composed object) or
                   ``None`` if the property is not set locally. This property
                   will not be set on objects not created via ``compose``.
@@ -800,7 +800,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The generation of the blob or ``None`` if the property
                   is not set locally.
         """
@@ -872,7 +872,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The metageneration of the blob or ``None`` if the property
                   is not set locally.
         """
@@ -910,7 +910,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The size of the blob or ``None`` if the property
                   is not set locally.
         """
