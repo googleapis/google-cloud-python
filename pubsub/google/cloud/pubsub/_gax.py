@@ -376,7 +376,7 @@ class _SubscriberAPI(object):
             the fully-qualified path of the new subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
-        :type return_immediately: boolean
+        :type return_immediately: bool
         :param return_immediately: if True, the back-end returns even if no
                                    messages are available;  if False, the API
                                    call blocks until one or more messages are

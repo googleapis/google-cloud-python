@@ -92,7 +92,7 @@ class Group(object):
         The filter string used to determine which monitored resources belong to
         this group.
 
-    :type is_cluster: boolean
+    :type is_cluster: bool
     :param is_cluster:
         If true, the members of this group are considered to be a cluster. The
         system can perform additional analysis on groups that are clusters.

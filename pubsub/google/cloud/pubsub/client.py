@@ -179,7 +179,7 @@ class Client(JSONClient):
         :type name: str
         :param name: the name of the topic to be constructed.
 
-        :type timestamp_messages: boolean
+        :type timestamp_messages: bool
         :param timestamp_messages: To be passed to ``Topic`` constructor.
 
         :rtype: :class:`google.cloud.pubsub.topic.Topic`
