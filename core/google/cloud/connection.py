@@ -179,7 +179,7 @@ class JSONConnection(Connection):
                             Typically you shouldn't provide this and instead
                             use the default for the library.
 
-        :rtype: string
+        :rtype: str
         :returns: The URL assembled from the pieces provided.
         """
         url = cls.API_URL_TEMPLATE.format(

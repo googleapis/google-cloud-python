@@ -83,7 +83,7 @@ class Connection(base_connection.JSONConnection):
                             Typically you shouldn't provide this and instead
                             use the default for the library.
 
-        :rtype: string
+        :rtype: str
         :returns: The URL assembled from the pieces provided.
         """
         if api_base_url is None:

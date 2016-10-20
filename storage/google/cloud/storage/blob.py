@@ -115,7 +115,7 @@ class Blob(_PropertyMixin):
         :type blob_name: string
         :param blob_name: The name of the blob.
 
-        :rtype: string
+        :rtype: str
         :returns: The relative URL path for ``blob_name``.
         """
         return bucket_path + '/o/' + quote(blob_name, safe='')
@@ -137,7 +137,7 @@ class Blob(_PropertyMixin):
     def path(self):
         """Getter property for the URL path to this Blob.
 
-        :rtype: string
+        :rtype: str
         :returns: The URL path to this Blob.
         """
         if not self.name:
@@ -709,7 +709,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     content_disposition = _scalar_property('contentDisposition')
@@ -720,7 +720,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     content_encoding = _scalar_property('contentEncoding')
@@ -731,7 +731,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     content_language = _scalar_property('contentLanguage')
@@ -742,7 +742,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     content_type = _scalar_property('contentType')
@@ -753,7 +753,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     crc32c = _scalar_property('crc32c')
@@ -764,7 +764,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     @property
@@ -789,7 +789,7 @@ class Blob(_PropertyMixin):
         See: http://tools.ietf.org/html/rfc2616#section-3.11 and
              https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The blob etag or ``None`` if the property is not set locally.
         """
         return self._properties.get('etag')
@@ -814,7 +814,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The ID of the blob or ``None`` if the property is not
                   set locally.
         """
@@ -828,7 +828,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     @property
@@ -837,7 +837,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The media link for the blob or ``None`` if the property is
                   not set locally.
         """
@@ -898,7 +898,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The self link for the blob or ``None`` if the property is
                   not set locally.
         """
@@ -924,7 +924,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/storage-classes
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
                   "NEARLINE", "COLDLINE", "STANDARD", or
                   "DURABLE_REDUCED_AVAILABILITY", else ``None``.

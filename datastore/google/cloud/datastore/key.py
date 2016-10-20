@@ -269,7 +269,7 @@ class Key(object):
     def namespace(self):
         """Namespace getter.
 
-        :rtype: string
+        :rtype: str
         :returns: The namespace of the current key.
         """
         return self._namespace
@@ -298,7 +298,7 @@ class Key(object):
     def kind(self):
         """Kind getter. Based on the last element of path.
 
-        :rtype: string
+        :rtype: str
         :returns: The kind of the current key.
         """
         return self.path[-1]['kind']
@@ -316,7 +316,7 @@ class Key(object):
     def name(self):
         """Name getter. Based on the last element of path.
 
-        :rtype: string
+        :rtype: str
         :returns: The (string) name of the key.
         """
         return self.path[-1].get('name')
@@ -335,7 +335,7 @@ class Key(object):
     def project(self):
         """Project getter.
 
-        :rtype: string
+        :rtype: str
         :returns: The key's project.
         """
         return self._project
@@ -391,7 +391,7 @@ def _validate_project(project, parent):
     :type parent: :class:`google.cloud.datastore.key.Key` or ``NoneType``
     :param parent: The parent of the key or ``None``.
 
-    :rtype: string
+    :rtype: str
     :returns: The ``project`` passed in, or implied from the environment.
     :raises: :class:`ValueError` if ``project`` is ``None`` and no project
              can be inferred from the parent.

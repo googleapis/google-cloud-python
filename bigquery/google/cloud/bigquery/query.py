@@ -91,7 +91,7 @@ class QueryResults(object):
     def project(self):
         """Project bound to the job.
 
-        :rtype: string
+        :rtype: str
         :returns: the project (derived from the client).
         """
         return self._client.project
@@ -185,7 +185,7 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#pageToken
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: Token generated on the server (None until set by the server).
         """
         return self._properties.get('pageToken')

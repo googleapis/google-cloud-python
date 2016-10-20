@@ -76,7 +76,7 @@ class _DatastoreAPIOverHttp(object):
         :param data: The data to send with the API call.
                      Typically this is a serialized Protobuf string.
 
-        :rtype: string
+        :rtype: str
         :returns: The string response content from the API call.
         :raises: :class:`google.cloud.exceptions.GoogleCloudError` if the
                  response code is not 200 OK.

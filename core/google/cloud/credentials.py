@@ -220,7 +220,7 @@ def generate_signed_url(credentials, resource, expiration,
     :param generation: (Optional) A value that indicates which generation of
                        the resource to fetch.
 
-    :rtype: string
+    :rtype: str
     :returns: A signed URL you can use to access the resource
               until expiration.
     """

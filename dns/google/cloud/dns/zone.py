@@ -81,7 +81,7 @@ class ManagedZone(object):
     def project(self):
         """Project bound to the zone.
 
-        :rtype: string
+        :rtype: str
         :returns: the project (derived from the client).
         """
         return self._client.project
@@ -90,7 +90,7 @@ class ManagedZone(object):
     def path(self):
         """URL path for the zone's APIs.
 
-        :rtype: string
+        :rtype: str
         :returns: the path based on project and dataste name.
         """
         return '/projects/%s/managedZones/%s' % (self.project, self.name)
@@ -117,7 +117,7 @@ class ManagedZone(object):
     def zone_id(self):
         """ID for the zone resource.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: the ID (None until set from the server).
         """
         return self._properties.get('id')
@@ -126,7 +126,7 @@ class ManagedZone(object):
     def description(self):
         """Description of the zone.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: The description as set by the user, or None (the default).
         """
         return self._properties.get('description')
@@ -153,7 +153,7 @@ class ManagedZone(object):
         See:
         https://cloud.google.com/dns/api/v1/managedZones#nameServerSet
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: The name as set by the user, or None (the default).
         """
         return self._properties.get('nameServerSet')
