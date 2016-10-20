@@ -24,7 +24,7 @@ from google.cloud.iterator import Iterator
 class Client(JSONClient):
     """Client to bundle configuration needed for API requests.
 
-    :type project: string
+    :type project: str
     :param project: the project which the client acts on behalf of. Will be
                     passed when creating a zone.  If not passed,
                     falls back to the default inferred from the environment.
@@ -88,14 +88,14 @@ class Client(JSONClient):
     def zone(self, name, dns_name=None, description=None):
         """Construct a zone bound to this client.
 
-        :type name: string
+        :type name: str
         :param name: Name of the zone.
 
-        :type dns_name: string or :class:`NoneType`
+        :type dns_name: str or :class:`NoneType`
         :param dns_name: DNS name of the zone.  If not passed, then calls
                          to :meth:`zone.create` will fail.
 
-        :type description: string or :class:`NoneType`
+        :type description: str or :class:`NoneType`
         :param description: the description for the zone.  If not passed,
                             defaults to the value of 'dns_name'.
 

@@ -108,7 +108,7 @@ class _ConfigurationProperty(object):
     Values will be stored on a `_configuration` helper attribute of the
     property's job instance.
 
-    :type name: string
+    :type name: str
     :param name:  name of the property
     """
 
@@ -139,7 +139,7 @@ class _ConfigurationProperty(object):
 class _TypedProperty(_ConfigurationProperty):
     """Property implementation:  validates based on value type.
 
-    :type name: string
+    :type name: str
     :param name:  name of the property
 
     :type property_type: type or sequence of types
@@ -164,7 +164,7 @@ class _EnumProperty(_ConfigurationProperty):
     Subclasses must define ``ALLOWED`` as a class-level constant:  it must
     be a sequence of strings.
 
-    :type name: string
+    :type name: str
     :param name:  name of the property.
     """
     def _validate(self, value):

@@ -33,7 +33,7 @@ class Topic(object):
     See:
     https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics
 
-    :type name: string
+    :type name: str
     :param name: the name of the topic
 
     :type client: :class:`google.cloud.pubsub.client.Client`
@@ -71,14 +71,14 @@ class Topic(object):
            :start-after: [START topic_subscription_push]
            :end-before: [END topic_subscription_push]
 
-        :type name: string
+        :type name: str
         :param name: the name of the subscription
 
         :type ack_deadline: int
         :param ack_deadline: the deadline (in seconds) by which messages pulled
                              from the back-end must be acknowledged.
 
-        :type push_endpoint: string
+        :type push_endpoint: str
         :param push_endpoint: URL to which messages will be pushed by the
                               back-end. If not set, the application must pull
                               messages.
@@ -299,7 +299,7 @@ class Topic(object):
         :param page_size: maximum number of topics to return, If not passed,
                           defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of topics. If not
                            passed, the API will return the first page of
                            topics.

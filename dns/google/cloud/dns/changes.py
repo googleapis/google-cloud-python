@@ -93,7 +93,7 @@ class Changes(object):
     def name(self, value):
         """Update name of the change set.
 
-        :type value: string
+        :type value: str
         :param value: New name for the changeset.
         """
         if not isinstance(value, six.string_types):

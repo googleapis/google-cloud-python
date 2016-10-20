@@ -31,7 +31,7 @@ class AccessGrant(object):
 
     See https://cloud.google.com/bigquery/docs/reference/v2/datasets.
 
-    :type role: string
+    :type role: str
     :param role: Role granted to the entity. One of
 
                  * ``'OWNER'``
@@ -40,11 +40,11 @@ class AccessGrant(object):
 
                  May also be ``None`` if the ``entity_type`` is ``view``.
 
-    :type entity_type: string
+    :type entity_type: str
     :param entity_type: Type of entity being granted the role. One of
                         :attr:`ENTITY_TYPES`.
 
-    :type entity_id: string
+    :type entity_id: str
     :param entity_id: ID of entity being granted the role.
 
     :raises: :class:`ValueError` if the ``entity_type`` is not among
@@ -91,7 +91,7 @@ class Dataset(object):
     See:
     https://cloud.google.com/bigquery/docs/reference/v2/datasets
 
-    :type name: string
+    :type name: str
     :param name: the name of the dataset
 
     :type client: :class:`google.cloud.bigquery.client.Client`
@@ -238,7 +238,7 @@ class Dataset(object):
     def description(self, value):
         """Update description of the dataset.
 
-        :type value: string, or ``NoneType``
+        :type value: str, or ``NoneType``
         :param value: new description
 
         :raises: ValueError for invalid value types.
@@ -260,7 +260,7 @@ class Dataset(object):
     def friendly_name(self, value):
         """Update title of the dataset.
 
-        :type value: string, or ``NoneType``
+        :type value: str, or ``NoneType``
         :param value: new title
 
         :raises: ValueError for invalid value types.
@@ -282,7 +282,7 @@ class Dataset(object):
     def location(self, value):
         """Update location in which the dataset is hosted.
 
-        :type value: string, or ``NoneType``
+        :type value: str, or ``NoneType``
         :param value: new location
 
         :raises: ValueError for invalid value types.
@@ -545,7 +545,7 @@ class Dataset(object):
         :param max_results: maximum number of tables to return, If not
                             passed, defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of datasets. If
                            not passed, the API will return the first page of
                            datasets.
@@ -575,7 +575,7 @@ class Dataset(object):
     def table(self, name, schema=()):
         """Construct a table bound to this dataset.
 
-        :type name: string
+        :type name: str
         :param name: Name of the table.
 
         :type schema: list of :class:`google.cloud.bigquery.table.SchemaField`

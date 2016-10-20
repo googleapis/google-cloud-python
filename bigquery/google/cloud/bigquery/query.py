@@ -42,7 +42,7 @@ class _SyncQueryConfiguration(object):
 class QueryResults(object):
     """Synchronous job: query tables.
 
-    :type query: string
+    :type query: str
     :param query: SQL query string
 
     :type client: :class:`google.cloud.bigquery.client.Client`
@@ -348,7 +348,7 @@ class QueryResults(object):
         :type max_results: integer or ``NoneType``
         :param max_results: maximum number of rows to return.
 
-        :type page_token: string or ``NoneType``
+        :type page_token: str or ``NoneType``
         :param page_token: token representing a cursor into the table's rows.
 
         :type start_index: integer or ``NoneType``

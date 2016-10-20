@@ -50,7 +50,7 @@ _UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.
 class Client(JSONClient):
     """Client to bundle configuration needed for API requests.
 
-    :type project: string
+    :type project: str
     :param project: The target project. If not passed, falls back to the
                     default inferred from the environment.
 
@@ -80,7 +80,7 @@ class Client(JSONClient):
             >>> query = client.query(minutes=5)
             >>> print(query.as_dataframe())  # Requires pandas.
 
-        :type metric_type: string
+        :type metric_type: str
         :param metric_type: The metric type name. The default value is
             :data:`Query.DEFAULT_METRIC_TYPE
             <google.cloud.monitoring.query.Query.DEFAULT_METRIC_TYPE>`,
@@ -158,19 +158,19 @@ class Client(JSONClient):
             ...     description='Cumulative count of HTTP responses.')
             >>> descriptor.create()
 
-        :type type_: string
+        :type type_: str
         :param type_:
             The metric type including a DNS name prefix. For example:
             ``"custom.googleapis.com/my_metric"``
 
-        :type metric_kind: string
+        :type metric_kind: str
         :param metric_kind:
             The kind of measurement. It must be one of
             :data:`MetricKind.GAUGE`, :data:`MetricKind.DELTA`,
             or :data:`MetricKind.CUMULATIVE`.
             See :class:`~google.cloud.monitoring.metric.MetricKind`.
 
-        :type value_type: string
+        :type value_type: str
         :param value_type:
             The value type of the metric. It must be one of
             :data:`ValueType.BOOL`, :data:`ValueType.INT64`,
@@ -184,13 +184,13 @@ class Client(JSONClient):
             A sequence of zero or more label descriptors specifying the labels
             used to identify a specific instance of this metric.
 
-        :type unit: string
+        :type unit: str
         :param unit: An optional unit in which the metric value is reported.
 
-        :type description: string
+        :type description: str
         :param description: An optional detailed description of the metric.
 
-        :type display_name: string
+        :type display_name: str
         :param display_name: An optional concise name for the metric.
 
         :rtype: :class:`MetricDescriptor`
@@ -221,7 +221,7 @@ class Client(JSONClient):
              ...                            'status': 'successful',
              ...                         })
 
-        :type type_: string
+        :type type_: str
         :param type_: The metric type name.
 
         :type labels: dict
@@ -248,7 +248,7 @@ class Client(JSONClient):
 
         https://cloud.google.com/monitoring/api/resources
 
-        :type type_: string
+        :type type_: str
         :param type_: The monitored resource type name.
 
         :type labels: dict
@@ -339,7 +339,7 @@ class Client(JSONClient):
             >>> METRIC = 'compute.googleapis.com/instance/cpu/utilization'
             >>> print(client.fetch_metric_descriptor(METRIC))
 
-        :type metric_type: string
+        :type metric_type: str
         :param metric_type: The metric type name.
 
         :rtype: :class:`~google.cloud.monitoring.metric.MetricDescriptor`
@@ -362,12 +362,12 @@ class Client(JSONClient):
             ...         type_prefix='custom.'):
             ...     print(descriptor.type)
 
-        :type filter_string: string or None
+        :type filter_string: str or None
         :param filter_string:
             An optional filter expression describing the metric descriptors
             to be returned. See the `filter documentation`_.
 
-        :type type_prefix: string or None
+        :type type_prefix: str or None
         :param type_prefix: An optional prefix constraining the selected
             metric types. This adds ``metric.type = starts_with("<prefix>")``
             to the filter.
@@ -389,7 +389,7 @@ class Client(JSONClient):
 
             >>> print(client.fetch_resource_descriptor('gce_instance'))
 
-        :type resource_type: string
+        :type resource_type: str
         :param resource_type: The resource type name.
 
         :rtype: :class:`~google.cloud.monitoring.resource.ResourceDescriptor`
@@ -408,7 +408,7 @@ class Client(JSONClient):
             >>> for descriptor in client.list_resource_descriptors():
             ...     print(descriptor.type)
 
-        :type filter_string: string or None
+        :type filter_string: str or None
         :param filter_string:
             An optional filter expression describing the resource descriptors
             to be returned. See the `filter documentation`_.
@@ -430,19 +430,19 @@ class Client(JSONClient):
           This will not make an HTTP request; it simply instantiates
           a group object owned by this client.
 
-        :type group_id: string or None
+        :type group_id: str or None
         :param group_id: The ID of the group.
 
-        :type display_name: string or None
+        :type display_name: str or None
         :param display_name:
             A user-assigned name for this group, used only for display
             purposes.
 
-        :type parent_id: string or None
+        :type parent_id: str or None
         :param parent_id:
             The ID of the group's parent, if it has one.
 
-        :type filter_string: string or None
+        :type filter_string: str or None
         :param filter_string:
             The filter string used to determine which monitored resources
             belong to this group.
@@ -478,7 +478,7 @@ class Client(JSONClient):
             >>> except google.cloud.exceptions.NotFound:
             >>>     print('That group does not exist!')
 
-        :type group_id: string
+        :type group_id: str
         :param group_id: The ID of the group.
 
         :rtype: :class:`~google.cloud.monitoring.group.Group`

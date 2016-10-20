@@ -38,10 +38,10 @@ _GROUP_TEMPLATE = re.compile(r"""
 def _group_id_from_name(path, project=None):
     """Validate a group URI path and get the group ID.
 
-    :type path: string
+    :type path: str
     :param path: URI path for a group API request.
 
-    :type project: string or None
+    :type project: str or None
     :param project: The project associated with the request. It is
                     included for validation purposes.
 
@@ -57,10 +57,10 @@ def _group_id_from_name(path, project=None):
 def _group_name_from_id(project, group_id):
     """Build the group name given the project and group ID.
 
-    :type project: string
+    :type project: str
     :param project: The project associated with the group.
 
-    :type group_id: string
+    :type group_id: str
     :param group_id: The group ID.
 
     :rtype: str
@@ -76,18 +76,18 @@ class Group(object):
     :type client: :class:`google.cloud.monitoring.client.Client`
     :param client: A client for operating on the metric descriptor.
 
-    :type group_id: string or None
+    :type group_id: str or None
     :param group_id: The ID of the group.
 
-    :type display_name: string or None
+    :type display_name: str or None
     :param display_name:
         A user-assigned name for this group, used only for display purposes.
 
-    :type parent_id: string or None
+    :type parent_id: str or None
     :param parent_id:
         The ID of the group's parent, if it has one.
 
-    :type filter_string: string or None
+    :type filter_string: str or None
     :param filter_string:
         The filter string used to determine which monitored resources belong to
         this group.
@@ -296,7 +296,7 @@ class Group(object):
             ...     print(member)
 
 
-        :type filter_string: string or None
+        :type filter_string: str or None
         :param filter_string:
             An optional list filter describing the members to be returned. The
             filter may reference the type, labels, and metadata of monitored
@@ -365,7 +365,7 @@ class Group(object):
         :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
-        :type group_id: string
+        :type group_id: str
         :param group_id: The group ID.
 
         :rtype: :class:`Group`
@@ -386,17 +386,17 @@ class Group(object):
         :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
-        :type children_of_group: string or None
+        :type children_of_group: str or None
         :param children_of_group:
             Returns groups whose parent_name field contains the group name. If
             no groups have this parent, the results are empty.
 
-        :type ancestors_of_group: string or None
+        :type ancestors_of_group: str or None
         :param ancestors_of_group:
             Returns groups that are ancestors of the specified group. If the
             specified group has no immediate parent, the results are empty.
 
-        :type descendants_of_group: string or None
+        :type descendants_of_group: str or None
         :param descendants_of_group:
             Returns the descendants of the specified group. This is a superset
             of the results returned by the children_of_group filter, and

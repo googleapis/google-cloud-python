@@ -178,7 +178,7 @@ class _Transfer(object):
         :type http: :class:`httplib2.Http` (or a worklike) or None.
         :param http: the Http instance to use to make requests.
 
-        :type url: string
+        :type url: str
         :param url: The url for this transfer.
         """
         self._ensure_uninitialized()
@@ -250,7 +250,7 @@ class Download(_Transfer):
     def from_file(cls, filename, overwrite=False, auto_transfer=True, **kwds):
         """Create a new download object from a filename.
 
-        :type filename: string
+        :type filename: str
         :param filename: path/filename for the target file
 
         :type overwrite: boolean
@@ -622,7 +622,7 @@ class Upload(_Transfer):
     :type stream: file-like object
     :param stream: stream to/from which data is downloaded/uploaded.
 
-    :type mime_type: string:
+    :type mime_type: str:
     :param mime_type: MIME type of the upload.
 
     :type total_size: integer or None
@@ -663,10 +663,10 @@ class Upload(_Transfer):
     def from_file(cls, filename, mime_type=None, auto_transfer=True, **kwds):
         """Create a new Upload object from a filename.
 
-        :type filename: string
+        :type filename: str
         :param filename: path/filename to the file being uploaded
 
-        :type mime_type: string
+        :type mime_type: str
         :param mime_type:  MIMEtype of the file being uploaded
 
         :type auto_transfer: boolean or None
@@ -697,7 +697,7 @@ class Upload(_Transfer):
         :type stream: writable file-like object
         :param stream: the target file
 
-        :type mime_type: string
+        :type mime_type: str
         :param mime_type:  MIMEtype of the file being uploaded
 
         :type total_size: integer or None
@@ -759,7 +759,7 @@ class Upload(_Transfer):
     def strategy(self, value):
         """Update upload strategy to use
 
-        :type value: string (one of :data:`SIMPLE_UPLOAD` or
+        :type value: str (one of :data:`SIMPLE_UPLOAD` or
                 :data:`RESUMABLE_UPLOAD`)
 
         :raises: :exc:`ValueError` if value is not one of the two allowed
@@ -1034,7 +1034,7 @@ class Upload(_Transfer):
     def _last_byte(range_header):
         """Parse the last byte from a 'Range' header.
 
-        :type range_header: string
+        :type range_header: str
         :param range_header: 'Range' header value per RFC 2616/7233
 
         :rtype: int

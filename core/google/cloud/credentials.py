@@ -97,7 +97,7 @@ def _get_signed_query_params(credentials, expiration, string_to_sign):
     :type expiration: int or long
     :param expiration: When the signed URL should expire.
 
-    :type string_to_sign: string
+    :type string_to_sign: str
     :param string_to_sign: The string to be signed by the credentials.
 
     :raises AttributeError: If :meth: sign_blob is unavailable.
@@ -184,7 +184,7 @@ def generate_signed_url(credentials, resource, expiration,
     :param credentials: Credentials object with an associated private key to
                         sign text.
 
-    :type resource: string
+    :type resource: str
     :param resource: A pointer to a specific resource
                      (typically, ``/bucket-name/path/to/blob.txt``).
 

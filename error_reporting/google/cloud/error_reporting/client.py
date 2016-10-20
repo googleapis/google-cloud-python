@@ -24,24 +24,24 @@ class HTTPContext(object):
     """HTTPContext defines an object that captures the parameter for the
     httpRequest part of Error Reporting API
 
-    :type method: string
+    :type method: str
     :param method: The type of HTTP request, such as GET, POST, etc.
 
-    :type url: string
+    :type url: str
     :param url: The URL of the request
 
-    :type user_agent: string
+    :type user_agent: str
     :param user_agent: The user agent information that is provided with the
                        request.
 
-    :type referrer: string
+    :type referrer: str
     :param referrer: The referrer information that is provided with the
                      request.
 
     :type response_status_code: int
     :param response_status_code: The HTTP response status code for the request.
 
-    :type remote_ip: string
+    :type remote_ip: str
     :param remote_ip: The IP address from which the request originated. This
                       can be IPv4, IPv6, or a token which is derived from
                       the IP address, depending on the data that has been
@@ -65,7 +65,7 @@ class Client(object):
     """Error Reporting client. Currently Error Reporting is done by creating
     a Logging client.
 
-    :type project: string
+    :type project: str
     :param project: the project which the client acts on behalf of. If not
                     passed falls back to the default inferred from the
                     environment.
@@ -125,7 +125,7 @@ class Client(object):
 
         https://cloud.google.com/error-reporting/docs/formatting-error-messages
 
-        :type message: string
+        :type message: str
         :param message: The stack trace that was reported or logged by the
                    service.
 
@@ -143,7 +143,7 @@ class Client(object):
         :param http_context: The HTTP request which was processed when the
                              error was triggered.
 
-        :type user: string
+        :type user: str
         :param user: The user who caused or was affected by the crash. This can
                      be a user ID, an email address, or an arbitrary token that
                      uniquely identifies the user. When sending an error
@@ -194,7 +194,7 @@ class Client(object):
           :param http_context: The HTTP request which was processed when the
                                error was triggered.
 
-          :type user: string
+          :type user: str
           :param user: The user who caused or was affected by the crash. This
                        can be a user ID, an email address, or an arbitrary
                        token that uniquely identifies the user. When sending
@@ -230,7 +230,7 @@ class Client(object):
           :param http_context: The HTTP request which was processed when the
                                error was triggered.
 
-          :type user: string
+          :type user: str
           :param user: The user who caused or was affected by the crash. This
                        can be a user ID, an email address, or an arbitrary
                        token that uniquely identifies the user. When sending an
