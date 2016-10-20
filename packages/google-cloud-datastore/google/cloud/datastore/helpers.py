@@ -452,7 +452,7 @@ class GeoPoint(object):
     def __eq__(self, other):
         """Compare two geo points for equality.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: True if the points compare equal, else False.
         """
         if not isinstance(other, GeoPoint):
@@ -464,7 +464,7 @@ class GeoPoint(object):
     def __ne__(self, other):
         """Compare two geo points for inequality.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: False if the points compare equal, else True.
         """
         return not self.__eq__(other)
