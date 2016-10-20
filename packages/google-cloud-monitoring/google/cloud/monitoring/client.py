@@ -102,13 +102,13 @@ class Client(JSONClient):
             :meth:`~google.cloud.monitoring.query.Query.select_interval`
             must be called before the query is executed.
 
-        :type days: integer
+        :type days: int
         :param days: The number of days in the time interval.
 
-        :type hours: integer
+        :type hours: int
         :param hours: The number of hours in the time interval.
 
-        :type minutes: integer
+        :type minutes: int
         :param minutes: The number of minutes in the time interval.
 
         :rtype: :class:`~google.cloud.monitoring.query.Query`

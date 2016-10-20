@@ -100,13 +100,13 @@ class Query(object):
         :meth:`~google.cloud.monitoring.query.Query.select_interval`
         must be called before the query is executed.
 
-    :type days: integer
+    :type days: int
     :param days: The number of days in the time interval.
 
-    :type hours: integer
+    :type hours: int
     :param hours: The number of hours in the time interval.
 
-    :type minutes: integer
+    :type minutes: int
     :param minutes: The number of minutes in the time interval.
 
     :raises: :exc:`ValueError` if ``end_time`` is specified but
@@ -368,13 +368,13 @@ class Query(object):
             See :class:`Aligner` and the descriptions of the `supported
             aligners`_.
 
-        :type seconds: integer
+        :type seconds: int
         :param seconds: The number of seconds in the alignment period.
 
-        :type minutes: integer
+        :type minutes: int
         :param minutes: The number of minutes in the alignment period.
 
-        :type hours: integer
+        :type hours: int
         :param hours: The number of hours in the alignment period.
 
         :rtype: :class:`Query`
@@ -446,7 +446,7 @@ class Query(object):
         :param headers_only:
              Whether to omit the point data from the time series objects.
 
-        :type page_size: integer or None
+        :type page_size: int or None
         :param page_size:
             An optional positive number specifying the maximum number of
             points to return per page. This can be used to control how far
@@ -510,7 +510,7 @@ class Query(object):
              Whether to omit the point data from the
              :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects.
 
-        :type page_size: integer or None
+        :type page_size: int or None
         :param page_size: A limit on the number of points to return per page.
 
         :type page_token: string or None
