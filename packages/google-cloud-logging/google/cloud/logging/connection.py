@@ -27,7 +27,7 @@ class Connection(base_connection.JSONConnection):
     :type http: :class:`httplib2.Http` or class that defines ``request()``.
     :param http: (Optional) HTTP object to make requests.
 
-    :type api_base_url: string
+    :type api_base_url: str
     :param api_base_url: The base of the API call URL. Defaults to the value
                          :attr:`Connection.API_BASE_URL`.
     """
@@ -123,7 +123,7 @@ class _LoggingAPI(object):
         :type entries: sequence of mapping
         :param entries: the log entry resources to log.
 
-        :type logger_name: string
+        :type logger_name: str
         :param logger_name: name of default logger to which to log the entries;
                             individual entries may override.
 
@@ -155,10 +155,10 @@ class _LoggingAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs/delete
 
-        :type project: string
+        :type project: str
         :param project: ID of project containing the log entries to delete
 
-        :type logger_name: string
+        :type logger_name: str
         :param logger_name: name of logger containing the log entries to delete
         """
         path = '/projects/%s/logs/%s' % (project, logger_name)
@@ -183,7 +183,7 @@ class _SinksAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/list
 
-        :type project: string
+        :type project: str
         :param project: ID of the project whose sinks are to be listed.
 
         :type page_size: int
@@ -220,17 +220,17 @@ class _SinksAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/create
 
-        :type project: string
+        :type project: str
         :param project: ID of the project in which to create the sink.
 
-        :type sink_name: string
+        :type sink_name: str
         :param sink_name: the name of the sink
 
-        :type filter_: string
+        :type filter_: str
         :param filter_: the advanced logs filter expression defining the
                         entries exported by the sink.
 
-        :type destination: string
+        :type destination: str
         :param destination: destination URI for the entries exported by
                             the sink.
         """
@@ -248,10 +248,10 @@ class _SinksAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/get
 
-        :type project: string
+        :type project: str
         :param project: ID of the project containing the sink.
 
-        :type sink_name: string
+        :type sink_name: str
         :param sink_name: the name of the sink
 
         :rtype: dict
@@ -266,17 +266,17 @@ class _SinksAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/update
 
-        :type project: string
+        :type project: str
         :param project: ID of the project containing the sink.
 
-        :type sink_name: string
+        :type sink_name: str
         :param sink_name: the name of the sink
 
-        :type filter_: string
+        :type filter_: str
         :param filter_: the advanced logs filter expression defining the
                         entries exported by the sink.
 
-        :type destination: string
+        :type destination: str
         :param destination: destination URI for the entries exported by
                             the sink.
         """
@@ -294,10 +294,10 @@ class _SinksAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/delete
 
-        :type project: string
+        :type project: str
         :param project: ID of the project containing the sink.
 
-        :type sink_name: string
+        :type sink_name: str
         :param sink_name: the name of the sink
         """
         target = '/projects/%s/sinks/%s' % (project, sink_name)
@@ -322,7 +322,7 @@ class _MetricsAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/list
 
-        :type project: string
+        :type project: str
         :param project: ID of the project whose metrics are to be listed.
 
         :type page_size: int
@@ -359,17 +359,17 @@ class _MetricsAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/create
 
-        :type project: string
+        :type project: str
         :param project: ID of the project in which to create the metric.
 
-        :type metric_name: string
+        :type metric_name: str
         :param metric_name: the name of the metric
 
-        :type filter_: string
+        :type filter_: str
         :param filter_: the advanced logs filter expression defining the
                         entries exported by the metric.
 
-        :type description: string
+        :type description: str
         :param description: description of the metric.
         """
         target = '/projects/%s/metrics' % (project,)
@@ -386,10 +386,10 @@ class _MetricsAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/get
 
-        :type project: string
+        :type project: str
         :param project: ID of the project containing the metric.
 
-        :type metric_name: string
+        :type metric_name: str
         :param metric_name: the name of the metric
 
         :rtype: dict
@@ -404,17 +404,17 @@ class _MetricsAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/update
 
-        :type project: string
+        :type project: str
         :param project: ID of the project containing the metric.
 
-        :type metric_name: string
+        :type metric_name: str
         :param metric_name: the name of the metric
 
-        :type filter_: string
+        :type filter_: str
         :param filter_: the advanced logs filter expression defining the
                         entries exported by the metric.
 
-        :type description: string
+        :type description: str
         :param description: description of the metric.
         """
         target = '/projects/%s/metrics/%s' % (project, metric_name)
@@ -431,10 +431,10 @@ class _MetricsAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/delete
 
-        :type project: string
+        :type project: str
         :param project: ID of the project containing the metric.
 
-        :type metric_name: string
+        :type metric_name: str
         :param metric_name: the name of the metric.
         """
         target = '/projects/%s/metrics/%s' % (project, metric_name)
