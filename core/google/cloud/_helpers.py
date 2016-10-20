@@ -526,7 +526,7 @@ def _pb_timestamp_to_rfc3339(timestamp_pb):
     :type timestamp_pb: :class:`google.protobuf.timestamp_pb2.Timestamp`
     :param timestamp_pb: A Google returned timestamp protobuf.
 
-    :rtype: string
+    :rtype: str
     :returns: An RFC 3339 formatted timestamp string.
     """
     timestamp = _pb_timestamp_to_datetime(timestamp_pb)

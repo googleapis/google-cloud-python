@@ -74,7 +74,7 @@ class Changes(object):
     def path(self):
         """URL path for change set APIs.
 
-        :rtype: string
+        :rtype: str
         :returns: the path based on project, zone, and change set names.
         """
         return '/projects/%s/managedZones/%s/changes/%s' % (
@@ -84,7 +84,7 @@ class Changes(object):
     def name(self):
         """Name of the change set.
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: Name, as set by the back-end, or None.
         """
         return self._properties.get('id')
@@ -104,7 +104,7 @@ class Changes(object):
     def status(self):
         """Status of the change set.
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: Status, as set by the back-end, or None.
         """
         return self._properties.get('status')

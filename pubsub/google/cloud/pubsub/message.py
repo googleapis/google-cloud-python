@@ -71,7 +71,7 @@ class Message(object):
     def service_timestamp(self):
         """Return server-set timestamp.
 
-        :rtype: string
+        :rtype: str
         :returns: timestamp (in UTC timezone) in RFC 3339 format
         """
         return self._service_timestamp

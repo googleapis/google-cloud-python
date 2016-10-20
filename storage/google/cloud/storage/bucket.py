@@ -193,7 +193,7 @@ class Bucket(_PropertyMixin):
         :type bucket_name: string
         :param bucket_name: The bucket name in the path.
 
-        :rtype: string
+        :rtype: str
         :returns: The relative URL path for ``bucket_name``.
         """
         return '/b/' + bucket_name
@@ -541,7 +541,7 @@ class Bucket(_PropertyMixin):
         See: http://tools.ietf.org/html/rfc2616#section-3.11 and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The bucket etag or ``None`` if the property is not
                   set locally.
         """
@@ -553,7 +553,7 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The ID of the bucket or ``None`` if the property is not
                   set locally.
         """
@@ -584,7 +584,7 @@ class Bucket(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     def get_logging(self):
@@ -666,7 +666,7 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The self link for the bucket or ``None`` if the property is
                   not set locally.
         """
@@ -678,7 +678,7 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/storage-classes
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
                   "NEARLINE", "COLDLINE", "STANDARD", or
                   "DURABLE_REDUCED_AVAILABILITY", else ``None``.

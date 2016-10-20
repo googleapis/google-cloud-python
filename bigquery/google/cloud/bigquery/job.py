@@ -96,7 +96,7 @@ class _BaseJob(object):
     def project(self):
         """Project bound to the job.
 
-        :rtype: string
+        :rtype: str
         :returns: the project (derived from the client).
         """
         return self._client.project
@@ -135,7 +135,7 @@ class _AsyncJob(_BaseJob):
     def job_type(self):
         """Type of job
 
-        :rtype: string
+        :rtype: str
         :returns: one of 'load', 'copy', 'extract', 'query'
         """
         return self._JOB_TYPE
@@ -144,7 +144,7 @@ class _AsyncJob(_BaseJob):
     def path(self):
         """URL path for the job's APIs.
 
-        :rtype: string
+        :rtype: str
         :returns: the path based on project and job name.
         """
         return '/projects/%s/jobs/%s' % (self.project, self.name)
@@ -153,7 +153,7 @@ class _AsyncJob(_BaseJob):
     def etag(self):
         """ETag for the job resource.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: the ETag (None until set from the server).
         """
         return self._properties.get('etag')
@@ -162,7 +162,7 @@ class _AsyncJob(_BaseJob):
     def self_link(self):
         """URL for the job resource.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: the URL (None until set from the server).
         """
         return self._properties.get('selfLink')
@@ -171,7 +171,7 @@ class _AsyncJob(_BaseJob):
     def user_email(self):
         """E-mail address of user who submitted the job.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: the URL (None until set from the server).
         """
         return self._properties.get('user_email')
@@ -241,7 +241,7 @@ class _AsyncJob(_BaseJob):
     def state(self):
         """Status of the job.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: the state (None until set from the server).
         """
         status = self._properties.get('status')

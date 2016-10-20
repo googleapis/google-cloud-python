@@ -53,7 +53,7 @@ def _determine_default_project(project=None):
     :type project: string
     :param project: Optional. The project to use as default.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     :returns: Default project if it can be determined.
     """
     if project is None:

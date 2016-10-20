@@ -45,7 +45,7 @@ def _group_id_from_name(path, project=None):
     :param project: The project associated with the request. It is
                     included for validation purposes.
 
-    :rtype: string
+    :rtype: str
     :returns: Group ID parsed from ``path``.
     :raises: :class:`ValueError` if the ``path`` is ill-formed or if
              the project from the ``path`` does not agree with the
@@ -63,7 +63,7 @@ def _group_name_from_id(project, group_id):
     :type group_id: string
     :param group_id: The group ID.
 
-    :rtype: string
+    :rtype: str
     :returns: The fully qualified name of the group.
     """
     return 'projects/{project}/groups/{group_id}'.format(
