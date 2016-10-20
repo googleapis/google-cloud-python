@@ -26,7 +26,7 @@ class Subscription(object):
     See:
     https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions
 
-    :type name: string
+    :type name: str
     :param name: the name of the subscription.
 
     :type topic: :class:`google.cloud.pubsub.topic.Topic` or ``NoneType``
@@ -37,7 +37,7 @@ class Subscription(object):
     :param ack_deadline: the deadline (in seconds) by which messages pulled
                          from the back-end must be acknowledged.
 
-    :type push_endpoint: string
+    :type push_endpoint: str
     :param push_endpoint: URL to which messages will be pushed by the back-end.
                           If not set, the application must pull messages.
 
@@ -272,7 +272,7 @@ class Subscription(object):
            :start-after: [START subscription_pull_push]
            :end-before: [END subscription_pull_push]
 
-        :type push_endpoint: string
+        :type push_endpoint: str
         :param push_endpoint: URL to which messages will be pushed by the
                               back-end.  If None, the application must pull
                               messages.

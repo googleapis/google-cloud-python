@@ -46,14 +46,14 @@ class _PublisherAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list
 
-        :type project: string
+        :type project: str
         :param project: project ID
 
         :type page_size: int
         :param page_size: maximum number of topics to return, If not passed,
                           defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of topics. If not
                            passed, the API will return the first page of
                            topics.
@@ -80,7 +80,7 @@ class _PublisherAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create
 
-        :type topic_path: string
+        :type topic_path: str
         :param topic_path: fully-qualified path of the new topic, in format
                             ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
@@ -103,7 +103,7 @@ class _PublisherAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/get
 
-        :type topic_path: string
+        :type topic_path: str
         :param topic_path: fully-qualified path of the topic, in format
                         ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
@@ -126,7 +126,7 @@ class _PublisherAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create
 
-        :type topic_path: string
+        :type topic_path: str
         :param topic_path: fully-qualified path of the new topic, in format
                             ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
         """
@@ -143,7 +143,7 @@ class _PublisherAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/publish
 
-        :type topic_path: string
+        :type topic_path: str
         :param topic_path: fully-qualified path of the topic, in format
                             ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
@@ -174,7 +174,7 @@ class _PublisherAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list
 
-        :type topic_path: string
+        :type topic_path: str
         :param topic_path: fully-qualified path of the topic, in format
                             ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
@@ -182,7 +182,7 @@ class _PublisherAPI(object):
         :param page_size: maximum number of subscriptions to return, If not
                           passed, defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of subscriptions.
                            If not passed, the API will return the first page
                            of subscriptions.
@@ -223,14 +223,14 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/list
 
-        :type project: string
+        :type project: str
         :param project: project ID
 
         :type page_size: int
         :param page_size: maximum number of subscriptions to return, If not
                           passed, defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of subscriptions.
                            If not passed, the API will return the first page
                            of subscriptions.
@@ -259,12 +259,12 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the new subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
-        :type topic_path: string
+        :type topic_path: str
         :param topic_path: the fully-qualified path of the topic being
                            subscribed, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
@@ -273,7 +273,7 @@ class _SubscriberAPI(object):
         :param ack_deadline: the deadline (in seconds) by which messages pulled
                              from the back-end must be acknowledged.
 
-        :type push_endpoint: string, or ``NoneType``
+        :type push_endpoint: str, or ``NoneType``
         :param push_endpoint: URL to which messages will be pushed by the
                               back-end.  If not set, the application must pull
                               messages.
@@ -305,7 +305,7 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
@@ -327,7 +327,7 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
@@ -346,12 +346,12 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the new subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
-        :type push_endpoint: string, or ``NoneType``
+        :type push_endpoint: str, or ``NoneType``
         :param push_endpoint: URL to which messages will be pushed by the
                               back-end.  If not set, the application must pull
                               messages.
@@ -371,7 +371,7 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the new subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
@@ -405,7 +405,7 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the new subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
@@ -427,7 +427,7 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the new subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.

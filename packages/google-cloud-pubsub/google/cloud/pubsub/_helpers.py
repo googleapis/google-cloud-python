@@ -38,10 +38,10 @@ _SUBSCRIPTION_TEMPLATE = re.compile(r"""
 def topic_name_from_path(path, project):
     """Validate a topic URI path and get the topic name.
 
-    :type path: string
+    :type path: str
     :param path: URI path for a topic API request.
 
-    :type project: string
+    :type project: str
     :param project: The project associated with the request. It is
                     included for validation purposes.
 
@@ -57,10 +57,10 @@ def topic_name_from_path(path, project):
 def subscription_name_from_path(path, project):
     """Validate a subscription URI path and get the subscription name.
 
-    :type path: string
+    :type path: str
     :param path: URI path for a subscription API request.
 
-    :type project: string
+    :type project: str
     :param project: The project associated with the request. It is
                     included for validation purposes.
 
