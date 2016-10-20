@@ -109,7 +109,7 @@ class Query(object):
     def namespace(self):
         """This query's namespace
 
-        :rtype: string or None
+        :rtype: str or None
         :returns: the namespace assigned to this query
         """
         return self._namespace or self._client.namespace
@@ -128,7 +128,7 @@ class Query(object):
     def kind(self):
         """Get the Kind of the Query.
 
-        :rtype: string
+        :rtype: str
         :returns: The kind for the query.
         """
         return self._kind
