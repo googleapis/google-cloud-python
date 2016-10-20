@@ -16,6 +16,7 @@ import unittest
 
 
 class TestClient(unittest.TestCase):
+
     PROJECT = 'PROJECT'
     LOGGER_NAME = 'LOGGER_NAME'
     SINK_NAME = 'SINK_NAME'
@@ -65,6 +66,7 @@ class TestClient(unittest.TestCase):
             return wrapped
 
         class _GaxLoggingAPI(object):
+
             def __init__(self, _wrapped):
                 self._wrapped = _wrapped
 
