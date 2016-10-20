@@ -923,11 +923,10 @@ class Blob(_PropertyMixin):
         """Retrieve the storage class for the object.
 
         See: https://cloud.google.com/storage/docs/storage-classes
-        https://cloud.google.com/storage/docs/nearline-storage
-        https://cloud.google.com/storage/docs/durable-reduced-availability
 
         :rtype: string or ``NoneType``
-        :returns: If set, one of "STANDARD", "NEARLINE", or
+        :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
+                  "NEARLINE", "COLDLINE", "STANDARD", or
                   "DURABLE_REDUCED_AVAILABILITY", else ``None``.
         """
         return self._properties.get('storageClass')

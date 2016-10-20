@@ -746,6 +746,27 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.storage_class, 'NEARLINE')
         self.assertTrue('storageClass' in bucket._changes)
 
+    def test_storage_class_setter_COLDLINE(self):
+        NAME = 'name'
+        bucket = self._makeOne(name=NAME)
+        bucket.storage_class = 'COLDLINE'
+        self.assertEqual(bucket.storage_class, 'COLDLINE')
+        self.assertTrue('storageClass' in bucket._changes)
+
+    def test_storage_class_setter_MULTI_REGIONAL(self):
+        NAME = 'name'
+        bucket = self._makeOne(name=NAME)
+        bucket.storage_class = 'MULTI_REGIONAL'
+        self.assertEqual(bucket.storage_class, 'MULTI_REGIONAL')
+        self.assertTrue('storageClass' in bucket._changes)
+
+    def test_storage_class_setter_REGIONAL(self):
+        NAME = 'name'
+        bucket = self._makeOne(name=NAME)
+        bucket.storage_class = 'REGIONAL'
+        self.assertEqual(bucket.storage_class, 'REGIONAL')
+        self.assertTrue('storageClass' in bucket._changes)
+
     def test_storage_class_setter_DURABLE_REDUCED_AVAILABILITY(self):
         NAME = 'name'
         bucket = self._makeOne(name=NAME)
