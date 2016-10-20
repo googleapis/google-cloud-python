@@ -442,7 +442,7 @@ class Query(object):
             for timeseries in query.iter():
                 ...
 
-        :type headers_only: boolean
+        :type headers_only: bool
         :param headers_only:
              Whether to omit the point data from the time series objects.
 
@@ -505,7 +505,7 @@ class Query(object):
         We use a series of key-value pairs (suitable for passing to
         ``urlencode``) instead of a ``dict`` to allow for repeated fields.
 
-        :type headers_only: boolean
+        :type headers_only: bool
         :param headers_only:
              Whether to omit the point data from the
              :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects.
