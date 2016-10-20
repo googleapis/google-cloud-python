@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud 85a0c1a documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud 881a953 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 85a0c1a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -1195,11 +1195,10 @@
         <span class="sd">&quot;&quot;&quot;Retrieve the storage class for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/storage-classes</span>
-<span class="sd">        https://cloud.google.com/storage/docs/nearline-storage</span>
-<span class="sd">        https://cloud.google.com/storage/docs/durable-reduced-availability</span>
 
 <span class="sd">        :rtype: string or ``NoneType``</span>
-<span class="sd">        :returns: If set, one of &quot;STANDARD&quot;, &quot;NEARLINE&quot;, or</span>
+<span class="sd">        :returns: If set, one of &quot;MULTI_REGIONAL&quot;, &quot;REGIONAL&quot;,</span>
+<span class="sd">                  &quot;NEARLINE&quot;, &quot;COLDLINE&quot;, &quot;STANDARD&quot;, or</span>
 <span class="sd">                  &quot;DURABLE_REDUCED_AVAILABILITY&quot;, else ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;storageClass&#39;</span><span class="p">)</span>
@@ -1320,7 +1319,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'85a0c1a',
+            VERSION:'881a953',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
