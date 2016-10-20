@@ -29,7 +29,7 @@ class ResourceRecordSet(object):
     :type record_type: string
     :param record_type: the RR type of the zone.
 
-    :type ttl: integer
+    :type ttl: int
     :param ttl: TTL (in seconds) for caching the record sets.
 
     :type rrdatas: list of string
