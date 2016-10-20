@@ -331,7 +331,7 @@ class Bucket(_PropertyMixin):
         is to prevent accidental bucket deletion and to prevent extremely long
         runtime of this method.
 
-        :type force: boolean
+        :type force: bool
         :param force: If True, empties the bucket's objects then deletes it.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -793,11 +793,11 @@ class Bucket(_PropertyMixin):
         objects / blobs this will cowardly refuse to make the objects public.
         This is to prevent extremely long runtime of this method.
 
-        :type recursive: boolean
+        :type recursive: bool
         :param recursive: If True, this will make all blobs inside the bucket
                           public as well.
 
-        :type future: boolean
+        :type future: bool
         :param future: If True, this will make all objects created in the
                        future public as well.
 

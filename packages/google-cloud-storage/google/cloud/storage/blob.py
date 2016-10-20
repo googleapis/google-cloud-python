@@ -440,7 +440,7 @@ class Blob(_PropertyMixin):
         :type file_obj: file
         :param file_obj: A file handle open for reading.
 
-        :type rewind: boolean
+        :type rewind: bool
         :param rewind: If True, seek to the beginning of the file handle before
                        writing the file to Cloud Storage.
 
