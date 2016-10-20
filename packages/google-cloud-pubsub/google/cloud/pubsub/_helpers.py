@@ -45,7 +45,7 @@ def topic_name_from_path(path, project):
     :param project: The project associated with the request. It is
                     included for validation purposes.
 
-    :rtype: string
+    :rtype: str
     :returns: Topic name parsed from ``path``.
     :raises: :class:`ValueError` if the ``path`` is ill-formed or if
              the project from the ``path`` does not agree with the
@@ -64,7 +64,7 @@ def subscription_name_from_path(path, project):
     :param project: The project associated with the request. It is
                     included for validation purposes.
 
-    :rtype: string
+    :rtype: str
     :returns: subscription name parsed from ``path``.
     :raises: :class:`ValueError` if the ``path`` is ill-formed or if
              the project from the ``path`` does not agree with the

@@ -123,7 +123,7 @@ class Policy(object):
         :type email: string
         :param email: E-mail for this particular user.
 
-        :rtype: string
+        :rtype: str
         :returns: A member string corresponding to the given user.
         """
         return 'user:%s' % (email,)
@@ -135,7 +135,7 @@ class Policy(object):
         :type email: string
         :param email: E-mail for this particular service account.
 
-        :rtype: string
+        :rtype: str
         :returns: A member string corresponding to the given service account.
         """
         return 'serviceAccount:%s' % (email,)
@@ -147,7 +147,7 @@ class Policy(object):
         :type email: string
         :param email: An id or e-mail for this particular group.
 
-        :rtype: string
+        :rtype: str
         :returns: A member string corresponding to the given group.
         """
         return 'group:%s' % (email,)
@@ -159,7 +159,7 @@ class Policy(object):
         :type domain: string
         :param domain: The domain for this member.
 
-        :rtype: string
+        :rtype: str
         :returns: A member string corresponding to the given domain.
         """
         return 'domain:%s' % (domain,)
@@ -168,7 +168,7 @@ class Policy(object):
     def all_users():
         """Factory method for a member representing all users.
 
-        :rtype: string
+        :rtype: str
         :returns: A member string representing all users.
         """
         return 'allUsers'
@@ -177,7 +177,7 @@ class Policy(object):
     def authenticated_users():
         """Factory method for a member representing all authenticated users.
 
-        :rtype: string
+        :rtype: str
         :returns: A member string representing all authenticated users.
         """
         return 'allAuthenticatedUsers'
