@@ -197,7 +197,7 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalRows
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: Count generated on the server (None until set by the server).
         """
         return self._properties.get('totalRows')
@@ -209,7 +209,7 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalBytesProcessed
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: Count generated on the server (None until set by the server).
         """
         return self._properties.get('totalBytesProcessed')

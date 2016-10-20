@@ -151,7 +151,7 @@ class Table(object):
     def num_bytes(self):
         """The size of the table in bytes.
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: the byte count (None until set from the server).
         """
         num_bytes_as_str = self._properties.get('numBytes')
@@ -162,7 +162,7 @@ class Table(object):
     def num_rows(self):
         """The number of rows in the table.
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: the row count (None until set from the server).
         """
         num_rows_as_str = self._properties.get('numRows')

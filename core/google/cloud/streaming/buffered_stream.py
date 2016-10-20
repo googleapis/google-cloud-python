@@ -64,7 +64,7 @@ class BufferedStream(object):
     def stream_end_position(self):
         """Point to which stream was read into the buffer
 
-        :rtype: integer
+        :rtype: int
         :returns: The end-position of the stream.
         """
         return self._end_pos
@@ -73,7 +73,7 @@ class BufferedStream(object):
     def _bytes_remaining(self):
         """Bytes remaining to be read from the buffer
 
-        :rtype: integer
+        :rtype: int
         :returns: The number of bytes remaining.
         """
         return len(self._buffered_data) - self._buffer_pos

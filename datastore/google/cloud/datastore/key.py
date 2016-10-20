@@ -105,7 +105,7 @@ class Key(object):
     def __hash__(self):
         """Hash a keys for use in a dictionary lookp.
 
-        :rtype: integer
+        :rtype: int
         :returns: a hash of the key's state.
         """
         return (hash(self.flat_path) +
@@ -307,7 +307,7 @@ class Key(object):
     def id(self):
         """ID getter. Based on the last element of path.
 
-        :rtype: integer
+        :rtype: int
         :returns: The (integer) ID of the key.
         """
         return self.path[-1].get('id')
@@ -325,7 +325,7 @@ class Key(object):
     def id_or_name(self):
         """Getter. Based on the last element of path.
 
-        :rtype: integer (if ``id``) or string (if ``name``)
+        :rtype: int (if ``id``) or string (if ``name``)
         :returns: The last element of the key's path if it is either an ``id``
                   or a ``name``.
         """
