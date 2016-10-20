@@ -111,7 +111,7 @@ class Bucket(_PropertyMixin):
         :type blob_name: string
         :param blob_name: The name of the blob to be instantiated.
 
-        :type chunk_size: integer
+        :type chunk_size: int
         :param chunk_size: The size of a chunk of data whenever iterating
                            (1 MB). This must be a multiple of 256 KB per the
                            API specification.

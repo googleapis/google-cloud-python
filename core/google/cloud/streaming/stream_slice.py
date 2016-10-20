@@ -23,7 +23,7 @@ class StreamSlice(object):
     :type stream:  readable file-like object
     :param stream:  the stream to be buffered.
 
-    :type max_bytes: integer
+    :type max_bytes: int
     :param max_bytes: maximum number of bytes to return in the slice.
     """
     def __init__(self, stream, max_bytes):
@@ -65,7 +65,7 @@ class StreamSlice(object):
         slice indicates we should still be able to read more bytes, we
         raise :exc:`IncompleteRead`.
 
-        :type size: integer or None
+        :type size: int or None
         :param size: If provided, read no more than size bytes from the stream.
 
         :rtype: bytes

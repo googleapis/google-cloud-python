@@ -227,7 +227,7 @@ class Client(JSONClient):
 
         This implements "storage.buckets.list".
 
-        :type max_results: integer or ``NoneType``
+        :type max_results: int or ``NoneType``
         :param max_results: Optional. Maximum number of buckets to return.
 
         :type page_token: string or ``NoneType``

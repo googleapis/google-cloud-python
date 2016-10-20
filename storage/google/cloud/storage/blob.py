@@ -57,7 +57,7 @@ class Blob(_PropertyMixin):
     :type bucket: :class:`google.cloud.storage.bucket.Bucket`
     :param bucket: The bucket to which this blob belongs.
 
-    :type chunk_size: integer
+    :type chunk_size: int
     :param chunk_size: The size of a chunk of data whenever iterating (1 MB).
                        This must be a multiple of 256 KB per the API
                        specification.
@@ -94,7 +94,7 @@ class Blob(_PropertyMixin):
     def chunk_size(self, value):
         """Set the blob's default chunk size.
 
-        :type value: integer or ``NoneType``
+        :type value: int or ``NoneType``
         :param value: The current blob's chunk size, if it is set.
 
         :raises: :class:`ValueError` if ``value`` is not ``None`` and is not a
@@ -453,7 +453,7 @@ class Blob(_PropertyMixin):
         :type content_type: string or ``NoneType``
         :param content_type: Optional type of content being uploaded.
 
-        :type num_retries: integer
+        :type num_retries: int
         :param num_retries: Number of upload retries. Defaults to 6.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
