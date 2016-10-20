@@ -63,7 +63,7 @@ class Client(BaseClient):
         :type project_id: str
         :param project_id: The ID for this project.
 
-        :type name: string
+        :type name: str
         :param name: The display name of the project.
 
         :type labels: dict
