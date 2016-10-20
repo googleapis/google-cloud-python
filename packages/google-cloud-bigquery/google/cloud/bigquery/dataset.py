@@ -115,7 +115,7 @@ class Dataset(object):
     def project(self):
         """Project bound to the dataset.
 
-        :rtype: string
+        :rtype: str
         :returns: the project (derived from the client).
         """
         return self._client.project
@@ -124,7 +124,7 @@ class Dataset(object):
     def path(self):
         """URL path for the dataset's APIs.
 
-        :rtype: string
+        :rtype: str
         :returns: the path based on project and dataste name.
         """
         return '/projects/%s/datasets/%s' % (self.project, self.name)
@@ -168,7 +168,7 @@ class Dataset(object):
     def dataset_id(self):
         """ID for the dataset resource.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: the ID (None until set from the server).
         """
         return self._properties.get('id')
@@ -177,7 +177,7 @@ class Dataset(object):
     def etag(self):
         """ETag for the dataset resource.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: the ETag (None until set from the server).
         """
         return self._properties.get('etag')
@@ -198,7 +198,7 @@ class Dataset(object):
     def self_link(self):
         """URL for the dataset resource.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: the URL (None until set from the server).
         """
         return self._properties.get('selfLink')
@@ -229,7 +229,7 @@ class Dataset(object):
     def description(self):
         """Description of the dataset.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: The description as set by the user, or None (the default).
         """
         return self._properties.get('description')
@@ -251,7 +251,7 @@ class Dataset(object):
     def friendly_name(self):
         """Title of the dataset.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: The name as set by the user, or None (the default).
         """
         return self._properties.get('friendlyName')
@@ -273,7 +273,7 @@ class Dataset(object):
     def location(self):
         """Location in which the dataset is hosted.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: The location as set by the user, or None (the default).
         """
         return self._properties.get('location')
