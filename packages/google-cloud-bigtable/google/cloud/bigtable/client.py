@@ -317,7 +317,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :type instance_id: str
         :param instance_id: The ID of the instance.
 
-        :type location: string
+        :type location: str
         :param location: location name, in form
                          ``projects/<project>/locations/<location>``; used to
                          set up the instance's cluster.
