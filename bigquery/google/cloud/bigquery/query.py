@@ -118,7 +118,7 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#cacheHit
 
-        :rtype: boolean or ``NoneType``
+        :rtype: bool or ``NoneType``
         :returns: True if the query results were served from cache (None
                   until set by the server).
         """
@@ -131,7 +131,7 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#jobComplete
 
-        :rtype: boolean or ``NoneType``
+        :rtype: bool or ``NoneType``
         :returns: True if the query completed on the server (None
                   until set by the server).
         """

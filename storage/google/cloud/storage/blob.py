@@ -254,7 +254,7 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: True if the blob exists in Cloud Storage.
         """
         client = self._require_client(client)

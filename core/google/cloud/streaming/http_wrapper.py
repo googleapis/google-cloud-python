@@ -258,7 +258,7 @@ class Response(_ResponseTuple):
     def is_redirect(self):
         """Does this response contain a redirect
 
-        :rtype: boolean
+        :rtype: bool
         :returns: True if the status code indicates a redirect and the
                   'location' header is present.
         """
