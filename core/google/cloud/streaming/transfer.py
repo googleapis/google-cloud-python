@@ -131,7 +131,7 @@ class _Transfer(object):
     def num_retries(self):
         """How many retries should the transfer attempt
 
-        :rtype: integer
+        :rtype: int
         :returns: The number of retries allowed.
         """
         return self._num_retries
@@ -300,7 +300,7 @@ class Download(_Transfer):
     def progress(self):
         """Number of bytes have been downloaded.
 
-        :rtype: integer >= 0
+        :rtype: int >= 0
         :returns: The number of downloaded bytes.
         """
         return self._progress
@@ -309,7 +309,7 @@ class Download(_Transfer):
     def total_size(self):
         """Total number of bytes to be downloaded.
 
-        :rtype: integer or None
+        :rtype: int or None
         :returns: The total number of bytes to download.
         """
         return self._total_size
@@ -741,7 +741,7 @@ class Upload(_Transfer):
     def progress(self):
         """Bytes uploaded so far
 
-        :rtype: integer
+        :rtype: int
         :returns: The amount uploaded so far.
         """
         return self._progress
@@ -775,7 +775,7 @@ class Upload(_Transfer):
     def total_size(self):
         """Total size of the stream to be uploaded.
 
-        :rtype: integer or None
+        :rtype: int or None
         :returns: The total size to be uploaded.
         """
         return self._total_size

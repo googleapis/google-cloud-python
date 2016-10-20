@@ -30,7 +30,7 @@ def calculate_wait_for_retry(retry_attempt):
     :type retry_attempt: int
     :param retry_attempt: Retry attempt counter.
 
-    :rtype: integer
+    :rtype: int
     :returns: Number of seconds to wait before retrying request.
     """
     wait_time = 2 ** retry_attempt

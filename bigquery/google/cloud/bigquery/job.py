@@ -455,7 +455,7 @@ class LoadTableFromStorageJob(_AsyncJob):
     def input_file_bytes(self):
         """Count of bytes loaded from source files.
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
         """
         statistics = self._properties.get('statistics')
@@ -466,7 +466,7 @@ class LoadTableFromStorageJob(_AsyncJob):
     def input_files(self):
         """Count of source files.
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
         """
         statistics = self._properties.get('statistics')
@@ -477,7 +477,7 @@ class LoadTableFromStorageJob(_AsyncJob):
     def output_bytes(self):
         """Count of bytes saved to destination table.
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
         """
         statistics = self._properties.get('statistics')
@@ -488,7 +488,7 @@ class LoadTableFromStorageJob(_AsyncJob):
     def output_rows(self):
         """Count of rows saved to destination table.
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
         """
         statistics = self._properties.get('statistics')
