@@ -322,13 +322,11 @@ class TestSubscription(unittest.TestCase):
                          (self.SUB_PATH, None))
 
     def test_pull_wo_return_immediately_max_messages_w_bound_client(self):
-        import base64
         from google.cloud.pubsub.message import Message
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD)
-        MESSAGE = {'messageId': MSG_ID, 'data': B64}
+        MESSAGE = {'messageId': MSG_ID, 'data': PAYLOAD}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
         client = _Client(project=self.PROJECT)
         api = client.subscriber_api = _FauxSubscribererAPI()
@@ -349,13 +347,12 @@ class TestSubscription(unittest.TestCase):
                          (self.SUB_PATH, False, 1))
 
     def test_pull_w_return_immediately_w_max_messages_w_alt_client(self):
-        import base64
         from google.cloud.pubsub.message import Message
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD)
-        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
+        MESSAGE = {'messageId': MSG_ID, 'data': PAYLOAD,
+                   'attributes': {'a': 'b'}}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)

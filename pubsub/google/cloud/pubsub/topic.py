@@ -14,8 +14,6 @@
 
 """Define API Topics."""
 
-import base64
-
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
 from google.cloud.exceptions import NotFound
@@ -252,8 +250,7 @@ class Topic(object):
         api = client.publisher_api
 
         self._timestamp_message(attrs)
-        message_b = base64.b64encode(message).decode('ascii')
-        message_data = {'data': message_b, 'attributes': attrs}
+        message_data = {'data': message, 'attributes': attrs}
         message_ids = api.topic_publish(self.full_name, [message_data])
         return message_ids[0]
 
@@ -449,7 +446,7 @@ class Batch(object):
         """
         self.topic._timestamp_message(attrs)
         self.messages.append(
-            {'data': base64.b64encode(message).decode('ascii'),
+            {'data': message,
              'attributes': attrs})
 
     def commit(self, client=None):
