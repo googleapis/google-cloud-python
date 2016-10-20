@@ -134,7 +134,7 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: True if the bucket exists in Cloud Storage.
         """
         client = self._require_client(client)
@@ -720,7 +720,7 @@ class Bucket(_PropertyMixin):
         See:  https://cloud.google.com/storage/docs/object-versioning for
         details.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: True if enabled, else False.
         """
         versioning = self._properties.get('versioning', {})
