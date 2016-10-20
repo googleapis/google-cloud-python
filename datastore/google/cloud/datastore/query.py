@@ -327,10 +327,10 @@ class Query(object):
           >>> list(query.fetch(1))
           [<Entity object>]
 
-        :type limit: integer or None
+        :type limit: int or None
         :param limit: An optional limit passed through to the iterator.
 
-        :type offset: integer
+        :type offset: int
         :param offset: An optional offset passed through to the iterator.
 
         :type start_cursor: bytes
@@ -366,10 +366,10 @@ class Iterator(object):
     :type client: :class:`google.cloud.datastore.client.Client`
     :param client: The client used to make a request.
 
-    :type limit: integer
+    :type limit: int
     :param limit: (Optional) Limit the number of results returned.
 
-    :type offset: integer
+    :type offset: int
     :param offset: (Optional) Offset used to begin a query.
 
     :type start_cursor: bytes
