@@ -30,21 +30,23 @@ class Subscription(object):
     :param name: the name of the subscription.
 
     :type topic: :class:`google.cloud.pubsub.topic.Topic`
-    :param topic: (Optional) the topic to which the subscription belongs;  if ``None``,
-                  the subscription's topic has been deleted.
+    :param topic:
+        (Optional) the topic to which the subscription belongs;  if ``None``,
+        the subscription's topic has been deleted.
 
     :type ack_deadline: int
     :param ack_deadline: the deadline (in seconds) by which messages pulled
                          from the back-end must be acknowledged.
 
     :type push_endpoint: str
-    :param push_endpoint: URL to which messages will be pushed by the back-end.
-                          If not set, the application must pull messages.
+    :param push_endpoint:
+        (Optional) URL to which messages will be pushed by the back-end.  If
+        not set, the application must pull messages.
 
-    :type client: :class:`~google.cloud.pubsub.client.Client` or
-                  ``NoneType``
-    :param client: the client to use.  If not passed, falls back to the
-                   ``client`` stored on the topic.
+    :type client: :class:`~google.cloud.pubsub.client.Client`
+    :param client:
+        (Optional) The client to use.  If not passed, falls back to the
+        ``client`` stored on the topic.
     """
 
     _DELETED_TOPIC_PATH = '_deleted-topic_'
@@ -82,8 +84,9 @@ class Subscription(object):
                        configuration for a topic.
 
         :type topics: dict
-        :param topics: (Optional) A mapping of topic names -> topics.  If not passed,
-                       the subscription will have a newly-created topic.
+        :param topics:
+            (Optional) A mapping of topic names -> topics.  If not passed, the
+            subscription will have a newly-created topic.
 
         :rtype: :class:`google.cloud.pubsub.subscription.Subscription`
         :returns: Subscription parsed from ``resource``.

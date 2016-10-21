@@ -33,8 +33,8 @@ class Message(object):
     :param message_id: An ID assigned to the message by the API.
 
     :type attributes: dict
-    :param attributes: (Optional) Extra metadata associated by the publisher with the
-                       message.
+    :param attributes:
+        (Optional) Extra metadata associated by the publisher with the message.
     """
     _service_timestamp = None
 
