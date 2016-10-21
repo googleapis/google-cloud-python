@@ -88,8 +88,8 @@ class Client(JSONClient):
             demonstration purposes and is subject to change. See the
             `supported metrics`_.
 
-        :type end_time: :class:`datetime.datetime` or None
-        :param end_time: The end time (inclusive) of the time interval
+        :type end_time: :class:`datetime.datetime`
+        :param end_time: (Optional) The end time (inclusive) of the time interval
             for which results should be returned, as a datetime object.
             The default is the start of the current minute.
 
@@ -362,13 +362,13 @@ class Client(JSONClient):
             ...         type_prefix='custom.'):
             ...     print(descriptor.type)
 
-        :type filter_string: str or None
+        :type filter_string: str
         :param filter_string:
-            An optional filter expression describing the metric descriptors
+            (Optional) An optional filter expression describing the metric descriptors
             to be returned. See the `filter documentation`_.
 
-        :type type_prefix: str or None
-        :param type_prefix: An optional prefix constraining the selected
+        :type type_prefix: str
+        :param type_prefix: (Optional) An optional prefix constraining the selected
             metric types. This adds ``metric.type = starts_with("<prefix>")``
             to the filter.
 
@@ -408,9 +408,9 @@ class Client(JSONClient):
             >>> for descriptor in client.list_resource_descriptors():
             ...     print(descriptor.type)
 
-        :type filter_string: str or None
+        :type filter_string: str
         :param filter_string:
-            An optional filter expression describing the resource descriptors
+            (Optional) An optional filter expression describing the resource descriptors
             to be returned. See the `filter documentation`_.
 
         :rtype: list of
@@ -430,21 +430,21 @@ class Client(JSONClient):
           This will not make an HTTP request; it simply instantiates
           a group object owned by this client.
 
-        :type group_id: str or None
-        :param group_id: The ID of the group.
+        :type group_id: str
+        :param group_id: (Optional) The ID of the group.
 
-        :type display_name: str or None
+        :type display_name: str
         :param display_name:
-            A user-assigned name for this group, used only for display
+            (Optional) A user-assigned name for this group, used only for display
             purposes.
 
-        :type parent_id: str or None
+        :type parent_id: str
         :param parent_id:
-            The ID of the group's parent, if it has one.
+            (Optional) The ID of the group's parent, if it has one.
 
-        :type filter_string: str or None
+        :type filter_string: str
         :param filter_string:
-            The filter string used to determine which monitored resources
+            (Optional) The filter string used to determine which monitored resources
             belong to this group.
 
         :type is_cluster: bool
