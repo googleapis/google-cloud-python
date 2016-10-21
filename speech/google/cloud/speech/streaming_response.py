@@ -17,6 +17,11 @@
 from google.cloud.speech.streaming_result import StreamingSpeechResult
 from google.cloud.gapic.speech.v1beta1.enums import StreamingRecognizeResponse
 
+_REVERSE_MAP = {
+    value: key for key, value
+    in StreamingRecognizeResponse.EndpointerType.__dict__.items()
+    if not key.startswith('__')}
+
 
 class StreamingSpeechResponse(object):
     """Representation of a Speech API protobuf streaming response.
@@ -24,8 +29,8 @@ class StreamingSpeechResponse(object):
     :type error: :class:`google.grpc.Status`
     :param error: Instance of ``Status``
 
-    :type endpointer_type: :class:`~EndpointerType`
-    :param endpointer_type: Enum of endpointer event.
+    :type endpointer_type: int
+    :param endpointer_type: Integer value of endpointer event.
 
     :type results: list of
         :class:`google.cloud.speech.v1beta1.StreamingRecognitionResult`
@@ -39,8 +44,7 @@ class StreamingSpeechResponse(object):
                  result_index=None):
         results = results or []
         self._error = error
-        self._endpointer_type = EndpointerType.REVERSE_MAP.get(
-            endpointer_type, None)
+        self._endpointer_type = _REVERSE_MAP.get(endpointer_type)
         self._result_index = result_index
         self._results = [StreamingSpeechResult.from_pb(result)
                          for result in results]
@@ -62,19 +66,6 @@ class StreamingSpeechResponse(object):
         result_index = pb_response.result_index
         return cls(error=error, endpointer_type=endpointer_type,
                    results=results, result_index=result_index)
-
-    @property
-    def confidence(self):
-        """Confidence score for recognized speech.
-
-        :rtype: float
-        :returns: Confidence score of recognized speech [0.0-1.0].
-        """
-        if self.results and self.results[0].alternatives:
-            top_alternative = self.results[0].alternatives[0]
-            return top_alternative.confidence
-        else:
-            return 0.0
 
     @property
     def endpointer_type(self):
@@ -114,39 +105,3 @@ class StreamingSpeechResponse(object):
         :returns: List of ``StreamingSpeechResult`` in this response.
         """
         return self._results
-
-    @property
-    def transcript(self):
-        """Get most likely transcript from response.
-
-        :rtype: str
-        :returns: Transcript text from response.
-        """
-        if self.results and self.results[0].alternatives:
-            top_alternative = self.results[0].alternatives[0]
-            return top_alternative.transcript
-        else:
-            return None
-
-
-class EndpointerType(StreamingRecognizeResponse.EndpointerType):
-    """Endpointer type for tracking state of Speech API detection.
-
-    ENDPOINTER_EVENT_UNSPECIFIED (int): No endpointer event specified.
-    START_OF_SPEECH (int): Speech has been detected in the audio stream.
-    END_OF_SPEECH (int): Speech has ceased to be detected in the audio
-    stream.
-    END_OF_AUDIO (int): The end of the audio stream has been reached. and
-    it is being processed.
-    END_OF_UTTERANCE (int): This event is only sent when
-    ``single_utterance`` is ``true``. It indicates that the server has
-    detected the end of the user's speech utterance and expects no
-    additional speech. Therefore, the server will not process additional
-    audio. The client should stop sending additional audio data.
-
-    See:
-    https://cloud.google.com/speech/reference/rpc/\
-    google.cloud.speech.v1beta1#endpointertype
-    """
-    REVERSE_MAP = {v: k for k, v
-                   in vars(StreamingRecognizeResponse.EndpointerType).items()}

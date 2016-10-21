@@ -27,10 +27,8 @@ class TestStreamingSpeechResponse(unittest.TestCase):
     def test_ctor(self):
         response = self._makeOne({}, 'END_OF_UTTERANCE', [], 0)
         self.assertEqual(response.result_index, 0)
-        self.assertEqual(response.confidence, 0.0)
         self.assertEqual(response.endpointer_type, None)
         self.assertEqual(response.results, [])
-        self.assertEqual(response.transcript, None)
         self.assertFalse(response.is_final)
 
     def test_from_pb(self):
@@ -38,8 +36,9 @@ class TestStreamingSpeechResponse(unittest.TestCase):
         res = response.from_pb(_MockSpeechPBResponse)
         self.assertFalse(res.is_final)
         self.assertEqual(res.endpointer_type, 'END_OF_AUDIO')
-        self.assertEqual(res.transcript, 'hello there!')
-        self.assertEqual(res.confidence, 0.9704365)
+        self.assertEqual(res.results[0].alternatives[0].transcript,
+                         'hello there!')
+        self.assertEqual(res.results[0].alternatives[0].confidence, 0.9704365)
 
 
 class _MockSpeechPBAlternative(object):
