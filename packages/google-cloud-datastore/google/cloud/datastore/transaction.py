@@ -100,7 +100,7 @@ class Transaction(Batch):
     def id(self):
         """Getter for the transaction ID.
 
-        :rtype: string
+        :rtype: str
         :returns: The ID of the current transaction.
         """
         return self._id
