@@ -366,8 +366,8 @@ def _microseconds_from_datetime(value):
 def _millis_from_datetime(value):
     """Convert non-none datetime to timestamp, assuming UTC.
 
-    :type value: :class:`datetime.datetime`, or None
-    :param value: the timestamp
+    :type value: :class:`datetime.datetime`
+    :param value: (Optional) the timestamp
 
     :rtype: int, or ``NoneType``
     :returns: the timestamp, in milliseconds, or None
@@ -554,8 +554,8 @@ def _name_from_project_path(path, project, template):
     :type path: str
     :param path: URI path containing the name.
 
-    :type project: str or NoneType
-    :param project: The project associated with the request. It is
+    :type project: str
+    :param project: (Optional) The project associated with the request. It is
                     included for validation purposes.  If passed as None,
                     disables validation.
 

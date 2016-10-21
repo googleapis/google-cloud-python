@@ -81,8 +81,10 @@ class BufferedStream(object):
     def read(self, size=None):
         """Read bytes from the buffer.
 
-        :type size: int or None
-        :param size: How many bytes to read (defaults to all remaining bytes).
+        :type size: int
+        :param size:
+            (Optional) How many bytes to read (defaults to all remaining
+            bytes).
 
         :rtype: str
         :returns: The data read from the stream.
