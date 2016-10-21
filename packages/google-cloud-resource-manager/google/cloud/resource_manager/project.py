@@ -39,13 +39,13 @@ class Project(object):
     See:
     https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects
 
-    :type project_id: string
+    :type project_id: str
     :param project_id: The globally unique ID of the project.
 
     :type client: :class:`google.cloud.resource_manager.client.Client`
     :param client: The Client used with this project.
 
-    :type name: string
+    :type name: str
     :param name: The display name of the project.
 
     :type labels: dict
