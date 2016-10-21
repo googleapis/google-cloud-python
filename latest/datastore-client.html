@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Datastore Client &mdash; google-cloud 881a953 documentation</title>
+  <title>Datastore Client &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="index.html"/>
         <link rel="next" title="Entities" href="datastore-entities.html"/>
         <link rel="prev" title="Long-Running Operations" href="operation-api.html"/> 
 
@@ -286,8 +286,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; (optional) The project to pass to proxied API methods.</li>
-<li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; (optional) namespace to pass to proxied API methods.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) The project to pass to proxied API methods.</li>
+<li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) namespace to pass to proxied API methods.</li>
 <li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
 owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
@@ -628,7 +628,7 @@ types.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to which the transaction belongs.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The project to which the transaction belongs.</li>
 <li><strong>key_pbs</strong> (list of
 <code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore._generated.entity_pb2.Key</span></code>) &#8211; The keys for which the backend should allocate IDs.</li>
 </ul>
@@ -653,7 +653,7 @@ types.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to which the transaction applies.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The project to which the transaction applies.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bytes</td>
 </tr>
@@ -674,12 +674,12 @@ making RPCs to the Cloud Datastore API.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to connect to. This is
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The project to connect to. This is
 usually your project name in the cloud console.</li>
-<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The API method to call (e.g. &#8216;runQuery&#8217;, &#8216;lookup&#8217;).</li>
-<li><strong>base_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The base URL where the API lives.
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The API method to call (e.g. &#8216;runQuery&#8217;, &#8216;lookup&#8217;).</li>
+<li><strong>base_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The base URL where the API lives.
 You shouldn&#8217;t have to provide this.</li>
-<li><strong>api_version</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The version of the API to connect to.
+<li><strong>api_version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The version of the API to connect to.
 You shouldn&#8217;t have to provide this.</li>
 </ul>
 </td>
@@ -704,9 +704,9 @@ You shouldn&#8217;t have to provide this.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to which the transaction applies.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The project to which the transaction applies.</li>
 <li><strong>request</strong> (<code class="xref py py-class docutils literal"><span class="pre">_generated.datastore_pb2.CommitRequest</span></code>) &#8211; The protobuf with the mutations being committed.</li>
-<li><strong>transaction_id</strong> (<em>string or None</em>) &#8211; The transaction ID returned from
+<li><strong>transaction_id</strong> (<em>str or None</em>) &#8211; The transaction ID returned from
 <a class="reference internal" href="#google.cloud.datastore.connection.Connection.begin_transaction" title="google.cloud.datastore.connection.Connection.begin_transaction"><code class="xref py py-meth docutils literal"><span class="pre">begin_transaction()</span></code></a>.  Non-transactional
 batches must pass <code class="docutils literal"><span class="pre">None</span></code>.</li>
 </ul>
@@ -759,13 +759,13 @@ as output). It is used under the hood in
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to look up the keys in.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The project to look up the keys in.</li>
 <li><strong>key_pbs</strong> (list of
 <code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore._generated.entity_pb2.Key</span></code>) &#8211; The keys to retrieve from the datastore.</li>
 <li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If False (the default), request <code class="docutils literal"><span class="pre">STRONG</span></code> read
 consistency.  If True, request <code class="docutils literal"><span class="pre">EVENTUAL</span></code> read
 consistency.</li>
-<li><strong>transaction_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; If passed, make the request in the scope of
+<li><strong>transaction_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If passed, make the request in the scope of
 the given transaction.  Incompatible with
 <code class="docutils literal"><span class="pre">eventual==True</span></code>.</li>
 </ul>
@@ -795,8 +795,8 @@ and <code class="docutils literal"><span class="pre">deferred</span></code> is a
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to which the transaction belongs.</li>
-<li><strong>transaction_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The transaction ID returned from
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The project to which the transaction belongs.</li>
+<li><strong>transaction_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The transaction ID returned from
 <a class="reference internal" href="#google.cloud.datastore.connection.Connection.begin_transaction" title="google.cloud.datastore.connection.Connection.begin_transaction"><code class="xref py py-meth docutils literal"><span class="pre">begin_transaction()</span></code></a>.</li>
 </ul>
 </td>
@@ -822,13 +822,13 @@ uses this method to fetch data.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project over which to run the query.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The project over which to run the query.</li>
 <li><strong>query_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">datastore._generated.query_pb2.Query</span></code>) &#8211; The Protobuf representing the query to run.</li>
-<li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The namespace over which to run the query.</li>
+<li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The namespace over which to run the query.</li>
 <li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If False (the default), request <code class="docutils literal"><span class="pre">STRONG</span></code> read
 consistency.  If True, request <code class="docutils literal"><span class="pre">EVENTUAL</span></code> read
 consistency.</li>
-<li><strong>transaction_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; If passed, make the request in the scope of
+<li><strong>transaction_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; If passed, make the request in the scope of
 the given transaction.  Incompatible with
 <code class="docutils literal"><span class="pre">eventual==True</span></code>.</li>
 </ul>
@@ -898,7 +898,7 @@ enum and a count of the number of skipped results.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

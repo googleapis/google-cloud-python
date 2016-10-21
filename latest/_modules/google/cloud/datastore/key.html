@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.key &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.datastore.key &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -479,7 +479,7 @@
 <div class="viewcode-block" id="Key.completed_key"><a class="viewcode-back" href="../../../../datastore-keys.html#google.cloud.datastore.key.Key.completed_key">[docs]</a>    <span class="k">def</span> <span class="nf">completed_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_or_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates new key from existing partial key by adding final ID/name.</span>
 
-<span class="sd">        :type id_or_name: string or integer</span>
+<span class="sd">        :type id_or_name: str or integer</span>
 <span class="sd">        :param id_or_name: ID or name to be added to the key.</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.datastore.key.Key`</span>
@@ -541,7 +541,7 @@
     <span class="k">def</span> <span class="nf">namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Namespace getter.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The namespace of the current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span>
@@ -570,7 +570,7 @@
     <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Kind getter. Based on the last element of path.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The kind of the current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;kind&#39;</span><span class="p">]</span>
@@ -588,7 +588,7 @@
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Name getter. Based on the last element of path.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The (string) name of the key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
@@ -607,7 +607,7 @@
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Project getter.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The key&#39;s project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span>
@@ -657,13 +657,13 @@
 
 <span class="sd">    If ``project`` is unset, attempt to infer the project from the environment.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: A project.</span>
 
 <span class="sd">    :type parent: :class:`google.cloud.datastore.key.Key` or ``NoneType``</span>
 <span class="sd">    :param parent: The parent of the key or ``None``.</span>
 
-<span class="sd">    :rtype: string</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    :returns: The ``project`` passed in, or implied from the environment.</span>
 <span class="sd">    :raises: :class:`ValueError` if ``project`` is ``None`` and no project</span>
 <span class="sd">             can be inferred from the parent.</span>
@@ -706,7 +706,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

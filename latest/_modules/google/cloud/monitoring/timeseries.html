@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.timeseries &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.monitoring.timeseries &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -316,13 +316,13 @@
 <span class="sd">    :type resource: :class:`~google.cloud.monitoring.resource.Resource`</span>
 <span class="sd">    :param resource: A resource object.</span>
 
-<span class="sd">    :type metric_kind: string</span>
+<span class="sd">    :type metric_kind: str</span>
 <span class="sd">    :param metric_kind:</span>
 <span class="sd">        The kind of measurement: :data:`MetricKind.GAUGE`,</span>
 <span class="sd">        :data:`MetricKind.DELTA`, or :data:`MetricKind.CUMULATIVE`.</span>
 <span class="sd">        See :class:`~google.cloud.monitoring.metric.MetricKind`.</span>
 
-<span class="sd">    :type value_type: string</span>
+<span class="sd">    :type value_type: str</span>
 <span class="sd">    :param value_type:</span>
 <span class="sd">        The value type of the metric: :data:`ValueType.BOOL`,</span>
 <span class="sd">        :data:`ValueType.INT64`, :data:`ValueType.DOUBLE`,</span>
@@ -448,10 +448,10 @@
 <div class="viewcode-block" id="Point"><a class="viewcode-back" href="../../../../monitoring-timeseries.html#google.cloud.monitoring.timeseries.Point">[docs]</a><span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Point&#39;</span><span class="p">,</span> <span class="s1">&#39;end_time start_time value&#39;</span><span class="p">)):</span>
     <span class="sd">&quot;&quot;&quot;A single point in a time series.</span>
 
-<span class="sd">    :type end_time: string</span>
+<span class="sd">    :type end_time: str</span>
 <span class="sd">    :param end_time: The end time in RFC3339 UTC &quot;Zulu&quot; format.</span>
 
-<span class="sd">    :type start_time: string or None</span>
+<span class="sd">    :type start_time: str or None</span>
 <span class="sd">    :param start_time: An optional start time in RFC3339 UTC &quot;Zulu&quot; format.</span>
 
 <span class="sd">    :type value: object</span>
@@ -531,7 +531,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

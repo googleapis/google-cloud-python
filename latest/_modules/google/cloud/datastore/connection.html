@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.connection &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.datastore.connection &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -337,18 +337,18 @@
     <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a request over the Http transport to the Cloud Datastore API.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to make the request for.</span>
 
-<span class="sd">        :type method: string</span>
+<span class="sd">        :type method: str</span>
 <span class="sd">        :param method: The API call method name (ie, ``runQuery``,</span>
 <span class="sd">                       ``lookup``, etc)</span>
 
-<span class="sd">        :type data: string</span>
+<span class="sd">        :type data: str</span>
 <span class="sd">        :param data: The data to send with the API call.</span>
 <span class="sd">                     Typically this is a serialized Protobuf string.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The string response content from the API call.</span>
 <span class="sd">        :raises: :class:`google.cloud.exceptions.GoogleCloudError` if the</span>
 <span class="sd">                 response code is not 200 OK.</span>
@@ -372,11 +372,11 @@
     <span class="k">def</span> <span class="nf">_rpc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">,</span> <span class="n">response_pb_cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a protobuf RPC request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
-<span class="sd">        :type method: string</span>
+<span class="sd">        :type method: str</span>
 <span class="sd">        :param method: The name of the method to invoke.</span>
 
 <span class="sd">        :type request_pb: :class:`google.protobuf.message.Message` instance</span>
@@ -397,7 +397,7 @@
     <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``lookup`` request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
@@ -413,7 +413,7 @@
     <span class="k">def</span> <span class="nf">run_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``runQuery`` request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
@@ -429,7 +429,7 @@
     <span class="k">def</span> <span class="nf">begin_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``beginTransaction`` request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
@@ -446,7 +446,7 @@
     <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``commit`` request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
@@ -462,7 +462,7 @@
     <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``rollback`` request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
@@ -478,7 +478,7 @@
     <span class="k">def</span> <span class="nf">allocate_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform an ``allocateIds`` request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
@@ -521,7 +521,7 @@
     <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``lookup`` request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
@@ -537,7 +537,7 @@
     <span class="k">def</span> <span class="nf">run_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``runQuery`` request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
@@ -559,7 +559,7 @@
     <span class="k">def</span> <span class="nf">begin_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``beginTransaction`` request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
@@ -576,7 +576,7 @@
     <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``commit`` request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
@@ -600,7 +600,7 @@
     <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``rollback`` request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
@@ -616,7 +616,7 @@
     <span class="k">def</span> <span class="nf">allocate_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform an ``allocateIds`` request.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
@@ -679,18 +679,18 @@
 <span class="sd">        This method is used internally to come up with the URL to use when</span>
 <span class="sd">        making RPCs to the Cloud Datastore API.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to connect to. This is</span>
 <span class="sd">                        usually your project name in the cloud console.</span>
 
-<span class="sd">        :type method: string</span>
+<span class="sd">        :type method: str</span>
 <span class="sd">        :param method: The API method to call (e.g. &#39;runQuery&#39;, &#39;lookup&#39;).</span>
 
-<span class="sd">        :type base_url: string</span>
+<span class="sd">        :type base_url: str</span>
 <span class="sd">        :param base_url: The base URL where the API lives.</span>
 <span class="sd">                         You shouldn&#39;t have to provide this.</span>
 
-<span class="sd">        :type api_version: string</span>
+<span class="sd">        :type api_version: str</span>
 <span class="sd">        :param api_version: The version of the API to connect to.</span>
 <span class="sd">                            You shouldn&#39;t have to provide this.</span>
 
@@ -725,7 +725,7 @@
 <span class="sd">        &gt;&gt;&gt; connection.lookup(&#39;project&#39;, [key.to_protobuf()])</span>
 <span class="sd">        [&lt;Entity protobuf&gt;]</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to look up the keys in.</span>
 
 <span class="sd">        :type key_pbs: list of</span>
@@ -737,7 +737,7 @@
 <span class="sd">                         consistency.  If True, request ``EVENTUAL`` read</span>
 <span class="sd">                         consistency.</span>
 
-<span class="sd">        :type transaction_id: string</span>
+<span class="sd">        :type transaction_id: str</span>
 <span class="sd">        :param transaction_id: If passed, make the request in the scope of</span>
 <span class="sd">                               the given transaction.  Incompatible with</span>
 <span class="sd">                               ``eventual==True``.</span>
@@ -776,13 +776,13 @@
 <span class="sd">        Under the hood, the :class:`google.cloud.datastore.query.Query` class</span>
 <span class="sd">        uses this method to fetch data.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project over which to run the query.</span>
 
 <span class="sd">        :type query_pb: :class:`.datastore._generated.query_pb2.Query`</span>
 <span class="sd">        :param query_pb: The Protobuf representing the query to run.</span>
 
-<span class="sd">        :type namespace: string</span>
+<span class="sd">        :type namespace: str</span>
 <span class="sd">        :param namespace: The namespace over which to run the query.</span>
 
 <span class="sd">        :type eventual: bool</span>
@@ -790,7 +790,7 @@
 <span class="sd">                         consistency.  If True, request ``EVENTUAL`` read</span>
 <span class="sd">                         consistency.</span>
 
-<span class="sd">        :type transaction_id: string</span>
+<span class="sd">        :type transaction_id: str</span>
 <span class="sd">        :param transaction_id: If passed, make the request in the scope of</span>
 <span class="sd">                               the given transaction.  Incompatible with</span>
 <span class="sd">                               ``eventual==True``.</span>
@@ -820,7 +820,7 @@
 
 <span class="sd">        Maps the ``DatastoreService.BeginTransaction`` protobuf RPC.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to which the transaction applies.</span>
 
 <span class="sd">        :rtype: bytes</span>
@@ -835,13 +835,13 @@
 
 <span class="sd">        Maps the ``DatastoreService.Commit`` protobuf RPC.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to which the transaction applies.</span>
 
 <span class="sd">        :type request: :class:`._generated.datastore_pb2.CommitRequest`</span>
 <span class="sd">        :param request: The protobuf with the mutations being committed.</span>
 
-<span class="sd">        :type transaction_id: string or None</span>
+<span class="sd">        :type transaction_id: str or None</span>
 <span class="sd">        :param transaction_id: The transaction ID returned from</span>
 <span class="sd">                               :meth:`begin_transaction`.  Non-transactional</span>
 <span class="sd">                               batches must pass ``None``.</span>
@@ -869,10 +869,10 @@
 
 <span class="sd">        Maps the ``DatastoreService.Rollback`` protobuf RPC.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to which the transaction belongs.</span>
 
-<span class="sd">        :type transaction_id: string</span>
+<span class="sd">        :type transaction_id: str</span>
 <span class="sd">        :param transaction_id: The transaction ID returned from</span>
 <span class="sd">                               :meth:`begin_transaction`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -886,7 +886,7 @@
 
 <span class="sd">        Maps the ``DatastoreService.AllocateIds`` protobuf RPC.</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to which the transaction belongs.</span>
 
 <span class="sd">        :type key_pbs: list of</span>
@@ -983,7 +983,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

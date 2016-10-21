@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Logger &mdash; google-cloud 881a953 documentation</title>
+  <title>Logger &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="index.html"/>
         <link rel="next" title="Entries" href="logging-entries.html"/>
         <link rel="prev" title="Stackdriver Logging Client" href="logging-client.html"/> 
 
@@ -318,8 +318,8 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>message</strong> (<em>protobuf message</em>) &#8211; the protobuf entry</li>
 <li><strong>labels</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) mapping of labels for the entry.</li>
-<li><strong>insert_id</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) unique ID for log entry.</li>
-<li><strong>severity</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) severity of event being logged.</li>
+<li><strong>insert_id</strong> (str or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) unique ID for log entry.</li>
+<li><strong>severity</strong> (str or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) info about HTTP request associated with
 the entry.</li>
 </ul>
@@ -340,8 +340,8 @@ the entry.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>info</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; the struct entry</li>
 <li><strong>labels</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) mapping of labels for the entry.</li>
-<li><strong>insert_id</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) unique ID for log entry.</li>
-<li><strong>severity</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) severity of event being logged.</li>
+<li><strong>insert_id</strong> (str or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) unique ID for log entry.</li>
+<li><strong>severity</strong> (str or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) info about HTTP request associated with
 the entry.</li>
 </ul>
@@ -360,10 +360,10 @@ the entry.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>text</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the text entry</li>
+<li><strong>text</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the text entry</li>
 <li><strong>labels</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) mapping of labels for the entry.</li>
-<li><strong>insert_id</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) unique ID for log entry.</li>
-<li><strong>severity</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) severity of event being logged.</li>
+<li><strong>insert_id</strong> (str or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) unique ID for log entry.</li>
+<li><strong>severity</strong> (str or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) info about HTTP request associated with
 the entry.</li>
 </ul>
@@ -387,7 +387,7 @@ the entry.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the logger</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the logger</li>
 <li><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
 for the logger (which requires a project).</li>
 <li><strong>labels</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) mapping of default labels for entries written
@@ -460,13 +460,13 @@ via this logger.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>projects</strong> (<em>list of strings</em>) &#8211; project IDs to include. If not passed,
 defaults to the project bound to the client.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; a filter expression. See:
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; a filter expression. See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">https://cloud.google.com/logging/docs/view/advanced_filters</a></li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; One of <code class="xref py py-data docutils literal"><span class="pre">ASCENDING</span></code>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; One of <code class="xref py py-data docutils literal"><span class="pre">ASCENDING</span></code>
 or <code class="xref py py-data docutils literal"><span class="pre">DESCENDING</span></code>.</li>
 <li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of entries to return, If not passed,
 defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of entries. If not
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of entries. If not
 passed, the API will return the first page of
 entries.</li>
 </ul>
@@ -501,8 +501,8 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current logger.</li>
 <li><strong>labels</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) mapping of labels for the entry.</li>
-<li><strong>insert_id</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) unique ID for log entry.</li>
-<li><strong>severity</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) severity of event being logged.</li>
+<li><strong>insert_id</strong> (str or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) unique ID for log entry.</li>
+<li><strong>severity</strong> (str or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) info about HTTP request associated with
 the entry.</li>
 </ul>
@@ -528,8 +528,8 @@ the entry.</li>
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current logger.</li>
 <li><strong>labels</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) mapping of labels for the entry.</li>
-<li><strong>insert_id</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) unique ID for log entry.</li>
-<li><strong>severity</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) severity of event being logged.</li>
+<li><strong>insert_id</strong> (str or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) unique ID for log entry.</li>
+<li><strong>severity</strong> (str or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) info about HTTP request associated with
 the entry.</li>
 </ul>
@@ -555,8 +555,8 @@ the entry.</li>
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current logger.</li>
 <li><strong>labels</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) mapping of labels for the entry.</li>
-<li><strong>insert_id</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) unique ID for log entry.</li>
-<li><strong>severity</strong> (string or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) severity of event being logged.</li>
+<li><strong>insert_id</strong> (str or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) unique ID for log entry.</li>
+<li><strong>severity</strong> (str or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (dict or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (optional) info about HTTP request associated with
 the entry</li>
 </ul>
@@ -623,7 +623,7 @@ the entry</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

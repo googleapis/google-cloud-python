@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.subscription &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.pubsub.subscription &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -298,7 +298,7 @@
 <span class="sd">    See:</span>
 <span class="sd">    https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the subscription.</span>
 
 <span class="sd">    :type topic: :class:`google.cloud.pubsub.topic.Topic` or ``NoneType``</span>
@@ -309,7 +309,7 @@
 <span class="sd">    :param ack_deadline: the deadline (in seconds) by which messages pulled</span>
 <span class="sd">                         from the back-end must be acknowledged.</span>
 
-<span class="sd">    :type push_endpoint: string</span>
+<span class="sd">    :type push_endpoint: str</span>
 <span class="sd">    :param push_endpoint: URL to which messages will be pushed by the back-end.</span>
 <span class="sd">                          If not set, the application must pull messages.</span>
 
@@ -399,7 +399,7 @@
 <div class="viewcode-block" id="Subscription.auto_ack"><a class="viewcode-back" href="../../../../pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription.auto_ack">[docs]</a>    <span class="k">def</span> <span class="nf">auto_ack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_immediately</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;:class:`AutoAck` factory</span>
 
-<span class="sd">        :type return_immediately: boolean</span>
+<span class="sd">        :type return_immediately: bool</span>
 <span class="sd">        :param return_immediately: passed through to :meth:`Subscription.pull`</span>
 
 <span class="sd">        :type max_messages: int</span>
@@ -544,7 +544,7 @@
 <span class="sd">           :start-after: [START subscription_pull_push]</span>
 <span class="sd">           :end-before: [END subscription_pull_push]</span>
 
-<span class="sd">        :type push_endpoint: string</span>
+<span class="sd">        :type push_endpoint: str</span>
 <span class="sd">        :param push_endpoint: URL to which messages will be pushed by the</span>
 <span class="sd">                              back-end.  If None, the application must pull</span>
 <span class="sd">                              messages.</span>
@@ -571,7 +571,7 @@
 <span class="sd">           :start-after: [START subscription_pull]</span>
 <span class="sd">           :end-before: [END subscription_pull]</span>
 
-<span class="sd">        :type return_immediately: boolean</span>
+<span class="sd">        :type return_immediately: bool</span>
 <span class="sd">        :param return_immediately: if True, the back-end returns even if no</span>
 <span class="sd">                                   messages are available;  if False, the API</span>
 <span class="sd">                                   call blocks until one or more messages are</span>
@@ -752,7 +752,7 @@
 <span class="sd">    :type subscription: :class:`Subscription`</span>
 <span class="sd">    :param subscription: subscription to be pulled.</span>
 
-<span class="sd">    :type return_immediately: boolean</span>
+<span class="sd">    :type return_immediately: bool</span>
 <span class="sd">    :param return_immediately: passed through to :meth:`Subscription.pull`</span>
 
 <span class="sd">    :type max_messages: int</span>
@@ -812,7 +812,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

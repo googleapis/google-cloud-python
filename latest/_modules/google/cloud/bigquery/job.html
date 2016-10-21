@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.job &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.bigquery.job &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -368,7 +368,7 @@
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Project bound to the job.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the project (derived from the client).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span>
@@ -392,7 +392,7 @@
 <span class="k">class</span> <span class="nc">_AsyncJob</span><span class="p">(</span><span class="n">_BaseJob</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for asynchronous jobs.</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the job</span>
 
 <span class="sd">    :type client: :class:`google.cloud.bigquery.client.Client`</span>
@@ -407,7 +407,7 @@
     <span class="k">def</span> <span class="nf">job_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Type of job</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: one of &#39;load&#39;, &#39;copy&#39;, &#39;extract&#39;, &#39;query&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_JOB_TYPE</span>
@@ -416,7 +416,7 @@
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;URL path for the job&#39;s APIs.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the path based on project and job name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/jobs/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -425,7 +425,7 @@
     <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;ETag for the job resource.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the ETag (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
@@ -434,7 +434,7 @@
     <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;URL for the job resource.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the URL (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selfLink&#39;</span><span class="p">)</span>
@@ -443,7 +443,7 @@
     <span class="k">def</span> <span class="nf">user_email</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;E-mail address of user who submitted the job.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the URL (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_email&#39;</span><span class="p">)</span>
@@ -513,7 +513,7 @@
     <span class="k">def</span> <span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Status of the job.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the state (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
@@ -671,7 +671,7 @@
 <div class="viewcode-block" id="LoadTableFromStorageJob"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.LoadTableFromStorageJob">[docs]</a><span class="k">class</span> <span class="nc">LoadTableFromStorageJob</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Asynchronous job for loading data into a table from CloudStorage.</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the job</span>
 
 <span class="sd">    :type destination: :class:`google.cloud.bigquery.table.Table`</span>
@@ -920,7 +920,7 @@
 <div class="viewcode-block" id="CopyJob"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.CopyJob">[docs]</a><span class="k">class</span> <span class="nc">CopyJob</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Asynchronous job: copy data into a table from other tables.</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the job</span>
 
 <span class="sd">    :type destination: :class:`google.cloud.bigquery.table.Table`</span>
@@ -1035,7 +1035,7 @@
 <div class="viewcode-block" id="ExtractTableToStorageJob"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.ExtractTableToStorageJob">[docs]</a><span class="k">class</span> <span class="nc">ExtractTableToStorageJob</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Asynchronous job: extract data from a table into Cloud Storage.</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the job</span>
 
 <span class="sd">    :type source: :class:`google.cloud.bigquery.table.Table`</span>
@@ -1166,10 +1166,10 @@
 <div class="viewcode-block" id="QueryJob"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.QueryJob">[docs]</a><span class="k">class</span> <span class="nc">QueryJob</span><span class="p">(</span><span class="n">_AsyncJob</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Asynchronous job: query tables.</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the job</span>
 
-<span class="sd">    :type query: string</span>
+<span class="sd">    :type query: str</span>
 <span class="sd">    :param query: SQL query string</span>
 
 <span class="sd">    :type client: :class:`google.cloud.bigquery.client.Client`</span>
@@ -1408,7 +1408,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

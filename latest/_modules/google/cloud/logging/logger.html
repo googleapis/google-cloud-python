@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.logger &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.logging.logger &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -297,7 +297,7 @@
 <span class="sd">    See:</span>
 <span class="sd">    https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the logger</span>
 
 <span class="sd">    :type client: :class:`google.cloud.logging.client.Client`</span>
@@ -371,7 +371,7 @@
 
 <span class="sd">        Only one of ``text``, ``info``, or ``message`` should be passed.</span>
 
-<span class="sd">        :type text: string or :class:`NoneType`</span>
+<span class="sd">        :type text: str or :class:`NoneType`</span>
 <span class="sd">        :param text: text payload</span>
 
 <span class="sd">        :type info: dict or :class:`NoneType`</span>
@@ -383,10 +383,10 @@
 <span class="sd">        :type labels: dict or :class:`NoneType`</span>
 <span class="sd">        :param labels: labels passed in to calling method.</span>
 
-<span class="sd">        :type insert_id: string or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: string or :class:`NoneType`</span>
+<span class="sd">        :type severity: str or :class:`NoneType`</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
 <span class="sd">        :type http_request: dict or :class:`NoneType`</span>
@@ -447,10 +447,10 @@
 <span class="sd">        :type labels: dict or :class:`NoneType`</span>
 <span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
 
-<span class="sd">        :type insert_id: string or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: string or :class:`NoneType`</span>
+<span class="sd">        :type severity: str or :class:`NoneType`</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
 <span class="sd">        :type http_request: dict or :class:`NoneType`</span>
@@ -481,10 +481,10 @@
 <span class="sd">        :type labels: dict or :class:`NoneType`</span>
 <span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
 
-<span class="sd">        :type insert_id: string or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: string or :class:`NoneType`</span>
+<span class="sd">        :type severity: str or :class:`NoneType`</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
 <span class="sd">        :type http_request: dict or :class:`NoneType`</span>
@@ -515,10 +515,10 @@
 <span class="sd">        :type labels: dict or :class:`NoneType`</span>
 <span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
 
-<span class="sd">        :type insert_id: string or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: string or :class:`NoneType`</span>
+<span class="sd">        :type severity: str or :class:`NoneType`</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
 <span class="sd">        :type http_request: dict or :class:`NoneType`</span>
@@ -556,11 +556,11 @@
 <span class="sd">        :param projects: project IDs to include. If not passed,</span>
 <span class="sd">                            defaults to the project bound to the client.</span>
 
-<span class="sd">        :type filter_: string</span>
+<span class="sd">        :type filter_: str</span>
 <span class="sd">        :param filter_: a filter expression. See:</span>
 <span class="sd">                        https://cloud.google.com/logging/docs/view/advanced_filters</span>
 
-<span class="sd">        :type order_by: string</span>
+<span class="sd">        :type order_by: str</span>
 <span class="sd">        :param order_by: One of :data:`~google.cloud.logging.ASCENDING`</span>
 <span class="sd">                         or :data:`~google.cloud.logging.DESCENDING`.</span>
 
@@ -568,7 +568,7 @@
 <span class="sd">        :param page_size: maximum number of entries to return, If not passed,</span>
 <span class="sd">                          defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of entries. If not</span>
 <span class="sd">                           passed, the API will return the first page of</span>
 <span class="sd">                           entries.</span>
@@ -616,16 +616,16 @@
                  <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a text entry to be logged during :meth:`commit`.</span>
 
-<span class="sd">        :type text: string</span>
+<span class="sd">        :type text: str</span>
 <span class="sd">        :param text: the text entry</span>
 
 <span class="sd">        :type labels: dict or :class:`NoneType`</span>
 <span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
 
-<span class="sd">        :type insert_id: string or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: string or :class:`NoneType`</span>
+<span class="sd">        :type severity: str or :class:`NoneType`</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
 <span class="sd">        :type http_request: dict or :class:`NoneType`</span>
@@ -645,10 +645,10 @@
 <span class="sd">        :type labels: dict or :class:`NoneType`</span>
 <span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
 
-<span class="sd">        :type insert_id: string or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: string or :class:`NoneType`</span>
+<span class="sd">        :type severity: str or :class:`NoneType`</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
 <span class="sd">        :type http_request: dict or :class:`NoneType`</span>
@@ -668,10 +668,10 @@
 <span class="sd">        :type labels: dict or :class:`NoneType`</span>
 <span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
 
-<span class="sd">        :type insert_id: string or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: string or :class:`NoneType`</span>
+<span class="sd">        :type severity: str or :class:`NoneType`</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
 <span class="sd">        :type http_request: dict or :class:`NoneType`</span>
@@ -756,7 +756,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

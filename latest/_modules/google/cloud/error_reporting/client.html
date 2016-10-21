@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.error_reporting.client &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.error_reporting.client &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -296,24 +296,24 @@
     <span class="sd">&quot;&quot;&quot;HTTPContext defines an object that captures the parameter for the</span>
 <span class="sd">    httpRequest part of Error Reporting API</span>
 
-<span class="sd">    :type method: string</span>
+<span class="sd">    :type method: str</span>
 <span class="sd">    :param method: The type of HTTP request, such as GET, POST, etc.</span>
 
-<span class="sd">    :type url: string</span>
+<span class="sd">    :type url: str</span>
 <span class="sd">    :param url: The URL of the request</span>
 
-<span class="sd">    :type user_agent: string</span>
+<span class="sd">    :type user_agent: str</span>
 <span class="sd">    :param user_agent: The user agent information that is provided with the</span>
 <span class="sd">                       request.</span>
 
-<span class="sd">    :type referrer: string</span>
+<span class="sd">    :type referrer: str</span>
 <span class="sd">    :param referrer: The referrer information that is provided with the</span>
 <span class="sd">                     request.</span>
 
 <span class="sd">    :type response_status_code: int</span>
 <span class="sd">    :param response_status_code: The HTTP response status code for the request.</span>
 
-<span class="sd">    :type remote_ip: string</span>
+<span class="sd">    :type remote_ip: str</span>
 <span class="sd">    :param remote_ip: The IP address from which the request originated. This</span>
 <span class="sd">                      can be IPv4, IPv6, or a token which is derived from</span>
 <span class="sd">                      the IP address, depending on the data that has been</span>
@@ -337,7 +337,7 @@
     <span class="sd">&quot;&quot;&quot;Error Reporting client. Currently Error Reporting is done by creating</span>
 <span class="sd">    a Logging client.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: the project which the client acts on behalf of. If not</span>
 <span class="sd">                    passed falls back to the default inferred from the</span>
 <span class="sd">                    environment.</span>
@@ -397,7 +397,7 @@
 
 <span class="sd">        https://cloud.google.com/error-reporting/docs/formatting-error-messages</span>
 
-<span class="sd">        :type message: string</span>
+<span class="sd">        :type message: str</span>
 <span class="sd">        :param message: The stack trace that was reported or logged by the</span>
 <span class="sd">                   service.</span>
 
@@ -415,7 +415,7 @@
 <span class="sd">        :param http_context: The HTTP request which was processed when the</span>
 <span class="sd">                             error was triggered.</span>
 
-<span class="sd">        :type user: string</span>
+<span class="sd">        :type user: str</span>
 <span class="sd">        :param user: The user who caused or was affected by the crash. This can</span>
 <span class="sd">                     be a user ID, an email address, or an arbitrary token that</span>
 <span class="sd">                     uniquely identifies the user. When sending an error</span>
@@ -466,7 +466,7 @@
 <span class="sd">          :param http_context: The HTTP request which was processed when the</span>
 <span class="sd">                               error was triggered.</span>
 
-<span class="sd">          :type user: string</span>
+<span class="sd">          :type user: str</span>
 <span class="sd">          :param user: The user who caused or was affected by the crash. This</span>
 <span class="sd">                       can be a user ID, an email address, or an arbitrary</span>
 <span class="sd">                       token that uniquely identifies the user. When sending</span>
@@ -502,7 +502,7 @@
 <span class="sd">          :param http_context: The HTTP request which was processed when the</span>
 <span class="sd">                               error was triggered.</span>
 
-<span class="sd">          :type user: string</span>
+<span class="sd">          :type user: str</span>
 <span class="sd">          :param user: The user who caused or was affected by the crash. This</span>
 <span class="sd">                       can be a user ID, an email address, or an arbitrary</span>
 <span class="sd">                       token that uniquely identifies the user. When sending an</span>
@@ -554,7 +554,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

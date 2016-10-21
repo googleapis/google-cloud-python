@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Error Reporting Client &mdash; google-cloud 881a953 documentation</title>
+  <title>Error Reporting Client &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="index.html"/>
         <link rel="next" title="Using the API" href="monitoring-usage.html"/>
         <link rel="prev" title="Using the API" href="error-reporting-usage.html"/> 
 
@@ -284,7 +284,7 @@ a Logging client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the project which the client acts on behalf of. If not
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the project which the client acts on behalf of. If not
 passed falls back to the default inferred from the
 environment.</li>
 <li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
@@ -344,7 +344,7 @@ set in the environment.</p>
 error was triggered.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">type user:</th><td class="field-body"><p class="first">string</p>
+<tr class="field-odd field"><th class="field-name">type user:</th><td class="field-body"><p class="first">str</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">param user:</th><td class="field-body"><dl class="first last docutils">
@@ -383,7 +383,7 @@ to distinguish affected users.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>http_context</strong> (<em>:class`google.cloud.error_reporting.HTTPContext`</em>) &#8211; The HTTP request which was processed when the
 error was triggered.</li>
-<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; <dl class="docutils">
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; <dl class="docutils">
 <dt>The user who caused or was affected by the crash. This</dt>
 <dd>can be a user ID, an email address, or an arbitrary
 token that uniquely identifies the user. When sending an
@@ -420,14 +420,14 @@ httpRequest part of Error Reporting API</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The type of HTTP request, such as GET, POST, etc.</li>
-<li><strong>url</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The URL of the request</li>
-<li><strong>user_agent</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The user agent information that is provided with the
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The type of HTTP request, such as GET, POST, etc.</li>
+<li><strong>url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The URL of the request</li>
+<li><strong>user_agent</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The user agent information that is provided with the
 request.</li>
-<li><strong>referrer</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The referrer information that is provided with the
+<li><strong>referrer</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The referrer information that is provided with the
 request.</li>
 <li><strong>response_status_code</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The HTTP response status code for the request.</li>
-<li><strong>remote_ip</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The IP address from which the request originated. This
+<li><strong>remote_ip</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The IP address from which the request originated. This
 can be IPv4, IPv6, or a token which is derived from
 the IP address, depending on the data that has been
 provided in the error report.</li>
@@ -481,7 +481,7 @@ provided in the error report.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

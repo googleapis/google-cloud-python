@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.client &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.client &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -306,7 +306,7 @@
     <span class="k">def</span> <span class="nf">from_service_account_json</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">json_credentials_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to retrieve JSON credentials while creating client.</span>
 
-<span class="sd">        :type json_credentials_path: string</span>
+<span class="sd">        :type json_credentials_path: str</span>
 <span class="sd">        :param json_credentials_path: The path to a private key file (this file</span>
 <span class="sd">                                      was given to you when you created the</span>
 <span class="sd">                                      service account). This file must contain</span>
@@ -341,10 +341,10 @@
 <span class="sd">          Unless you have an explicit reason to use a PKCS12 key for your</span>
 <span class="sd">          service account, we recommend using a JSON key.</span>
 
-<span class="sd">        :type client_email: string</span>
+<span class="sd">        :type client_email: str</span>
 <span class="sd">        :param client_email: The e-mail attached to the service account.</span>
 
-<span class="sd">        :type private_key_path: string</span>
+<span class="sd">        :type private_key_path: str</span>
 <span class="sd">        :param private_key_path: The path to a private key file (this file was</span>
 <span class="sd">                                 given to you when you created the service</span>
 <span class="sd">                                 account). This file must be in P12 format.</span>
@@ -399,7 +399,7 @@
 <span class="k">class</span> <span class="nc">_ClientProjectMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Mixin to allow setting the project on the client.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: the project which the client acts on behalf of. If not</span>
 <span class="sd">                    passed falls back to the default inferred from the</span>
 <span class="sd">                    environment.</span>
@@ -432,7 +432,7 @@
 <span class="sd">    Assumes such APIs use the ``project`` and the client needs to store this</span>
 <span class="sd">    value.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: the project which the client acts on behalf of. If not</span>
 <span class="sd">                    passed falls back to the default inferred from the</span>
 <span class="sd">                    environment.</span>
@@ -489,7 +489,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

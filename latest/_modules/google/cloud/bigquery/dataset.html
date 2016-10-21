@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.dataset &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.bigquery.dataset &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -303,7 +303,7 @@
 
 <span class="sd">    See https://cloud.google.com/bigquery/docs/reference/v2/datasets.</span>
 
-<span class="sd">    :type role: string</span>
+<span class="sd">    :type role: str</span>
 <span class="sd">    :param role: Role granted to the entity. One of</span>
 
 <span class="sd">                 * ``&#39;OWNER&#39;``</span>
@@ -312,11 +312,11 @@
 
 <span class="sd">                 May also be ``None`` if the ``entity_type`` is ``view``.</span>
 
-<span class="sd">    :type entity_type: string</span>
+<span class="sd">    :type entity_type: str</span>
 <span class="sd">    :param entity_type: Type of entity being granted the role. One of</span>
 <span class="sd">                        :attr:`ENTITY_TYPES`.</span>
 
-<span class="sd">    :type entity_id: string</span>
+<span class="sd">    :type entity_id: str</span>
 <span class="sd">    :param entity_id: ID of entity being granted the role.</span>
 
 <span class="sd">    :raises: :class:`ValueError` if the ``entity_type`` is not among</span>
@@ -363,7 +363,7 @@
 <span class="sd">    See:</span>
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/datasets</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the dataset</span>
 
 <span class="sd">    :type client: :class:`google.cloud.bigquery.client.Client`</span>
@@ -387,7 +387,7 @@
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Project bound to the dataset.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the project (derived from the client).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span>
@@ -396,7 +396,7 @@
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;URL path for the dataset&#39;s APIs.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the path based on project and dataste name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -440,7 +440,7 @@
     <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;ID for the dataset resource.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the ID (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
@@ -449,7 +449,7 @@
     <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;ETag for the dataset resource.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the ETag (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
@@ -470,7 +470,7 @@
     <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;URL for the dataset resource.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the URL (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selfLink&#39;</span><span class="p">)</span>
@@ -501,7 +501,7 @@
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Description of the dataset.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: The description as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
@@ -510,7 +510,7 @@
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update description of the dataset.</span>
 
-<span class="sd">        :type value: string, or ``NoneType``</span>
+<span class="sd">        :type value: str, or ``NoneType``</span>
 <span class="sd">        :param value: new description</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
@@ -523,7 +523,7 @@
     <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Title of the dataset.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: The name as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">)</span>
@@ -532,7 +532,7 @@
     <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update title of the dataset.</span>
 
-<span class="sd">        :type value: string, or ``NoneType``</span>
+<span class="sd">        :type value: str, or ``NoneType``</span>
 <span class="sd">        :param value: new title</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
@@ -545,7 +545,7 @@
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Location in which the dataset is hosted.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: The location as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
@@ -554,7 +554,7 @@
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update location in which the dataset is hosted.</span>
 
-<span class="sd">        :type value: string, or ``NoneType``</span>
+<span class="sd">        :type value: str, or ``NoneType``</span>
 <span class="sd">        :param value: new location</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
@@ -817,7 +817,7 @@
 <span class="sd">        :param max_results: maximum number of tables to return, If not</span>
 <span class="sd">                            passed, defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of datasets. If</span>
 <span class="sd">                           not passed, the API will return the first page of</span>
 <span class="sd">                           datasets.</span>
@@ -847,7 +847,7 @@
 <div class="viewcode-block" id="Dataset.table"><a class="viewcode-back" href="../../../../bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="p">()):</span>
         <span class="sd">&quot;&quot;&quot;Construct a table bound to this dataset.</span>
 
-<span class="sd">        :type name: string</span>
+<span class="sd">        :type name: str</span>
 <span class="sd">        :param name: Name of the table.</span>
 
 <span class="sd">        :type schema: list of :class:`google.cloud.bigquery.table.SchemaField`</span>
@@ -890,7 +890,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

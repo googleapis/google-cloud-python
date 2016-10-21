@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ACL &mdash; google-cloud 881a953 documentation</title>
+  <title>ACL &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="index.html"/>
         <link rel="next" title="Batches" href="storage-batch.html"/>
         <link rel="prev" title="Buckets" href="storage-buckets.html"/> 
 
@@ -342,7 +342,7 @@ when sending metadata for ACLs to the API.</p>
 <p>Container class representing a list of access controls.</p>
 <dl class="attribute">
 <dt id="google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS">
-<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset(['projectPrivate', 'publicReadWrite', 'authenticatedRead', 'bucketOwnerFullControl', 'private', 'bucketOwnerRead', 'publicRead'])</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
+<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset(['publicReadWrite', 'private', 'bucketOwnerRead', 'publicRead', 'authenticatedRead', 'bucketOwnerFullControl', 'projectPrivate'])</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
 <dd><p>See:
 <a class="reference external" href="https://cloud.google.com/storage/docs/access-control#predefined-acl">https://cloud.google.com/storage/docs/access-control#predefined-acl</a></p>
 </dd></dl>
@@ -427,7 +427,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The domain for this entity.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The domain for this entity.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
@@ -450,9 +450,9 @@ this ACL.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>entity_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The type of entity to create
+<li><strong>entity_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The type of entity to create
 (ie, <code class="docutils literal"><span class="pre">user</span></code>, <code class="docutils literal"><span class="pre">group</span></code>, etc)</li>
-<li><strong>identifier</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID of the entity (if applicable).
+<li><strong>identifier</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the entity (if applicable).
 This can be either an ID or an e-mail address.</li>
 </ul>
 </td>
@@ -538,7 +538,7 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; An id or e-mail for this particular group.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An id or e-mail for this particular group.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
@@ -558,7 +558,7 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code>) &#8211; The entity to check for existence in this ACL.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True of the entity exists in the ACL.</td>
 </tr>
@@ -618,7 +618,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>predefined</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; An identifier for a predefined ACL.  Must be one
+<li><strong>predefined</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An identifier for a predefined ACL.  Must be one
 of the keys in <a class="reference internal" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS"><code class="xref py py-attr docutils literal"><span class="pre">PREDEFINED_JSON_ACLS</span></code></a>
 or <code class="xref py py-attr docutils literal"><span class="pre">PREDEFINED_XML_ACLS</span></code> (which will be
 aliased to the corresponding JSON name).
@@ -641,7 +641,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; An id or e-mail for this particular user.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An id or e-mail for this particular user.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
@@ -769,7 +769,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

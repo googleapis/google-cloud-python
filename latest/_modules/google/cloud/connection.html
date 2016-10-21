@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.connection &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.connection &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -434,7 +434,7 @@
 
 <span class="sd">        Typically, you shouldn&#39;t need to use this method.</span>
 
-<span class="sd">        :type path: string</span>
+<span class="sd">        :type path: str</span>
 <span class="sd">        :param path: The path to the resource (ie, ``&#39;/b/bucket-name&#39;``).</span>
 
 <span class="sd">        :type query_params: dict or list</span>
@@ -442,16 +442,16 @@
 <span class="sd">                             key-value pairs) to insert into the query</span>
 <span class="sd">                             string of the URL.</span>
 
-<span class="sd">        :type api_base_url: string</span>
+<span class="sd">        :type api_base_url: str</span>
 <span class="sd">        :param api_base_url: The base URL for the API endpoint.</span>
 <span class="sd">                             Typically you won&#39;t have to provide this.</span>
 
-<span class="sd">        :type api_version: string</span>
+<span class="sd">        :type api_version: str</span>
 <span class="sd">        :param api_version: The version of the API to call.</span>
 <span class="sd">                            Typically you shouldn&#39;t provide this and instead</span>
 <span class="sd">                            use the default for the library.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The URL assembled from the pieces provided.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">url</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">API_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -471,16 +471,16 @@
 
 <span class="sd">        Typically, you shouldn&#39;t need to use this method.</span>
 
-<span class="sd">        :type method: string</span>
+<span class="sd">        :type method: str</span>
 <span class="sd">        :param method: The HTTP method to use in the request.</span>
 
-<span class="sd">        :type url: string</span>
+<span class="sd">        :type url: str</span>
 <span class="sd">        :param url: The URL to send the request to.</span>
 
-<span class="sd">        :type data: string</span>
+<span class="sd">        :type data: str</span>
 <span class="sd">        :param data: The data to send as the body of the request.</span>
 
-<span class="sd">        :type content_type: string</span>
+<span class="sd">        :type content_type: str</span>
 <span class="sd">        :param content_type: The proper MIME type of the data provided.</span>
 
 <span class="sd">        :type headers: dict</span>
@@ -521,16 +521,16 @@
 
 <span class="sd">        Allows batch context managers to override and defer a request.</span>
 
-<span class="sd">        :type method: string</span>
+<span class="sd">        :type method: str</span>
 <span class="sd">        :param method: The HTTP method to use in the request.</span>
 
-<span class="sd">        :type url: string</span>
+<span class="sd">        :type url: str</span>
 <span class="sd">        :param url: The URL to send the request to.</span>
 
 <span class="sd">        :type headers: dict</span>
 <span class="sd">        :param headers: A dictionary of HTTP headers to send with the request.</span>
 
-<span class="sd">        :type data: string</span>
+<span class="sd">        :type data: str</span>
 <span class="sd">        :param data: The data to send as the body of the request.</span>
 
 <span class="sd">        :type target_object: object or :class:`NoneType`</span>
@@ -554,11 +554,11 @@
 <span class="sd">        interact with the API using these primitives, this is the</span>
 <span class="sd">        correct one to use.</span>
 
-<span class="sd">        :type method: string</span>
+<span class="sd">        :type method: str</span>
 <span class="sd">        :param method: The HTTP method name (ie, ``GET``, ``POST``, etc).</span>
 <span class="sd">                       Required.</span>
 
-<span class="sd">        :type path: string</span>
+<span class="sd">        :type path: str</span>
 <span class="sd">        :param path: The path to the resource (ie, ``&#39;/b/bucket-name&#39;``).</span>
 <span class="sd">                     Required.</span>
 
@@ -567,23 +567,23 @@
 <span class="sd">                             key-value pairs) to insert into the query</span>
 <span class="sd">                             string of the URL.</span>
 
-<span class="sd">        :type data: string</span>
+<span class="sd">        :type data: str</span>
 <span class="sd">        :param data: The data to send as the body of the request. Default is</span>
 <span class="sd">                     the empty string.</span>
 
-<span class="sd">        :type content_type: string</span>
+<span class="sd">        :type content_type: str</span>
 <span class="sd">        :param content_type: The proper MIME type of the data provided. Default</span>
 <span class="sd">                             is None.</span>
 
 <span class="sd">        :type headers: dict</span>
 <span class="sd">        :param headers: extra HTTP headers to be sent with the request.</span>
 
-<span class="sd">        :type api_base_url: string</span>
+<span class="sd">        :type api_base_url: str</span>
 <span class="sd">        :param api_base_url: The base URL for the API endpoint.</span>
 <span class="sd">                             Typically you won&#39;t have to provide this.</span>
 <span class="sd">                             Default is the standard API base URL.</span>
 
-<span class="sd">        :type api_version: string</span>
+<span class="sd">        :type api_version: str</span>
 <span class="sd">        :param api_version: The version of the API to call.  Typically</span>
 <span class="sd">                            you shouldn&#39;t provide this and instead use</span>
 <span class="sd">                            the default for the library.  Default is the</span>
@@ -667,7 +667,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

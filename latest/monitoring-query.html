@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Time Series Query &mdash; google-cloud 881a953 documentation</title>
+  <title>Time Series Query &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="index.html"/>
         <link rel="next" title="Time Series" href="monitoring-timeseries.html"/>
         <link rel="prev" title="Groups" href="monitoring-group.html"/> 
 
@@ -294,7 +294,7 @@ of the <a class="reference internal" href="monitoring-client.html#google.cloud.m
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>client</strong> (<a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client" title="google.cloud.monitoring.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.monitoring.client.Client</span></code></a>) &#8211; The client to use.</li>
-<li><strong>metric_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The metric type name. The default value is
+<li><strong>metric_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The metric type name. The default value is
 <code class="xref py py-data docutils literal"><span class="pre">Query.DEFAULT_METRIC_TYPE</span></code>,
 but please note that this default value is provided only for
 demonstration purposes and is subject to change. See the
@@ -343,7 +343,7 @@ series will contain data points only on the period boundaries.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>per_series_aligner</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The approach to be used to align
+<li><strong>per_series_aligner</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The approach to be used to align
 individual time series. For example: <code class="xref py py-data docutils literal"><span class="pre">Aligner.ALIGN_MEAN</span></code>.
 See <a class="reference internal" href="#google.cloud.monitoring.query.Aligner" title="google.cloud.monitoring.query.Aligner"><code class="xref py py-class docutils literal"><span class="pre">Aligner</span></code></a> and the descriptions of the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list#Aligner">supported
 aligners</a>.</li>
@@ -395,7 +395,7 @@ aligners</a>.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>label</strong> (<em>string or None</em>) &#8211; The label name to use for the dataframe header.
+<li><strong>label</strong> (<em>str or None</em>) &#8211; The label name to use for the dataframe header.
 This can be the name of a resource label or metric label
 (e.g., <code class="docutils literal"><span class="pre">&quot;instance_name&quot;</span></code>), or the string <code class="docutils literal"><span class="pre">&quot;resource_type&quot;</span></code>.</li>
 <li><strong>labels</strong> (<em>list of strings, or None</em>) &#8211; A list or tuple of label names to use for the dataframe
@@ -461,7 +461,7 @@ the following are equivalent:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>headers_only</strong> (<em>boolean</em>) &#8211; Whether to omit the point data from the time series objects.</li>
+<li><strong>headers_only</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Whether to omit the point data from the time series objects.</li>
 <li><strong>page_size</strong> (<em>integer or None</em>) &#8211; An optional positive number specifying the maximum number of
 points to return per page. This can be used to control how far
 the iterator reads ahead.</li>
@@ -499,10 +499,10 @@ combination of project and zone as follows:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>cross_series_reducer</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The approach to be used to combine time series. For example:
+<li><strong>cross_series_reducer</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The approach to be used to combine time series. For example:
 <code class="xref py py-data docutils literal"><span class="pre">Reducer.REDUCE_MEAN</span></code>. See <a class="reference internal" href="#google.cloud.monitoring.query.Reducer" title="google.cloud.monitoring.query.Reducer"><code class="xref py py-class docutils literal"><span class="pre">Reducer</span></code></a> and the
 descriptions of the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list#Reducer">supported reducers</a>.</li>
-<li><strong>group_by_fields</strong> (<em>strings</em>) &#8211; Fields to be preserved by the reduction. For example, specifying
+<li><strong>group_by_fields</strong> (<em>strs</em>) &#8211; Fields to be preserved by the reduction. For example, specifying
 just <code class="docutils literal"><span class="pre">&quot;resource.zone&quot;</span></code> will result in one time series per zone.
 The default is to aggregate all of the time series into just one.</li>
 </ul>
@@ -530,7 +530,7 @@ The default is to aggregate all of the time series into just one.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID of a group to filter by.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of a group to filter by.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.monitoring.query.Query" title="google.cloud.monitoring.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
 </tr>
@@ -782,7 +782,7 @@ described above.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

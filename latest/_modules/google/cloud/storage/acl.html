@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.acl &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.storage.acl &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -357,10 +357,10 @@
 <span class="sd">    This is a helper class that you likely won&#39;t ever construct</span>
 <span class="sd">    outside of using the factor methods on the :class:`ACL` object.</span>
 
-<span class="sd">    :type entity_type: string</span>
+<span class="sd">    :type entity_type: str</span>
 <span class="sd">    :param entity_type: The type of entity (ie, &#39;group&#39; or &#39;user&#39;).</span>
 
-<span class="sd">    :type identifier: string</span>
+<span class="sd">    :type identifier: str</span>
 <span class="sd">    :param identifier: The ID or e-mail of the entity. For the special</span>
 <span class="sd">                       entity types (like &#39;allUsers&#39;) this is optional.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -395,7 +395,7 @@
     <span class="k">def</span> <span class="nf">grant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a role to the entity.</span>
 
-<span class="sd">        :type role: string</span>
+<span class="sd">        :type role: str</span>
 <span class="sd">        :param role: The role to add to the entity.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
@@ -403,7 +403,7 @@
     <span class="k">def</span> <span class="nf">revoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove a role from the entity.</span>
 
-<span class="sd">        :type role: string</span>
+<span class="sd">        :type role: str</span>
 <span class="sd">        :param role: The role to remove from the entity.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">role</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="p">:</span>
@@ -530,7 +530,7 @@
 <span class="sd">        :type entity: :class:`_ACLEntity`</span>
 <span class="sd">        :param entity: The entity to check for existence in this ACL.</span>
 
-<span class="sd">        :rtype: boolean</span>
+<span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: True of the entity exists in the ACL.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_loaded</span><span class="p">()</span>
@@ -570,11 +570,11 @@
 <span class="sd">        create a new one and add it to the list of known entities for</span>
 <span class="sd">        this ACL.</span>
 
-<span class="sd">        :type entity_type: string</span>
+<span class="sd">        :type entity_type: str</span>
 <span class="sd">        :param entity_type: The type of entity to create</span>
 <span class="sd">                            (ie, ``user``, ``group``, etc)</span>
 
-<span class="sd">        :type identifier: string</span>
+<span class="sd">        :type identifier: str</span>
 <span class="sd">        :param identifier: The ID of the entity (if applicable).</span>
 <span class="sd">                           This can be either an ID or an e-mail address.</span>
 
@@ -591,7 +591,7 @@
 <div class="viewcode-block" id="ACL.user"><a class="viewcode-back" href="../../../../storage-acl.html#google.cloud.storage.acl.ACL.user">[docs]</a>    <span class="k">def</span> <span class="nf">user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for a user Entity.</span>
 
-<span class="sd">        :type identifier: string</span>
+<span class="sd">        :type identifier: str</span>
 <span class="sd">        :param identifier: An id or e-mail for this particular user.</span>
 
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
@@ -602,7 +602,7 @@
 <div class="viewcode-block" id="ACL.group"><a class="viewcode-back" href="../../../../storage-acl.html#google.cloud.storage.acl.ACL.group">[docs]</a>    <span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for a group Entity.</span>
 
-<span class="sd">        :type identifier: string</span>
+<span class="sd">        :type identifier: str</span>
 <span class="sd">        :param identifier: An id or e-mail for this particular group.</span>
 
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
@@ -613,7 +613,7 @@
 <div class="viewcode-block" id="ACL.domain"><a class="viewcode-back" href="../../../../storage-acl.html#google.cloud.storage.acl.ACL.domain">[docs]</a>    <span class="k">def</span> <span class="nf">domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for a domain Entity.</span>
 
-<span class="sd">        :type domain: string</span>
+<span class="sd">        :type domain: str</span>
 <span class="sd">        :param domain: The domain for this entity.</span>
 
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
@@ -691,7 +691,7 @@
 <span class="sd">        :param acl: The ACL object to save.  If left blank, this will save</span>
 <span class="sd">                    current entries.</span>
 
-<span class="sd">        :type predefined: string or None</span>
+<span class="sd">        :type predefined: str or None</span>
 <span class="sd">        :param predefined: An identifier for a predefined ACL.  Must be one</span>
 <span class="sd">                           of the keys in :attr:`PREDEFINED_JSON_ACLS`</span>
 <span class="sd">                           If passed, `acl` must be None.</span>
@@ -742,7 +742,7 @@
 <div class="viewcode-block" id="ACL.save_predefined"><a class="viewcode-back" href="../../../../storage-acl.html#google.cloud.storage.acl.ACL.save_predefined">[docs]</a>    <span class="k">def</span> <span class="nf">save_predefined</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predefined</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save this ACL for the current bucket using a predefined ACL.</span>
 
-<span class="sd">        :type predefined: string</span>
+<span class="sd">        :type predefined: str</span>
 <span class="sd">        :param predefined: An identifier for a predefined ACL.  Must be one</span>
 <span class="sd">                           of the keys in :attr:`PREDEFINED_JSON_ACLS`</span>
 <span class="sd">                           or :attr:`PREDEFINED_XML_ACLS` (which will be</span>
@@ -869,7 +869,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

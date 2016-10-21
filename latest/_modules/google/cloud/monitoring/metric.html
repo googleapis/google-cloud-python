@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.metric &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.monitoring.metric &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -340,18 +340,18 @@
 <span class="sd">    :type client: :class:`google.cloud.monitoring.client.Client`</span>
 <span class="sd">    :param client: A client for operating on the metric descriptor.</span>
 
-<span class="sd">    :type type_: string</span>
+<span class="sd">    :type type_: str</span>
 <span class="sd">    :param type_:</span>
 <span class="sd">        The metric type including a DNS name prefix. For example:</span>
 <span class="sd">        ``&quot;compute.googleapis.com/instance/cpu/utilization&quot;``</span>
 
-<span class="sd">    :type metric_kind: string</span>
+<span class="sd">    :type metric_kind: str</span>
 <span class="sd">    :param metric_kind:</span>
 <span class="sd">        The kind of measurement. It must be one of</span>
 <span class="sd">        :data:`MetricKind.GAUGE`, :data:`MetricKind.DELTA`,</span>
 <span class="sd">        or :data:`MetricKind.CUMULATIVE`. See :class:`MetricKind`.</span>
 
-<span class="sd">    :type value_type: string</span>
+<span class="sd">    :type value_type: str</span>
 <span class="sd">    :param value_type:</span>
 <span class="sd">        The value type of the metric. It must be one of</span>
 <span class="sd">        :data:`ValueType.BOOL`, :data:`ValueType.INT64`,</span>
@@ -365,16 +365,16 @@
 <span class="sd">        A sequence of zero or more label descriptors specifying the labels</span>
 <span class="sd">        used to identify a specific instance of this metric.</span>
 
-<span class="sd">    :type unit: string</span>
+<span class="sd">    :type unit: str</span>
 <span class="sd">    :param unit: An optional unit in which the metric value is reported.</span>
 
-<span class="sd">    :type description: string</span>
+<span class="sd">    :type description: str</span>
 <span class="sd">    :param description: An optional detailed description of the metric.</span>
 
-<span class="sd">    :type display_name: string</span>
+<span class="sd">    :type display_name: str</span>
 <span class="sd">    :param display_name: An optional concise name for the metric.</span>
 
-<span class="sd">    :type name: string or None</span>
+<span class="sd">    :type name: str or None</span>
 <span class="sd">    :param name:</span>
 <span class="sd">        The &quot;resource name&quot; of the metric descriptor. For example:</span>
 <span class="sd">        ``&quot;projects/&lt;project_id&gt;/metricDescriptors/&lt;type&gt;&quot;``. As</span>
@@ -448,7 +448,7 @@
 <span class="sd">        :type client: :class:`google.cloud.monitoring.client.Client`</span>
 <span class="sd">        :param client: The client to use.</span>
 
-<span class="sd">        :type metric_type: string</span>
+<span class="sd">        :type metric_type: str</span>
 <span class="sd">        :param metric_type: The metric type name.</span>
 
 <span class="sd">        :rtype: :class:`MetricDescriptor`</span>
@@ -470,12 +470,12 @@
 <span class="sd">        :type client: :class:`google.cloud.monitoring.client.Client`</span>
 <span class="sd">        :param client: The client to use.</span>
 
-<span class="sd">        :type filter_string: string or None</span>
+<span class="sd">        :type filter_string: str or None</span>
 <span class="sd">        :param filter_string:</span>
 <span class="sd">            An optional filter expression describing the metric descriptors</span>
 <span class="sd">            to be returned. See the `filter documentation`_.</span>
 
-<span class="sd">        :type type_prefix: string or None</span>
+<span class="sd">        :type type_prefix: str or None</span>
 <span class="sd">        :param type_prefix: An optional prefix constraining the selected</span>
 <span class="sd">            metric types. This adds ``metric.type = starts_with(&quot;&lt;prefix&gt;&quot;)``</span>
 <span class="sd">            to the filter.</span>
@@ -596,7 +596,7 @@
 <span class="sd">    :meth:`~google.cloud.monitoring.client.Client.metric` factory method</span>
 <span class="sd">    of the :class:`~google.cloud.monitoring.client.Client` class.</span>
 
-<span class="sd">    :type type: string</span>
+<span class="sd">    :type type: str</span>
 <span class="sd">    :param type: The metric type name.</span>
 
 <span class="sd">    :type labels: dict</span>
@@ -665,7 +665,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

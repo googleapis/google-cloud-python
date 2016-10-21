@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.connection &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.pubsub.connection &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -338,7 +338,7 @@
 
 <span class="sd">        Typically, you shouldn&#39;t need to use this method.</span>
 
-<span class="sd">        :type path: string</span>
+<span class="sd">        :type path: str</span>
 <span class="sd">        :param path: The path to the resource.</span>
 
 <span class="sd">        :type query_params: dict or list</span>
@@ -346,16 +346,16 @@
 <span class="sd">                             key-value pairs) to insert into the query</span>
 <span class="sd">                             string of the URL.</span>
 
-<span class="sd">        :type api_base_url: string</span>
+<span class="sd">        :type api_base_url: str</span>
 <span class="sd">        :param api_base_url: The base URL for the API endpoint.</span>
 <span class="sd">                             Typically you won&#39;t have to provide this.</span>
 
-<span class="sd">        :type api_version: string</span>
+<span class="sd">        :type api_version: str</span>
 <span class="sd">        :param api_version: The version of the API to call.</span>
 <span class="sd">                            Typically you shouldn&#39;t provide this and instead</span>
 <span class="sd">                            use the default for the library.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The URL assembled from the pieces provided.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">api_base_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -381,14 +381,14 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: project ID</span>
 
 <span class="sd">        :type page_size: int</span>
 <span class="sd">        :param page_size: maximum number of topics to return, If not passed,</span>
 <span class="sd">                          defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of topics. If not</span>
 <span class="sd">                           passed, the API will return the first page of</span>
 <span class="sd">                           topics.</span>
@@ -418,7 +418,7 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create</span>
 
-<span class="sd">        :type topic_path: string</span>
+<span class="sd">        :type topic_path: str</span>
 <span class="sd">        :param topic_path: the fully-qualified path of the new topic, in format</span>
 <span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
 
@@ -434,7 +434,7 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/get</span>
 
-<span class="sd">        :type topic_path: string</span>
+<span class="sd">        :type topic_path: str</span>
 <span class="sd">        :param topic_path: the fully-qualified path of the topic, in format</span>
 <span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
 
@@ -450,7 +450,7 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/delete</span>
 
-<span class="sd">        :type topic_path: string</span>
+<span class="sd">        :type topic_path: str</span>
 <span class="sd">        :param topic_path: the fully-qualified path of the topic, in format</span>
 <span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -463,7 +463,7 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/publish</span>
 
-<span class="sd">        :type topic_path: string</span>
+<span class="sd">        :type topic_path: str</span>
 <span class="sd">        :param topic_path: the fully-qualified path of the topic, in format</span>
 <span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
 
@@ -486,7 +486,7 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list</span>
 
-<span class="sd">        :type topic_path: string</span>
+<span class="sd">        :type topic_path: str</span>
 <span class="sd">        :param topic_path: the fully-qualified path of the topic, in format</span>
 <span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
 
@@ -494,7 +494,7 @@
 <span class="sd">        :param page_size: maximum number of subscriptions to return, If not</span>
 <span class="sd">                          passed, defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of topics. If not</span>
 <span class="sd">                           passed, the API will return the first page of</span>
 <span class="sd">                           topics.</span>
@@ -533,14 +533,14 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/list</span>
 
-<span class="sd">        :type project: string</span>
+<span class="sd">        :type project: str</span>
 <span class="sd">        :param project: project ID</span>
 
 <span class="sd">        :type page_size: int</span>
 <span class="sd">        :param page_size: maximum number of subscriptions to return, If not</span>
 <span class="sd">                          passed, defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of subscriptions.</span>
 <span class="sd">                           If not passed, the API will return the first page</span>
 <span class="sd">                           of subscriptions.</span>
@@ -571,12 +571,12 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create</span>
 
-<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :type subscription_path: str</span>
 <span class="sd">        :param subscription_path:</span>
 <span class="sd">            the fully-qualified path of the new subscription, in format</span>
 <span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
 
-<span class="sd">        :type topic_path: string</span>
+<span class="sd">        :type topic_path: str</span>
 <span class="sd">        :param topic_path: the fully-qualified path of the topic being</span>
 <span class="sd">                           subscribed, in format</span>
 <span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
@@ -585,7 +585,7 @@
 <span class="sd">        :param ack_deadline: the deadline (in seconds) by which messages pulled</span>
 <span class="sd">                            from the back-end must be acknowledged.</span>
 
-<span class="sd">        :type push_endpoint: string, or ``NoneType``</span>
+<span class="sd">        :type push_endpoint: str, or ``NoneType``</span>
 <span class="sd">        :param push_endpoint: URL to which messages will be pushed by the</span>
 <span class="sd">                              back-end.  If not set, the application must pull</span>
 <span class="sd">                              messages.</span>
@@ -611,7 +611,7 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get</span>
 
-<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :type subscription_path: str</span>
 <span class="sd">        :param subscription_path:</span>
 <span class="sd">            the fully-qualified path of the subscription, in format</span>
 <span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
@@ -629,7 +629,7 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete</span>
 
-<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :type subscription_path: str</span>
 <span class="sd">        :param subscription_path:</span>
 <span class="sd">            the fully-qualified path of the subscription, in format</span>
 <span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
@@ -645,12 +645,12 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
 
-<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :type subscription_path: str</span>
 <span class="sd">        :param subscription_path:</span>
 <span class="sd">            the fully-qualified path of the new subscription, in format</span>
 <span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
 
-<span class="sd">        :type push_endpoint: string, or ``NoneType``</span>
+<span class="sd">        :type push_endpoint: str, or ``NoneType``</span>
 <span class="sd">        :param push_endpoint: URL to which messages will be pushed by the</span>
 <span class="sd">                              back-end.  If not set, the application must pull</span>
 <span class="sd">                              messages.</span>
@@ -667,12 +667,12 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
 
-<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :type subscription_path: str</span>
 <span class="sd">        :param subscription_path:</span>
 <span class="sd">            the fully-qualified path of the new subscription, in format</span>
 <span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
 
-<span class="sd">        :type return_immediately: boolean</span>
+<span class="sd">        :type return_immediately: bool</span>
 <span class="sd">        :param return_immediately: if True, the back-end returns even if no</span>
 <span class="sd">                                   messages are available;  if False, the API</span>
 <span class="sd">                                   call blocks until one or more messages are</span>
@@ -699,7 +699,7 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
 
-<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :type subscription_path: str</span>
 <span class="sd">        :param subscription_path:</span>
 <span class="sd">            the fully-qualified path of the new subscription, in format</span>
 <span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
@@ -721,7 +721,7 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline</span>
 
-<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :type subscription_path: str</span>
 <span class="sd">        :param subscription_path:</span>
 <span class="sd">            the fully-qualified path of the new subscription, in format</span>
 <span class="sd">            ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
@@ -759,7 +759,7 @@
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/getIamPolicy</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/getIamPolicy</span>
 
-<span class="sd">        :type target_path: string</span>
+<span class="sd">        :type target_path: str</span>
 <span class="sd">        :param target_path: the path of the target object.</span>
 
 <span class="sd">        :rtype: dict</span>
@@ -776,7 +776,7 @@
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/setIamPolicy</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/setIamPolicy</span>
 
-<span class="sd">        :type target_path: string</span>
+<span class="sd">        :type target_path: str</span>
 <span class="sd">        :param target_path: the path of the target object.</span>
 
 <span class="sd">        :type policy: dict</span>
@@ -797,7 +797,7 @@
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/testIamPermissions</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/testIamPermissions</span>
 
-<span class="sd">        :type target_path: string</span>
+<span class="sd">        :type target_path: str</span>
 <span class="sd">        :param target_path: the path of the target object.</span>
 
 <span class="sd">        :type permissions: list of string</span>
@@ -844,7 +844,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

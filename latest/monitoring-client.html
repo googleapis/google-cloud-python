@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stackdriver Monitoring Client &mdash; google-cloud 881a953 documentation</title>
+  <title>Stackdriver Monitoring Client &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="index.html"/>
         <link rel="next" title="Metric Descriptors" href="monitoring-metric.html"/>
         <link rel="prev" title="Using the API" href="monitoring-usage.html"/> 
 
@@ -295,7 +295,7 @@ and monitored resource descriptors.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The target project. If not passed, falls back to the
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The target project. If not passed, falls back to the
 default inferred from the environment.</li>
 <li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
@@ -325,7 +325,7 @@ from the environment.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID of the group.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the group.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="monitoring-group.html#google.cloud.monitoring.group.Group" title="google.cloud.monitoring.group.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a></td>
 </tr>
@@ -351,7 +351,7 @@ is not found.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metric_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The metric type name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metric_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The metric type name.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="monitoring-metric.html#google.cloud.monitoring.metric.MetricDescriptor" title="google.cloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a></td>
 </tr>
@@ -376,7 +376,7 @@ descriptor is not found.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The resource type name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The resource type name.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="monitoring-resource.html#google.cloud.monitoring.resource.ResourceDescriptor" title="google.cloud.monitoring.resource.ResourceDescriptor"><code class="xref py py-class docutils literal"><span class="pre">ResourceDescriptor</span></code></a></td>
 </tr>
@@ -403,13 +403,13 @@ a group object owned by this client.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>group_id</strong> (<em>string or None</em>) &#8211; The ID of the group.</li>
-<li><strong>display_name</strong> (<em>string or None</em>) &#8211; A user-assigned name for this group, used only for display
+<li><strong>group_id</strong> (<em>str or None</em>) &#8211; The ID of the group.</li>
+<li><strong>display_name</strong> (<em>str or None</em>) &#8211; A user-assigned name for this group, used only for display
 purposes.</li>
-<li><strong>parent_id</strong> (<em>string or None</em>) &#8211; The ID of the group&#8217;s parent, if it has one.</li>
-<li><strong>filter_string</strong> (<em>string or None</em>) &#8211; The filter string used to determine which monitored resources
+<li><strong>parent_id</strong> (<em>str or None</em>) &#8211; The ID of the group&#8217;s parent, if it has one.</li>
+<li><strong>filter_string</strong> (<em>str or None</em>) &#8211; The filter string used to determine which monitored resources
 belong to this group.</li>
-<li><strong>is_cluster</strong> (<em>boolean</em>) &#8211; If true, the members of this group are considered to be a cluster.
+<li><strong>is_cluster</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If true, the members of this group are considered to be a cluster.
 The system can perform additional analysis on groups that are
 clusters.</li>
 </ul>
@@ -467,9 +467,9 @@ clusters.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filter_string</strong> (<em>string or None</em>) &#8211; An optional filter expression describing the metric descriptors
+<li><strong>filter_string</strong> (<em>str or None</em>) &#8211; An optional filter expression describing the metric descriptors
 to be returned. See the <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters">filter documentation</a>.</li>
-<li><strong>type_prefix</strong> (<em>string or None</em>) &#8211; An optional prefix constraining the selected
+<li><strong>type_prefix</strong> (<em>str or None</em>) &#8211; An optional prefix constraining the selected
 metric types. This adds <code class="docutils literal"><span class="pre">metric.type</span> <span class="pre">=</span> <span class="pre">starts_with(&quot;&lt;prefix&gt;&quot;)</span></code>
 to the filter.</li>
 </ul>
@@ -498,7 +498,7 @@ to the filter.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filter_string</strong> (<em>string or None</em>) &#8211; An optional filter expression describing the resource descriptors
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filter_string</strong> (<em>str or None</em>) &#8211; An optional filter expression describing the resource descriptors
 to be returned. See the <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters">filter documentation</a>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of
@@ -530,7 +530,7 @@ create the custom metric:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The metric type name.</li>
+<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The metric type name.</li>
 <li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; A mapping from label names to values for all labels
 enumerated in the associated
 <a class="reference internal" href="monitoring-metric.html#google.cloud.monitoring.metric.MetricDescriptor" title="google.cloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a>.</li>
@@ -582,22 +582,22 @@ metric label:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The metric type including a DNS name prefix. For example:
+<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The metric type including a DNS name prefix. For example:
 <code class="docutils literal"><span class="pre">&quot;custom.googleapis.com/my_metric&quot;</span></code></li>
-<li><strong>metric_kind</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The kind of measurement. It must be one of
+<li><strong>metric_kind</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The kind of measurement. It must be one of
 <code class="xref py py-data docutils literal"><span class="pre">MetricKind.GAUGE</span></code>, <code class="xref py py-data docutils literal"><span class="pre">MetricKind.DELTA</span></code>,
 or <code class="xref py py-data docutils literal"><span class="pre">MetricKind.CUMULATIVE</span></code>.
 See <a class="reference internal" href="monitoring-metric.html#google.cloud.monitoring.metric.MetricKind" title="google.cloud.monitoring.metric.MetricKind"><code class="xref py py-class docutils literal"><span class="pre">MetricKind</span></code></a>.</li>
-<li><strong>value_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The value type of the metric. It must be one of
+<li><strong>value_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The value type of the metric. It must be one of
 <code class="xref py py-data docutils literal"><span class="pre">ValueType.BOOL</span></code>, <code class="xref py py-data docutils literal"><span class="pre">ValueType.INT64</span></code>,
 <code class="xref py py-data docutils literal"><span class="pre">ValueType.DOUBLE</span></code>, <code class="xref py py-data docutils literal"><span class="pre">ValueType.STRING</span></code>,
 or <code class="xref py py-data docutils literal"><span class="pre">ValueType.DISTRIBUTION</span></code>.
 See <code class="xref py py-class docutils literal"><span class="pre">ValueType</span></code>.</li>
 <li><strong>labels</strong> (list of <a class="reference internal" href="monitoring-label.html#google.cloud.monitoring.label.LabelDescriptor" title="google.cloud.monitoring.label.LabelDescriptor"><code class="xref py py-class docutils literal"><span class="pre">LabelDescriptor</span></code></a>) &#8211; A sequence of zero or more label descriptors specifying the labels
 used to identify a specific instance of this metric.</li>
-<li><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; An optional unit in which the metric value is reported.</li>
-<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; An optional detailed description of the metric.</li>
-<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; An optional concise name for the metric.</li>
+<li><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An optional unit in which the metric value is reported.</li>
+<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An optional detailed description of the metric.</li>
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; An optional concise name for the metric.</li>
 </ul>
 </td>
 </tr>
@@ -625,7 +625,7 @@ used to identify a specific instance of this metric.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>metric_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The metric type name. The default value is
+<li><strong>metric_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The metric type name. The default value is
 <code class="xref py py-data docutils literal"><span class="pre">Query.DEFAULT_METRIC_TYPE</span></code>,
 but please note that this default value is provided only for
 demonstration purposes and is subject to change. See the
@@ -679,7 +679,7 @@ labels, see:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The monitored resource type name.</li>
+<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The monitored resource type name.</li>
 <li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; A mapping from label names to values for all labels
 enumerated in the associated
 <a class="reference internal" href="monitoring-resource.html#google.cloud.monitoring.resource.ResourceDescriptor" title="google.cloud.monitoring.resource.ResourceDescriptor"><code class="xref py py-class docutils literal"><span class="pre">ResourceDescriptor</span></code></a>,
@@ -847,7 +847,7 @@ to the API. Each time series must contain exactly one point.</td>
 <li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
 connection.</li>
 <li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>) &#8211; (Optional) HTTP object to make requests.</li>
-<li><strong>api_base_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The base of the API call URL. Defaults to the value
+<li><strong>api_base_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The base of the API call URL. Defaults to the value
 <a class="reference internal" href="#google.cloud.monitoring.connection.Connection.API_BASE_URL" title="google.cloud.monitoring.connection.Connection.API_BASE_URL"><code class="xref py py-attr docutils literal"><span class="pre">Connection.API_BASE_URL</span></code></a>.</li>
 </ul>
 </td>
@@ -924,7 +924,7 @@ connection.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

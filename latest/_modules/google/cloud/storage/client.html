@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.client &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.storage.client &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -299,7 +299,7 @@
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../storage-client.html#google.cloud.storage.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: the project which the client acts on behalf of. Will be</span>
 <span class="sd">                    passed when creating a topic.  If not passed,</span>
 <span class="sd">                    falls back to the default inferred from the environment.</span>
@@ -393,7 +393,7 @@
 <span class="sd">          This will not make an HTTP request; it simply instantiates</span>
 <span class="sd">          a bucket object owned by this client.</span>
 
-<span class="sd">        :type bucket_name: string</span>
+<span class="sd">        :type bucket_name: str</span>
 <span class="sd">        :param bucket_name: The name of the bucket to be instantiated.</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.storage.bucket.Bucket`</span>
@@ -428,7 +428,7 @@
 
 <span class="sd">        This implements &quot;storage.buckets.get&quot;.</span>
 
-<span class="sd">        :type bucket_name: string</span>
+<span class="sd">        :type bucket_name: str</span>
 <span class="sd">        :param bucket_name: The name of the bucket to get.</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.storage.bucket.Bucket`</span>
@@ -452,7 +452,7 @@
 <span class="sd">          &gt;&gt;&gt; print(bucket)</span>
 <span class="sd">          &lt;Bucket: my-bucket&gt;</span>
 
-<span class="sd">        :type bucket_name: string</span>
+<span class="sd">        :type bucket_name: str</span>
 <span class="sd">        :param bucket_name: The name of the bucket to get.</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.storage.bucket.Bucket`</span>
@@ -477,7 +477,7 @@
 <span class="sd">        If the bucket already exists, will raise</span>
 <span class="sd">        :class:`google.cloud.exceptions.Conflict`.</span>
 
-<span class="sd">        :type bucket_name: string</span>
+<span class="sd">        :type bucket_name: str</span>
 <span class="sd">        :param bucket_name: The bucket name to create.</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.storage.bucket.Bucket`</span>
@@ -502,20 +502,20 @@
 <span class="sd">        :type max_results: integer or ``NoneType``</span>
 <span class="sd">        :param max_results: Optional. Maximum number of buckets to return.</span>
 
-<span class="sd">        :type page_token: string or ``NoneType``</span>
+<span class="sd">        :type page_token: str or ``NoneType``</span>
 <span class="sd">        :param page_token: Optional. Opaque marker for the next &quot;page&quot; of</span>
 <span class="sd">                           buckets. If not passed, will return the first page</span>
 <span class="sd">                           of buckets.</span>
 
-<span class="sd">        :type prefix: string or ``NoneType``</span>
+<span class="sd">        :type prefix: str or ``NoneType``</span>
 <span class="sd">        :param prefix: Optional. Filter results to buckets whose names begin</span>
 <span class="sd">                       with this prefix.</span>
 
-<span class="sd">        :type projection: string or ``NoneType``</span>
+<span class="sd">        :type projection: str or ``NoneType``</span>
 <span class="sd">        :param projection: If used, must be &#39;full&#39; or &#39;noAcl&#39;. Defaults to</span>
 <span class="sd">                           &#39;noAcl&#39;. Specifies the set of properties to return.</span>
 
-<span class="sd">        :type fields: string or ``NoneType``</span>
+<span class="sd">        :type fields: str or ``NoneType``</span>
 <span class="sd">        :param fields: Selector specifying which fields to include in a</span>
 <span class="sd">                       partial response. Must be a list of fields. For example</span>
 <span class="sd">                       to get a partial response with just the next page token</span>
@@ -591,7 +591,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

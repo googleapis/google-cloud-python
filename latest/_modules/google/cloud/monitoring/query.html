@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.query &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.monitoring.query &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -350,7 +350,7 @@
 <span class="sd">    :type client: :class:`google.cloud.monitoring.client.Client`</span>
 <span class="sd">    :param client: The client to use.</span>
 
-<span class="sd">    :type metric_type: string</span>
+<span class="sd">    :type metric_type: str</span>
 <span class="sd">    :param metric_type: The metric type name. The default value is</span>
 <span class="sd">        :data:`Query.DEFAULT_METRIC_TYPE</span>
 <span class="sd">        &lt;google.cloud.monitoring.query.Query.DEFAULT_METRIC_TYPE&gt;`,</span>
@@ -471,7 +471,7 @@
 
 <span class="sd">            query = query.select_group(&#39;1234567&#39;)</span>
 
-<span class="sd">        :type group_id: string</span>
+<span class="sd">        :type group_id: str</span>
 <span class="sd">        :param group_id: The ID of a group to filter by.</span>
 
 <span class="sd">        :rtype: :class:`Query`</span>
@@ -634,7 +634,7 @@
 
 <span class="sd">            query = query.align(&#39;ALIGN_MEAN&#39;, minutes=5)</span>
 
-<span class="sd">        :type per_series_aligner: string</span>
+<span class="sd">        :type per_series_aligner: str</span>
 <span class="sd">        :param per_series_aligner: The approach to be used to align</span>
 <span class="sd">            individual time series. For example: :data:`Aligner.ALIGN_MEAN`.</span>
 <span class="sd">            See :class:`Aligner` and the descriptions of the `supported</span>
@@ -674,13 +674,13 @@
 <span class="sd">            query = query.reduce(Reducer.REDUCE_MEAN,</span>
 <span class="sd">                                 &#39;resource.project_id&#39;, &#39;resource.zone&#39;)</span>
 
-<span class="sd">        :type cross_series_reducer: string</span>
+<span class="sd">        :type cross_series_reducer: str</span>
 <span class="sd">        :param cross_series_reducer:</span>
 <span class="sd">            The approach to be used to combine time series. For example:</span>
 <span class="sd">            :data:`Reducer.REDUCE_MEAN`. See :class:`Reducer` and the</span>
 <span class="sd">            descriptions of the `supported reducers`_.</span>
 
-<span class="sd">        :type group_by_fields: strings</span>
+<span class="sd">        :type group_by_fields: strs</span>
 <span class="sd">        :param group_by_fields:</span>
 <span class="sd">            Fields to be preserved by the reduction. For example, specifying</span>
 <span class="sd">            just ``&quot;resource.zone&quot;`` will result in one time series per zone.</span>
@@ -714,7 +714,7 @@
 <span class="sd">            for timeseries in query.iter():</span>
 <span class="sd">                ...</span>
 
-<span class="sd">        :type headers_only: boolean</span>
+<span class="sd">        :type headers_only: bool</span>
 <span class="sd">        :param headers_only:</span>
 <span class="sd">             Whether to omit the point data from the time series objects.</span>
 
@@ -777,7 +777,7 @@
 <span class="sd">        We use a series of key-value pairs (suitable for passing to</span>
 <span class="sd">        ``urlencode``) instead of a ``dict`` to allow for repeated fields.</span>
 
-<span class="sd">        :type headers_only: boolean</span>
+<span class="sd">        :type headers_only: bool</span>
 <span class="sd">        :param headers_only:</span>
 <span class="sd">             Whether to omit the point data from the</span>
 <span class="sd">             :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects.</span>
@@ -785,7 +785,7 @@
 <span class="sd">        :type page_size: integer or None</span>
 <span class="sd">        :param page_size: A limit on the number of points to return per page.</span>
 
-<span class="sd">        :type page_token: string or None</span>
+<span class="sd">        :type page_token: str or None</span>
 <span class="sd">        :param page_token: A token to continue the retrieval.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">yield</span> <span class="s1">&#39;filter&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span>
@@ -847,7 +847,7 @@
 <span class="sd">            dataframe = query.as_dataframe(</span>
 <span class="sd">                labels=[&#39;resource_type&#39;, &#39;instance_id&#39;])</span>
 
-<span class="sd">        :type label: string or None</span>
+<span class="sd">        :type label: str or None</span>
 <span class="sd">        :param label: The label name to use for the dataframe header.</span>
 <span class="sd">            This can be the name of a resource label or metric label</span>
 <span class="sd">            (e.g., ``&quot;instance_name&quot;``), or the string ``&quot;resource_type&quot;``.</span>
@@ -988,7 +988,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

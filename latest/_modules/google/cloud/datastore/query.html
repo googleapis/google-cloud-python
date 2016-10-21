@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.query &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.datastore.query &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -303,14 +303,14 @@
 <span class="sd">    :type client: :class:`google.cloud.datastore.client.Client`</span>
 <span class="sd">    :param client: The client used to connect to Datastore.</span>
 
-<span class="sd">    :type kind: string</span>
+<span class="sd">    :type kind: str</span>
 <span class="sd">    :param kind: The kind to query.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: The project associated with the query.  If not passed,</span>
 <span class="sd">                    uses the client&#39;s value.</span>
 
-<span class="sd">    :type namespace: string or None</span>
+<span class="sd">    :type namespace: str or None</span>
 <span class="sd">    :param namespace: The namespace to which to restrict results.  If not</span>
 <span class="sd">                      passed, uses the client&#39;s value.</span>
 
@@ -381,7 +381,7 @@
     <span class="k">def</span> <span class="nf">namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;This query&#39;s namespace</span>
 
-<span class="sd">        :rtype: string or None</span>
+<span class="sd">        :rtype: str or None</span>
 <span class="sd">        :returns: the namespace assigned to this query</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">namespace</span>
@@ -390,7 +390,7 @@
     <span class="k">def</span> <span class="nf">namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the query&#39;s namespace.</span>
 
-<span class="sd">        :type value: string</span>
+<span class="sd">        :type value: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Namespace must be a string&quot;</span><span class="p">)</span>
@@ -400,7 +400,7 @@
     <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the Kind of the Query.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The kind for the query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kind</span>
@@ -409,7 +409,7 @@
     <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the Kind of the Query.</span>
 
-<span class="sd">        :type value: string</span>
+<span class="sd">        :type value: str</span>
 <span class="sd">        :param value: updated kind for the query.</span>
 
 <span class="sd">        .. note::</span>
@@ -475,10 +475,10 @@
 <span class="sd">          &gt;&gt;&gt; query.add_filter(&#39;name&#39;, &#39;=&#39;, &#39;James&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; query.add_filter(&#39;age&#39;, &#39;&gt;&#39;, 50)</span>
 
-<span class="sd">        :type property_name: string</span>
+<span class="sd">        :type property_name: str</span>
 <span class="sd">        :param property_name: A property name.</span>
 
-<span class="sd">        :type operator: string</span>
+<span class="sd">        :type operator: str</span>
 <span class="sd">        :param operator: One of ``=``, ``&lt;``, ``&lt;=``, ``&gt;``, ``&gt;=``.</span>
 
 <span class="sd">        :type value: :class:`int`, :class:`str`, :class:`bool`,</span>
@@ -514,7 +514,7 @@
     <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the fields returned the query.</span>
 
-<span class="sd">        :type projection: string or sequence of strings</span>
+<span class="sd">        :type projection: str or sequence of strings</span>
 <span class="sd">        :param projection: Each value is a string giving the name of a</span>
 <span class="sd">                           property to be included in the projection query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -532,7 +532,7 @@
 <span class="sd">        :type key: :class:`google.cloud.datastore.key.Key`</span>
 <span class="sd">        :param key: The key to filter on.</span>
 
-<span class="sd">        :type operator: string</span>
+<span class="sd">        :type operator: str</span>
 <span class="sd">        :param operator: (Optional) One of ``=``, ``&lt;``, ``&lt;=``, ``&gt;``, ``&gt;=``.</span>
 <span class="sd">                         Defaults to ``=``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -553,7 +553,7 @@
 
 <span class="sd">        Sort fields will be applied in the order specified.</span>
 
-<span class="sd">        :type value: string or sequence of strings</span>
+<span class="sd">        :type value: str or sequence of strings</span>
 <span class="sd">        :param value: Each value is a string giving the name of the</span>
 <span class="sd">                      property on which to sort, optionally preceded by a</span>
 <span class="sd">                      hyphen (-) to specify descending order.</span>
@@ -576,7 +576,7 @@
     <span class="k">def</span> <span class="nf">distinct_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set fields used to group query results.</span>
 
-<span class="sd">        :type value: string or sequence of strings</span>
+<span class="sd">        :type value: str or sequence of strings</span>
 <span class="sd">        :param value: Each value is a string giving the name of a</span>
 <span class="sd">                      property to use to group results together.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -842,7 +842,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

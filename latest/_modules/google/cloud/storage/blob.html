@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -322,7 +322,7 @@
 <div class="viewcode-block" id="Blob"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob">[docs]</a><span class="k">class</span> <span class="nc">Blob</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A wrapper around Cloud Storage&#39;s concept of an ``Object``.</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name: The name of the blob.  This corresponds to the</span>
 <span class="sd">                 unique path of the object in the bucket.</span>
 
@@ -381,13 +381,13 @@
 <div class="viewcode-block" id="Blob.path_helper"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.path_helper">[docs]</a>    <span class="k">def</span> <span class="nf">path_helper</span><span class="p">(</span><span class="n">bucket_path</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Relative URL path for a blob.</span>
 
-<span class="sd">        :type bucket_path: string</span>
+<span class="sd">        :type bucket_path: str</span>
 <span class="sd">        :param bucket_path: The URL path for a bucket.</span>
 
-<span class="sd">        :type blob_name: string</span>
+<span class="sd">        :type blob_name: str</span>
 <span class="sd">        :param blob_name: The name of the blob.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The relative URL path for ``blob_name``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">bucket_path</span> <span class="o">+</span> <span class="s1">&#39;/o/&#39;</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
@@ -409,7 +409,7 @@
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter property for the URL path to this Blob.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The URL path to this Blob.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
@@ -526,7 +526,7 @@
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
 
-<span class="sd">        :rtype: boolean</span>
+<span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: True if the blob exists in Cloud Storage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
@@ -627,7 +627,7 @@
 <div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
 
-<span class="sd">        :type filename: string</span>
+<span class="sd">        :type filename: str</span>
 <span class="sd">        :param filename: A filename to be passed to ``open``.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
@@ -712,7 +712,7 @@
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle open for reading.</span>
 
-<span class="sd">        :type rewind: boolean</span>
+<span class="sd">        :type rewind: bool</span>
 <span class="sd">        :param rewind: If True, seek to the beginning of the file handle before</span>
 <span class="sd">                       writing the file to Cloud Storage.</span>
 
@@ -722,7 +722,7 @@
 <span class="sd">                     :func:`os.fstat`. (If the file handle is not from the</span>
 <span class="sd">                     filesystem this won&#39;t be possible.)</span>
 
-<span class="sd">        :type content_type: string or ``NoneType``</span>
+<span class="sd">        :type content_type: str or ``NoneType``</span>
 <span class="sd">        :param content_type: Optional type of content being uploaded.</span>
 
 <span class="sd">        :type num_retries: integer</span>
@@ -836,10 +836,10 @@
 <span class="sd">           `lifecycle &lt;https://cloud.google.com/storage/docs/lifecycle&gt;`_</span>
 <span class="sd">           API documents for details.</span>
 
-<span class="sd">        :type filename: string</span>
+<span class="sd">        :type filename: str</span>
 <span class="sd">        :param filename: The path to the file.</span>
 
-<span class="sd">        :type content_type: string or ``NoneType``</span>
+<span class="sd">        :type content_type: str or ``NoneType``</span>
 <span class="sd">        :param content_type: Optional type of content being uploaded.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
@@ -873,7 +873,7 @@
 <span class="sd">        :param data: The data to store in this blob.  If the value is</span>
 <span class="sd">                     text, it will be encoded as UTF-8.</span>
 
-<span class="sd">        :type content_type: string</span>
+<span class="sd">        :type content_type: str</span>
 <span class="sd">        :param content_type: Optional type of content being uploaded. Defaults</span>
 <span class="sd">                             to ``&#39;text/plain&#39;``.</span>
 
@@ -981,7 +981,7 @@
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
 
-<span class="sd">    :rtype: string or ``NoneType``</span>
+<span class="sd">    :rtype: str or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content_disposition</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentDisposition&#39;</span><span class="p">)</span>
@@ -992,7 +992,7 @@
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
 
-<span class="sd">    :rtype: string or ``NoneType``</span>
+<span class="sd">    :rtype: str or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content_encoding</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentEncoding&#39;</span><span class="p">)</span>
@@ -1003,7 +1003,7 @@
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
 
-<span class="sd">    :rtype: string or ``NoneType``</span>
+<span class="sd">    :rtype: str or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content_language</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentLanguage&#39;</span><span class="p">)</span>
@@ -1014,7 +1014,7 @@
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
 
-<span class="sd">    :rtype: string or ``NoneType``</span>
+<span class="sd">    :rtype: str or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content_type</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;contentType&#39;</span><span class="p">)</span>
@@ -1025,7 +1025,7 @@
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
 
-<span class="sd">    :rtype: string or ``NoneType``</span>
+<span class="sd">    :rtype: str or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">crc32c</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s1">&#39;crc32c&#39;</span><span class="p">)</span>
@@ -1036,7 +1036,7 @@
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
 
-<span class="sd">    :rtype: string or ``NoneType``</span>
+<span class="sd">    :rtype: str or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
@@ -1061,7 +1061,7 @@
 <span class="sd">        See: http://tools.ietf.org/html/rfc2616#section-3.11 and</span>
 <span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns: The blob etag or ``None`` if the property is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
@@ -1086,7 +1086,7 @@
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns: The ID of the blob or ``None`` if the property is not</span>
 <span class="sd">                  set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1100,7 +1100,7 @@
 
 <span class="sd">    If the property is not set locally, returns ``None``.</span>
 
-<span class="sd">    :rtype: string or ``NoneType``</span>
+<span class="sd">    :rtype: str or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
@@ -1109,7 +1109,7 @@
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns: The media link for the blob or ``None`` if the property is</span>
 <span class="sd">                  not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1170,7 +1170,7 @@
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns: The self link for the blob or ``None`` if the property is</span>
 <span class="sd">                  not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1196,7 +1196,7 @@
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/storage-classes</span>
 
-<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :rtype: str or ``NoneType``</span>
 <span class="sd">        :returns: If set, one of &quot;MULTI_REGIONAL&quot;, &quot;REGIONAL&quot;,</span>
 <span class="sd">                  &quot;NEARLINE&quot;, &quot;COLDLINE&quot;, &quot;STANDARD&quot;, or</span>
 <span class="sd">                  &quot;DURABLE_REDUCED_AVAILABILITY&quot;, else ``None``.</span>
@@ -1319,7 +1319,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.client &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.monitoring.client &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -322,7 +322,7 @@
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../monitoring-client.html#google.cloud.monitoring.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: The target project. If not passed, falls back to the</span>
 <span class="sd">                    default inferred from the environment.</span>
 
@@ -352,7 +352,7 @@
 <span class="sd">            &gt;&gt;&gt; query = client.query(minutes=5)</span>
 <span class="sd">            &gt;&gt;&gt; print(query.as_dataframe())  # Requires pandas.</span>
 
-<span class="sd">        :type metric_type: string</span>
+<span class="sd">        :type metric_type: str</span>
 <span class="sd">        :param metric_type: The metric type name. The default value is</span>
 <span class="sd">            :data:`Query.DEFAULT_METRIC_TYPE</span>
 <span class="sd">            &lt;google.cloud.monitoring.query.Query.DEFAULT_METRIC_TYPE&gt;`,</span>
@@ -430,19 +430,19 @@
 <span class="sd">            ...     description=&#39;Cumulative count of HTTP responses.&#39;)</span>
 <span class="sd">            &gt;&gt;&gt; descriptor.create()</span>
 
-<span class="sd">        :type type_: string</span>
+<span class="sd">        :type type_: str</span>
 <span class="sd">        :param type_:</span>
 <span class="sd">            The metric type including a DNS name prefix. For example:</span>
 <span class="sd">            ``&quot;custom.googleapis.com/my_metric&quot;``</span>
 
-<span class="sd">        :type metric_kind: string</span>
+<span class="sd">        :type metric_kind: str</span>
 <span class="sd">        :param metric_kind:</span>
 <span class="sd">            The kind of measurement. It must be one of</span>
 <span class="sd">            :data:`MetricKind.GAUGE`, :data:`MetricKind.DELTA`,</span>
 <span class="sd">            or :data:`MetricKind.CUMULATIVE`.</span>
 <span class="sd">            See :class:`~google.cloud.monitoring.metric.MetricKind`.</span>
 
-<span class="sd">        :type value_type: string</span>
+<span class="sd">        :type value_type: str</span>
 <span class="sd">        :param value_type:</span>
 <span class="sd">            The value type of the metric. It must be one of</span>
 <span class="sd">            :data:`ValueType.BOOL`, :data:`ValueType.INT64`,</span>
@@ -456,13 +456,13 @@
 <span class="sd">            A sequence of zero or more label descriptors specifying the labels</span>
 <span class="sd">            used to identify a specific instance of this metric.</span>
 
-<span class="sd">        :type unit: string</span>
+<span class="sd">        :type unit: str</span>
 <span class="sd">        :param unit: An optional unit in which the metric value is reported.</span>
 
-<span class="sd">        :type description: string</span>
+<span class="sd">        :type description: str</span>
 <span class="sd">        :param description: An optional detailed description of the metric.</span>
 
-<span class="sd">        :type display_name: string</span>
+<span class="sd">        :type display_name: str</span>
 <span class="sd">        :param display_name: An optional concise name for the metric.</span>
 
 <span class="sd">        :rtype: :class:`MetricDescriptor`</span>
@@ -493,7 +493,7 @@
 <span class="sd">             ...                            &#39;status&#39;: &#39;successful&#39;,</span>
 <span class="sd">             ...                         })</span>
 
-<span class="sd">        :type type_: string</span>
+<span class="sd">        :type type_: str</span>
 <span class="sd">        :param type_: The metric type name.</span>
 
 <span class="sd">        :type labels: dict</span>
@@ -520,7 +520,7 @@
 
 <span class="sd">        https://cloud.google.com/monitoring/api/resources</span>
 
-<span class="sd">        :type type_: string</span>
+<span class="sd">        :type type_: str</span>
 <span class="sd">        :param type_: The monitored resource type name.</span>
 
 <span class="sd">        :type labels: dict</span>
@@ -611,7 +611,7 @@
 <span class="sd">            &gt;&gt;&gt; METRIC = &#39;compute.googleapis.com/instance/cpu/utilization&#39;</span>
 <span class="sd">            &gt;&gt;&gt; print(client.fetch_metric_descriptor(METRIC))</span>
 
-<span class="sd">        :type metric_type: string</span>
+<span class="sd">        :type metric_type: str</span>
 <span class="sd">        :param metric_type: The metric type name.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.monitoring.metric.MetricDescriptor`</span>
@@ -634,12 +634,12 @@
 <span class="sd">            ...         type_prefix=&#39;custom.&#39;):</span>
 <span class="sd">            ...     print(descriptor.type)</span>
 
-<span class="sd">        :type filter_string: string or None</span>
+<span class="sd">        :type filter_string: str or None</span>
 <span class="sd">        :param filter_string:</span>
 <span class="sd">            An optional filter expression describing the metric descriptors</span>
 <span class="sd">            to be returned. See the `filter documentation`_.</span>
 
-<span class="sd">        :type type_prefix: string or None</span>
+<span class="sd">        :type type_prefix: str or None</span>
 <span class="sd">        :param type_prefix: An optional prefix constraining the selected</span>
 <span class="sd">            metric types. This adds ``metric.type = starts_with(&quot;&lt;prefix&gt;&quot;)``</span>
 <span class="sd">            to the filter.</span>
@@ -661,7 +661,7 @@
 
 <span class="sd">            &gt;&gt;&gt; print(client.fetch_resource_descriptor(&#39;gce_instance&#39;))</span>
 
-<span class="sd">        :type resource_type: string</span>
+<span class="sd">        :type resource_type: str</span>
 <span class="sd">        :param resource_type: The resource type name.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.monitoring.resource.ResourceDescriptor`</span>
@@ -680,7 +680,7 @@
 <span class="sd">            &gt;&gt;&gt; for descriptor in client.list_resource_descriptors():</span>
 <span class="sd">            ...     print(descriptor.type)</span>
 
-<span class="sd">        :type filter_string: string or None</span>
+<span class="sd">        :type filter_string: str or None</span>
 <span class="sd">        :param filter_string:</span>
 <span class="sd">            An optional filter expression describing the resource descriptors</span>
 <span class="sd">            to be returned. See the `filter documentation`_.</span>
@@ -702,24 +702,24 @@
 <span class="sd">          This will not make an HTTP request; it simply instantiates</span>
 <span class="sd">          a group object owned by this client.</span>
 
-<span class="sd">        :type group_id: string or None</span>
+<span class="sd">        :type group_id: str or None</span>
 <span class="sd">        :param group_id: The ID of the group.</span>
 
-<span class="sd">        :type display_name: string or None</span>
+<span class="sd">        :type display_name: str or None</span>
 <span class="sd">        :param display_name:</span>
 <span class="sd">            A user-assigned name for this group, used only for display</span>
 <span class="sd">            purposes.</span>
 
-<span class="sd">        :type parent_id: string or None</span>
+<span class="sd">        :type parent_id: str or None</span>
 <span class="sd">        :param parent_id:</span>
 <span class="sd">            The ID of the group&#39;s parent, if it has one.</span>
 
-<span class="sd">        :type filter_string: string or None</span>
+<span class="sd">        :type filter_string: str or None</span>
 <span class="sd">        :param filter_string:</span>
 <span class="sd">            The filter string used to determine which monitored resources</span>
 <span class="sd">            belong to this group.</span>
 
-<span class="sd">        :type is_cluster: boolean</span>
+<span class="sd">        :type is_cluster: bool</span>
 <span class="sd">        :param is_cluster:</span>
 <span class="sd">            If true, the members of this group are considered to be a cluster.</span>
 <span class="sd">            The system can perform additional analysis on groups that are</span>
@@ -750,7 +750,7 @@
 <span class="sd">            &gt;&gt;&gt; except google.cloud.exceptions.NotFound:</span>
 <span class="sd">            &gt;&gt;&gt;     print(&#39;That group does not exist!&#39;)</span>
 
-<span class="sd">        :type group_id: string</span>
+<span class="sd">        :type group_id: str</span>
 <span class="sd">        :param group_id: The ID of the group.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.monitoring.group.Group`</span>
@@ -889,7 +889,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

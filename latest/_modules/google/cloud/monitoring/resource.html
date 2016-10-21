@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.resource &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.monitoring.resource &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -300,20 +300,20 @@
 <div class="viewcode-block" id="ResourceDescriptor"><a class="viewcode-back" href="../../../../monitoring-resource.html#google.cloud.monitoring.resource.ResourceDescriptor">[docs]</a><span class="k">class</span> <span class="nc">ResourceDescriptor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specification of a monitored resource type and its schema.</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name:</span>
 <span class="sd">        The &quot;resource name&quot; of the monitored resource descriptor:</span>
 <span class="sd">        ``&quot;projects/&lt;project_id&gt;/monitoredResourceDescriptors/&lt;type&gt;&quot;``</span>
 
-<span class="sd">    :type type_: string</span>
+<span class="sd">    :type type_: str</span>
 <span class="sd">    :param type_:</span>
 <span class="sd">        The monitored resource type. For example: ``&quot;gce_instance&quot;``</span>
 
-<span class="sd">    :type display_name: string</span>
+<span class="sd">    :type display_name: str</span>
 <span class="sd">    :param display_name:</span>
 <span class="sd">        A concise name that might be displayed in user interfaces.</span>
 
-<span class="sd">    :type description: string</span>
+<span class="sd">    :type description: str</span>
 <span class="sd">    :param description:</span>
 <span class="sd">        A detailed description that might be used in documentation.</span>
 
@@ -338,7 +338,7 @@
 <span class="sd">        :type client: :class:`google.cloud.monitoring.client.Client`</span>
 <span class="sd">        :param client: The client to use.</span>
 
-<span class="sd">        :type resource_type: string</span>
+<span class="sd">        :type resource_type: str</span>
 <span class="sd">        :param resource_type: The resource type name.</span>
 
 <span class="sd">        :rtype: :class:`ResourceDescriptor`</span>
@@ -360,7 +360,7 @@
 <span class="sd">        :type client: :class:`google.cloud.monitoring.client.Client`</span>
 <span class="sd">        :param client: The client to use.</span>
 
-<span class="sd">        :type filter_string: string or None</span>
+<span class="sd">        :type filter_string: str or None</span>
 <span class="sd">        :param filter_string:</span>
 <span class="sd">            An optional filter expression describing the resource descriptors</span>
 <span class="sd">            to be returned. See the `filter documentation`_.</span>
@@ -435,7 +435,7 @@
 <span class="sd">    :meth:`~google.cloud.monitoring.client.Client.resource` factory method</span>
 <span class="sd">    of the :class:`~google.cloud.monitoring.client.Client` class.</span>
 
-<span class="sd">    :type type: string</span>
+<span class="sd">    :type type: str</span>
 <span class="sd">    :param type: The resource type name.</span>
 
 <span class="sd">    :type labels: dict</span>
@@ -504,7 +504,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

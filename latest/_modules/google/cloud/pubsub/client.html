@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.client &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.pubsub.client &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -319,7 +319,7 @@
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../pubsub-client.html#google.cloud.pubsub.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: the project which the client acts on behalf of. Will be</span>
 <span class="sd">                    passed when creating a topic.  If not passed,</span>
 <span class="sd">                    falls back to the default inferred from the environment.</span>
@@ -385,7 +385,7 @@
 <span class="sd">        :param page_size: maximum number of topics to return, If not passed,</span>
 <span class="sd">                          defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of topics. If not</span>
 <span class="sd">                           passed, the API will return the first page of</span>
 <span class="sd">                           topics.</span>
@@ -419,7 +419,7 @@
 <span class="sd">        :param page_size: maximum number of topics to return, If not passed,</span>
 <span class="sd">                          defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of topics. If not</span>
 <span class="sd">                           passed, the API will return the first page of</span>
 <span class="sd">                           topics.</span>
@@ -448,10 +448,10 @@
 <span class="sd">           :start-after: [START client_topic]</span>
 <span class="sd">           :end-before: [END client_topic]</span>
 
-<span class="sd">        :type name: string</span>
+<span class="sd">        :type name: str</span>
 <span class="sd">        :param name: the name of the topic to be constructed.</span>
 
-<span class="sd">        :type timestamp_messages: boolean</span>
+<span class="sd">        :type timestamp_messages: bool</span>
 <span class="sd">        :param timestamp_messages: To be passed to ``Topic`` constructor.</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.pubsub.topic.Topic`</span>
@@ -491,7 +491,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.dns.zone &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.dns.zone &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -301,10 +301,10 @@
 <span class="sd">    See:</span>
 <span class="sd">    https://cloud.google.com/dns/api/v1/managedZones</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the zone</span>
 
-<span class="sd">    :type dns_name: string or :class:`NoneType`</span>
+<span class="sd">    :type dns_name: str or :class:`NoneType`</span>
 <span class="sd">    :param dns_name: the DNS name of the zone.  If not passed, then calls</span>
 <span class="sd">                     to :meth:`create` will fail.</span>
 
@@ -312,7 +312,7 @@
 <span class="sd">    :param client: A client which holds credentials and project configuration</span>
 <span class="sd">                   for the zone (which requires a project).</span>
 
-<span class="sd">    :type description: string or :class:`NoneType`</span>
+<span class="sd">    :type description: str or :class:`NoneType`</span>
 <span class="sd">    :param description: the description for the zone.  If not passed, defaults</span>
 <span class="sd">                        to the value of &#39;dns_name&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -353,7 +353,7 @@
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Project bound to the zone.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the project (derived from the client).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span>
@@ -362,7 +362,7 @@
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;URL path for the zone&#39;s APIs.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the path based on project and dataste name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/managedZones/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -389,7 +389,7 @@
     <span class="k">def</span> <span class="nf">zone_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;ID for the zone resource.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the ID (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
@@ -398,7 +398,7 @@
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Description of the zone.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: The description as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
@@ -407,7 +407,7 @@
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update description of the zone.</span>
 
-<span class="sd">        :type value: string, or ``NoneType``</span>
+<span class="sd">        :type value: str, or ``NoneType``</span>
 <span class="sd">        :param value: new description</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
@@ -425,7 +425,7 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/dns/api/v1/managedZones#nameServerSet</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: The name as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nameServerSet&#39;</span><span class="p">)</span>
@@ -434,7 +434,7 @@
     <span class="k">def</span> <span class="nf">name_server_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update named set of DNS name servers.</span>
 
-<span class="sd">        :type value: string, or ``NoneType``</span>
+<span class="sd">        :type value: str, or ``NoneType``</span>
 <span class="sd">        :param value: new title</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
@@ -446,10 +446,10 @@
 <div class="viewcode-block" id="ManagedZone.resource_record_set"><a class="viewcode-back" href="../../../../dns-zone.html#google.cloud.dns.zone.ManagedZone.resource_record_set">[docs]</a>    <span class="k">def</span> <span class="nf">resource_record_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">record_type</span><span class="p">,</span> <span class="n">ttl</span><span class="p">,</span> <span class="n">rrdatas</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a resource record set bound to this zone.</span>
 
-<span class="sd">        :type name: string</span>
+<span class="sd">        :type name: str</span>
 <span class="sd">        :param name: Name of the record set.</span>
 
-<span class="sd">        :type record_type: string</span>
+<span class="sd">        :type record_type: str</span>
 <span class="sd">        :param record_type: RR type</span>
 
 <span class="sd">        :type ttl: integer</span>
@@ -595,7 +595,7 @@
 <span class="sd">        :param max_results: maximum number of zones to return, If not</span>
 <span class="sd">                            passed, defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of zones. If</span>
 <span class="sd">                           not passed, the API will return the first page of</span>
 <span class="sd">                           zones.</span>
@@ -628,7 +628,7 @@
 <span class="sd">        :param max_results: maximum number of zones to return, If not</span>
 <span class="sd">                            passed, defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of zones. If</span>
 <span class="sd">                           not passed, the API will return the first page of</span>
 <span class="sd">                           zones.</span>
@@ -713,7 +713,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

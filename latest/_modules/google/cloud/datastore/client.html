@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.client &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.datastore.client &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -322,10 +322,10 @@
 <span class="sd">    * Google App Engine application ID</span>
 <span class="sd">    * Google Compute Engine project ID (from metadata server)</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: Optional. The project to use as default.</span>
 
-<span class="sd">    :rtype: string or ``NoneType``</span>
+<span class="sd">    :rtype: str or ``NoneType``</span>
 <span class="sd">    :returns: Default project if it can be determined.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -347,7 +347,7 @@
 <span class="sd">    :type connection: :class:`google.cloud.datastore.connection.Connection`</span>
 <span class="sd">    :param connection: The connection used to connect to datastore.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: The project to make the request for.</span>
 
 <span class="sd">    :type key_pbs: list of :class:`._generated.entity_pb2.Key`</span>
@@ -367,7 +367,7 @@
 <span class="sd">                     consistency.  If True, request ``EVENTUAL`` read</span>
 <span class="sd">                     consistency.</span>
 
-<span class="sd">    :type transaction_id: string</span>
+<span class="sd">    :type transaction_id: str</span>
 <span class="sd">    :param transaction_id: If passed, make the request in the scope of</span>
 <span class="sd">                           the given transaction.  Incompatible with</span>
 <span class="sd">                           ``eventual==True``.</span>
@@ -418,10 +418,10 @@
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../datastore-client.html#google.cloud.datastore.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">_BaseClient</span><span class="p">,</span> <span class="n">_ClientProjectMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convenience wrapper for invoking APIs/factories w/ a project.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: (optional) The project to pass to proxied API methods.</span>
 
-<span class="sd">    :type namespace: string</span>
+<span class="sd">    :type namespace: str</span>
 <span class="sd">    :param namespace: (optional) namespace to pass to proxied API methods.</span>
 
 <span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or</span>
@@ -791,7 +791,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

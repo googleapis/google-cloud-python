@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.group &mdash; google-cloud 881a953 documentation</title>
+  <title>google.cloud.monitoring.group &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -310,14 +310,14 @@
 <span class="k">def</span> <span class="nf">_group_id_from_name</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Validate a group URI path and get the group ID.</span>
 
-<span class="sd">    :type path: string</span>
+<span class="sd">    :type path: str</span>
 <span class="sd">    :param path: URI path for a group API request.</span>
 
-<span class="sd">    :type project: string or None</span>
+<span class="sd">    :type project: str or None</span>
 <span class="sd">    :param project: The project associated with the request. It is</span>
 <span class="sd">                    included for validation purposes.</span>
 
-<span class="sd">    :rtype: string</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    :returns: Group ID parsed from ``path``.</span>
 <span class="sd">    :raises: :class:`ValueError` if the ``path`` is ill-formed or if</span>
 <span class="sd">             the project from the ``path`` does not agree with the</span>
@@ -329,13 +329,13 @@
 <span class="k">def</span> <span class="nf">_group_name_from_id</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">group_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Build the group name given the project and group ID.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: The project associated with the group.</span>
 
-<span class="sd">    :type group_id: string</span>
+<span class="sd">    :type group_id: str</span>
 <span class="sd">    :param group_id: The group ID.</span>
 
-<span class="sd">    :rtype: string</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    :returns: The fully qualified name of the group.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/groups/</span><span class="si">{group_id}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -348,23 +348,23 @@
 <span class="sd">    :type client: :class:`google.cloud.monitoring.client.Client`</span>
 <span class="sd">    :param client: A client for operating on the metric descriptor.</span>
 
-<span class="sd">    :type group_id: string or None</span>
+<span class="sd">    :type group_id: str or None</span>
 <span class="sd">    :param group_id: The ID of the group.</span>
 
-<span class="sd">    :type display_name: string or None</span>
+<span class="sd">    :type display_name: str or None</span>
 <span class="sd">    :param display_name:</span>
 <span class="sd">        A user-assigned name for this group, used only for display purposes.</span>
 
-<span class="sd">    :type parent_id: string or None</span>
+<span class="sd">    :type parent_id: str or None</span>
 <span class="sd">    :param parent_id:</span>
 <span class="sd">        The ID of the group&#39;s parent, if it has one.</span>
 
-<span class="sd">    :type filter_string: string or None</span>
+<span class="sd">    :type filter_string: str or None</span>
 <span class="sd">    :param filter_string:</span>
 <span class="sd">        The filter string used to determine which monitored resources belong to</span>
 <span class="sd">        this group.</span>
 
-<span class="sd">    :type is_cluster: boolean</span>
+<span class="sd">    :type is_cluster: bool</span>
 <span class="sd">    :param is_cluster:</span>
 <span class="sd">        If true, the members of this group are considered to be a cluster. The</span>
 <span class="sd">        system can perform additional analysis on groups that are clusters.</span>
@@ -568,7 +568,7 @@
 <span class="sd">            ...     print(member)</span>
 
 
-<span class="sd">        :type filter_string: string or None</span>
+<span class="sd">        :type filter_string: str or None</span>
 <span class="sd">        :param filter_string:</span>
 <span class="sd">            An optional list filter describing the members to be returned. The</span>
 <span class="sd">            filter may reference the type, labels, and metadata of monitored</span>
@@ -637,7 +637,7 @@
 <span class="sd">        :type client: :class:`google.cloud.monitoring.client.Client`</span>
 <span class="sd">        :param client: The client to use.</span>
 
-<span class="sd">        :type group_id: string</span>
+<span class="sd">        :type group_id: str</span>
 <span class="sd">        :param group_id: The group ID.</span>
 
 <span class="sd">        :rtype: :class:`Group`</span>
@@ -658,17 +658,17 @@
 <span class="sd">        :type client: :class:`google.cloud.monitoring.client.Client`</span>
 <span class="sd">        :param client: The client to use.</span>
 
-<span class="sd">        :type children_of_group: string or None</span>
+<span class="sd">        :type children_of_group: str or None</span>
 <span class="sd">        :param children_of_group:</span>
 <span class="sd">            Returns groups whose parent_name field contains the group name. If</span>
 <span class="sd">            no groups have this parent, the results are empty.</span>
 
-<span class="sd">        :type ancestors_of_group: string or None</span>
+<span class="sd">        :type ancestors_of_group: str or None</span>
 <span class="sd">        :param ancestors_of_group:</span>
 <span class="sd">            Returns groups that are ancestors of the specified group. If the</span>
 <span class="sd">            specified group has no immediate parent, the results are empty.</span>
 
-<span class="sd">        :type descendants_of_group: string or None</span>
+<span class="sd">        :type descendants_of_group: str or None</span>
 <span class="sd">        :param descendants_of_group:</span>
 <span class="sd">            Returns the descendants of the specified group. This is a superset</span>
 <span class="sd">            of the results returned by the children_of_group filter, and</span>
@@ -799,7 +799,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

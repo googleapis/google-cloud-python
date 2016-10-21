@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Jobs &mdash; google-cloud 881a953 documentation</title>
+  <title>Jobs &mdash; google-cloud 22941e2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 881a953 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 22941e2 documentation" href="index.html"/>
         <link rel="next" title="Tables" href="bigquery-table.html"/>
         <link rel="prev" title="Datasets" href="bigquery-dataset.html"/> 
 
@@ -290,7 +290,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the job</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the job</li>
 <li><strong>destination</strong> (<a class="reference internal" href="bigquery-table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
 <li><strong>sources</strong> (list of <a class="reference internal" href="bigquery-table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
 <li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
@@ -372,7 +372,7 @@ configuration for the dataset.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the job</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the job</li>
 <li><strong>source</strong> (<a class="reference internal" href="bigquery-table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
 <li><strong>destination_uris</strong> (<em>list of string</em>) &#8211; URIs describing Cloud Storage blobs into which
 extracted data will be written, in format
@@ -449,7 +449,7 @@ configuration for the dataset.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the job</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the job</li>
 <li><strong>destination</strong> (<a class="reference internal" href="bigquery-table.html#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
 <li><strong>source_uris</strong> (<em>sequence of string</em>) &#8211; URIs of one or more data files to be loaded, in
 format <code class="docutils literal"><span class="pre">gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;</span></code>.</li>
@@ -655,8 +655,8 @@ configuration for the dataset.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the job</li>
-<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; SQL query string</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the job</li>
+<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; SQL query string</li>
 <li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
 for the dataset (which requires a project).</li>
 <li><strong>udf_resources</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; An iterable of
@@ -858,7 +858,7 @@ configuration for the dataset.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'881a953',
+            VERSION:'22941e2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
