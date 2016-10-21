@@ -34,17 +34,32 @@ class TestClient(unittest.TestCase):
         from google.cloud.pubsub import client as MUT
         from google.cloud._testing import _Monkey
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
-        conn = client.connection = object()
 
         with _Monkey(MUT, _USE_GAX=False):
-            api = client.publisher_api
+            client = self._makeOne(project=self.PROJECT, credentials=creds)
+
+        conn = client.connection = object()
+        api = client.publisher_api
 
         self.assertIsInstance(api, _PublisherAPI)
         self.assertIs(api._connection, conn)
         # API instance is cached
         again = client.publisher_api
         self.assertIs(again, api)
+
+    def test_no_gax_ctor(self):
+        from google.cloud._testing import _Monkey
+        from google.cloud.pubsub.connection import _PublisherAPI
+        from google.cloud.pubsub import client as MUT
+
+        creds = _Credentials()
+        with _Monkey(MUT, _USE_GAX=True):
+            client = self._makeOne(project=self.PROJECT, credentials=creds,
+                                   use_gax=False)
+
+        self.assertFalse(client._use_gax)
+        api = client.publisher_api
+        self.assertIsInstance(api, _PublisherAPI)
 
     def test_publisher_api_w_gax(self):
         from google.cloud.pubsub import client as MUT
@@ -84,11 +99,12 @@ class TestClient(unittest.TestCase):
         from google.cloud.pubsub import client as MUT
         from google.cloud._testing import _Monkey
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
-        conn = client.connection = object()
 
         with _Monkey(MUT, _USE_GAX=False):
-            api = client.subscriber_api
+            client = self._makeOne(project=self.PROJECT, credentials=creds)
+
+        conn = client.connection = object()
+        api = client.subscriber_api
 
         self.assertIsInstance(api, _SubscriberAPI)
         self.assertIs(api._connection, conn)
