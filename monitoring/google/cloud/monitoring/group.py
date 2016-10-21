@@ -41,8 +41,8 @@ def _group_id_from_name(path, project=None):
     :type path: str
     :param path: URI path for a group API request.
 
-    :type project: str or None
-    :param project: The project associated with the request. It is
+    :type project: str
+    :param project: (Optional) The project associated with the request. It is
                     included for validation purposes.
 
     :rtype: str
@@ -76,20 +76,20 @@ class Group(object):
     :type client: :class:`google.cloud.monitoring.client.Client`
     :param client: A client for operating on the metric descriptor.
 
-    :type group_id: str or None
-    :param group_id: The ID of the group.
+    :type group_id: str
+    :param group_id: (Optional) The ID of the group.
 
-    :type display_name: str or None
+    :type display_name: str
     :param display_name:
-        A user-assigned name for this group, used only for display purposes.
+        (Optional) A user-assigned name for this group, used only for display purposes.
 
-    :type parent_id: str or None
+    :type parent_id: str
     :param parent_id:
-        The ID of the group's parent, if it has one.
+        (Optional) The ID of the group's parent, if it has one.
 
-    :type filter_string: str or None
+    :type filter_string: str
     :param filter_string:
-        The filter string used to determine which monitored resources belong to
+        (Optional) The filter string used to determine which monitored resources belong to
         this group.
 
     :type is_cluster: bool
@@ -296,21 +296,21 @@ class Group(object):
             ...     print(member)
 
 
-        :type filter_string: str or None
+        :type filter_string: str
         :param filter_string:
-            An optional list filter describing the members to be returned. The
+            (Optional) An optional list filter describing the members to be returned. The
             filter may reference the type, labels, and metadata of monitored
             resources that comprise the group. See the `filter documentation`_.
 
-        :type end_time: :class:`datetime.datetime` or None
+        :type end_time: :class:`datetime.datetime`
         :param end_time:
-            The end time (inclusive) of the time interval for which results
+            (Optional) The end time (inclusive) of the time interval for which results
             should be returned, as a datetime object. If ``start_time`` is
             specified, then this must also be specified.
 
-        :type start_time: :class:`datetime.datetime` or None
+        :type start_time: :class:`datetime.datetime`
         :param start_time:
-            The start time (exclusive) of the time interval for which results
+            (Optional) The start time (exclusive) of the time interval for which results
             should be returned, as a datetime object.
 
         :rtype: list of :class:`~google.cloud.monitoring.resource.Resource`
@@ -386,19 +386,19 @@ class Group(object):
         :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
-        :type children_of_group: str or None
+        :type children_of_group: str
         :param children_of_group:
-            Returns groups whose parent_name field contains the group name. If
+            (Optional) Returns groups whose parent_name field contains the group name. If
             no groups have this parent, the results are empty.
 
-        :type ancestors_of_group: str or None
+        :type ancestors_of_group: str
         :param ancestors_of_group:
-            Returns groups that are ancestors of the specified group. If the
+            (Optional) Returns groups that are ancestors of the specified group. If the
             specified group has no immediate parent, the results are empty.
 
-        :type descendants_of_group: str or None
+        :type descendants_of_group: str
         :param descendants_of_group:
-            Returns the descendants of the specified group. This is a superset
+            (Optional) Returns the descendants of the specified group. This is a superset
             of the results returned by the children_of_group filter, and
             includes children-of-children, and so forth.
 

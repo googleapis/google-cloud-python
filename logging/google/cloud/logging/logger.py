@@ -32,7 +32,7 @@ class Logger(object):
     :param client: A client which holds credentials and project configuration
                    for the logger (which requires a project).
 
-    :type labels: dict or :class:`NoneType`
+    :type labels: dict
     :param labels: (optional) mapping of default labels for entries written
                    via this logger.
     """
@@ -99,25 +99,25 @@ class Logger(object):
 
         Only one of ``text``, ``info``, or ``message`` should be passed.
 
-        :type text: str or :class:`NoneType`
-        :param text: text payload
+        :type text: str
+        :param text: (Optional) text payload
 
-        :type info: dict or :class:`NoneType`
-        :param info: struct payload
+        :type info: dict
+        :param info: (Optional) struct payload
 
         :type message: Protobuf message or :class:`NoneType`
         :param message: protobuf payload
 
-        :type labels: dict or :class:`NoneType`
-        :param labels: labels passed in to calling method.
+        :type labels: dict
+        :param labels: (Optional) labels passed in to calling method.
 
-        :type insert_id: str or :class:`NoneType`
+        :type insert_id: str
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: str or :class:`NoneType`
+        :type severity: str
         :param severity: (optional) severity of event being logged.
 
-        :type http_request: dict or :class:`NoneType`
+        :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry
 
@@ -172,16 +172,16 @@ class Logger(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
 
-        :type labels: dict or :class:`NoneType`
+        :type labels: dict
         :param labels: (optional) mapping of labels for the entry.
 
-        :type insert_id: str or :class:`NoneType`
+        :type insert_id: str
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: str or :class:`NoneType`
+        :type severity: str
         :param severity: (optional) severity of event being logged.
 
-        :type http_request: dict or :class:`NoneType`
+        :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry
         """
@@ -206,16 +206,16 @@ class Logger(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
 
-        :type labels: dict or :class:`NoneType`
+        :type labels: dict
         :param labels: (optional) mapping of labels for the entry.
 
-        :type insert_id: str or :class:`NoneType`
+        :type insert_id: str
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: str or :class:`NoneType`
+        :type severity: str
         :param severity: (optional) severity of event being logged.
 
-        :type http_request: dict or :class:`NoneType`
+        :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
         """
@@ -240,16 +240,16 @@ class Logger(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
 
-        :type labels: dict or :class:`NoneType`
+        :type labels: dict
         :param labels: (optional) mapping of labels for the entry.
 
-        :type insert_id: str or :class:`NoneType`
+        :type insert_id: str
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: str or :class:`NoneType`
+        :type severity: str
         :param severity: (optional) severity of event being logged.
 
-        :type http_request: dict or :class:`NoneType`
+        :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
         """
@@ -347,16 +347,16 @@ class Batch(object):
         :type text: str
         :param text: the text entry
 
-        :type labels: dict or :class:`NoneType`
+        :type labels: dict
         :param labels: (optional) mapping of labels for the entry.
 
-        :type insert_id: str or :class:`NoneType`
+        :type insert_id: str
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: str or :class:`NoneType`
+        :type severity: str
         :param severity: (optional) severity of event being logged.
 
-        :type http_request: dict or :class:`NoneType`
+        :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
         """
@@ -370,16 +370,16 @@ class Batch(object):
         :type info: dict
         :param info: the struct entry
 
-        :type labels: dict or :class:`NoneType`
+        :type labels: dict
         :param labels: (optional) mapping of labels for the entry.
 
-        :type insert_id: str or :class:`NoneType`
+        :type insert_id: str
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: str or :class:`NoneType`
+        :type severity: str
         :param severity: (optional) severity of event being logged.
 
-        :type http_request: dict or :class:`NoneType`
+        :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
         """
@@ -393,16 +393,16 @@ class Batch(object):
         :type message: protobuf message
         :param message: the protobuf entry
 
-        :type labels: dict or :class:`NoneType`
+        :type labels: dict
         :param labels: (optional) mapping of labels for the entry.
 
-        :type insert_id: str or :class:`NoneType`
+        :type insert_id: str
         :param insert_id: (optional) unique ID for log entry.
 
-        :type severity: str or :class:`NoneType`
+        :type severity: str
         :param severity: (optional) severity of event being logged.
 
-        :type http_request: dict or :class:`NoneType`
+        :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
         """

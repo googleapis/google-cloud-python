@@ -29,8 +29,8 @@ class Subscription(object):
     :type name: str
     :param name: the name of the subscription.
 
-    :type topic: :class:`google.cloud.pubsub.topic.Topic` or ``NoneType``
-    :param topic: the topic to which the subscription belongs;  if ``None``,
+    :type topic: :class:`google.cloud.pubsub.topic.Topic`
+    :param topic: (Optional) the topic to which the subscription belongs;  if ``None``,
                   the subscription's topic has been deleted.
 
     :type ack_deadline: int
@@ -81,8 +81,8 @@ class Subscription(object):
         :param client: Client which holds credentials and project
                        configuration for a topic.
 
-        :type topics: dict or None
-        :param topics: A mapping of topic names -> topics.  If not passed,
+        :type topics: dict
+        :param topics: (Optional) A mapping of topic names -> topics.  If not passed,
                        the subscription will have a newly-created topic.
 
         :rtype: :class:`google.cloud.pubsub.subscription.Subscription`

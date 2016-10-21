@@ -264,8 +264,8 @@ class Table(object):
     def description(self, value):
         """Update description of the table.
 
-        :type value: str, or ``NoneType``
-        :param value: new description
+        :type value: str
+        :param value: (Optional) new description
 
         :raises: ValueError for invalid value types.
         """
@@ -289,8 +289,8 @@ class Table(object):
     def expires(self, value):
         """Update datetime at which the table will be removed.
 
-        :type value: ``datetime.datetime``, or ``NoneType``
-        :param value: the new expiration time, or None
+        :type value: ``datetime.datetime``
+        :param value: (Optional) the new expiration time, or None
         """
         if not isinstance(value, datetime.datetime) and value is not None:
             raise ValueError("Pass a datetime, or None")
@@ -309,8 +309,8 @@ class Table(object):
     def friendly_name(self, value):
         """Update title of the table.
 
-        :type value: str, or ``NoneType``
-        :param value: new title
+        :type value: str
+        :param value: (Optional) new title
 
         :raises: ValueError for invalid value types.
         """
@@ -331,8 +331,8 @@ class Table(object):
     def location(self, value):
         """Update location in which the table is hosted.
 
-        :type value: str, or ``NoneType``
-        :param value: new location
+        :type value: str
+        :param value: (Optional) new location
 
         :raises: ValueError for invalid value types.
         """
@@ -554,17 +554,17 @@ class Table(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :type friendly_name: str or ``NoneType``
-        :param friendly_name: point in time at which the table expires.
+        :type friendly_name: str
+        :param friendly_name: (Optional) point in time at which the table expires.
 
-        :type description: str or ``NoneType``
-        :param description: point in time at which the table expires.
+        :type description: str
+        :param description: (Optional) point in time at which the table expires.
 
-        :type location: str or ``NoneType``
-        :param location: point in time at which the table expires.
+        :type location: str
+        :param location: (Optional) point in time at which the table expires.
 
-        :type expires: :class:`datetime.datetime` or ``NoneType``
-        :param expires: point in time at which the table expires.
+        :type expires: :class:`datetime.datetime`
+        :param expires: (Optional) point in time at which the table expires.
 
         :type view_query: str
         :param view_query: SQL query defining the table as a view
@@ -654,11 +654,12 @@ class Table(object):
            incomplete.  To ensure that the local copy of the schema is
            up-to-date, call the table's ``reload`` method.
 
-        :type max_results: int or ``NoneType``
-        :param max_results: maximum number of rows to return.
+        :type max_results: int
+        :param max_results: (Optional) maximum number of rows to return.
 
-        :type page_token: str or ``NoneType``
-        :param page_token: token representing a cursor into the table's rows.
+        :type page_token: str
+        :param page_token:
+            (Optional) token representing a cursor into the table's rows.
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -714,18 +715,18 @@ class Table(object):
         :param row_ids: Unique ids, one per row being inserted.  If not
                         passed, no de-duplication occurs.
 
-        :type skip_invalid_rows: bool or ``NoneType``
-        :param skip_invalid_rows: skip rows w/ invalid data?
+        :type skip_invalid_rows: bool
+        :param skip_invalid_rows: (Optional) skip rows w/ invalid data?
 
-        :type ignore_unknown_values: bool or ``NoneType``
-        :param ignore_unknown_values: ignore columns beyond schema?
+        :type ignore_unknown_values: bool
+        :param ignore_unknown_values: (Optional) ignore columns beyond schema?
 
-        :type template_suffix: str or ``NoneType``
-        :param template_suffix: treat ``name`` as a template table and provide
-                                a suffix. BigQuery will create the table
-                                ``<name> + <template_suffix>`` based on the
-                                schema of the template table. See:
-                                https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
+        :type template_suffix: str
+        :param template_suffix:
+            (Optional) treat ``name`` as a template table and provide a suffix.
+            BigQuery will create the table ``<name> + <template_suffix>`` based
+            on the schema of the template table. See:
+            https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
