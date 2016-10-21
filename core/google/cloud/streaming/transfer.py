@@ -280,8 +280,8 @@ class Download(_Transfer):
         :type stream: writable file-like object
         :param stream: the target file
 
-        :type total_size: int or None
-        :param total_size: total size of the file to be downloaded
+        :type total_size: int
+        :param total_size: (Optional) total size of the file to be downloaded
 
         :type auto_transfer: bool
         :param auto_transfer: should the transfer be started immediately
@@ -457,8 +457,8 @@ class Download(_Transfer):
         :type start: int
         :param start: start byte of the range.
 
-        :type end: int or None
-        :param end: suggested last byte of the range.
+        :type end: int
+        :param end: (Optional) suggested last byte of the range.
 
         :type use_chunks: bool
         :param use_chunks: If False, ignore :attr:`chunksize`.
@@ -493,8 +493,8 @@ class Download(_Transfer):
         :type start: int
         :param start: start byte of the range.
 
-        :type end: int or None
-        :param end: end byte of the range.
+        :type end: int
+        :param end: (Optional) end byte of the range.
 
         :rtype: :class:`google.cloud.streaming.http_wrapper.Response`
         :returns: response from the chunk request.
@@ -555,8 +555,8 @@ class Download(_Transfer):
         :type start: int
         :param start: Where to start fetching bytes. (See above.)
 
-        :type end: int or ``None``
-        :param end: Where to stop fetching bytes. (See above.)
+        :type end: int
+        :param end: (Optional) Where to stop fetching bytes. (See above.)
 
         :type use_chunks: bool
         :param use_chunks: If False, ignore :attr:`chunksize`
@@ -625,8 +625,8 @@ class Upload(_Transfer):
     :type mime_type: str:
     :param mime_type: MIME type of the upload.
 
-    :type total_size: int or None
-    :param total_size: Total upload size for the stream.
+    :type total_size: int
+    :param total_size: (Optional) Total upload size for the stream.
 
     :type http: :class:`httplib2.Http` (or workalike)
     :param http: Http instance used to perform requests.
@@ -669,8 +669,9 @@ class Upload(_Transfer):
         :type mime_type: str
         :param mime_type:  MIMEtype of the file being uploaded
 
-        :type auto_transfer: bool or None
-        :param auto_transfer: should the transfer be started immediately
+        :type auto_transfer: bool
+        :param auto_transfer:
+            (Optional) should the transfer be started immediately
 
         :type kwds: dict
         :param kwds:  keyword arguments:  passed
@@ -700,11 +701,12 @@ class Upload(_Transfer):
         :type mime_type: str
         :param mime_type:  MIMEtype of the file being uploaded
 
-        :type total_size: int or None
-        :param total_size:  Size of the file being uploaded
+        :type total_size: int
+        :param total_size: (Optional)  Size of the file being uploaded
 
-        :type auto_transfer: bool or None
-        :param auto_transfer: should the transfer be started immediately
+        :type auto_transfer: bool
+        :param auto_transfer:
+            (Optional) should the transfer be started immediately
 
         :type kwds: dict
         :param kwds:  keyword arguments:  passed
@@ -784,8 +786,8 @@ class Upload(_Transfer):
     def total_size(self, value):
         """Update total size of the stream to be uploaded.
 
-        :type value: int or None
-        :param value: the size
+        :type value: int
+        :param value: (Optional) the size
         """
         self._ensure_uninitialized()
         self._total_size = value
@@ -1048,8 +1050,8 @@ class Upload(_Transfer):
 
         Helper for :meth:`stream_file`.
 
-        :type chunksize: int or None
-        :param chunksize: the chunk size to be tested.
+        :type chunksize: int
+        :param chunksize: (Optional) the chunk size to be tested.
 
         :raises: :exc:`ValueError` if ``chunksize`` is not a multiple
                  of the server-specified granulariy.

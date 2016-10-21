@@ -179,8 +179,8 @@ class Point(collections.namedtuple('Point', 'end_time start_time value')):
     :type end_time: str
     :param end_time: The end time in RFC3339 UTC "Zulu" format.
 
-    :type start_time: str or None
-    :param start_time: An optional start time in RFC3339 UTC "Zulu" format.
+    :type start_time: str
+    :param start_time: (Optional) The start time in RFC3339 UTC "Zulu" format.
 
     :type value: object
     :param value: The metric value. This can be a scalar or a distribution.

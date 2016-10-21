@@ -147,7 +147,7 @@ def get_python_files(all_files=None):
     NOTE: This requires ``git`` to be installed and requires that this
           is run within the ``git`` repository.
 
-    :type all_files: list or ``NoneType``
+    :type all_files: list
     :param all_files: Optional list of files to be linted.
 
     :rtype: tuple

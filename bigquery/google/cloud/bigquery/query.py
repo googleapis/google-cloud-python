@@ -345,18 +345,19 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/getQueryResults
 
-        :type max_results: int or ``NoneType``
-        :param max_results: maximum number of rows to return.
+        :type max_results: int
+        :param max_results: (Optional) maximum number of rows to return.
 
-        :type page_token: str or ``NoneType``
-        :param page_token: token representing a cursor into the table's rows.
+        :type page_token: str
+        :param page_token:
+            (Optional) token representing a cursor into the table's rows.
 
-        :type start_index: int or ``NoneType``
-        :param start_index: zero-based index of starting row
+        :type start_index: int
+        :param start_index: (Optional) zero-based index of starting row
 
-        :type timeout_ms: int or ``NoneType``
-        :param timeout_ms: timeout, in milliseconds, to wait for query to
-                           complete
+        :type timeout_ms: int
+        :param timeout_ms:
+            (Optional) timeout, in milliseconds, to wait for query to complete
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
