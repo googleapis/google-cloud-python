@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from setuptools import find_packages
 from setuptools import setup
 
 
@@ -21,22 +20,23 @@ DEPENDENCIES = (
     'pyasn1-modules>=0.0.5',
     'rsa>=3.1.4',
     'six>=1.9.0',
+    'google-auth'
 )
 
 
 with open('README.rst', 'r') as fh:
     long_description = fh.read()
 
+
 setup(
-    name='google-auth',
+    name='google-auth-httplib2',
     version='0.0.1',
     author='Google Cloud Platform',
     author_email='jonwayne+google-auth@google.com',
     description='Google Authentication Library',
     long_description=long_description,
     url='https://github.com/GoogleCloudPlatform/google-auth-library-python',
-    packages=find_packages(exclude='tests'),
-    namespace_packages=('google',),
+    py_modules=['google_auth_httplib2'],
     install_requires=DEPENDENCIES,
     license='Apache 2.0',
     keywords='google auth oauth client',
