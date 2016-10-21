@@ -66,7 +66,9 @@ class StreamSlice(object):
         raise :exc:`IncompleteRead`.
 
         :type size: int
-        :param size: (Optional) If provided, read no more than size bytes from the stream.
+        :param size:
+            (Optional) If provided, read no more than size bytes from the
+            stream.
 
         :rtype: bytes
         :returns: bytes read from this slice.
