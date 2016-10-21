@@ -419,8 +419,8 @@ class ACL(object):
         :param acl: The ACL object to save.  If left blank, this will save
                     current entries.
 
-        :type predefined: str or None
-        :param predefined: An identifier for a predefined ACL.  Must be one
+        :type predefined: str
+        :param predefined: (Optional) An identifier for a predefined ACL.  Must be one
                            of the keys in :attr:`PREDEFINED_JSON_ACLS`
                            If passed, `acl` must be None.
 

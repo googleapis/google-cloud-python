@@ -44,8 +44,8 @@ class MIMEApplicationHTTP(MIMEApplication):
     :type headers:  dict
     :param headers: HTTP headers
 
-    :type body: str or None
-    :param body: HTTP payload
+    :type body: str
+    :param body: (Optional) HTTP payload
 
     """
     def __init__(self, method, uri, headers, body):
@@ -154,8 +154,8 @@ class Batch(Connection):
         :type data: str
         :param data: The data to send as the body of the request.
 
-        :type target_object: object or :class:`NoneType`
-        :param target_object: This allows us to enable custom behavior in our
+        :type target_object: object
+        :param target_object: (Optional) This allows us to enable custom behavior in our
                               batch connection. Here we defer an HTTP request
                               and complete initialization of the object at a
                               later time.

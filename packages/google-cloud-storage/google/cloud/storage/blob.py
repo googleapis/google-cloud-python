@@ -94,8 +94,8 @@ class Blob(_PropertyMixin):
     def chunk_size(self, value):
         """Set the blob's default chunk size.
 
-        :type value: int or ``NoneType``
-        :param value: The current blob's chunk size, if it is set.
+        :type value: int
+        :param value: (Optional) The current blob's chunk size, if it is set.
 
         :raises: :class:`ValueError` if ``value`` is not ``None`` and is not a
                  multiple of 256 KB.
@@ -450,7 +450,7 @@ class Blob(_PropertyMixin):
                      :func:`os.fstat`. (If the file handle is not from the
                      filesystem this won't be possible.)
 
-        :type content_type: str or ``NoneType``
+        :type content_type: str
         :param content_type: Optional type of content being uploaded.
 
         :type num_retries: int
@@ -567,7 +567,7 @@ class Blob(_PropertyMixin):
         :type filename: str
         :param filename: The path to the file.
 
-        :type content_type: str or ``NoneType``
+        :type content_type: str
         :param content_type: Optional type of content being uploaded.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -861,8 +861,8 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :type value: dict or ``NoneType``
-        :param value: The blob metadata to set.
+        :type value: dict
+        :param value: (Optional) The blob metadata to set.
         """
         self._patch_property('metadata', value)
 
