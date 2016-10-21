@@ -95,8 +95,9 @@ class _BaseEntry(object):
                        configuration.
 
         :type loggers: dict
-        :param loggers: (Optional) A mapping of logger fullnames -> loggers.  If not
-                        passed, the entry will have a newly-created logger.
+        :param loggers:
+            (Optional) A mapping of logger fullnames -> loggers.  If not
+            passed, the entry will have a newly-created logger.
 
         :rtype: :class:`google.cloud.logging.entries.TextEntry`
         :returns: Text entry parsed from ``resource``.
