@@ -69,7 +69,7 @@ If you need support for other Google APIs, check out the
 Quick Start
 -----------
 
-::
+.. code-block:: console
 
     $ pip install --upgrade google-cloud
 
