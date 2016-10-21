@@ -50,7 +50,7 @@ class HttpError(CommunicationError):
     def status_code(self):
         """Status code for the response.
 
-        :rtype: integer
+        :rtype: int
         :returns: the code
         """
         return int(self.response['status'])
@@ -97,7 +97,7 @@ class RetryAfterError(HttpError):
     :type url: str
     :param url: URL of the response which returned the error.
 
-    :type retry_after: integer
+    :type retry_after: int
     :param retry_after: seconds to wait before retrying.
     """
     def __init__(self, response, content, url, retry_after):
