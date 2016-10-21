@@ -12,7 +12,7 @@ Python Client for Google Cloud Natural Language
 Quick Start
 -----------
 
-::
+.. code-block:: console
 
     $ pip install --upgrade google-cloud-language
     $ # OR
