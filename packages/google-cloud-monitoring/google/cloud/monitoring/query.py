@@ -78,7 +78,7 @@ class Query(object):
     :type client: :class:`google.cloud.monitoring.client.Client`
     :param client: The client to use.
 
-    :type metric_type: string
+    :type metric_type: str
     :param metric_type: The metric type name. The default value is
         :data:`Query.DEFAULT_METRIC_TYPE
         <google.cloud.monitoring.query.Query.DEFAULT_METRIC_TYPE>`,
@@ -199,7 +199,7 @@ class Query(object):
 
             query = query.select_group('1234567')
 
-        :type group_id: string
+        :type group_id: str
         :param group_id: The ID of a group to filter by.
 
         :rtype: :class:`Query`
@@ -362,7 +362,7 @@ class Query(object):
 
             query = query.align('ALIGN_MEAN', minutes=5)
 
-        :type per_series_aligner: string
+        :type per_series_aligner: str
         :param per_series_aligner: The approach to be used to align
             individual time series. For example: :data:`Aligner.ALIGN_MEAN`.
             See :class:`Aligner` and the descriptions of the `supported
@@ -402,13 +402,13 @@ class Query(object):
             query = query.reduce(Reducer.REDUCE_MEAN,
                                  'resource.project_id', 'resource.zone')
 
-        :type cross_series_reducer: string
+        :type cross_series_reducer: str
         :param cross_series_reducer:
             The approach to be used to combine time series. For example:
             :data:`Reducer.REDUCE_MEAN`. See :class:`Reducer` and the
             descriptions of the `supported reducers`_.
 
-        :type group_by_fields: strings
+        :type group_by_fields: strs
         :param group_by_fields:
             Fields to be preserved by the reduction. For example, specifying
             just ``"resource.zone"`` will result in one time series per zone.
@@ -442,7 +442,7 @@ class Query(object):
             for timeseries in query.iter():
                 ...
 
-        :type headers_only: boolean
+        :type headers_only: bool
         :param headers_only:
              Whether to omit the point data from the time series objects.
 
@@ -505,7 +505,7 @@ class Query(object):
         We use a series of key-value pairs (suitable for passing to
         ``urlencode``) instead of a ``dict`` to allow for repeated fields.
 
-        :type headers_only: boolean
+        :type headers_only: bool
         :param headers_only:
              Whether to omit the point data from the
              :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects.
@@ -513,7 +513,7 @@ class Query(object):
         :type page_size: integer or None
         :param page_size: A limit on the number of points to return per page.
 
-        :type page_token: string or None
+        :type page_token: str or None
         :param page_token: A token to continue the retrieval.
         """
         yield 'filter', self.filter
@@ -575,7 +575,7 @@ class Query(object):
             dataframe = query.as_dataframe(
                 labels=['resource_type', 'instance_id'])
 
-        :type label: string or None
+        :type label: str or None
         :param label: The label name to use for the dataframe header.
             This can be the name of a resource label or metric label
             (e.g., ``"instance_name"``), or the string ``"resource_type"``.
