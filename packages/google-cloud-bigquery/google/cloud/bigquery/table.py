@@ -555,13 +555,14 @@ class Table(object):
                        ``client`` stored on the current dataset.
 
         :type friendly_name: str
-        :param friendly_name: (Optional) point in time at which the table expires.
+        :param friendly_name: (Optional) a descriptive name for this table.
 
         :type description: str
-        :param description: (Optional) point in time at which the table expires.
+        :param description: (Optional) a description of this table.
 
         :type location: str
-        :param location: (Optional) point in time at which the table expires.
+        :param location:
+            (Optional) the geographic location where the table resides.
 
         :type expires: :class:`datetime.datetime`
         :param expires: (Optional) point in time at which the table expires.
