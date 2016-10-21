@@ -169,8 +169,8 @@ class Changes(object):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
+        :type client: :class:`google.cloud.dns.client.Client`
+        :param client: (Optional) the client to use.  If not passed, falls back to the
                        ``client`` stored on the current zone.
 
         :rtype: :class:`google.cloud.dns.client.Client`
@@ -207,8 +207,8 @@ class Changes(object):
         See:
         https://cloud.google.com/dns/api/v1/changes/create
 
-        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
+        :type client: :class:`google.cloud.dns.client.Client`
+        :param client: (Optional) the client to use.  If not passed, falls back to the
                        ``client`` stored on the current zone.
         """
         if len(self.additions) == 0 and len(self.deletions) == 0:
@@ -226,8 +226,8 @@ class Changes(object):
         See
         https://cloud.google.com/dns/api/v1/changes/get
 
-        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
+        :type client: :class:`google.cloud.dns.client.Client`
+        :param client: (Optional) the client to use.  If not passed, falls back to the
                        ``client`` stored on the current zone.
 
         :rtype: bool
@@ -248,8 +248,8 @@ class Changes(object):
         See
         https://cloud.google.com/dns/api/v1/changes/get
 
-        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
+        :type client: :class:`google.cloud.dns.client.Client`
+        :param client: (Optional) the client to use.  If not passed, falls back to the
                        ``client`` stored on the current zone.
         """
         client = self._require_client(client)
