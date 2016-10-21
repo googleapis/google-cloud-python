@@ -74,7 +74,7 @@ class Bucket(_PropertyMixin):
     :param client: A client which holds credentials and project configuration
                    for the bucket (which requires a project).
 
-    :type name: string
+    :type name: str
     :param name: The name of the bucket.
     """
 
@@ -108,7 +108,7 @@ class Bucket(_PropertyMixin):
           This will not make an HTTP request; it simply instantiates
           a blob object owned by this bucket.
 
-        :type blob_name: string
+        :type blob_name: str
         :param blob_name: The name of the blob to be instantiated.
 
         :type chunk_size: integer
@@ -134,7 +134,7 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: True if the bucket exists in Cloud Storage.
         """
         client = self._require_client(client)
@@ -190,10 +190,10 @@ class Bucket(_PropertyMixin):
     def path_helper(bucket_name):
         """Relative URL path for a bucket.
 
-        :type bucket_name: string
+        :type bucket_name: str
         :param bucket_name: The bucket name in the path.
 
-        :rtype: string
+        :rtype: str
         :returns: The relative URL path for ``bucket_name``.
         """
         return '/b/' + bucket_name
@@ -219,7 +219,7 @@ class Bucket(_PropertyMixin):
           >>> print(bucket.get_blob('/does-not-exist.txt'))
           None
 
-        :type blob_name: string
+        :type blob_name: str
         :param blob_name: The name of the blob to retrieve.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -331,7 +331,7 @@ class Bucket(_PropertyMixin):
         is to prevent accidental bucket deletion and to prevent extremely long
         runtime of this method.
 
-        :type force: boolean
+        :type force: bool
         :param force: If True, empties the bucket's objects then deletes it.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -386,7 +386,7 @@ class Bucket(_PropertyMixin):
           ... except NotFound:
           ...   pass
 
-        :type blob_name: string
+        :type blob_name: str
         :param blob_name: A blob name to delete.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -452,7 +452,7 @@ class Bucket(_PropertyMixin):
         :param destination_bucket: The bucket into which the blob should be
                                    copied.
 
-        :type new_name: string
+        :type new_name: str
         :param new_name: (optional) the new name for the copied file.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -494,7 +494,7 @@ class Bucket(_PropertyMixin):
         :type blob: :class:`google.cloud.storage.blob.Blob`
         :param blob: The blob to be renamed.
 
-        :type new_name: string
+        :type new_name: str
         :param new_name: The new name for this blob.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -541,7 +541,7 @@ class Bucket(_PropertyMixin):
         See: http://tools.ietf.org/html/rfc2616#section-3.11 and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The bucket etag or ``None`` if the property is not
                   set locally.
         """
@@ -553,7 +553,7 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The ID of the bucket or ``None`` if the property is not
                   set locally.
         """
@@ -584,7 +584,7 @@ class Bucket(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     def get_logging(self):
@@ -604,10 +604,10 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/accesslogs#delivery
 
-        :type bucket_name: string
+        :type bucket_name: str
         :param bucket_name: name of bucket in which to store access logs
 
-        :type object_prefix: string
+        :type object_prefix: str
         :param object_prefix: prefix for access log filenames
         """
         info = {'logBucket': bucket_name, 'logObjectPrefix': object_prefix}
@@ -666,7 +666,7 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The self link for the bucket or ``None`` if the property is
                   not set locally.
         """
@@ -678,7 +678,7 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/storage-classes
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
                   "NEARLINE", "COLDLINE", "STANDARD", or
                   "DURABLE_REDUCED_AVAILABILITY", else ``None``.
@@ -691,7 +691,7 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/storage-classes
 
-        :type value: string
+        :type value: str
         :param value: one of "MULTI_REGIONAL", "REGIONAL", "NEARLINE",
                       "COLDLINE", "STANDARD", or "DURABLE_REDUCED_AVAILABILITY"
         """
@@ -720,7 +720,7 @@ class Bucket(_PropertyMixin):
         See:  https://cloud.google.com/storage/docs/object-versioning for
         details.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: True if enabled, else False.
         """
         versioning = self._properties.get('versioning', {})
@@ -764,12 +764,12 @@ class Bucket(_PropertyMixin):
         the bucket, and anything else I add to the bucket.  Just make it
         all public."
 
-        :type main_page_suffix: string
+        :type main_page_suffix: str
         :param main_page_suffix: The page to use as the main page
                                  of a directory.
                                  Typically something like index.html.
 
-        :type not_found_page: string
+        :type not_found_page: str
         :param not_found_page: The file to use when a page isn't found.
         """
         data = {
@@ -793,11 +793,11 @@ class Bucket(_PropertyMixin):
         objects / blobs this will cowardly refuse to make the objects public.
         This is to prevent extremely long runtime of this method.
 
-        :type recursive: boolean
+        :type recursive: bool
         :param recursive: If True, this will make all blobs inside the bucket
                           public as well.
 
-        :type future: boolean
+        :type future: bool
         :param future: If True, this will make all objects created in the
                        future public as well.
 

@@ -85,10 +85,10 @@ class _ACLEntity(object):
     This is a helper class that you likely won't ever construct
     outside of using the factor methods on the :class:`ACL` object.
 
-    :type entity_type: string
+    :type entity_type: str
     :param entity_type: The type of entity (ie, 'group' or 'user').
 
-    :type identifier: string
+    :type identifier: str
     :param identifier: The ID or e-mail of the entity. For the special
                        entity types (like 'allUsers') this is optional.
     """
@@ -123,7 +123,7 @@ class _ACLEntity(object):
     def grant(self, role):
         """Add a role to the entity.
 
-        :type role: string
+        :type role: str
         :param role: The role to add to the entity.
         """
         self.roles.add(role)
@@ -131,7 +131,7 @@ class _ACLEntity(object):
     def revoke(self, role):
         """Remove a role from the entity.
 
-        :type role: string
+        :type role: str
         :param role: The role to remove from the entity.
         """
         if role in self.roles:
@@ -258,7 +258,7 @@ class ACL(object):
         :type entity: :class:`_ACLEntity`
         :param entity: The entity to check for existence in this ACL.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: True of the entity exists in the ACL.
         """
         self._ensure_loaded()
@@ -298,11 +298,11 @@ class ACL(object):
         create a new one and add it to the list of known entities for
         this ACL.
 
-        :type entity_type: string
+        :type entity_type: str
         :param entity_type: The type of entity to create
                             (ie, ``user``, ``group``, etc)
 
-        :type identifier: string
+        :type identifier: str
         :param identifier: The ID of the entity (if applicable).
                            This can be either an ID or an e-mail address.
 
@@ -319,7 +319,7 @@ class ACL(object):
     def user(self, identifier):
         """Factory method for a user Entity.
 
-        :type identifier: string
+        :type identifier: str
         :param identifier: An id or e-mail for this particular user.
 
         :rtype: :class:`_ACLEntity`
@@ -330,7 +330,7 @@ class ACL(object):
     def group(self, identifier):
         """Factory method for a group Entity.
 
-        :type identifier: string
+        :type identifier: str
         :param identifier: An id or e-mail for this particular group.
 
         :rtype: :class:`_ACLEntity`
@@ -341,7 +341,7 @@ class ACL(object):
     def domain(self, domain):
         """Factory method for a domain Entity.
 
-        :type domain: string
+        :type domain: str
         :param domain: The domain for this entity.
 
         :rtype: :class:`_ACLEntity`
@@ -419,7 +419,7 @@ class ACL(object):
         :param acl: The ACL object to save.  If left blank, this will save
                     current entries.
 
-        :type predefined: string or None
+        :type predefined: str or None
         :param predefined: An identifier for a predefined ACL.  Must be one
                            of the keys in :attr:`PREDEFINED_JSON_ACLS`
                            If passed, `acl` must be None.
@@ -470,7 +470,7 @@ class ACL(object):
     def save_predefined(self, predefined, client=None):
         """Save this ACL for the current bucket using a predefined ACL.
 
-        :type predefined: string
+        :type predefined: str
         :param predefined: An identifier for a predefined ACL.  Must be one
                            of the keys in :attr:`PREDEFINED_JSON_ACLS`
                            or :attr:`PREDEFINED_XML_ACLS` (which will be
