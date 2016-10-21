@@ -240,15 +240,16 @@ class Client(JSONClient):
                        with this prefix.
 
         :type projection: str
-        :param projection: (Optional) If used, must be 'full' or 'noAcl'. Defaults to
-                           'noAcl'. Specifies the set of properties to return.
+        :param projection:
+            (Optional) Specifies the set of properties to return. If used, must
+            be 'full' or 'noAcl'. Defaults to 'noAcl'.
 
         :type fields: str
-        :param fields: (Optional) Selector specifying which fields to include in a
-                       partial response. Must be a list of fields. For example
-                       to get a partial response with just the next page token
-                       and the language of each bucket returned:
-                       'items/id,nextPageToken'
+        :param fields:
+            (Optional) Selector specifying which fields to include in a partial
+            response. Must be a list of fields. For example to get a partial
+            response with just the next page token and the language of each
+            bucket returned: 'items/id,nextPageToken'
 
         :rtype: :class:`~google.cloud.iterator.Iterator`
         :returns: Iterator of all :class:`~google.cloud.storage.bucket.Bucket`
