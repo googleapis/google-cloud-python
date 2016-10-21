@@ -58,15 +58,14 @@ class TestCredentials(object):
             signer, self.SERVICE_ACCOUNT_EMAIL, self.TOKEN_URI)
 
     def test_from_service_account_info(self):
-        with open(SERVICE_ACCOUNT_JSON_FILE, 'r') as fh:
-            info = json.load(fh)
-
         credentials = service_account.Credentials.from_service_account_info(
-            info)
+            SERVICE_ACCOUNT_INFO)
 
-        assert credentials._signer.key_id == info['private_key_id']
-        assert credentials._service_account_email == info['client_email']
-        assert credentials._token_uri == info['token_uri']
+        assert (credentials._signer.key_id ==
+                SERVICE_ACCOUNT_INFO['private_key_id'])
+        assert (credentials._service_account_email ==
+                SERVICE_ACCOUNT_INFO['client_email'])
+        assert credentials._token_uri == SERVICE_ACCOUNT_INFO['token_uri']
 
     def test_from_service_account_info_args(self):
         info = SERVICE_ACCOUNT_INFO.copy()
@@ -111,6 +110,17 @@ class TestCredentials(object):
         assert credentials._scopes == scopes
         assert credentials._subject == subject
         assert credentials._additional_claims == additional_claims
+
+    def test_to_jwt_credentials(self):
+        jwt_from_svc = self.credentials.to_jwt_credentials()
+        jwt_from_info = jwt.Credentials.from_service_account_info(
+            SERVICE_ACCOUNT_INFO)
+
+        assert isinstance(jwt_from_svc, jwt.Credentials)
+        assert jwt_from_svc._signer.key_id == jwt_from_info._signer.key_id
+        assert jwt_from_svc._issuer == jwt_from_info._issuer
+        assert jwt_from_svc._subject == jwt_from_info._subject
+        assert jwt_from_svc._audience == jwt_from_info._audience
 
     def test_default_state(self):
         assert not self.credentials.valid
