@@ -35,6 +35,7 @@ setup(
     author_email='jonwayne+google-auth@google.com',
     description='Google Authentication Library',
     long_description=long_description,
+    url='https://github.com/GoogleCloudPlatform/google-auth-library-python',
     packages=find_packages(exclude='tests'),
     namespace_packages=('google',),
     install_requires=DEPENDENCIES,

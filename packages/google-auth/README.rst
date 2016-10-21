@@ -39,13 +39,13 @@ Contributing
 
 Contributions to this library are always welcome and highly encouraged.
 
-See `CONTRIBUTING`_ for more information on how to get started.
+See `CONTRIBUTING.rst`_ for more information on how to get started.
 
-.. _CONTRIBUTING: https://github.com/GoogleCloudPlatform/google-auth-library-python/blob/master/CONTRIBUTING.rst
+.. _CONTRIBUTING.rst: https://github.com/GoogleCloudPlatform/google-auth-library-python/blob/master/CONTRIBUTING.rst
 
 License
 -------
 
-Apache 2.0 - See `LICENSE`_ for more information.
+Apache 2.0 - See `the LICENSE`_ for more information.
 
-.. _LICENSE: https://github.com/GoogleCloudPlatform/google-auth-library-python/blob/master/LICENSE
+.. _the LICENSE: https://github.com/GoogleCloudPlatform/google-auth-library-python/blob/master/LICENSE
