@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.table &mdash; google-cloud fe4cc1e documentation</title>
+  <title>google.cloud.bigquery.table &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -536,8 +536,8 @@
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update description of the table.</span>
 
-<span class="sd">        :type value: str, or ``NoneType``</span>
-<span class="sd">        :param value: new description</span>
+<span class="sd">        :type value: str</span>
+<span class="sd">        :param value: (Optional) new description</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -561,8 +561,8 @@
     <span class="k">def</span> <span class="nf">expires</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update datetime at which the table will be removed.</span>
 
-<span class="sd">        :type value: ``datetime.datetime``, or ``NoneType``</span>
-<span class="sd">        :param value: the new expiration time, or None</span>
+<span class="sd">        :type value: ``datetime.datetime``</span>
+<span class="sd">        :param value: (Optional) the new expiration time, or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a datetime, or None&quot;</span><span class="p">)</span>
@@ -581,8 +581,8 @@
     <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update title of the table.</span>
 
-<span class="sd">        :type value: str, or ``NoneType``</span>
-<span class="sd">        :param value: new title</span>
+<span class="sd">        :type value: str</span>
+<span class="sd">        :param value: (Optional) new title</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -603,8 +603,8 @@
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update location in which the table is hosted.</span>
 
-<span class="sd">        :type value: str, or ``NoneType``</span>
-<span class="sd">        :param value: new location</span>
+<span class="sd">        :type value: str</span>
+<span class="sd">        :param value: (Optional) new location</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -826,17 +826,18 @@
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current dataset.</span>
 
-<span class="sd">        :type friendly_name: str or ``NoneType``</span>
-<span class="sd">        :param friendly_name: point in time at which the table expires.</span>
+<span class="sd">        :type friendly_name: str</span>
+<span class="sd">        :param friendly_name: (Optional) a descriptive name for this table.</span>
 
-<span class="sd">        :type description: str or ``NoneType``</span>
-<span class="sd">        :param description: point in time at which the table expires.</span>
+<span class="sd">        :type description: str</span>
+<span class="sd">        :param description: (Optional) a description of this table.</span>
 
-<span class="sd">        :type location: str or ``NoneType``</span>
-<span class="sd">        :param location: point in time at which the table expires.</span>
+<span class="sd">        :type location: str</span>
+<span class="sd">        :param location:</span>
+<span class="sd">            (Optional) the geographic location where the table resides.</span>
 
-<span class="sd">        :type expires: :class:`datetime.datetime` or ``NoneType``</span>
-<span class="sd">        :param expires: point in time at which the table expires.</span>
+<span class="sd">        :type expires: :class:`datetime.datetime`</span>
+<span class="sd">        :param expires: (Optional) point in time at which the table expires.</span>
 
 <span class="sd">        :type view_query: str</span>
 <span class="sd">        :param view_query: SQL query defining the table as a view</span>
@@ -926,11 +927,12 @@
 <span class="sd">           incomplete.  To ensure that the local copy of the schema is</span>
 <span class="sd">           up-to-date, call the table&#39;s ``reload`` method.</span>
 
-<span class="sd">        :type max_results: int or ``NoneType``</span>
-<span class="sd">        :param max_results: maximum number of rows to return.</span>
+<span class="sd">        :type max_results: int</span>
+<span class="sd">        :param max_results: (Optional) maximum number of rows to return.</span>
 
-<span class="sd">        :type page_token: str or ``NoneType``</span>
-<span class="sd">        :param page_token: token representing a cursor into the table&#39;s rows.</span>
+<span class="sd">        :type page_token: str</span>
+<span class="sd">        :param page_token:</span>
+<span class="sd">            (Optional) token representing a cursor into the table&#39;s rows.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -986,18 +988,18 @@
 <span class="sd">        :param row_ids: Unique ids, one per row being inserted.  If not</span>
 <span class="sd">                        passed, no de-duplication occurs.</span>
 
-<span class="sd">        :type skip_invalid_rows: bool or ``NoneType``</span>
-<span class="sd">        :param skip_invalid_rows: skip rows w/ invalid data?</span>
+<span class="sd">        :type skip_invalid_rows: bool</span>
+<span class="sd">        :param skip_invalid_rows: (Optional) skip rows w/ invalid data?</span>
 
-<span class="sd">        :type ignore_unknown_values: bool or ``NoneType``</span>
-<span class="sd">        :param ignore_unknown_values: ignore columns beyond schema?</span>
+<span class="sd">        :type ignore_unknown_values: bool</span>
+<span class="sd">        :param ignore_unknown_values: (Optional) ignore columns beyond schema?</span>
 
-<span class="sd">        :type template_suffix: str or ``NoneType``</span>
-<span class="sd">        :param template_suffix: treat ``name`` as a template table and provide</span>
-<span class="sd">                                a suffix. BigQuery will create the table</span>
-<span class="sd">                                ``&lt;name&gt; + &lt;template_suffix&gt;`` based on the</span>
-<span class="sd">                                schema of the template table. See:</span>
-<span class="sd">                                https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</span>
+<span class="sd">        :type template_suffix: str</span>
+<span class="sd">        :param template_suffix:</span>
+<span class="sd">            (Optional) treat ``name`` as a template table and provide a suffix.</span>
+<span class="sd">            BigQuery will create the table ``&lt;name&gt; + &lt;template_suffix&gt;`` based</span>
+<span class="sd">            on the schema of the template table. See:</span>
+<span class="sd">            https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -1401,7 +1403,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

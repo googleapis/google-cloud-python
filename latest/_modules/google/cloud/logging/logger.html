@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.logger &mdash; google-cloud fe4cc1e documentation</title>
+  <title>google.cloud.logging.logger &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -304,7 +304,7 @@
 <span class="sd">    :param client: A client which holds credentials and project configuration</span>
 <span class="sd">                   for the logger (which requires a project).</span>
 
-<span class="sd">    :type labels: dict or :class:`NoneType`</span>
+<span class="sd">    :type labels: dict</span>
 <span class="sd">    :param labels: (optional) mapping of default labels for entries written</span>
 <span class="sd">                   via this logger.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -371,25 +371,25 @@
 
 <span class="sd">        Only one of ``text``, ``info``, or ``message`` should be passed.</span>
 
-<span class="sd">        :type text: str or :class:`NoneType`</span>
-<span class="sd">        :param text: text payload</span>
+<span class="sd">        :type text: str</span>
+<span class="sd">        :param text: (Optional) text payload</span>
 
-<span class="sd">        :type info: dict or :class:`NoneType`</span>
-<span class="sd">        :param info: struct payload</span>
+<span class="sd">        :type info: dict</span>
+<span class="sd">        :param info: (Optional) struct payload</span>
 
 <span class="sd">        :type message: Protobuf message or :class:`NoneType`</span>
 <span class="sd">        :param message: protobuf payload</span>
 
-<span class="sd">        :type labels: dict or :class:`NoneType`</span>
-<span class="sd">        :param labels: labels passed in to calling method.</span>
+<span class="sd">        :type labels: dict</span>
+<span class="sd">        :param labels: (Optional) labels passed in to calling method.</span>
 
-<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: str or :class:`NoneType`</span>
+<span class="sd">        :type severity: str</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
-<span class="sd">        :type http_request: dict or :class:`NoneType`</span>
+<span class="sd">        :type http_request: dict</span>
 <span class="sd">        :param http_request: (optional) info about HTTP request associated with</span>
 <span class="sd">                             the entry</span>
 
@@ -444,16 +444,16 @@
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current logger.</span>
 
-<span class="sd">        :type labels: dict or :class:`NoneType`</span>
+<span class="sd">        :type labels: dict</span>
 <span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
 
-<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: str or :class:`NoneType`</span>
+<span class="sd">        :type severity: str</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
-<span class="sd">        :type http_request: dict or :class:`NoneType`</span>
+<span class="sd">        :type http_request: dict</span>
 <span class="sd">        :param http_request: (optional) info about HTTP request associated with</span>
 <span class="sd">                             the entry</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -478,16 +478,16 @@
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current logger.</span>
 
-<span class="sd">        :type labels: dict or :class:`NoneType`</span>
+<span class="sd">        :type labels: dict</span>
 <span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
 
-<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: str or :class:`NoneType`</span>
+<span class="sd">        :type severity: str</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
-<span class="sd">        :type http_request: dict or :class:`NoneType`</span>
+<span class="sd">        :type http_request: dict</span>
 <span class="sd">        :param http_request: (optional) info about HTTP request associated with</span>
 <span class="sd">                             the entry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -512,16 +512,16 @@
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current logger.</span>
 
-<span class="sd">        :type labels: dict or :class:`NoneType`</span>
+<span class="sd">        :type labels: dict</span>
 <span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
 
-<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: str or :class:`NoneType`</span>
+<span class="sd">        :type severity: str</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
-<span class="sd">        :type http_request: dict or :class:`NoneType`</span>
+<span class="sd">        :type http_request: dict</span>
 <span class="sd">        :param http_request: (optional) info about HTTP request associated with</span>
 <span class="sd">                             the entry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -619,16 +619,16 @@
 <span class="sd">        :type text: str</span>
 <span class="sd">        :param text: the text entry</span>
 
-<span class="sd">        :type labels: dict or :class:`NoneType`</span>
+<span class="sd">        :type labels: dict</span>
 <span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
 
-<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: str or :class:`NoneType`</span>
+<span class="sd">        :type severity: str</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
-<span class="sd">        :type http_request: dict or :class:`NoneType`</span>
+<span class="sd">        :type http_request: dict</span>
 <span class="sd">        :param http_request: (optional) info about HTTP request associated with</span>
 <span class="sd">                             the entry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -642,16 +642,16 @@
 <span class="sd">        :type info: dict</span>
 <span class="sd">        :param info: the struct entry</span>
 
-<span class="sd">        :type labels: dict or :class:`NoneType`</span>
+<span class="sd">        :type labels: dict</span>
 <span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
 
-<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: str or :class:`NoneType`</span>
+<span class="sd">        :type severity: str</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
-<span class="sd">        :type http_request: dict or :class:`NoneType`</span>
+<span class="sd">        :type http_request: dict</span>
 <span class="sd">        :param http_request: (optional) info about HTTP request associated with</span>
 <span class="sd">                             the entry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -665,16 +665,16 @@
 <span class="sd">        :type message: protobuf message</span>
 <span class="sd">        :param message: the protobuf entry</span>
 
-<span class="sd">        :type labels: dict or :class:`NoneType`</span>
+<span class="sd">        :type labels: dict</span>
 <span class="sd">        :param labels: (optional) mapping of labels for the entry.</span>
 
-<span class="sd">        :type insert_id: str or :class:`NoneType`</span>
+<span class="sd">        :type insert_id: str</span>
 <span class="sd">        :param insert_id: (optional) unique ID for log entry.</span>
 
-<span class="sd">        :type severity: str or :class:`NoneType`</span>
+<span class="sd">        :type severity: str</span>
 <span class="sd">        :param severity: (optional) severity of event being logged.</span>
 
-<span class="sd">        :type http_request: dict or :class:`NoneType`</span>
+<span class="sd">        :type http_request: dict</span>
 <span class="sd">        :param http_request: (optional) info about HTTP request associated with</span>
 <span class="sd">                             the entry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -756,7 +756,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

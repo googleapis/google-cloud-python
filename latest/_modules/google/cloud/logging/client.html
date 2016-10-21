@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.client &mdash; google-cloud fe4cc1e documentation</title>
+  <title>google.cloud.logging.client &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -343,10 +343,24 @@
 <span class="sd">    :param http: An optional HTTP object to make requests. If not passed, an</span>
 <span class="sd">                 ``http`` object is created that is bound to the</span>
 <span class="sd">                 ``credentials`` for the current object.</span>
+
+<span class="sd">    :type use_gax: bool</span>
+<span class="sd">    :param use_gax: (Optional) Explicitly specifies whether</span>
+<span class="sd">                    to use the gRPC transport (via GAX) or HTTP. If unset,</span>
+<span class="sd">                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment</span>
+<span class="sd">                    variable</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
     <span class="n">_logging_api</span> <span class="o">=</span> <span class="n">_sinks_api</span> <span class="o">=</span> <span class="n">_metrics_api</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_gax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_gax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">_USE_GAX</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">use_gax</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">logging_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -357,7 +371,7 @@
 <span class="sd">        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logging_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">_USE_GAX</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
                 <span class="n">generated</span> <span class="o">=</span> <span class="n">GeneratedLoggingAPI</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_logging_api</span> <span class="o">=</span> <span class="n">GAXLoggingAPI</span><span class="p">(</span><span class="n">generated</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -411,9 +425,10 @@
 <span class="sd">        :type resource: dict</span>
 <span class="sd">        :param resource: one entry resource from API response</span>
 
-<span class="sd">        :type loggers: dict or None</span>
-<span class="sd">        :param loggers: A mapping of logger fullnames -&gt; loggers.  If not</span>
-<span class="sd">                        passed, the entry will have a newly-created logger.</span>
+<span class="sd">        :type loggers: dict</span>
+<span class="sd">        :param loggers:</span>
+<span class="sd">            (Optional) A mapping of logger fullnames -&gt; loggers.  If not</span>
+<span class="sd">            passed, the entry will have a newly-created logger.</span>
 
 <span class="sd">        :rtype: One of:</span>
 <span class="sd">                :class:`google.cloud.logging.entries.TextEntry`,</span>
@@ -605,7 +620,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

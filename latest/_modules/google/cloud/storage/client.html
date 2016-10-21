@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.client &mdash; google-cloud fe4cc1e documentation</title>
+  <title>google.cloud.storage.client &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -499,28 +499,29 @@
 
 <span class="sd">        This implements &quot;storage.buckets.list&quot;.</span>
 
-<span class="sd">        :type max_results: int or ``NoneType``</span>
+<span class="sd">        :type max_results: int</span>
 <span class="sd">        :param max_results: Optional. Maximum number of buckets to return.</span>
 
-<span class="sd">        :type page_token: str or ``NoneType``</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: Optional. Opaque marker for the next &quot;page&quot; of</span>
 <span class="sd">                           buckets. If not passed, will return the first page</span>
 <span class="sd">                           of buckets.</span>
 
-<span class="sd">        :type prefix: str or ``NoneType``</span>
+<span class="sd">        :type prefix: str</span>
 <span class="sd">        :param prefix: Optional. Filter results to buckets whose names begin</span>
 <span class="sd">                       with this prefix.</span>
 
-<span class="sd">        :type projection: str or ``NoneType``</span>
-<span class="sd">        :param projection: If used, must be &#39;full&#39; or &#39;noAcl&#39;. Defaults to</span>
-<span class="sd">                           &#39;noAcl&#39;. Specifies the set of properties to return.</span>
+<span class="sd">        :type projection: str</span>
+<span class="sd">        :param projection:</span>
+<span class="sd">            (Optional) Specifies the set of properties to return. If used, must</span>
+<span class="sd">            be &#39;full&#39; or &#39;noAcl&#39;. Defaults to &#39;noAcl&#39;.</span>
 
-<span class="sd">        :type fields: str or ``NoneType``</span>
-<span class="sd">        :param fields: Selector specifying which fields to include in a</span>
-<span class="sd">                       partial response. Must be a list of fields. For example</span>
-<span class="sd">                       to get a partial response with just the next page token</span>
-<span class="sd">                       and the language of each bucket returned:</span>
-<span class="sd">                       &#39;items/id,nextPageToken&#39;</span>
+<span class="sd">        :type fields: str</span>
+<span class="sd">        :param fields:</span>
+<span class="sd">            (Optional) Selector specifying which fields to include in a partial</span>
+<span class="sd">            response. Must be a list of fields. For example to get a partial</span>
+<span class="sd">            response with just the next page token and the language of each</span>
+<span class="sd">            bucket returned: &#39;items/id,nextPageToken&#39;</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
 <span class="sd">        :returns: Iterator of all :class:`~google.cloud.storage.bucket.Bucket`</span>
@@ -591,7 +592,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

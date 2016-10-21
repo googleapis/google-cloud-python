@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Time Series Query &mdash; google-cloud fe4cc1e documentation</title>
+  <title>Time Series Query &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="index.html"/>
         <link rel="next" title="Time Series" href="monitoring-timeseries.html"/>
         <link rel="prev" title="Groups" href="monitoring-group.html"/> 
 
@@ -299,7 +299,7 @@ of the <a class="reference internal" href="monitoring-client.html#google.cloud.m
 but please note that this default value is provided only for
 demonstration purposes and is subject to change. See the
 <a class="reference external" href="https://cloud.google.com/monitoring/api/metrics">supported metrics</a>.</li>
-<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or None) &#8211; <p>The end time (inclusive) of the time interval
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; <p>(Optional) The end time (inclusive) of the time interval
 for which results should be returned, as a datetime object.
 The default is the start of the current minute.</p>
 <p>The start time (exclusive) is determined by combining the
@@ -395,7 +395,7 @@ aligners</a>.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>label</strong> (<em>str or None</em>) &#8211; The label name to use for the dataframe header.
+<li><strong>label</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The label name to use for the dataframe header.
 This can be the name of a resource label or metric label
 (e.g., <code class="docutils literal"><span class="pre">&quot;instance_name&quot;</span></code>), or the string <code class="docutils literal"><span class="pre">&quot;resource_type&quot;</span></code>.</li>
 <li><strong>labels</strong> (<em>list of strings, or None</em>) &#8211; A list or tuple of label names to use for the dataframe
@@ -462,9 +462,9 @@ the following are equivalent:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>headers_only</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Whether to omit the point data from the time series objects.</li>
-<li><strong>page_size</strong> (<em>int or None</em>) &#8211; An optional positive number specifying the maximum number of
-points to return per page. This can be used to control how far
-the iterator reads ahead.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Positive number specifying the maximum number of points
+to return per page. This can be used to control how far the
+iterator reads ahead.</li>
 </ul>
 </td>
 </tr>
@@ -562,7 +562,7 @@ an interval duration when you create the query initially.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; The end time (inclusive) of the time interval
 for which results should be returned, as a datetime object.</li>
-<li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or None) &#8211; The start time (exclusive) of the time interval
+<li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (Optional) The start time (exclusive) of the time interval
 for which results should be returned, as a datetime object.
 If not specified, the interval is a point in time.</li>
 </ul>
@@ -782,7 +782,7 @@ described above.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

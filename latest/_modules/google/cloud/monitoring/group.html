@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.group &mdash; google-cloud fe4cc1e documentation</title>
+  <title>google.cloud.monitoring.group &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -313,8 +313,8 @@
 <span class="sd">    :type path: str</span>
 <span class="sd">    :param path: URI path for a group API request.</span>
 
-<span class="sd">    :type project: str or None</span>
-<span class="sd">    :param project: The project associated with the request. It is</span>
+<span class="sd">    :type project: str</span>
+<span class="sd">    :param project: (Optional) The project associated with the request. It is</span>
 <span class="sd">                    included for validation purposes.</span>
 
 <span class="sd">    :rtype: str</span>
@@ -348,21 +348,22 @@
 <span class="sd">    :type client: :class:`google.cloud.monitoring.client.Client`</span>
 <span class="sd">    :param client: A client for operating on the metric descriptor.</span>
 
-<span class="sd">    :type group_id: str or None</span>
-<span class="sd">    :param group_id: The ID of the group.</span>
+<span class="sd">    :type group_id: str</span>
+<span class="sd">    :param group_id: (Optional) The ID of the group.</span>
 
-<span class="sd">    :type display_name: str or None</span>
+<span class="sd">    :type display_name: str</span>
 <span class="sd">    :param display_name:</span>
-<span class="sd">        A user-assigned name for this group, used only for display purposes.</span>
+<span class="sd">        (Optional) A user-assigned name for this group, used only for display</span>
+<span class="sd">        purposes.</span>
 
-<span class="sd">    :type parent_id: str or None</span>
+<span class="sd">    :type parent_id: str</span>
 <span class="sd">    :param parent_id:</span>
-<span class="sd">        The ID of the group&#39;s parent, if it has one.</span>
+<span class="sd">        (Optional) The ID of the group&#39;s parent, if it has one.</span>
 
-<span class="sd">    :type filter_string: str or None</span>
+<span class="sd">    :type filter_string: str</span>
 <span class="sd">    :param filter_string:</span>
-<span class="sd">        The filter string used to determine which monitored resources belong to</span>
-<span class="sd">        this group.</span>
+<span class="sd">        (Optional) The filter string used to determine which monitored</span>
+<span class="sd">        resources belong to this group.</span>
 
 <span class="sd">    :type is_cluster: bool</span>
 <span class="sd">    :param is_cluster:</span>
@@ -568,22 +569,23 @@
 <span class="sd">            ...     print(member)</span>
 
 
-<span class="sd">        :type filter_string: str or None</span>
+<span class="sd">        :type filter_string: str</span>
 <span class="sd">        :param filter_string:</span>
-<span class="sd">            An optional list filter describing the members to be returned. The</span>
-<span class="sd">            filter may reference the type, labels, and metadata of monitored</span>
-<span class="sd">            resources that comprise the group. See the `filter documentation`_.</span>
+<span class="sd">            (Optional) An optional list filter describing the members to be</span>
+<span class="sd">            returned. The filter may reference the type, labels, and metadata</span>
+<span class="sd">            of monitored resources that comprise the group. See the `filter</span>
+<span class="sd">            documentation`_.</span>
 
-<span class="sd">        :type end_time: :class:`datetime.datetime` or None</span>
+<span class="sd">        :type end_time: :class:`datetime.datetime`</span>
 <span class="sd">        :param end_time:</span>
-<span class="sd">            The end time (inclusive) of the time interval for which results</span>
-<span class="sd">            should be returned, as a datetime object. If ``start_time`` is</span>
-<span class="sd">            specified, then this must also be specified.</span>
+<span class="sd">            (Optional) The end time (inclusive) of the time interval for which</span>
+<span class="sd">            results should be returned, as a datetime object. If ``start_time``</span>
+<span class="sd">            is specified, then this must also be specified.</span>
 
-<span class="sd">        :type start_time: :class:`datetime.datetime` or None</span>
+<span class="sd">        :type start_time: :class:`datetime.datetime`</span>
 <span class="sd">        :param start_time:</span>
-<span class="sd">            The start time (exclusive) of the time interval for which results</span>
-<span class="sd">            should be returned, as a datetime object.</span>
+<span class="sd">            (Optional) The start time (exclusive) of the time interval for</span>
+<span class="sd">            which results should be returned, as a datetime object.</span>
 
 <span class="sd">        :rtype: list of :class:`~google.cloud.monitoring.resource.Resource`</span>
 <span class="sd">        :returns: A list of resource instances.</span>
@@ -658,21 +660,22 @@
 <span class="sd">        :type client: :class:`google.cloud.monitoring.client.Client`</span>
 <span class="sd">        :param client: The client to use.</span>
 
-<span class="sd">        :type children_of_group: str or None</span>
+<span class="sd">        :type children_of_group: str</span>
 <span class="sd">        :param children_of_group:</span>
-<span class="sd">            Returns groups whose parent_name field contains the group name. If</span>
-<span class="sd">            no groups have this parent, the results are empty.</span>
+<span class="sd">            (Optional) Returns groups whose parent_name field contains the</span>
+<span class="sd">            group name. If no groups have this parent, the results are empty.</span>
 
-<span class="sd">        :type ancestors_of_group: str or None</span>
+<span class="sd">        :type ancestors_of_group: str</span>
 <span class="sd">        :param ancestors_of_group:</span>
-<span class="sd">            Returns groups that are ancestors of the specified group. If the</span>
-<span class="sd">            specified group has no immediate parent, the results are empty.</span>
+<span class="sd">            (Optional) Returns groups that are ancestors of the specified</span>
+<span class="sd">            group. If the specified group has no immediate parent, the results</span>
+<span class="sd">            are empty.</span>
 
-<span class="sd">        :type descendants_of_group: str or None</span>
+<span class="sd">        :type descendants_of_group: str</span>
 <span class="sd">        :param descendants_of_group:</span>
-<span class="sd">            Returns the descendants of the specified group. This is a superset</span>
-<span class="sd">            of the results returned by the children_of_group filter, and</span>
-<span class="sd">            includes children-of-children, and so forth.</span>
+<span class="sd">            (Optional) Returns the descendants of the specified group. This is</span>
+<span class="sd">            a superset of the results returned by the children_of_group filter,</span>
+<span class="sd">            and includes children-of-children, and so forth.</span>
 
 <span class="sd">        :rtype: list of :class:`~google.cloud.monitoring.group.Group`</span>
 <span class="sd">        :returns: A list of group instances.</span>
@@ -799,7 +802,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

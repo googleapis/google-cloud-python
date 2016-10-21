@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Queries &mdash; google-cloud fe4cc1e documentation</title>
+  <title>Queries &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="index.html"/>
         <link rel="next" title="Transactions" href="datastore-transactions.html"/>
         <link rel="prev" title="Keys" href="datastore-keys.html"/> 
 
@@ -332,11 +332,11 @@ stored in the Cloud Datastore.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) &#8211; The client used to connect to Datastore.</li>
 <li><strong>kind</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The kind to query.</li>
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The project associated with the query.  If not passed,
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The project associated with the query.  If not passed, uses
+the client&#8217;s value.</li>
+<li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The namespace to which to restrict results.  If not passed,
 uses the client&#8217;s value.</li>
-<li><strong>namespace</strong> (<em>str or None</em>) &#8211; The namespace to which to restrict results.  If not
-passed, uses the client&#8217;s value.</li>
-<li><strong>ancestor</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a> or None) &#8211; key of the ancestor to which this query&#8217;s results are
+<li><strong>ancestor</strong> (<a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>) &#8211; (Optional) key of the ancestor to which this query&#8217;s results are
 restricted.</li>
 <li><strong>filters</strong> (<em>sequence of (property_name, operator, value) tuples</em>) &#8211; property filters applied by this query.</li>
 <li><strong>projection</strong> (<em>sequence of string</em>) &#8211; fields returned as part of query results.</li>
@@ -354,7 +354,7 @@ default is set.</p>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'=': 5, '&lt;': 1, '&gt;': 3, '&lt;=': 2, '&gt;=': 4}</em><a class="headerlink" href="#google.cloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'=': 5, '&lt;=': 2, '&gt;': 3, '&gt;=': 4, '&lt;': 1}</em><a class="headerlink" href="#google.cloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -451,10 +451,10 @@ passes an invalid value (a key is required).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>limit</strong> (<em>int or None</em>) &#8211; An optional limit passed through to the iterator.</li>
-<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; An optional offset passed through to the iterator.</li>
-<li><strong>start_cursor</strong> (<em>bytes</em>) &#8211; An optional cursor passed through to the iterator.</li>
-<li><strong>end_cursor</strong> (<em>bytes</em>) &#8211; An optional cursor passed through to the iterator.</li>
+<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) limit passed through to the iterator.</li>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) offset passed through to the iterator.</li>
+<li><strong>start_cursor</strong> (<em>bytes</em>) &#8211; (Optional) cursor passed through to the iterator.</li>
+<li><strong>end_cursor</strong> (<em>bytes</em>) &#8211; (Optional) cursor passed through to the iterator.</li>
 <li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) &#8211; client used to connect to datastore.
 If not supplied, uses the query&#8217;s value.</li>
 </ul>
@@ -640,7 +640,7 @@ Defaults to <code class="docutils literal"><span class="pre">=</span></code>.</l
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

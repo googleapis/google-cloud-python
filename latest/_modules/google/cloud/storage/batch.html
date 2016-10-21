@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.batch &mdash; google-cloud fe4cc1e documentation</title>
+  <title>google.cloud.storage.batch &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -316,8 +316,8 @@
 <span class="sd">    :type headers:  dict</span>
 <span class="sd">    :param headers: HTTP headers</span>
 
-<span class="sd">    :type body: str or None</span>
-<span class="sd">    :param body: HTTP payload</span>
+<span class="sd">    :type body: str</span>
+<span class="sd">    :param body: (Optional) HTTP payload</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
@@ -426,11 +426,11 @@
 <span class="sd">        :type data: str</span>
 <span class="sd">        :param data: The data to send as the body of the request.</span>
 
-<span class="sd">        :type target_object: object or :class:`NoneType`</span>
-<span class="sd">        :param target_object: This allows us to enable custom behavior in our</span>
-<span class="sd">                              batch connection. Here we defer an HTTP request</span>
-<span class="sd">                              and complete initialization of the object at a</span>
-<span class="sd">                              later time.</span>
+<span class="sd">        :type target_object: object</span>
+<span class="sd">        :param target_object:</span>
+<span class="sd">            (Optional) This allows us to enable custom behavior in our batch</span>
+<span class="sd">            connection. Here we defer an HTTP request and complete</span>
+<span class="sd">            initialization of the object at a later time.</span>
 
 <span class="sd">        :rtype: tuple of ``response`` (a dictionary of sorts)</span>
 <span class="sd">                and ``content`` (a string).</span>
@@ -627,7 +627,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

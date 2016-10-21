@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.metric &mdash; google-cloud fe4cc1e documentation</title>
+  <title>google.cloud.monitoring.metric &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -374,9 +374,9 @@
 <span class="sd">    :type display_name: str</span>
 <span class="sd">    :param display_name: An optional concise name for the metric.</span>
 
-<span class="sd">    :type name: str or None</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name:</span>
-<span class="sd">        The &quot;resource name&quot; of the metric descriptor. For example:</span>
+<span class="sd">        (Optional) The &quot;resource name&quot; of the metric descriptor. For example:</span>
 <span class="sd">        ``&quot;projects/&lt;project_id&gt;/metricDescriptors/&lt;type&gt;&quot;``. As</span>
 <span class="sd">        retrieved from the service, this will always be specified.</span>
 <span class="sd">        You can and should omit it when constructing an instance for</span>
@@ -470,15 +470,15 @@
 <span class="sd">        :type client: :class:`google.cloud.monitoring.client.Client`</span>
 <span class="sd">        :param client: The client to use.</span>
 
-<span class="sd">        :type filter_string: str or None</span>
+<span class="sd">        :type filter_string: str</span>
 <span class="sd">        :param filter_string:</span>
-<span class="sd">            An optional filter expression describing the metric descriptors</span>
-<span class="sd">            to be returned. See the `filter documentation`_.</span>
+<span class="sd">            (Optional) Filter expression describing the metric descriptors to</span>
+<span class="sd">            be returned. See the `filter documentation`_.</span>
 
-<span class="sd">        :type type_prefix: str or None</span>
-<span class="sd">        :param type_prefix: An optional prefix constraining the selected</span>
-<span class="sd">            metric types. This adds ``metric.type = starts_with(&quot;&lt;prefix&gt;&quot;)``</span>
-<span class="sd">            to the filter.</span>
+<span class="sd">        :type type_prefix: str</span>
+<span class="sd">        :param type_prefix:</span>
+<span class="sd">            (Optional) Prefix constraining the selected metric types. This adds</span>
+<span class="sd">            ``metric.type = starts_with(&quot;&lt;prefix&gt;&quot;)`` to the filter.</span>
 
 <span class="sd">        :rtype: list of :class:`MetricDescriptor`</span>
 <span class="sd">        :returns: A list of metric descriptor instances.</span>
@@ -665,7 +665,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

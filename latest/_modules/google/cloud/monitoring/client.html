@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.client &mdash; google-cloud fe4cc1e documentation</title>
+  <title>google.cloud.monitoring.client &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -360,8 +360,9 @@
 <span class="sd">            demonstration purposes and is subject to change. See the</span>
 <span class="sd">            `supported metrics`_.</span>
 
-<span class="sd">        :type end_time: :class:`datetime.datetime` or None</span>
-<span class="sd">        :param end_time: The end time (inclusive) of the time interval</span>
+<span class="sd">        :type end_time: :class:`datetime.datetime`</span>
+<span class="sd">        :param end_time:</span>
+<span class="sd">            (Optional) The end time (inclusive) of the time interval</span>
 <span class="sd">            for which results should be returned, as a datetime object.</span>
 <span class="sd">            The default is the start of the current minute.</span>
 
@@ -634,15 +635,16 @@
 <span class="sd">            ...         type_prefix=&#39;custom.&#39;):</span>
 <span class="sd">            ...     print(descriptor.type)</span>
 
-<span class="sd">        :type filter_string: str or None</span>
+<span class="sd">        :type filter_string: str</span>
 <span class="sd">        :param filter_string:</span>
-<span class="sd">            An optional filter expression describing the metric descriptors</span>
-<span class="sd">            to be returned. See the `filter documentation`_.</span>
+<span class="sd">            (Optional) An optional filter expression describing the metric</span>
+<span class="sd">            descriptors to be returned. See the `filter documentation`_.</span>
 
-<span class="sd">        :type type_prefix: str or None</span>
-<span class="sd">        :param type_prefix: An optional prefix constraining the selected</span>
-<span class="sd">            metric types. This adds ``metric.type = starts_with(&quot;&lt;prefix&gt;&quot;)``</span>
-<span class="sd">            to the filter.</span>
+<span class="sd">        :type type_prefix: str</span>
+<span class="sd">        :param type_prefix:</span>
+<span class="sd">            (Optional) An optional prefix constraining the selected metric</span>
+<span class="sd">            types. This adds ``metric.type = starts_with(&quot;&lt;prefix&gt;&quot;)`` to the</span>
+<span class="sd">            filter.</span>
 
 <span class="sd">        :rtype:</span>
 <span class="sd">            list of :class:`~google.cloud.monitoring.metric.MetricDescriptor`</span>
@@ -680,10 +682,10 @@
 <span class="sd">            &gt;&gt;&gt; for descriptor in client.list_resource_descriptors():</span>
 <span class="sd">            ...     print(descriptor.type)</span>
 
-<span class="sd">        :type filter_string: str or None</span>
+<span class="sd">        :type filter_string: str</span>
 <span class="sd">        :param filter_string:</span>
-<span class="sd">            An optional filter expression describing the resource descriptors</span>
-<span class="sd">            to be returned. See the `filter documentation`_.</span>
+<span class="sd">            (Optional) An optional filter expression describing the resource</span>
+<span class="sd">            descriptors to be returned. See the `filter documentation`_.</span>
 
 <span class="sd">        :rtype: list of</span>
 <span class="sd">                :class:`~google.cloud.monitoring.resource.ResourceDescriptor`</span>
@@ -702,22 +704,22 @@
 <span class="sd">          This will not make an HTTP request; it simply instantiates</span>
 <span class="sd">          a group object owned by this client.</span>
 
-<span class="sd">        :type group_id: str or None</span>
-<span class="sd">        :param group_id: The ID of the group.</span>
+<span class="sd">        :type group_id: str</span>
+<span class="sd">        :param group_id: (Optional) The ID of the group.</span>
 
-<span class="sd">        :type display_name: str or None</span>
+<span class="sd">        :type display_name: str</span>
 <span class="sd">        :param display_name:</span>
-<span class="sd">            A user-assigned name for this group, used only for display</span>
-<span class="sd">            purposes.</span>
+<span class="sd">            (Optional) A user-assigned name for this group, used only for</span>
+<span class="sd">            display purposes.</span>
 
-<span class="sd">        :type parent_id: str or None</span>
+<span class="sd">        :type parent_id: str</span>
 <span class="sd">        :param parent_id:</span>
-<span class="sd">            The ID of the group&#39;s parent, if it has one.</span>
+<span class="sd">            (Optional) The ID of the group&#39;s parent, if it has one.</span>
 
-<span class="sd">        :type filter_string: str or None</span>
+<span class="sd">        :type filter_string: str</span>
 <span class="sd">        :param filter_string:</span>
-<span class="sd">            The filter string used to determine which monitored resources</span>
-<span class="sd">            belong to this group.</span>
+<span class="sd">            (Optional) The filter string used to determine which monitored</span>
+<span class="sd">            resources belong to this group.</span>
 
 <span class="sd">        :type is_cluster: bool</span>
 <span class="sd">        :param is_cluster:</span>
@@ -889,7 +891,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

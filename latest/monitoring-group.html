@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Groups &mdash; google-cloud fe4cc1e documentation</title>
+  <title>Groups &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="index.html"/>
         <link rel="next" title="Time Series Query" href="monitoring-query.html"/>
         <link rel="prev" title="Monitored Resource Descriptors" href="monitoring-resource.html"/> 
 
@@ -284,11 +284,12 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>client</strong> (<a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client" title="google.cloud.monitoring.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.monitoring.client.Client</span></code></a>) &#8211; A client for operating on the metric descriptor.</li>
-<li><strong>group_id</strong> (<em>str or None</em>) &#8211; The ID of the group.</li>
-<li><strong>display_name</strong> (<em>str or None</em>) &#8211; A user-assigned name for this group, used only for display purposes.</li>
-<li><strong>parent_id</strong> (<em>str or None</em>) &#8211; The ID of the group&#8217;s parent, if it has one.</li>
-<li><strong>filter_string</strong> (<em>str or None</em>) &#8211; The filter string used to determine which monitored resources belong to
-this group.</li>
+<li><strong>group_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The ID of the group.</li>
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) A user-assigned name for this group, used only for display
+purposes.</li>
+<li><strong>parent_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The ID of the group&#8217;s parent, if it has one.</li>
+<li><strong>filter_string</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The filter string used to determine which monitored
+resources belong to this group.</li>
 <li><strong>is_cluster</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If true, the members of this group are considered to be a cluster. The
 system can perform additional analysis on groups that are clusters.</li>
 </ul>
@@ -465,14 +466,15 @@ minute is returned.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filter_string</strong> (<em>str or None</em>) &#8211; An optional list filter describing the members to be returned. The
-filter may reference the type, labels, and metadata of monitored
-resources that comprise the group. See the <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters#group-filter">filter documentation</a>.</li>
-<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or None) &#8211; The end time (inclusive) of the time interval for which results
-should be returned, as a datetime object. If <code class="docutils literal"><span class="pre">start_time</span></code> is
-specified, then this must also be specified.</li>
-<li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or None) &#8211; The start time (exclusive) of the time interval for which results
-should be returned, as a datetime object.</li>
+<li><strong>filter_string</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) An optional list filter describing the members to be
+returned. The filter may reference the type, labels, and metadata
+of monitored resources that comprise the group. See the <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters#group-filter">filter
+documentation</a>.</li>
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (Optional) The end time (inclusive) of the time interval for which
+results should be returned, as a datetime object. If <code class="docutils literal"><span class="pre">start_time</span></code>
+is specified, then this must also be specified.</li>
+<li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (Optional) The start time (exclusive) of the time interval for
+which results should be returned, as a datetime object.</li>
 </ul>
 </td>
 </tr>
@@ -603,7 +605,7 @@ via <a class="reference internal" href="#google.cloud.monitoring.group.Group.upd
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

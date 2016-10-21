@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.query &mdash; google-cloud fe4cc1e documentation</title>
+  <title>google.cloud.monitoring.query &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -358,8 +358,8 @@
 <span class="sd">        demonstration purposes and is subject to change. See the</span>
 <span class="sd">        `supported metrics`_.</span>
 
-<span class="sd">    :type end_time: :class:`datetime.datetime` or None</span>
-<span class="sd">    :param end_time: The end time (inclusive) of the time interval</span>
+<span class="sd">    :type end_time: :class:`datetime.datetime`</span>
+<span class="sd">    :param end_time: (Optional) The end time (inclusive) of the time interval</span>
 <span class="sd">        for which results should be returned, as a datetime object.</span>
 <span class="sd">        The default is the start of the current minute.</span>
 
@@ -451,8 +451,9 @@
 <span class="sd">        :param end_time: The end time (inclusive) of the time interval</span>
 <span class="sd">            for which results should be returned, as a datetime object.</span>
 
-<span class="sd">        :type start_time: :class:`datetime.datetime` or None</span>
-<span class="sd">        :param start_time: The start time (exclusive) of the time interval</span>
+<span class="sd">        :type start_time: :class:`datetime.datetime`</span>
+<span class="sd">        :param start_time:</span>
+<span class="sd">            (Optional) The start time (exclusive) of the time interval</span>
 <span class="sd">            for which results should be returned, as a datetime object.</span>
 <span class="sd">            If not specified, the interval is a point in time.</span>
 
@@ -718,11 +719,11 @@
 <span class="sd">        :param headers_only:</span>
 <span class="sd">             Whether to omit the point data from the time series objects.</span>
 
-<span class="sd">        :type page_size: int or None</span>
+<span class="sd">        :type page_size: int</span>
 <span class="sd">        :param page_size:</span>
-<span class="sd">            An optional positive number specifying the maximum number of</span>
-<span class="sd">            points to return per page. This can be used to control how far</span>
-<span class="sd">            the iterator reads ahead.</span>
+<span class="sd">            (Optional) Positive number specifying the maximum number of points</span>
+<span class="sd">            to return per page. This can be used to control how far the</span>
+<span class="sd">            iterator reads ahead.</span>
 
 <span class="sd">        :raises: :exc:`ValueError` if the query time interval has not been</span>
 <span class="sd">            specified.</span>
@@ -782,11 +783,12 @@
 <span class="sd">             Whether to omit the point data from the</span>
 <span class="sd">             :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects.</span>
 
-<span class="sd">        :type page_size: int or None</span>
-<span class="sd">        :param page_size: A limit on the number of points to return per page.</span>
+<span class="sd">        :type page_size: int</span>
+<span class="sd">        :param page_size:</span>
+<span class="sd">            (Optional) A limit on the number of points to return per page.</span>
 
-<span class="sd">        :type page_token: str or None</span>
-<span class="sd">        :param page_token: A token to continue the retrieval.</span>
+<span class="sd">        :type page_token: str</span>
+<span class="sd">        :param page_token: (Optional) A token to continue the retrieval.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">yield</span> <span class="s1">&#39;filter&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span>
 
@@ -847,8 +849,9 @@
 <span class="sd">            dataframe = query.as_dataframe(</span>
 <span class="sd">                labels=[&#39;resource_type&#39;, &#39;instance_id&#39;])</span>
 
-<span class="sd">        :type label: str or None</span>
-<span class="sd">        :param label: The label name to use for the dataframe header.</span>
+<span class="sd">        :type label: str</span>
+<span class="sd">        :param label:</span>
+<span class="sd">            (Optional) The label name to use for the dataframe header.</span>
 <span class="sd">            This can be the name of a resource label or metric label</span>
 <span class="sd">            (e.g., ``&quot;instance_name&quot;``), or the string ``&quot;resource_type&quot;``.</span>
 
@@ -988,7 +991,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

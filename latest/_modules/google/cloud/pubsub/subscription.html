@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.subscription &mdash; google-cloud fe4cc1e documentation</title>
+  <title>google.cloud.pubsub.subscription &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -301,22 +301,24 @@
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the subscription.</span>
 
-<span class="sd">    :type topic: :class:`google.cloud.pubsub.topic.Topic` or ``NoneType``</span>
-<span class="sd">    :param topic: the topic to which the subscription belongs;  if ``None``,</span>
-<span class="sd">                  the subscription&#39;s topic has been deleted.</span>
+<span class="sd">    :type topic: :class:`google.cloud.pubsub.topic.Topic`</span>
+<span class="sd">    :param topic:</span>
+<span class="sd">        (Optional) the topic to which the subscription belongs;  if ``None``,</span>
+<span class="sd">        the subscription&#39;s topic has been deleted.</span>
 
 <span class="sd">    :type ack_deadline: int</span>
 <span class="sd">    :param ack_deadline: the deadline (in seconds) by which messages pulled</span>
 <span class="sd">                         from the back-end must be acknowledged.</span>
 
 <span class="sd">    :type push_endpoint: str</span>
-<span class="sd">    :param push_endpoint: URL to which messages will be pushed by the back-end.</span>
-<span class="sd">                          If not set, the application must pull messages.</span>
+<span class="sd">    :param push_endpoint:</span>
+<span class="sd">        (Optional) URL to which messages will be pushed by the back-end.  If</span>
+<span class="sd">        not set, the application must pull messages.</span>
 
-<span class="sd">    :type client: :class:`~google.cloud.pubsub.client.Client` or</span>
-<span class="sd">                  ``NoneType``</span>
-<span class="sd">    :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                   ``client`` stored on the topic.</span>
+<span class="sd">    :type client: :class:`~google.cloud.pubsub.client.Client`</span>
+<span class="sd">    :param client:</span>
+<span class="sd">        (Optional) The client to use.  If not passed, falls back to the</span>
+<span class="sd">        ``client`` stored on the topic.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_DELETED_TOPIC_PATH</span> <span class="o">=</span> <span class="s1">&#39;_deleted-topic_&#39;</span>
@@ -353,9 +355,10 @@
 <span class="sd">        :param client: Client which holds credentials and project</span>
 <span class="sd">                       configuration for a topic.</span>
 
-<span class="sd">        :type topics: dict or None</span>
-<span class="sd">        :param topics: A mapping of topic names -&gt; topics.  If not passed,</span>
-<span class="sd">                       the subscription will have a newly-created topic.</span>
+<span class="sd">        :type topics: dict</span>
+<span class="sd">        :param topics:</span>
+<span class="sd">            (Optional) A mapping of topic names -&gt; topics.  If not passed, the</span>
+<span class="sd">            subscription will have a newly-created topic.</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.pubsub.subscription.Subscription`</span>
 <span class="sd">        :returns: Subscription parsed from ``resource``.</span>
@@ -812,7 +815,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.query &mdash; google-cloud fe4cc1e documentation</title>
+  <title>google.cloud.datastore.query &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -307,16 +307,19 @@
 <span class="sd">    :param kind: The kind to query.</span>
 
 <span class="sd">    :type project: str</span>
-<span class="sd">    :param project: The project associated with the query.  If not passed,</span>
-<span class="sd">                    uses the client&#39;s value.</span>
+<span class="sd">    :param project:</span>
+<span class="sd">        (Optional) The project associated with the query.  If not passed, uses</span>
+<span class="sd">        the client&#39;s value.</span>
 
-<span class="sd">    :type namespace: str or None</span>
-<span class="sd">    :param namespace: The namespace to which to restrict results.  If not</span>
-<span class="sd">                      passed, uses the client&#39;s value.</span>
+<span class="sd">    :type namespace: str</span>
+<span class="sd">    :param namespace:</span>
+<span class="sd">        (Optional) The namespace to which to restrict results.  If not passed,</span>
+<span class="sd">        uses the client&#39;s value.</span>
 
-<span class="sd">    :type ancestor: :class:`google.cloud.datastore.key.Key` or None</span>
-<span class="sd">    :param ancestor: key of the ancestor to which this query&#39;s results are</span>
-<span class="sd">                     restricted.</span>
+<span class="sd">    :type ancestor: :class:`google.cloud.datastore.key.Key`</span>
+<span class="sd">    :param ancestor:</span>
+<span class="sd">        (Optional) key of the ancestor to which this query&#39;s results are</span>
+<span class="sd">        restricted.</span>
 
 <span class="sd">    :type filters: sequence of (property_name, operator, value) tuples</span>
 <span class="sd">    :param filters: property filters applied by this query.</span>
@@ -599,17 +602,17 @@
 <span class="sd">          &gt;&gt;&gt; list(query.fetch(1))</span>
 <span class="sd">          [&lt;Entity object&gt;]</span>
 
-<span class="sd">        :type limit: int or None</span>
-<span class="sd">        :param limit: An optional limit passed through to the iterator.</span>
+<span class="sd">        :type limit: int</span>
+<span class="sd">        :param limit: (Optional) limit passed through to the iterator.</span>
 
 <span class="sd">        :type offset: int</span>
-<span class="sd">        :param offset: An optional offset passed through to the iterator.</span>
+<span class="sd">        :param offset: (Optional) offset passed through to the iterator.</span>
 
 <span class="sd">        :type start_cursor: bytes</span>
-<span class="sd">        :param start_cursor: An optional cursor passed through to the iterator.</span>
+<span class="sd">        :param start_cursor: (Optional) cursor passed through to the iterator.</span>
 
 <span class="sd">        :type end_cursor: bytes</span>
-<span class="sd">        :param end_cursor: An optional cursor passed through to the iterator.</span>
+<span class="sd">        :param end_cursor: (Optional) cursor passed through to the iterator.</span>
 
 <span class="sd">        :type client: :class:`google.cloud.datastore.client.Client`</span>
 <span class="sd">        :param client: client used to connect to datastore.</span>
@@ -842,7 +845,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

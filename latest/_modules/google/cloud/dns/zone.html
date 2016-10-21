@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.dns.zone &mdash; google-cloud fe4cc1e documentation</title>
+  <title>google.cloud.dns.zone &mdash; google-cloud 1fab756 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1fab756 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -304,17 +304,19 @@
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the zone</span>
 
-<span class="sd">    :type dns_name: str or :class:`NoneType`</span>
-<span class="sd">    :param dns_name: the DNS name of the zone.  If not passed, then calls</span>
-<span class="sd">                     to :meth:`create` will fail.</span>
+<span class="sd">    :type dns_name: str</span>
+<span class="sd">    :param dns_name:</span>
+<span class="sd">        (Optional) the DNS name of the zone.  If not passed, then calls to</span>
+<span class="sd">        :meth:`create` will fail.</span>
 
 <span class="sd">    :type client: :class:`google.cloud.dns.client.Client`</span>
 <span class="sd">    :param client: A client which holds credentials and project configuration</span>
 <span class="sd">                   for the zone (which requires a project).</span>
 
-<span class="sd">    :type description: str or :class:`NoneType`</span>
-<span class="sd">    :param description: the description for the zone.  If not passed, defaults</span>
-<span class="sd">                        to the value of &#39;dns_name&#39;.</span>
+<span class="sd">    :type description: str</span>
+<span class="sd">    :param description:</span>
+<span class="sd">        (Optional) the description for the zone.  If not passed, defaults to</span>
+<span class="sd">        the value of &#39;dns_name&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dns_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -407,8 +409,8 @@
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update description of the zone.</span>
 
-<span class="sd">        :type value: str, or ``NoneType``</span>
-<span class="sd">        :param value: new description</span>
+<span class="sd">        :type value: str</span>
+<span class="sd">        :param value: (Optional) new description</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -434,8 +436,8 @@
     <span class="k">def</span> <span class="nf">name_server_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update named set of DNS name servers.</span>
 
-<span class="sd">        :type value: str, or ``NoneType``</span>
-<span class="sd">        :param value: new title</span>
+<span class="sd">        :type value: str</span>
+<span class="sd">        :param value: (Optional) new title</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -474,9 +476,10 @@
     <span class="k">def</span> <span class="nf">_require_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check client or verify over-ride.</span>
 
-<span class="sd">        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current zone.</span>
+<span class="sd">        :type client: :class:`google.cloud.dns.client.Client`</span>
+<span class="sd">        :param client:</span>
+<span class="sd">            (Optional) the client to use.  If not passed, falls back to the</span>
+<span class="sd">            ``client`` stored on the current zone.</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.dns.client.Client`</span>
 <span class="sd">        :returns: The client passed in or the currently bound client.</span>
@@ -522,9 +525,10 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/dns/api/v1/managedZones/create</span>
 
-<span class="sd">        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current zone.</span>
+<span class="sd">        :type client: :class:`google.cloud.dns.client.Client`</span>
+<span class="sd">        :param client:</span>
+<span class="sd">            (Optional) the client to use.  If not passed, falls back to the</span>
+<span class="sd">            ``client`` stored on the current zone.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/managedZones&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
@@ -538,9 +542,10 @@
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/dns/api/v1/managedZones/get</span>
 
-<span class="sd">        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current zone.</span>
+<span class="sd">        :type client: :class:`google.cloud.dns.client.Client`</span>
+<span class="sd">        :param client:</span>
+<span class="sd">            (Optional) the client to use.  If not passed, falls back to the</span>
+<span class="sd">            ``client`` stored on the current zone.</span>
 
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: Boolean indicating existence of the managed zone.</span>
@@ -561,9 +566,10 @@
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/dns/api/v1/managedZones/get</span>
 
-<span class="sd">        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current zone.</span>
+<span class="sd">        :type client: :class:`google.cloud.dns.client.Client`</span>
+<span class="sd">        :param client:</span>
+<span class="sd">            (Optional) the client to use.  If not passed, falls back to the</span>
+<span class="sd">            ``client`` stored on the current zone.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 
@@ -577,9 +583,10 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/dns/api/v1/managedZones/delete</span>
 
-<span class="sd">        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current zone.</span>
+<span class="sd">        :type client: :class:`google.cloud.dns.client.Client`</span>
+<span class="sd">        :param client:</span>
+<span class="sd">            (Optional) the client to use.  If not passed, falls back to the</span>
+<span class="sd">            ``client`` stored on the current zone.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
@@ -600,9 +607,10 @@
 <span class="sd">                           not passed, the API will return the first page of</span>
 <span class="sd">                           zones.</span>
 
-<span class="sd">        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current zone.</span>
+<span class="sd">        :type client: :class:`google.cloud.dns.client.Client`</span>
+<span class="sd">        :param client:</span>
+<span class="sd">            (Optional) the client to use.  If not passed, falls back to the</span>
+<span class="sd">            ``client`` stored on the current zone.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
 <span class="sd">        :returns: Iterator of :class:`~.resource_record_set.ResourceRecordSet`</span>
@@ -633,9 +641,10 @@
 <span class="sd">                           not passed, the API will return the first page of</span>
 <span class="sd">                           zones.</span>
 
-<span class="sd">        :type client: :class:`google.cloud.dns.client.Client` or ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current zone.</span>
+<span class="sd">        :type client: :class:`google.cloud.dns.client.Client`</span>
+<span class="sd">        :param client:</span>
+<span class="sd">            (Optional) the client to use.  If not passed, falls back to the</span>
+<span class="sd">            ``client`` stored on the current zone.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
 <span class="sd">        :returns: Iterator of :class:`~.changes.Changes`</span>
@@ -713,7 +722,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'fe4cc1e',
+            VERSION:'1fab756',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
