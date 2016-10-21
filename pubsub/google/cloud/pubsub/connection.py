@@ -66,7 +66,7 @@ class Connection(base_connection.JSONConnection):
 
         Typically, you shouldn't need to use this method.
 
-        :type path: string
+        :type path: str
         :param path: The path to the resource.
 
         :type query_params: dict or list
@@ -74,16 +74,16 @@ class Connection(base_connection.JSONConnection):
                              key-value pairs) to insert into the query
                              string of the URL.
 
-        :type api_base_url: string
+        :type api_base_url: str
         :param api_base_url: The base URL for the API endpoint.
                              Typically you won't have to provide this.
 
-        :type api_version: string
+        :type api_version: str
         :param api_version: The version of the API to call.
                             Typically you shouldn't provide this and instead
                             use the default for the library.
 
-        :rtype: string
+        :rtype: str
         :returns: The URL assembled from the pieces provided.
         """
         if api_base_url is None:
@@ -109,14 +109,14 @@ class _PublisherAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list
 
-        :type project: string
+        :type project: str
         :param project: project ID
 
         :type page_size: int
         :param page_size: maximum number of topics to return, If not passed,
                           defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of topics. If not
                            passed, the API will return the first page of
                            topics.
@@ -146,7 +146,7 @@ class _PublisherAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create
 
-        :type topic_path: string
+        :type topic_path: str
         :param topic_path: the fully-qualified path of the new topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
@@ -162,7 +162,7 @@ class _PublisherAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/get
 
-        :type topic_path: string
+        :type topic_path: str
         :param topic_path: the fully-qualified path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
@@ -178,7 +178,7 @@ class _PublisherAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/delete
 
-        :type topic_path: string
+        :type topic_path: str
         :param topic_path: the fully-qualified path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
         """
@@ -191,7 +191,7 @@ class _PublisherAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/publish
 
-        :type topic_path: string
+        :type topic_path: str
         :param topic_path: the fully-qualified path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
@@ -214,7 +214,7 @@ class _PublisherAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list
 
-        :type topic_path: string
+        :type topic_path: str
         :param topic_path: the fully-qualified path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
@@ -222,7 +222,7 @@ class _PublisherAPI(object):
         :param page_size: maximum number of subscriptions to return, If not
                           passed, defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of topics. If not
                            passed, the API will return the first page of
                            topics.
@@ -261,14 +261,14 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/list
 
-        :type project: string
+        :type project: str
         :param project: project ID
 
         :type page_size: int
         :param page_size: maximum number of subscriptions to return, If not
                           passed, defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of subscriptions.
                            If not passed, the API will return the first page
                            of subscriptions.
@@ -299,12 +299,12 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the new subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
-        :type topic_path: string
+        :type topic_path: str
         :param topic_path: the fully-qualified path of the topic being
                            subscribed, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
@@ -313,7 +313,7 @@ class _SubscriberAPI(object):
         :param ack_deadline: the deadline (in seconds) by which messages pulled
                             from the back-end must be acknowledged.
 
-        :type push_endpoint: string, or ``NoneType``
+        :type push_endpoint: str, or ``NoneType``
         :param push_endpoint: URL to which messages will be pushed by the
                               back-end.  If not set, the application must pull
                               messages.
@@ -339,7 +339,7 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
@@ -357,7 +357,7 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
@@ -373,12 +373,12 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the new subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
-        :type push_endpoint: string, or ``NoneType``
+        :type push_endpoint: str, or ``NoneType``
         :param push_endpoint: URL to which messages will be pushed by the
                               back-end.  If not set, the application must pull
                               messages.
@@ -395,12 +395,12 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the new subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
-        :type return_immediately: boolean
+        :type return_immediately: bool
         :param return_immediately: if True, the back-end returns even if no
                                    messages are available;  if False, the API
                                    call blocks until one or more messages are
@@ -427,7 +427,7 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the new subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
@@ -449,7 +449,7 @@ class _SubscriberAPI(object):
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
-        :type subscription_path: string
+        :type subscription_path: str
         :param subscription_path:
             the fully-qualified path of the new subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
@@ -487,7 +487,7 @@ class _IAMPolicyAPI(object):
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/getIamPolicy
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/getIamPolicy
 
-        :type target_path: string
+        :type target_path: str
         :param target_path: the path of the target object.
 
         :rtype: dict
@@ -504,7 +504,7 @@ class _IAMPolicyAPI(object):
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/setIamPolicy
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/setIamPolicy
 
-        :type target_path: string
+        :type target_path: str
         :param target_path: the path of the target object.
 
         :type policy: dict
@@ -525,7 +525,7 @@ class _IAMPolicyAPI(object):
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/testIamPermissions
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/testIamPermissions
 
-        :type target_path: string
+        :type target_path: str
         :param target_path: the path of the target object.
 
         :type permissions: list of string

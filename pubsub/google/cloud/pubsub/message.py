@@ -29,7 +29,7 @@ class Message(object):
     :type data: bytes
     :param data: the payload of the message.
 
-    :type message_id: string
+    :type message_id: str
     :param message_id: An ID assigned to the message by the API.
 
     :type attributes: dict or None
@@ -71,7 +71,7 @@ class Message(object):
     def service_timestamp(self):
         """Return server-set timestamp.
 
-        :rtype: string
+        :rtype: str
         :returns: timestamp (in UTC timezone) in RFC 3339 format
         """
         return self._service_timestamp

@@ -91,7 +91,7 @@ class _LoggingAPI(object):
         :type entries: sequence of mapping
         :param entries: the log entry resources to log.
 
-        :type logger_name: string
+        :type logger_name: str
         :param logger_name: name of default logger to which to log the entries;
                             individual entries may override.
 
@@ -113,10 +113,10 @@ class _LoggingAPI(object):
     def logger_delete(self, project, logger_name):
         """API call:  delete all entries in a logger via a DELETE request
 
-        :type project: string
+        :type project: str
         :param project: ID of project containing the log entries to delete
 
-        :type logger_name: string
+        :type logger_name: str
         :param logger_name: name of logger containing the log entries to delete
         """
         options = None
@@ -142,7 +142,7 @@ class _SinksAPI(object):
     def list_sinks(self, project, page_size=0, page_token=None):
         """List sinks for the project associated with this client.
 
-        :type project: string
+        :type project: str
         :param project: ID of the project whose sinks are to be listed.
 
         :type page_size: int
@@ -176,17 +176,17 @@ class _SinksAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/create
 
-        :type project: string
+        :type project: str
         :param project: ID of the project in which to create the sink.
 
-        :type sink_name: string
+        :type sink_name: str
         :param sink_name: the name of the sink
 
-        :type filter_: string
+        :type filter_: str
         :param filter_: the advanced logs filter expression defining the
                         entries exported by the sink.
 
-        :type destination: string
+        :type destination: str
         :param destination: destination URI for the entries exported by
                             the sink.
         """
@@ -205,10 +205,10 @@ class _SinksAPI(object):
     def sink_get(self, project, sink_name):
         """API call:  retrieve a sink resource.
 
-        :type project: string
+        :type project: str
         :param project: ID of the project containing the sink.
 
-        :type sink_name: string
+        :type sink_name: str
         :param sink_name: the name of the sink
 
         :rtype: dict
@@ -228,17 +228,17 @@ class _SinksAPI(object):
     def sink_update(self, project, sink_name, filter_, destination):
         """API call:  update a sink resource.
 
-        :type project: string
+        :type project: str
         :param project: ID of the project containing the sink.
 
-        :type sink_name: string
+        :type sink_name: str
         :param sink_name: the name of the sink
 
-        :type filter_: string
+        :type filter_: str
         :param filter_: the advanced logs filter expression defining the
                         entries exported by the sink.
 
-        :type destination: string
+        :type destination: str
         :param destination: destination URI for the entries exported by
                             the sink.
 
@@ -260,10 +260,10 @@ class _SinksAPI(object):
     def sink_delete(self, project, sink_name):
         """API call:  delete a sink resource.
 
-        :type project: string
+        :type project: str
         :param project: ID of the project containing the sink.
 
-        :type sink_name: string
+        :type sink_name: str
         :param sink_name: the name of the sink
         """
         options = None
@@ -289,7 +289,7 @@ class _MetricsAPI(object):
     def list_metrics(self, project, page_size=0, page_token=None):
         """List metrics for the project associated with this client.
 
-        :type project: string
+        :type project: str
         :param project: ID of the project whose metrics are to be listed.
 
         :type page_size: int
@@ -323,17 +323,17 @@ class _MetricsAPI(object):
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/create
 
-        :type project: string
+        :type project: str
         :param project: ID of the project in which to create the metric.
 
-        :type metric_name: string
+        :type metric_name: str
         :param metric_name: the name of the metric
 
-        :type filter_: string
+        :type filter_: str
         :param filter_: the advanced logs filter expression defining the
                         entries exported by the metric.
 
-        :type description: string
+        :type description: str
         :param description: description of the metric.
         """
         options = None
@@ -351,10 +351,10 @@ class _MetricsAPI(object):
     def metric_get(self, project, metric_name):
         """API call:  retrieve a metric resource.
 
-        :type project: string
+        :type project: str
         :param project: ID of the project containing the metric.
 
-        :type metric_name: string
+        :type metric_name: str
         :param metric_name: the name of the metric
 
         :rtype: dict
@@ -374,17 +374,17 @@ class _MetricsAPI(object):
     def metric_update(self, project, metric_name, filter_, description):
         """API call:  update a metric resource.
 
-        :type project: string
+        :type project: str
         :param project: ID of the project containing the metric.
 
-        :type metric_name: string
+        :type metric_name: str
         :param metric_name: the name of the metric
 
-        :type filter_: string
+        :type filter_: str
         :param filter_: the advanced logs filter expression defining the
                         entries exported by the metric.
 
-        :type description: string
+        :type description: str
         :param description: description of the metric.
 
         :rtype: dict
@@ -406,10 +406,10 @@ class _MetricsAPI(object):
     def metric_delete(self, project, metric_name):
         """API call:  delete a metric resource.
 
-        :type project: string
+        :type project: str
         :param project: ID of the project containing the metric.
 
-        :type metric_name: string
+        :type metric_name: str
         :param metric_name: the name of the metric
         """
         options = None

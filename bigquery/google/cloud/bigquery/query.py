@@ -42,7 +42,7 @@ class _SyncQueryConfiguration(object):
 class QueryResults(object):
     """Synchronous job: query tables.
 
-    :type query: string
+    :type query: str
     :param query: SQL query string
 
     :type client: :class:`google.cloud.bigquery.client.Client`
@@ -91,7 +91,7 @@ class QueryResults(object):
     def project(self):
         """Project bound to the job.
 
-        :rtype: string
+        :rtype: str
         :returns: the project (derived from the client).
         """
         return self._client.project
@@ -118,7 +118,7 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#cacheHit
 
-        :rtype: boolean or ``NoneType``
+        :rtype: bool or ``NoneType``
         :returns: True if the query results were served from cache (None
                   until set by the server).
         """
@@ -131,7 +131,7 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#jobComplete
 
-        :rtype: boolean or ``NoneType``
+        :rtype: bool or ``NoneType``
         :returns: True if the query completed on the server (None
                   until set by the server).
         """
@@ -185,7 +185,7 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#pageToken
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: Token generated on the server (None until set by the server).
         """
         return self._properties.get('pageToken')
@@ -348,7 +348,7 @@ class QueryResults(object):
         :type max_results: integer or ``NoneType``
         :param max_results: maximum number of rows to return.
 
-        :type page_token: string or ``NoneType``
+        :type page_token: str or ``NoneType``
         :param page_token: token representing a cursor into the table's rows.
 
         :type start_index: integer or ``NoneType``

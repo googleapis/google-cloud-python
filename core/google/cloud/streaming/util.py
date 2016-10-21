@@ -50,10 +50,10 @@ def acceptable_mime_type(accept_patterns, mime_type):
     :type accept_patterns: list of string
     :param accept_patterns: acceptable MIME types.
 
-    :type mime_type: string
+    :type mime_type: str
     :param mime_type: the MIME being checked
 
-    :rtype: boolean
+    :rtype: bool
     :returns: True if the supplied MIME type matches at least one of the
               patterns, else False.
     """

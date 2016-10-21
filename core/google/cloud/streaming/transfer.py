@@ -52,13 +52,13 @@ class _Transfer(object):
     :type stream: file-like object
     :param stream: stream to/from which data is downloaded/uploaded.
 
-    :type close_stream: boolean
+    :type close_stream: bool
     :param close_stream: should this instance close the stream when deleted
 
     :type chunksize: integer
     :param chunksize: the size of chunks used to download/upload a file.
 
-    :type auto_transfer: boolean
+    :type auto_transfer: bool
     :param auto_transfer: should this instance automatically begin transfering
                           data when initialized
 
@@ -93,7 +93,7 @@ class _Transfer(object):
     def close_stream(self):
         """Should this instance close the stream when deleted.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: Boolean indicated if the stream should be closed.
         """
         return self._close_stream
@@ -163,7 +163,7 @@ class _Transfer(object):
     def url(self):
         """URL to / from which data is downloaded/uploaded.
 
-        :rtype: string
+        :rtype: str
         :returns: The URL where data is sent/received.
         """
         return self._url
@@ -178,7 +178,7 @@ class _Transfer(object):
         :type http: :class:`httplib2.Http` (or a worklike) or None.
         :param http: the Http instance to use to make requests.
 
-        :type url: string
+        :type url: str
         :param url: The url for this transfer.
         """
         self._ensure_uninitialized()
@@ -190,7 +190,7 @@ class _Transfer(object):
     def initialized(self):
         """Has the instance been initialized
 
-        :rtype: boolean
+        :rtype: bool
         :returns: Boolean indicating if the current transfer
                   has been initialized.
         """
@@ -250,13 +250,13 @@ class Download(_Transfer):
     def from_file(cls, filename, overwrite=False, auto_transfer=True, **kwds):
         """Create a new download object from a filename.
 
-        :type filename: string
+        :type filename: str
         :param filename: path/filename for the target file
 
-        :type overwrite: boolean
+        :type overwrite: bool
         :param overwrite: should an existing file be overwritten
 
-        :type auto_transfer: boolean
+        :type auto_transfer: bool
         :param auto_transfer: should the transfer be started immediately
 
         :type kwds: dict
@@ -283,7 +283,7 @@ class Download(_Transfer):
         :type total_size: integer or None
         :param total_size: total size of the file to be downloaded
 
-        :type auto_transfer: boolean
+        :type auto_transfer: bool
         :param auto_transfer: should the transfer be started immediately
 
         :type kwds: dict
@@ -318,7 +318,7 @@ class Download(_Transfer):
     def encoding(self):
         """'Content-Encoding' used to transfer the file
 
-        :rtype: string or None
+        :rtype: str or None
         :returns: The encoding of the downloaded content.
         """
         return self._encoding
@@ -460,7 +460,7 @@ class Download(_Transfer):
         :type end: integer or None
         :param end: suggested last byte of the range.
 
-        :type use_chunks: boolean
+        :type use_chunks: bool
         :param use_chunks: If False, ignore :attr:`chunksize`.
 
         :rtype: str
@@ -558,7 +558,7 @@ class Download(_Transfer):
         :type end: integer or ``None``
         :param end: Where to stop fetching bytes. (See above.)
 
-        :type use_chunks: boolean
+        :type use_chunks: bool
         :param use_chunks: If False, ignore :attr:`chunksize`
                            and fetch this range in a single request.
                            If True, streams via chunks.
@@ -594,7 +594,7 @@ class Download(_Transfer):
 
         Writes retrieved bytes into :attr:`stream`.
 
-        :type use_chunks: boolean
+        :type use_chunks: bool
         :param use_chunks: If False, ignore :attr:`chunksize`
                            and stream this download in a single request.
                            If True, streams via chunks.
@@ -622,7 +622,7 @@ class Upload(_Transfer):
     :type stream: file-like object
     :param stream: stream to/from which data is downloaded/uploaded.
 
-    :type mime_type: string:
+    :type mime_type: str:
     :param mime_type: MIME type of the upload.
 
     :type total_size: integer or None
@@ -631,10 +631,10 @@ class Upload(_Transfer):
     :type http: :class:`httplib2.Http` (or workalike)
     :param http: Http instance used to perform requests.
 
-    :type close_stream: boolean
+    :type close_stream: bool
     :param close_stream: should this instance close the stream when deleted
 
-    :type auto_transfer: boolean
+    :type auto_transfer: bool
     :param auto_transfer: should this instance automatically begin transfering
                           data when initialized
 
@@ -663,13 +663,13 @@ class Upload(_Transfer):
     def from_file(cls, filename, mime_type=None, auto_transfer=True, **kwds):
         """Create a new Upload object from a filename.
 
-        :type filename: string
+        :type filename: str
         :param filename: path/filename to the file being uploaded
 
-        :type mime_type: string
+        :type mime_type: str
         :param mime_type:  MIMEtype of the file being uploaded
 
-        :type auto_transfer: boolean or None
+        :type auto_transfer: bool or None
         :param auto_transfer: should the transfer be started immediately
 
         :type kwds: dict
@@ -697,13 +697,13 @@ class Upload(_Transfer):
         :type stream: writable file-like object
         :param stream: the target file
 
-        :type mime_type: string
+        :type mime_type: str
         :param mime_type:  MIMEtype of the file being uploaded
 
         :type total_size: integer or None
         :param total_size:  Size of the file being uploaded
 
-        :type auto_transfer: boolean or None
+        :type auto_transfer: bool or None
         :param auto_transfer: should the transfer be started immediately
 
         :type kwds: dict
@@ -723,7 +723,7 @@ class Upload(_Transfer):
     def complete(self):
         """Has the entire stream been uploaded.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: Boolean indicated if the upload is complete.
         """
         return self._complete
@@ -732,7 +732,7 @@ class Upload(_Transfer):
     def mime_type(self):
         """MIMEtype of the file being uploaded.
 
-        :rtype: string
+        :rtype: str
         :returns: The mime-type of the upload.
         """
         return self._mime_type
@@ -750,7 +750,7 @@ class Upload(_Transfer):
     def strategy(self):
         """Upload strategy to use
 
-        :rtype: string or None
+        :rtype: str or None
         :returns: The strategy used to upload the data.
         """
         return self._strategy
@@ -759,7 +759,7 @@ class Upload(_Transfer):
     def strategy(self, value):
         """Update upload strategy to use
 
-        :type value: string (one of :data:`SIMPLE_UPLOAD` or
+        :type value: str (one of :data:`SIMPLE_UPLOAD` or
                 :data:`RESUMABLE_UPLOAD`)
 
         :raises: :exc:`ValueError` if value is not one of the two allowed
@@ -972,7 +972,7 @@ class Upload(_Transfer):
         :type response: :class:`google.cloud.streaming.http_wrapper.Response`
         :param response: response to be queried
 
-        :rtype: string
+        :rtype: str
         :returns: The header used to determine the bytes range.
         """
         # NOTE: Per RFC 2616[1]/7233[2][3], 'Range' is a request header,
@@ -1034,7 +1034,7 @@ class Upload(_Transfer):
     def _last_byte(range_header):
         """Parse the last byte from a 'Range' header.
 
-        :type range_header: string
+        :type range_header: str
         :param range_header: 'Range' header value per RFC 2616/7233
 
         :rtype: int
@@ -1065,7 +1065,7 @@ class Upload(_Transfer):
     def stream_file(self, use_chunks=True):
         """Upload the stream.
 
-        :type use_chunks: boolean
+        :type use_chunks: bool
         :param use_chunks: If False, send the stream in a single request.
                            Otherwise, send it in chunks.
 

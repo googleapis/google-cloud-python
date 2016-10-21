@@ -26,7 +26,7 @@ class Subscription(object):
     See:
     https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions
 
-    :type name: string
+    :type name: str
     :param name: the name of the subscription.
 
     :type topic: :class:`google.cloud.pubsub.topic.Topic` or ``NoneType``
@@ -37,7 +37,7 @@ class Subscription(object):
     :param ack_deadline: the deadline (in seconds) by which messages pulled
                          from the back-end must be acknowledged.
 
-    :type push_endpoint: string
+    :type push_endpoint: str
     :param push_endpoint: URL to which messages will be pushed by the back-end.
                           If not set, the application must pull messages.
 
@@ -127,7 +127,7 @@ class Subscription(object):
     def auto_ack(self, return_immediately=False, max_messages=1, client=None):
         """:class:`AutoAck` factory
 
-        :type return_immediately: boolean
+        :type return_immediately: bool
         :param return_immediately: passed through to :meth:`Subscription.pull`
 
         :type max_messages: int
@@ -272,7 +272,7 @@ class Subscription(object):
            :start-after: [START subscription_pull_push]
            :end-before: [END subscription_pull_push]
 
-        :type push_endpoint: string
+        :type push_endpoint: str
         :param push_endpoint: URL to which messages will be pushed by the
                               back-end.  If None, the application must pull
                               messages.
@@ -299,7 +299,7 @@ class Subscription(object):
            :start-after: [START subscription_pull]
            :end-before: [END subscription_pull]
 
-        :type return_immediately: boolean
+        :type return_immediately: bool
         :param return_immediately: if True, the back-end returns even if no
                                    messages are available;  if False, the API
                                    call blocks until one or more messages are
@@ -480,7 +480,7 @@ class AutoAck(dict):
     :type subscription: :class:`Subscription`
     :param subscription: subscription to be pulled.
 
-    :type return_immediately: boolean
+    :type return_immediately: bool
     :param return_immediately: passed through to :meth:`Subscription.pull`
 
     :type max_messages: int

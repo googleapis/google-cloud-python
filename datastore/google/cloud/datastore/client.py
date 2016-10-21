@@ -50,10 +50,10 @@ def _determine_default_project(project=None):
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 
-    :type project: string
+    :type project: str
     :param project: Optional. The project to use as default.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     :returns: Default project if it can be determined.
     """
     if project is None:
@@ -75,7 +75,7 @@ def _extended_lookup(connection, project, key_pbs,
     :type connection: :class:`google.cloud.datastore.connection.Connection`
     :param connection: The connection used to connect to datastore.
 
-    :type project: string
+    :type project: str
     :param project: The project to make the request for.
 
     :type key_pbs: list of :class:`._generated.entity_pb2.Key`
@@ -95,7 +95,7 @@ def _extended_lookup(connection, project, key_pbs,
                      consistency.  If True, request ``EVENTUAL`` read
                      consistency.
 
-    :type transaction_id: string
+    :type transaction_id: str
     :param transaction_id: If passed, make the request in the scope of
                            the given transaction.  Incompatible with
                            ``eventual==True``.
@@ -146,10 +146,10 @@ def _extended_lookup(connection, project, key_pbs,
 class Client(_BaseClient, _ClientProjectMixin):
     """Convenience wrapper for invoking APIs/factories w/ a project.
 
-    :type project: string
+    :type project: str
     :param project: (optional) The project to pass to proxied API methods.
 
-    :type namespace: string
+    :type namespace: str
     :param namespace: (optional) namespace to pass to proxied API methods.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials` or

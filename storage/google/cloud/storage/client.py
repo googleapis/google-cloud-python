@@ -27,7 +27,7 @@ from google.cloud.storage.connection import Connection
 class Client(JSONClient):
     """Client to bundle configuration needed for API requests.
 
-    :type project: string
+    :type project: str
     :param project: the project which the client acts on behalf of. Will be
                     passed when creating a topic.  If not passed,
                     falls back to the default inferred from the environment.
@@ -121,7 +121,7 @@ class Client(JSONClient):
           This will not make an HTTP request; it simply instantiates
           a bucket object owned by this client.
 
-        :type bucket_name: string
+        :type bucket_name: str
         :param bucket_name: The name of the bucket to be instantiated.
 
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
@@ -156,7 +156,7 @@ class Client(JSONClient):
 
         This implements "storage.buckets.get".
 
-        :type bucket_name: string
+        :type bucket_name: str
         :param bucket_name: The name of the bucket to get.
 
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
@@ -180,7 +180,7 @@ class Client(JSONClient):
           >>> print(bucket)
           <Bucket: my-bucket>
 
-        :type bucket_name: string
+        :type bucket_name: str
         :param bucket_name: The name of the bucket to get.
 
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
@@ -205,7 +205,7 @@ class Client(JSONClient):
         If the bucket already exists, will raise
         :class:`google.cloud.exceptions.Conflict`.
 
-        :type bucket_name: string
+        :type bucket_name: str
         :param bucket_name: The bucket name to create.
 
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
@@ -230,20 +230,20 @@ class Client(JSONClient):
         :type max_results: integer or ``NoneType``
         :param max_results: Optional. Maximum number of buckets to return.
 
-        :type page_token: string or ``NoneType``
+        :type page_token: str or ``NoneType``
         :param page_token: Optional. Opaque marker for the next "page" of
                            buckets. If not passed, will return the first page
                            of buckets.
 
-        :type prefix: string or ``NoneType``
+        :type prefix: str or ``NoneType``
         :param prefix: Optional. Filter results to buckets whose names begin
                        with this prefix.
 
-        :type projection: string or ``NoneType``
+        :type projection: str or ``NoneType``
         :param projection: If used, must be 'full' or 'noAcl'. Defaults to
                            'noAcl'. Specifies the set of properties to return.
 
-        :type fields: string or ``NoneType``
+        :type fields: str or ``NoneType``
         :param fields: Selector specifying which fields to include in a
                        partial response. Must be a list of fields. For example
                        to get a partial response with just the next page token

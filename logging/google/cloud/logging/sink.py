@@ -23,15 +23,15 @@ class Sink(object):
     See:
     https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks
 
-    :type name: string
+    :type name: str
     :param name: the name of the sink
 
-    :type filter_: string
+    :type filter_: str
     :param filter_: the advanced logs filter expression defining the entries
                     exported by the sink.  If not passed, the instance should
                     already exist, to be refreshed via :meth:`reload`.
 
-    :type destination: string
+    :type destination: str
     :param destination: destination URI for the entries exported by the sink.
                         If not passed, the instance should already exist, to
                         be refreshed via :meth:`reload`.

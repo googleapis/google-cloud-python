@@ -28,7 +28,7 @@ class _PropertyMixin(object):
       - client
       - path
 
-    :type name: string
+    :type name: str
     :param name: The name of the object.
     """
 
@@ -88,7 +88,7 @@ class _PropertyMixin(object):
         It **will not** reload the properties from the server. The behavior is
         local only and syncing occurs via :meth:`patch`.
 
-        :type name: string
+        :type name: str
         :param name: The field name to update.
 
         :type value: object

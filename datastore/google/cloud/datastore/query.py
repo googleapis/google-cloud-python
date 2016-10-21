@@ -31,14 +31,14 @@ class Query(object):
     :type client: :class:`google.cloud.datastore.client.Client`
     :param client: The client used to connect to Datastore.
 
-    :type kind: string
+    :type kind: str
     :param kind: The kind to query.
 
-    :type project: string
+    :type project: str
     :param project: The project associated with the query.  If not passed,
                     uses the client's value.
 
-    :type namespace: string or None
+    :type namespace: str or None
     :param namespace: The namespace to which to restrict results.  If not
                       passed, uses the client's value.
 
@@ -109,7 +109,7 @@ class Query(object):
     def namespace(self):
         """This query's namespace
 
-        :rtype: string or None
+        :rtype: str or None
         :returns: the namespace assigned to this query
         """
         return self._namespace or self._client.namespace
@@ -118,7 +118,7 @@ class Query(object):
     def namespace(self, value):
         """Update the query's namespace.
 
-        :type value: string
+        :type value: str
         """
         if not isinstance(value, str):
             raise ValueError("Namespace must be a string")
@@ -128,7 +128,7 @@ class Query(object):
     def kind(self):
         """Get the Kind of the Query.
 
-        :rtype: string
+        :rtype: str
         :returns: The kind for the query.
         """
         return self._kind
@@ -137,7 +137,7 @@ class Query(object):
     def kind(self, value):
         """Update the Kind of the Query.
 
-        :type value: string
+        :type value: str
         :param value: updated kind for the query.
 
         .. note::
@@ -203,10 +203,10 @@ class Query(object):
           >>> query.add_filter('name', '=', 'James')
           >>> query.add_filter('age', '>', 50)
 
-        :type property_name: string
+        :type property_name: str
         :param property_name: A property name.
 
-        :type operator: string
+        :type operator: str
         :param operator: One of ``=``, ``<``, ``<=``, ``>``, ``>=``.
 
         :type value: :class:`int`, :class:`str`, :class:`bool`,
@@ -242,7 +242,7 @@ class Query(object):
     def projection(self, projection):
         """Set the fields returned the query.
 
-        :type projection: string or sequence of strings
+        :type projection: str or sequence of strings
         :param projection: Each value is a string giving the name of a
                            property to be included in the projection query.
         """
@@ -260,7 +260,7 @@ class Query(object):
         :type key: :class:`google.cloud.datastore.key.Key`
         :param key: The key to filter on.
 
-        :type operator: string
+        :type operator: str
         :param operator: (Optional) One of ``=``, ``<``, ``<=``, ``>``, ``>=``.
                          Defaults to ``=``.
         """
@@ -281,7 +281,7 @@ class Query(object):
 
         Sort fields will be applied in the order specified.
 
-        :type value: string or sequence of strings
+        :type value: str or sequence of strings
         :param value: Each value is a string giving the name of the
                       property on which to sort, optionally preceded by a
                       hyphen (-) to specify descending order.
@@ -304,7 +304,7 @@ class Query(object):
     def distinct_on(self, value):
         """Set fields used to group query results.
 
-        :type value: string or sequence of strings
+        :type value: str or sequence of strings
         :param value: Each value is a string giving the name of a
                       property to use to group results together.
         """

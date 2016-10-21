@@ -34,7 +34,7 @@ class _ClientFactoryMixin(object):
     def from_service_account_json(cls, json_credentials_path, *args, **kwargs):
         """Factory to retrieve JSON credentials while creating client.
 
-        :type json_credentials_path: string
+        :type json_credentials_path: str
         :param json_credentials_path: The path to a private key file (this file
                                       was given to you when you created the
                                       service account). This file must contain
@@ -69,10 +69,10 @@ class _ClientFactoryMixin(object):
           Unless you have an explicit reason to use a PKCS12 key for your
           service account, we recommend using a JSON key.
 
-        :type client_email: string
+        :type client_email: str
         :param client_email: The e-mail attached to the service account.
 
-        :type private_key_path: string
+        :type private_key_path: str
         :param private_key_path: The path to a private key file (this file was
                                  given to you when you created the service
                                  account). This file must be in P12 format.
@@ -127,7 +127,7 @@ class Client(_ClientFactoryMixin):
 class _ClientProjectMixin(object):
     """Mixin to allow setting the project on the client.
 
-    :type project: string
+    :type project: str
     :param project: the project which the client acts on behalf of. If not
                     passed falls back to the default inferred from the
                     environment.
@@ -160,7 +160,7 @@ class JSONClient(Client, _ClientProjectMixin):
     Assumes such APIs use the ``project`` and the client needs to store this
     value.
 
-    :type project: string
+    :type project: str
     :param project: the project which the client acts on behalf of. If not
                     passed falls back to the default inferred from the
                     environment.
