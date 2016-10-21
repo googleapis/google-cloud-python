@@ -23,10 +23,10 @@ class Metric(object):
     See:
     https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics
 
-    :type name: string
+    :type name: str
     :param name: the name of the metric
 
-    :type filter_: string
+    :type filter_: str
     :param filter_: the advanced logs filter expression defining the entries
                    tracked by the metric.  If not passed, the instance should
                    already exist, to be refreshed via :meth:`reload`.
@@ -35,7 +35,7 @@ class Metric(object):
     :param client: A client which holds credentials and project configuration
                    for the metric (which requires a project).
 
-    :type description: string
+    :type description: str
     :param description: an optional description of the metric.
     """
     def __init__(self, name, filter_=None, client=None, description=''):
