@@ -63,7 +63,20 @@ class Client(JSONClient):
     :param http: An optional HTTP object to make requests. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
+
+    :type use_gax: bool
+    :param use_gax: (Optional) Explicitly specifies whether
+                    to use the gRPC transport (via GAX) or HTTP. If unset,
+                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
+                    variable
     """
+    def __init__(self, project=None, credentials=None,
+                 http=None, use_gax=None):
+        super(Client, self).__init__(project, credentials, http)
+        if use_gax is None:
+            self._use_gax = _USE_GAX
+        else:
+            self._use_gax = use_gax
 
     _connection_class = Connection
     _publisher_api = _subscriber_api = _iam_policy_api = None
@@ -72,7 +85,7 @@ class Client(JSONClient):
     def publisher_api(self):
         """Helper for publisher-related API calls."""
         if self._publisher_api is None:
-            if _USE_GAX:
+            if self._use_gax:
                 generated = make_gax_publisher_api(self.connection)
                 self._publisher_api = GAXPublisherAPI(generated)
             else:
@@ -83,7 +96,7 @@ class Client(JSONClient):
     def subscriber_api(self):
         """Helper for subscriber-related API calls."""
         if self._subscriber_api is None:
-            if _USE_GAX:
+            if self._use_gax:
                 generated = make_gax_subscriber_api(self.connection)
                 self._subscriber_api = GAXSubscriberAPI(generated)
             else:
