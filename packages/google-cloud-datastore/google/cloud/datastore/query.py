@@ -38,12 +38,12 @@ class Query(object):
     :param project: The project associated with the query.  If not passed,
                     uses the client's value.
 
-    :type namespace: str or None
-    :param namespace: The namespace to which to restrict results.  If not
+    :type namespace: str
+    :param namespace: (Optional) The namespace to which to restrict results.  If not
                       passed, uses the client's value.
 
-    :type ancestor: :class:`google.cloud.datastore.key.Key` or None
-    :param ancestor: key of the ancestor to which this query's results are
+    :type ancestor: :class:`google.cloud.datastore.key.Key`
+    :param ancestor: (Optional) key of the ancestor to which this query's results are
                      restricted.
 
     :type filters: sequence of (property_name, operator, value) tuples
@@ -327,8 +327,8 @@ class Query(object):
           >>> list(query.fetch(1))
           [<Entity object>]
 
-        :type limit: int or None
-        :param limit: An optional limit passed through to the iterator.
+        :type limit: int
+        :param limit: (Optional) An optional limit passed through to the iterator.
 
         :type offset: int
         :param offset: An optional offset passed through to the iterator.

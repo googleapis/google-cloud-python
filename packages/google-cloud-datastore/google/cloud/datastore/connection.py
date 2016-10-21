@@ -569,8 +569,8 @@ class Connection(connection_module.Connection):
         :type request: :class:`._generated.datastore_pb2.CommitRequest`
         :param request: The protobuf with the mutations being committed.
 
-        :type transaction_id: str or None
-        :param transaction_id: The transaction ID returned from
+        :type transaction_id: str
+        :param transaction_id: (Optional) The transaction ID returned from
                                :meth:`begin_transaction`.  Non-transactional
                                batches must pass ``None``.
 
