@@ -86,13 +86,12 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_no_gax_ctor(self):
-        from google.cloud.logging.connection import _LoggingAPI
-        from google.cloud.logging import client as MUT
         from google.cloud._testing import _Monkey
+        from google.cloud.logging import client as MUT
+        from google.cloud.logging.connection import _LoggingAPI
 
         creds = _Credentials()
-        with _Monkey(MUT,
-                     _USE_GAX=True):
+        with _Monkey(MUT, _USE_GAX=True):
             client = self._makeOne(project=self.PROJECT, credentials=creds,
                                    use_gax=False)
 

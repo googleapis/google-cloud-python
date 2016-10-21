@@ -48,9 +48,9 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_no_gax_ctor(self):
-        from google.cloud.pubsub import client as MUT
-        from google.cloud.pubsub.connection import _PublisherAPI
         from google.cloud._testing import _Monkey
+        from google.cloud.pubsub.connection import _PublisherAPI
+        from google.cloud.pubsub import client as MUT
 
         creds = _Credentials()
         with _Monkey(MUT, _USE_GAX=True):
