@@ -180,7 +180,7 @@ class ManagedZone(object):
         :type record_type: str
         :param record_type: RR type
 
-        :type ttl: integer
+        :type ttl: int
         :param ttl: TTL for the RR, in seconds
 
         :type rrdatas: list of string

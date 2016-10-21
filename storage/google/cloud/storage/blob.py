@@ -57,7 +57,7 @@ class Blob(_PropertyMixin):
     :type bucket: :class:`google.cloud.storage.bucket.Bucket`
     :param bucket: The bucket to which this blob belongs.
 
-    :type chunk_size: integer
+    :type chunk_size: int
     :param chunk_size: The size of a chunk of data whenever iterating (1 MB).
                        This must be a multiple of 256 KB per the API
                        specification.
@@ -85,7 +85,7 @@ class Blob(_PropertyMixin):
     def chunk_size(self):
         """Get the blob's default chunk size.
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The current blob's chunk size, if it is set.
         """
         return self._chunk_size
@@ -94,7 +94,7 @@ class Blob(_PropertyMixin):
     def chunk_size(self, value):
         """Set the blob's default chunk size.
 
-        :type value: integer or ``NoneType``
+        :type value: int or ``NoneType``
         :param value: The current blob's chunk size, if it is set.
 
         :raises: :class:`ValueError` if ``value`` is not ``None`` and is not a
@@ -453,7 +453,7 @@ class Blob(_PropertyMixin):
         :type content_type: str or ``NoneType``
         :param content_type: Optional type of content being uploaded.
 
-        :type num_retries: integer
+        :type num_retries: int
         :param num_retries: Number of upload retries. Defaults to 6.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -773,7 +773,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The component count (in case of a composed object) or
                   ``None`` if the property is not set locally. This property
                   will not be set on objects not created via ``compose``.
@@ -800,7 +800,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The generation of the blob or ``None`` if the property
                   is not set locally.
         """
@@ -872,7 +872,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The metageneration of the blob or ``None`` if the property
                   is not set locally.
         """
@@ -910,7 +910,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The size of the blob or ``None`` if the property
                   is not set locally.
         """

@@ -24,10 +24,10 @@ class BufferedStream(object):
     :type stream:  readable file-like object
     :param stream:  the stream to be buffered
 
-    :type start: integer
+    :type start: int
     :param start: the starting point in the stream
 
-    :type size: integer
+    :type size: int
     :param size:  the size of the buffer
     """
     def __init__(self, stream, start, size):
@@ -64,7 +64,7 @@ class BufferedStream(object):
     def stream_end_position(self):
         """Point to which stream was read into the buffer
 
-        :rtype: integer
+        :rtype: int
         :returns: The end-position of the stream.
         """
         return self._end_pos
@@ -73,7 +73,7 @@ class BufferedStream(object):
     def _bytes_remaining(self):
         """Bytes remaining to be read from the buffer
 
-        :rtype: integer
+        :rtype: int
         :returns: The number of bytes remaining.
         """
         return len(self._buffered_data) - self._buffer_pos
@@ -81,7 +81,7 @@ class BufferedStream(object):
     def read(self, size=None):
         """Read bytes from the buffer.
 
-        :type size: integer or None
+        :type size: int or None
         :param size: How many bytes to read (defaults to all remaining bytes).
 
         :rtype: str

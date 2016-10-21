@@ -77,7 +77,7 @@ def _httplib2_debug_level(http_request, level, http=None):
     :type http_request: :class:`Request`
     :param http_request: the request to be logged.
 
-    :type level: integer
+    :type level: int
     :param level: the debuglevel for logging.
 
     :type http: :class:`httplib2.Http`, or ``None``
@@ -191,7 +191,7 @@ def _process_content_range(content_range):
     :type content_range: str
     :param content_range: the header value being parsed.
 
-    :rtype: integer
+    :rtype: int
     :returns: the length of the response chunk.
     """
     _, _, range_spec = content_range.partition(' ')
@@ -221,7 +221,7 @@ class Response(_ResponseTuple):
         Exposed as an attribute since using ``len()`` directly can fail
         for responses larger than ``sys.maxint``.
 
-        :rtype: integer or long
+        :rtype: int or long
         :returns: The length of the response.
         """
         if 'content-encoding' in self.info and 'content-range' in self.info:
@@ -239,7 +239,7 @@ class Response(_ResponseTuple):
     def status_code(self):
         """HTTP status code
 
-        :rtype: integer
+        :rtype: int
         :returns: The response status code.
         """
         return int(self.info['status'])
@@ -248,7 +248,7 @@ class Response(_ResponseTuple):
     def retry_after(self):
         """Retry interval (if set).
 
-        :rtype: integer
+        :rtype: int
         :returns: interval in seconds
         """
         if 'retry-after' in self.info:
@@ -319,7 +319,7 @@ def _make_api_request_no_retry(http, http_request, redirections=_REDIRECTIONS):
     :type http_request: :class:`Request`
     :param http_request: the request to send.
 
-    :type redirections: integer
+    :type redirections: int
     :param redirections: Number of redirects to follow.
 
     :rtype: :class:`Response`
@@ -363,11 +363,11 @@ def make_api_request(http, http_request, retries=7,
     :type http_request: :class:`Request`
     :param http_request: the request to send.
 
-    :type retries: integer
+    :type retries: int
     :param retries: Number of retries to attempt on retryable
                     responses (such as 429 or 5XX).
 
-    :type redirections: integer
+    :type redirections: int
     :param redirections: Number of redirects to follow.
 
     :rtype: :class:`Response`
