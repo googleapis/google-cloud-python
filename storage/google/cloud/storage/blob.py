@@ -50,7 +50,7 @@ _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
 class Blob(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``.
 
-    :type name: string
+    :type name: str
     :param name: The name of the blob.  This corresponds to the
                  unique path of the object in the bucket.
 
@@ -109,13 +109,13 @@ class Blob(_PropertyMixin):
     def path_helper(bucket_path, blob_name):
         """Relative URL path for a blob.
 
-        :type bucket_path: string
+        :type bucket_path: str
         :param bucket_path: The URL path for a bucket.
 
-        :type blob_name: string
+        :type blob_name: str
         :param blob_name: The name of the blob.
 
-        :rtype: string
+        :rtype: str
         :returns: The relative URL path for ``blob_name``.
         """
         return bucket_path + '/o/' + quote(blob_name, safe='')
@@ -137,7 +137,7 @@ class Blob(_PropertyMixin):
     def path(self):
         """Getter property for the URL path to this Blob.
 
-        :rtype: string
+        :rtype: str
         :returns: The URL path to this Blob.
         """
         if not self.name:
@@ -254,7 +254,7 @@ class Blob(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: True if the blob exists in Cloud Storage.
         """
         client = self._require_client(client)
@@ -355,7 +355,7 @@ class Blob(_PropertyMixin):
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
 
-        :type filename: string
+        :type filename: str
         :param filename: A filename to be passed to ``open``.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -440,7 +440,7 @@ class Blob(_PropertyMixin):
         :type file_obj: file
         :param file_obj: A file handle open for reading.
 
-        :type rewind: boolean
+        :type rewind: bool
         :param rewind: If True, seek to the beginning of the file handle before
                        writing the file to Cloud Storage.
 
@@ -450,7 +450,7 @@ class Blob(_PropertyMixin):
                      :func:`os.fstat`. (If the file handle is not from the
                      filesystem this won't be possible.)
 
-        :type content_type: string or ``NoneType``
+        :type content_type: str or ``NoneType``
         :param content_type: Optional type of content being uploaded.
 
         :type num_retries: integer
@@ -564,10 +564,10 @@ class Blob(_PropertyMixin):
            `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
            API documents for details.
 
-        :type filename: string
+        :type filename: str
         :param filename: The path to the file.
 
-        :type content_type: string or ``NoneType``
+        :type content_type: str or ``NoneType``
         :param content_type: Optional type of content being uploaded.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -601,7 +601,7 @@ class Blob(_PropertyMixin):
         :param data: The data to store in this blob.  If the value is
                      text, it will be encoded as UTF-8.
 
-        :type content_type: string
+        :type content_type: str
         :param content_type: Optional type of content being uploaded. Defaults
                              to ``'text/plain'``.
 
@@ -709,7 +709,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     content_disposition = _scalar_property('contentDisposition')
@@ -720,7 +720,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     content_encoding = _scalar_property('contentEncoding')
@@ -731,7 +731,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     content_language = _scalar_property('contentLanguage')
@@ -742,7 +742,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     content_type = _scalar_property('contentType')
@@ -753,7 +753,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     crc32c = _scalar_property('crc32c')
@@ -764,7 +764,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     @property
@@ -789,7 +789,7 @@ class Blob(_PropertyMixin):
         See: http://tools.ietf.org/html/rfc2616#section-3.11 and
              https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The blob etag or ``None`` if the property is not set locally.
         """
         return self._properties.get('etag')
@@ -814,7 +814,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The ID of the blob or ``None`` if the property is not
                   set locally.
         """
@@ -828,7 +828,7 @@ class Blob(_PropertyMixin):
 
     If the property is not set locally, returns ``None``.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     """
 
     @property
@@ -837,7 +837,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The media link for the blob or ``None`` if the property is
                   not set locally.
         """
@@ -898,7 +898,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: The self link for the blob or ``None`` if the property is
                   not set locally.
         """
@@ -924,7 +924,7 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/storage-classes
 
-        :rtype: string or ``NoneType``
+        :rtype: str or ``NoneType``
         :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
                   "NEARLINE", "COLDLINE", "STANDARD", or
                   "DURABLE_REDUCED_AVAILABILITY", else ``None``.

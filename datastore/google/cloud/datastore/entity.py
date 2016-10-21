@@ -91,7 +91,7 @@ class Entity(dict):
         Entities compare equal if their keys compare equal and their
         properties compare equal.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: True if the entities compare equal, else False.
         """
         if not isinstance(other, Entity):
@@ -108,7 +108,7 @@ class Entity(dict):
         Entities compare equal if their keys compare equal and their
         properties compare equal.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: False if the entities compare equal, else True.
         """
         return not self.__eq__(other)

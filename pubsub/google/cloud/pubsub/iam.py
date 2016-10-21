@@ -101,7 +101,7 @@ class Policy(object):
     https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Policy
     https://cloud.google.com/pubsub/docs/reference/rest/Shared.Types/Binding
 
-    :type etag: string
+    :type etag: str
     :param etag: ETag used to identify a unique of the policy
 
     :type version: int
@@ -120,10 +120,10 @@ class Policy(object):
     def user(email):
         """Factory method for a user member.
 
-        :type email: string
+        :type email: str
         :param email: E-mail for this particular user.
 
-        :rtype: string
+        :rtype: str
         :returns: A member string corresponding to the given user.
         """
         return 'user:%s' % (email,)
@@ -132,10 +132,10 @@ class Policy(object):
     def service_account(email):
         """Factory method for a service account member.
 
-        :type email: string
+        :type email: str
         :param email: E-mail for this particular service account.
 
-        :rtype: string
+        :rtype: str
         :returns: A member string corresponding to the given service account.
         """
         return 'serviceAccount:%s' % (email,)
@@ -144,10 +144,10 @@ class Policy(object):
     def group(email):
         """Factory method for a group member.
 
-        :type email: string
+        :type email: str
         :param email: An id or e-mail for this particular group.
 
-        :rtype: string
+        :rtype: str
         :returns: A member string corresponding to the given group.
         """
         return 'group:%s' % (email,)
@@ -156,10 +156,10 @@ class Policy(object):
     def domain(domain):
         """Factory method for a domain member.
 
-        :type domain: string
+        :type domain: str
         :param domain: The domain for this member.
 
-        :rtype: string
+        :rtype: str
         :returns: A member string corresponding to the given domain.
         """
         return 'domain:%s' % (domain,)
@@ -168,7 +168,7 @@ class Policy(object):
     def all_users():
         """Factory method for a member representing all users.
 
-        :rtype: string
+        :rtype: str
         :returns: A member string representing all users.
         """
         return 'allUsers'
@@ -177,7 +177,7 @@ class Policy(object):
     def authenticated_users():
         """Factory method for a member representing all authenticated users.
 
-        :rtype: string
+        :rtype: str
         :returns: A member string representing all authenticated users.
         """
         return 'allAuthenticatedUsers'

@@ -35,16 +35,16 @@ class LabelValueType(object):
 class LabelDescriptor(object):
     """Schema specification and documentation for a single label.
 
-    :type key: string
+    :type key: str
     :param key: The name of the label.
 
-    :type value_type: string
+    :type value_type: str
     :param value_type:
         The type of the label. It must be one of :data:`LabelValueType.STRING`,
         :data:`LabelValueType.BOOL`, or :data:`LabelValueType.INT64`.
         See :class:`LabelValueType`.
 
-    :type description: string
+    :type description: str
     :param description: A human-readable description for the label.
     """
 

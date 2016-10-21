@@ -65,7 +65,7 @@ class _BaseEntry(object):
     :type labels: dict or :class:`NoneType`
     :param labels: (optional) mapping of labels for the entry
 
-    :type severity: string or :class:`NoneType`
+    :type severity: str or :class:`NoneType`
     :param severity: (optional) severity of event being logged.
 
     :type http_request: dict or :class:`NoneType`

@@ -28,20 +28,20 @@ from google.cloud.monitoring.label import LabelDescriptor
 class ResourceDescriptor(object):
     """Specification of a monitored resource type and its schema.
 
-    :type name: string
+    :type name: str
     :param name:
         The "resource name" of the monitored resource descriptor:
         ``"projects/<project_id>/monitoredResourceDescriptors/<type>"``
 
-    :type type_: string
+    :type type_: str
     :param type_:
         The monitored resource type. For example: ``"gce_instance"``
 
-    :type display_name: string
+    :type display_name: str
     :param display_name:
         A concise name that might be displayed in user interfaces.
 
-    :type description: string
+    :type description: str
     :param description:
         A detailed description that might be used in documentation.
 
@@ -66,7 +66,7 @@ class ResourceDescriptor(object):
         :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
-        :type resource_type: string
+        :type resource_type: str
         :param resource_type: The resource type name.
 
         :rtype: :class:`ResourceDescriptor`
@@ -88,7 +88,7 @@ class ResourceDescriptor(object):
         :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
-        :type filter_string: string or None
+        :type filter_string: str or None
         :param filter_string:
             An optional filter expression describing the resource descriptors
             to be returned. See the `filter documentation`_.
@@ -163,7 +163,7 @@ class Resource(collections.namedtuple('Resource', 'type labels')):
     :meth:`~google.cloud.monitoring.client.Client.resource` factory method
     of the :class:`~google.cloud.monitoring.client.Client` class.
 
-    :type type: string
+    :type type: str
     :param type: The resource type name.
 
     :type labels: dict

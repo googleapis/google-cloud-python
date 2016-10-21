@@ -87,7 +87,7 @@ def is_valid_module(filename):
     Assumes if is just the end of a path (i.e. does not contain
     ``os.path.sep``.
 
-    :type filename: string
+    :type filename: str
     :param filename: The name of a file.
 
     :rtype: bool
@@ -106,10 +106,10 @@ def is_valid_module(filename):
 def get_public_modules(path, base_package=None):
     """Get list of all public modules relative to a path.
 
-    :type path: string
+    :type path: str
     :param path: The path containing the python modules.
 
-    :type base_package: string
+    :type base_package: str
     :param base_package: (Optional) A package to prepend in
                          front of the path.
 
