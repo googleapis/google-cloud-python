@@ -86,8 +86,8 @@ class Query(object):
         demonstration purposes and is subject to change. See the
         `supported metrics`_.
 
-    :type end_time: :class:`datetime.datetime` or None
-    :param end_time: The end time (inclusive) of the time interval
+    :type end_time: :class:`datetime.datetime`
+    :param end_time: (Optional) The end time (inclusive) of the time interval
         for which results should be returned, as a datetime object.
         The default is the start of the current minute.
 
@@ -179,8 +179,9 @@ class Query(object):
         :param end_time: The end time (inclusive) of the time interval
             for which results should be returned, as a datetime object.
 
-        :type start_time: :class:`datetime.datetime` or None
-        :param start_time: The start time (exclusive) of the time interval
+        :type start_time: :class:`datetime.datetime`
+        :param start_time:
+            (Optional) The start time (exclusive) of the time interval
             for which results should be returned, as a datetime object.
             If not specified, the interval is a point in time.
 
@@ -446,11 +447,11 @@ class Query(object):
         :param headers_only:
              Whether to omit the point data from the time series objects.
 
-        :type page_size: int or None
+        :type page_size: int
         :param page_size:
-            An optional positive number specifying the maximum number of
-            points to return per page. This can be used to control how far
-            the iterator reads ahead.
+            (Optional) Positive number specifying the maximum number of points
+            to return per page. This can be used to control how far the
+            iterator reads ahead.
 
         :raises: :exc:`ValueError` if the query time interval has not been
             specified.
@@ -510,11 +511,12 @@ class Query(object):
              Whether to omit the point data from the
              :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects.
 
-        :type page_size: int or None
-        :param page_size: A limit on the number of points to return per page.
+        :type page_size: int
+        :param page_size:
+            (Optional) A limit on the number of points to return per page.
 
-        :type page_token: str or None
-        :param page_token: A token to continue the retrieval.
+        :type page_token: str
+        :param page_token: (Optional) A token to continue the retrieval.
         """
         yield 'filter', self.filter
 
@@ -575,8 +577,9 @@ class Query(object):
             dataframe = query.as_dataframe(
                 labels=['resource_type', 'instance_id'])
 
-        :type label: str or None
-        :param label: The label name to use for the dataframe header.
+        :type label: str
+        :param label:
+            (Optional) The label name to use for the dataframe header.
             This can be the name of a resource label or metric label
             (e.g., ``"instance_name"``), or the string ``"resource_type"``.
 

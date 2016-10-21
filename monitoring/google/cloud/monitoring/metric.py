@@ -102,9 +102,9 @@ class MetricDescriptor(object):
     :type display_name: str
     :param display_name: An optional concise name for the metric.
 
-    :type name: str or None
+    :type name: str
     :param name:
-        The "resource name" of the metric descriptor. For example:
+        (Optional) The "resource name" of the metric descriptor. For example:
         ``"projects/<project_id>/metricDescriptors/<type>"``. As
         retrieved from the service, this will always be specified.
         You can and should omit it when constructing an instance for
@@ -198,15 +198,15 @@ class MetricDescriptor(object):
         :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
-        :type filter_string: str or None
+        :type filter_string: str
         :param filter_string:
-            An optional filter expression describing the metric descriptors
-            to be returned. See the `filter documentation`_.
+            (Optional) Filter expression describing the metric descriptors to
+            be returned. See the `filter documentation`_.
 
-        :type type_prefix: str or None
-        :param type_prefix: An optional prefix constraining the selected
-            metric types. This adds ``metric.type = starts_with("<prefix>")``
-            to the filter.
+        :type type_prefix: str
+        :param type_prefix:
+            (Optional) Prefix constraining the selected metric types. This adds
+            ``metric.type = starts_with("<prefix>")`` to the filter.
 
         :rtype: list of :class:`MetricDescriptor`
         :returns: A list of metric descriptor instances.

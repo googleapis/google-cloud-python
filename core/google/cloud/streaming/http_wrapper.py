@@ -80,8 +80,9 @@ def _httplib2_debug_level(http_request, level, http=None):
     :type level: int
     :param level: the debuglevel for logging.
 
-    :type http: :class:`httplib2.Http`, or ``None``
-    :param http: the instance on whose connections to set the debuglevel.
+    :type http: :class:`httplib2.Http`
+    :param http:
+        (Optional) the instance on whose connections to set the debuglevel.
     """
     if http_request.loggable_body is None:
         yield
@@ -115,8 +116,8 @@ class Request(object):
     :type http_method: str
     :param http_method: the HTTP method to use for the request
 
-    :type headers: mapping or None
-    :param headers: headers to be sent with the request
+    :type headers: mapping
+    :param headers: (Optional) headers to be sent with the request
 
     :type body: str
     :param body: body to be sent with the request
