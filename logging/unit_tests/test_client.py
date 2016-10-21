@@ -39,14 +39,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, self.PROJECT)
 
     def test_logging_api_wo_gax(self):
-        from google.cloud.logging.connection import _LoggingAPI
-        from google.cloud.logging import client as MUT
         from google.cloud._testing import _Monkey
+        from google.cloud.logging import client as MUT
+        from google.cloud.logging.connection import _LoggingAPI
 
         with _Monkey(MUT, _USE_GAX=False):
             client = self._makeOne(self.PROJECT, credentials=_Credentials())
-            conn = client.connection = object()
-            api = client.logging_api
+        conn = client.connection = object()
+        api = client.logging_api
 
         self.assertIsInstance(api, _LoggingAPI)
         self.assertIs(api._connection, conn)

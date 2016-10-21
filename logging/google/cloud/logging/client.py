@@ -72,9 +72,9 @@ class Client(JSONClient):
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
 
-    :type use_gax: bool or :class:`NoneType`
+    :type use_gax: bool
     :param use_gax: An optional parameter that explicitly specifies whether
-                    to use the gRPC transport (gax) or HTTP
+                    to use the gRPC transport (via GAX) or HTTP
     """
 
     _connection_class = Connection

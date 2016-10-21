@@ -37,8 +37,9 @@ class TestClient(unittest.TestCase):
 
         with _Monkey(MUT, _USE_GAX=False):
             client = self._makeOne(project=self.PROJECT, credentials=creds)
-            conn = client.connection = object()
-            api = client.publisher_api
+
+        conn = client.connection = object()
+        api = client.publisher_api
 
         self.assertIsInstance(api, _PublisherAPI)
         self.assertIs(api._connection, conn)
@@ -59,7 +60,6 @@ class TestClient(unittest.TestCase):
         self.assertFalse(client._use_gax)
         api = client.publisher_api
         self.assertIsInstance(api, _PublisherAPI)
-
 
     def test_publisher_api_w_gax(self):
         from google.cloud.pubsub import client as MUT
@@ -102,8 +102,9 @@ class TestClient(unittest.TestCase):
 
         with _Monkey(MUT, _USE_GAX=False):
             client = self._makeOne(project=self.PROJECT, credentials=creds)
-            conn = client.connection = object()
-            api = client.subscriber_api
+
+        conn = client.connection = object()
+        api = client.subscriber_api
 
         self.assertIsInstance(api, _SubscriberAPI)
         self.assertIs(api._connection, conn)

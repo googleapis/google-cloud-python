@@ -106,7 +106,7 @@ class Client(object):
                  service=None,
                  version=None):
         self.logging_client = google.cloud.logging.client.Client(
-            project=project, credentials=credentials, http=http, use_gax=False)
+            project, credentials, http)
         self.service = service if service else self.DEFAULT_SERVICE
         self.version = version
 
