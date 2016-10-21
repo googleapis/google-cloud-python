@@ -56,19 +56,19 @@ class _BaseEntry(object):
     :type logger: :class:`google.cloud.logging.logger.Logger`
     :param logger: the logger used to write the entry.
 
-    :type insert_id: text, or :class:`NoneType`
+    :type insert_id: text
     :param insert_id: (optional) the ID used to identify an entry uniquely.
 
-    :type timestamp: :class:`datetime.datetime`, or :class:`NoneType`
+    :type timestamp: :class:`datetime.datetime`
     :param timestamp: (optional) timestamp for the entry
 
-    :type labels: dict or :class:`NoneType`
+    :type labels: dict
     :param labels: (optional) mapping of labels for the entry
 
-    :type severity: str or :class:`NoneType`
+    :type severity: str
     :param severity: (optional) severity of event being logged.
 
-    :type http_request: dict or :class:`NoneType`
+    :type http_request: dict
     :param http_request: (optional) info about HTTP request associated with
                          the entry
     """
@@ -94,8 +94,8 @@ class _BaseEntry(object):
         :param client: Client which holds credentials and project
                        configuration.
 
-        :type loggers: dict or None
-        :param loggers: A mapping of logger fullnames -> loggers.  If not
+        :type loggers: dict
+        :param loggers: (Optional) A mapping of logger fullnames -> loggers.  If not
                         passed, the entry will have a newly-created logger.
 
         :rtype: :class:`google.cloud.logging.entries.TextEntry`
