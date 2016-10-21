@@ -227,28 +227,29 @@ class Client(JSONClient):
 
         This implements "storage.buckets.list".
 
-        :type max_results: int or ``NoneType``
+        :type max_results: int
         :param max_results: Optional. Maximum number of buckets to return.
 
-        :type page_token: str or ``NoneType``
+        :type page_token: str
         :param page_token: Optional. Opaque marker for the next "page" of
                            buckets. If not passed, will return the first page
                            of buckets.
 
-        :type prefix: str or ``NoneType``
+        :type prefix: str
         :param prefix: Optional. Filter results to buckets whose names begin
                        with this prefix.
 
-        :type projection: str or ``NoneType``
-        :param projection: If used, must be 'full' or 'noAcl'. Defaults to
-                           'noAcl'. Specifies the set of properties to return.
+        :type projection: str
+        :param projection:
+            (Optional) Specifies the set of properties to return. If used, must
+            be 'full' or 'noAcl'. Defaults to 'noAcl'.
 
-        :type fields: str or ``NoneType``
-        :param fields: Selector specifying which fields to include in a
-                       partial response. Must be a list of fields. For example
-                       to get a partial response with just the next page token
-                       and the language of each bucket returned:
-                       'items/id,nextPageToken'
+        :type fields: str
+        :param fields:
+            (Optional) Selector specifying which fields to include in a partial
+            response. Must be a list of fields. For example to get a partial
+            response with just the next page token and the language of each
+            bucket returned: 'items/id,nextPageToken'
 
         :rtype: :class:`~google.cloud.iterator.Iterator`
         :returns: Iterator of all :class:`~google.cloud.storage.bucket.Bucket`
