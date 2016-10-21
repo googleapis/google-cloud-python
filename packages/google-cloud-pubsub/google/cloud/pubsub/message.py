@@ -32,9 +32,9 @@ class Message(object):
     :type message_id: str
     :param message_id: An ID assigned to the message by the API.
 
-    :type attributes: dict or None
-    :param attributes: Extra metadata associated by the publisher with the
-                       message.
+    :type attributes: dict
+    :param attributes:
+        (Optional) Extra metadata associated by the publisher with the message.
     """
     _service_timestamp = None
 
@@ -80,8 +80,8 @@ class Message(object):
     def from_api_repr(cls, api_repr):
         """Factory:  construct message from API representation.
 
-        :type api_repr: dict or None
-        :param api_repr: The API representation of the message
+        :type api_repr: dict
+        :param api_repr: (Optional) The API representation of the message
 
         :rtype: :class:`Message`
         :returns: The message created from the response.

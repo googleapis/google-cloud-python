@@ -269,14 +269,15 @@ class _SubscriberAPI(object):
                            subscribed, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
-        :type ack_deadline: int, or ``NoneType``
-        :param ack_deadline: the deadline (in seconds) by which messages pulled
-                             from the back-end must be acknowledged.
+        :type ack_deadline: int
+        :param ack_deadline:
+            (Optional) the deadline (in seconds) by which messages pulled from
+            the back-end must be acknowledged.
 
-        :type push_endpoint: str, or ``NoneType``
-        :param push_endpoint: URL to which messages will be pushed by the
-                              back-end.  If not set, the application must pull
-                              messages.
+        :type push_endpoint: str
+        :param push_endpoint:
+            (Optional) URL to which messages will be pushed by the back-end.
+            If not set, the application must pull messages.
 
         :rtype: dict
         :returns: ``Subscription`` resource returned from the API.
@@ -351,10 +352,10 @@ class _SubscriberAPI(object):
             the fully-qualified path of the new subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
-        :type push_endpoint: str, or ``NoneType``
-        :param push_endpoint: URL to which messages will be pushed by the
-                              back-end.  If not set, the application must pull
-                              messages.
+        :type push_endpoint: str
+        :param push_endpoint:
+            (Optional) URL to which messages will be pushed by the back-end.
+            If not set, the application must pull messages.
         """
         push_config = PushConfig(push_endpoint=push_endpoint)
         try:
