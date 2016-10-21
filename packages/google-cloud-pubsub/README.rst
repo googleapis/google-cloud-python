@@ -12,7 +12,7 @@ Python Client for Google Cloud Pub / Sub
 Quick Start
 -----------
 
-::
+.. code-block:: console
 
     $ pip install --upgrade google-cloud-pubsub
 
