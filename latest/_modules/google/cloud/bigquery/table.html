@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.table &mdash; google-cloud 22941e2 documentation</title>
+  <title>google.cloud.bigquery.table &mdash; google-cloud fe4cc1e documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -423,7 +423,7 @@
     <span class="k">def</span> <span class="nf">num_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The size of the table in bytes.</span>
 
-<span class="sd">        :rtype: integer, or ``NoneType``</span>
+<span class="sd">        :rtype: int, or ``NoneType``</span>
 <span class="sd">        :returns: the byte count (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">num_bytes_as_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;numBytes&#39;</span><span class="p">)</span>
@@ -434,7 +434,7 @@
     <span class="k">def</span> <span class="nf">num_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The number of rows in the table.</span>
 
-<span class="sd">        :rtype: integer, or ``NoneType``</span>
+<span class="sd">        :rtype: int, or ``NoneType``</span>
 <span class="sd">        :returns: the row count (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">num_rows_as_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;numRows&#39;</span><span class="p">)</span>
@@ -926,7 +926,7 @@
 <span class="sd">           incomplete.  To ensure that the local copy of the schema is</span>
 <span class="sd">           up-to-date, call the table&#39;s ``reload`` method.</span>
 
-<span class="sd">        :type max_results: integer or ``NoneType``</span>
+<span class="sd">        :type max_results: int or ``NoneType``</span>
 <span class="sd">        :param max_results: maximum number of rows to return.</span>
 
 <span class="sd">        :type page_token: str or ``NoneType``</span>
@@ -1108,7 +1108,7 @@
 <span class="sd">                     :func:`os.fstat`. (If the file handle is not from the</span>
 <span class="sd">                     filesystem this won&#39;t be possible.)</span>
 
-<span class="sd">        :type num_retries: integer</span>
+<span class="sd">        :type num_retries: int</span>
 <span class="sd">        :param num_retries: Number of upload retries. Defaults to 6.</span>
 
 <span class="sd">        :type allow_jagged_rows: bool</span>
@@ -1135,7 +1135,7 @@
 <span class="sd">        :param ignore_unknown_values: job configuration option; see</span>
 <span class="sd">                                      :meth:`google.cloud.bigquery.job.LoadJob`.</span>
 
-<span class="sd">        :type max_bad_records: integer</span>
+<span class="sd">        :type max_bad_records: int</span>
 <span class="sd">        :param max_bad_records: job configuration option; see</span>
 <span class="sd">                                :meth:`google.cloud.bigquery.job.LoadJob`.</span>
 
@@ -1143,7 +1143,7 @@
 <span class="sd">        :param quote_character: job configuration option; see</span>
 <span class="sd">                                :meth:`google.cloud.bigquery.job.LoadJob`.</span>
 
-<span class="sd">        :type skip_leading_rows: integer</span>
+<span class="sd">        :type skip_leading_rows: int</span>
 <span class="sd">        :param skip_leading_rows: job configuration option; see</span>
 <span class="sd">                                  :meth:`google.cloud.bigquery.job.LoadJob`.</span>
 
@@ -1401,7 +1401,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'22941e2',
+            VERSION:'fe4cc1e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

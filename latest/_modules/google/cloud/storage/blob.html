@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud 22941e2 documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud fe4cc1e documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -329,7 +329,7 @@
 <span class="sd">    :type bucket: :class:`google.cloud.storage.bucket.Bucket`</span>
 <span class="sd">    :param bucket: The bucket to which this blob belongs.</span>
 
-<span class="sd">    :type chunk_size: integer</span>
+<span class="sd">    :type chunk_size: int</span>
 <span class="sd">    :param chunk_size: The size of a chunk of data whenever iterating (1 MB).</span>
 <span class="sd">                       This must be a multiple of 256 KB per the API</span>
 <span class="sd">                       specification.</span>
@@ -357,7 +357,7 @@
     <span class="k">def</span> <span class="nf">chunk_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the blob&#39;s default chunk size.</span>
 
-<span class="sd">        :rtype: integer or ``NoneType``</span>
+<span class="sd">        :rtype: int or ``NoneType``</span>
 <span class="sd">        :returns: The current blob&#39;s chunk size, if it is set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunk_size</span>
@@ -366,7 +366,7 @@
     <span class="k">def</span> <span class="nf">chunk_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the blob&#39;s default chunk size.</span>
 
-<span class="sd">        :type value: integer or ``NoneType``</span>
+<span class="sd">        :type value: int or ``NoneType``</span>
 <span class="sd">        :param value: The current blob&#39;s chunk size, if it is set.</span>
 
 <span class="sd">        :raises: :class:`ValueError` if ``value`` is not ``None`` and is not a</span>
@@ -725,7 +725,7 @@
 <span class="sd">        :type content_type: str or ``NoneType``</span>
 <span class="sd">        :param content_type: Optional type of content being uploaded.</span>
 
-<span class="sd">        :type num_retries: integer</span>
+<span class="sd">        :type num_retries: int</span>
 <span class="sd">        :param num_retries: Number of upload retries. Defaults to 6.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
@@ -1045,7 +1045,7 @@
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: integer or ``NoneType``</span>
+<span class="sd">        :rtype: int or ``NoneType``</span>
 <span class="sd">        :returns: The component count (in case of a composed object) or</span>
 <span class="sd">                  ``None`` if the property is not set locally. This property</span>
 <span class="sd">                  will not be set on objects not created via ``compose``.</span>
@@ -1072,7 +1072,7 @@
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: integer or ``NoneType``</span>
+<span class="sd">        :rtype: int or ``NoneType``</span>
 <span class="sd">        :returns: The generation of the blob or ``None`` if the property</span>
 <span class="sd">                  is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1144,7 +1144,7 @@
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: integer or ``NoneType``</span>
+<span class="sd">        :rtype: int or ``NoneType``</span>
 <span class="sd">        :returns: The metageneration of the blob or ``None`` if the property</span>
 <span class="sd">                  is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1182,7 +1182,7 @@
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: integer or ``NoneType``</span>
+<span class="sd">        :rtype: int or ``NoneType``</span>
 <span class="sd">        :returns: The size of the blob or ``None`` if the property</span>
 <span class="sd">                  is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1319,7 +1319,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'22941e2',
+            VERSION:'fe4cc1e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

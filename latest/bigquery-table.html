@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Tables &mdash; google-cloud 22941e2 documentation</title>
+  <title>Tables &mdash; google-cloud fe4cc1e documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 22941e2 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud fe4cc1e documentation" href="index.html"/>
         <link rel="next" title="Query" href="bigquery-query.html"/>
         <link rel="prev" title="Jobs" href="bigquery-job.html"/> 
 
@@ -450,7 +450,7 @@ up-to-date, call the table&#8217;s <code class="docutils literal"><span class="p
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>max_results</strong> (integer or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; maximum number of rows to return.</li>
+<li><strong>max_results</strong> (int or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; maximum number of rows to return.</li>
 <li><strong>page_token</strong> (str or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; token representing a cursor into the table&#8217;s rows.</li>
 <li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
@@ -618,7 +618,7 @@ row.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the byte count (None until set from the server).</td>
 </tr>
@@ -634,7 +634,7 @@ row.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the row count (None until set from the server).</td>
 </tr>
@@ -843,7 +843,7 @@ writing the file to Cloud Storage.</li>
 If not provided, we&#8217;ll try to guess the size using
 <a class="reference external" href="https://docs.python.org/2/library/os.html#os.fstat" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">os.fstat()</span></code></a>. (If the file handle is not from the
 filesystem this won&#8217;t be possible.)</li>
-<li><strong>num_retries</strong> (<em>integer</em>) &#8211; Number of upload retries. Defaults to 6.</li>
+<li><strong>num_retries</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of upload retries. Defaults to 6.</li>
 <li><strong>allow_jagged_rows</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; job configuration option;  see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
 <li><strong>allow_quoted_newlines</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; job configuration option; see
@@ -856,11 +856,11 @@ filesystem this won&#8217;t be possible.)</li>
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
 <li><strong>ignore_unknown_values</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
-<li><strong>max_bad_records</strong> (<em>integer</em>) &#8211; job configuration option; see
+<li><strong>max_bad_records</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
 <li><strong>quote_character</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
-<li><strong>skip_leading_rows</strong> (<em>integer</em>) &#8211; job configuration option; see
+<li><strong>skip_leading_rows</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
 <li><strong>write_disposition</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code>.</li>
@@ -948,7 +948,7 @@ a file opened in text mode.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'22941e2',
+            VERSION:'fe4cc1e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

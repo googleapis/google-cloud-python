@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Queries &mdash; google-cloud 22941e2 documentation</title>
+  <title>Queries &mdash; google-cloud fe4cc1e documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 22941e2 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud fe4cc1e documentation" href="index.html"/>
         <link rel="next" title="Transactions" href="datastore-transactions.html"/>
         <link rel="prev" title="Keys" href="datastore-keys.html"/> 
 
@@ -287,8 +287,8 @@
 things that don&#8217;t change on with each page in
 a results set).</li>
 <li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) &#8211; The client used to make a request.</li>
-<li><strong>limit</strong> (<em>integer</em>) &#8211; (Optional) Limit the number of results returned.</li>
-<li><strong>offset</strong> (<em>integer</em>) &#8211; (Optional) Offset used to begin a query.</li>
+<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Limit the number of results returned.</li>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Offset used to begin a query.</li>
 <li><strong>start_cursor</strong> (<em>bytes</em>) &#8211; (Optional) Cursor to begin paging through
 query results.</li>
 <li><strong>end_cursor</strong> (<em>bytes</em>) &#8211; (Optional) Cursor to end paging through
@@ -354,7 +354,7 @@ default is set.</p>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'&gt;': 3, '=': 5, '&lt;': 1, '&gt;=': 4, '&lt;=': 2}</em><a class="headerlink" href="#google.cloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'=': 5, '&lt;': 1, '&gt;': 3, '&lt;=': 2, '&gt;=': 4}</em><a class="headerlink" href="#google.cloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -451,8 +451,8 @@ passes an invalid value (a key is required).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>limit</strong> (<em>integer or None</em>) &#8211; An optional limit passed through to the iterator.</li>
-<li><strong>offset</strong> (<em>integer</em>) &#8211; An optional offset passed through to the iterator.</li>
+<li><strong>limit</strong> (<em>int or None</em>) &#8211; An optional limit passed through to the iterator.</li>
+<li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; An optional offset passed through to the iterator.</li>
 <li><strong>start_cursor</strong> (<em>bytes</em>) &#8211; An optional cursor passed through to the iterator.</li>
 <li><strong>end_cursor</strong> (<em>bytes</em>) &#8211; An optional cursor passed through to the iterator.</li>
 <li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) &#8211; client used to connect to datastore.
@@ -640,7 +640,7 @@ Defaults to <code class="docutils literal"><span class="pre">=</span></code>.</l
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'22941e2',
+            VERSION:'fe4cc1e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

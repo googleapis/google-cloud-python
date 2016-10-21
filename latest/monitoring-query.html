@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Time Series Query &mdash; google-cloud 22941e2 documentation</title>
+  <title>Time Series Query &mdash; google-cloud fe4cc1e documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 22941e2 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud fe4cc1e documentation" href="index.html"/>
         <link rel="next" title="Time Series" href="monitoring-timeseries.html"/>
         <link rel="prev" title="Groups" href="monitoring-group.html"/> 
 
@@ -310,9 +310,9 @@ in which case
 <a class="reference internal" href="#google.cloud.monitoring.query.Query.select_interval" title="google.cloud.monitoring.query.Query.select_interval"><code class="xref py py-meth docutils literal"><span class="pre">select_interval()</span></code></a>
 must be called before the query is executed.</p>
 </li>
-<li><strong>days</strong> (<em>integer</em>) &#8211; The number of days in the time interval.</li>
-<li><strong>hours</strong> (<em>integer</em>) &#8211; The number of hours in the time interval.</li>
-<li><strong>minutes</strong> (<em>integer</em>) &#8211; The number of minutes in the time interval.</li>
+<li><strong>days</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of days in the time interval.</li>
+<li><strong>hours</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of hours in the time interval.</li>
+<li><strong>minutes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of minutes in the time interval.</li>
 </ul>
 </td>
 </tr>
@@ -347,9 +347,9 @@ series will contain data points only on the period boundaries.</p>
 individual time series. For example: <code class="xref py py-data docutils literal"><span class="pre">Aligner.ALIGN_MEAN</span></code>.
 See <a class="reference internal" href="#google.cloud.monitoring.query.Aligner" title="google.cloud.monitoring.query.Aligner"><code class="xref py py-class docutils literal"><span class="pre">Aligner</span></code></a> and the descriptions of the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list#Aligner">supported
 aligners</a>.</li>
-<li><strong>seconds</strong> (<em>integer</em>) &#8211; The number of seconds in the alignment period.</li>
-<li><strong>minutes</strong> (<em>integer</em>) &#8211; The number of minutes in the alignment period.</li>
-<li><strong>hours</strong> (<em>integer</em>) &#8211; The number of hours in the alignment period.</li>
+<li><strong>seconds</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of seconds in the alignment period.</li>
+<li><strong>minutes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of minutes in the alignment period.</li>
+<li><strong>hours</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of hours in the alignment period.</li>
 </ul>
 </td>
 </tr>
@@ -462,7 +462,7 @@ the following are equivalent:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>headers_only</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Whether to omit the point data from the time series objects.</li>
-<li><strong>page_size</strong> (<em>integer or None</em>) &#8211; An optional positive number specifying the maximum number of
+<li><strong>page_size</strong> (<em>int or None</em>) &#8211; An optional positive number specifying the maximum number of
 points to return per page. This can be used to control how far
 the iterator reads ahead.</li>
 </ul>
@@ -782,7 +782,7 @@ described above.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'22941e2',
+            VERSION:'fe4cc1e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.key &mdash; google-cloud 22941e2 documentation</title>
+  <title>google.cloud.datastore.key &mdash; google-cloud fe4cc1e documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -377,7 +377,7 @@
     <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Hash a keys for use in a dictionary lookp.</span>
 
-<span class="sd">        :rtype: integer</span>
+<span class="sd">        :rtype: int</span>
 <span class="sd">        :returns: a hash of the key&#39;s state.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flat_path</span><span class="p">)</span> <span class="o">+</span>
@@ -579,7 +579,7 @@
     <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;ID getter. Based on the last element of path.</span>
 
-<span class="sd">        :rtype: integer</span>
+<span class="sd">        :rtype: int</span>
 <span class="sd">        :returns: The (integer) ID of the key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
@@ -597,7 +597,7 @@
     <span class="k">def</span> <span class="nf">id_or_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter. Based on the last element of path.</span>
 
-<span class="sd">        :rtype: integer (if ``id``) or string (if ``name``)</span>
+<span class="sd">        :rtype: int (if ``id``) or string (if ``name``)</span>
 <span class="sd">        :returns: The last element of the key&#39;s path if it is either an ``id``</span>
 <span class="sd">                  or a ``name``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -706,7 +706,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'22941e2',
+            VERSION:'fe4cc1e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

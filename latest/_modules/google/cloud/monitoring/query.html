@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.monitoring.query &mdash; google-cloud 22941e2 documentation</title>
+  <title>google.cloud.monitoring.query &mdash; google-cloud fe4cc1e documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 22941e2 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud fe4cc1e documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -372,13 +372,13 @@
 <span class="sd">        :meth:`~google.cloud.monitoring.query.Query.select_interval`</span>
 <span class="sd">        must be called before the query is executed.</span>
 
-<span class="sd">    :type days: integer</span>
+<span class="sd">    :type days: int</span>
 <span class="sd">    :param days: The number of days in the time interval.</span>
 
-<span class="sd">    :type hours: integer</span>
+<span class="sd">    :type hours: int</span>
 <span class="sd">    :param hours: The number of hours in the time interval.</span>
 
-<span class="sd">    :type minutes: integer</span>
+<span class="sd">    :type minutes: int</span>
 <span class="sd">    :param minutes: The number of minutes in the time interval.</span>
 
 <span class="sd">    :raises: :exc:`ValueError` if ``end_time`` is specified but</span>
@@ -640,13 +640,13 @@
 <span class="sd">            See :class:`Aligner` and the descriptions of the `supported</span>
 <span class="sd">            aligners`_.</span>
 
-<span class="sd">        :type seconds: integer</span>
+<span class="sd">        :type seconds: int</span>
 <span class="sd">        :param seconds: The number of seconds in the alignment period.</span>
 
-<span class="sd">        :type minutes: integer</span>
+<span class="sd">        :type minutes: int</span>
 <span class="sd">        :param minutes: The number of minutes in the alignment period.</span>
 
-<span class="sd">        :type hours: integer</span>
+<span class="sd">        :type hours: int</span>
 <span class="sd">        :param hours: The number of hours in the alignment period.</span>
 
 <span class="sd">        :rtype: :class:`Query`</span>
@@ -718,7 +718,7 @@
 <span class="sd">        :param headers_only:</span>
 <span class="sd">             Whether to omit the point data from the time series objects.</span>
 
-<span class="sd">        :type page_size: integer or None</span>
+<span class="sd">        :type page_size: int or None</span>
 <span class="sd">        :param page_size:</span>
 <span class="sd">            An optional positive number specifying the maximum number of</span>
 <span class="sd">            points to return per page. This can be used to control how far</span>
@@ -782,7 +782,7 @@
 <span class="sd">             Whether to omit the point data from the</span>
 <span class="sd">             :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects.</span>
 
-<span class="sd">        :type page_size: integer or None</span>
+<span class="sd">        :type page_size: int or None</span>
 <span class="sd">        :param page_size: A limit on the number of points to return per page.</span>
 
 <span class="sd">        :type page_token: str or None</span>
@@ -988,7 +988,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'22941e2',
+            VERSION:'fe4cc1e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
