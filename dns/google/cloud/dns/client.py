@@ -92,12 +92,14 @@ class Client(JSONClient):
         :param name: Name of the zone.
 
         :type dns_name: str
-        :param dns_name: (Optional) DNS name of the zone.  If not passed, then calls
-                         to :meth:`zone.create` will fail.
+        :param dns_name:
+            (Optional) DNS name of the zone.  If not passed, then calls to
+            :meth:`zone.create` will fail.
 
         :type description: str
-        :param description: (Optional) the description for the zone.  If not passed,
-                            defaults to the value of 'dns_name'.
+        :param description:
+            (Optional) the description for the zone.  If not passed, defaults
+            to the value of 'dns_name'.
 
         :rtype: :class:`google.cloud.dns.zone.ManagedZone`
         :returns: a new ``ManagedZone`` instance.

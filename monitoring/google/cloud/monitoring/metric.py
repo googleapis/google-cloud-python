@@ -200,13 +200,13 @@ class MetricDescriptor(object):
 
         :type filter_string: str
         :param filter_string:
-            (Optional) An optional filter expression describing the metric descriptors
-            to be returned. See the `filter documentation`_.
+            (Optional) Filter expression describing the metric descriptors to
+            be returned. See the `filter documentation`_.
 
         :type type_prefix: str
-        :param type_prefix: (Optional) An optional prefix constraining the selected
-            metric types. This adds ``metric.type = starts_with("<prefix>")``
-            to the filter.
+        :param type_prefix:
+            (Optional) Prefix constraining the selected metric types. This adds
+            ``metric.type = starts_with("<prefix>")`` to the filter.
 
         :rtype: list of :class:`MetricDescriptor`
         :returns: A list of metric descriptor instances.

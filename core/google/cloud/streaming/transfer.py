@@ -670,7 +670,8 @@ class Upload(_Transfer):
         :param mime_type:  MIMEtype of the file being uploaded
 
         :type auto_transfer: bool
-        :param auto_transfer: (Optional) should the transfer be started immediately
+        :param auto_transfer:
+            (Optional) should the transfer be started immediately
 
         :type kwds: dict
         :param kwds:  keyword arguments:  passed
@@ -704,7 +705,8 @@ class Upload(_Transfer):
         :param total_size: (Optional)  Size of the file being uploaded
 
         :type auto_transfer: bool
-        :param auto_transfer: (Optional) should the transfer be started immediately
+        :param auto_transfer:
+            (Optional) should the transfer be started immediately
 
         :type kwds: dict
         :param kwds:  keyword arguments:  passed

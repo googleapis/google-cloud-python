@@ -155,10 +155,10 @@ class Batch(Connection):
         :param data: The data to send as the body of the request.
 
         :type target_object: object
-        :param target_object: (Optional) This allows us to enable custom behavior in our
-                              batch connection. Here we defer an HTTP request
-                              and complete initialization of the object at a
-                              later time.
+        :param target_object:
+            (Optional) This allows us to enable custom behavior in our batch
+            connection. Here we defer an HTTP request and complete
+            initialization of the object at a later time.
 
         :rtype: tuple of ``response`` (a dictionary of sorts)
                 and ``content`` (a string).

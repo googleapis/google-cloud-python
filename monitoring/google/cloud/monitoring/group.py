@@ -81,7 +81,8 @@ class Group(object):
 
     :type display_name: str
     :param display_name:
-        (Optional) A user-assigned name for this group, used only for display purposes.
+        (Optional) A user-assigned name for this group, used only for display
+        purposes.
 
     :type parent_id: str
     :param parent_id:
@@ -89,8 +90,8 @@ class Group(object):
 
     :type filter_string: str
     :param filter_string:
-        (Optional) The filter string used to determine which monitored resources belong to
-        this group.
+        (Optional) The filter string used to determine which monitored
+        resources belong to this group.
 
     :type is_cluster: bool
     :param is_cluster:
@@ -298,20 +299,21 @@ class Group(object):
 
         :type filter_string: str
         :param filter_string:
-            (Optional) An optional list filter describing the members to be returned. The
-            filter may reference the type, labels, and metadata of monitored
-            resources that comprise the group. See the `filter documentation`_.
+            (Optional) An optional list filter describing the members to be
+            returned. The filter may reference the type, labels, and metadata
+            of monitored resources that comprise the group. See the `filter
+            documentation`_.
 
         :type end_time: :class:`datetime.datetime`
         :param end_time:
-            (Optional) The end time (inclusive) of the time interval for which results
-            should be returned, as a datetime object. If ``start_time`` is
-            specified, then this must also be specified.
+            (Optional) The end time (inclusive) of the time interval for which
+            results should be returned, as a datetime object. If ``start_time``
+            is specified, then this must also be specified.
 
         :type start_time: :class:`datetime.datetime`
         :param start_time:
-            (Optional) The start time (exclusive) of the time interval for which results
-            should be returned, as a datetime object.
+            (Optional) The start time (exclusive) of the time interval for
+            which results should be returned, as a datetime object.
 
         :rtype: list of :class:`~google.cloud.monitoring.resource.Resource`
         :returns: A list of resource instances.
@@ -388,19 +390,20 @@ class Group(object):
 
         :type children_of_group: str
         :param children_of_group:
-            (Optional) Returns groups whose parent_name field contains the group name. If
-            no groups have this parent, the results are empty.
+            (Optional) Returns groups whose parent_name field contains the
+            group name. If no groups have this parent, the results are empty.
 
         :type ancestors_of_group: str
         :param ancestors_of_group:
-            (Optional) Returns groups that are ancestors of the specified group. If the
-            specified group has no immediate parent, the results are empty.
+            (Optional) Returns groups that are ancestors of the specified
+            group. If the specified group has no immediate parent, the results
+            are empty.
 
         :type descendants_of_group: str
         :param descendants_of_group:
-            (Optional) Returns the descendants of the specified group. This is a superset
-            of the results returned by the children_of_group filter, and
-            includes children-of-children, and so forth.
+            (Optional) Returns the descendants of the specified group. This is
+            a superset of the results returned by the children_of_group filter,
+            and includes children-of-children, and so forth.
 
         :rtype: list of :class:`~google.cloud.monitoring.group.Group`
         :returns: A list of group instances.

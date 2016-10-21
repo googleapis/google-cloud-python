@@ -81,7 +81,8 @@ def _httplib2_debug_level(http_request, level, http=None):
     :param level: the debuglevel for logging.
 
     :type http: :class:`httplib2.Http`
-    :param http: (Optional) the instance on whose connections to set the debuglevel.
+    :param http:
+        (Optional) the instance on whose connections to set the debuglevel.
     """
     if http_request.loggable_body is None:
         yield

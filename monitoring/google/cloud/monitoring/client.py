@@ -89,7 +89,8 @@ class Client(JSONClient):
             `supported metrics`_.
 
         :type end_time: :class:`datetime.datetime`
-        :param end_time: (Optional) The end time (inclusive) of the time interval
+        :param end_time:
+            (Optional) The end time (inclusive) of the time interval
             for which results should be returned, as a datetime object.
             The default is the start of the current minute.
 
@@ -364,13 +365,14 @@ class Client(JSONClient):
 
         :type filter_string: str
         :param filter_string:
-            (Optional) An optional filter expression describing the metric descriptors
-            to be returned. See the `filter documentation`_.
+            (Optional) An optional filter expression describing the metric
+            descriptors to be returned. See the `filter documentation`_.
 
         :type type_prefix: str
-        :param type_prefix: (Optional) An optional prefix constraining the selected
-            metric types. This adds ``metric.type = starts_with("<prefix>")``
-            to the filter.
+        :param type_prefix:
+            (Optional) An optional prefix constraining the selected metric
+            types. This adds ``metric.type = starts_with("<prefix>")`` to the
+            filter.
 
         :rtype:
             list of :class:`~google.cloud.monitoring.metric.MetricDescriptor`
@@ -410,8 +412,8 @@ class Client(JSONClient):
 
         :type filter_string: str
         :param filter_string:
-            (Optional) An optional filter expression describing the resource descriptors
-            to be returned. See the `filter documentation`_.
+            (Optional) An optional filter expression describing the resource
+            descriptors to be returned. See the `filter documentation`_.
 
         :rtype: list of
                 :class:`~google.cloud.monitoring.resource.ResourceDescriptor`
@@ -435,8 +437,8 @@ class Client(JSONClient):
 
         :type display_name: str
         :param display_name:
-            (Optional) A user-assigned name for this group, used only for display
-            purposes.
+            (Optional) A user-assigned name for this group, used only for
+            display purposes.
 
         :type parent_id: str
         :param parent_id:
@@ -444,8 +446,8 @@ class Client(JSONClient):
 
         :type filter_string: str
         :param filter_string:
-            (Optional) The filter string used to determine which monitored resources
-            belong to this group.
+            (Optional) The filter string used to determine which monitored
+            resources belong to this group.
 
         :type is_cluster: bool
         :param is_cluster:

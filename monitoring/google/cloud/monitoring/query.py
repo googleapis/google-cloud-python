@@ -180,7 +180,8 @@ class Query(object):
             for which results should be returned, as a datetime object.
 
         :type start_time: :class:`datetime.datetime`
-        :param start_time: (Optional) The start time (exclusive) of the time interval
+        :param start_time:
+            (Optional) The start time (exclusive) of the time interval
             for which results should be returned, as a datetime object.
             If not specified, the interval is a point in time.
 
@@ -448,9 +449,9 @@ class Query(object):
 
         :type page_size: int
         :param page_size:
-            (Optional) An optional positive number specifying the maximum number of
-            points to return per page. This can be used to control how far
-            the iterator reads ahead.
+            (Optional) Positive number specifying the maximum number of points
+            to return per page. This can be used to control how far the
+            iterator reads ahead.
 
         :raises: :exc:`ValueError` if the query time interval has not been
             specified.
@@ -511,7 +512,8 @@ class Query(object):
              :class:`~google.cloud.monitoring.timeseries.TimeSeries` objects.
 
         :type page_size: int
-        :param page_size: (Optional) A limit on the number of points to return per page.
+        :param page_size:
+            (Optional) A limit on the number of points to return per page.
 
         :type page_token: str
         :param page_token: (Optional) A token to continue the retrieval.
@@ -576,7 +578,8 @@ class Query(object):
                 labels=['resource_type', 'instance_id'])
 
         :type label: str
-        :param label: (Optional) The label name to use for the dataframe header.
+        :param label:
+            (Optional) The label name to use for the dataframe header.
             This can be the name of a resource label or metric label
             (e.g., ``"instance_name"``), or the string ``"resource_type"``.
 
