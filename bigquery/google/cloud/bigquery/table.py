@@ -151,7 +151,7 @@ class Table(object):
     def num_bytes(self):
         """The size of the table in bytes.
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: the byte count (None until set from the server).
         """
         num_bytes_as_str = self._properties.get('numBytes')
@@ -162,7 +162,7 @@ class Table(object):
     def num_rows(self):
         """The number of rows in the table.
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: the row count (None until set from the server).
         """
         num_rows_as_str = self._properties.get('numRows')
@@ -654,7 +654,7 @@ class Table(object):
            incomplete.  To ensure that the local copy of the schema is
            up-to-date, call the table's ``reload`` method.
 
-        :type max_results: integer or ``NoneType``
+        :type max_results: int or ``NoneType``
         :param max_results: maximum number of rows to return.
 
         :type page_token: str or ``NoneType``
@@ -836,7 +836,7 @@ class Table(object):
                      :func:`os.fstat`. (If the file handle is not from the
                      filesystem this won't be possible.)
 
-        :type num_retries: integer
+        :type num_retries: int
         :param num_retries: Number of upload retries. Defaults to 6.
 
         :type allow_jagged_rows: bool
@@ -863,7 +863,7 @@ class Table(object):
         :param ignore_unknown_values: job configuration option; see
                                       :meth:`google.cloud.bigquery.job.LoadJob`.
 
-        :type max_bad_records: integer
+        :type max_bad_records: int
         :param max_bad_records: job configuration option; see
                                 :meth:`google.cloud.bigquery.job.LoadJob`.
 
@@ -871,7 +871,7 @@ class Table(object):
         :param quote_character: job configuration option; see
                                 :meth:`google.cloud.bigquery.job.LoadJob`.
 
-        :type skip_leading_rows: integer
+        :type skip_leading_rows: int
         :param skip_leading_rows: job configuration option; see
                                   :meth:`google.cloud.bigquery.job.LoadJob`.
 

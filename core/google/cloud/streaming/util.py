@@ -27,10 +27,10 @@ def calculate_wait_for_retry(retry_attempt):
     random amount of jitter is added to spread out retry attempts from
     different clients.
 
-    :type retry_attempt: integer
+    :type retry_attempt: int
     :param retry_attempt: Retry attempt counter.
 
-    :rtype: integer
+    :rtype: int
     :returns: Number of seconds to wait before retrying request.
     """
     wait_time = 2 ** retry_attempt

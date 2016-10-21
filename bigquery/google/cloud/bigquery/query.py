@@ -197,7 +197,7 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalRows
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: Count generated on the server (None until set by the server).
         """
         return self._properties.get('totalRows')
@@ -209,7 +209,7 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalBytesProcessed
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: Count generated on the server (None until set by the server).
         """
         return self._properties.get('totalBytesProcessed')
@@ -345,16 +345,16 @@ class QueryResults(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs/getQueryResults
 
-        :type max_results: integer or ``NoneType``
+        :type max_results: int or ``NoneType``
         :param max_results: maximum number of rows to return.
 
         :type page_token: str or ``NoneType``
         :param page_token: token representing a cursor into the table's rows.
 
-        :type start_index: integer or ``NoneType``
+        :type start_index: int or ``NoneType``
         :param start_index: zero-based index of starting row
 
-        :type timeout_ms: integer or ``NoneType``
+        :type timeout_ms: int or ``NoneType``
         :param timeout_ms: timeout, in milliseconds, to wait for query to
                            complete
 

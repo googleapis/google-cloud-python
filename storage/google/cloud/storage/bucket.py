@@ -111,7 +111,7 @@ class Bucket(_PropertyMixin):
         :type blob_name: str
         :param blob_name: The name of the blob to be instantiated.
 
-        :type chunk_size: integer
+        :type chunk_size: int
         :param chunk_size: The size of a chunk of data whenever iterating
                            (1 MB). This must be a multiple of 256 KB per the
                            API specification.
@@ -626,7 +626,7 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The metageneration of the bucket or ``None`` if the property
                   is not set locally.
         """
@@ -652,7 +652,7 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: integer or ``NoneType``
+        :rtype: int or ``NoneType``
         :returns: The project number that owns the bucket or ``None`` if the
                   property is not set locally.
         """

@@ -55,7 +55,7 @@ class _Transfer(object):
     :type close_stream: bool
     :param close_stream: should this instance close the stream when deleted
 
-    :type chunksize: integer
+    :type chunksize: int
     :param chunksize: the size of chunks used to download/upload a file.
 
     :type auto_transfer: bool
@@ -65,7 +65,7 @@ class _Transfer(object):
     :type http: :class:`httplib2.Http` (or workalike)
     :param http: Http instance used to perform requests.
 
-    :type num_retries: integer
+    :type num_retries: int
     :param num_retries: how many retries should the transfer attempt
     """
 
@@ -131,7 +131,7 @@ class _Transfer(object):
     def num_retries(self):
         """How many retries should the transfer attempt
 
-        :rtype: integer
+        :rtype: int
         :returns: The number of retries allowed.
         """
         return self._num_retries
@@ -140,7 +140,7 @@ class _Transfer(object):
     def num_retries(self, value):
         """Update how many retries should the transfer attempt
 
-        :type value: integer
+        :type value: int
         """
         if not isinstance(value, six.integer_types):
             raise ValueError("num_retries: pass an integer")
@@ -280,7 +280,7 @@ class Download(_Transfer):
         :type stream: writable file-like object
         :param stream: the target file
 
-        :type total_size: integer or None
+        :type total_size: int or None
         :param total_size: total size of the file to be downloaded
 
         :type auto_transfer: bool
@@ -300,7 +300,7 @@ class Download(_Transfer):
     def progress(self):
         """Number of bytes have been downloaded.
 
-        :rtype: integer >= 0
+        :rtype: int >= 0
         :returns: The number of downloaded bytes.
         """
         return self._progress
@@ -309,7 +309,7 @@ class Download(_Transfer):
     def total_size(self):
         """Total number of bytes to be downloaded.
 
-        :rtype: integer or None
+        :rtype: int or None
         :returns: The total number of bytes to download.
         """
         return self._total_size
@@ -392,11 +392,11 @@ class Download(_Transfer):
     def _normalize_start_end(self, start, end=None):
         """Validate / fix up byte range.
 
-        :type start: integer
+        :type start: int
         :param start: start byte of the range:  if negative, used as an
                       offset from the end.
 
-        :type end: integer
+        :type end: int
         :param end: end byte of the range.
 
         :rtype: tuple, (start, end)
@@ -428,11 +428,11 @@ class Download(_Transfer):
         :type request: :class:`google.cloud.streaming.http_wrapper.Request`
         :param request: the request to update
 
-        :type start: integer
+        :type start: int
         :param start: start byte of the range:  if negative, used as an
                       offset from the end.
 
-        :type end: integer
+        :type end: int
         :param end: end byte of the range.
         """
         if start < 0:
@@ -454,10 +454,10 @@ class Download(_Transfer):
            - if we have no information about size, and don't want to
              use the chunksize, we'll return None.
 
-        :type start: integer
+        :type start: int
         :param start: start byte of the range.
 
-        :type end: integer or None
+        :type end: int or None
         :param end: suggested last byte of the range.
 
         :type use_chunks: bool
@@ -490,10 +490,10 @@ class Download(_Transfer):
     def _get_chunk(self, start, end):
         """Retrieve a chunk of the file.
 
-        :type start: integer
+        :type start: int
         :param start: start byte of the range.
 
-        :type end: integer or None
+        :type end: int or None
         :param end: end byte of the range.
 
         :rtype: :class:`google.cloud.streaming.http_wrapper.Response`
@@ -552,10 +552,10 @@ class Download(_Transfer):
         (These variations correspond to those described in the HTTP 1.1
         protocol for range headers in RFC 2616, sec. 14.35.1.)
 
-        :type start: integer
+        :type start: int
         :param start: Where to start fetching bytes. (See above.)
 
-        :type end: integer or ``None``
+        :type end: int or ``None``
         :param end: Where to stop fetching bytes. (See above.)
 
         :type use_chunks: bool
@@ -625,7 +625,7 @@ class Upload(_Transfer):
     :type mime_type: str:
     :param mime_type: MIME type of the upload.
 
-    :type total_size: integer or None
+    :type total_size: int or None
     :param total_size: Total upload size for the stream.
 
     :type http: :class:`httplib2.Http` (or workalike)
@@ -700,7 +700,7 @@ class Upload(_Transfer):
         :type mime_type: str
         :param mime_type:  MIMEtype of the file being uploaded
 
-        :type total_size: integer or None
+        :type total_size: int or None
         :param total_size:  Size of the file being uploaded
 
         :type auto_transfer: bool or None
@@ -741,7 +741,7 @@ class Upload(_Transfer):
     def progress(self):
         """Bytes uploaded so far
 
-        :rtype: integer
+        :rtype: int
         :returns: The amount uploaded so far.
         """
         return self._progress
@@ -775,7 +775,7 @@ class Upload(_Transfer):
     def total_size(self):
         """Total size of the stream to be uploaded.
 
-        :rtype: integer or None
+        :rtype: int or None
         :returns: The total size to be uploaded.
         """
         return self._total_size
@@ -784,7 +784,7 @@ class Upload(_Transfer):
     def total_size(self, value):
         """Update total size of the stream to be uploaded.
 
-        :type value: integer or None
+        :type value: int or None
         :param value: the size
         """
         self._ensure_uninitialized()
@@ -1048,7 +1048,7 @@ class Upload(_Transfer):
 
         Helper for :meth:`stream_file`.
 
-        :type chunksize: integer or None
+        :type chunksize: int or None
         :param chunksize: the chunk size to be tested.
 
         :raises: :exc:`ValueError` if ``chunksize`` is not a multiple
@@ -1112,7 +1112,7 @@ class Upload(_Transfer):
         :type request: :class:`google.cloud.streaming.http_wrapper.Request`
         :param request: the request to upload
 
-        :type end: integer
+        :type end: int
         :param end: end byte of the to be uploaded
 
         :rtype: :class:`google.cloud.streaming.http_wrapper.Response`
@@ -1140,7 +1140,7 @@ class Upload(_Transfer):
 
         Helper for :meth:`stream_file`:
 
-        :type start: integer
+        :type start: int
         :param start: start byte of the range.
 
         :rtype: :class:`google.cloud.streaming.http_wrapper.Response`
@@ -1170,7 +1170,7 @@ class Upload(_Transfer):
 
         Helper for :meth:`stream_file`:
 
-        :type start: integer
+        :type start: int
         :param start: start byte of the range.
 
         :rtype: :class:`google.cloud.streaming.http_wrapper.Response`

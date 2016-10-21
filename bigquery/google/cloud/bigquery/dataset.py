@@ -207,7 +207,7 @@ class Dataset(object):
     def default_table_expiration_ms(self):
         """Default expiration time for tables in the dataset.
 
-        :rtype: integer, or ``NoneType``
+        :rtype: int, or ``NoneType``
         :returns: The time in milliseconds, or None (the default).
         """
         return self._properties.get('defaultTableExpirationMs')
@@ -216,7 +216,7 @@ class Dataset(object):
     def default_table_expiration_ms(self, value):
         """Update default expiration time for tables in the dataset.
 
-        :type value: integer, or ``NoneType``
+        :type value: int, or ``NoneType``
         :param value: new default time, in milliseconds
 
         :raises: ValueError for invalid value types.
