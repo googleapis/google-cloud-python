@@ -216,8 +216,8 @@ class Dataset(object):
     def default_table_expiration_ms(self, value):
         """Update default expiration time for tables in the dataset.
 
-        :type value: int, or ``NoneType``
-        :param value: new default time, in milliseconds
+        :type value: int
+        :param value: (Optional) new default time, in milliseconds
 
         :raises: ValueError for invalid value types.
         """
@@ -238,8 +238,8 @@ class Dataset(object):
     def description(self, value):
         """Update description of the dataset.
 
-        :type value: str, or ``NoneType``
-        :param value: new description
+        :type value: str
+        :param value: (Optional) new description
 
         :raises: ValueError for invalid value types.
         """
@@ -260,8 +260,8 @@ class Dataset(object):
     def friendly_name(self, value):
         """Update title of the dataset.
 
-        :type value: str, or ``NoneType``
-        :param value: new title
+        :type value: str
+        :param value: (Optional) new title
 
         :raises: ValueError for invalid value types.
         """
@@ -282,8 +282,8 @@ class Dataset(object):
     def location(self, value):
         """Update location in which the dataset is hosted.
 
-        :type value: str, or ``NoneType``
-        :param value: new location
+        :type value: str
+        :param value: (Optional) new location
 
         :raises: ValueError for invalid value types.
         """
