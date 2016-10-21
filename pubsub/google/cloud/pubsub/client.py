@@ -65,8 +65,10 @@ class Client(JSONClient):
                  ``credentials`` for the current object.
 
     :type use_gax: bool
-    :param use_gax: An optional parameter that explicitly specifies whether
-                    to use the gRPC transport (via GAX) or HTTP
+    :param use_gax: (Optional) Explicitly specifies whether
+                    to use the gRPC transport (via GAX) or HTTP. If unset,
+                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
+                    variable
     """
     def __init__(self, project=None, credentials=None,
                  http=None, use_gax=None):
