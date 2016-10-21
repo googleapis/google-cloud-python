@@ -33,16 +33,18 @@ class ManagedZone(object):
     :param name: the name of the zone
 
     :type dns_name: str
-    :param dns_name: (Optional) the DNS name of the zone.  If not passed, then calls
-                     to :meth:`create` will fail.
+    :param dns_name:
+        (Optional) the DNS name of the zone.  If not passed, then calls to
+        :meth:`create` will fail.
 
     :type client: :class:`google.cloud.dns.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the zone (which requires a project).
 
     :type description: str
-    :param description: (Optional) the description for the zone.  If not passed, defaults
-                        to the value of 'dns_name'.
+    :param description:
+        (Optional) the description for the zone.  If not passed, defaults to
+        the value of 'dns_name'.
     """
 
     def __init__(self, name, dns_name=None, client=None, description=None):
@@ -203,8 +205,9 @@ class ManagedZone(object):
         """Check client or verify over-ride.
 
         :type client: :class:`google.cloud.dns.client.Client`
-        :param client: (Optional) the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current zone.
+        :param client:
+            (Optional) the client to use.  If not passed, falls back to the
+            ``client`` stored on the current zone.
 
         :rtype: :class:`google.cloud.dns.client.Client`
         :returns: The client passed in or the currently bound client.
@@ -251,8 +254,9 @@ class ManagedZone(object):
         https://cloud.google.com/dns/api/v1/managedZones/create
 
         :type client: :class:`google.cloud.dns.client.Client`
-        :param client: (Optional) the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current zone.
+        :param client:
+            (Optional) the client to use.  If not passed, falls back to the
+            ``client`` stored on the current zone.
         """
         client = self._require_client(client)
         path = '/projects/%s/managedZones' % (self.project,)
@@ -267,8 +271,9 @@ class ManagedZone(object):
         https://cloud.google.com/dns/api/v1/managedZones/get
 
         :type client: :class:`google.cloud.dns.client.Client`
-        :param client: (Optional) the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current zone.
+        :param client:
+            (Optional) the client to use.  If not passed, falls back to the
+            ``client`` stored on the current zone.
 
         :rtype: bool
         :returns: Boolean indicating existence of the managed zone.
@@ -290,8 +295,9 @@ class ManagedZone(object):
         https://cloud.google.com/dns/api/v1/managedZones/get
 
         :type client: :class:`google.cloud.dns.client.Client`
-        :param client: (Optional) the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current zone.
+        :param client:
+            (Optional) the client to use.  If not passed, falls back to the
+            ``client`` stored on the current zone.
         """
         client = self._require_client(client)
 
@@ -306,8 +312,9 @@ class ManagedZone(object):
         https://cloud.google.com/dns/api/v1/managedZones/delete
 
         :type client: :class:`google.cloud.dns.client.Client`
-        :param client: (Optional) the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current zone.
+        :param client:
+            (Optional) the client to use.  If not passed, falls back to the
+            ``client`` stored on the current zone.
         """
         client = self._require_client(client)
         client.connection.api_request(method='DELETE', path=self.path)
@@ -329,8 +336,9 @@ class ManagedZone(object):
                            zones.
 
         :type client: :class:`google.cloud.dns.client.Client`
-        :param client: (Optional) the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current zone.
+        :param client:
+            (Optional) the client to use.  If not passed, falls back to the
+            ``client`` stored on the current zone.
 
         :rtype: :class:`~google.cloud.iterator.Iterator`
         :returns: Iterator of :class:`~.resource_record_set.ResourceRecordSet`
@@ -362,8 +370,9 @@ class ManagedZone(object):
                            zones.
 
         :type client: :class:`google.cloud.dns.client.Client`
-        :param client: (Optional) the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current zone.
+        :param client:
+            (Optional) the client to use.  If not passed, falls back to the
+            ``client`` stored on the current zone.
 
         :rtype: :class:`~google.cloud.iterator.Iterator`
         :returns: Iterator of :class:`~.changes.Changes`
