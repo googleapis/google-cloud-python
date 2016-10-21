@@ -88,10 +88,10 @@ class ResourceDescriptor(object):
         :type client: :class:`google.cloud.monitoring.client.Client`
         :param client: The client to use.
 
-        :type filter_string: str or None
+        :type filter_string: str
         :param filter_string:
-            An optional filter expression describing the resource descriptors
-            to be returned. See the `filter documentation`_.
+            (Optional) An optional filter expression describing the resource
+            descriptors to be returned. See the `filter documentation`_.
 
         :rtype: list of :class:`ResourceDescriptor`
         :returns: A list of resource descriptor instances.
