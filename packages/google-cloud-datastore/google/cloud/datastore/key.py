@@ -388,8 +388,8 @@ def _validate_project(project, parent):
     :type project: str
     :param project: A project.
 
-    :type parent: :class:`google.cloud.datastore.key.Key` or ``NoneType``
-    :param parent: The parent of the key or ``None``.
+    :type parent: :class:`google.cloud.datastore.key.Key`
+    :param parent: (Optional) The parent of the key or ``None``.
 
     :rtype: str
     :returns: The ``project`` passed in, or implied from the environment.
