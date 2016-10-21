@@ -82,7 +82,9 @@ class BufferedStream(object):
         """Read bytes from the buffer.
 
         :type size: int
-        :param size: (Optional) How many bytes to read (defaults to all remaining bytes).
+        :param size:
+            (Optional) How many bytes to read (defaults to all remaining
+            bytes).
 
         :rtype: str
         :returns: The data read from the stream.

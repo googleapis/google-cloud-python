@@ -420,9 +420,9 @@ class ACL(object):
                     current entries.
 
         :type predefined: str
-        :param predefined: (Optional) An identifier for a predefined ACL.  Must be one
-                           of the keys in :attr:`PREDEFINED_JSON_ACLS`
-                           If passed, `acl` must be None.
+        :param predefined:
+            (Optional) An identifier for a predefined ACL.  Must be one of the
+            keys in :attr:`PREDEFINED_JSON_ACLS` If passed, `acl` must be None.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``

@@ -90,8 +90,8 @@ class ResourceDescriptor(object):
 
         :type filter_string: str
         :param filter_string:
-            (Optional) An optional filter expression describing the resource descriptors
-            to be returned. See the `filter documentation`_.
+            (Optional) An optional filter expression describing the resource
+            descriptors to be returned. See the `filter documentation`_.
 
         :rtype: list of :class:`ResourceDescriptor`
         :returns: A list of resource descriptor instances.

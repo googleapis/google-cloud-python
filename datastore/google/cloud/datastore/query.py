@@ -35,16 +35,19 @@ class Query(object):
     :param kind: The kind to query.
 
     :type project: str
-    :param project: The project associated with the query.  If not passed,
-                    uses the client's value.
+    :param project:
+        (Optional) The project associated with the query.  If not passed, uses
+        the client's value.
 
     :type namespace: str
-    :param namespace: (Optional) The namespace to which to restrict results.  If not
-                      passed, uses the client's value.
+    :param namespace:
+        (Optional) The namespace to which to restrict results.  If not passed,
+        uses the client's value.
 
     :type ancestor: :class:`google.cloud.datastore.key.Key`
-    :param ancestor: (Optional) key of the ancestor to which this query's results are
-                     restricted.
+    :param ancestor:
+        (Optional) key of the ancestor to which this query's results are
+        restricted.
 
     :type filters: sequence of (property_name, operator, value) tuples
     :param filters: property filters applied by this query.
@@ -328,16 +331,16 @@ class Query(object):
           [<Entity object>]
 
         :type limit: int
-        :param limit: (Optional) An optional limit passed through to the iterator.
+        :param limit: (Optional) limit passed through to the iterator.
 
         :type offset: int
-        :param offset: An optional offset passed through to the iterator.
+        :param offset: (Optional) offset passed through to the iterator.
 
         :type start_cursor: bytes
-        :param start_cursor: An optional cursor passed through to the iterator.
+        :param start_cursor: (Optional) cursor passed through to the iterator.
 
         :type end_cursor: bytes
-        :param end_cursor: An optional cursor passed through to the iterator.
+        :param end_cursor: (Optional) cursor passed through to the iterator.
 
         :type client: :class:`google.cloud.datastore.client.Client`
         :param client: client used to connect to datastore.

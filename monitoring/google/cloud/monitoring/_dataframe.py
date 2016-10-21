@@ -36,9 +36,9 @@ def _build_dataframe(time_series_iterable,
 
     :type label: str
     :param label:
-        (Optional) The label name to use for the dataframe header. This can be the name
-        of a resource label or metric label (e.g., ``"instance_name"``), or
-        the string ``"resource_type"``.
+        (Optional) The label name to use for the dataframe header. This can be
+        the name of a resource label or metric label (e.g.,
+        ``"instance_name"``), or the string ``"resource_type"``.
 
     :type labels: list of strings, or None
     :param labels:

@@ -140,8 +140,9 @@ class Client(JSONClient):
         :param resource: one entry resource from API response
 
         :type loggers: dict
-        :param loggers: (Optional) A mapping of logger fullnames -> loggers.  If not
-                        passed, the entry will have a newly-created logger.
+        :param loggers:
+            (Optional) A mapping of logger fullnames -> loggers.  If not
+            passed, the entry will have a newly-created logger.
 
         :rtype: One of:
                 :class:`google.cloud.logging.entries.TextEntry`,

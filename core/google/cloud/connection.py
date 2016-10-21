@@ -215,10 +215,10 @@ class JSONConnection(Connection):
         :param headers: A dictionary of HTTP headers to send with the request.
 
         :type target_object: object
-        :param target_object: (Optional) Argument to be used by library callers.
-                              This can allow custom behavior, for example, to
-                              defer an HTTP request and complete initialization
-                              of the object at a later time.
+        :param target_object:
+            (Optional) Argument to be used by library callers.  This can allow
+            custom behavior, for example, to defer an HTTP request and complete
+            initialization of the object at a later time.
 
         :rtype: tuple of ``response`` (a dictionary of sorts)
                 and ``content`` (a string).
@@ -262,8 +262,9 @@ class JSONConnection(Connection):
         :param data: The data to send as the body of the request.
 
         :type target_object: object
-        :param target_object: (Optional) Unused ``target_object`` here but may be used
-                              by a superclass.
+        :param target_object:
+            (Optional) Unused ``target_object`` here but may be used by a
+            superclass.
 
         :rtype: tuple of ``response`` (a dictionary of sorts)
                 and ``content`` (a string).
@@ -324,10 +325,10 @@ class JSONConnection(Connection):
                             that cannot be done.  Default is True.
 
         :type _target_object: :class:`object`
-        :param _target_object: (Optional) Protected argument to be used by library
-                               callers. This can allow custom behavior, for
-                               example, to defer an HTTP request and complete
-                               initialization of the object at a later time.
+        :param _target_object:
+            (Optional) Protected argument to be used by library callers. This
+            can allow custom behavior, for example, to defer an HTTP request
+            and complete initialization of the object at a later time.
 
         :raises: Exception if the response code is not 200 OK.
         :rtype: dict or str
