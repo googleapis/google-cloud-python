@@ -214,8 +214,8 @@ class JSONConnection(Connection):
         :type headers: dict
         :param headers: A dictionary of HTTP headers to send with the request.
 
-        :type target_object: object or :class:`NoneType`
-        :param target_object: Argument to be used by library callers.
+        :type target_object: object
+        :param target_object: (Optional) Argument to be used by library callers.
                               This can allow custom behavior, for example, to
                               defer an HTTP request and complete initialization
                               of the object at a later time.
@@ -261,8 +261,8 @@ class JSONConnection(Connection):
         :type data: str
         :param data: The data to send as the body of the request.
 
-        :type target_object: object or :class:`NoneType`
-        :param target_object: Unused ``target_object`` here but may be used
+        :type target_object: object
+        :param target_object: (Optional) Unused ``target_object`` here but may be used
                               by a superclass.
 
         :rtype: tuple of ``response`` (a dictionary of sorts)
@@ -323,8 +323,8 @@ class JSONConnection(Connection):
                             response as JSON and raise an exception if
                             that cannot be done.  Default is True.
 
-        :type _target_object: :class:`object` or :class:`NoneType`
-        :param _target_object: Protected argument to be used by library
+        :type _target_object: :class:`object`
+        :param _target_object: (Optional) Protected argument to be used by library
                                callers. This can allow custom behavior, for
                                example, to defer an HTTP request and complete
                                initialization of the object at a later time.
