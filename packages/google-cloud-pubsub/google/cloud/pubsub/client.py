@@ -47,7 +47,7 @@ _USE_GAX = _HAVE_GAX and not _DISABLE_GAX
 class Client(JSONClient):
     """Client to bundle configuration needed for API requests.
 
-    :type project: string
+    :type project: str
     :param project: the project which the client acts on behalf of. Will be
                     passed when creating a topic.  If not passed,
                     falls back to the default inferred from the environment.
@@ -113,7 +113,7 @@ class Client(JSONClient):
         :param page_size: maximum number of topics to return, If not passed,
                           defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of topics. If not
                            passed, the API will return the first page of
                            topics.
@@ -147,7 +147,7 @@ class Client(JSONClient):
         :param page_size: maximum number of topics to return, If not passed,
                           defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of topics. If not
                            passed, the API will return the first page of
                            topics.
@@ -176,10 +176,10 @@ class Client(JSONClient):
            :start-after: [START client_topic]
            :end-before: [END client_topic]
 
-        :type name: string
+        :type name: str
         :param name: the name of the topic to be constructed.
 
-        :type timestamp_messages: boolean
+        :type timestamp_messages: bool
         :param timestamp_messages: To be passed to ``Topic`` constructor.
 
         :rtype: :class:`google.cloud.pubsub.topic.Topic`
