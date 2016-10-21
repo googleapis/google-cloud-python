@@ -12,7 +12,7 @@ Python Client for Stackdriver Logging
 Quick Start
 -----------
 
-::
+.. code-block:: console
 
     $ pip install --upgrade google-cloud-logging
 
