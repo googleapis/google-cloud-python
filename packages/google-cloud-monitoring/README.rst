@@ -12,7 +12,7 @@ Python Client for Stackdriver Monitoring
 Quick Start
 -----------
 
-::
+.. code-block:: console
 
     $ pip install --upgrade google-cloud-monitoring
 
