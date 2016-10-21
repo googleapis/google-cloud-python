@@ -12,6 +12,6 @@ used by all of the ``google-cloud-*``.
 Quick Start
 -----------
 
-::
+.. code-block:: console
 
     $ pip install --upgrade google-cloud-core

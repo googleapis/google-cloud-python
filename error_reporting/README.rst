@@ -12,7 +12,7 @@ Python Client for Stackdriver Error Reporting
 Quick Start
 -----------
 
-::
+.. code-block:: console
 
     $ pip install --upgrade google-cloud-error-reporting
 
