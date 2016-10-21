@@ -32,7 +32,7 @@ class HttpError(CommunicationError):
     :type content: bytes
     :param content: payload of the response which returned the error
 
-    :type url: string
+    :type url: str
     :param url: URL of the response which returned the error
     """
     def __init__(self, response, content, url):
@@ -94,7 +94,7 @@ class RetryAfterError(HttpError):
     :type content: bytes
     :param content: payload of the response which returned the error.
 
-    :type url: string
+    :type url: str
     :param url: URL of the response which returned the error.
 
     :type retry_after: integer

@@ -162,7 +162,7 @@ class JSONConnection(Connection):
 
         Typically, you shouldn't need to use this method.
 
-        :type path: string
+        :type path: str
         :param path: The path to the resource (ie, ``'/b/bucket-name'``).
 
         :type query_params: dict or list
@@ -170,16 +170,16 @@ class JSONConnection(Connection):
                              key-value pairs) to insert into the query
                              string of the URL.
 
-        :type api_base_url: string
+        :type api_base_url: str
         :param api_base_url: The base URL for the API endpoint.
                              Typically you won't have to provide this.
 
-        :type api_version: string
+        :type api_version: str
         :param api_version: The version of the API to call.
                             Typically you shouldn't provide this and instead
                             use the default for the library.
 
-        :rtype: string
+        :rtype: str
         :returns: The URL assembled from the pieces provided.
         """
         url = cls.API_URL_TEMPLATE.format(
@@ -199,16 +199,16 @@ class JSONConnection(Connection):
 
         Typically, you shouldn't need to use this method.
 
-        :type method: string
+        :type method: str
         :param method: The HTTP method to use in the request.
 
-        :type url: string
+        :type url: str
         :param url: The URL to send the request to.
 
-        :type data: string
+        :type data: str
         :param data: The data to send as the body of the request.
 
-        :type content_type: string
+        :type content_type: str
         :param content_type: The proper MIME type of the data provided.
 
         :type headers: dict
@@ -249,16 +249,16 @@ class JSONConnection(Connection):
 
         Allows batch context managers to override and defer a request.
 
-        :type method: string
+        :type method: str
         :param method: The HTTP method to use in the request.
 
-        :type url: string
+        :type url: str
         :param url: The URL to send the request to.
 
         :type headers: dict
         :param headers: A dictionary of HTTP headers to send with the request.
 
-        :type data: string
+        :type data: str
         :param data: The data to send as the body of the request.
 
         :type target_object: object or :class:`NoneType`
@@ -282,11 +282,11 @@ class JSONConnection(Connection):
         interact with the API using these primitives, this is the
         correct one to use.
 
-        :type method: string
+        :type method: str
         :param method: The HTTP method name (ie, ``GET``, ``POST``, etc).
                        Required.
 
-        :type path: string
+        :type path: str
         :param path: The path to the resource (ie, ``'/b/bucket-name'``).
                      Required.
 
@@ -295,23 +295,23 @@ class JSONConnection(Connection):
                              key-value pairs) to insert into the query
                              string of the URL.
 
-        :type data: string
+        :type data: str
         :param data: The data to send as the body of the request. Default is
                      the empty string.
 
-        :type content_type: string
+        :type content_type: str
         :param content_type: The proper MIME type of the data provided. Default
                              is None.
 
         :type headers: dict
         :param headers: extra HTTP headers to be sent with the request.
 
-        :type api_base_url: string
+        :type api_base_url: str
         :param api_base_url: The base URL for the API endpoint.
                              Typically you won't have to provide this.
                              Default is the standard API base URL.
 
-        :type api_version: string
+        :type api_version: str
         :param api_version: The version of the API to call.  Typically
                             you shouldn't provide this and instead use
                             the default for the library.  Default is the
