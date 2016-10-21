@@ -103,7 +103,7 @@ class Client(JSONClient):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/datasets/list
 
-        :type include_all: boolean
+        :type include_all: bool
         :param include_all: True if results include hidden datasets.
 
         :type max_results: int
@@ -180,7 +180,7 @@ class Client(JSONClient):
                            not passed, the API will return the first page of
                            jobs.
 
-        :type all_users: boolean
+        :type all_users: bool
         :param all_users: if true, include jobs owned by all users in the
                           project.
 
