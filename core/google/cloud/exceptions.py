@@ -177,6 +177,11 @@ class ServiceUnavailable(ServerError):
     code = 503
 
 
+class GatewayTimeout(ServerError):
+    """Excepption mapping a `504 Gateway Timeout'` response."""
+    code = 504
+
+
 def make_exception(response, content, error_info=None, use_json=True):
     """Factory:  create exception based on HTTP response code.
 
