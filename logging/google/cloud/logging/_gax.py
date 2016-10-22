@@ -603,8 +603,11 @@ def _log_entry_mapping_to_pb(mapping):
             entry_pb.labels[key] = value
 
     if 'jsonPayload' in mapping:
-        for key, value in mapping['jsonPayload'].items():
-            entry_pb.json_payload[key] = value
+        # NOTE: ``json.dumps`` is wasteful here because internally,
+        #       ``Parse`` will just call ``json.loads``. However,
+        #       there is no equivalent public function to parse on raw
+        #       dictionaries, so we waste cycles on parse/unparse.
+        Parse(json.dumps(mapping['jsonPayload']), entry_pb.json_payload)
 
     if 'protoPayload' in mapping:
         Parse(json.dumps(mapping['protoPayload']), entry_pb.proto_payload)
