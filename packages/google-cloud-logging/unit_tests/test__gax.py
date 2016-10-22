@@ -80,16 +80,12 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(page_size, 0)
         self.assertIs(options.page_token, INITIAL_PAGE)
 
-    def test_list_entries_with_paging(self):
-        from google.protobuf.struct_pb2 import Value
+    def _list_entries_with_paging_helper(self, payload, struct_pb):
         from google.cloud._testing import _GAXPageIterator
+
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
-        PAYLOAD = {'message': 'MESSAGE', 'weather': 'sunny'}
-        struct_pb = _StructPB({
-            key: Value(string_value=value) for key, value in PAYLOAD.items()
-        })
         response = _GAXPageIterator(
             [_LogEntryPB(self.LOG_NAME, json_payload=struct_pb)], NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
@@ -103,7 +99,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertIsInstance(entry, dict)
         self.assertEqual(entry['logName'], self.LOG_NAME)
         self.assertEqual(entry['resource'], {'type': 'global'})
-        self.assertEqual(entry['jsonPayload'], PAYLOAD)
+        self.assertEqual(entry['jsonPayload'], payload)
         self.assertEqual(next_token, NEW_TOKEN)
 
         projects, filter_, order_by, page_size, options = (
@@ -113,6 +109,43 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(order_by, '')
         self.assertEqual(page_size, SIZE)
         self.assertEqual(options.page_token, TOKEN)
+
+    def test_list_entries_with_paging(self):
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        payload = {'message': 'MESSAGE', 'weather': 'sunny'}
+        struct_pb = Struct(fields={
+            key: Value(string_value=value) for key, value in payload.items()
+        })
+        self._list_entries_with_paging_helper(payload, struct_pb)
+
+    def test_list_entries_with_paging_nested_payload(self):
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        payload = {}
+        struct_fields = {}
+        # Add a simple key.
+        key = 'message'
+        payload[key] = 'MESSAGE'
+        struct_fields[key] = Value(string_value=payload[key])
+        # Add a nested key.
+        key = 'weather'
+        sub_value = {}
+        sub_fields = {}
+        sub_key = 'temperature'
+        sub_value[sub_key] = 75
+        sub_fields[sub_key] = Value(number_value=sub_value[sub_key])
+        sub_key = 'precipitation'
+        sub_value[sub_key] = False
+        sub_fields[sub_key] = Value(bool_value=sub_value[sub_key])
+        # Update the parent payload.
+        payload[key] = sub_value
+        struct_fields[key] = Value(struct_value=Struct(fields=sub_fields))
+        # Make the struct_pb for our dict.
+        struct_pb = Struct(fields=struct_fields)
+        self._list_entries_with_paging_helper(payload, struct_pb)
 
     def test_list_entries_with_extra_properties(self):
         from datetime import datetime
@@ -317,18 +350,16 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
         # pylint: enable=too-many-statements
 
-    def test_write_entries_multiple(self):
+    def _write_entries_multiple_helper(self, json_payload, json_struct_pb):
         # pylint: disable=too-many-statements
         import datetime
         from google.logging.type.log_severity_pb2 import WARNING
         from google.logging.v2.log_entry_pb2 import LogEntry
         from google.protobuf.any_pb2 import Any
-        from google.protobuf.struct_pb2 import Struct
         from google.cloud._helpers import _datetime_to_rfc3339, UTC
         TEXT = 'TEXT'
         NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
         TIMESTAMP_TYPE_URL = 'type.googleapis.com/google.protobuf.Timestamp'
-        JSON = {'payload': 'PAYLOAD', 'type': 'json'}
         PROTO = {
             '@type': TIMESTAMP_TYPE_URL,
             'value': _datetime_to_rfc3339(NOW),
@@ -339,7 +370,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         ENTRIES = [
             {'textPayload': TEXT,
              'severity': WARNING},
-            {'jsonPayload': JSON,
+            {'jsonPayload': json_payload,
              'operation': {'producer': PRODUCER, 'id': OPID}},
             {'protoPayload': PROTO,
              'httpRequest': {'requestUrl': URL}},
@@ -373,10 +404,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(entry.log_name, '')
         self.assertEqual(entry.resource.type, '')
         self.assertEqual(entry.labels, {})
-        json_struct = entry.json_payload
-        self.assertIsInstance(json_struct, Struct)
-        self.assertEqual(json_struct.fields['payload'].string_value,
-                         JSON['payload'])
+        self.assertEqual(entry.json_payload, json_struct_pb)
         operation = entry.operation
         self.assertEqual(operation.producer, PRODUCER)
         self.assertEqual(operation.id, OPID)
@@ -398,6 +426,44 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(partial_success, False)
         self.assertIsNone(options)
         # pylint: enable=too-many-statements
+
+    def test_write_entries_multiple(self):
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        json_payload = {'payload': 'PAYLOAD', 'type': 'json'}
+        json_struct_pb = Struct(fields={
+            key: Value(string_value=value)
+            for key, value in json_payload.items()
+        })
+        self._write_entries_multiple_helper(json_payload, json_struct_pb)
+
+    def test_write_entries_multiple_nested_payload(self):
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        json_payload = {}
+        struct_fields = {}
+        # Add a simple key.
+        key = 'hello'
+        json_payload[key] = 'me you looking for'
+        struct_fields[key] = Value(string_value=json_payload[key])
+        # Add a nested key.
+        key = 'everything'
+        sub_value = {}
+        sub_fields = {}
+        sub_key = 'answer'
+        sub_value[sub_key] = 42
+        sub_fields[sub_key] = Value(number_value=sub_value[sub_key])
+        sub_key = 'really?'
+        sub_value[sub_key] = False
+        sub_fields[sub_key] = Value(bool_value=sub_value[sub_key])
+        # Update the parent payload.
+        json_payload[key] = sub_value
+        struct_fields[key] = Value(struct_value=Struct(fields=sub_fields))
+        # Make the struct_pb for our dict.
+        json_struct_pb = Struct(fields=struct_fields)
+        self._write_entries_multiple_helper(json_payload, json_struct_pb)
 
     def test_logger_delete(self):
         LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
@@ -1055,12 +1121,6 @@ class _ResourcePB(object):
     def __init__(self, type_='global', **labels):
         self.type = type_
         self.labels = labels
-
-
-class _StructPB(object):
-
-    def __init__(self, fields):
-        self.fields = fields
 
 
 class _LogEntryPB(object):
