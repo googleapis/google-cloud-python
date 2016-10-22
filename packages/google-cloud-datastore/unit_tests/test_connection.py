@@ -106,6 +106,67 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
                          [{'method': METHOD, 'project': PROJECT}])
 
 
+@unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
+class Test__grpc_catch_rendezvous(unittest.TestCase):
+
+    def _callFUT(self, to_call, *args, **kwargs):
+        from google.cloud.datastore.connection import _grpc_catch_rendezvous
+        return _grpc_catch_rendezvous(to_call, *args, **kwargs)
+
+    @staticmethod
+    def _fake_method(exc, result=None):
+        if exc is None:
+            return result
+        else:
+            raise exc
+
+    def test_success(self):
+        expected = object()
+        result = self._callFUT(self._fake_method, None, expected)
+        self.assertIs(result, expected)
+
+    def test_failure_aborted(self):
+        from grpc import StatusCode
+        from grpc._channel import _RPCState
+        from google.cloud.exceptions import Conflict
+        from google.cloud.exceptions import GrpcRendezvous
+
+        details = 'Bad things.'
+        exc_state = _RPCState((), None, None, StatusCode.ABORTED, details)
+        exc = GrpcRendezvous(exc_state, None, None, None)
+        with self.assertRaises(Conflict):
+            self._callFUT(self._fake_method, exc)
+
+    def test_failure_invalid_argument(self):
+        from grpc import StatusCode
+        from grpc._channel import _RPCState
+        from google.cloud.exceptions import BadRequest
+        from google.cloud.exceptions import GrpcRendezvous
+
+        details = ('Cannot have inequality filters on multiple '
+                   'properties: [created, priority]')
+        exc_state = _RPCState((), None, None,
+                              StatusCode.INVALID_ARGUMENT, details)
+        exc = GrpcRendezvous(exc_state, None, None, None)
+        with self.assertRaises(BadRequest):
+            self._callFUT(self._fake_method, exc)
+
+    def test_failure_cancelled(self):
+        from grpc import StatusCode
+        from grpc._channel import _RPCState
+        from google.cloud.exceptions import GrpcRendezvous
+
+        exc_state = _RPCState((), None, None, StatusCode.CANCELLED, None)
+        exc = GrpcRendezvous(exc_state, None, None, None)
+        with self.assertRaises(GrpcRendezvous):
+            self._callFUT(self._fake_method, exc)
+
+    def test_commit_failure_non_grpc_err(self):
+        exc = RuntimeError('Not a gRPC error')
+        with self.assertRaises(RuntimeError):
+            self._callFUT(self._fake_method, exc)
+
+
 class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 
     def _getTargetClass(self):
@@ -227,16 +288,6 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         exc = GrpcRendezvous(exc_state, None, None, None)
         self._run_query_failure_helper(exc, BadRequest)
 
-    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
-    def test_run_query_cancelled(self):
-        from grpc import StatusCode
-        from grpc._channel import _RPCState
-        from google.cloud.exceptions import GrpcRendezvous
-
-        exc_state = _RPCState((), None, None, StatusCode.CANCELLED, None)
-        exc = GrpcRendezvous(exc_state, None, None, None)
-        self._run_query_failure_helper(exc, GrpcRendezvous)
-
     def test_begin_transaction(self):
         return_val = object()
         stub = _GRPCStub(return_val)
@@ -263,59 +314,6 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         self.assertEqual(request_pb.project_id, project)
         self.assertEqual(stub.method_calls,
                          [(request_pb, 'Commit')])
-
-    def _commit_failure_helper(self, exc, err_class):
-        stub = _GRPCStub(side_effect=exc)
-        datastore_api = self._makeOne(stub=stub)
-
-        request_pb = _RequestPB()
-        project = 'PROJECT'
-        with self.assertRaises(err_class):
-            datastore_api.commit(project, request_pb)
-
-        self.assertEqual(request_pb.project_id, project)
-        self.assertEqual(stub.method_calls,
-                         [(request_pb, 'Commit')])
-
-    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
-    def test_commit_failure_aborted(self):
-        from grpc import StatusCode
-        from grpc._channel import _RPCState
-        from google.cloud.exceptions import Conflict
-        from google.cloud.exceptions import GrpcRendezvous
-
-        details = 'Bad things.'
-        exc_state = _RPCState((), None, None, StatusCode.ABORTED, details)
-        exc = GrpcRendezvous(exc_state, None, None, None)
-        self._commit_failure_helper(exc, Conflict)
-
-    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
-    def test_commit_failure_invalid_argument(self):
-        from grpc import StatusCode
-        from grpc._channel import _RPCState
-        from google.cloud.exceptions import BadRequest
-        from google.cloud.exceptions import GrpcRendezvous
-
-        details = 'Too long content.'
-        exc_state = _RPCState((), None, None,
-                              StatusCode.INVALID_ARGUMENT, details)
-        exc = GrpcRendezvous(exc_state, None, None, None)
-        self._commit_failure_helper(exc, BadRequest)
-
-    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
-    def test_commit_failure_cancelled(self):
-        from grpc import StatusCode
-        from grpc._channel import _RPCState
-        from google.cloud.exceptions import GrpcRendezvous
-
-        exc_state = _RPCState((), None, None, StatusCode.CANCELLED, None)
-        exc = GrpcRendezvous(exc_state, None, None, None)
-        self._commit_failure_helper(exc, GrpcRendezvous)
-
-    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
-    def test_commit_failure_non_grpc_err(self):
-        exc = RuntimeError('Not a gRPC error')
-        self._commit_failure_helper(exc, RuntimeError)
 
     def test_rollback(self):
         return_val = object()
@@ -1161,27 +1159,22 @@ class _GRPCStub(object):
 
     def _method(self, request_pb, name):
         self.method_calls.append((request_pb, name))
-        return self.return_val
+        if self.side_effect is Exception:
+            return self.return_val
+        else:
+            raise self.side_effect
 
     def Lookup(self, request_pb):
         return self._method(request_pb, 'Lookup')
 
     def RunQuery(self, request_pb):
-        result = self._method(request_pb, 'RunQuery')
-        if self.side_effect is Exception:
-            return result
-        else:
-            raise self.side_effect
+        return self._method(request_pb, 'RunQuery')
 
     def BeginTransaction(self, request_pb):
         return self._method(request_pb, 'BeginTransaction')
 
     def Commit(self, request_pb):
-        result = self._method(request_pb, 'Commit')
-        if self.side_effect is Exception:
-            return result
-        else:
-            raise self.side_effect
+        return self._method(request_pb, 'Commit')
 
     def Rollback(self, request_pb):
         return self._method(request_pb, 'Rollback')
