@@ -51,10 +51,9 @@ See: `Speech Asynchronous Recognize`_
 
     >>> import time
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.LINEAR16,
+    ...                        encoding=speech.Encoding.LINEAR16,
     ...                        sample_rate=44100)
     >>> operation = client.async_recognize(sample, max_alternatives=2)
     >>> retry_count = 100
@@ -82,10 +81,9 @@ Great Britian.
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.FLAC,
+    ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
     >>> operation = client.async_recognize(sample, max_alternatives=2)
      >>> alternatives = client.sync_recognize(
@@ -93,8 +91,8 @@ Great Britian.
      ...     language_code='en-GB', max_alternatives=2)
      >>> for alternative in alternatives:
      ...     print('=' * 20)
-     ...     print('transcript: ' + alternative['transcript'])
-     ...     print('confidence: ' + alternative['confidence'])
+     ...     print('transcript: ' + alternative.transcript)
+     ...     print('confidence: ' + alternative.confidence)
      ====================
      transcript: Hello, this is a test
      confidence: 0.81
@@ -107,17 +105,16 @@ Example of using the profanity filter.
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.FLAC,
+    ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
     >>> alternatives = client.sync_recognize(sample, max_alternatives=1,
     ...                                      profanity_filter=True)
     >>> for alternative in alternatives:
     ...     print('=' * 20)
-    ...     print('transcript: ' + alternative['transcript'])
-    ...     print('confidence: ' + alternative['confidence'])
+    ...     print('transcript: ' + alternative.transcript)
+    ...     print('confidence: ' + alternative.confidence)
     ====================
     transcript: Hello, this is a f****** test
     confidence: 0.81
@@ -129,21 +126,92 @@ words to the vocabulary of the recognizer.
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.FLAC,
+    ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
     >>> hints = ['hi', 'good afternoon']
     >>> alternatives = client.sync_recognize(sample, max_alternatives=2,
     ...                                      speech_context=hints)
     >>> for alternative in alternatives:
     ...     print('=' * 20)
-    ...     print('transcript: ' + alternative['transcript'])
-    ...     print('confidence: ' + alternative['confidence'])
+    ...     print('transcript: ' + alternative.transcript)
+    ...     print('confidence: ' + alternative.confidence)
     ====================
     transcript: Hello, this is a test
     confidence: 0.81
 
+
+Streaming Recognition
+---------------------
+
+The :meth:`~google.cloud.speech.Client.stream_recognize` method converts speech
+data to possible text alternatives on the fly.
+
+.. note::
+    Streaming recognition requests are limited to 1 minute of audio.
+
+    See: https://cloud.google.com/speech/limits#content
+
+.. code-block:: python
+
+    >>> import io
+    >>> from google.cloud import speech
+    >>> client = speech.Client()
+    >>> with io.open('./hello.wav', 'rb') as stream:
+    ...     sample = client.sample(stream=stream, encoding=speech.Encoding.LINEAR16,
+    ...                            sample_rate=16000)
+    ...     for response in client.stream_recognize(sample):
+    ...         print(response.transcript)
+    hello
+    ...         print(response.is_final)
+    True
+
+
+By setting ``interim_results`` to true, interim results (tentative hypotheses)
+may be returned as they become available (these interim results are indicated
+with the is_final=false flag). If false or omitted, only is_final=true
+result(s) are returned.
+
+.. code-block:: python
+
+    >>> import io
+    >>> from google.cloud import speech
+    >>> client = speech.Client()
+    >>> with io.open('./hello.wav', 'rb') as stream:
+    >>>     sample = client.sample(stream=stream, encoding=speech.Encoding.LINEAR16,
+    ...                            sample_rate=16000)
+    ...     for response in client.stream_recognize(sample,
+    ...                                             interim_results=True):
+    ...         print(response.transcript)
+    hell
+    ...         print(response.is_final)
+    False
+    ...         print(response.transcript)
+    hello
+    ...         print(response.is_final)
+    True
+
+
+By default the recognizer will perform continuous recognition
+(continuing to process audio even if the user pauses speaking) until the client
+closes the output stream or when the maximum time limit has been reached.
+
+If you only want to recognize a single utterance you can set
+ ``single_utterance`` to ``True`` and only one result will be returned.
+
+See: `Single Utterance`_
+
+.. code-block:: python
+
+    >>> with io.open('./hello_pause_goodbye.wav', 'rb') as stream:
+    >>>     sample = client.sample(stream=stream, encoding=speech.Encoding.LINEAR16,
+    ...                            sample_rate=16000)
+    ...     stream_container = client.stream_recognize(sample,
+    ...                                                single_utterance=True)
+    >>> print(stream_container.get_full_text())
+    hello
+
+.. _Single Utterance: https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#streamingrecognitionconfig
 .. _sync_recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize
 .. _Speech Asynchronous Recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize
