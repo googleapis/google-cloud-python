@@ -19,6 +19,7 @@ import mock
 import pytest
 
 from google.auth import _default
+from google.auth import app_engine
 from google.auth import compute_engine
 from google.auth import environment_vars
 from google.auth import exceptions
@@ -188,7 +189,25 @@ def test__get_gcloud_sdk_credentials_no_project_id(
     assert project_id is None
 
 
-def test__get_gae_credentials():
+@pytest.fixture
+def app_identity_mock(monkeypatch):
+    """Mocks the app_identity module for google.auth.app_engine."""
+    app_identity_mock = mock.Mock()
+    monkeypatch.setattr(
+        app_engine, 'app_identity', app_identity_mock)
+    yield app_identity_mock
+
+
+def test__get_gae_credentials(app_identity_mock):
+    app_identity_mock.get_application_id.return_value = mock.sentinel.project
+
+    credentials, project_id = _default._get_gae_credentials()
+
+    assert isinstance(credentials, app_engine.Credentials)
+    assert project_id == mock.sentinel.project
+
+
+def test__get_gae_credentials_no_apis():
     assert _default._get_gae_credentials() == (None, None)
 
 

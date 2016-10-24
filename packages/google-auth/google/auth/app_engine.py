@@ -33,6 +33,21 @@ except ImportError:
     app_identity = None
 
 
+def get_project_id():
+    """Gets the project ID for the current App Engine application.
+
+    Returns:
+        str: The project ID
+
+    Raises:
+        EnvironmentError: If the App Engine APIs are unavailable.
+    """
+    if app_identity is None:
+        raise EnvironmentError(
+            'The App Engine APIs are not available.')
+    return app_identity.get_application_id()
+
+
 class Credentials(credentials.Scoped, credentials.Signing,
                   credentials.Credentials):
     """App Engine standard environment credentials.

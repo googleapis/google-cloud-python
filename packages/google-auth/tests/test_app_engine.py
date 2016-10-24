@@ -29,6 +29,18 @@ def app_identity_mock(monkeypatch):
     yield app_identity_mock
 
 
+def test_get_project_id(app_identity_mock):
+    app_identity_mock.get_application_id.return_value = mock.sentinel.project
+    assert app_engine.get_project_id() == mock.sentinel.project
+
+
+def test_get_project_id_missing_apis():
+    with pytest.raises(EnvironmentError) as excinfo:
+        assert app_engine.get_project_id()
+
+    assert excinfo.match(r'App Engine APIs are not available')
+
+
 class TestCredentials(object):
     def test_missing_apis(self):
         with pytest.raises(EnvironmentError) as excinfo:

@@ -23,6 +23,7 @@ import logging
 import os
 
 from google.auth import _cloud_sdk
+from google.auth import app_engine
 from google.auth import compute_engine
 from google.auth import environment_vars
 from google.auth import exceptions
@@ -150,7 +151,12 @@ def _get_explicit_environ_credentials():
 
 def _get_gae_credentials():
     """Gets Google App Engine App Identity credentials and project ID."""
-    return None, None
+    try:
+        credentials = app_engine.Credentials()
+        project_id = app_engine.get_project_id()
+        return credentials, project_id
+    except EnvironmentError:
+        return None, None
 
 
 def _get_gce_credentials(request=None):
