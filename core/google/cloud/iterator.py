@@ -107,7 +107,6 @@ manually::
 import six
 
 
-_UNSET = object()
 _NO_MORE_PAGES_ERR = 'Iterator has no more pages.'
 _UNSTARTED_ERR = (
     'Iterator has not been started. Either begin iterating, '
@@ -261,7 +260,6 @@ class Iterator(object):
         self.page_number = 0
         self.next_page_token = page_token
         self.num_results = 0
-        self._page = _UNSET
 
     def _verify_params(self):
         """Verifies the parameters don't use any reserved parameter.
@@ -299,20 +297,6 @@ class Iterator(object):
         self._started = True
         return self._pages_iter()
 
-    @property
-    def page(self):
-        """The current page of results that has been retrieved.
-
-        If there are no more results, will return :data:`None`.
-
-        :rtype: :class:`Page`
-        :returns: The page of items that has been retrieved.
-        :raises AttributeError: If the page has not been set.
-        """
-        if self._page is _UNSET:
-            raise AttributeError(_UNSTARTED_ERR)
-        return self._page
-
     def __iter__(self):
         """Iterator for each item returned."""
         # NOTE: We don't check if the iterator has started since the pages
@@ -321,45 +305,6 @@ class Iterator(object):
             for item in page:
                 self.num_results += 1
                 yield item
-
-    def update_page(self, require_empty=True):
-        """Move to the next page in the result set.
-
-        If the current page is not empty and ``require_empty`` is :data:`True`
-        then an exception will be raised. If the current page is not empty
-        and ``require_empty`` is :data:`False`, then this will return
-        without updating the current page.
-
-        If the current page **is** empty, but there are no more results,
-        sets the current page to :data:`None`.
-
-        If there are no more pages, throws an exception.
-
-        :type require_empty: bool
-        :param require_empty: (Optional) Flag to indicate if the current page
-                              must be empty before updating.
-
-        :raises ValueError: If ``require_empty`` is :data:`True` but the
-                            current page is not empty.
-        :raises ValueError: If there are no more pages.
-        """
-        if self._page is None:
-            raise ValueError(_NO_MORE_PAGES_ERR)
-
-        # NOTE: This assumes Page.remaining can never go below 0.
-        page_empty = self._page is _UNSET or self._page.remaining == 0
-        if page_empty:
-            if self._has_next_page():
-                response = self._get_next_page_response()
-                self._page = Page(self, response, self._items_key,
-                                  self._item_to_value)
-                self._page_start(self, self._page, response)
-            else:
-                self._page = None
-        else:
-            if require_empty:
-                msg = _PAGE_ERR_TEMPLATE % (self._page, self.page.remaining)
-                raise ValueError(msg)
 
     def _has_next_page(self):
         """Determines whether or not there are more pages with results.
