@@ -57,6 +57,15 @@ def setUpModule():
 
 class TestLogging(unittest.TestCase):
 
+    JSON_PAYLOAD = {
+        'message': 'System test: test_log_struct',
+        'weather': {
+            'clouds': 'party or partly',
+            'temperature': 70,
+            'precipitation': False,
+        },
+    }
+
     def setUp(self):
         self.to_delete = []
         self._handlers_cache = logging.getLogger().handlers[:]
@@ -120,18 +129,14 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(request['status'], STATUS)
 
     def test_log_struct(self):
-        JSON_PAYLOAD = {
-            'message': 'System test: test_log_struct',
-            'weather': 'partly cloudy',
-        }
         logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
 
-        logger.log_struct(JSON_PAYLOAD)
+        logger.log_struct(self.JSON_PAYLOAD)
         entries, _ = self._list_entries(logger)
 
         self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0].payload, JSON_PAYLOAD)
+        self.assertEqual(entries[0].payload, self.JSON_PAYLOAD)
 
     def test_log_handler_async(self):
         LOG_MESSAGE = 'It was the worst of times'
@@ -145,12 +150,12 @@ class TestLogging(unittest.TestCase):
         cloud_logger.addHandler(handler)
         cloud_logger.warn(LOG_MESSAGE)
         entries, _ = self._list_entries(logger)
-        JSON_PAYLOAD = {
+        expected_payload = {
             'message': LOG_MESSAGE,
             'python_logger': handler.name
         }
         self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0].payload, JSON_PAYLOAD)
+        self.assertEqual(entries[0].payload, expected_payload)
 
     def test_log_handler_sync(self):
         LOG_MESSAGE = 'It was the best of times.'
@@ -169,12 +174,12 @@ class TestLogging(unittest.TestCase):
         cloud_logger.warn(LOG_MESSAGE)
 
         entries, _ = self._list_entries(logger)
-        JSON_PAYLOAD = {
+        expected_payload = {
             'message': LOG_MESSAGE,
             'python_logger': LOGGER_NAME
         }
         self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0].payload, JSON_PAYLOAD)
+        self.assertEqual(entries[0].payload, expected_payload)
 
     def test_log_root_handler(self):
         LOG_MESSAGE = 'It was the best of times.'
@@ -188,19 +193,15 @@ class TestLogging(unittest.TestCase):
         logging.warn(LOG_MESSAGE)
 
         entries, _ = self._list_entries(logger)
-        JSON_PAYLOAD = {
+        expected_payload = {
             'message': LOG_MESSAGE,
             'python_logger': 'root'
         }
 
         self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0].payload, JSON_PAYLOAD)
+        self.assertEqual(entries[0].payload, expected_payload)
 
     def test_log_struct_w_metadata(self):
-        JSON_PAYLOAD = {
-            'message': 'System test: test_log_struct',
-            'weather': 'partly cloudy',
-        }
         INSERT_ID = 'INSERTID'
         SEVERITY = 'INFO'
         METHOD = 'POST'
@@ -214,12 +215,12 @@ class TestLogging(unittest.TestCase):
         logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
 
-        logger.log_struct(JSON_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
-                          http_request=REQUEST)
+        logger.log_struct(self.JSON_PAYLOAD, insert_id=INSERT_ID,
+                          severity=SEVERITY, http_request=REQUEST)
         entries, _ = self._list_entries(logger)
 
         self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0].payload, JSON_PAYLOAD)
+        self.assertEqual(entries[0].payload, self.JSON_PAYLOAD)
         self.assertEqual(entries[0].insert_id, INSERT_ID)
         self.assertEqual(entries[0].severity, SEVERITY)
         request = entries[0].http_request
