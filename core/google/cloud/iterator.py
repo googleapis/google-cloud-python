@@ -274,6 +274,31 @@ class Iterator(object):
             raise ValueError('Using a reserved parameter',
                              reserved_in_use)
 
+    def _pages_iter(self):
+        """Generator of pages of API responses.
+
+        Yields :class:`Page` instances.
+        """
+        while self._has_next_page():
+            response = self._get_next_page_response()
+            page = Page(self, response, self._items_key,
+                        self._item_to_value)
+            self._page_start(self, page, response)
+            yield page
+
+    @property
+    def pages(self):
+        """Iterator of pages in the response.
+
+        :rtype: :class:`~types.GeneratorType`
+        :returns: A generator of :class:`Page` instances.
+        :raises ValueError: If the iterator has already been started.
+        """
+        if self._started:
+            raise ValueError('Iterator has already started', self)
+        self._started = True
+        return self._pages_iter()
+
     @property
     def page(self):
         """The current page of results that has been retrieved.
