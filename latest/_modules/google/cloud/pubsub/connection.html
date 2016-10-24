@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.connection &mdash; google-cloud 491519d documentation</title>
+  <title>google.cloud.pubsub.connection &mdash; google-cloud 4c55b1c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 491519d documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 4c55b1c documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -286,6 +286,7 @@
 
 <span class="sd">&quot;&quot;&quot;Create / interact with Google Cloud Pub/Sub connections.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
@@ -473,6 +474,7 @@
 <span class="sd">        :rtype: list of string</span>
 <span class="sd">        :returns: list of opaque IDs for published messages.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_transform_messages_base64</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">_base64_unicode</span><span class="p">)</span>
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;messages&#39;</span><span class="p">:</span> <span class="n">messages</span><span class="p">}</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
@@ -692,7 +694,9 @@
             <span class="s1">&#39;maxMessages&#39;</span><span class="p">:</span> <span class="n">max_messages</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;receivedMessages&#39;</span><span class="p">,</span> <span class="p">())</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;receivedMessages&#39;</span><span class="p">,</span> <span class="p">())</span>
+        <span class="n">_transform_messages_base64</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">,</span> <span class="s1">&#39;message&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">messages</span>
 
     <span class="k">def</span> <span class="nf">subscription_acknowledge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  acknowledge retrieved messages</span>
@@ -812,6 +816,38 @@
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">:testIamPermissions&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">target_path</span><span class="p">,)</span>
         <span class="n">resp</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">wrapped</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;permissions&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+
+<span class="k">def</span> <span class="nf">_base64_unicode</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper to base64 encode and make JSON serializable.</span>
+
+<span class="sd">    :type value: str</span>
+<span class="sd">    :param value: String value to be base64 encoded and made serializable.</span>
+
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :returns: Base64 encoded string/unicode value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">as_bytes</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">as_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_transform_messages_base64</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">transform</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper for base64 encoding and decoding messages.</span>
+
+<span class="sd">    :type messages: list</span>
+<span class="sd">    :param messages: List of dictionaries with message data.</span>
+
+<span class="sd">    :type transform: :class:`~types.FunctionType`</span>
+<span class="sd">    :param transform: Function to encode/decode the message data.</span>
+
+<span class="sd">    :type key: str</span>
+<span class="sd">    :param key: Index to access messages.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;data&#39;</span> <span class="ow">in</span> <span class="n">message</span><span class="p">:</span>
+            <span class="n">message</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
 </pre></div>
 
            </div>
@@ -845,7 +881,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'491519d',
+            VERSION:'4c55b1c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.topic &mdash; google-cloud 491519d documentation</title>
+  <title>google.cloud.pubsub.topic &mdash; google-cloud 4c55b1c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 491519d documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 4c55b1c documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -286,8 +286,6 @@
 
 <span class="sd">&quot;&quot;&quot;Define API Topics.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">base64</span>
-
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_NOW</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
@@ -524,8 +522,7 @@
         <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">publisher_api</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_timestamp_message</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
-        <span class="n">message_b</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
-        <span class="n">message_data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">message_b</span><span class="p">,</span> <span class="s1">&#39;attributes&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="p">}</span>
+        <span class="n">message_data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span> <span class="s1">&#39;attributes&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="p">}</span>
         <span class="n">message_ids</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">topic_publish</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="p">[</span><span class="n">message_data</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">message_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
@@ -721,7 +718,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">_timestamp_message</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">),</span>
+            <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
              <span class="s1">&#39;attributes&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="Batch.commit"><a class="viewcode-back" href="../../../../pubsub-topic.html#google.cloud.pubsub.topic.Batch.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -774,7 +771,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'491519d',
+            VERSION:'4c55b1c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
