@@ -43,64 +43,38 @@ requests)::
     ...         break
 
 When iterating, not every new item will send a request to the server.
-To monitor these requests, track the current page of the iterator::
+To iterate based on each page of items (where a page corresponds to
+a request)::
 
     >>> iterator = Iterator(...)
-    >>> iterator.page_number
-    0
-    >>> next(iterator)
-    <MyItemClass at 0x7f1d3cccf690>
-    >>> iterator.page_number
-    1
-    >>> iterator.page.remaining
-    1
-    >>> next(iterator)
-    <MyItemClass at 0x7f1d3cccfe90>
-    >>> iterator.page_number
-    1
-    >>> iterator.page.remaining
-    0
-    >>> next(iterator)
-    <MyItemClass at 0x7f1d3cccffd0>
-    >>> iterator.page_number
-    2
-    >>> iterator.page.remaining
-    19
+    >>> for page in iterator.pages:
+    ...     print('=' * 20)
+    ...     print('    Page number: %d' % (iterator.page_number,))
+    ...     print('  Items in page: %d' % (page.num_items,))
+    ...     print('     First item: %r' % (next(page),))
+    ...     print('Items remaining: %d' % (page.remaining,))
+    ...     print('Next page token: %s' % (iterator.next_page_token,))
+    ====================
+        Page number: 1
+      Items in page: 1
+         First item: <MyItemClass at 0x7f1d3cccf690>
+    Items remaining: 0
+    Next page token: eav1OzQB0OM8rLdGXOEsyQWSG
+    ====================
+        Page number: 2
+      Items in page: 19
+         First item: <MyItemClass at 0x7f1d3cccffd0>
+    Items remaining: 18
+    Next page token: None
 
-It's also possible to consume an entire page and handle the paging process
-manually::
+To consume an entire page::
 
-    >>> iterator = Iterator(...)
-    >>> # Manually pull down the first page.
-    >>> iterator.update_page()
-    >>> items = list(iterator.page)
-    >>> items
+    >>> list(page)
     [
         <MyItemClass at 0x7fd64a098ad0>,
         <MyItemClass at 0x7fd64a098ed0>,
         <MyItemClass at 0x7fd64a098e90>,
     ]
-    >>> iterator.page.remaining
-    0
-    >>> iterator.page.num_items
-    3
-    >>> iterator.next_page_token
-    'eav1OzQB0OM8rLdGXOEsyQWSG'
-    >>>
-    >>> # Ask for the next page to be grabbed.
-    >>> iterator.update_page()
-    >>> list(iterator.page)
-    [
-        <MyItemClass at 0x7fea740abdd0>,
-        <MyItemClass at 0x7fea740abe50>,
-    ]
-    >>>
-    >>> # When there are no more results
-    >>> iterator.next_page_token is None
-    True
-    >>> iterator.update_page()
-    >>> iterator.page is None
-    True
 """
 
 
