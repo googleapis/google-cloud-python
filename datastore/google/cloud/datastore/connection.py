@@ -14,6 +14,7 @@
 
 """Connections to Google Cloud Datastore API servers."""
 
+import contextlib
 import os
 
 from google.rpc import status_pb2
@@ -23,19 +24,35 @@ from google.cloud._helpers import make_secure_stub
 from google.cloud import connection as connection_module
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_HOST
-from google.cloud.exceptions import BadRequest
-from google.cloud.exceptions import Conflict
-from google.cloud.exceptions import GrpcRendezvous
-from google.cloud.exceptions import make_exception
+from google.cloud import exceptions
 from google.cloud.datastore._generated import datastore_pb2 as _datastore_pb2
 try:
     from grpc import StatusCode
     from google.cloud.datastore._generated import datastore_grpc_pb2
 except ImportError:  # pragma: NO COVER
+    _GRPC_ERROR_MAPPING = {}
     _HAVE_GRPC = False
     datastore_grpc_pb2 = None
     StatusCode = None
 else:
+    # NOTE: We don't include OK -> 200 or CANCELLED -> 499
+    _GRPC_ERROR_MAPPING = {
+        StatusCode.UNKNOWN: exceptions.InternalServerError,
+        StatusCode.INVALID_ARGUMENT: exceptions.BadRequest,
+        StatusCode.DEADLINE_EXCEEDED: exceptions.GatewayTimeout,
+        StatusCode.NOT_FOUND: exceptions.NotFound,
+        StatusCode.ALREADY_EXISTS: exceptions.Conflict,
+        StatusCode.PERMISSION_DENIED: exceptions.Forbidden,
+        StatusCode.UNAUTHENTICATED: exceptions.Unauthorized,
+        StatusCode.RESOURCE_EXHAUSTED: exceptions.TooManyRequests,
+        StatusCode.FAILED_PRECONDITION: exceptions.PreconditionFailed,
+        StatusCode.ABORTED: exceptions.Conflict,
+        StatusCode.OUT_OF_RANGE: exceptions.BadRequest,
+        StatusCode.UNIMPLEMENTED: exceptions.MethodNotImplemented,
+        StatusCode.INTERNAL: exceptions.InternalServerError,
+        StatusCode.UNAVAILABLE: exceptions.ServiceUnavailable,
+        StatusCode.DATA_LOSS: exceptions.InternalServerError,
+    }
     _HAVE_GRPC = True
 
 
@@ -93,7 +110,8 @@ class _DatastoreAPIOverHttp(object):
         status = headers['status']
         if status != '200':
             error_status = status_pb2.Status.FromString(content)
-            raise make_exception(headers, error_status.message, use_json=False)
+            raise exceptions.make_exception(
+                headers, error_status.message, use_json=False)
 
         return content
 
@@ -220,6 +238,28 @@ class _DatastoreAPIOverHttp(object):
                          _datastore_pb2.AllocateIdsResponse)
 
 
+@contextlib.contextmanager
+def _grpc_catch_rendezvous():
+    """Re-map gRPC exceptions that happen in context.
+
+    .. _code.proto: https://github.com/googleapis/googleapis/blob/\
+                    master/google/rpc/code.proto
+
+    Remaps gRPC exceptions to the classes defined in
+    :mod:`~google.cloud.exceptions` (according to the description
+    in `code.proto`_).
+    """
+    try:
+        yield
+    except exceptions.GrpcRendezvous as exc:
+        error_code = exc.code()
+        error_class = _GRPC_ERROR_MAPPING.get(error_code)
+        if error_class is None:
+            raise
+        else:
+            raise error_class(exc.details())
+
+
 class _DatastoreAPIOverGRPC(object):
     """Helper mapping datastore API methods.
 
@@ -276,13 +316,8 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        try:
+        with _grpc_catch_rendezvous():
             return self._stub.RunQuery(request_pb)
-        except GrpcRendezvous as exc:
-            error_code = exc.code()
-            if error_code == StatusCode.INVALID_ARGUMENT:
-                raise BadRequest(exc.details())
-            raise
 
     def begin_transaction(self, project, request_pb):
         """Perform a ``beginTransaction`` request.
@@ -299,7 +334,8 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return self._stub.BeginTransaction(request_pb)
+        with _grpc_catch_rendezvous():
+            return self._stub.BeginTransaction(request_pb)
 
     def commit(self, project, request_pb):
         """Perform a ``commit`` request.
@@ -315,15 +351,8 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        try:
+        with _grpc_catch_rendezvous():
             return self._stub.Commit(request_pb)
-        except GrpcRendezvous as exc:
-            error_code = exc.code()
-            if error_code == StatusCode.ABORTED:
-                raise Conflict(exc.details())
-            if error_code == StatusCode.INVALID_ARGUMENT:
-                raise BadRequest(exc.details())
-            raise
 
     def rollback(self, project, request_pb):
         """Perform a ``rollback`` request.
@@ -339,7 +368,8 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return self._stub.Rollback(request_pb)
+        with _grpc_catch_rendezvous():
+            return self._stub.Rollback(request_pb)
 
     def allocate_ids(self, project, request_pb):
         """Perform an ``allocateIds`` request.
@@ -355,7 +385,8 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return self._stub.AllocateIds(request_pb)
+        with _grpc_catch_rendezvous():
+            return self._stub.AllocateIds(request_pb)
 
 
 class Connection(connection_module.Connection):
