@@ -14,9 +14,6 @@
 
 """Define API Topics."""
 
-import base64
-import binascii
-
 from google.cloud._helpers import _rfc3339_to_datetime
 
 
@@ -86,14 +83,7 @@ class Message(object):
         :rtype: :class:`Message`
         :returns: The message created from the response.
         """
-        raw_data = api_repr.get('data', b'')
-        try:
-            data = base64.b64decode(raw_data)
-        except (binascii.Error, TypeError):
-            to_pad = (- len(raw_data)) % 4
-            padded_data = raw_data + b'=' * to_pad
-            data = base64.b64decode(padded_data)
-
+        data = api_repr.get('data', b'')
         instance = cls(
             data=data, message_id=api_repr['messageId'],
             attributes=api_repr.get('attributes'))

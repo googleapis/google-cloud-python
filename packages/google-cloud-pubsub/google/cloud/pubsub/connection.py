@@ -14,6 +14,7 @@
 
 """Create / interact with Google Cloud Pub/Sub connections."""
 
+import base64
 import os
 
 from google.cloud import connection as base_connection
@@ -201,6 +202,7 @@ class _PublisherAPI(object):
         :rtype: list of string
         :returns: list of opaque IDs for published messages.
         """
+        _transform_messages_base64(messages, _base64_unicode)
         conn = self._connection
         data = {'messages': messages}
         response = conn.api_request(
@@ -420,7 +422,9 @@ class _SubscriberAPI(object):
             'maxMessages': max_messages,
         }
         response = conn.api_request(method='POST', path=path, data=data)
-        return response.get('receivedMessages', ())
+        messages = response.get('receivedMessages', ())
+        _transform_messages_base64(messages, base64.b64decode, 'message')
+        return messages
 
     def subscription_acknowledge(self, subscription_path, ack_ids):
         """API call:  acknowledge retrieved messages
@@ -540,3 +544,35 @@ class _IAMPolicyAPI(object):
         path = '/%s:testIamPermissions' % (target_path,)
         resp = conn.api_request(method='POST', path=path, data=wrapped)
         return resp.get('permissions', [])
+
+
+def _base64_unicode(value):
+    """Helper to base64 encode and make JSON serializable.
+
+    :type value: str
+    :param value: String value to be base64 encoded and made serializable.
+
+    :rtype: str
+    :returns: Base64 encoded string/unicode value.
+    """
+    as_bytes = base64.b64encode(value)
+    return as_bytes.decode('ascii')
+
+
+def _transform_messages_base64(messages, transform, key=None):
+    """Helper for base64 encoding and decoding messages.
+
+    :type messages: list
+    :param messages: List of dictionaries with message data.
+
+    :type transform: :class:`~types.FunctionType`
+    :param transform: Function to encode/decode the message data.
+
+    :type key: str
+    :param key: Index to access messages.
+    """
+    for message in messages:
+        if key is not None:
+            message = message[key]
+        if 'data' in message:
+            message['data'] = transform(message['data'])
