@@ -101,14 +101,26 @@ class TestIterator(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_constructor(self):
+        from google.cloud.iterator import _do_nothing_page_start
+        from google.cloud.iterator import _UNSET
+
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
         iterator = self._makeOne(client, path, None)
+        self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
         self.assertEqual(iterator.path, path)
+        self.assertIsNone(iterator._item_to_value)
+        self.assertEqual(iterator._items_key, 'items')
+        self.assertIsNone(iterator.max_results)
+        self.assertEqual(iterator.extra_params, {})
+        self.assertIs(iterator._page_start, _do_nothing_page_start)
+        # Changing attributes.
         self.assertEqual(iterator.page_number, 0)
         self.assertIsNone(iterator.next_page_token)
+        self.assertEqual(iterator.num_results, 0)
+        self.assertIs(iterator._page, _UNSET)
 
     def test_constructor_w_extra_param_collision(self):
         connection = _Connection()
@@ -192,6 +204,13 @@ class TestIterator(unittest.TestCase):
     def test___iter__(self):
         iterator = self._makeOne(None, None, None)
         self.assertIs(iter(iterator), iterator)
+
+    def test___iter___started(self):
+        iterator = self._makeOne(None, None, None)
+        iter_obj = iter(iterator)
+        self.assertIs(iter_obj, iterator)
+        with self.assertRaises(ValueError):
+            iter(iterator)
 
     def test_iterate(self):
         import six
@@ -335,23 +354,6 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], path)
         self.assertEqual(kw['query_params'], {})
-
-    def test_reset(self):
-        from google.cloud.iterator import _UNSET
-
-        connection = _Connection()
-        client = _Client(connection)
-        path = '/foo'
-        token = 'token'
-        iterator = self._makeOne(client, path, None)
-        iterator.page_number = 1
-        iterator.next_page_token = token
-        iterator._page = object()
-        iterator.reset()
-        self.assertEqual(iterator.page_number, 0)
-        self.assertEqual(iterator.num_results, 0)
-        self.assertIsNone(iterator.next_page_token)
-        self.assertIs(iterator._page, _UNSET)
 
 
 class _Connection(object):
