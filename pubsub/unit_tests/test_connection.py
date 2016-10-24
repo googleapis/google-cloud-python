@@ -238,9 +238,10 @@ class Test_PublisherAPI(_Base):
     def test_topic_publish_hit(self):
         import base64
         PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        B64_PAYLOAD = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
-        MESSAGE = {'data': B64, 'attributes': {}}
+        MESSAGE = {'data': PAYLOAD, 'attributes': {}}
+        B64MSG = {'data': B64_PAYLOAD, 'attributes': {}}
         RETURNED = {'messageIds': [MSGID]}
         connection = _Connection(RETURNED)
         api = self._makeOne(connection)
@@ -252,14 +253,14 @@ class Test_PublisherAPI(_Base):
         path = '/%s:publish' % (self.TOPIC_PATH,)
         self.assertEqual(connection._called_with['path'], path)
         self.assertEqual(connection._called_with['data'],
-                         {'messages': [MESSAGE]})
+                         {'messages': [B64MSG]})
+        msg_data = connection._called_with['data']['messages'][0]['data']
+        self.assertEqual(msg_data, B64_PAYLOAD)
 
     def test_topic_publish_miss(self):
-        import base64
         from google.cloud.exceptions import NotFound
         PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD).decode('ascii')
-        MESSAGE = {'data': B64, 'attributes': {}}
+        MESSAGE = {'data': PAYLOAD, 'attributes': {}}
         connection = _Connection()
         api = self._makeOne(connection)
 
@@ -534,6 +535,7 @@ class Test_SubscriberAPI(_Base):
         received = api.subscription_pull(self.SUB_PATH)
 
         self.assertEqual(received, RETURNED['receivedMessages'])
+        self.assertEqual(received[0]['message']['data'], PAYLOAD)
         self.assertEqual(connection._called_with['method'], 'POST')
         path = '/%s:pull' % (self.SUB_PATH,)
         self.assertEqual(connection._called_with['path'], path)
@@ -716,6 +718,37 @@ class Test_IAMPolicyAPI(_Base):
         self.assertEqual(connection._called_with['path'], path)
         self.assertEqual(connection._called_with['data'],
                          {'permissions': ALL_ROLES})
+
+
+class Test__transform_messages_base64_empty(unittest.TestCase):
+    def _callFUT(self, messages, transform, key=None):
+        from google.cloud.pubsub.connection import _transform_messages_base64
+        return _transform_messages_base64(messages, transform, key)
+
+    def test__transform_messages_base64_empty_message(self):
+        from base64 import b64decode
+        DATA = [{'message': {}}]
+        self._callFUT(DATA, b64decode, 'message')
+        self.assertEqual(DATA, [{'message': {}}])
+
+    def test__transform_messages_base64_empty_data(self):
+        from base64 import b64decode
+        DATA = [{'message': {'data': b''}}]
+        self._callFUT(DATA, b64decode, 'message')
+        self.assertEqual(DATA, [{'message': {'data': b''}}])
+
+    def test__transform_messages_base64_pull(self):
+        from base64 import b64encode
+        DATA = [{'message': {'data': b'testing 1 2 3'}}]
+        self._callFUT(DATA, b64encode, 'message')
+        self.assertEqual(DATA[0]['message']['data'],
+                         b64encode(b'testing 1 2 3'))
+
+    def test__transform_messages_base64_publish(self):
+        from base64 import b64encode
+        DATA = [{'data': b'testing 1 2 3'}]
+        self._callFUT(DATA, b64encode)
+        self.assertEqual(DATA[0]['data'], b64encode(b'testing 1 2 3'))
 
 
 class _Connection(object):

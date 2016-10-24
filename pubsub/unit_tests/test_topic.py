@@ -120,11 +120,9 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(api._topic_deleted, self.TOPIC_PATH)
 
     def test_publish_single_bytes_wo_attrs_w_bound_client(self):
-        import base64
-        PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        PAYLOAD = 'This is the message text'
         MSGID = 'DEADBEEF'
-        MESSAGE = {'data': B64, 'attributes': {}}
+        MESSAGE = {'data': PAYLOAD, 'attributes': {}}
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID]
@@ -136,7 +134,6 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(api._topic_published, (self.TOPIC_PATH, [MESSAGE]))
 
     def test_publish_single_bytes_wo_attrs_w_add_timestamp_alt_client(self):
-        import base64
         import datetime
         from google.cloud.pubsub import topic as MUT
         from google.cloud._helpers import _RFC3339_MICROS
@@ -146,11 +143,10 @@ class TestTopic(unittest.TestCase):
         def _utcnow():
             return NOW
 
-        PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        PAYLOAD = 'This is the message text'
         MSGID = 'DEADBEEF'
         MESSAGE = {
-            'data': B64,
+            'data': PAYLOAD,
             'attributes': {'timestamp': NOW.strftime(_RFC3339_MICROS)},
         }
         client1 = _Client(project=self.PROJECT)
@@ -167,12 +163,10 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(api._topic_published, (self.TOPIC_PATH, [MESSAGE]))
 
     def test_publish_single_bytes_w_add_timestamp_w_ts_in_attrs(self):
-        import base64
-        PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        PAYLOAD = 'This is the message text'
         MSGID = 'DEADBEEF'
         OVERRIDE = '2015-04-10T16:46:22.868399Z'
-        MESSAGE = {'data': B64,
+        MESSAGE = {'data': PAYLOAD,
                    'attributes': {'timestamp': OVERRIDE}}
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
@@ -186,11 +180,9 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(api._topic_published, (self.TOPIC_PATH, [MESSAGE]))
 
     def test_publish_single_w_attrs(self):
-        import base64
-        PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        PAYLOAD = 'This is the message text'
         MSGID = 'DEADBEEF'
-        MESSAGE = {'data': B64,
+        MESSAGE = {'data': PAYLOAD,
                    'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
@@ -202,17 +194,39 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(msgid, MSGID)
         self.assertEqual(api._topic_published, (self.TOPIC_PATH, [MESSAGE]))
 
+    def test_publish_with_gax(self):
+        PAYLOAD = 'This is the message text'
+        MSGID = 'DEADBEEF'
+        MESSAGE = {'data': PAYLOAD, 'attributes': {}}
+        client = _Client(project=self.PROJECT)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_publish_response = [MSGID]
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        msgid = topic.publish(PAYLOAD)
+
+        self.assertEqual(msgid, MSGID)
+        self.assertEqual(api._topic_published, (self.TOPIC_PATH, [MESSAGE]))
+
+    def test_publish_without_gax(self):
+        PAYLOAD = 'This is the message text'
+        MSGID = 'DEADBEEF'
+        MESSAGE = {'data': PAYLOAD, 'attributes': {}}
+        client = _Client(project=self.PROJECT)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_publish_response = [MSGID]
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        msgid = topic.publish(PAYLOAD)
+
+        self.assertEqual(msgid, MSGID)
+        self.assertEqual(api._topic_published, (self.TOPIC_PATH, [MESSAGE]))
+
     def test_publish_multiple_w_bound_client(self):
-        import base64
-        PAYLOAD1 = b'This is the first message text'
-        PAYLOAD2 = b'This is the second message text'
-        B64_1 = base64.b64encode(PAYLOAD1)
-        B64_2 = base64.b64encode(PAYLOAD2)
+        PAYLOAD1 = 'This is the first message text'
+        PAYLOAD2 = 'This is the second message text'
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
-        MESSAGE1 = {'data': B64_1.decode('ascii'),
-                    'attributes': {}}
-        MESSAGE2 = {'data': B64_2.decode('ascii'),
+        MESSAGE1 = {'data': PAYLOAD1, 'attributes': {}}
+        MESSAGE2 = {'data': PAYLOAD2,
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
@@ -241,16 +255,13 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(api._api_called, 0)
 
     def test_publish_multiple_w_alternate_client(self):
-        import base64
-        PAYLOAD1 = b'This is the first message text'
-        PAYLOAD2 = b'This is the second message text'
-        B64_1 = base64.b64encode(PAYLOAD1)
-        B64_2 = base64.b64encode(PAYLOAD2)
+        PAYLOAD1 = 'This is the first message text'
+        PAYLOAD2 = 'This is the second message text'
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
-        MESSAGE1 = {'data': B64_1.decode('ascii'), 'attributes': {}}
+        MESSAGE1 = {'data': PAYLOAD1, 'attributes': {}}
         MESSAGE2 = {
-            'data': B64_2.decode('ascii'),
+            'data': PAYLOAD2,
             'attributes': {'attr1': 'value1', 'attr2': 'value2'},
         }
         client1 = _Client(project=self.PROJECT)
@@ -598,10 +609,8 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(list(batch), ['ONE', 'TWO', 'THREE'])
 
     def test_publish_bytes_wo_attrs(self):
-        import base64
-        PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD).decode('ascii')
-        MESSAGE = {'data': B64,
+        PAYLOAD = 'This is the message text'
+        MESSAGE = {'data': PAYLOAD,
                    'attributes': {}}
         client = _Client(project=self.PROJECT)
         topic = _Topic()
@@ -610,10 +619,8 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch.messages, [MESSAGE])
 
     def test_publish_bytes_w_add_timestamp(self):
-        import base64
-        PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD).decode('ascii')
-        MESSAGE = {'data': B64,
+        PAYLOAD = 'This is the message text'
+        MESSAGE = {'data': PAYLOAD,
                    'attributes': {'timestamp': 'TIMESTAMP'}}
         client = _Client(project=self.PROJECT)
         topic = _Topic(timestamp_messages=True)
@@ -622,16 +629,13 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch.messages, [MESSAGE])
 
     def test_commit_w_bound_client(self):
-        import base64
-        PAYLOAD1 = b'This is the first message text'
-        PAYLOAD2 = b'This is the second message text'
-        B64_1 = base64.b64encode(PAYLOAD1)
-        B64_2 = base64.b64encode(PAYLOAD2)
+        PAYLOAD1 = 'This is the first message text'
+        PAYLOAD2 = 'This is the second message text'
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
-        MESSAGE1 = {'data': B64_1.decode('ascii'),
+        MESSAGE1 = {'data': PAYLOAD1,
                     'attributes': {}}
-        MESSAGE2 = {'data': B64_2.decode('ascii'),
+        MESSAGE2 = {'data': PAYLOAD2,
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         client = _Client(project='PROJECT')
         api = client.publisher_api = _FauxPublisherAPI()
@@ -649,16 +653,12 @@ class TestBatch(unittest.TestCase):
                          (topic.full_name, [MESSAGE1, MESSAGE2]))
 
     def test_commit_w_alternate_client(self):
-        import base64
-        PAYLOAD1 = b'This is the first message text'
-        PAYLOAD2 = b'This is the second message text'
-        B64_1 = base64.b64encode(PAYLOAD1)
-        B64_2 = base64.b64encode(PAYLOAD2)
+        PAYLOAD1 = 'This is the first message text'
+        PAYLOAD2 = 'This is the second message text'
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
-        MESSAGE1 = {'data': B64_1.decode('ascii'),
-                    'attributes': {}}
-        MESSAGE2 = {'data': B64_2.decode('ascii'),
+        MESSAGE1 = {'data': PAYLOAD1, 'attributes': {}}
+        MESSAGE2 = {'data': PAYLOAD2,
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         client1 = _Client(project='PROJECT')
         client2 = _Client(project='PROJECT')
@@ -677,16 +677,12 @@ class TestBatch(unittest.TestCase):
                          (topic.full_name, [MESSAGE1, MESSAGE2]))
 
     def test_context_mgr_success(self):
-        import base64
-        PAYLOAD1 = b'This is the first message text'
-        PAYLOAD2 = b'This is the second message text'
-        B64_1 = base64.b64encode(PAYLOAD1)
-        B64_2 = base64.b64encode(PAYLOAD2)
+        PAYLOAD1 = 'This is the first message text'
+        PAYLOAD2 = 'This is the second message text'
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
-        MESSAGE1 = {'data': B64_1.decode('ascii'),
-                    'attributes': {}}
-        MESSAGE2 = {'data': B64_2.decode('ascii'),
+        MESSAGE1 = {'data': PAYLOAD1, 'attributes': {}}
+        MESSAGE2 = {'data': PAYLOAD2,
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         client = _Client(project='PROJECT')
         api = client.publisher_api = _FauxPublisherAPI()
@@ -705,14 +701,10 @@ class TestBatch(unittest.TestCase):
                          (topic.full_name, [MESSAGE1, MESSAGE2]))
 
     def test_context_mgr_failure(self):
-        import base64
-        PAYLOAD1 = b'This is the first message text'
-        PAYLOAD2 = b'This is the second message text'
-        B64_1 = base64.b64encode(PAYLOAD1)
-        B64_2 = base64.b64encode(PAYLOAD2)
-        MESSAGE1 = {'data': B64_1.decode('ascii'),
-                    'attributes': {}}
-        MESSAGE2 = {'data': B64_2.decode('ascii'),
+        PAYLOAD1 = 'This is the first message text'
+        PAYLOAD2 = 'This is the second message text'
+        MESSAGE1 = {'data': PAYLOAD1, 'attributes': {}}
+        MESSAGE2 = {'data': PAYLOAD2,
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         client = _Client(project='PROJECT')
         api = client.publisher_api = _FauxPublisherAPI()
