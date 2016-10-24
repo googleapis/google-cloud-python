@@ -14,8 +14,6 @@
 
 """GAX wrapper for Logging API requests."""
 
-import json
-
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
@@ -24,7 +22,7 @@ from google.logging.type.log_severity_pb2 import LogSeverity
 from google.logging.v2.logging_config_pb2 import LogSink
 from google.logging.v2.logging_metrics_pb2 import LogMetric
 from google.logging.v2.log_entry_pb2 import LogEntry
-from google.protobuf.json_format import Parse
+from google.protobuf.json_format import ParseDict
 from grpc import StatusCode
 
 from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -603,11 +601,10 @@ def _log_entry_mapping_to_pb(mapping):
             entry_pb.labels[key] = value
 
     if 'jsonPayload' in mapping:
-        for key, value in mapping['jsonPayload'].items():
-            entry_pb.json_payload[key] = value
+        ParseDict(mapping['jsonPayload'], entry_pb.json_payload)
 
     if 'protoPayload' in mapping:
-        Parse(json.dumps(mapping['protoPayload']), entry_pb.proto_payload)
+        ParseDict(mapping['protoPayload'], entry_pb.proto_payload)
 
     if 'httpRequest' in mapping:
         _http_request_mapping_to_pb(
