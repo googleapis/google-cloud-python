@@ -214,7 +214,8 @@ def test__get_gae_credentials_no_apis():
 @mock.patch(
     'google.auth.compute_engine._metadata.ping', return_value=True)
 @mock.patch(
-    'google.auth.compute_engine._metadata.get', return_value='example-project')
+    'google.auth.compute_engine._metadata.get_project_id',
+    return_value='example-project')
 def test__get_gce_credentials(get_mock, ping_mock):
     credentials, project_id = _default._get_gce_credentials()
 
@@ -233,7 +234,7 @@ def test__get_gce_credentials_no_ping(ping_mock):
 @mock.patch(
     'google.auth.compute_engine._metadata.ping', return_value=True)
 @mock.patch(
-    'google.auth.compute_engine._metadata.get',
+    'google.auth.compute_engine._metadata.get_project_id',
     side_effect=exceptions.TransportError())
 def test__get_gce_credentials_no_project_id(get_mock, ping_mock):
     credentials, project_id = _default._get_gce_credentials()

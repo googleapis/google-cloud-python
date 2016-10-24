@@ -126,6 +126,20 @@ def test_get_failure_bad_json(mock_request):
         headers=_metadata._METADATA_HEADERS)
 
 
+def test_get_project_id(mock_request):
+    project = 'example-project'
+    request_mock = mock_request(
+        project, headers={'content-type': 'text/plain'})
+
+    project_id = _metadata.get_project_id(request_mock)
+
+    request_mock.assert_called_once_with(
+        method='GET',
+        url=_metadata._METADATA_ROOT + 'project/project-id',
+        headers=_metadata._METADATA_HEADERS)
+    assert project_id == project
+
+
 @mock.patch('google.auth._helpers.utcnow', return_value=datetime.datetime.min)
 def test_get_service_account_token(utcnow, mock_request):
     ttl = 500

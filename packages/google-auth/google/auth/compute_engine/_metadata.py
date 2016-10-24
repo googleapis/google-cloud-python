@@ -128,6 +128,23 @@ def get(request, path, root=_METADATA_ROOT, recursive=False):
                 url, response.status, response.data), response)
 
 
+def get_project_id(request):
+    """Get the Google Cloud Project ID from the metadata server.
+
+    Args:
+        request (google.auth.transport.Request): A callable used to make
+            HTTP requests.
+
+    Returns:
+        str: The project ID
+
+    Raises:
+        google.auth.exceptions.TransportError: if an error occurred while
+            retrieving metadata.
+    """
+    return get(request, 'project/project-id')
+
+
 def get_service_account_info(request, service_account='default'):
     """Get information about a service account from the metadata server.
 

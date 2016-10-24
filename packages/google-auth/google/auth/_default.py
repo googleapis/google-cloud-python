@@ -172,7 +172,7 @@ def _get_gce_credentials(request=None):
     if _metadata.ping(request=request):
         # Get the project ID.
         try:
-            project_id = _metadata.get(request, 'project/project-id')
+            project_id = _metadata.get_project_id(request=request)
         except exceptions.TransportError:
             _LOGGER.warning(
                 'No project ID could be determined from the Compute Engine '
