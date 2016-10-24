@@ -88,7 +88,7 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(entity2.metadata, {})
         # Verify entity 3.
         self.assertEqual(entity3.name, self.NAME3)
-        self.assertEqual(entity3.entity_type, EntityType.EVENT)
+        self.assertEqual(entity3.entity_type, EntityType.WORK_OF_ART)
         self.assertGreater(entity3.salience, 0.0)
         self.assertEqual(entity3.mentions, [entity3.name])
         wiki_url = ('http://en.wikipedia.org/wiki/'
