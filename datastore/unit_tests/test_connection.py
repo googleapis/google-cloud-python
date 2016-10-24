@@ -109,9 +109,9 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
 @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
 class Test__grpc_catch_rendezvous(unittest.TestCase):
 
-    def _callFUT(self, to_call, *args, **kwargs):
+    def _callFUT(self):
         from google.cloud.datastore.connection import _grpc_catch_rendezvous
-        return _grpc_catch_rendezvous(to_call, *args, **kwargs)
+        return _grpc_catch_rendezvous()
 
     @staticmethod
     def _fake_method(exc, result=None):
@@ -122,7 +122,8 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
 
     def test_success(self):
         expected = object()
-        result = self._callFUT(self._fake_method, None, expected)
+        with self._callFUT():
+            result = self._fake_method(None, expected)
         self.assertIs(result, expected)
 
     def test_failure_aborted(self):
@@ -135,7 +136,8 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
         exc_state = _RPCState((), None, None, StatusCode.ABORTED, details)
         exc = GrpcRendezvous(exc_state, None, None, None)
         with self.assertRaises(Conflict):
-            self._callFUT(self._fake_method, exc)
+            with self._callFUT():
+                self._fake_method(exc)
 
     def test_failure_invalid_argument(self):
         from grpc import StatusCode
@@ -149,7 +151,8 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
                               StatusCode.INVALID_ARGUMENT, details)
         exc = GrpcRendezvous(exc_state, None, None, None)
         with self.assertRaises(BadRequest):
-            self._callFUT(self._fake_method, exc)
+            with self._callFUT():
+                self._fake_method(exc)
 
     def test_failure_cancelled(self):
         from grpc import StatusCode
@@ -159,12 +162,14 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
         exc_state = _RPCState((), None, None, StatusCode.CANCELLED, None)
         exc = GrpcRendezvous(exc_state, None, None, None)
         with self.assertRaises(GrpcRendezvous):
-            self._callFUT(self._fake_method, exc)
+            with self._callFUT():
+                self._fake_method(exc)
 
     def test_commit_failure_non_grpc_err(self):
         exc = RuntimeError('Not a gRPC error')
         with self.assertRaises(RuntimeError):
-            self._callFUT(self._fake_method, exc)
+            with self._callFUT():
+                self._fake_method(exc)
 
 
 class Test_DatastoreAPIOverGRPC(unittest.TestCase):
