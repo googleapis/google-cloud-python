@@ -14,6 +14,7 @@
 
 """Connections to Google Cloud Datastore API servers."""
 
+import contextlib
 import os
 
 from google.rpc import status_pb2
@@ -237,8 +238,9 @@ class _DatastoreAPIOverHttp(object):
                          _datastore_pb2.AllocateIdsResponse)
 
 
-def _grpc_catch_rendezvous(to_call, *args, **kwargs):
-    """Call a method/function and re-map gRPC exceptions.
+@contextlib.contextmanager
+def _grpc_catch_rendezvous():
+    """Re-map gRPC exceptions that happen in context.
 
     .. _code.proto: https://github.com/googleapis/googleapis/blob/\
                     master/google/rpc/code.proto
@@ -246,26 +248,9 @@ def _grpc_catch_rendezvous(to_call, *args, **kwargs):
     Remaps gRPC exceptions to the classes defined in
     :mod:`~google.cloud.exceptions` (according to the description
     in `code.proto`_).
-
-    :type to_call: callable
-    :param to_call: Callable that makes a request which may raise a
-                    :class:`~google.cloud.exceptions.GrpcRendezvous`.
-
-    :type args: tuple
-    :param args: Positional arugments to the callable.
-
-    :type kwargs: dict
-    :param kwargs: Keyword arguments to the callable.
-
-    :rtype: object
-    :returns: The value returned from ``to_call``.
-    :raises: :class:`~google.cloud.exceptions.GrpcRendezvous` if one
-             is encountered that can't be re-mapped, otherwise maps
-             to a :class:`~google.cloud.exceptions.GoogleCloudError`
-             subclass.
     """
     try:
-        return to_call(*args, **kwargs)
+        yield
     except exceptions.GrpcRendezvous as exc:
         error_code = exc.code()
         error_class = _GRPC_ERROR_MAPPING.get(error_code)
@@ -331,8 +316,8 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return _grpc_catch_rendezvous(
-            self._stub.RunQuery, request_pb)
+        with _grpc_catch_rendezvous():
+            return self._stub.RunQuery(request_pb)
 
     def begin_transaction(self, project, request_pb):
         """Perform a ``beginTransaction`` request.
@@ -349,8 +334,8 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return _grpc_catch_rendezvous(
-            self._stub.BeginTransaction, request_pb)
+        with _grpc_catch_rendezvous():
+            return self._stub.BeginTransaction(request_pb)
 
     def commit(self, project, request_pb):
         """Perform a ``commit`` request.
@@ -366,8 +351,8 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return _grpc_catch_rendezvous(
-            self._stub.Commit, request_pb)
+        with _grpc_catch_rendezvous():
+            return self._stub.Commit(request_pb)
 
     def rollback(self, project, request_pb):
         """Perform a ``rollback`` request.
@@ -383,8 +368,8 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return _grpc_catch_rendezvous(
-            self._stub.Rollback, request_pb)
+        with _grpc_catch_rendezvous():
+            return self._stub.Rollback(request_pb)
 
     def allocate_ids(self, project, request_pb):
         """Perform an ``allocateIds`` request.
@@ -400,8 +385,8 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return _grpc_catch_rendezvous(
-            self._stub.AllocateIds, request_pb)
+        with _grpc_catch_rendezvous():
+            return self._stub.AllocateIds(request_pb)
 
 
 class Connection(connection_module.Connection):
