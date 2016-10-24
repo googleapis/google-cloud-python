@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud f327be3 documentation</title>
+  <title>Using the API &mdash; google-cloud fd0cf13 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud f327be3 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud fd0cf13 documentation" href="index.html"/>
         <link rel="next" title="Speech Client" href="speech-client.html"/>
         <link rel="prev" title="Natural Language Response Classes" href="language-responses.html"/> 
 
@@ -313,10 +313,9 @@ asynchronous recognition.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize">Speech Asynchronous Recognize</a></p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.speech.encoding</span> <span class="kn">import</span> <span class="n">Encoding</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                       <span class="n">encoding</span><span class="o">=</span><span class="n">Encoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span>
+<span class="gp">... </span>                       <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span>
 <span class="gp">... </span>                       <span class="n">sample_rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">async_recognize</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">retry_count</span> <span class="o">=</span> <span class="mi">100</span>
@@ -340,33 +339,32 @@ data to text and returns alternative text transcriptons.</p>
 <p>This example uses <code class="docutils literal"><span class="pre">language_code='en-GB'</span></code> to better recognize a dialect from
 Great Britian.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.speech.encoding</span> <span class="kn">import</span> <span class="n">Encoding</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                       <span class="n">encoding</span><span class="o">=</span><span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span><span class="p">,</span>
+<span class="gp">... </span>                       <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span><span class="p">,</span>
 <span class="gp">... </span>                       <span class="n">sample_rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">async_recognize</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="go"> &gt;&gt;&gt; alternatives = client.sync_recognize(</span>
-<span class="go"> ...     &#39;FLAC&#39;, 16000, source_uri=&#39;gs://my-bucket/recording.flac&#39;,</span>
-<span class="go"> ...     language_code=&#39;en-GB&#39;, max_alternatives=2)</span>
-<span class="go"> &gt;&gt;&gt; for alternative in alternatives:</span>
-<span class="go"> ...     print(&#39;=&#39; * 20)</span>
-<span class="go"> ...     print(&#39;transcript: &#39; + alternative[&#39;transcript&#39;])</span>
-<span class="go"> ...     print(&#39;confidence: &#39; + alternative[&#39;confidence&#39;])</span>
-<span class="go"> ====================</span>
-<span class="go"> transcript: Hello, this is a test</span>
-<span class="go"> confidence: 0.81</span>
-<span class="go"> ====================</span>
-<span class="go"> transcript: Hello, this is one test</span>
-<span class="go"> confidence: 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alternatives</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sync_recognize</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span><span class="p">,</span> <span class="mi">16000</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span> <span class="n">language_code</span><span class="o">=</span><span class="s1">&#39;en-GB&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">alternatives</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;transcript: &#39;</span> <span class="o">+</span> <span class="n">alternative</span><span class="p">[</span><span class="s1">&#39;transcript&#39;</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;confidence: &#39;</span> <span class="o">+</span> <span class="n">alternative</span><span class="p">[</span><span class="s1">&#39;confidence&#39;</span><span class="p">])</span>
+<span class="go">====================</span>
+<span class="go">transcript: Hello, this is a test</span>
+<span class="go">confidence: 0.81</span>
+<span class="go">====================</span>
+<span class="go">transcript: Hello, this is one test</span>
+<span class="go">confidence: 0</span>
 </pre></div>
 </div>
 <p>Example of using the profanity filter.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.speech.encoding</span> <span class="kn">import</span> <span class="n">Encoding</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                       <span class="n">encoding</span><span class="o">=</span><span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span><span class="p">,</span>
+<span class="gp">... </span>                       <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span><span class="p">,</span>
 <span class="gp">... </span>                       <span class="n">sample_rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alternatives</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sync_recognize</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="gp">... </span>                                     <span class="n">profanity_filter</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -383,10 +381,9 @@ Great Britian.</p>
 the accuracy for specific words and phrases. This can also be used to add new
 words to the vocabulary of the recognizer.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.speech.encoding</span> <span class="kn">import</span> <span class="n">Encoding</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-bucket/recording.flac&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                       <span class="n">encoding</span><span class="o">=</span><span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span><span class="p">,</span>
+<span class="gp">... </span>                       <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span><span class="p">,</span>
 <span class="gp">... </span>                       <span class="n">sample_rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hints</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;hi&#39;</span><span class="p">,</span> <span class="s1">&#39;good afternoon&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alternatives</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sync_recognize</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
@@ -444,7 +441,7 @@ words to the vocabulary of the recognizer.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'f327be3',
+            VERSION:'fd0cf13',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
