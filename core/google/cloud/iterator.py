@@ -81,13 +81,6 @@ To consume an entire page::
 import six
 
 
-_NO_MORE_PAGES_ERR = 'Iterator has no more pages.'
-_UNSTARTED_ERR = (
-    'Iterator has not been started. Either begin iterating, '
-    'call next(my_iter) or call my_iter.update_page().')
-_PAGE_ERR_TEMPLATE = (
-    'Tried to update the page while current page (%r) still has %d '
-    'items remaining.')
 DEFAULT_ITEMS_KEY = 'items'
 """The dictionary key used to retrieve items from each response."""
 
@@ -272,17 +265,27 @@ class Iterator(object):
         self._started = True
         return self._pages_iter()
 
-    def __iter__(self):
+    def _items_iter(self):
         """Iterator for each item returned."""
-        # NOTE: We don't check if the iterator has started since the pages
-        #       iterator already does this.
-        for page in self.pages:
+        for page in self._pages_iter():
             # Decrement the total results since the pages iterator adds
             # to it when each page is encountered.
             self.num_results -= page.num_items
             for item in page:
                 self.num_results += 1
                 yield item
+
+    def __iter__(self):
+        """Iterator for each item returned.
+
+        :rtype: :class:`~types.GeneratorType`
+        :returns: A generator of items from the API.
+        :raises ValueError: If the iterator has already been started.
+        """
+        if self._started:
+            raise ValueError('Iterator has already started', self)
+        self._started = True
+        return self._items_iter()
 
     def _has_next_page(self):
         """Determines whether or not there are more pages with results.
