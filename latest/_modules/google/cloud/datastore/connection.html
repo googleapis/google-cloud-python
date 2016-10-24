@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.connection &mdash; google-cloud dca5600 documentation</title>
+  <title>google.cloud.datastore.connection &mdash; google-cloud f327be3 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud dca5600 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud f327be3 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -286,6 +286,7 @@
 
 <span class="sd">&quot;&quot;&quot;Connections to Google Cloud Datastore API servers.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">from</span> <span class="nn">google.rpc</span> <span class="k">import</span> <span class="n">status_pb2</span>
@@ -295,19 +296,35 @@
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">connection_module</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">GCD_HOST</span>
-<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">BadRequest</span>
-<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">Conflict</span>
-<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">GrpcRendezvous</span>
-<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">make_exception</span>
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore._generated</span> <span class="k">import</span> <span class="n">datastore_pb2</span> <span class="k">as</span> <span class="n">_datastore_pb2</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">grpc</span> <span class="k">import</span> <span class="n">StatusCode</span>
     <span class="kn">from</span> <span class="nn">google.cloud.datastore._generated</span> <span class="k">import</span> <span class="n">datastore_grpc_pb2</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
+    <span class="n">_GRPC_ERROR_MAPPING</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">_HAVE_GRPC</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">datastore_grpc_pb2</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">StatusCode</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="k">else</span><span class="p">:</span>
+    <span class="c1"># NOTE: We don&#39;t include OK -&gt; 200 or CANCELLED -&gt; 499</span>
+    <span class="n">_GRPC_ERROR_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">InternalServerError</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">INVALID_ARGUMENT</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">BadRequest</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">DEADLINE_EXCEEDED</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">GatewayTimeout</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">NOT_FOUND</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">ALREADY_EXISTS</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">Conflict</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">PERMISSION_DENIED</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">Forbidden</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">UNAUTHENTICATED</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">Unauthorized</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">RESOURCE_EXHAUSTED</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">TooManyRequests</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">FAILED_PRECONDITION</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">PreconditionFailed</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">ABORTED</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">Conflict</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">OUT_OF_RANGE</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">BadRequest</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">UNIMPLEMENTED</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">MethodNotImplemented</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">INTERNAL</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">InternalServerError</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">UNAVAILABLE</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">ServiceUnavailable</span><span class="p">,</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">DATA_LOSS</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">InternalServerError</span><span class="p">,</span>
+    <span class="p">}</span>
     <span class="n">_HAVE_GRPC</span> <span class="o">=</span> <span class="kc">True</span>
 
 
@@ -365,7 +382,8 @@
         <span class="n">status</span> <span class="o">=</span> <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="s1">&#39;200&#39;</span><span class="p">:</span>
             <span class="n">error_status</span> <span class="o">=</span> <span class="n">status_pb2</span><span class="o">.</span><span class="n">Status</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">error_status</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">make_exception</span><span class="p">(</span>
+                <span class="n">headers</span><span class="p">,</span> <span class="n">error_status</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">content</span>
 
@@ -492,6 +510,28 @@
                          <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">AllocateIdsResponse</span><span class="p">)</span>
 
 
+<span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<span class="k">def</span> <span class="nf">_grpc_catch_rendezvous</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Re-map gRPC exceptions that happen in context.</span>
+
+<span class="sd">    .. _code.proto: https://github.com/googleapis/googleapis/blob/\</span>
+<span class="sd">                    master/google/rpc/code.proto</span>
+
+<span class="sd">    Remaps gRPC exceptions to the classes defined in</span>
+<span class="sd">    :mod:`~google.cloud.exceptions` (according to the description</span>
+<span class="sd">    in `code.proto`_).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">GrpcRendezvous</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="n">error_code</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">code</span><span class="p">()</span>
+        <span class="n">error_class</span> <span class="o">=</span> <span class="n">_GRPC_ERROR_MAPPING</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">error_code</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">error_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">error_class</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">details</span><span class="p">())</span>
+
+
 <span class="k">class</span> <span class="nc">_DatastoreAPIOverGRPC</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper mapping datastore API methods.</span>
 
@@ -548,13 +588,8 @@
 <span class="sd">        :returns: The returned protobuf response object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_pb</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project</span>
-        <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">_grpc_catch_rendezvous</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">RunQuery</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">GrpcRendezvous</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="n">error_code</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">code</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">error_code</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">INVALID_ARGUMENT</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">details</span><span class="p">())</span>
-            <span class="k">raise</span>
 
     <span class="k">def</span> <span class="nf">begin_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``beginTransaction`` request.</span>
@@ -571,7 +606,8 @@
 <span class="sd">        :returns: The returned protobuf response object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_pb</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">BeginTransaction</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">_grpc_catch_rendezvous</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">BeginTransaction</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``commit`` request.</span>
@@ -587,15 +623,8 @@
 <span class="sd">        :returns: The returned protobuf response object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_pb</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project</span>
-        <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">_grpc_catch_rendezvous</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">Commit</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">GrpcRendezvous</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="n">error_code</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">code</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">error_code</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">ABORTED</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">Conflict</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">details</span><span class="p">())</span>
-            <span class="k">if</span> <span class="n">error_code</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">INVALID_ARGUMENT</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">details</span><span class="p">())</span>
-            <span class="k">raise</span>
 
     <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``rollback`` request.</span>
@@ -611,7 +640,8 @@
 <span class="sd">        :returns: The returned protobuf response object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_pb</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">Rollback</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">_grpc_catch_rendezvous</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">Rollback</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">allocate_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform an ``allocateIds`` request.</span>
@@ -627,7 +657,8 @@
 <span class="sd">        :returns: The returned protobuf response object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_pb</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">AllocateIds</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">_grpc_catch_rendezvous</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub</span><span class="o">.</span><span class="n">AllocateIds</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../../datastore-client.html#google.cloud.datastore.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">connection_module</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
@@ -983,7 +1014,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'dca5600',
+            VERSION:'f327be3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
