@@ -282,6 +282,7 @@ class Iterator(object):
             page = Page(self, response, self._items_key,
                         self._item_to_value)
             self._page_start(self, page, response)
+            self.num_results += page.num_items
             yield page
 
     @property
@@ -302,6 +303,9 @@ class Iterator(object):
         # NOTE: We don't check if the iterator has started since the pages
         #       iterator already does this.
         for page in self.pages:
+            # Decrement the total results since the pages iterator adds
+            # to it when each page is encountered.
+            self.num_results -= page.num_items
             for item in page:
                 self.num_results += 1
                 yield item
