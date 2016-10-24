@@ -51,10 +51,9 @@ See: `Speech Asynchronous Recognize`_
 
     >>> import time
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.LINEAR16,
+    ...                        encoding=speech.Encoding.LINEAR16,
     ...                        sample_rate=44100)
     >>> operation = client.async_recognize(sample, max_alternatives=2)
     >>> retry_count = 100
@@ -82,35 +81,34 @@ Great Britian.
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.FLAC,
+    ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
     >>> operation = client.async_recognize(sample, max_alternatives=2)
-     >>> alternatives = client.sync_recognize(
-     ...     'FLAC', 16000, source_uri='gs://my-bucket/recording.flac',
-     ...     language_code='en-GB', max_alternatives=2)
-     >>> for alternative in alternatives:
-     ...     print('=' * 20)
-     ...     print('transcript: ' + alternative['transcript'])
-     ...     print('confidence: ' + alternative['confidence'])
-     ====================
-     transcript: Hello, this is a test
-     confidence: 0.81
-     ====================
-     transcript: Hello, this is one test
-     confidence: 0
+    >>> alternatives = client.sync_recognize(
+    ...     speech.Encoding.FLAC, 16000,
+    ...     source_uri='gs://my-bucket/recording.flac', language_code='en-GB',
+    ...     max_alternatives=2)
+    >>> for alternative in alternatives:
+    ...     print('=' * 20)
+    ...     print('transcript: ' + alternative['transcript'])
+    ...     print('confidence: ' + alternative['confidence'])
+    ====================
+    transcript: Hello, this is a test
+    confidence: 0.81
+    ====================
+    transcript: Hello, this is one test
+    confidence: 0
 
 Example of using the profanity filter.
 
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.FLAC,
+    ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
     >>> alternatives = client.sync_recognize(sample, max_alternatives=1,
     ...                                      profanity_filter=True)
@@ -129,10 +127,9 @@ words to the vocabulary of the recognizer.
 .. code-block:: python
 
     >>> from google.cloud import speech
-    >>> from google.cloud.speech.encoding import Encoding
     >>> client = speech.Client()
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
-    ...                        encoding=Encoding.FLAC,
+    ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
     >>> hints = ['hi', 'good afternoon']
     >>> alternatives = client.sync_recognize(sample, max_alternatives=2,
