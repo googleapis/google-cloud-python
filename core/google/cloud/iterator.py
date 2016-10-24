@@ -246,10 +246,11 @@ class Iterator(object):
                  items_key=DEFAULT_ITEMS_KEY,
                  page_token=None, max_results=None, extra_params=None,
                  page_start=_do_nothing_page_start):
+        self._started = False
         self.client = client
         self.path = path
-        self._items_key = items_key
         self._item_to_value = item_to_value
+        self._items_key = items_key
         self.max_results = max_results
         self.extra_params = extra_params
         self._page_start = page_start
@@ -288,7 +289,15 @@ class Iterator(object):
         return self._page
 
     def __iter__(self):
-        """The :class:`Iterator` is an iterator."""
+        """The :class:`Iterator` is an iterator.
+
+        :rtype: :class:`Iterator`
+        :returns: Current instance.
+        :raises ValueError: If the iterator has already been started.
+        """
+        if self._started:
+            raise ValueError('Iterator has already started', self)
+        self._started = True
         return self
 
     def update_page(self, require_empty=True):
@@ -385,10 +394,3 @@ class Iterator(object):
         self.next_page_token = response.get('nextPageToken')
 
         return response
-
-    def reset(self):
-        """Resets the iterator to the beginning."""
-        self.page_number = 0
-        self.next_page_token = None
-        self.num_results = 0
-        self._page = _UNSET
