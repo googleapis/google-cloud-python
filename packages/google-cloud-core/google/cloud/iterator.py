@@ -314,16 +314,13 @@ class Iterator(object):
         return self._page
 
     def __iter__(self):
-        """The :class:`Iterator` is an iterator.
-
-        :rtype: :class:`Iterator`
-        :returns: Current instance.
-        :raises ValueError: If the iterator has already been started.
-        """
-        if self._started:
-            raise ValueError('Iterator has already started', self)
-        self._started = True
-        return self
+        """Iterator for each item returned."""
+        # NOTE: We don't check if the iterator has started since the pages
+        #       iterator already does this.
+        for page in self.pages:
+            for item in page:
+                self.num_results += 1
+                yield item
 
     def update_page(self, require_empty=True):
         """Move to the next page in the result set.
@@ -363,18 +360,6 @@ class Iterator(object):
             if require_empty:
                 msg = _PAGE_ERR_TEMPLATE % (self._page, self.page.remaining)
                 raise ValueError(msg)
-
-    def next(self):
-        """Get the next item from the request."""
-        self.update_page(require_empty=False)
-        if self.page is None:
-            raise StopIteration
-        item = six.next(self.page)
-        self.num_results += 1
-        return item
-
-    # Alias needed for Python 2/3 support.
-    __next__ = next
 
     def _has_next_page(self):
         """Determines whether or not there are more pages with results.
