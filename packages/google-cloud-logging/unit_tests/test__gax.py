@@ -738,8 +738,10 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_sink_update_hit(self):
         from google.logging.v2.logging_config_pb2 import LogSink
-        response = _LogSinkPB(
-            self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
+
+        response = LogSink(name=self.SINK_NAME,
+                           destination=self.DESTINATION_URI,
+                           filter=self.FILTER)
         gax_api = _GAXSinksAPI(_update_sink_response=response)
         api = self._makeOne(gax_api)
 
@@ -951,8 +953,10 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_metric_update_hit(self):
         from google.logging.v2.logging_metrics_pb2 import LogMetric
-        response = _LogMetricPB(
-            self.METRIC_NAME, self.FILTER, self.DESCRIPTION)
+
+        response = LogMetric(name=self.METRIC_NAME,
+                             description=self.DESCRIPTION,
+                             filter=self.FILTER)
         gax_api = _GAXMetricsAPI(_update_log_metric_response=response)
         api = self._makeOne(gax_api)
 
@@ -1109,19 +1113,3 @@ class _GAXMetricsAPI(_GAXBaseAPI):
             raise GaxError('error')
         if self._log_metric_not_found:
             raise GaxError('notfound', self._make_grpc_not_found())
-
-
-class _LogSinkPB(object):
-
-    def __init__(self, name, destination, filter_):
-        self.name = name
-        self.destination = destination
-        self.filter = filter_
-
-
-class _LogMetricPB(object):
-
-    def __init__(self, name, description, filter_):
-        self.name = name
-        self.description = description
-        self.filter = filter_
