@@ -14,8 +14,6 @@
 
 """GAX wrapper for Pubsub API requests."""
 
-import functools
-
 from google.cloud.gapic.pubsub.v1.publisher_api import PublisherApi
 from google.cloud.gapic.pubsub.v1.subscriber_api import SubscriberApi
 from google.gax import CallOptions
@@ -31,7 +29,7 @@ from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _pb_timestamp_to_rfc3339
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-from google.cloud.iterator import HTTPIterator
+from google.cloud.iterator import GAXIterator
 from google.cloud.iterator import Page
 from google.cloud.pubsub.topic import Topic
 
@@ -78,11 +76,8 @@ class _PublisherAPI(object):
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_topics(
             path, page_size=page_size, options=options)
-        page_iter = functools.partial(_recast_page_iterator, page_iter)
 
-        return HTTPIterator(
-            client=self._client, path=path, item_to_value=_item_to_topic,
-            page_iter=page_iter)
+        return GAXIterator(self._client, page_iter, _item_to_topic)
 
     def topic_create(self, topic_path):
         """API call:  create a topic
@@ -569,24 +564,3 @@ def _item_to_topic(iterator, resource):
     """
     return Topic.from_api_repr(
         {'name': resource.name}, iterator.client)
-
-
-def _recast_page_iterator(page_iter, iterator):
-    """Wrap GAX pages generator.
-
-    In particular, wrap each page and capture some state from the
-    GAX iterator.
-
-    Yields :class:`~google.cloud.iterator.Page` instances
-
-    :type page_iter: :class:`~google.gax.PageIterator`
-    :param page_iter: The iterator to wrap.
-
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
-    :param iterator: The iterator that owns each page.
-    """
-    for items in page_iter:
-        page = Page(iterator, items, _item_to_topic)
-        iterator.next_page_token = page_iter.page_token or None
-        iterator.num_results += page.num_items
-        yield page
