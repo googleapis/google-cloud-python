@@ -56,17 +56,24 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_list_topics_no_paging(self):
         from google.gax import INITIAL_PAGE
         from google.cloud._testing import _GAXPageIterator
+        from google.cloud.pubsub.topic import Topic
+
         TOKEN = 'TOKEN'
         response = _GAXPageIterator([_TopicPB(self.TOPIC_PATH)], TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
         api = self._makeOne(gax_api)
 
-        topics, next_token = api.list_topics(self.PROJECT)
+        iterator = api.list_topics(self.PROJECT)
+        # Add back the client to support API requests.
+        iterator.client = _Client(self.PROJECT)
+        topics = list(iterator)
+        next_token = iterator.next_page_token
 
         self.assertEqual(len(topics), 1)
         topic = topics[0]
-        self.assertIsInstance(topic, dict)
-        self.assertEqual(topic['name'], self.TOPIC_PATH)
+        self.assertIsInstance(topic, Topic)
+        self.assertEqual(topic.name, self.TOPIC_NAME)
+        self.assertEqual(topic.full_name, self.TOPIC_PATH)
         self.assertEqual(next_token, TOKEN)
 
         name, page_size, options = gax_api._list_topics_called_with
@@ -76,6 +83,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_list_topics_with_paging(self):
         from google.cloud._testing import _GAXPageIterator
+        from google.cloud.pubsub.topic import Topic
+
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
@@ -84,13 +93,18 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
         api = self._makeOne(gax_api)
 
-        topics, next_token = api.list_topics(
+        iterator = api.list_topics(
             self.PROJECT, page_size=SIZE, page_token=TOKEN)
+        # Add back the client to support API requests.
+        iterator.client = _Client(self.PROJECT)
+        topics = list(iterator)
+        next_token = iterator.next_page_token
 
         self.assertEqual(len(topics), 1)
         topic = topics[0]
-        self.assertIsInstance(topic, dict)
-        self.assertEqual(topic['name'], self.TOPIC_PATH)
+        self.assertIsInstance(topic, Topic)
+        self.assertEqual(topic.name, self.TOPIC_NAME)
+        self.assertEqual(topic.full_name, self.TOPIC_PATH)
         self.assertEqual(next_token, NEW_TOKEN)
 
         name, page_size, options = gax_api._list_topics_called_with
@@ -1043,3 +1057,9 @@ class _Connection(object):
     def __init__(self, in_emulator=False, host=None):
         self.in_emulator = in_emulator
         self.host = host
+
+
+class _Client(object):
+
+    def __init__(self, project):
+        self.project = project

@@ -19,6 +19,8 @@ import os
 
 from google.cloud import connection as base_connection
 from google.cloud.environment_vars import PUBSUB_EMULATOR
+from google.cloud.iterator import Iterator
+from google.cloud.pubsub.topic import Topic
 
 
 PUBSUB_API_HOST = 'pubsub.googleapis.com'
@@ -104,7 +106,8 @@ class _PublisherAPI(object):
     def __init__(self, connection):
         self._connection = connection
 
-    def list_topics(self, project, page_size=None, page_token=None):
+    @staticmethod
+    def list_topics(project, page_size=None, page_token=None):
         """API call:  list topics for a given project
 
         See:
@@ -122,24 +125,21 @@ class _PublisherAPI(object):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: tuple, (list, str)
-        :returns: list of ``Topic`` resource dicts, plus a
-                  "next page token" string:  if not None, indicates that
-                  more topics can be retrieved with another call (pass that
-                  value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.pubsub.topic.Topic`
+                  accessible to the current connection.
         """
-        conn = self._connection
-        params = {}
-
+        extra_params = {}
         if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
+            extra_params['pageSize'] = page_size
         path = '/projects/%s/topics' % (project,)
-        resp = conn.api_request(method='GET', path=path, query_params=params)
-        return resp.get('topics', ()), resp.get('nextPageToken')
+
+        # NOTE: We don't currently have access to the client, so callers
+        #       that want the client, must manually bind the client to the
+        #       iterator instance returned.
+        return Iterator(client=None, path=path,
+                        items_key='topics', item_to_value=_item_to_topic,
+                        page_token=page_token, extra_params=extra_params)
 
     def topic_create(self, topic_path):
         """API call:  create a topic
@@ -576,3 +576,18 @@ def _transform_messages_base64(messages, transform, key=None):
             message = message[key]
         if 'data' in message:
             message['data'] = transform(message['data'])
+
+
+def _item_to_topic(iterator, resource):
+    """Convert a JSON job to the native object.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type resource: dict
+    :param resource: A topic returned from the API.
+
+    :rtype: :class:`~google.cloud.pubsub.topic.Topic`
+    :returns: The next topic in the page.
+    """
+    return Topic.from_api_repr(resource, iterator.client)
