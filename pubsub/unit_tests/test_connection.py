@@ -105,16 +105,23 @@ class Test_PublisherAPI(_Base):
         self.assertIs(api._connection, connection)
 
     def test_list_topics_no_paging(self):
-        RETURNED = {'topics': [{'name': self.TOPIC_PATH}]}
-        connection = _Connection(RETURNED)
+        from google.cloud.pubsub.topic import Topic
+
+        returned = {'topics': [{'name': self.TOPIC_PATH}]}
+        connection = _Connection(returned)
         api = self._makeOne(connection)
 
-        topics, next_token = api.list_topics(self.PROJECT)
+        iterator = api.list_topics(self.PROJECT)
+        # Add back the client to support API requests.
+        iterator.client = _Client(connection, self.PROJECT)
+        topics = list(iterator)
+        next_token = iterator.next_page_token
 
         self.assertEqual(len(topics), 1)
         topic = topics[0]
-        self.assertIsInstance(topic, dict)
-        self.assertEqual(topic['name'], self.TOPIC_PATH)
+        self.assertIsInstance(topic, Topic)
+        self.assertEqual(topic.name, self.TOPIC_NAME)
+        self.assertEqual(topic.full_name, self.TOPIC_PATH)
         self.assertIsNone(next_token)
 
         self.assertEqual(connection._called_with['method'], 'GET')
@@ -123,6 +130,9 @@ class Test_PublisherAPI(_Base):
         self.assertEqual(connection._called_with['query_params'], {})
 
     def test_list_topics_with_paging(self):
+        import six
+        from google.cloud.pubsub.topic import Topic
+
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
@@ -133,13 +143,19 @@ class Test_PublisherAPI(_Base):
         connection = _Connection(RETURNED)
         api = self._makeOne(connection)
 
-        topics, next_token = api.list_topics(
+        iterator = api.list_topics(
             self.PROJECT, page_token=TOKEN1, page_size=SIZE)
+        # Add back the client to support API requests.
+        iterator.client = _Client(connection, self.PROJECT)
+        page = six.next(iterator.pages)
+        topics = list(page)
+        next_token = iterator.next_page_token
 
         self.assertEqual(len(topics), 1)
         topic = topics[0]
-        self.assertIsInstance(topic, dict)
-        self.assertEqual(topic['name'], self.TOPIC_PATH)
+        self.assertIsInstance(topic, Topic)
+        self.assertEqual(topic.name, self.TOPIC_NAME)
+        self.assertEqual(topic.full_name, self.TOPIC_PATH)
         self.assertEqual(next_token, TOKEN2)
 
         self.assertEqual(connection._called_with['method'], 'GET')
@@ -149,11 +165,15 @@ class Test_PublisherAPI(_Base):
                          {'pageToken': TOKEN1, 'pageSize': SIZE})
 
     def test_list_topics_missing_key(self):
-        RETURNED = {}
-        connection = _Connection(RETURNED)
+        returned = {}
+        connection = _Connection(returned)
         api = self._makeOne(connection)
 
-        topics, next_token = api.list_topics(self.PROJECT)
+        iterator = api.list_topics(self.PROJECT)
+        # Add back the client to support API requests.
+        iterator.client = _Client(connection, self.PROJECT)
+        topics = list(iterator)
+        next_token = iterator.next_page_token
 
         self.assertEqual(len(topics), 0)
         self.assertIsNone(next_token)
@@ -768,3 +788,10 @@ class _Connection(object):
             err_class = self._no_response_error or NotFound
             raise err_class('miss')
         return response
+
+
+class _Client(object):
+
+    def __init__(self, connection, project):
+        self.connection = connection
+        self.project = project

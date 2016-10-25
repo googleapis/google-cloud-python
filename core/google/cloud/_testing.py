@@ -81,5 +81,14 @@ class _GAXPageIterator(object):
         self.page_token = page_token
 
     def next(self):
-        items, self._items = self._items, None
-        return items
+        if self._items is None:
+            raise StopIteration
+        else:
+            items = self._items
+            self._items = None
+            return items
+
+    __next__ = next
+
+    def __iter__(self):
+        return self
