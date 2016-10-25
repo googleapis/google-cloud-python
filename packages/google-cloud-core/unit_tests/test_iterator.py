@@ -112,6 +112,7 @@ class TestIterator(unittest.TestCase):
         self.assertIs(iterator.client, client)
         self.assertEqual(iterator.max_results, max_results)
         self.assertEqual(list(iterator._page_iter), [])
+        self.assertFalse(iterator._page_increment)
         # Changing attributes.
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, token)
@@ -160,9 +161,6 @@ class TestIterator(unittest.TestCase):
                      mock_key, self._do_nothing)
         page2 = Page(parent, {mock_key: [item3]},
                      mock_key, self._do_nothing)
-        # Spoof the number of items in each page to offset the
-        # ``num_results -= page.num_items`` in _items_iter().
-        page1._num_items = page2._num_items = 0
 
         iterator = self._makeOne(None)
         # Fake the page iterator on the object.
