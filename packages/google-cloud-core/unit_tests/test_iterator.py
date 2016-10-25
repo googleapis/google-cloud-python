@@ -128,6 +128,22 @@ class TestIterator(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._makeOne(client, path, None, extra_params=extra_params)
 
+    def test_constructor_non_default_page_iter(self):
+        connection = _Connection()
+        client = _Client(connection)
+        path = '/foo'
+        result = object()
+        called = []
+
+        def page_iter(iterator):
+            called.append(iterator)
+            return result
+
+        iterator = self._makeOne(client, path, None,
+                                 page_iter=page_iter)
+        self.assertEqual(called, [iterator])
+        self.assertIs(iterator._page_iter, result)
+
     def test_pages_iter_empty_then_another(self):
         import six
         from google.cloud._testing import _Monkey
