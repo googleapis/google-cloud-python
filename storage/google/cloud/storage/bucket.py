@@ -602,7 +602,7 @@ class Bucket(_PropertyMixin):
     def enable_logging(self, bucket_name, object_prefix=''):
         """Enable access logging for this bucket.
 
-        See: https://cloud.google.com/storage/docs/accesslogs#delivery
+        See: https://cloud.google.com/storage/docs/accesslogs
 
         :type bucket_name: str
         :param bucket_name: name of bucket in which to store access logs
