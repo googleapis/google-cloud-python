@@ -257,13 +257,20 @@ class TestStorageListFiles(TestStorageFiles):
         truncation_size = 1
         count = len(self.FILENAMES) - truncation_size
         iterator = self.bucket.list_blobs(max_results=count)
-        iterator.update_page()
-        blobs = list(iterator.page)
+        page_iter = iterator.pages
+
+        page1 = six.next(page_iter)
+        blobs = list(page1)
         self.assertEqual(len(blobs), count)
         self.assertIsNotNone(iterator.next_page_token)
+        # Technically the iterator is exhausted.
+        self.assertEqual(iterator.num_results, iterator.max_results)
+        # But we modify the iterator to continue paging after
+        # articially stopping after ``count`` items.
+        iterator.max_results = None
 
-        iterator.update_page()
-        last_blobs = list(iterator.page)
+        page2 = six.next(page_iter)
+        last_blobs = list(page2)
         self.assertEqual(len(last_blobs), truncation_size)
 
 
@@ -301,8 +308,8 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
     @RetryErrors(unittest.TestCase.failureException)
     def test_root_level_w_delimiter(self):
         iterator = self.bucket.list_blobs(delimiter='/')
-        iterator.update_page()
-        blobs = list(iterator.page)
+        page = six.next(iterator.pages)
+        blobs = list(page)
         self.assertEqual([blob.name for blob in blobs], ['file01.txt'])
         self.assertIsNone(iterator.next_page_token)
         self.assertEqual(iterator.prefixes, set(['parent/']))
@@ -310,8 +317,8 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
     @RetryErrors(unittest.TestCase.failureException)
     def test_first_level(self):
         iterator = self.bucket.list_blobs(delimiter='/', prefix='parent/')
-        iterator.update_page()
-        blobs = list(iterator.page)
+        page = six.next(iterator.pages)
+        blobs = list(page)
         self.assertEqual([blob.name for blob in blobs], ['parent/file11.txt'])
         self.assertIsNone(iterator.next_page_token)
         self.assertEqual(iterator.prefixes, set(['parent/child/']))
@@ -325,8 +332,8 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
 
         iterator = self.bucket.list_blobs(delimiter='/',
                                           prefix='parent/child/')
-        iterator.update_page()
-        blobs = list(iterator.page)
+        page = six.next(iterator.pages)
+        blobs = list(page)
         self.assertEqual([blob.name for blob in blobs],
                          expected_names)
         self.assertIsNone(iterator.next_page_token)
@@ -341,8 +348,8 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         # Exercise a layer deeper to illustrate this.
         iterator = self.bucket.list_blobs(delimiter='/',
                                           prefix='parent/child/grand/')
-        iterator.update_page()
-        blobs = list(iterator.page)
+        page = six.next(iterator.pages)
+        blobs = list(page)
         self.assertEqual([blob.name for blob in blobs],
                          ['parent/child/grand/file31.txt'])
         self.assertIsNone(iterator.next_page_token)

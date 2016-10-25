@@ -991,6 +991,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(iterator.prefixes, set())
 
     def test_page_non_empty_response(self):
+        import six
         from google.cloud.storage.blob import Blob
 
         blob_name = 'blob-name'
@@ -1006,17 +1007,17 @@ class Test_Bucket(unittest.TestCase):
         iterator = bucket.list_blobs()
         iterator._get_next_page_response = dummy_response
 
-        iterator.update_page()
-        page = iterator.page
+        page = six.next(iterator.pages)
         self.assertEqual(page.prefixes, ('foo',))
         self.assertEqual(page.num_items, 1)
-        blob = iterator.next()
+        blob = six.next(page)
         self.assertEqual(page.remaining, 0)
         self.assertIsInstance(blob, Blob)
         self.assertEqual(blob.name, blob_name)
         self.assertEqual(iterator.prefixes, set(['foo']))
 
     def test_cumulative_prefixes(self):
+        import six
         from google.cloud.storage.blob import Blob
 
         BLOB_NAME = 'blob-name1'
@@ -1041,18 +1042,17 @@ class Test_Bucket(unittest.TestCase):
         iterator._get_next_page_response = dummy_response
 
         # Parse first response.
-        iterator.update_page()
-        page1 = iterator.page
+        pages_iter = iterator.pages
+        page1 = six.next(pages_iter)
         self.assertEqual(page1.prefixes, ('foo',))
         self.assertEqual(page1.num_items, 1)
-        blob = iterator.next()
+        blob = six.next(page1)
         self.assertEqual(page1.remaining, 0)
         self.assertIsInstance(blob, Blob)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(iterator.prefixes, set(['foo']))
         # Parse second response.
-        iterator.update_page()
-        page2 = iterator.page
+        page2 = six.next(pages_iter)
         self.assertEqual(page2.prefixes, ('bar',))
         self.assertEqual(page2.num_items, 0)
         self.assertEqual(iterator.prefixes, set(['foo', 'bar']))

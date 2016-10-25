@@ -43,78 +43,44 @@ requests)::
     ...         break
 
 When iterating, not every new item will send a request to the server.
-To monitor these requests, track the current page of the iterator::
+To iterate based on each page of items (where a page corresponds to
+a request)::
 
     >>> iterator = Iterator(...)
-    >>> iterator.page_number
-    0
-    >>> next(iterator)
-    <MyItemClass at 0x7f1d3cccf690>
-    >>> iterator.page_number
-    1
-    >>> iterator.page.remaining
-    1
-    >>> next(iterator)
-    <MyItemClass at 0x7f1d3cccfe90>
-    >>> iterator.page_number
-    1
-    >>> iterator.page.remaining
-    0
-    >>> next(iterator)
-    <MyItemClass at 0x7f1d3cccffd0>
-    >>> iterator.page_number
-    2
-    >>> iterator.page.remaining
-    19
+    >>> for page in iterator.pages:
+    ...     print('=' * 20)
+    ...     print('    Page number: %d' % (iterator.page_number,))
+    ...     print('  Items in page: %d' % (page.num_items,))
+    ...     print('     First item: %r' % (next(page),))
+    ...     print('Items remaining: %d' % (page.remaining,))
+    ...     print('Next page token: %s' % (iterator.next_page_token,))
+    ====================
+        Page number: 1
+      Items in page: 1
+         First item: <MyItemClass at 0x7f1d3cccf690>
+    Items remaining: 0
+    Next page token: eav1OzQB0OM8rLdGXOEsyQWSG
+    ====================
+        Page number: 2
+      Items in page: 19
+         First item: <MyItemClass at 0x7f1d3cccffd0>
+    Items remaining: 18
+    Next page token: None
 
-It's also possible to consume an entire page and handle the paging process
-manually::
+To consume an entire page::
 
-    >>> iterator = Iterator(...)
-    >>> # Manually pull down the first page.
-    >>> iterator.update_page()
-    >>> items = list(iterator.page)
-    >>> items
+    >>> list(page)
     [
         <MyItemClass at 0x7fd64a098ad0>,
         <MyItemClass at 0x7fd64a098ed0>,
         <MyItemClass at 0x7fd64a098e90>,
     ]
-    >>> iterator.page.remaining
-    0
-    >>> iterator.page.num_items
-    3
-    >>> iterator.next_page_token
-    'eav1OzQB0OM8rLdGXOEsyQWSG'
-    >>>
-    >>> # Ask for the next page to be grabbed.
-    >>> iterator.update_page()
-    >>> list(iterator.page)
-    [
-        <MyItemClass at 0x7fea740abdd0>,
-        <MyItemClass at 0x7fea740abe50>,
-    ]
-    >>>
-    >>> # When there are no more results
-    >>> iterator.next_page_token is None
-    True
-    >>> iterator.update_page()
-    >>> iterator.page is None
-    True
 """
 
 
 import six
 
 
-_UNSET = object()
-_NO_MORE_PAGES_ERR = 'Iterator has no more pages.'
-_UNSTARTED_ERR = (
-    'Iterator has not been started. Either begin iterating, '
-    'call next(my_iter) or call my_iter.update_page().')
-_PAGE_ERR_TEMPLATE = (
-    'Tried to update the page while current page (%r) still has %d '
-    'items remaining.')
 DEFAULT_ITEMS_KEY = 'items'
 """The dictionary key used to retrieve items from each response."""
 
@@ -261,7 +227,6 @@ class Iterator(object):
         self.page_number = 0
         self.next_page_token = page_token
         self.num_results = 0
-        self._page = _UNSET
 
     def _verify_params(self):
         """Verifies the parameters don't use any reserved parameter.
@@ -274,82 +239,53 @@ class Iterator(object):
             raise ValueError('Using a reserved parameter',
                              reserved_in_use)
 
-    @property
-    def page(self):
-        """The current page of results that has been retrieved.
+    def _pages_iter(self):
+        """Generator of pages of API responses.
 
-        If there are no more results, will return :data:`None`.
-
-        :rtype: :class:`Page`
-        :returns: The page of items that has been retrieved.
-        :raises AttributeError: If the page has not been set.
+        Yields :class:`Page` instances.
         """
-        if self._page is _UNSET:
-            raise AttributeError(_UNSTARTED_ERR)
-        return self._page
+        while self._has_next_page():
+            response = self._get_next_page_response()
+            page = Page(self, response, self._items_key,
+                        self._item_to_value)
+            self._page_start(self, page, response)
+            self.num_results += page.num_items
+            yield page
 
-    def __iter__(self):
-        """The :class:`Iterator` is an iterator.
+    @property
+    def pages(self):
+        """Iterator of pages in the response.
 
-        :rtype: :class:`Iterator`
-        :returns: Current instance.
+        :rtype: :class:`~types.GeneratorType`
+        :returns: A generator of :class:`Page` instances.
         :raises ValueError: If the iterator has already been started.
         """
         if self._started:
             raise ValueError('Iterator has already started', self)
         self._started = True
-        return self
+        return self._pages_iter()
 
-    def update_page(self, require_empty=True):
-        """Move to the next page in the result set.
+    def _items_iter(self):
+        """Iterator for each item returned."""
+        for page in self._pages_iter():
+            # Decrement the total results since the pages iterator adds
+            # to it when each page is encountered.
+            self.num_results -= page.num_items
+            for item in page:
+                self.num_results += 1
+                yield item
 
-        If the current page is not empty and ``require_empty`` is :data:`True`
-        then an exception will be raised. If the current page is not empty
-        and ``require_empty`` is :data:`False`, then this will return
-        without updating the current page.
+    def __iter__(self):
+        """Iterator for each item returned.
 
-        If the current page **is** empty, but there are no more results,
-        sets the current page to :data:`None`.
-
-        If there are no more pages, throws an exception.
-
-        :type require_empty: bool
-        :param require_empty: (Optional) Flag to indicate if the current page
-                              must be empty before updating.
-
-        :raises ValueError: If ``require_empty`` is :data:`True` but the
-                            current page is not empty.
-        :raises ValueError: If there are no more pages.
+        :rtype: :class:`~types.GeneratorType`
+        :returns: A generator of items from the API.
+        :raises ValueError: If the iterator has already been started.
         """
-        if self._page is None:
-            raise ValueError(_NO_MORE_PAGES_ERR)
-
-        # NOTE: This assumes Page.remaining can never go below 0.
-        page_empty = self._page is _UNSET or self._page.remaining == 0
-        if page_empty:
-            if self._has_next_page():
-                response = self._get_next_page_response()
-                self._page = Page(self, response, self._items_key,
-                                  self._item_to_value)
-                self._page_start(self, self._page, response)
-            else:
-                self._page = None
-        else:
-            if require_empty:
-                msg = _PAGE_ERR_TEMPLATE % (self._page, self.page.remaining)
-                raise ValueError(msg)
-
-    def next(self):
-        """Get the next item from the request."""
-        self.update_page(require_empty=False)
-        if self.page is None:
-            raise StopIteration
-        item = six.next(self.page)
-        self.num_results += 1
-        return item
-
-    # Alias needed for Python 2/3 support.
-    __next__ = next
+        if self._started:
+            raise ValueError('Iterator has already started', self)
+        self._started = True
+        return self._items_iter()
 
     def _has_next_page(self):
         """Determines whether or not there are more pages with results.

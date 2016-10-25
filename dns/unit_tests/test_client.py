@@ -106,6 +106,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_zones_defaults(self):
+        import six
         from google.cloud.dns.zone import ManagedZone
         ID_1 = '123'
         ZONE_1 = 'zone_one'
@@ -133,8 +134,8 @@ class TestClient(unittest.TestCase):
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_zones()
-        iterator.update_page()
-        zones = list(iterator.page)
+        page = six.next(iterator.pages)
+        zones = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(zones), len(DATA['managedZones']))
@@ -151,6 +152,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_zones_explicit(self):
+        import six
         from google.cloud.dns.zone import ManagedZone
         ID_1 = '123'
         ZONE_1 = 'zone_one'
@@ -177,8 +179,8 @@ class TestClient(unittest.TestCase):
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_zones(max_results=3, page_token=TOKEN)
-        iterator.update_page()
-        zones = list(iterator.page)
+        page = six.next(iterator.pages)
+        zones = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(zones), len(DATA['managedZones']))
