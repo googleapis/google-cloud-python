@@ -16,13 +16,17 @@ matrix:
     env: TOXENV=pypy
   - python: 3.5
     env: TOXENV=cover
+  - python: 3.5
+    env: TOXENV=py35-system SYSTEM_TEST=1
+  - python: 2.7
+    env: TOXENV=py27-system SYSTEM_TEST=1
 cache:
   directories:
   - ${HOME}/.cache
 install:
 - pip install --upgrade tox
 script:
-- tox
+- scripts/travis.sh
 deploy:
   provider: pypi
   user: google_opensource
@@ -32,3 +36,6 @@ deploy:
   on:
     tags: true
     repo: GoogleCloudPlatform/google-auth-library-python
+env:
+  global:
+    secure: KjV9daSNZsM3/jth2d87MEu4irHtwNwUcdIUVglz3QrIX7fAcbFqHu/2Ux3yGC+iPJd5/i2jZWWz9F6iyuKdhyMySz2WaBsbySmCs1pREcRYWcK5GL49yPb3ZOZucprD/n0VIer0+eublQeBQRMxNdxfJEs6tgkHxTeiOJ3mHaeLa/nE1PXW9Ih6fgS5NT/7CE7SO0fw1th9ZdLdRyo3a9fphDWqiGlt0oRURRnoJ7qctLYAZ7uXDn3c6oXJ/dZsio6Hjx16dPNjn0dpkpCBFYN3D7wXD02Ysm/7u+SGl2FjqA76FmmnJsqJ5Nog1QV4v7YpJdTtpfXBOuXAov4Fz9xHVssX4dYZkW5JKsfVFFIilo1vQbO4mBjYw58/gJswJygD5smwO2GawAfm62mGpdx4mFv2lwZoqJbLg1qcuI/qc8DqPrc3Y1nVNu3oGdMcts5q2IeuZgI1yzdb/Qz0gtkkIDtPzoyBlAZE9hsylBI7SdoP7VpmP+vIW21yC3GpE3TajbVD8p53c70fV4YH0LSX6pFF6RBuSFLwarG+WYtPTEy2k3d0ATMdH0gBaf19FJ04RTwsbYZPqAy328Dl3RLioZffm8BHAeKzuVsocrIiiHjJM6PqtL4II0UfbiKahxLcI7t1cGTWVhUtqrnZKZwJrbLYGd08aBvioTne/Nk=
