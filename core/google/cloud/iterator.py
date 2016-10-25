@@ -202,6 +202,14 @@ class Iterator(object):
                        takes the :class:`Iterator` that started the page,
                        the :class:`Page` that was started and the dictionary
                        containing the page response.
+
+    :type page_iter: callable
+    :param page_iter: (Optional) Callable to produce a pages iterator from the
+                      current iterator. Assumed signature takes the
+                      :class:`Iterator` that started the page. By default uses
+                      the HTTP pages iterator. Meant to provide a custom
+                      way to create pages (potentially with a custom
+                      transport such as gRPC).
     """
 
     _PAGE_TOKEN = 'pageToken'
@@ -211,7 +219,7 @@ class Iterator(object):
     def __init__(self, client, path, item_to_value,
                  items_key=DEFAULT_ITEMS_KEY,
                  page_token=None, max_results=None, extra_params=None,
-                 page_start=_do_nothing_page_start):
+                 page_start=_do_nothing_page_start, page_iter=None):
         self._started = False
         self.client = client
         self.path = path
@@ -220,8 +228,14 @@ class Iterator(object):
         self.max_results = max_results
         self.extra_params = extra_params
         self._page_start = page_start
+        self._page_iter = None
+        # Verify inputs / provide defaults.
         if self.extra_params is None:
             self.extra_params = {}
+        if page_iter is None:
+            self._page_iter = self._default_page_iter()
+        else:
+            self._page_iter = page_iter(self)
         self._verify_params()
         # The attributes below will change over the life of the iterator.
         self.page_number = 0
@@ -239,7 +253,7 @@ class Iterator(object):
             raise ValueError('Using a reserved parameter',
                              reserved_in_use)
 
-    def _pages_iter(self):
+    def _default_page_iter(self):
         """Generator of pages of API responses.
 
         Yields :class:`Page` instances.
@@ -263,11 +277,11 @@ class Iterator(object):
         if self._started:
             raise ValueError('Iterator has already started', self)
         self._started = True
-        return self._pages_iter()
+        return self._page_iter
 
     def _items_iter(self):
         """Iterator for each item returned."""
-        for page in self._pages_iter():
+        for page in self._page_iter:
             # Decrement the total results since the pages iterator adds
             # to it when each page is encountered.
             self.num_results -= page.num_items

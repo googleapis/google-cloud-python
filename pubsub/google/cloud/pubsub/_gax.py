@@ -14,6 +14,8 @@
 
 """GAX wrapper for Pubsub API requests."""
 
+import functools
+
 from google.cloud.gapic.pubsub.v1.publisher_api import PublisherApi
 from google.cloud.gapic.pubsub.v1.subscriber_api import SubscriberApi
 from google.gax import CallOptions
@@ -29,6 +31,12 @@ from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _pb_timestamp_to_rfc3339
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
+from google.cloud.iterator import Iterator
+from google.cloud.iterator import Page
+from google.cloud.pubsub.topic import Topic
+
+
+_FAKE_ITEMS_KEY = 'not-a-key'
 
 
 class _PublisherAPI(object):
@@ -36,9 +44,14 @@ class _PublisherAPI(object):
 
     :type gax_api: :class:`google.pubsub.v1.publisher_api.PublisherApi`
     :param gax_api: API object used to make GAX requests.
+
+    :type client: :class:`~google.cloud.pubsub.client.Client`
+    :param client: The client that owns this API object.
     """
-    def __init__(self, gax_api):
+
+    def __init__(self, gax_api, client):
         self._gax_api = gax_api
+        self._client = client
 
     def list_topics(self, project, page_size=0, page_token=None):
         """List topics for the project associated with this API.
@@ -58,11 +71,9 @@ class _PublisherAPI(object):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: tuple, (list, str)
-        :returns: list of ``Topic`` resource dicts, plus a
-                  "next page token" string:  if not None, indicates that
-                  more topics can be retrieved with another call (pass that
-                  value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.pubsub.topic.Topic`
+                  accessible to the current API.
         """
         if page_token is None:
             page_token = INITIAL_PAGE
@@ -70,9 +81,11 @@ class _PublisherAPI(object):
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_topics(
             path, page_size=page_size, options=options)
-        topics = [{'name': topic_pb.name} for topic_pb in page_iter.next()]
-        token = page_iter.page_token or None
-        return topics, token
+        page_iter = functools.partial(_recast_page_iterator, page_iter)
+
+        return Iterator(client=self._client, path=path,
+                        item_to_value=_item_to_topic,
+                        page_iter=page_iter)
 
     def topic_create(self, topic_path):
         """API call:  create a topic
@@ -543,3 +556,42 @@ def make_gax_subscriber_api(connection):
     if connection.in_emulator:
         channel = insecure_channel(connection.host)
     return SubscriberApi(channel=channel)
+
+
+def _item_to_topic(iterator, resource):
+    """Convert a JSON job to the native object.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type resource: :class:`google.pubsub.v1.pubsub_pb2.Topic`
+    :param resource: A topic returned from the API.
+
+    :rtype: :class:`~google.cloud.pubsub.topic.Topic`
+    :returns: The next topic in the page.
+    """
+    return Topic.from_api_repr(
+        {'name': resource.name}, iterator.client)
+
+
+def _recast_page_iterator(page_iter, iterator):
+    """Wrap GAX pages generator.
+
+    In particular, wrap each page and capture some state from the
+    GAX iterator.
+
+    Yields :class:`~google.cloud.iterator.Page` instances
+
+    :type page_iter: :class:`~google.gax.PageIterator`
+    :param page_iter: The iterator to wrap.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that owns each page.
+    """
+    for items in page_iter:
+        fake_response = {_FAKE_ITEMS_KEY: items}
+        page = Page(
+            iterator, fake_response, _FAKE_ITEMS_KEY, _item_to_topic)
+        iterator.next_page_token = page_iter.page_token or None
+        iterator.num_results += page.num_items
+        yield page

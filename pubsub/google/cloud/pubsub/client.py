@@ -87,9 +87,9 @@ class Client(JSONClient):
         if self._publisher_api is None:
             if self._use_gax:
                 generated = make_gax_publisher_api(self.connection)
-                self._publisher_api = GAXPublisherAPI(generated)
+                self._publisher_api = GAXPublisherAPI(generated, self)
             else:
-                self._publisher_api = JSONPublisherAPI(self.connection)
+                self._publisher_api = JSONPublisherAPI(self)
         return self._publisher_api
 
     @property
@@ -131,18 +131,13 @@ class Client(JSONClient):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: tuple, (list, str)
-        :returns: list of :class:`google.cloud.pubsub.topic.Topic`, plus a
-                  "next page token" string:  if not None, indicates that
-                  more topics can be retrieved with another call (pass that
-                  value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.pubsub.topic.Topic`
+                  accessible to the current API.
         """
         api = self.publisher_api
-        resources, next_token = api.list_topics(
+        return api.list_topics(
             self.project, page_size, page_token)
-        topics = [Topic.from_api_repr(resource, self)
-                  for resource in resources]
-        return topics, next_token
 
     def list_subscriptions(self, page_size=None, page_token=None):
         """List subscriptions for the project associated with this client.
