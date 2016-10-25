@@ -31,7 +31,7 @@ from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _pb_timestamp_to_rfc3339
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-from google.cloud.iterator import Iterator
+from google.cloud.iterator import HTTPIterator
 from google.cloud.iterator import Page
 from google.cloud.pubsub.topic import Topic
 
@@ -83,9 +83,9 @@ class _PublisherAPI(object):
             path, page_size=page_size, options=options)
         page_iter = functools.partial(_recast_page_iterator, page_iter)
 
-        return Iterator(client=self._client, path=path,
-                        item_to_value=_item_to_topic,
-                        page_iter=page_iter)
+        return HTTPIterator(
+            client=self._client, path=path, item_to_value=_item_to_topic,
+            page_iter=page_iter)
 
     def topic_create(self, topic_path):
         """API call:  create a topic

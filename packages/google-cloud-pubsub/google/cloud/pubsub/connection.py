@@ -19,7 +19,7 @@ import os
 
 from google.cloud import connection as base_connection
 from google.cloud.environment_vars import PUBSUB_EMULATOR
-from google.cloud.iterator import Iterator
+from google.cloud.iterator import HTTPIterator
 from google.cloud.pubsub.topic import Topic
 
 
@@ -134,9 +134,10 @@ class _PublisherAPI(object):
             extra_params['pageSize'] = page_size
         path = '/projects/%s/topics' % (project,)
 
-        return Iterator(client=self._client, path=path,
-                        items_key='topics', item_to_value=_item_to_topic,
-                        page_token=page_token, extra_params=extra_params)
+        return HTTPIterator(
+            client=self._client, path=path, item_to_value=_item_to_topic,
+            items_key='topics', page_token=page_token,
+            extra_params=extra_params)
 
     def topic_create(self, topic_path):
         """API call:  create a topic
