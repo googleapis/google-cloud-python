@@ -99,15 +99,15 @@ class Connection(base_connection.JSONConnection):
 class _PublisherAPI(object):
     """Helper mapping publisher-related APIs.
 
-    :type connection: :class:`Connection`
-    :param connection: the connection used to make API requests.
+    :type client: :class:`~google.cloud.pubsub.client.Client`
+    :param client: the client used to make API requests.
     """
 
-    def __init__(self, connection):
-        self._connection = connection
+    def __init__(self, client):
+        self._client = client
+        self._connection = client.connection
 
-    @staticmethod
-    def list_topics(project, page_size=None, page_token=None):
+    def list_topics(self, project, page_size=None, page_token=None):
         """API call:  list topics for a given project
 
         See:
@@ -134,10 +134,7 @@ class _PublisherAPI(object):
             extra_params['pageSize'] = page_size
         path = '/projects/%s/topics' % (project,)
 
-        # NOTE: We don't currently have access to the client, so callers
-        #       that want the client, must manually bind the client to the
-        #       iterator instance returned.
-        return Iterator(client=None, path=path,
+        return Iterator(client=self._client, path=path,
                         items_key='topics', item_to_value=_item_to_topic,
                         page_token=page_token, extra_params=extra_params)
 
