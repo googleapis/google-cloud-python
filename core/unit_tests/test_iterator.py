@@ -111,10 +111,98 @@ class TestIterator(unittest.TestCase):
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
         self.assertEqual(iterator.max_results, max_results)
+        self.assertEqual(list(iterator._page_iter), [])
         # Changing attributes.
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, token)
         self.assertEqual(iterator.num_results, 0)
+
+    def test_pages_property(self):
+        iterator = self._makeOne(None)
+        self.assertFalse(iterator._started)
+        mock_iter = object()
+        iterator._page_iter = mock_iter
+        self.assertIs(iterator.pages, mock_iter)
+        # Check the side-effect.
+        self.assertTrue(iterator._started)
+
+    def test_pages_property_started(self):
+        iterator = self._makeOne(None)
+        self.assertEqual(list(iterator.pages), [])
+        # Make sure we cannot restart.
+        with self.assertRaises(ValueError):
+            getattr(iterator, 'pages')
+
+    def test_pages_property_items_started(self):
+        iterator = self._makeOne(None)
+        self.assertEqual(list(iterator), [])
+        with self.assertRaises(ValueError):
+            getattr(iterator, 'pages')
+
+    @staticmethod
+    def _do_nothing(parent, value):
+        return parent, value
+
+    def test__items_iter(self):
+        import types
+        import six
+        from google.cloud.iterator import Page
+
+        # Items to be returned.
+        item1 = 17
+        item2 = 100
+        item3 = 211
+
+        # Make pages from mock responses
+        mock_key = 'mock'
+        parent = object()
+        page1 = Page(parent, {mock_key: [item1, item2]},
+                     mock_key, self._do_nothing)
+        page2 = Page(parent, {mock_key: [item3]},
+                     mock_key, self._do_nothing)
+        # Spoof the number of items in each page to offset the
+        # ``num_results -= page.num_items`` in _items_iter().
+        page1._num_items = page2._num_items = 0
+
+        iterator = self._makeOne(None)
+        # Fake the page iterator on the object.
+        iterator._page_iter = iter((page1, page2))
+
+        items_iter = iterator._items_iter()
+        # Make sure it is a generator.
+        self.assertIsInstance(items_iter, types.GeneratorType)
+
+        # Consume items and check the state of the iterator.
+        self.assertEqual(iterator.num_results, 0)
+        self.assertEqual(six.next(items_iter), (parent, item1))
+        self.assertEqual(iterator.num_results, 1)
+        self.assertEqual(six.next(items_iter), (parent, item2))
+        self.assertEqual(iterator.num_results, 2)
+        self.assertEqual(six.next(items_iter), (parent, item3))
+        self.assertEqual(iterator.num_results, 3)
+        with self.assertRaises(StopIteration):
+            six.next(items_iter)
+
+    def test___iter__(self):
+        iterator = self._makeOne(None)
+        self.assertFalse(iterator._started)
+        mock_iter = object()
+        iterator._page_iter = mock_iter
+        self.assertIs(iterator.pages, mock_iter)
+        # Check the side-effect.
+        self.assertTrue(iterator._started)
+
+    def test___iter___started(self):
+        iterator = self._makeOne(None)
+        self.assertEqual(list(iterator), [])
+        with self.assertRaises(ValueError):
+            iter(iterator)
+
+    def test___iter___pages_started(self):
+        iterator = self._makeOne(None)
+        self.assertEqual(list(iterator.pages), [])
+        with self.assertRaises(ValueError):
+            iter(iterator)
 
 
 class TestHTTPIterator(unittest.TestCase):
@@ -195,54 +283,6 @@ class TestHTTPIterator(unittest.TestCase):
         self.assertIs(page, fake_page)
         self.assertEqual(
             page_args, [(iterator, {}, items_key, iterator._item_to_value)])
-
-    def test_pages_property(self):
-        import types
-
-        iterator = self._makeOne(None, None, None)
-        self.assertIsInstance(iterator.pages, types.GeneratorType)
-
-    def test_pages_property_started(self):
-        import types
-
-        iterator = self._makeOne(None, None, None)
-        pages_iter = iterator.pages
-        self.assertIsInstance(pages_iter, types.GeneratorType)
-        with self.assertRaises(ValueError):
-            getattr(iterator, 'pages')
-
-    def test_pages_property_items_started(self):
-        import types
-
-        iterator = self._makeOne(None, None, None)
-        items_iter = iter(iterator)
-        self.assertIsInstance(items_iter, types.GeneratorType)
-        with self.assertRaises(ValueError):
-            getattr(iterator, 'pages')
-
-    def test___iter__(self):
-        import types
-
-        iterator = self._makeOne(None, None, None)
-        self.assertIsInstance(iter(iterator), types.GeneratorType)
-
-    def test___iter___started(self):
-        import types
-
-        iterator = self._makeOne(None, None, None)
-        iter_obj = iter(iterator)
-        self.assertIsInstance(iter_obj, types.GeneratorType)
-        with self.assertRaises(ValueError):
-            iter(iterator)
-
-    def test___iter___pages_started(self):
-        import types
-
-        iterator = self._makeOne(None, None, None)
-        pages_iter = iterator.pages
-        self.assertIsInstance(pages_iter, types.GeneratorType)
-        with self.assertRaises(ValueError):
-            iter(iterator)
 
     def test_iterate(self):
         import six
