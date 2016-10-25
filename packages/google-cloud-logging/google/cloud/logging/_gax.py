@@ -18,15 +18,14 @@ from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
-from google.logging.type.log_severity_pb2 import LogSeverity
 from google.logging.v2.logging_config_pb2 import LogSink
 from google.logging.v2.logging_metrics_pb2 import LogMetric
 from google.logging.v2.log_entry_pb2 import LogEntry
+from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import ParseDict
 from grpc import StatusCode
 
-from google.cloud._helpers import _datetime_to_pb_timestamp
-from google.cloud._helpers import _pb_timestamp_to_rfc3339
+from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 
@@ -420,20 +419,6 @@ class _MetricsAPI(object):
             raise
 
 
-def _mon_resource_pb_to_mapping(resource_pb):
-    """Helper for  :func:_log_entry_pb_to_mapping`.
-
-    Performs "impedance matching" between the protobuf attrs and the keys
-    expected in the JSON API.
-    """
-    mapping = {
-        'type': resource_pb.type,
-    }
-    if resource_pb.labels:
-        mapping['labels'] = resource_pb.labels
-    return mapping
-
-
 def _value_pb_to_value(value_pb):
     """Helper for :func:`_log_entry_pb_to_mapping`.
 
@@ -483,152 +468,29 @@ def _log_entry_pb_to_mapping(entry_pb):
     Performs "impedance matching" between the protobuf attrs and the keys
     expected in the JSON API.
     """
-    mapping = {
-        'logName': entry_pb.log_name,
-        'resource': _mon_resource_pb_to_mapping(entry_pb.resource),
-        'severity': LogSeverity.Name(entry_pb.severity),
-        'insertId': entry_pb.insert_id,
-        'timestamp': _pb_timestamp_to_rfc3339(entry_pb.timestamp),
-        'labels': entry_pb.labels,
-    }
-    if entry_pb.HasField('text_payload'):
-        mapping['textPayload'] = entry_pb.text_payload
-
-    if entry_pb.HasField('json_payload'):
-        mapping['jsonPayload'] = _struct_pb_to_mapping(entry_pb.json_payload)
-
-    if entry_pb.HasField('proto_payload'):
-        mapping['protoPayload'] = entry_pb.proto_payload
-
-    if entry_pb.http_request:
-        request = entry_pb.http_request
-        mapping['httpRequest'] = {
-            'requestMethod': request.request_method,
-            'requestUrl': request.request_url,
-            'status': request.status,
-            'referer': request.referer,
-            'userAgent': request.user_agent,
-            'cacheHit': request.cache_hit,
-            'requestSize': request.request_size,
-            'responseSize': request.response_size,
-            'remoteIp': request.remote_ip,
-        }
-
-    if entry_pb.operation:
-        operation = entry_pb.operation
-        mapping['operation'] = {
-            'producer': operation.producer,
-            'id': operation.id,
-            'first': operation.first,
-            'last': operation.last,
-        }
-
-    return mapping
-
-
-def _http_request_mapping_to_pb(info, request):
-    """Helper for _log_entry_mapping_to_pb
-
-    Performs "impedance matching" between the protobuf attrs and the keys
-    expected in the JSON API.
-    """
-    optional_request_keys = {
-        'requestMethod': 'request_method',
-        'requestUrl': 'request_url',
-        'status': 'status',
-        'referer': 'referer',
-        'userAgent': 'user_agent',
-        'cacheHit': 'cache_hit',
-        'requestSize': 'request_size',
-        'responseSize': 'response_size',
-        'remoteIp': 'remote_ip',
-    }
-    for key, pb_name in optional_request_keys.items():
-        if key in info:
-            setattr(request, pb_name, info[key])
-
-
-def _log_operation_mapping_to_pb(info, operation):
-    """Helper for _log_entry_mapping_to_pb
-
-    Performs "impedance matching" between the protobuf attrs and the keys
-    expected in the JSON API.
-    """
-    operation.producer = info['producer']
-    operation.id = info['id']
-
-    if 'first' in info:
-        operation.first = info['first']
-
-    if 'last' in info:
-        operation.last = info['last']
+    return MessageToDict(entry_pb)
 
 
 def _log_entry_mapping_to_pb(mapping):
     """Helper for :meth:`write_entries`, et aliae
 
-    Performs "impedance matching" between the protobuf attrs and the keys
-    expected in the JSON API.
+    Performs "impedance matching" between the protobuf attrs and
+    the keys expected in the JSON API.
     """
-    # pylint: disable=too-many-branches
     entry_pb = LogEntry()
-
-    optional_scalar_keys = {
-        'logName': 'log_name',
-        'insertId': 'insert_id',
-        'textPayload': 'text_payload',
-    }
-
-    for key, pb_name in optional_scalar_keys.items():
-        if key in mapping:
-            setattr(entry_pb, pb_name, mapping[key])
-
-    if 'resource' in mapping:
-        entry_pb.resource.type = mapping['resource']['type']
-
-    if 'severity' in mapping:
-        severity = mapping['severity']
-        if isinstance(severity, str):
-            severity = LogSeverity.Value(severity)
-        entry_pb.severity = severity
-
     if 'timestamp' in mapping:
-        timestamp = _datetime_to_pb_timestamp(mapping['timestamp'])
-        entry_pb.timestamp.CopyFrom(timestamp)
-
-    if 'labels' in mapping:
-        for key, value in mapping['labels'].items():
-            entry_pb.labels[key] = value
-
-    if 'jsonPayload' in mapping:
-        ParseDict(mapping['jsonPayload'], entry_pb.json_payload)
-
-    if 'protoPayload' in mapping:
-        ParseDict(mapping['protoPayload'], entry_pb.proto_payload)
-
-    if 'httpRequest' in mapping:
-        _http_request_mapping_to_pb(
-            mapping['httpRequest'], entry_pb.http_request)
-
-    if 'operation' in mapping:
-        _log_operation_mapping_to_pb(
-            mapping['operation'], entry_pb.operation)
-
+        mapping['timestamp'] = _datetime_to_rfc3339(mapping['timestamp'])
+    ParseDict(mapping, entry_pb)
     return entry_pb
-    # pylint: enable=too-many-branches
 
 
 def _log_sink_pb_to_mapping(sink_pb):
     """Helper for :meth:`list_sinks`, et aliae
 
-    Performs "impedance matching" between the protobuf attrs and the keys
-    expected in the JSON API.
+    Performs "impedance matching" between the protobuf attrs and
+    the keys expected in the JSON API.
     """
-    return {
-        'name': sink_pb.name,
-        'destination': sink_pb.destination,
-        'filter': sink_pb.filter,
-    }
+    return MessageToDict(sink_pb)
 
 
 def _log_metric_pb_to_mapping(metric_pb):
@@ -637,8 +499,4 @@ def _log_metric_pb_to_mapping(metric_pb):
     Performs "impedance matching" between the protobuf attrs and the keys
     expected in the JSON API.
     """
-    return {
-        'name': metric_pb.name,
-        'description': metric_pb.description,
-        'filter': metric_pb.filter,
-    }
+    return MessageToDict(metric_pb)
