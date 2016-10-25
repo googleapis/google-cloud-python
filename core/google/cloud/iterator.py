@@ -183,10 +183,49 @@ class Iterator(object):
         self._started = False
         self.client = client
         self.max_results = max_results
+        # NOTE: The _page_iter is not intended to come through the
+        #       constructor, instead subclasses should over-ride
+        #       this property.
+        self._page_iter = iter(())
         # The attributes below will change over the life of the iterator.
         self.page_number = 0
         self.next_page_token = page_token
         self.num_results = 0
+
+    @property
+    def pages(self):
+        """Iterator of pages in the response.
+
+        :rtype: :class:`~types.GeneratorType`
+        :returns: A generator of :class:`Page` instances.
+        :raises ValueError: If the iterator has already been started.
+        """
+        if self._started:
+            raise ValueError('Iterator has already started', self)
+        self._started = True
+        return self._page_iter
+
+    def _items_iter(self):
+        """Iterator for each item returned."""
+        for page in self._page_iter:
+            # Decrement the total results since the pages iterator adds
+            # to it when each page is encountered.
+            self.num_results -= page.num_items
+            for item in page:
+                self.num_results += 1
+                yield item
+
+    def __iter__(self):
+        """Iterator for each item returned.
+
+        :rtype: :class:`~types.GeneratorType`
+        :returns: A generator of items from the API.
+        :raises ValueError: If the iterator has already been started.
+        """
+        if self._started:
+            raise ValueError('Iterator has already started', self)
+        self._started = True
+        return self._items_iter()
 
 
 class HTTPIterator(Iterator):
@@ -232,6 +271,8 @@ class HTTPIterator(Iterator):
                       the HTTP pages iterator. Meant to provide a custom
                       way to create pages (potentially with a custom
                       transport such as gRPC).
+
+    .. autoattribute:: pages
     """
 
     _PAGE_TOKEN = 'pageToken'
@@ -249,7 +290,6 @@ class HTTPIterator(Iterator):
         self._items_key = items_key
         self.extra_params = extra_params
         self._page_start = page_start
-        self._page_iter = None
         # Verify inputs / provide defaults.
         if self.extra_params is None:
             self.extra_params = {}
@@ -282,41 +322,6 @@ class HTTPIterator(Iterator):
             self._page_start(self, page, response)
             self.num_results += page.num_items
             yield page
-
-    @property
-    def pages(self):
-        """Iterator of pages in the response.
-
-        :rtype: :class:`~types.GeneratorType`
-        :returns: A generator of :class:`Page` instances.
-        :raises ValueError: If the iterator has already been started.
-        """
-        if self._started:
-            raise ValueError('Iterator has already started', self)
-        self._started = True
-        return self._page_iter
-
-    def _items_iter(self):
-        """Iterator for each item returned."""
-        for page in self._page_iter:
-            # Decrement the total results since the pages iterator adds
-            # to it when each page is encountered.
-            self.num_results -= page.num_items
-            for item in page:
-                self.num_results += 1
-                yield item
-
-    def __iter__(self):
-        """Iterator for each item returned.
-
-        :rtype: :class:`~types.GeneratorType`
-        :returns: A generator of items from the API.
-        :raises ValueError: If the iterator has already been started.
-        """
-        if self._started:
-            raise ValueError('Iterator has already started', self)
-        self._started = True
-        return self._items_iter()
 
     def _has_next_page(self):
         """Determines whether or not there are more pages with results.
