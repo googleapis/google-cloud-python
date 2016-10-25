@@ -44,9 +44,14 @@ class _PublisherAPI(object):
 
     :type gax_api: :class:`google.pubsub.v1.publisher_api.PublisherApi`
     :param gax_api: API object used to make GAX requests.
+
+    :type client: :class:`~google.cloud.pubsub.client.Client`
+    :param client: The client that owns this API object.
     """
-    def __init__(self, gax_api):
+
+    def __init__(self, gax_api, client):
         self._gax_api = gax_api
+        self._client = client
 
     def list_topics(self, project, page_size=0, page_token=None):
         """List topics for the project associated with this API.
@@ -78,10 +83,7 @@ class _PublisherAPI(object):
             path, page_size=page_size, options=options)
         page_iter = functools.partial(_recast_page_iterator, page_iter)
 
-        # NOTE: We don't currently have access to the client, so callers
-        #       that want the client, must manually bind the client to the
-        #       iterator instance returned.
-        return Iterator(client=None, path=path,
+        return Iterator(client=self._client, path=path,
                         item_to_value=_item_to_topic,
                         page_iter=page_iter)
 

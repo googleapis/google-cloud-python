@@ -50,8 +50,10 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_ctor(self):
         gax_api = _GAXPublisherAPI()
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
         self.assertIs(api._gax_api, gax_api)
+        self.assertIs(api._client, client)
 
     def test_list_topics_no_paging(self):
         from google.gax import INITIAL_PAGE
@@ -61,11 +63,10 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         TOKEN = 'TOKEN'
         response = _GAXPageIterator([_TopicPB(self.TOPIC_PATH)], TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         iterator = api.list_topics(self.PROJECT)
-        # Add back the client to support API requests.
-        iterator.client = _Client(self.PROJECT)
         topics = list(iterator)
         next_token = iterator.next_page_token
 
@@ -91,12 +92,11 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator(
             [_TopicPB(self.TOPIC_PATH)], NEW_TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         iterator = api.list_topics(
             self.PROJECT, page_size=SIZE, page_token=TOKEN)
-        # Add back the client to support API requests.
-        iterator.client = _Client(self.PROJECT)
         topics = list(iterator)
         next_token = iterator.next_page_token
 
@@ -115,7 +115,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_topic_create(self):
         topic_pb = _TopicPB(self.TOPIC_PATH)
         gax_api = _GAXPublisherAPI(_create_topic_response=topic_pb)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         resource = api.topic_create(self.TOPIC_PATH)
 
@@ -127,7 +128,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_topic_create_already_exists(self):
         from google.cloud.exceptions import Conflict
         gax_api = _GAXPublisherAPI(_create_topic_conflict=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(Conflict):
             api.topic_create(self.TOPIC_PATH)
@@ -139,7 +141,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_topic_create_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.topic_create(self.TOPIC_PATH)
@@ -151,7 +154,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_topic_get_hit(self):
         topic_pb = _TopicPB(self.TOPIC_PATH)
         gax_api = _GAXPublisherAPI(_get_topic_response=topic_pb)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         resource = api.topic_get(self.TOPIC_PATH)
 
@@ -163,7 +167,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_topic_get_miss(self):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXPublisherAPI()
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.topic_get(self.TOPIC_PATH)
@@ -175,7 +180,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_topic_get_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.topic_get(self.TOPIC_PATH)
@@ -186,7 +192,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def test_topic_delete_hit(self):
         gax_api = _GAXPublisherAPI(_delete_topic_ok=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         api.topic_delete(self.TOPIC_PATH)
 
@@ -197,7 +204,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_topic_delete_miss(self):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXPublisherAPI(_delete_topic_ok=False)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.topic_delete(self.TOPIC_PATH)
@@ -209,7 +217,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_topic_delete_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.topic_delete(self.TOPIC_PATH)
@@ -226,7 +235,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         MESSAGE = {'data': B64, 'attributes': {}}
         response = _PublishResponsePB([MSGID])
         gax_api = _GAXPublisherAPI(_publish_response=response)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         resource = api.topic_publish(self.TOPIC_PATH, [MESSAGE])
 
@@ -245,7 +255,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         B64 = base64.b64encode(PAYLOAD)
         MESSAGE = {'data': B64, 'attributes': {'foo': 'bar'}}
         gax_api = _GAXPublisherAPI()
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.topic_publish(self.TOPIC_PATH, [MESSAGE])
@@ -264,7 +275,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MESSAGE = {'data': B64, 'attributes': {}}
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.topic_publish(self.TOPIC_PATH, [MESSAGE])
@@ -282,7 +294,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([
             {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}], None)
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         subscriptions, next_token = api.topic_list_subscriptions(
             self.TOPIC_PATH)
@@ -308,7 +321,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([
             {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}], NEW_TOKEN)
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         subscriptions, next_token = api.topic_list_subscriptions(
             self.TOPIC_PATH, page_size=SIZE, page_token=TOKEN)
@@ -330,7 +344,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         from google.gax import INITIAL_PAGE
         from google.cloud.exceptions import NotFound
         gax_api = _GAXPublisherAPI()
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.topic_list_subscriptions(self.TOPIC_PATH)
@@ -345,7 +360,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         from google.gax import INITIAL_PAGE
         from google.gax.errors import GaxError
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.topic_list_subscriptions(self.TOPIC_PATH)
