@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.connection &mdash; google-cloud 5d5d5eb documentation</title>
+  <title>google.cloud.pubsub.connection &mdash; google-cloud 0e4a660 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5d5d5eb documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 0e4a660 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -291,6 +291,8 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">PUBSUB_EMULATOR</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">Iterator</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub.topic</span> <span class="k">import</span> <span class="n">Topic</span>
 
 
 <span class="n">PUBSUB_API_HOST</span> <span class="o">=</span> <span class="s1">&#39;pubsub.googleapis.com&#39;</span>
@@ -369,12 +371,13 @@
 <span class="k">class</span> <span class="nc">_PublisherAPI</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper mapping publisher-related APIs.</span>
 
-<span class="sd">    :type connection: :class:`Connection`</span>
-<span class="sd">    :param connection: the connection used to make API requests.</span>
+<span class="sd">    :type client: :class:`~google.cloud.pubsub.client.Client`</span>
+<span class="sd">    :param client: the client used to make API requests.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span>
 
     <span class="k">def</span> <span class="nf">list_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  list topics for a given project</span>
@@ -394,24 +397,18 @@
 <span class="sd">                           passed, the API will return the first page of</span>
 <span class="sd">                           topics.</span>
 
-<span class="sd">        :rtype: tuple, (list, str)</span>
-<span class="sd">        :returns: list of ``Topic`` resource dicts, plus a</span>
-<span class="sd">                  &quot;next page token&quot; string:  if not None, indicates that</span>
-<span class="sd">                  more topics can be retrieved with another call (pass that</span>
-<span class="sd">                  value as ``page_token``).</span>
+<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :returns: Iterator of :class:`~google.cloud.pubsub.topic.Topic`</span>
+<span class="sd">                  accessible to the current connection.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
-
+        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
-
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
-
+            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/topics&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,)</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;topics&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Iterator</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                        <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;topics&#39;</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_topic</span><span class="p">,</span>
+                        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">topic_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  create a topic</span>
@@ -848,6 +845,21 @@
             <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">if</span> <span class="s1">&#39;data&#39;</span> <span class="ow">in</span> <span class="n">message</span><span class="p">:</span>
             <span class="n">message</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">_item_to_topic</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON job to the native object.</span>
+
+<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">    :type resource: dict</span>
+<span class="sd">    :param resource: A topic returned from the API.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.pubsub.topic.Topic`</span>
+<span class="sd">    :returns: The next topic in the page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Topic</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -881,7 +893,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5d5d5eb',
+            VERSION:'0e4a660',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

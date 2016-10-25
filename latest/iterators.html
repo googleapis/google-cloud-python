@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Iterators &mdash; google-cloud 5d5d5eb documentation</title>
+  <title>Iterators &mdash; google-cloud 0e4a660 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5d5d5eb documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 0e4a660 documentation" href="index.html"/>
         <link rel="next" title="Long-Running Operations" href="operation-api.html"/>
         <link rel="prev" title="Authentication" href="google-cloud-auth.html"/> 
 
@@ -342,7 +342,7 @@ a request):</p>
 
 <dl class="class">
 <dt id="google.cloud.iterator.Iterator">
-<em class="property">class </em><code class="descclassname">google.cloud.iterator.</code><code class="descname">Iterator</code><span class="sig-paren">(</span><em>client</em>, <em>path</em>, <em>item_to_value</em>, <em>items_key='items'</em>, <em>page_token=None</em>, <em>max_results=None</em>, <em>extra_params=None</em>, <em>page_start=&lt;function _do_nothing_page_start&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iterator.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iterator.Iterator" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.iterator.</code><code class="descname">Iterator</code><span class="sig-paren">(</span><em>client</em>, <em>path</em>, <em>item_to_value</em>, <em>items_key='items'</em>, <em>page_token=None</em>, <em>max_results=None</em>, <em>extra_params=None</em>, <em>page_start=&lt;function _do_nothing_page_start&gt;</em>, <em>page_iter=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iterator.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iterator.Iterator" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A generic class for iterating through Cloud JSON APIs list responses.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -368,6 +368,12 @@ after a new page has been created. Assumed signature
 takes the <a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a> that started the page,
 the <a class="reference internal" href="#google.cloud.iterator.Page" title="google.cloud.iterator.Page"><code class="xref py py-class docutils literal"><span class="pre">Page</span></code></a> that was started and the dictionary
 containing the page response.</li>
+<li><strong>page_iter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; (Optional) Callable to produce a pages iterator from the
+current iterator. Assumed signature takes the
+<a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a> that started the page. By default uses
+the HTTP pages iterator. Meant to provide a custom
+way to create pages (potentially with a custom
+transport such as gRPC).</li>
 </ul>
 </td>
 </tr>
@@ -499,7 +505,7 @@ holding a single item.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5d5d5eb',
+            VERSION:'0e4a660',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

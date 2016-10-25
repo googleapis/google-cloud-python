@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.iterator &mdash; google-cloud 5d5d5eb documentation</title>
+  <title>google.cloud.iterator &mdash; google-cloud 0e4a660 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud 5d5d5eb documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 0e4a660 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -474,6 +474,14 @@
 <span class="sd">                       takes the :class:`Iterator` that started the page,</span>
 <span class="sd">                       the :class:`Page` that was started and the dictionary</span>
 <span class="sd">                       containing the page response.</span>
+
+<span class="sd">    :type page_iter: callable</span>
+<span class="sd">    :param page_iter: (Optional) Callable to produce a pages iterator from the</span>
+<span class="sd">                      current iterator. Assumed signature takes the</span>
+<span class="sd">                      :class:`Iterator` that started the page. By default uses</span>
+<span class="sd">                      the HTTP pages iterator. Meant to provide a custom</span>
+<span class="sd">                      way to create pages (potentially with a custom</span>
+<span class="sd">                      transport such as gRPC).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_PAGE_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;pageToken&#39;</span>
@@ -483,7 +491,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span>
                  <span class="n">items_key</span><span class="o">=</span><span class="n">DEFAULT_ITEMS_KEY</span><span class="p">,</span>
                  <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">page_start</span><span class="o">=</span><span class="n">_do_nothing_page_start</span><span class="p">):</span>
+                 <span class="n">page_start</span><span class="o">=</span><span class="n">_do_nothing_page_start</span><span class="p">,</span> <span class="n">page_iter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
@@ -492,8 +500,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="o">=</span> <span class="n">max_results</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span> <span class="o">=</span> <span class="n">extra_params</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_page_start</span> <span class="o">=</span> <span class="n">page_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Verify inputs / provide defaults.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">page_iter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_page_iter</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span> <span class="o">=</span> <span class="n">page_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_verify_params</span><span class="p">()</span>
         <span class="c1"># The attributes below will change over the life of the iterator.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="mi">0</span>
@@ -511,7 +525,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Using a reserved parameter&#39;</span><span class="p">,</span>
                              <span class="n">reserved_in_use</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_pages_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_default_page_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generator of pages of API responses.</span>
 
 <span class="sd">        Yields :class:`Page` instances.</span>
@@ -535,11 +549,11 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Iterator has already started&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pages_iter</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span>
 
     <span class="k">def</span> <span class="nf">_items_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Iterator for each item returned.&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pages_iter</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span><span class="p">:</span>
             <span class="c1"># Decrement the total results since the pages iterator adds</span>
             <span class="c1"># to it when each page is encountered.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">-=</span> <span class="n">page</span><span class="o">.</span><span class="n">num_items</span>
@@ -635,7 +649,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'5d5d5eb',
+            VERSION:'0e4a660',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
