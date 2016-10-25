@@ -208,13 +208,15 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % (VARIABLE_PATH,))
 
     def test_list_variables_empty(self):
+        import six
+
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         config = self._makeOne(name=self.CONFIG_NAME, client=client)
 
         iterator = config.list_variables()
-        iterator.update_page()
-        variables = list(iterator.page)
+        page = six.next(iterator.pages)
+        variables = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(variables, [])
@@ -227,6 +229,7 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % (PATH,))
 
     def test_list_variables_defaults(self):
+        import six
         from google.cloud.runtimeconfig.variable import Variable
 
         VARIABLE_1 = 'variable-one'
@@ -249,8 +252,8 @@ class TestConfig(unittest.TestCase):
         config = self._makeOne(name=self.CONFIG_NAME, client=client)
 
         iterator = config.list_variables()
-        iterator.update_page()
-        variables = list(iterator.page)
+        page = six.next(iterator.pages)
+        variables = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(variables), len(DATA['variables']))
@@ -269,6 +272,7 @@ class TestConfig(unittest.TestCase):
         self.assertNotIn('filter', req['query_params'])
 
     def test_list_variables_explicit(self):
+        import six
         from google.cloud.runtimeconfig.variable import Variable
 
         VARIABLE_1 = 'variable-one'
@@ -293,8 +297,8 @@ class TestConfig(unittest.TestCase):
             page_size=3,
             page_token=TOKEN,
             client=client)
-        iterator.update_page()
-        variables = list(iterator.page)
+        page = six.next(iterator.pages)
+        variables = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(variables), len(DATA['variables']))
