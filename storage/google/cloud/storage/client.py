@@ -149,12 +149,9 @@ class Client(JSONClient):
 
         For example:
 
-        .. code-block:: python
-
-          >>> try:
-          >>>   bucket = client.get_bucket('my-bucket')
-          >>> except google.cloud.exceptions.NotFound:
-          >>>   print('Sorry, that bucket does not exist!')
+        .. literalinclude:: storage_snippets.py
+            :start-after: [START get_bucket]
+            :end-before: [END get_bucket]
 
         This implements "storage.buckets.get".
 
@@ -175,14 +172,9 @@ class Client(JSONClient):
         You can use this if you would rather check for a None value
         than catching an exception:
 
-        .. code-block:: python
-
-          >>> bucket = client.lookup_bucket('doesnt-exist')
-          >>> print(bucket)
-          None
-          >>> bucket = client.lookup_bucket('my-bucket')
-          >>> print(bucket)
-          <Bucket: my-bucket>
+        .. literalinclude:: storage_snippets.py
+            :start-after: [START lookup_bucket]
+            :end-before: [END lookup_bucket]
 
         :type bucket_name: str
         :param bucket_name: The name of the bucket to get.
@@ -200,11 +192,9 @@ class Client(JSONClient):
 
         For example:
 
-        .. code-block:: python
-
-          >>> bucket = client.create_bucket('my-bucket')
-          >>> print(bucket)
-          <Bucket: my-bucket>
+        .. literalinclude:: storage_snippets.py
+            :start-after: [START create_bucket]
+            :end-before: [END create_bucket]
 
         This implements "storage.buckets.insert".
 
@@ -228,10 +218,9 @@ class Client(JSONClient):
         This will not populate the list of blobs available in each
         bucket.
 
-        .. code-block:: python
-
-          >>> for bucket in client.list_buckets():
-          ...   print(bucket)
+        .. literalinclude:: storage_snippets.py
+            :start-after: [START list_buckets]
+            :end-before: [END list_buckets]
 
         This implements "storage.buckets.list".
 
