@@ -229,6 +229,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(page), [])
 
     def test_page_non_empty_response(self):
+        import six
         from google.cloud.resource_manager.project import Project
 
         project_id = 'project-id'
@@ -253,10 +254,9 @@ class TestClient(unittest.TestCase):
         iterator = client.list_projects()
         iterator._get_next_page_response = dummy_response
 
-        iterator.update_page()
-        page = iterator.page
+        page = six.next(iterator.pages)
         self.assertEqual(page.num_items, 1)
-        project = iterator.next()
+        project = six.next(page)
         self.assertEqual(page.remaining, 0)
         self.assertIsInstance(project, Project)
         self.assertEqual(project.project_id, project_id)

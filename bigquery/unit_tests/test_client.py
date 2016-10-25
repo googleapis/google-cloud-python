@@ -35,6 +35,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(client.connection.http, http)
 
     def test_list_projects_defaults(self):
+        import six
         from google.cloud.bigquery.client import Project
         PROJECT_1 = 'PROJECT_ONE'
         PROJECT_2 = 'PROJECT_TWO'
@@ -60,8 +61,8 @@ class TestClient(unittest.TestCase):
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_projects()
-        iterator.update_page()
-        projects = list(iterator.page)
+        page = six.next(iterator.pages)
+        projects = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(projects), len(DATA['projects']))
@@ -78,6 +79,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_projects_explicit_response_missing_projects_key(self):
+        import six
+
         PROJECT = 'PROJECT'
         PATH = 'projects'
         TOKEN = 'TOKEN'
@@ -87,8 +90,8 @@ class TestClient(unittest.TestCase):
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_projects(max_results=3, page_token=TOKEN)
-        iterator.update_page()
-        projects = list(iterator.page)
+        page = six.next(iterator.pages)
+        projects = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(projects), 0)
@@ -102,6 +105,7 @@ class TestClient(unittest.TestCase):
                          {'maxResults': 3, 'pageToken': TOKEN})
 
     def test_list_datasets_defaults(self):
+        import six
         from google.cloud.bigquery.dataset import Dataset
         PROJECT = 'PROJECT'
         DATASET_1 = 'dataset_one'
@@ -128,8 +132,8 @@ class TestClient(unittest.TestCase):
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_datasets()
-        iterator.update_page()
-        datasets = list(iterator.page)
+        page = six.next(iterator.pages)
+        datasets = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(datasets), len(DATA['datasets']))
@@ -145,6 +149,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_datasets_explicit_response_missing_datasets_key(self):
+        import six
+
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/datasets' % PROJECT
         TOKEN = 'TOKEN'
@@ -155,8 +161,8 @@ class TestClient(unittest.TestCase):
 
         iterator = client.list_datasets(
             include_all=True, max_results=3, page_token=TOKEN)
-        iterator.update_page()
-        datasets = list(iterator.page)
+        page = six.next(iterator.pages)
+        datasets = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(datasets), 0)
@@ -189,6 +195,7 @@ class TestClient(unittest.TestCase):
             client.job_from_resource({'configuration': {'nonesuch': {}}})
 
     def test_list_jobs_defaults(self):
+        import six
         from google.cloud.bigquery.job import LoadTableFromStorageJob
         from google.cloud.bigquery.job import CopyJob
         from google.cloud.bigquery.job import ExtractTableToStorageJob
@@ -301,8 +308,8 @@ class TestClient(unittest.TestCase):
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_jobs()
-        iterator.update_page()
-        jobs = list(iterator.page)
+        page = six.next(iterator.pages)
+        jobs = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(jobs), len(DATA['jobs']))
@@ -319,6 +326,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], {'projection': 'full'})
 
     def test_list_jobs_load_job_wo_sourceUris(self):
+        import six
         from google.cloud.bigquery.job import LoadTableFromStorageJob
         PROJECT = 'PROJECT'
         DATASET = 'test_dataset'
@@ -356,8 +364,8 @@ class TestClient(unittest.TestCase):
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_jobs()
-        iterator.update_page()
-        jobs = list(iterator.page)
+        page = six.next(iterator.pages)
+        jobs = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(jobs), len(DATA['jobs']))
@@ -374,6 +382,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], {'projection': 'full'})
 
     def test_list_jobs_explicit_missing(self):
+        import six
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/jobs' % PROJECT
         DATA = {}
@@ -384,8 +393,8 @@ class TestClient(unittest.TestCase):
 
         iterator = client.list_jobs(max_results=1000, page_token=TOKEN,
                                     all_users=True, state_filter='done')
-        iterator.update_page()
-        jobs = list(iterator.page)
+        page = six.next(iterator.pages)
+        jobs = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(jobs), 0)
