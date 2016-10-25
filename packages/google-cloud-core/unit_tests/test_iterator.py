@@ -91,6 +91,32 @@ class TestPage(unittest.TestCase):
         self.assertEqual(page.remaining, 97)
 
 
+class TestIterator(unittest.TestCase):
+
+    def _getTargetClass(self):
+        from google.cloud.iterator import Iterator
+        return Iterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_constructor(self):
+        connection = _Connection()
+        client = _Client(connection)
+        token = 'ab13nceor03'
+        max_results = 1337
+        iterator = self._makeOne(client, page_token=token,
+                                 max_results=max_results)
+
+        self.assertFalse(iterator._started)
+        self.assertIs(iterator.client, client)
+        self.assertEqual(iterator.max_results, max_results)
+        # Changing attributes.
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, token)
+        self.assertEqual(iterator.num_results, 0)
+
+
 class TestHTTPIterator(unittest.TestCase):
 
     def _getTargetClass(self):
