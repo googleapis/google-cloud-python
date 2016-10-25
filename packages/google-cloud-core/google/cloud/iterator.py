@@ -406,4 +406,22 @@ class GAXIterator(Iterator):
         super(GAXIterator, self).__init__(
             client, item_to_value, page_token=page_token,
             max_results=max_results)
-        self._page_iter = page_iter
+        self._page_iter = self._wrap_gax(page_iter)
+
+    def _wrap_gax(self, page_iter):
+        """Generator of pages of API responses.
+
+        Wraps each response from the :class:`~google.gax.PageIterator` in a
+        :class:`Page` instance and captures some state at each page.
+
+        :type page_iter: :class:`~google.gax.PageIterator`
+        :param page_iter: The GAX page iterator to wrap.
+
+        Yields :class:`Page` instances.
+        """
+        for items in page_iter:
+            page = Page(self, items, self._item_to_value)
+            self.next_page_token = page_iter.page_token or None
+            if self._page_increment:
+                self.num_results += page.num_items
+            yield page
