@@ -195,6 +195,97 @@ class TestClient(unittest.TestCase):
         self.assertFalse(operation.complete)
         self.assertIsNone(operation.metadata)
 
+    def test_streaming_depends_on_gax(self):
+        from google.cloud.speech import client as MUT
+        from google.cloud._testing import _Monkey
+        creds = _Credentials()
+        client = self._makeOne(credentials=creds)
+        client.connection = _Connection()
+
+        with _Monkey(MUT, _USE_GAX=False):
+            with self.assertRaises(EnvironmentError):
+                next(client.stream_recognize({}))
+
+    def test_set_speech_api(self):
+        from google.cloud.speech import client as MUT
+        from google.cloud._testing import _Monkey
+        creds = _Credentials()
+        client = self._makeOne(credentials=creds)
+        client.connection = _Connection()
+
+        with _Monkey(MUT, SpeechApi=_MockGAPICSpeechAPI):
+            client._speech_api = None
+            speech_api = client.speech_api
+            self.assertIsInstance(speech_api, _MockGAPICSpeechAPI)
+
+    def test_streaming_with_empty_response(self):
+        from io import BytesIO
+        from google.cloud.speech.encoding import Encoding
+
+        stream = BytesIO(b'Some audio data...')
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+        client.connection = _Connection()
+        client._speech_api = _MockGAPICSpeechAPI()
+        client._speech_api._responses = []
+
+        sample = client.sample(stream=stream,
+                               encoding=Encoding.LINEAR16,
+                               sample_rate=self.SAMPLE_RATE)
+        results = client.stream_recognize(sample)
+        with self.assertRaises(StopIteration):
+            next(results)
+
+    def test_stream_recognize(self):
+        from io import BytesIO
+        from google.cloud.speech.encoding import Encoding
+        from google.cloud.speech.streaming_response import (
+            StreamingSpeechResponse)
+
+        stream = BytesIO(b'Some audio data...')
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+        client.connection = _Connection()
+        client._speech_api = _MockGAPICSpeechAPI()
+
+        sample = client.sample(stream=stream,
+                               encoding=Encoding.LINEAR16,
+                               sample_rate=self.SAMPLE_RATE)
+        responses = client.stream_recognize(sample)
+
+        self.assertIsInstance(next(responses), StreamingSpeechResponse)
+        requests = []
+        for req in client.speech_api._requests:
+            requests.append(req)
+        self.assertEqual(len(requests), 2)
+
+
+class _MockSpeechGAPICAlternative(object):
+    transcript = 'hello there!'
+    confidence = 0.9704365
+
+
+class _MockSpeechGAPICResult(object):
+    alternatives = [_MockSpeechGAPICAlternative()]
+    is_final = False
+    stability = 0.0
+
+
+class _MockGAPICSpeechResponse(object):
+    error = None
+    endpointer_type = None
+    results = [_MockSpeechGAPICResult()]
+    result_index = 0
+
+
+class _MockGAPICSpeechAPI(object):
+    _requests = None
+    _responses = [None, _MockGAPICSpeechResponse()]
+
+    def streaming_recognize(self, requests):
+        self._requests = requests
+        return self._responses
+
 
 class _Credentials(object):
 

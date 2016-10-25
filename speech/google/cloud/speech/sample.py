@@ -30,6 +30,9 @@ class Sample(object):
                        supported, which must be specified in the following
                        format: ``gs://bucket_name/object_name``.
 
+    :type stream: :class:`io.BufferedReader`
+    :param stream: File like object to read audio data from.
+
     :type encoding: str
     :param encoding: encoding of audio data sent in all RecognitionAudio
                      messages, can be one of: :attr:`~.Encoding.LINEAR16`,
@@ -47,16 +50,15 @@ class Sample(object):
     default_encoding = Encoding.FLAC
     default_sample_rate = 16000
 
-    def __init__(self, content=None, source_uri=None,
+    def __init__(self, content=None, source_uri=None, stream=None,
                  encoding=None, sample_rate=None):
-
-        no_source = content is None and source_uri is None
-        both_source = content is not None and source_uri is not None
-        if no_source or both_source:
-            raise ValueError('Supply one of \'content\' or \'source_uri\'')
+        if (content, source_uri, stream).count(None) != 2:
+            raise ValueError('Supply only one of \'content\', \'source_uri\''
+                             ' or stream.')
 
         self._content = content
         self._source_uri = source_uri
+        self._stream = stream
 
         if sample_rate is not None and not 8000 <= sample_rate <= 48000:
             raise ValueError('The value of sample_rate must be between 8000'
@@ -69,6 +71,15 @@ class Sample(object):
             raise ValueError('Invalid encoding: %s' % (encoding,))
 
     @property
+    def chunk_size(self):
+        """Chunk size to send over GRPC. ~100ms
+
+        :rtype: int
+        :returns: Optimized chunk size.
+        """
+        return int(self.sample_rate / 10.0)
+
+    @property
     def source_uri(self):
         """Google Cloud Storage URI of audio source.
 
@@ -76,6 +87,15 @@ class Sample(object):
         :returns: Google Cloud Storage URI string.
         """
         return self._source_uri
+
+    @property
+    def stream(self):
+        """Stream of audio data.
+
+        :rtype: :class:`io.BufferedReader`
+        :returns: File like object to read audio data from.
+        """
+        return self._stream
 
     @property
     def content(self):
