@@ -67,7 +67,9 @@ class TestClient(unittest.TestCase):
 
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
+        from google.cloud.speech.transcript import Transcript
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
+
         _AUDIO_CONTENT = _to_bytes(self.AUDIO_CONTENT)
         _B64_AUDIO_CONTENT = _bytes_to_unicode(b64encode(_AUDIO_CONTENT))
         RETURNED = SYNC_RECOGNIZE_RESPONSE
@@ -109,12 +111,17 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], 'speech:syncrecognize')
 
-        expected = SYNC_RECOGNIZE_RESPONSE['results'][0]['alternatives']
-        self.assertEqual(response, expected)
+        alternative = SYNC_RECOGNIZE_RESPONSE['results'][0]['alternatives'][0]
+        expected = Transcript.from_api_repr(alternative)
+        self.assertEqual(len(response), 1)
+        self.assertIsInstance(response[0], Transcript)
+        self.assertEqual(response[0].transcript, expected.transcript)
+        self.assertEqual(response[0].confidence, expected.confidence)
 
     def test_sync_recognize_source_uri_without_optional_parameters(self):
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
+        from google.cloud.speech.transcript import Transcript
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
 
         RETURNED = SYNC_RECOGNIZE_RESPONSE
@@ -144,8 +151,12 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], 'speech:syncrecognize')
 
-        expected = SYNC_RECOGNIZE_RESPONSE['results'][0]['alternatives']
-        self.assertEqual(response, expected)
+        expected = Transcript.from_api_repr(
+            SYNC_RECOGNIZE_RESPONSE['results'][0]['alternatives'][0])
+        self.assertEqual(len(response), 1)
+        self.assertIsInstance(response[0], Transcript)
+        self.assertEqual(response[0].transcript, expected.transcript)
+        self.assertEqual(response[0].confidence, expected.confidence)
 
     def test_sync_recognize_with_empty_results(self):
         from google.cloud import speech
