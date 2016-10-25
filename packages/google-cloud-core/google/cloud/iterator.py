@@ -271,14 +271,6 @@ class HTTPIterator(Iterator):
                        the :class:`Page` that was started and the dictionary
                        containing the page response.
 
-    :type page_iter: callable
-    :param page_iter: (Optional) Callable to produce a pages iterator from the
-                      current iterator. Assumed signature takes the
-                      :class:`Iterator` that started the page. By default uses
-                      the HTTP pages iterator. Meant to provide a custom
-                      way to create pages (potentially with a custom
-                      transport such as gRPC).
-
     .. autoattribute:: pages
     """
 
@@ -289,7 +281,7 @@ class HTTPIterator(Iterator):
     def __init__(self, client, path, item_to_value,
                  items_key=DEFAULT_ITEMS_KEY,
                  page_token=None, max_results=None, extra_params=None,
-                 page_start=_do_nothing_page_start, page_iter=None):
+                 page_start=_do_nothing_page_start):
         super(HTTPIterator, self).__init__(
             client, item_to_value, page_token=page_token,
             max_results=max_results)
@@ -300,10 +292,7 @@ class HTTPIterator(Iterator):
         # Verify inputs / provide defaults.
         if self.extra_params is None:
             self.extra_params = {}
-        if page_iter is None:
-            self._page_iter = self._default_page_iter()
-        else:
-            self._page_iter = page_iter(self)
+        self._page_iter = self._http_page_iter()
         self._verify_params()
 
     def _verify_params(self):
@@ -317,7 +306,7 @@ class HTTPIterator(Iterator):
             raise ValueError('Using a reserved parameter',
                              reserved_in_use)
 
-    def _default_page_iter(self):
+    def _http_page_iter(self):
         """Generator of pages of API responses.
 
         Yields :class:`Page` instances.
