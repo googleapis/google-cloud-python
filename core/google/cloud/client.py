@@ -155,7 +155,7 @@ class _ClientProjectMixin(object):
 
 
 class JSONClient(Client, _ClientProjectMixin):
-    """Client to for Google JSON-based API.
+    """Client for Google JSON-based API.
 
     Assumes such APIs use the ``project`` and the client needs to store this
     value.
