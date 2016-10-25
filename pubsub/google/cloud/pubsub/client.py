@@ -87,9 +87,9 @@ class Client(JSONClient):
         if self._publisher_api is None:
             if self._use_gax:
                 generated = make_gax_publisher_api(self.connection)
-                self._publisher_api = GAXPublisherAPI(generated)
+                self._publisher_api = GAXPublisherAPI(generated, self)
             else:
-                self._publisher_api = JSONPublisherAPI(self.connection)
+                self._publisher_api = JSONPublisherAPI(self)
         return self._publisher_api
 
     @property
@@ -136,12 +136,8 @@ class Client(JSONClient):
                   accessible to the current API.
         """
         api = self.publisher_api
-        iterator = api.list_topics(
+        return api.list_topics(
             self.project, page_size, page_token)
-        # NOTE: Make sure to set the client since ``api.list_topics()`` may
-        #       not have access to the current client.
-        iterator.client = self
-        return iterator
 
     def list_subscriptions(self, page_size=None, page_token=None):
         """List subscriptions for the project associated with this client.

@@ -83,10 +83,8 @@ class _GAXPageIterator(object):
     def next(self):
         if self._items is None:
             raise StopIteration
-        else:
-            items = self._items
-            self._items = None
-            return items
+        items, self._items = self._items, None
+        return items
 
     __next__ = next
 
