@@ -23,6 +23,7 @@ from google.cloud.speech.connection import Connection
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
 from google.cloud.speech.sample import Sample
+from google.cloud.speech.transcript import Transcript
 
 
 class Client(client_module.Client):
@@ -195,7 +196,9 @@ class Client(client_module.Client):
             method='POST', path='speech:syncrecognize', data=data)
 
         if len(api_response['results']) == 1:
-            return api_response['results'][0]['alternatives']
+            result = api_response['results'][0]
+            return [Transcript.from_api_repr(alternative)
+                    for alternative in result['alternatives']]
         else:
             raise ValueError('result in api should have length 1')
 
