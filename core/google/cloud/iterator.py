@@ -187,6 +187,11 @@ class Iterator(object):
         #       constructor, instead subclasses should over-ride
         #       this property.
         self._page_iter = iter(())
+        # NOTE: This flag indicates if the total number of results should be
+        #       incremented. This is useful since a page iterator will
+        #       want to increment by results per page while an items
+        #       iterator will want to increment per item.
+        self._page_increment = False
         # The attributes below will change over the life of the iterator.
         self.page_number = 0
         self.next_page_token = page_token
@@ -203,14 +208,12 @@ class Iterator(object):
         if self._started:
             raise ValueError('Iterator has already started', self)
         self._started = True
+        self._page_increment = True
         return self._page_iter
 
     def _items_iter(self):
         """Iterator for each item returned."""
         for page in self._page_iter:
-            # Decrement the total results since the pages iterator adds
-            # to it when each page is encountered.
-            self.num_results -= page.num_items
             for item in page:
                 self.num_results += 1
                 yield item
@@ -320,7 +323,8 @@ class HTTPIterator(Iterator):
             page = Page(self, response, self._items_key,
                         self._item_to_value)
             self._page_start(self, page, response)
-            self.num_results += page.num_items
+            if self._page_increment:
+                self.num_results += page.num_items
             yield page
 
     def _has_next_page(self):
