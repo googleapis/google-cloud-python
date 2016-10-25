@@ -166,7 +166,7 @@ class Page(object):
     __next__ = next
 
 
-class Iterator(object):
+class HTTPIterator(object):
     """A generic class for iterating through Cloud JSON APIs list responses.
 
     :type client: :class:`~google.cloud.client.Client`

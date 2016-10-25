@@ -78,7 +78,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project.labels, labels)
 
     def test_list_projects_return_type(self):
-        from google.cloud.iterator import Iterator
+        from google.cloud.iterator import HTTPIterator
 
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials)
@@ -86,7 +86,7 @@ class TestClient(unittest.TestCase):
         client.connection = _Connection({})
 
         results = client.list_projects()
-        self.assertIsInstance(results, Iterator)
+        self.assertIsInstance(results, HTTPIterator)
 
     def test_list_projects_no_paging(self):
         credentials = _Credentials()

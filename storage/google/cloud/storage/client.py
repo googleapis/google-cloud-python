@@ -18,7 +18,7 @@
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import JSONClient
 from google.cloud.exceptions import NotFound
-from google.cloud.iterator import Iterator
+from google.cloud.iterator import HTTPIterator
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.connection import Connection
@@ -265,7 +265,7 @@ class Client(JSONClient):
         if fields is not None:
             extra_params['fields'] = fields
 
-        return Iterator(
+        return HTTPIterator(
             client=self, path='/b', item_to_value=_item_to_bucket,
             page_token=page_token, max_results=max_results,
             extra_params=extra_params)

@@ -91,11 +91,11 @@ class TestPage(unittest.TestCase):
         self.assertEqual(page.remaining, 97)
 
 
-class TestIterator(unittest.TestCase):
+class TestHTTPIterator(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.iterator import Iterator
-        return Iterator
+        from google.cloud.iterator import HTTPIterator
+        return HTTPIterator
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
