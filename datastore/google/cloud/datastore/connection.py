@@ -300,7 +300,8 @@ class _DatastoreAPIOverGRPC(object):
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
-        return self._stub.Lookup(request_pb)
+        with _grpc_catch_rendezvous():
+            return self._stub.Lookup(request_pb)
 
     def run_query(self, project, request_pb):
         """Perform a ``runQuery`` request.
