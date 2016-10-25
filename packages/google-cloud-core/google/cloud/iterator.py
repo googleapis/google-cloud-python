@@ -172,6 +172,12 @@ class Iterator(object):
     :type client: :class:`~google.cloud.client.Client`
     :param client: The client used to identify the application.
 
+    :type item_to_value: callable
+    :param item_to_value: Callable to convert an item from the type in the
+                          raw API response into the native object.
+                          Assumed signature takes an :class:`Iterator` and a
+                          raw API response with a single item.
+
     :type page_token: str
     :param page_token: (Optional) A token identifying a page in a result set.
 
@@ -179,9 +185,11 @@ class Iterator(object):
     :param max_results: (Optional) The maximum number of results to fetch.
     """
 
-    def __init__(self, client, page_token=None, max_results=None):
+    def __init__(self, client, item_to_value,
+                 page_token=None, max_results=None):
         self._started = False
         self.client = client
+        self._item_to_value = item_to_value
         self.max_results = max_results
         # NOTE: The _page_iter is not intended to come through the
         #       constructor, instead subclasses should over-ride
@@ -287,9 +295,9 @@ class HTTPIterator(Iterator):
                  page_token=None, max_results=None, extra_params=None,
                  page_start=_do_nothing_page_start, page_iter=None):
         super(HTTPIterator, self).__init__(
-            client, page_token=page_token, max_results=max_results)
+            client, item_to_value, page_token=page_token,
+            max_results=max_results)
         self.path = path
-        self._item_to_value = item_to_value
         self._items_key = items_key
         self.extra_params = extra_params
         self._page_start = page_start
@@ -382,6 +390,12 @@ class GAXIterator(Iterator):
     :param page_iter: A GAX page iterator to be wrapped and conform to the
                       :class:`~google.cloud.iterator.Iterator` surface.
 
+    :type item_to_value: callable
+    :param item_to_value: Callable to convert an item from a protobuf
+                          into the native object. Assumed signature
+                          takes an :class:`Iterator` and a single item
+                          from the API response as a protobuf.
+
     :type page_token: str
     :param page_token: (Optional) A token identifying a page in a result set.
 
@@ -391,7 +405,9 @@ class GAXIterator(Iterator):
     .. autoattribute:: pages
     """
 
-    def __init__(self, client, page_iter, page_token=None, max_results=None):
+    def __init__(self, client, page_iter, item_to_value,
+                 page_token=None, max_results=None):
         super(GAXIterator, self).__init__(
-            client, page_token=page_token, max_results=max_results)
+            client, item_to_value, page_token=page_token,
+            max_results=max_results)
         self._page_iter = page_iter

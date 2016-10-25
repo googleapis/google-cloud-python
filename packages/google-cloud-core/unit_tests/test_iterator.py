@@ -103,13 +103,15 @@ class TestIterator(unittest.TestCase):
     def test_constructor(self):
         connection = _Connection()
         client = _Client(connection)
+        item_to_value = object()
         token = 'ab13nceor03'
         max_results = 1337
-        iterator = self._makeOne(client, page_token=token,
+        iterator = self._makeOne(client, item_to_value, page_token=token,
                                  max_results=max_results)
 
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
+        self.assertIs(iterator._item_to_value, item_to_value)
         self.assertEqual(iterator.max_results, max_results)
         self.assertEqual(list(iterator._page_iter), [])
         self.assertFalse(iterator._page_increment)
@@ -119,7 +121,7 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(iterator.num_results, 0)
 
     def test_pages_property(self):
-        iterator = self._makeOne(None)
+        iterator = self._makeOne(None, None)
         self.assertFalse(iterator._started)
         mock_iter = object()
         iterator._page_iter = mock_iter
@@ -128,14 +130,14 @@ class TestIterator(unittest.TestCase):
         self.assertTrue(iterator._started)
 
     def test_pages_property_started(self):
-        iterator = self._makeOne(None)
+        iterator = self._makeOne(None, None)
         self.assertEqual(list(iterator.pages), [])
         # Make sure we cannot restart.
         with self.assertRaises(ValueError):
             getattr(iterator, 'pages')
 
     def test_pages_property_items_started(self):
-        iterator = self._makeOne(None)
+        iterator = self._makeOne(None, None)
         self.assertEqual(list(iterator), [])
         with self.assertRaises(ValueError):
             getattr(iterator, 'pages')
@@ -162,7 +164,7 @@ class TestIterator(unittest.TestCase):
         page2 = Page(parent, {mock_key: [item3]},
                      mock_key, self._do_nothing)
 
-        iterator = self._makeOne(None)
+        iterator = self._makeOne(None, None)
         # Fake the page iterator on the object.
         iterator._page_iter = iter((page1, page2))
 
@@ -182,7 +184,7 @@ class TestIterator(unittest.TestCase):
             six.next(items_iter)
 
     def test___iter__(self):
-        iterator = self._makeOne(None)
+        iterator = self._makeOne(None, None)
         self.assertFalse(iterator._started)
         mock_iter = object()
         iterator._page_iter = mock_iter
@@ -191,13 +193,13 @@ class TestIterator(unittest.TestCase):
         self.assertTrue(iterator._started)
 
     def test___iter___started(self):
-        iterator = self._makeOne(None)
+        iterator = self._makeOne(None, None)
         self.assertEqual(list(iterator), [])
         with self.assertRaises(ValueError):
             iter(iterator)
 
     def test___iter___pages_started(self):
-        iterator = self._makeOne(None)
+        iterator = self._makeOne(None, None)
         self.assertEqual(list(iterator.pages), [])
         with self.assertRaises(ValueError):
             iter(iterator)
@@ -439,13 +441,15 @@ class TestGAXIterator(unittest.TestCase):
     def test_constructor(self):
         client = _Client(None)
         page_iter = object()
+        item_to_value = object()
         token = 'zzzyy78kl'
         max_results = 1337
-        iterator = self._makeOne(client, page_iter, page_token=token,
-                                 max_results=max_results)
+        iterator = self._makeOne(client, page_iter, item_to_value,
+                                 page_token=token, max_results=max_results)
 
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
+        self.assertIs(iterator._item_to_value, item_to_value)
         self.assertEqual(iterator.max_results, max_results)
         self.assertIs(iterator._page_iter, page_iter)
         self.assertFalse(iterator._page_increment)
