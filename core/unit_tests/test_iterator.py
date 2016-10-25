@@ -427,6 +427,34 @@ class TestHTTPIterator(unittest.TestCase):
         self.assertEqual(kw['query_params'], {})
 
 
+class TestGAXIterator(unittest.TestCase):
+
+    def _getTargetClass(self):
+        from google.cloud.iterator import GAXIterator
+        return GAXIterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_constructor(self):
+        client = _Client(None)
+        page_iter = object()
+        token = 'zzzyy78kl'
+        max_results = 1337
+        iterator = self._makeOne(client, page_iter, page_token=token,
+                                 max_results=max_results)
+
+        self.assertFalse(iterator._started)
+        self.assertIs(iterator.client, client)
+        self.assertEqual(iterator.max_results, max_results)
+        self.assertIs(iterator._page_iter, page_iter)
+        self.assertFalse(iterator._page_increment)
+        # Changing attributes.
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, token)
+        self.assertEqual(iterator.num_results, 0)
+
+
 class _Connection(object):
 
     def __init__(self, *responses):

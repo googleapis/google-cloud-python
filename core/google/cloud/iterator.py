@@ -370,3 +370,28 @@ class HTTPIterator(Iterator):
         self.next_page_token = response.get('nextPageToken')
 
         return response
+
+
+class GAXIterator(Iterator):
+    """A generic class for iterating through Cloud gRPC APIs list responses.
+
+    :type client: :class:`~google.cloud.client.Client`
+    :param client: The client used to identify the application.
+
+    :type page_iter: :class:`~google.gax.PageIterator`
+    :param page_iter: A GAX page iterator to be wrapped and conform to the
+                      :class:`~google.cloud.iterator.Iterator` surface.
+
+    :type page_token: str
+    :param page_token: (Optional) A token identifying a page in a result set.
+
+    :type max_results: int
+    :param max_results: (Optional) The maximum number of results to fetch.
+
+    .. autoattribute:: pages
+    """
+
+    def __init__(self, client, page_iter, page_token=None, max_results=None):
+        super(GAXIterator, self).__init__(
+            client, page_token=page_token, max_results=max_results)
+        self._page_iter = page_iter
