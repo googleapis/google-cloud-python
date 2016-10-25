@@ -23,7 +23,7 @@ from google.cloud.bigquery.job import ExtractTableToStorageJob
 from google.cloud.bigquery.job import LoadTableFromStorageJob
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.query import QueryResults
-from google.cloud.iterator import Iterator
+from google.cloud.iterator import HTTPIterator
 
 
 class Project(object):
@@ -92,9 +92,10 @@ class Client(JSONClient):
         :returns: Iterator of :class:`~google.cloud.bigquery.client.Project`
                   accessible to the current client.
         """
-        return Iterator(client=self, path='/projects',
-                        items_key='projects', item_to_value=_item_to_project,
-                        page_token=page_token, max_results=max_results)
+        return HTTPIterator(
+            client=self, path='/projects', item_to_value=_item_to_project,
+            items_key='projects', page_token=page_token,
+            max_results=max_results)
 
     def list_datasets(self, include_all=False, max_results=None,
                       page_token=None):
@@ -123,9 +124,9 @@ class Client(JSONClient):
         if include_all:
             extra_params['all'] = True
         path = '/projects/%s/datasets' % (self.project,)
-        return Iterator(
-            client=self, path=path, items_key='datasets',
-            item_to_value=_item_to_dataset, page_token=page_token,
+        return HTTPIterator(
+            client=self, path=path, item_to_value=_item_to_dataset,
+            items_key='datasets', page_token=page_token,
             max_results=max_results, extra_params=extra_params)
 
     def dataset(self, dataset_name):
@@ -204,9 +205,9 @@ class Client(JSONClient):
             extra_params['stateFilter'] = state_filter
 
         path = '/projects/%s/jobs' % (self.project,)
-        return Iterator(
-            client=self, path=path, items_key='jobs',
-            item_to_value=_item_to_job, page_token=page_token,
+        return HTTPIterator(
+            client=self, path=path, item_to_value=_item_to_job,
+            items_key='jobs', page_token=page_token,
             max_results=max_results, extra_params=extra_params)
 
     def load_table_from_storage(self, job_name, destination, *source_uris):

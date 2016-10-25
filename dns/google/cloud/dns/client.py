@@ -18,7 +18,7 @@
 from google.cloud.client import JSONClient
 from google.cloud.dns.connection import Connection
 from google.cloud.dns.zone import ManagedZone
-from google.cloud.iterator import Iterator
+from google.cloud.iterator import HTTPIterator
 
 
 class Client(JSONClient):
@@ -81,9 +81,10 @@ class Client(JSONClient):
                   belonging to this project.
         """
         path = '/projects/%s/managedZones' % (self.project,)
-        return Iterator(client=self, path=path, items_key='managedZones',
-                        item_to_value=_item_to_zone, page_token=page_token,
-                        max_results=max_results)
+        return HTTPIterator(
+            client=self, path=path, item_to_value=_item_to_zone,
+            items_key='managedZones', page_token=page_token,
+            max_results=max_results)
 
     def zone(self, name, dns_name=None, description=None):
         """Construct a zone bound to this client.
