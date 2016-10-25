@@ -92,8 +92,8 @@ Great Britian.
     ...     max_alternatives=2)
     >>> for alternative in alternatives:
     ...     print('=' * 20)
-    ...     print('transcript: ' + alternative['transcript'])
-    ...     print('confidence: ' + alternative['confidence'])
+    ...     print('transcript: ' + alternative.transcript)
+    ...     print('confidence: ' + alternative.confidence)
     ====================
     transcript: Hello, this is a test
     confidence: 0.81
@@ -114,8 +114,8 @@ Example of using the profanity filter.
     ...                                      profanity_filter=True)
     >>> for alternative in alternatives:
     ...     print('=' * 20)
-    ...     print('transcript: ' + alternative['transcript'])
-    ...     print('confidence: ' + alternative['confidence'])
+    ...     print('transcript: ' + alternative.transcript)
+    ...     print('confidence: ' + alternative.confidence)
     ====================
     transcript: Hello, this is a f****** test
     confidence: 0.81
@@ -136,8 +136,8 @@ words to the vocabulary of the recognizer.
     ...                                      speech_context=hints)
     >>> for alternative in alternatives:
     ...     print('=' * 20)
-    ...     print('transcript: ' + alternative['transcript'])
-    ...     print('confidence: ' + alternative['confidence'])
+    ...     print('transcript: ' + alternative.transcript)
+    ...     print('confidence: ' + alternative.confidence)
     ====================
     transcript: Hello, this is a test
     confidence: 0.81
