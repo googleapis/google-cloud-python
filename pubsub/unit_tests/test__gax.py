@@ -61,7 +61,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         from google.cloud.pubsub.topic import Topic
 
         TOKEN = 'TOKEN'
-        response = _GAXPageIterator([_TopicPB(self.TOPIC_PATH)], TOKEN)
+        response = _GAXPageIterator([_TopicPB(self.TOPIC_PATH)],
+                                    page_token=TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
         client = _Client(self.PROJECT)
         api = self._makeOne(gax_api, client)
@@ -90,7 +91,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
         response = _GAXPageIterator(
-            [_TopicPB(self.TOPIC_PATH)], NEW_TOKEN)
+            [_TopicPB(self.TOPIC_PATH)], page_token=NEW_TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
         client = _Client(self.PROJECT)
         api = self._makeOne(gax_api, client)
@@ -291,8 +292,8 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_topic_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
         from google.cloud._testing import _GAXPageIterator
-        response = _GAXPageIterator([
-            {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}], None)
+        response = _GAXPageIterator(
+            [{'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}])
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
         client = _Client(self.PROJECT)
         api = self._makeOne(gax_api, client)
@@ -318,8 +319,9 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
-        response = _GAXPageIterator([
-            {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}], NEW_TOKEN)
+        response = _GAXPageIterator(
+            [{'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}],
+            page_token=NEW_TOKEN)
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
         client = _Client(self.PROJECT)
         api = self._makeOne(gax_api, client)
@@ -390,8 +392,10 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
         from google.cloud._testing import _GAXPageIterator
-        response = _GAXPageIterator([_SubscriptionPB(
-            self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)], None)
+
+        sub_pb = _SubscriptionPB(
+            self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)
+        response = _GAXPageIterator([sub_pb])
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
         api = self._makeOne(gax_api)
 
@@ -417,8 +421,9 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
-        response = _GAXPageIterator([_SubscriptionPB(
-            self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)], NEW_TOKEN)
+        sub_pb = _SubscriptionPB(
+            self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)
+        response = _GAXPageIterator([sub_pb], page_token=NEW_TOKEN)
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
         api = self._makeOne(gax_api)
 

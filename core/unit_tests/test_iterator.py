@@ -434,6 +434,8 @@ class TestGAXIterator(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_constructor(self):
+        import types
+
         client = _Client(None)
         page_iter = object()
         item_to_value = object()
@@ -446,12 +448,99 @@ class TestGAXIterator(unittest.TestCase):
         self.assertIs(iterator.client, client)
         self.assertIs(iterator._item_to_value, item_to_value)
         self.assertEqual(iterator.max_results, max_results)
-        self.assertIs(iterator._page_iter, page_iter)
+        self.assertIsInstance(iterator._page_iter, types.GeneratorType)
         self.assertFalse(iterator._page_increment)
         # Changing attributes.
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, token)
         self.assertEqual(iterator.num_results, 0)
+
+    @staticmethod
+    def _do_nothing(parent, value):
+        return parent, value
+
+    def _wrap_gax_helper(self, page_increment=None):
+        import types
+        from google.cloud._testing import _GAXPageIterator
+        from google.cloud.iterator import Page
+
+        iterator = self._makeOne(None, (), self._do_nothing)
+        if page_increment is not None:
+            iterator._page_increment = page_increment
+        # Make a mock ``google.gax.PageIterator``
+        page_items = (29, 31)  # Items for just one page.
+        page_token = '2sde98ds2s0hh'
+        page_iter = _GAXPageIterator(page_items, page_token=page_token)
+        wrapped = iterator._wrap_gax(page_iter)
+        self.assertIsInstance(wrapped, types.GeneratorType)
+
+        pages = list(wrapped)
+        # First check the page token.
+        self.assertEqual(iterator.next_page_token, page_token)
+        # Then check the pages of results.
+        self.assertEqual(len(pages), 1)
+        page = pages[0]
+        self.assertIsInstance(page, Page)
+        # _do_nothing will throw the iterator in front.
+        expected = zip((iterator, iterator), page_items)
+        self.assertEqual(list(page), list(expected))
+        return iterator
+
+    def test__wrap_gax(self):
+        iterator = self._wrap_gax_helper()
+        # Make sure no page incrementing happend.
+        self.assertFalse(iterator._page_increment)
+        self.assertEqual(iterator.num_results, 0)
+
+    def test__wrap_gax_with_increment(self):
+        iterator = self._wrap_gax_helper(True)
+        # Make sure no page incrementing happend.
+        self.assertTrue(iterator._page_increment)
+        self.assertEqual(iterator.num_results, 2)
+
+    def test_iterate(self):
+        import six
+        from google.cloud._testing import _GAXPageIterator
+
+        item1 = object()
+        item2 = object()
+        item3 = object()
+        token1 = 'smkdme30e2e32r'
+        token2 = '39cm9csl123dck'
+
+        # Make a mock ``google.gax.PageIterator``
+        page1 = (item1,)
+        page2 = (item2, item3)
+        page_iter = _GAXPageIterator(page1, page2, page_token=token1)
+        iterator = self._makeOne(None, page_iter, self._do_nothing)
+
+        self.assertEqual(iterator.num_results, 0)
+
+        items_iter = iter(iterator)
+        val1 = six.next(items_iter)
+        self.assertEqual(val1, (iterator, item1))
+        self.assertEqual(iterator.num_results, 1)
+        self.assertEqual(iterator.next_page_token, token1)
+
+        # Before grabbing the next page, hot-swap the token
+        # on the ``page_iter``.
+        page_iter.page_token = token2
+
+        # Grab the next item (which will cause the next page).
+        val2 = six.next(items_iter)
+        self.assertEqual(val2, (iterator, item2))
+        self.assertEqual(iterator.num_results, 2)
+        self.assertEqual(iterator.next_page_token, token2)
+
+        # Grab the final item from the final / current page.
+        val3 = six.next(items_iter)
+        self.assertEqual(val3, (iterator, item3))
+        self.assertEqual(iterator.num_results, 3)
+        # Make sure the token did not change.
+        self.assertEqual(iterator.next_page_token, token2)
+
+        with self.assertRaises(StopIteration):
+            six.next(items_iter)
 
 
 class _Connection(object):
