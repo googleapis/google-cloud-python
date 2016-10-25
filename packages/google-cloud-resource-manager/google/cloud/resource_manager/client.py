@@ -16,7 +16,7 @@
 
 
 from google.cloud.client import Client as BaseClient
-from google.cloud.iterator import Iterator
+from google.cloud.iterator import HTTPIterator
 from google.cloud.resource_manager.connection import Connection
 from google.cloud.resource_manager.project import Project
 
@@ -154,7 +154,7 @@ class Client(BaseClient):
         if filter_params is not None:
             extra_params['filter'] = filter_params
 
-        return Iterator(
+        return HTTPIterator(
             client=self, path='/projects', item_to_value=_item_to_project,
             items_key='projects', extra_params=extra_params)
 
