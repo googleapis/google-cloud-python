@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Speech Transcript &mdash; google-cloud 0e4a660 documentation</title>
+  <title>Speech Transcript &mdash; google-cloud 0f8fdb6 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0e4a660 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 0f8fdb6 documentation" href="index.html"/>
         <link rel="prev" title="Speech Sample" href="speech-sample.html"/> 
 
   
@@ -274,14 +274,18 @@
 <p>Transcript representation for Google Speech API</p>
 <dl class="class">
 <dt id="google.cloud.speech.transcript.Transcript">
-<em class="property">class </em><code class="descclassname">google.cloud.speech.transcript.</code><code class="descname">Transcript</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/transcript.html#Transcript"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.transcript.Transcript" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.speech.transcript.</code><code class="descname">Transcript</code><span class="sig-paren">(</span><em>transcript</em>, <em>confidence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/transcript.html#Transcript"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.transcript.Transcript" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Representation of Speech Transcripts</p>
+<p>Representation of Speech Transcripts.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>result</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary of transcript and confidence of recognition.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>transcript</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; String of transcribed data.</li>
+<li><strong>confidence</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The confidence estimate between 0.0 and 1.0.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -296,6 +300,24 @@
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Confidence score of recognized speech [0-1].</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.speech.transcript.Transcript.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>transcript</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/transcript.html#Transcript.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.transcript.Transcript.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct <code class="docutils literal"><span class="pre">Transcript</span></code> from JSON response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transcript</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary response from the REST API.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.speech.transcript.Transcript" title="google.cloud.speech.transcript.Transcript"><code class="xref py py-class docutils literal"><span class="pre">Transcript</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">Transcript</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -360,7 +382,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0e4a660',
+            VERSION:'0f8fdb6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
