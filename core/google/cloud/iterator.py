@@ -166,15 +166,37 @@ class Page(object):
     __next__ = next
 
 
-class HTTPIterator(object):
+class Iterator(object):
+    """A generic class for iterating through API list responses.
+
+    :type client: :class:`~google.cloud.client.Client`
+    :param client: The client used to identify the application.
+
+    :type page_token: str
+    :param page_token: (Optional) A token identifying a page in a result set.
+
+    :type max_results: int
+    :param max_results: (Optional) The maximum number of results to fetch.
+    """
+
+    def __init__(self, client, page_token=None, max_results=None):
+        self._started = False
+        self.client = client
+        self.max_results = max_results
+        # The attributes below will change over the life of the iterator.
+        self.page_number = 0
+        self.next_page_token = page_token
+        self.num_results = 0
+
+
+class HTTPIterator(Iterator):
     """A generic class for iterating through Cloud JSON APIs list responses.
 
     :type client: :class:`~google.cloud.client.Client`
-    :param client: The client, which owns a connection to make requests.
+    :param client: The client used to identify the application.
 
     :type path: str
-    :param path: The path to query for the list of items. Defaults
-                 to :attr:`PATH` on the current iterator class.
+    :param path: The path to query for the list of items.
 
     :type item_to_value: callable
     :param item_to_value: Callable to convert an item from JSON
@@ -220,12 +242,11 @@ class HTTPIterator(object):
                  items_key=DEFAULT_ITEMS_KEY,
                  page_token=None, max_results=None, extra_params=None,
                  page_start=_do_nothing_page_start, page_iter=None):
-        self._started = False
-        self.client = client
+        super(HTTPIterator, self).__init__(
+            client, page_token=page_token, max_results=max_results)
         self.path = path
         self._item_to_value = item_to_value
         self._items_key = items_key
-        self.max_results = max_results
         self.extra_params = extra_params
         self._page_start = page_start
         self._page_iter = None
@@ -237,10 +258,6 @@ class HTTPIterator(object):
         else:
             self._page_iter = page_iter(self)
         self._verify_params()
-        # The attributes below will change over the life of the iterator.
-        self.page_number = 0
-        self.next_page_token = page_token
-        self.num_results = 0
 
     def _verify_params(self):
         """Verifies the parameters don't use any reserved parameter.
