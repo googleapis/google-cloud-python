@@ -26,7 +26,8 @@ class TestTranscript(unittest.TestCase):
     def test_ctor(self):
         from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE as DATA
         TRANSCRIPT_DATA = DATA['response']['results'][0]['alternatives'][0]
-        transcript = self._makeOne(TRANSCRIPT_DATA)
+        transcript = self._makeOne(TRANSCRIPT_DATA['transcript'],
+                                   TRANSCRIPT_DATA['confidence'])
         self.assertEqual('how old is the Brooklyn Bridge',
                          transcript.transcript)
         self.assertEqual(0.98267895, transcript.confidence)
