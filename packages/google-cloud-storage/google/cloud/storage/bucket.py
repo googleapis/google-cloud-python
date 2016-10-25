@@ -20,7 +20,7 @@ import six
 
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
-from google.cloud.iterator import Iterator
+from google.cloud.iterator import HTTPIterator
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage.acl import BucketACL
@@ -306,7 +306,7 @@ class Bucket(_PropertyMixin):
 
         client = self._require_client(client)
         path = self.path + '/o'
-        iterator = Iterator(
+        iterator = HTTPIterator(
             client=client, path=path, item_to_value=_item_to_blob,
             page_token=page_token, max_results=max_results,
             extra_params=extra_params, page_start=_blobs_page_start)
