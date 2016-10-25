@@ -376,7 +376,7 @@ class TestClient(unittest.TestCase):
         credentials = _Credentials()
         client = self._makeOne(project=project, credentials=credentials)
         iterator = client.list_buckets()
-        page = Page(iterator, {}, iterator._items_key, None)
+        page = Page(iterator, (), None)
         iterator._page = page
         self.assertEqual(list(page), [])
 

@@ -36,9 +36,6 @@ from google.cloud.iterator import Page
 from google.cloud.pubsub.topic import Topic
 
 
-_FAKE_ITEMS_KEY = 'not-a-key'
-
-
 class _PublisherAPI(object):
     """Helper mapping publisher-related APIs.
 
@@ -589,9 +586,7 @@ def _recast_page_iterator(page_iter, iterator):
     :param iterator: The iterator that owns each page.
     """
     for items in page_iter:
-        fake_response = {_FAKE_ITEMS_KEY: items}
-        page = Page(
-            iterator, fake_response, _FAKE_ITEMS_KEY, _item_to_topic)
+        page = Page(iterator, items, _item_to_topic)
         iterator.next_page_token = page_iter.page_token or None
         iterator.num_results += page.num_items
         yield page

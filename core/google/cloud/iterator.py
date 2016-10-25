@@ -109,23 +109,19 @@ class Page(object):
     :type parent: :class:`Iterator`
     :param parent: The iterator that owns the current page.
 
-    :type response: dict
-    :param response: The JSON API response for a page.
-
-    :type items_key: str
-    :param items_key: The dictionary key used to retrieve items
-                      from the response.
+    :type items: iterable
+    :param items: An iterable (that also defines __len__) of items
+                  from a raw API response.
 
     :type item_to_value: callable
-    :param item_to_value: Callable to convert an item from JSON
-                          into the native object. Assumed signature
-                          takes an :class:`Iterator` and a dictionary
-                          holding a single item.
+    :param item_to_value: Callable to convert an item from the type in the
+                          raw API response into the native object.
+                          Assumed signature takes an :class:`Iterator` and a
+                          raw API response with a single item.
     """
 
-    def __init__(self, parent, response, items_key, item_to_value):
+    def __init__(self, parent, items, item_to_value):
         self._parent = parent
-        items = response.get(items_key, ())
         self._num_items = len(items)
         self._remaining = self._num_items
         self._item_iter = iter(items)
@@ -328,8 +324,8 @@ class HTTPIterator(Iterator):
         """
         while self._has_next_page():
             response = self._get_next_page_response()
-            page = Page(self, response, self._items_key,
-                        self._item_to_value)
+            items = response.get(self._items_key, ())
+            page = Page(self, items, self._item_to_value)
             self._page_start(self, page, response)
             if self._page_increment:
                 self.num_results += page.num_items
