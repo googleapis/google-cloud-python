@@ -14,9 +14,6 @@
 
 import unittest
 
-from google.cloud._helpers import _rfc3339_to_datetime
-from google.cloud.runtimeconfig._helpers import config_name_from_full_name
-
 
 class TestConfig(unittest.TestCase):
     PROJECT = 'PROJECT'
@@ -31,6 +28,9 @@ class TestConfig(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def _verifyResourceProperties(self, config, resource):
+        from google.cloud.runtimeconfig._helpers import (
+            config_name_from_full_name)
+
         if 'name' in resource:
             self.assertEqual(config.full_name, resource['name'])
             self.assertEqual(
@@ -51,7 +51,7 @@ class TestConfig(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         config = self._makeOne(name=None, client=client)
         with self.assertRaises(ValueError):
-            _ = config.full_name
+            getattr(config, 'full_name')
 
     def test_exists_miss_w_bound_client(self):
         conn = _Connection()
@@ -143,6 +143,8 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(len(conn._requested), 0)
 
     def test_get_variable_w_bound_client(self):
+        from google.cloud._helpers import _rfc3339_to_datetime
+
         VARIABLE_NAME = 'my-variable/abcd'
         VARIABLE_PATH = '%s/variables/%s' % (self.CONFIG_PATH, VARIABLE_NAME)
         RESOURCE = {
@@ -178,6 +180,8 @@ class TestConfig(unittest.TestCase):
         self.assertIsNone(variable)
 
     def test_get_variable_w_alternate_client(self):
+        from google.cloud._helpers import _rfc3339_to_datetime
+
         VARIABLE_NAME = 'my-variable/abcd'
         VARIABLE_PATH = '%s/variables/%s' % (self.CONFIG_PATH, VARIABLE_NAME)
         RESOURCE = {
@@ -230,6 +234,7 @@ class TestConfig(unittest.TestCase):
 
     def test_list_variables_defaults(self):
         import six
+        from google.cloud._helpers import _rfc3339_to_datetime
         from google.cloud.runtimeconfig.variable import Variable
 
         VARIABLE_1 = 'variable-one'
@@ -273,6 +278,7 @@ class TestConfig(unittest.TestCase):
 
     def test_list_variables_explicit(self):
         import six
+        from google.cloud._helpers import _rfc3339_to_datetime
         from google.cloud.runtimeconfig.variable import Variable
 
         VARIABLE_1 = 'variable-one'

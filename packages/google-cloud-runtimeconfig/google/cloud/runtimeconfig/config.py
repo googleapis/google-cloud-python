@@ -17,7 +17,7 @@
 from google.cloud.exceptions import NotFound
 from google.cloud.runtimeconfig._helpers import config_name_from_full_name
 from google.cloud.runtimeconfig.variable import Variable
-from google.cloud.iterator import Iterator
+from google.cloud.iterator import HTTPIterator
 
 
 class Config(object):
@@ -238,9 +238,9 @@ class Config(object):
             belonging to this project.
         """
         path = '%s/variables' % (self.path,)
-        iterator = Iterator(
+        iterator = HTTPIterator(
             client=self._require_client(client), path=path,
-            items_key='variables', item_to_value=_item_to_variable,
+            item_to_value=_item_to_variable, items_key='variables',
             page_token=page_token, max_results=page_size)
         iterator._MAX_RESULTS = 'pageSize'
         iterator.config = self
