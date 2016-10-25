@@ -16,14 +16,29 @@
 
 
 class Transcript(object):
-    """Representation of Speech Transcripts
+    """Representation of Speech Transcripts.
 
-    :type result: dict
-    :param result: Dictionary of transcript and confidence of recognition.
+    :type transcript: str
+    :param transcript: String of transcribed data.
+
+    :type confidence: float
+    :param confidence: The confidence estimate between 0.0 and 1.0.
     """
-    def __init__(self, result):
-        self._transcript = result.get('transcript')
-        self._confidence = result.get('confidence')
+    def __init__(self, transcript, confidence):
+        self._transcript = transcript
+        self._confidence = confidence
+
+    @classmethod
+    def from_api_repr(cls, transcript):
+        """Factory: construct ``Transcript`` from JSON response.
+
+        :type transcript: dict
+        :param transcript: Dictionary response from the REST API.
+
+        :rtype: :class:`~Transcript`
+        :returns: Instance of ``Transcript``.
+        """
+        return cls(transcript['transcript'], transcript['confidence'])
 
     @property
     def transcript(self):
