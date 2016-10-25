@@ -50,14 +50,26 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertIs(api._gax_api, gax_api)
 
     def test_list_entries_no_paging(self):
+        import datetime
+
+        from google.api.monitored_resource_pb2 import MonitoredResource
         from google.gax import INITIAL_PAGE
-        from google.cloud.logging import DESCENDING
+        from google.logging.v2.log_entry_pb2 import LogEntry
+
+        from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud._testing import _GAXPageIterator
+        from google.cloud.logging import DESCENDING
 
         TOKEN = 'TOKEN'
         TEXT = 'TEXT'
-        response = _GAXPageIterator(
-            [_LogEntryPB(self.LOG_NAME, text_payload=TEXT)], TOKEN)
+        resource_pb = MonitoredResource(type='global')
+        timestamp_pb = _datetime_to_pb_timestamp(
+            datetime.datetime.utcnow())
+        entry_pb = LogEntry(log_name=self.LOG_NAME,
+                            resource=resource_pb,
+                            timestamp=timestamp_pb,
+                            text_payload=TEXT)
+        response = _GAXPageIterator([entry_pb], TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         api = self._makeOne(gax_api)
 
@@ -81,13 +93,24 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertIs(options.page_token, INITIAL_PAGE)
 
     def _list_entries_with_paging_helper(self, payload, struct_pb):
+        import datetime
+
+        from google.api.monitored_resource_pb2 import MonitoredResource
+        from google.logging.v2.log_entry_pb2 import LogEntry
         from google.cloud._testing import _GAXPageIterator
+        from google.cloud._helpers import _datetime_to_pb_timestamp
 
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
-        response = _GAXPageIterator(
-            [_LogEntryPB(self.LOG_NAME, json_payload=struct_pb)], NEW_TOKEN)
+        resource_pb = MonitoredResource(type='global')
+        timestamp_pb = _datetime_to_pb_timestamp(
+            datetime.datetime.utcnow())
+        entry_pb = LogEntry(log_name=self.LOG_NAME,
+                            resource=resource_pb,
+                            timestamp=timestamp_pb,
+                            json_payload=struct_pb)
+        response = _GAXPageIterator([entry_pb], NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         api = self._makeOne(gax_api)
 
@@ -147,36 +170,74 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         struct_pb = Struct(fields=struct_fields)
         self._list_entries_with_paging_helper(payload, struct_pb)
 
+    def _make_log_entry_with_extras(self, labels, iid, type_url, now):
+        from google.api.monitored_resource_pb2 import MonitoredResource
+        from google.logging.v2.log_entry_pb2 import LogEntry
+        from google.logging.v2.log_entry_pb2 import LogEntryOperation
+        from google.logging.type.http_request_pb2 import HttpRequest
+        from google.logging.type.log_severity_pb2 import WARNING
+        from google.protobuf.any_pb2 import Any
+
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+
+        resource_pb = MonitoredResource(
+            type='global', labels=labels)
+        proto_payload = Any(type_url=type_url)
+        timestamp_pb = _datetime_to_pb_timestamp(now)
+        request_pb = HttpRequest(
+            request_url='http://example.com/requested',
+            request_method='GET',
+            status=200,
+            referer='http://example.com/referer',
+            user_agent='AGENT',
+            cache_hit=True,
+            request_size=256,
+            response_size=1024,
+            remote_ip='1.2.3.4',
+        )
+        operation_pb = LogEntryOperation(
+            producer='PRODUCER',
+            first=True,
+            last=True,
+            id='OPID',
+        )
+        entry_pb = LogEntry(log_name=self.LOG_NAME,
+                            resource=resource_pb,
+                            proto_payload=proto_payload,
+                            timestamp=timestamp_pb,
+                            severity=WARNING,
+                            insert_id=iid,
+                            http_request=request_pb,
+                            labels=labels,
+                            operation=operation_pb)
+        return entry_pb
+
     def test_list_entries_with_extra_properties(self):
         from datetime import datetime
-        from google.logging.type.log_severity_pb2 import WARNING
-        from google.cloud._testing import _GAXPageIterator
+
+        # Import the wrappers to register the type URL for BoolValue
+        # pylint: disable=unused-variable
+        from google.protobuf import wrappers_pb2
+        # pylint: enable=unused-variable
+
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_rfc3339
-        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud._testing import _GAXPageIterator
+
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
-        PAYLOAD = {'message': 'MESSAGE', 'weather': 'sunny'}
         SEVERITY = 'WARNING'
         LABELS = {
             'foo': 'bar',
         }
         IID = 'IID'
-        request = _HTTPRequestPB()
-        operation = _LogEntryOperationPB()
-        EXTRAS = {
-            'severity': WARNING,
-            'labels': LABELS,
-            'insert_id': IID,
-            'http_request': request,
-            'operation': operation,
-        }
-        ENTRY = _LogEntryPB(self.LOG_NAME, proto_payload=PAYLOAD, **EXTRAS)
-        ENTRY.resource.labels['foo'] = 'bar'
-        ENTRY.timestamp = _datetime_to_pb_timestamp(NOW)
-        response = _GAXPageIterator([ENTRY], NEW_TOKEN)
+        bool_type_url = 'type.googleapis.com/google.protobuf.BoolValue'
+        entry_pb = self._make_log_entry_with_extras(
+            LABELS, IID, bool_type_url, NOW)
+
+        response = _GAXPageIterator([entry_pb], NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         api = self._makeOne(gax_api)
 
@@ -189,23 +250,28 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(entry['logName'], self.LOG_NAME)
         self.assertEqual(entry['resource'],
                          {'type': 'global', 'labels': {'foo': 'bar'}})
-        self.assertEqual(entry['protoPayload'], PAYLOAD)
+        self.assertEqual(entry['protoPayload'], {
+            '@type': bool_type_url,
+            'value': False,
+        })
         self.assertEqual(entry['severity'], SEVERITY)
         self.assertEqual(entry['labels'], LABELS)
         self.assertEqual(entry['insertId'], IID)
         self.assertEqual(entry['timestamp'], _datetime_to_rfc3339(NOW))
+        request = entry_pb.http_request
         EXPECTED_REQUEST = {
             'requestMethod': request.request_method,
             'requestUrl': request.request_url,
             'status': request.status,
-            'requestSize': request.request_size,
-            'responseSize': request.response_size,
+            'requestSize': str(request.request_size),
+            'responseSize': str(request.response_size),
             'referer': request.referer,
             'userAgent': request.user_agent,
             'remoteIp': request.remote_ip,
             'cacheHit': request.cache_hit,
         }
         self.assertEqual(entry['httpRequest'], EXPECTED_REQUEST)
+        operation = entry_pb.operation
         EXPECTED_OPERATION = {
             'producer': operation.producer,
             'id': operation.id,
@@ -521,15 +587,18 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_list_sinks_no_paging(self):
         from google.gax import INITIAL_PAGE
         from google.cloud._testing import _GAXPageIterator
+        from google.logging.v2.logging_config_pb2 import LogSink
+
         TOKEN = 'TOKEN'
         SINKS = [{
             'name': self.SINK_PATH,
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
         }]
-        response = _GAXPageIterator(
-            [_LogSinkPB(self.SINK_PATH, self.DESTINATION_URI, self.FILTER)],
-            TOKEN)
+        sink_pb = LogSink(name=self.SINK_PATH,
+                          destination=self.DESTINATION_URI,
+                          filter=self.FILTER)
+        response = _GAXPageIterator([sink_pb], TOKEN)
         gax_api = _GAXSinksAPI(_list_sinks_response=response)
         api = self._makeOne(gax_api)
 
@@ -545,6 +614,8 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_list_sinks_w_paging(self):
         from google.cloud._testing import _GAXPageIterator
+        from google.logging.v2.logging_config_pb2 import LogSink
+
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
         SINKS = [{
@@ -552,9 +623,10 @@ class Test_SinksAPI(_Base, unittest.TestCase):
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
         }]
-        response = _GAXPageIterator(
-            [_LogSinkPB(self.SINK_PATH, self.DESTINATION_URI, self.FILTER)],
-            None)
+        sink_pb = LogSink(name=self.SINK_PATH,
+                          destination=self.DESTINATION_URI,
+                          filter=self.FILTER)
+        response = _GAXPageIterator([sink_pb], None)
         gax_api = _GAXSinksAPI(_list_sinks_response=response)
         api = self._makeOne(gax_api)
 
@@ -623,13 +695,16 @@ class Test_SinksAPI(_Base, unittest.TestCase):
             api.sink_get(self.PROJECT, self.SINK_NAME)
 
     def test_sink_get_hit(self):
+        from google.logging.v2.logging_config_pb2 import LogSink
+
         RESPONSE = {
             'name': self.SINK_PATH,
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
         }
-        sink_pb = _LogSinkPB(
-            self.SINK_PATH, self.DESTINATION_URI, self.FILTER)
+        sink_pb = LogSink(name=self.SINK_PATH,
+                          destination=self.DESTINATION_URI,
+                          filter=self.FILTER)
         gax_api = _GAXSinksAPI(_get_sink_response=sink_pb)
         api = self._makeOne(gax_api)
 
@@ -725,15 +800,18 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_list_metrics_no_paging(self):
         from google.gax import INITIAL_PAGE
         from google.cloud._testing import _GAXPageIterator
+        from google.logging.v2.logging_metrics_pb2 import LogMetric
+
         TOKEN = 'TOKEN'
         METRICS = [{
             'name': self.METRIC_PATH,
             'filter': self.FILTER,
             'description': self.DESCRIPTION,
         }]
-        response = _GAXPageIterator(
-            [_LogMetricPB(self.METRIC_PATH, self.DESCRIPTION, self.FILTER)],
-            TOKEN)
+        metric_pb = LogMetric(name=self.METRIC_PATH,
+                              description=self.DESCRIPTION,
+                              filter=self.FILTER)
+        response = _GAXPageIterator([metric_pb], TOKEN)
         gax_api = _GAXMetricsAPI(_list_log_metrics_response=response)
         api = self._makeOne(gax_api)
 
@@ -749,6 +827,8 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_list_metrics_w_paging(self):
         from google.cloud._testing import _GAXPageIterator
+        from google.logging.v2.logging_metrics_pb2 import LogMetric
+
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
         METRICS = [{
@@ -756,9 +836,10 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
             'filter': self.FILTER,
             'description': self.DESCRIPTION,
         }]
-        response = _GAXPageIterator(
-            [_LogMetricPB(self.METRIC_PATH, self.DESCRIPTION, self.FILTER)],
-            None)
+        metric_pb = LogMetric(name=self.METRIC_PATH,
+                              description=self.DESCRIPTION,
+                              filter=self.FILTER)
+        response = _GAXPageIterator([metric_pb], None)
         gax_api = _GAXMetricsAPI(_list_log_metrics_response=response)
         api = self._makeOne(gax_api)
 
@@ -827,13 +908,16 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
             api.metric_get(self.PROJECT, self.METRIC_NAME)
 
     def test_metric_get_hit(self):
+        from google.logging.v2.logging_metrics_pb2 import LogMetric
+
         RESPONSE = {
             'name': self.METRIC_PATH,
             'filter': self.FILTER,
             'description': self.DESCRIPTION,
         }
-        metric_pb = _LogMetricPB(
-            self.METRIC_PATH, self.DESCRIPTION, self.FILTER)
+        metric_pb = LogMetric(name=self.METRIC_PATH,
+                              description=self.DESCRIPTION,
+                              filter=self.FILTER)
         gax_api = _GAXMetricsAPI(_get_log_metric_response=metric_pb)
         api = self._makeOne(gax_api)
 
@@ -1094,58 +1178,6 @@ class _GAXMetricsAPI(_GAXBaseAPI):
             raise GaxError('error')
         if self._log_metric_not_found:
             raise GaxError('notfound', self._make_grpc_not_found())
-
-
-class _HTTPRequestPB(object):
-
-    request_url = 'http://example.com/requested'
-    request_method = 'GET'
-    status = 200
-    referer = 'http://example.com/referer'
-    user_agent = 'AGENT'
-    cache_hit = False
-    request_size = 256
-    response_size = 1024
-    remote_ip = '1.2.3.4'
-
-
-class _LogEntryOperationPB(object):
-
-    producer = 'PRODUCER'
-    first = last = False
-    id = 'OPID'
-
-
-class _ResourcePB(object):
-
-    def __init__(self, type_='global', **labels):
-        self.type = type_
-        self.labels = labels
-
-
-class _LogEntryPB(object):
-
-    severity = 0
-    http_request = operation = insert_id = None
-    text_payload = json_payload = proto_payload = None
-
-    def __init__(self, log_name, **kw):
-        self.log_name = log_name
-        self.resource = _ResourcePB()
-        self.timestamp = self._make_timestamp()
-        self.labels = kw.pop('labels', {})
-        self.__dict__.update(kw)
-
-    def HasField(self, field_name):
-        return getattr(self, field_name, None) is not None
-
-    @staticmethod
-    def _make_timestamp():
-        from datetime import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud._helpers import _datetime_to_pb_timestamp
-        NOW = datetime.utcnow().replace(tzinfo=UTC)
-        return _datetime_to_pb_timestamp(NOW)
 
 
 class _LogSinkPB(object):
