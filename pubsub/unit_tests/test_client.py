@@ -159,13 +159,16 @@ class TestClient(unittest.TestCase):
 
     def test_list_topics_no_paging(self):
         from google.cloud.pubsub.topic import Topic
+
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         client.connection = object()
-        api = client._publisher_api = _FauxPublisherAPI()
-        api._list_topics_response = [{'name': self.TOPIC_PATH}], None
+        api = _FauxPublisherAPI(items=[Topic(self.TOPIC_NAME, client)])
+        client._publisher_api = api
 
-        topics, next_page_token = client.list_topics()
+        iterator = client.list_topics()
+        topics = list(iterator)
+        next_page_token = iterator.next_page_token
 
         self.assertEqual(len(topics), 1)
         self.assertIsInstance(topics[0], Topic)
@@ -176,16 +179,19 @@ class TestClient(unittest.TestCase):
 
     def test_list_topics_with_paging(self):
         from google.cloud.pubsub.topic import Topic
+
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         client.connection = object()
-        api = client._publisher_api = _FauxPublisherAPI()
-        api._list_topics_response = [{'name': self.TOPIC_PATH}], TOKEN2
+        api = _FauxPublisherAPI([Topic(self.TOPIC_NAME, client)], TOKEN2)
+        client._publisher_api = api
 
-        topics, next_page_token = client.list_topics(SIZE, TOKEN1)
+        iterator = client.list_topics(SIZE, TOKEN1)
+        topics = list(iterator)
+        next_page_token = iterator.next_page_token
 
         self.assertEqual(len(topics), 1)
         self.assertIsInstance(topics[0], Topic)
@@ -198,10 +204,12 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         client.connection = object()
-        api = client._publisher_api = _FauxPublisherAPI()
-        api._list_topics_response = (), None
+        api = _FauxPublisherAPI()
+        client._publisher_api = api
 
-        topics, next_page_token = client.list_topics()
+        iterator = client.list_topics()
+        topics = list(iterator)
+        next_page_token = iterator.next_page_token
 
         self.assertEqual(len(topics), 0)
         self.assertIsNone(next_page_token)
@@ -305,11 +313,25 @@ class _Credentials(object):
         return self
 
 
+class _Iterator(object):
+
+    def __init__(self, items, token):
+        self._items = items or ()
+        self.next_page_token = token
+
+    def __iter__(self):
+        return iter(self._items)
+
+
 class _FauxPublisherAPI(object):
+
+    def __init__(self, items=None, token=None):
+        self._items = items
+        self._token = token
 
     def list_topics(self, project, page_size, page_token):
         self._listed_topics = (project, page_size, page_token)
-        return self._list_topics_response
+        return _Iterator(self._items, self._token)
 
 
 class _FauxSubscriberAPI(object):
