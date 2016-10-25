@@ -209,15 +209,11 @@ class Bucket(_PropertyMixin):
     def get_blob(self, blob_name, client=None):
         """Get a blob object by name.
 
-        This will return None if the blob doesn't exist::
+        This will return None if the blob doesn't exist:
 
-          >>> from google.cloud import storage
-          >>> client = storage.Client()
-          >>> bucket = client.get_bucket('my-bucket')
-          >>> print(bucket.get_blob('/path/to/blob.txt'))
-          <Blob: my-bucket, /path/to/blob.txt>
-          >>> print(bucket.get_blob('/does-not-exist.txt'))
-          None
+        .. literalinclude:: storage_snippets.py
+          :start-after: [START get_blob]
+          :end-before: [END get_blob]
 
         :type blob_name: str
         :param blob_name: The name of the blob to retrieve.
@@ -372,19 +368,11 @@ class Bucket(_PropertyMixin):
         If the blob isn't found (backend 404), raises a
         :class:`google.cloud.exceptions.NotFound`.
 
-        For example::
+        For example:
 
-          >>> from google.cloud.exceptions import NotFound
-          >>> from google.cloud import storage
-          >>> client = storage.Client()
-          >>> bucket = client.get_bucket('my-bucket')
-          >>> print(bucket.list_blobs())
-          [<Blob: my-bucket, my-file.txt>]
-          >>> bucket.delete_blob('my-file.txt')
-          >>> try:
-          ...   bucket.delete_blob('doesnt-exist')
-          ... except NotFound:
-          ...   pass
+        .. literalinclude:: storage_snippets.py
+          :start-after: [START delete_blob]
+          :end-before: [END delete_blob]
 
         :type blob_name: str
         :param blob_name: A blob name to delete.
@@ -396,9 +384,12 @@ class Bucket(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound` (to suppress
                  the exception, call ``delete_blobs``, passing a no-op
-                 ``on_error`` callback, e.g.::
+                 ``on_error`` callback, e.g.:
 
-                 >>> bucket.delete_blobs([blob], on_error=lambda blob: None)
+        .. literalinclude:: storage_snippets.py
+            :start-after: [START delete_blobs]
+            :end-before: [END delete_blobs]
+
         """
         client = self._require_client(client)
         blob_path = Blob.path_helper(self.path, blob_name)
@@ -752,16 +743,17 @@ class Bucket(_PropertyMixin):
           (and to do that, you need to get approved somehow...).
 
         If you want this bucket to host a website, just provide the name
-        of an index page and a page to use when a blob isn't found::
+        of an index page and a page to use when a blob isn't found:
 
-          >>> from google.cloud import storage
-          >>> client = storage.Client()
-          >>> bucket = client.get_bucket(bucket_name)
-          >>> bucket.configure_website('index.html', '404.html')
+        .. literalinclude:: storage_snippets.py
+          :start-after: [START configure_website]
+          :end-before: [END configure_website]
 
-        You probably should also make the whole bucket public::
+        You probably should also make the whole bucket public:
 
-          >>> bucket.make_public(recursive=True, future=True)
+        .. literalinclude:: storage_snippets.py
+            :start-after: [START make_public]
+            :end-before: [END make_public]
 
         This says: "Make the bucket public, and all the stuff already in
         the bucket, and anything else I add to the bucket.  Just make it

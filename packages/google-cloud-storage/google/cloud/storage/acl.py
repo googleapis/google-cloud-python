@@ -16,12 +16,12 @@
 
 :class:`google.cloud.storage.bucket.Bucket` has a getting method that creates
 an ACL object under the hood, and you can interact with that using
-:func:`google.cloud.storage.bucket.Bucket.acl`::
+:func:`google.cloud.storage.bucket.Bucket.acl`:
 
-  >>> from google.cloud import storage
-  >>> client = storage.Client()
-  >>> bucket = client.get_bucket(bucket_name)
-  >>> acl = bucket.acl
+.. literalinclude:: storage_snippets.py
+    :start-after: [START client_bucket_acl]
+    :end-before: [END client_bucket_acl]
+
 
 Adding and removing permissions can be done with the following methods
 (in increasing order of granularity):
@@ -47,32 +47,40 @@ And you are able to ``grant`` and ``revoke`` the following roles:
   :func:`_ACLEntity.grant_owner` and :func:`_ACLEntity.revoke_owner`
 
 You can use any of these like any other factory method (these happen to
-be :class:`_ACLEntity` factories)::
+be :class:`_ACLEntity` factories):
 
-  >>> acl.user('me@example.org').grant_read()
-  >>> acl.all_authenticated().grant_write()
+.. literalinclude:: storage_snippets.py
+   :start-after: [START acl_user_settings]
+   :end-before: [END acl_user_settings]
 
 You can also chain these ``grant_*`` and ``revoke_*`` methods together
-for brevity::
+for brevity:
 
-  >>> acl.all().grant_read().revoke_write()
+.. literalinclude:: storage_snippets.py
+   :start-after: [START acl_revoke_write]
+   :end-before: [END acl_revoke_write]
 
 After that, you can save any changes you make with the
-:func:`google.cloud.storage.acl.ACL.save` method::
+:func:`google.cloud.storage.acl.ACL.save` method:
 
-  >>> acl.save()
+.. literalinclude:: storage_snippets.py
+   :start-after: [START acl_save]
+   :end-before: [END acl_save]
 
 You can alternatively save any existing :class:`google.cloud.storage.acl.ACL`
 object (whether it was created by a factory method or not) from a
-:class:`google.cloud.storage.bucket.Bucket`::
+:class:`google.cloud.storage.bucket.Bucket`:
 
-  >>> bucket.acl.save(acl=acl)
+.. literalinclude:: storage_snippets.py
+   :start-after: [START acl_save_bucket]
+   :end-before: [END acl_save_bucket]
 
 To get the list of ``entity`` and ``role`` for each unique pair, the
-:class:`ACL` class is iterable::
+:class:`ACL` class is iterable:
 
-  >>> print(list(ACL))
-  [{'role': 'OWNER', 'entity': 'allUsers'}, ...]
+.. literalinclude:: storage_snippets.py
+   :start-after: [START acl_print]
+   :end-before: [END acl_print]
 
 This list of tuples can be used as the ``entity`` and ``role`` fields
 when sending metadata for ACLs to the API.
