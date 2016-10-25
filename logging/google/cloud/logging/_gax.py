@@ -76,7 +76,7 @@ class _LoggingAPI(object):
         page_iter = self._gax_api.list_log_entries(
             projects, filter_=filter_, order_by=order_by,
             page_size=page_size, options=options)
-        entries = [_log_entry_pb_to_mapping(entry_pb)
+        entries = [MessageToDict(entry_pb)
                    for entry_pb in page_iter.next()]
         token = page_iter.page_token or None
         return entries, token
@@ -162,7 +162,7 @@ class _SinksAPI(object):
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_sinks(path, page_size=page_size,
                                              options=options)
-        sinks = [_log_sink_pb_to_mapping(log_sink_pb)
+        sinks = [MessageToDict(log_sink_pb)
                  for log_sink_pb in page_iter.next()]
         token = page_iter.page_token or None
         return sinks, token
@@ -220,7 +220,7 @@ class _SinksAPI(object):
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
-        return _log_sink_pb_to_mapping(sink_pb)
+        return MessageToDict(sink_pb)
 
     def sink_update(self, project, sink_name, filter_, destination):
         """API call:  update a sink resource.
@@ -252,7 +252,7 @@ class _SinksAPI(object):
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
-        return _log_sink_pb_to_mapping(sink_pb)
+        return MessageToDict(sink_pb)
 
     def sink_delete(self, project, sink_name):
         """API call:  delete a sink resource.
@@ -309,7 +309,7 @@ class _MetricsAPI(object):
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_log_metrics(
             path, page_size=page_size, options=options)
-        metrics = [_log_metric_pb_to_mapping(log_metric_pb)
+        metrics = [MessageToDict(log_metric_pb)
                    for log_metric_pb in page_iter.next()]
         token = page_iter.page_token or None
         return metrics, token
@@ -366,7 +366,7 @@ class _MetricsAPI(object):
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
-        return _log_metric_pb_to_mapping(metric_pb)
+        return MessageToDict(metric_pb)
 
     def metric_update(self, project, metric_name, filter_, description):
         """API call:  update a metric resource.
@@ -398,7 +398,7 @@ class _MetricsAPI(object):
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
             raise
-        return _log_metric_pb_to_mapping(metric_pb)
+        return MessageToDict(metric_pb)
 
     def metric_delete(self, project, metric_name):
         """API call:  delete a metric resource.
@@ -419,58 +419,6 @@ class _MetricsAPI(object):
             raise
 
 
-def _value_pb_to_value(value_pb):
-    """Helper for :func:`_log_entry_pb_to_mapping`.
-
-    Performs "impedance matching" between the protobuf attrs and the keys
-    expected in the JSON API.
-    """
-    kind = value_pb.WhichOneof('kind')
-
-    if kind is None:
-        result = None
-
-    elif kind == 'string_value':
-        result = value_pb.string_value
-
-    elif kind == 'bool_value':
-        result = value_pb.bool_value
-
-    elif kind == 'number_value':
-        result = value_pb.number_value
-
-    elif kind == 'list_value':
-        result = [_value_pb_to_value(element)
-                  for element in value_pb.list_value.values]
-
-    elif kind == 'struct_value':
-        result = _struct_pb_to_mapping(value_pb.struct_value)
-
-    else:
-        raise ValueError('Value protobuf had unknown kind: %s' % (kind,))
-
-    return result
-
-
-def _struct_pb_to_mapping(struct_pb):
-    """Helper for :func:`_log_entry_pb_to_mapping`.
-
-    Performs "impedance matching" between the protobuf attrs and the keys
-    expected in the JSON API.
-    """
-    return {key: _value_pb_to_value(struct_pb.fields[key])
-            for key in struct_pb.fields}
-
-
-def _log_entry_pb_to_mapping(entry_pb):
-    """Helper for :meth:`list_entries`, et aliae
-
-    Performs "impedance matching" between the protobuf attrs and the keys
-    expected in the JSON API.
-    """
-    return MessageToDict(entry_pb)
-
-
 def _log_entry_mapping_to_pb(mapping):
     """Helper for :meth:`write_entries`, et aliae
 
@@ -482,21 +430,3 @@ def _log_entry_mapping_to_pb(mapping):
         mapping['timestamp'] = _datetime_to_rfc3339(mapping['timestamp'])
     ParseDict(mapping, entry_pb)
     return entry_pb
-
-
-def _log_sink_pb_to_mapping(sink_pb):
-    """Helper for :meth:`list_sinks`, et aliae
-
-    Performs "impedance matching" between the protobuf attrs and
-    the keys expected in the JSON API.
-    """
-    return MessageToDict(sink_pb)
-
-
-def _log_metric_pb_to_mapping(metric_pb):
-    """Helper for :meth:`list_metrics`, et aliae
-
-    Performs "impedance matching" between the protobuf attrs and the keys
-    expected in the JSON API.
-    """
-    return MessageToDict(metric_pb)
