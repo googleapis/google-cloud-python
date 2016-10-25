@@ -76,15 +76,13 @@ class _GAXBaseAPI(object):
 
 class _GAXPageIterator(object):
 
-    def __init__(self, items, page_token):
-        self._items = items
-        self.page_token = page_token
+    def __init__(self, *pages, **kwargs):
+        self._pages = iter(pages)
+        self.page_token = kwargs.get('page_token')
 
     def next(self):
-        if self._items is None:
-            raise StopIteration
-        items, self._items = self._items, None
-        return items
+        import six
+        return six.next(self._pages)
 
     __next__ = next
 

@@ -69,7 +69,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
                             resource=resource_pb,
                             timestamp=timestamp_pb,
                             text_payload=TEXT)
-        response = _GAXPageIterator([entry_pb], TOKEN)
+        response = _GAXPageIterator([entry_pb], page_token=TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         api = self._makeOne(gax_api)
 
@@ -110,7 +110,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
                             resource=resource_pb,
                             timestamp=timestamp_pb,
                             json_payload=struct_pb)
-        response = _GAXPageIterator([entry_pb], NEW_TOKEN)
+        response = _GAXPageIterator([entry_pb], page_token=NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         api = self._makeOne(gax_api)
 
@@ -237,7 +237,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         entry_pb = self._make_log_entry_with_extras(
             LABELS, IID, bool_type_url, NOW)
 
-        response = _GAXPageIterator([entry_pb], NEW_TOKEN)
+        response = _GAXPageIterator([entry_pb], page_token=NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         api = self._makeOne(gax_api)
 
@@ -598,7 +598,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         sink_pb = LogSink(name=self.SINK_PATH,
                           destination=self.DESTINATION_URI,
                           filter=self.FILTER)
-        response = _GAXPageIterator([sink_pb], TOKEN)
+        response = _GAXPageIterator([sink_pb], page_token=TOKEN)
         gax_api = _GAXSinksAPI(_list_sinks_response=response)
         api = self._makeOne(gax_api)
 
@@ -626,7 +626,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         sink_pb = LogSink(name=self.SINK_PATH,
                           destination=self.DESTINATION_URI,
                           filter=self.FILTER)
-        response = _GAXPageIterator([sink_pb], None)
+        response = _GAXPageIterator([sink_pb])
         gax_api = _GAXSinksAPI(_list_sinks_response=response)
         api = self._makeOne(gax_api)
 
@@ -813,7 +813,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         metric_pb = LogMetric(name=self.METRIC_PATH,
                               description=self.DESCRIPTION,
                               filter=self.FILTER)
-        response = _GAXPageIterator([metric_pb], TOKEN)
+        response = _GAXPageIterator([metric_pb], page_token=TOKEN)
         gax_api = _GAXMetricsAPI(_list_log_metrics_response=response)
         api = self._makeOne(gax_api)
 
@@ -841,7 +841,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         metric_pb = LogMetric(name=self.METRIC_PATH,
                               description=self.DESCRIPTION,
                               filter=self.FILTER)
-        response = _GAXPageIterator([metric_pb], None)
+        response = _GAXPageIterator([metric_pb])
         gax_api = _GAXMetricsAPI(_list_log_metrics_response=response)
         api = self._makeOne(gax_api)
 
