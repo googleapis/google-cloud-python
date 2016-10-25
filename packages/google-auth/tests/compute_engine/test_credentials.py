@@ -42,7 +42,7 @@ class TestCredentials(object):
         get_mock.side_effect = [{
             # First request is for sevice account info.
             'email': 'service-account@example.com',
-            'scopes': 'one two'
+            'scopes': ['one', 'two']
         }, {
             # Second request is for the token.
             'access_token': 'token',

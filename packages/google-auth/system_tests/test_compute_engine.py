@@ -15,32 +15,24 @@
 import pytest
 
 from google.auth import _helpers
-from google.auth import exceptions
-from google.oauth2 import service_account
+from google.auth import compute_engine
+from google.auth.compute_engine import _metadata
 
 
-@pytest.fixture
-def credentials(service_account_file):
-    yield service_account.Credentials.from_service_account_file(
-        service_account_file)
+@pytest.fixture(autouse=True)
+def check_gce_environment(request):
+    if not _metadata.ping(request):
+        pytest.skip('Compute Engine metadata service is not available.')
 
 
-def test_refresh_no_scopes(request, credentials):
-    with pytest.raises(exceptions.RefreshError):
-        credentials.refresh(request)
-
-
-def test_refresh_success(request, credentials, token_info):
-    credentials = credentials.with_scopes(['email', 'profile'])
+def test_refresh(request, token_info):
+    credentials = compute_engine.Credentials()
 
     credentials.refresh(request)
 
-    assert credentials.token
+    assert credentials.token is not None
+    assert credentials._service_account_email is not None
 
     info = token_info(credentials.token)
-
-    assert info['email'] == credentials._service_account_email
     info_scopes = _helpers.string_to_scopes(info['scope'])
-    assert set(info_scopes) == set([
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile'])
+    assert set(info_scopes) == set(credentials.scopes)

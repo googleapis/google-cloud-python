@@ -19,7 +19,6 @@ Engine using the Compute Engine metadata server.
 
 """
 
-from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
 from google.auth.compute_engine import _metadata
@@ -71,7 +70,7 @@ class Credentials(credentials.Scoped, credentials.Credentials):
             service_account=self._service_account_email)
 
         self._service_account_email = info['email']
-        self._scopes = _helpers.string_to_scopes(info['scopes'])
+        self._scopes = info['scopes']
 
     def refresh(self, request):
         """Refresh the access token and scopes.
