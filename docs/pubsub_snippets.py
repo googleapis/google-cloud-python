@@ -46,13 +46,8 @@ def client_list_topics(client, to_delete):  # pylint: disable=unused-argument
         pass
 
     # [START client_list_topics]
-    topics, token = client.list_topics()   # API request
-    while True:
-        for topic in topics:
-            do_something_with(topic)
-        if token is None:
-            break
-        topics, token = client.list_topics(page_token=token)  # API request
+    for topic in client.list_topics():   # API request(s)
+        do_something_with(topic)
     # [END client_list_topics]
 
 

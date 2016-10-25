@@ -58,6 +58,18 @@ def setUpModule():
         Config.CLIENT = client.Client()
 
 
+def _consume_topics(pubsub_client):
+    """Consume entire iterator.
+
+    :type pubsub_client: :class:`~google.cloud.pubsub.client.Client`
+    :param pubsub_client: Client to use to retrieve topics.
+
+    :rtype: list
+    :returns: List of all topics encountered.
+    """
+    return list(pubsub_client.list_topics())
+
+
 class TestPubsub(unittest.TestCase):
 
     def setUp(self):
@@ -77,7 +89,7 @@ class TestPubsub(unittest.TestCase):
         self.assertEqual(topic.name, topic_name)
 
     def test_list_topics(self):
-        before, _ = Config.CLIENT.list_topics()
+        before = list(Config.CLIENT.list_topics())
         topics_to_create = [
             'new' + unique_resource_id(),
             'newer' + unique_resource_id(),
@@ -90,10 +102,10 @@ class TestPubsub(unittest.TestCase):
 
         # Retrieve the topics.
         def _all_created(result):
-            return len(result[0]) == len(before) + len(topics_to_create)
+            return len(result) == len(before) + len(topics_to_create)
 
         retry = RetryResult(_all_created)
-        after, _ = retry(Config.CLIENT.list_topics)()
+        after = retry(_consume_topics)(Config.CLIENT)
 
         created = [topic for topic in after
                    if topic.name in topics_to_create and

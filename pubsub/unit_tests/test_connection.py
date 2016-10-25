@@ -101,20 +101,28 @@ class Test_PublisherAPI(_Base):
 
     def test_ctor(self):
         connection = _Connection()
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
+        self.assertIs(api._client, client)
         self.assertIs(api._connection, connection)
 
     def test_list_topics_no_paging(self):
-        RETURNED = {'topics': [{'name': self.TOPIC_PATH}]}
-        connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        from google.cloud.pubsub.topic import Topic
 
-        topics, next_token = api.list_topics(self.PROJECT)
+        returned = {'topics': [{'name': self.TOPIC_PATH}]}
+        connection = _Connection(returned)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
+
+        iterator = api.list_topics(self.PROJECT)
+        topics = list(iterator)
+        next_token = iterator.next_page_token
 
         self.assertEqual(len(topics), 1)
         topic = topics[0]
-        self.assertIsInstance(topic, dict)
-        self.assertEqual(topic['name'], self.TOPIC_PATH)
+        self.assertIsInstance(topic, Topic)
+        self.assertEqual(topic.name, self.TOPIC_NAME)
+        self.assertEqual(topic.full_name, self.TOPIC_PATH)
         self.assertIsNone(next_token)
 
         self.assertEqual(connection._called_with['method'], 'GET')
@@ -123,6 +131,9 @@ class Test_PublisherAPI(_Base):
         self.assertEqual(connection._called_with['query_params'], {})
 
     def test_list_topics_with_paging(self):
+        import six
+        from google.cloud.pubsub.topic import Topic
+
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
@@ -131,15 +142,20 @@ class Test_PublisherAPI(_Base):
             'nextPageToken': 'TOKEN2',
         }
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
-        topics, next_token = api.list_topics(
+        iterator = api.list_topics(
             self.PROJECT, page_token=TOKEN1, page_size=SIZE)
+        page = six.next(iterator.pages)
+        topics = list(page)
+        next_token = iterator.next_page_token
 
         self.assertEqual(len(topics), 1)
         topic = topics[0]
-        self.assertIsInstance(topic, dict)
-        self.assertEqual(topic['name'], self.TOPIC_PATH)
+        self.assertIsInstance(topic, Topic)
+        self.assertEqual(topic.name, self.TOPIC_NAME)
+        self.assertEqual(topic.full_name, self.TOPIC_PATH)
         self.assertEqual(next_token, TOKEN2)
 
         self.assertEqual(connection._called_with['method'], 'GET')
@@ -149,11 +165,14 @@ class Test_PublisherAPI(_Base):
                          {'pageToken': TOKEN1, 'pageSize': SIZE})
 
     def test_list_topics_missing_key(self):
-        RETURNED = {}
-        connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        returned = {}
+        connection = _Connection(returned)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
-        topics, next_token = api.list_topics(self.PROJECT)
+        iterator = api.list_topics(self.PROJECT)
+        topics = list(iterator)
+        next_token = iterator.next_page_token
 
         self.assertEqual(len(topics), 0)
         self.assertIsNone(next_token)
@@ -166,7 +185,8 @@ class Test_PublisherAPI(_Base):
     def test_topic_create(self):
         RETURNED = {'name': self.TOPIC_PATH}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         resource = api.topic_create(self.TOPIC_PATH)
 
@@ -179,7 +199,8 @@ class Test_PublisherAPI(_Base):
         from google.cloud.exceptions import Conflict
         connection = _Connection()
         connection._no_response_error = Conflict
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         with self.assertRaises(Conflict):
             api.topic_create(self.TOPIC_PATH)
@@ -191,7 +212,8 @@ class Test_PublisherAPI(_Base):
     def test_topic_get_hit(self):
         RETURNED = {'name': self.TOPIC_PATH}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         resource = api.topic_get(self.TOPIC_PATH)
 
@@ -203,7 +225,8 @@ class Test_PublisherAPI(_Base):
     def test_topic_get_miss(self):
         from google.cloud.exceptions import NotFound
         connection = _Connection()
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         with self.assertRaises(NotFound):
             api.topic_get(self.TOPIC_PATH)
@@ -215,7 +238,8 @@ class Test_PublisherAPI(_Base):
     def test_topic_delete_hit(self):
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         api.topic_delete(self.TOPIC_PATH)
 
@@ -226,7 +250,8 @@ class Test_PublisherAPI(_Base):
     def test_topic_delete_miss(self):
         from google.cloud.exceptions import NotFound
         connection = _Connection()
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         with self.assertRaises(NotFound):
             api.topic_delete(self.TOPIC_PATH)
@@ -244,7 +269,8 @@ class Test_PublisherAPI(_Base):
         B64MSG = {'data': B64_PAYLOAD, 'attributes': {}}
         RETURNED = {'messageIds': [MSGID]}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         resource = api.topic_publish(self.TOPIC_PATH, [MESSAGE])
 
@@ -262,7 +288,8 @@ class Test_PublisherAPI(_Base):
         PAYLOAD = b'This is the message text'
         MESSAGE = {'data': PAYLOAD, 'attributes': {}}
         connection = _Connection()
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         with self.assertRaises(NotFound):
             api.topic_publish(self.TOPIC_PATH, [MESSAGE])
@@ -277,7 +304,8 @@ class Test_PublisherAPI(_Base):
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         RETURNED = {'subscriptions': [SUB_INFO]}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         subscriptions, next_token = api.topic_list_subscriptions(
             self.TOPIC_PATH)
@@ -304,7 +332,8 @@ class Test_PublisherAPI(_Base):
             'nextPageToken': 'TOKEN2',
         }
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         subscriptions, next_token = api.topic_list_subscriptions(
             self.TOPIC_PATH, page_token=TOKEN1, page_size=SIZE)
@@ -325,7 +354,8 @@ class Test_PublisherAPI(_Base):
     def test_topic_list_subscriptions_missing_key(self):
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         subscriptions, next_token = api.topic_list_subscriptions(
             self.TOPIC_PATH)
@@ -341,7 +371,8 @@ class Test_PublisherAPI(_Base):
     def test_topic_list_subscriptions_miss(self):
         from google.cloud.exceptions import NotFound
         connection = _Connection()
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         with self.assertRaises(NotFound):
             api.topic_list_subscriptions(self.TOPIC_PATH)
@@ -768,3 +799,10 @@ class _Connection(object):
             err_class = self._no_response_error or NotFound
             raise err_class('miss')
         return response
+
+
+class _Client(object):
+
+    def __init__(self, connection, project):
+        self.connection = connection
+        self.project = project
