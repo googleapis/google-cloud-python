@@ -15,24 +15,33 @@
 """Basic client for Google Cloud Speech API."""
 
 from base64 import b64encode
+import os
 
+from google.cloud.client import Client as BaseClient
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
-from google.cloud import client as client_module
+from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.speech.connection import Connection
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
 from google.cloud.speech.sample import Sample
 from google.cloud.speech.transcript import Transcript
 
+try:
+    from google.cloud.speech._gax import GAPICSpeechAPI
+except ImportError:  # pragma: NO COVER
+    _HAVE_GAX = False
+    GAPICSpeechAPI = None
+else:
+    _HAVE_GAX = True
 
-class Client(client_module.Client):
+
+_DISABLE_GAX = os.getenv(DISABLE_GRPC, False)
+_USE_GAX = _HAVE_GAX and not _DISABLE_GAX
+
+
+class Client(BaseClient):
     """Client to bundle configuration needed for API requests.
-
-    :type project: str
-    :param project: The project which the client acts on behalf of. Will be
-                    passed when creating a dataset / job.  If not passed,
-                    falls back to the default inferred from the environment.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
                        :class:`NoneType`
@@ -45,9 +54,22 @@ class Client(client_module.Client):
     :param http: An optional HTTP object to make requests. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
+
+    :type use_gax: bool
+    :param use_gax: (Optional) Explicitly specifies whether
+                    to use the gRPC transport (via GAX) or HTTP. If unset,
+                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
+                    variable
     """
+    def __init__(self, credentials=None, http=None, use_gax=None):
+        super(Client, self).__init__(credentials=credentials, http=http)
+        if use_gax is None:
+            self._use_gax = _USE_GAX
+        else:
+            self._use_gax = use_gax
 
     _connection_class = Connection
+    _speech_api = None
 
     def async_recognize(self, sample, language_code=None,
                         max_alternatives=None, profanity_filter=None,
@@ -139,6 +161,16 @@ class Client(client_module.Client):
         return Sample(content=content, source_uri=source_uri,
                       encoding=encoding, sample_rate=sample_rate)
 
+    @property
+    def speech_api(self):
+        """Helper for speech-related API calls."""
+        if self._speech_api is None:
+            if self._use_gax:
+                self._speech_api = GAPICSpeechAPI()
+            else:
+                self._speech_api = _JSONSpeechAPI(self)
+        return self._speech_api
+
     def sync_recognize(self, sample, language_code=None,
                        max_alternatives=None, profanity_filter=None,
                        speech_context=None):
@@ -188,11 +220,74 @@ class Client(client_module.Client):
                   * ``confidence``: The confidence in language detection, float
                     between 0 and 1.
         """
+        api = self.speech_api
+        return api.sync_recognize(sample, language_code, max_alternatives,
+                                  profanity_filter, speech_context)
 
+
+class _JSONSpeechAPI(object):
+    """Speech API for interacting with the JSON/REST version of the API.
+
+    :type client: :class:`google.cloud.core.client.Client`
+    :param client: Instance of a ``Client`` object.
+    """
+    def __init__(self, client):
+        self._client = client
+        self._connection = client.connection
+
+    def sync_recognize(self, sample, language_code=None, max_alternatives=None,
+                       profanity_filter=None, speech_context=None):
+        """Synchronous Speech Recognition.
+
+        .. _sync_recognize: https://cloud.google.com/speech/reference/\
+                            rest/v1beta1/speech/syncrecognize
+
+        See `sync_recognize`_.
+
+        :type sample: :class:`~google.cloud.speech.sample.Sample`
+        :param sample: Instance of ``Sample`` containing audio information.
+
+        :type language_code: str
+        :param language_code: (Optional) The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-GB'``.
+                              If omitted, defaults to ``'en-US'``.
+
+        :type max_alternatives: int
+        :param max_alternatives: (Optional) Maximum number of recognition
+                                 hypotheses to be returned. The server may
+                                 return fewer than maxAlternatives.
+                                 Valid values are 0-30. A value of 0 or 1
+                                 will return a maximum of 1. Defaults to 1
+
+        :type profanity_filter: bool
+        :param profanity_filter: If True, the server will attempt to filter
+                                 out profanities, replacing all but the
+                                 initial character in each filtered word with
+                                 asterisks, e.g. ``'f***'``. If False or
+                                 omitted, profanities won't be filtered out.
+
+        :type speech_context: list
+        :param speech_context: A list of strings (max 50) containing words and
+                               phrases "hints" so that the speech recognition
+                               is more likely to recognize them. This can be
+                               used to improve the accuracy for specific words
+                               and phrases. This can also be used to add new
+                               words to the vocabulary of the recognizer.
+
+        :rtype: list
+        :returns: A list of dictionaries. One dict for each alternative. Each
+                  dictionary typically contains two keys (though not
+                  all will be present in all cases)
+
+                  * ``transcript``: The detected text from the audio recording.
+                  * ``confidence``: The confidence in language detection, float
+                    between 0 and 1.
+
+        :raises: ValueError if more than one result is returned or no results.
+        """
         data = _build_request_data(sample, language_code, max_alternatives,
                                    profanity_filter, speech_context)
-
-        api_response = self.connection.api_request(
+        api_response = self._connection.api_request(
             method='POST', path='speech:syncrecognize', data=data)
 
         if len(api_response['results']) == 1:
@@ -200,7 +295,7 @@ class Client(client_module.Client):
             return [Transcript.from_api_repr(alternative)
                     for alternative in result['alternatives']]
         else:
-            raise ValueError('result in api should have length 1')
+            raise ValueError('More than one result or none returned from API.')
 
 
 def _build_request_data(sample, language_code=None, max_alternatives=None,
