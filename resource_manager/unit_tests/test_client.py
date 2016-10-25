@@ -222,7 +222,7 @@ class TestClient(unittest.TestCase):
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials)
         iterator = client.list_projects()
-        page = Page(iterator, {}, iterator._items_key, None)
+        page = Page(iterator, (), None)
         iterator._page = page
         self.assertEqual(page.num_items, 0)
         self.assertEqual(page.remaining, 0)

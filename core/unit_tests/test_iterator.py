@@ -37,27 +37,27 @@ class TestPage(unittest.TestCase):
 
     def test_constructor(self):
         parent = object()
-        items_key = 'potatoes'
-        response = {items_key: (1, 2, 3)}
-        page = self._makeOne(parent, response, items_key, None)
+        item_to_value = object()
+        page = self._makeOne(parent, (1, 2, 3), item_to_value)
         self.assertIs(page._parent, parent)
         self.assertEqual(page._num_items, 3)
         self.assertEqual(page._remaining, 3)
+        self.assertIs(page._item_to_value, item_to_value)
 
     def test_num_items_property(self):
-        page = self._makeOne(None, {}, '', None)
+        page = self._makeOne(None, (), None)
         num_items = 42
         page._num_items = num_items
         self.assertEqual(page.num_items, num_items)
 
     def test_remaining_property(self):
-        page = self._makeOne(None, {}, '', None)
+        page = self._makeOne(None, (), None)
         remaining = 1337
         page._remaining = remaining
         self.assertEqual(page.remaining, remaining)
 
     def test___iter__(self):
-        page = self._makeOne(None, {}, '', None)
+        page = self._makeOne(None, (), None)
         self.assertIs(iter(page), page)
 
     def test_iterator_calls__item_to_value(self):
@@ -71,10 +71,8 @@ class TestPage(unittest.TestCase):
                 self.calls += 1
                 return item
 
-        items_key = 'turkeys'
-        response = {items_key: [10, 11, 12]}
         parent = Parent()
-        page = self._makeOne(parent, response, items_key,
+        page = self._makeOne(parent, (10, 11, 12),
                              Parent.item_to_value)
         page._remaining = 100
 
@@ -157,12 +155,9 @@ class TestIterator(unittest.TestCase):
         item3 = 211
 
         # Make pages from mock responses
-        mock_key = 'mock'
         parent = object()
-        page1 = Page(parent, {mock_key: [item1, item2]},
-                     mock_key, self._do_nothing)
-        page2 = Page(parent, {mock_key: [item3]},
-                     mock_key, self._do_nothing)
+        page1 = Page(parent, (item1, item2), self._do_nothing)
+        page2 = Page(parent, (item3,), self._do_nothing)
 
         iterator = self._makeOne(None, None)
         # Fake the page iterator on the object.
@@ -266,7 +261,7 @@ class TestHTTPIterator(unittest.TestCase):
         items_key = 'its-key'
         iterator = self._makeOne(None, None, None, items_key=items_key)
         # Fake the next page class.
-        fake_page = MUT.Page(None, {}, '', None)
+        fake_page = MUT.Page(None, (), None)
         page_args = []
 
         def dummy_response():
@@ -282,7 +277,7 @@ class TestHTTPIterator(unittest.TestCase):
             page = six.next(pages_iter)
         self.assertIs(page, fake_page)
         self.assertEqual(
-            page_args, [(iterator, {}, items_key, iterator._item_to_value)])
+            page_args, [(iterator, (), iterator._item_to_value)])
 
     def test_iterate(self):
         import six
