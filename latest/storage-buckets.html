@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Buckets &mdash; google-cloud 3cc1cb8 documentation</title>
+  <title>Buckets &mdash; google-cloud bc91543 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 3cc1cb8 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud bc91543 documentation" href="index.html"/>
         <link rel="next" title="ACL" href="storage-acl.html"/>
         <link rel="prev" title="Blobs / Objects" href="storage-blobs.html"/> 
 
@@ -848,6 +848,23 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="google.cloud.storage.bucket.Bucket.patch">
+<code class="descname">patch</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.patch" title="Permalink to this definition">#</a></dt>
+<dd><p>Sends all changed properties in a PATCH request.</p>
+<p>Updates the <code class="docutils literal"><span class="pre">_properties</span></code> with the response from the backend.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.storage.bucket.Bucket.path">
 <code class="descname">path</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.path" title="Permalink to this definition">#</a></dt>
@@ -885,6 +902,22 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The project number that owns the bucket or <code class="docutils literal"><span class="pre">None</span></code> if the
 property is not set locally.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.storage.bucket.Bucket.reload">
+<code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.reload" title="Permalink to this definition">#</a></dt>
+<dd><p>Reload properties from Cloud Storage.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="storage-client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current object.</td>
 </tr>
 </tbody>
 </table>
@@ -1043,7 +1076,7 @@ details.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3cc1cb8',
+            VERSION:'bc91543',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

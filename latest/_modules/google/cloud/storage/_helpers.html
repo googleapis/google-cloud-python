@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.entity &mdash; google-cloud bc91543 documentation</title>
+  <title>google.cloud.storage._helpers &mdash; google-cloud bc91543 documentation</title>
   
 
   
@@ -257,7 +257,7 @@
       
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
       
-    <li>google.cloud.datastore.entity</li>
+    <li>google.cloud.storage._helpers</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -269,7 +269,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for google.cloud.datastore.entity</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.storage._helpers</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2014 Google Inc.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -284,135 +284,171 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Class for representing a single entity in the Cloud Datastore.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Helper functions for Cloud Storage utility classes.</span>
+
+<span class="sd">These are *not* part of the API.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">from</span> <span class="nn">hashlib</span> <span class="k">import</span> <span class="n">md5</span>
 
 
-<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_ensure_tuple_or_list</span>
+<span class="k">class</span> <span class="nc">_PropertyMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Abstract mixin for cloud storage classes with associated propertties.</span>
 
+<span class="sd">    Non-abstract subclasses should implement:</span>
+<span class="sd">      - client</span>
+<span class="sd">      - path</span>
 
-<div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../../datastore-entities.html#google.cloud.datastore.entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Entities are akin to rows in a relational database</span>
-
-<span class="sd">    An entity storing the actual instance of data.</span>
-
-<span class="sd">    Each entity is officially represented with a</span>
-<span class="sd">    :class:`google.cloud.datastore.key.Key` class, however it is possible that</span>
-<span class="sd">    you might create an Entity with only a partial Key (that is, a Key</span>
-<span class="sd">    with a Kind, and possibly a parent, but without an ID).  In such a</span>
-<span class="sd">    case, the datastore service will automatically assign an ID to the</span>
-<span class="sd">    partial key.</span>
-
-<span class="sd">    Entities in this API act like dictionaries with extras built in that</span>
-<span class="sd">    allow you to delete or persist the data stored on the entity.</span>
-
-<span class="sd">    Entities are mutable and act like a subclass of a dictionary.</span>
-<span class="sd">    This means you could take an existing entity and change the key</span>
-<span class="sd">    to duplicate the object.</span>
-
-<span class="sd">    Use :func:`google.cloud.datastore.get` to retrieve an existing entity.</span>
-
-<span class="sd">      &gt;&gt;&gt; from google.cloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; client = datastore.Client()</span>
-<span class="sd">      &gt;&gt;&gt; client.get(key)</span>
-<span class="sd">      &lt;Entity[{&#39;kind&#39;: &#39;EntityKind&#39;, id: 1234}] {&#39;property&#39;: &#39;value&#39;}&gt;</span>
-
-<span class="sd">    You can the set values on the entity just like you would on any</span>
-<span class="sd">    other dictionary.</span>
-
-<span class="sd">    &gt;&gt;&gt; entity[&#39;age&#39;] = 20</span>
-<span class="sd">    &gt;&gt;&gt; entity[&#39;name&#39;] = &#39;JJ&#39;</span>
-<span class="sd">    &gt;&gt;&gt; entity</span>
-<span class="sd">    &lt;Entity[{&#39;kind&#39;: &#39;EntityKind&#39;, id: 1234}] {&#39;age&#39;: 20, &#39;name&#39;: &#39;JJ&#39;}&gt;</span>
-
-<span class="sd">    And you can convert an entity to a regular Python dictionary with the</span>
-<span class="sd">    ``dict`` builtin:</span>
-
-<span class="sd">    &gt;&gt;&gt; dict(entity)</span>
-<span class="sd">    {&#39;age&#39;: 20, &#39;name&#39;: &#39;JJ&#39;}</span>
-
-<span class="sd">    .. note::</span>
-
-<span class="sd">       When saving an entity to the backend, values which are &quot;text&quot;</span>
-<span class="sd">       (``unicode`` in Python2, ``str`` in Python3) will be saved using</span>
-<span class="sd">       the &#39;text_value&#39; field, after being encoded to UTF-8.  When</span>
-<span class="sd">       retrieved from the back-end, such values will be decoded to &quot;text&quot;</span>
-<span class="sd">       again.  Values which are &quot;bytes&quot; (``str`` in Python2, ``bytes`` in</span>
-<span class="sd">       Python3), will be saved using the &#39;blob_value&#39; field, without</span>
-<span class="sd">       any decoding / encoding step.</span>
-
-<span class="sd">    :type key: :class:`google.cloud.datastore.key.Key`</span>
-<span class="sd">    :param key: Optional key to be set on entity.</span>
-
-<span class="sd">    :type exclude_from_indexes: tuple of string</span>
-<span class="sd">    :param exclude_from_indexes: Names of fields whose values are not to be</span>
-<span class="sd">                                 indexed for this entity.</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param name: The name of the object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="p">()):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">_ensure_tuple_or_list</span><span class="p">(</span>
-            <span class="s1">&#39;exclude_from_indexes&#39;</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="p">))</span>
-        <span class="c1"># NOTE: This will be populated when parsing a protobuf in</span>
-        <span class="c1">#       google.cloud.datastore.helpers.entity_from_protobuf.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_meanings</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compare two entities for equality.</span>
-
-<span class="sd">        Entities compare equal if their keys compare equal and their</span>
-<span class="sd">        properties compare equal.</span>
-
-<span class="sd">        :rtype: bool</span>
-<span class="sd">        :returns: True if the entities compare equal, else False.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Entity</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
-
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">key</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_exclude_from_indexes</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_meanings</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_meanings</span> <span class="ow">and</span>
-                <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compare two entities for inequality.</span>
-
-<span class="sd">        Entities compare equal if their keys compare equal and their</span>
-<span class="sd">        properties compare equal.</span>
-
-<span class="sd">        :rtype: bool</span>
-<span class="sd">        :returns: False if the entities compare equal, else True.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_changes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the kind of the current entity.</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">          This relies entirely on the :class:`google.cloud.datastore.key.Key`</span>
-<span class="sd">          set on the entity.  That means that we&#39;re not storing the kind</span>
-<span class="sd">          of the entity at all, just the properties and a pointer to a</span>
-<span class="sd">          Key which knows its Kind.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">kind</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Abstract getter for the object path.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">exclude_from_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Names of fields which are *not* to be indexed for this entity.</span>
+    <span class="k">def</span> <span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Abstract getter for the object client.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<span class="sd">        :rtype: sequence of field names</span>
-<span class="sd">        :returns: The set of fields excluded from indexes.</span>
+    <span class="k">def</span> <span class="nf">_require_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check client or verify over-ride.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
+<span class="sd">                      ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current object.</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.storage.client.Client`</span>
+<span class="sd">        :returns: The client passed in or the currently bound client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">frozenset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span>
+        <span class="k">return</span> <span class="n">client</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&lt;Entity</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                      <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__repr__</span><span class="p">())</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&lt;Entity </span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__repr__</span><span class="p">())</span></div>
+    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reload properties from Cloud Storage.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
+<span class="sd">                      ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="c1"># Pass only &#39;?projection=noAcl&#39; here because &#39;acl&#39; and related</span>
+        <span class="c1"># are handled via custom endpoints.</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;noAcl&#39;</span><span class="p">}</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
+            <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_patch_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update field of this object&#39;s properties.</span>
+
+<span class="sd">        This method will only update the field provided and will not</span>
+<span class="sd">        touch the other fields.</span>
+
+<span class="sd">        It **will not** reload the properties from the server. The behavior is</span>
+<span class="sd">        local only and syncing occurs via :meth:`patch`.</span>
+
+<span class="sd">        :type name: str</span>
+<span class="sd">        :param name: The field name to update.</span>
+
+<span class="sd">        :type value: object</span>
+<span class="sd">        :param value: The value being updated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_changes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">_set_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the properties for the current object.</span>
+
+<span class="sd">        :type value: dict or :class:`google.cloud.storage.batch._FutureDict`</span>
+<span class="sd">        :param value: The properties to be set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="c1"># If the values are reset, the changes must as well.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_changes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sends all changed properties in a PATCH request.</span>
+
+<span class="sd">        Updates the ``_properties`` with the response from the backend.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
+<span class="sd">                      ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="c1"># Pass &#39;?projection=full&#39; here because &#39;PATCH&#39; documented not</span>
+        <span class="c1"># to work properly w/ &#39;noAcl&#39;.</span>
+        <span class="n">update_properties</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_changes</span><span class="p">}</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">update_properties</span><span class="p">,</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;full&#39;</span><span class="p">},</span> <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_scalar_property</span><span class="p">(</span><span class="n">fieldname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a property descriptor around the :class:`_PropertyMixin` helpers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_getter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scalar property getter.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fieldname</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scalar property setter.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">property</span><span class="p">(</span><span class="n">_getter</span><span class="p">,</span> <span class="n">_setter</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_write_buffer_to_hash</span><span class="p">(</span><span class="n">buffer_object</span><span class="p">,</span> <span class="n">hash_obj</span><span class="p">,</span> <span class="n">digest_block_size</span><span class="o">=</span><span class="mi">8192</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read blocks from a buffer and update a hash with them.</span>
+
+<span class="sd">    :type buffer_object: bytes buffer</span>
+<span class="sd">    :param buffer_object: Buffer containing bytes used to update a hash object.</span>
+
+<span class="sd">    :type hash_obj: object that implements update</span>
+<span class="sd">    :param hash_obj: A hash object (MD5 or CRC32-C).</span>
+
+<span class="sd">    :type digest_block_size: int</span>
+<span class="sd">    :param digest_block_size: The block size to write to the hash.</span>
+<span class="sd">                              Defaults to 8192.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="n">buffer_object</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">digest_block_size</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">block</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">hash_obj</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+        <span class="c1"># Update the block for the next iteration.</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="n">buffer_object</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">digest_block_size</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_base64_md5hash</span><span class="p">(</span><span class="n">buffer_object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get MD5 hash of bytes (as base64).</span>
+
+<span class="sd">    :type buffer_object: bytes buffer</span>
+<span class="sd">    :param buffer_object: Buffer containing bytes used to compute an MD5</span>
+<span class="sd">                          hash (as base64).</span>
+
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :returns: A base64 encoded digest of the MD5 hash.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hash_obj</span> <span class="o">=</span> <span class="n">md5</span><span class="p">()</span>
+    <span class="n">_write_buffer_to_hash</span><span class="p">(</span><span class="n">buffer_object</span><span class="p">,</span> <span class="n">hash_obj</span><span class="p">)</span>
+    <span class="n">digest_bytes</span> <span class="o">=</span> <span class="n">hash_obj</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">digest_bytes</span><span class="p">)</span>
 </pre></div>
 
            </div>
