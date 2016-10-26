@@ -34,6 +34,12 @@ def service_account_file():
 
 
 @pytest.fixture
+def authorized_user_file():
+    """The full path to a valid authorized user file."""
+    yield os.path.join(DATA_DIR, 'authorized_user.json')
+
+
+@pytest.fixture
 def request():
     """A transport.request object."""
     yield google.auth.transport.urllib3.Request(HTTP)
