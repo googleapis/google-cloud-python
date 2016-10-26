@@ -117,14 +117,10 @@ class Client(BaseClient):
         if sample.encoding is not Encoding.LINEAR16:
             raise ValueError('Only LINEAR16 encoding is supported by '
                              'asynchronous speech requests.')
-
-        data = _build_request_data(sample, language_code, max_alternatives,
-                                   profanity_filter, speech_context)
-
-        api_response = self.connection.api_request(
-            method='POST', path='speech:asyncrecognize', data=data)
-
-        return Operation.from_api_repr(self, api_response)
+        api = self.speech_api
+        response = api.async_recognize(sample, language_code, max_alternatives,
+                                       profanity_filter, speech_context)
+        return response
 
     @staticmethod
     def sample(content=None, source_uri=None, encoding=None,
@@ -234,6 +230,56 @@ class _JSONSpeechAPI(object):
     def __init__(self, client):
         self._client = client
         self._connection = client.connection
+
+    def async_recognize(self, sample, language_code=None,
+                        max_alternatives=None, profanity_filter=None,
+                        speech_context=None):
+        """Asychronous Recognize request to Google Speech API.
+
+        .. _async_recognize: https://cloud.google.com/speech/reference/\
+                             rest/v1beta1/speech/asyncrecognize
+
+        See `async_recognize`_.
+
+        :type sample: :class:`~google.cloud.speech.sample.Sample`
+        :param sample: Instance of ``Sample`` containing audio information.
+
+        :type language_code: str
+        :param language_code: (Optional) The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-GB'``.
+                              If omitted, defaults to ``'en-US'``.
+
+        :type max_alternatives: int
+        :param max_alternatives: (Optional) Maximum number of recognition
+                                 hypotheses to be returned. The server may
+                                 return fewer than maxAlternatives.
+                                 Valid values are 0-30. A value of 0 or 1
+                                 will return a maximum of 1. Defaults to 1
+
+        :type profanity_filter: bool
+        :param profanity_filter: If True, the server will attempt to filter
+                                 out profanities, replacing all but the
+                                 initial character in each filtered word with
+                                 asterisks, e.g. ``'f***'``. If False or
+                                 omitted, profanities won't be filtered out.
+
+        :type speech_context: list
+        :param speech_context: A list of strings (max 50) containing words and
+                               phrases "hints" so that the speech recognition
+                               is more likely to recognize them. This can be
+                               used to improve the accuracy for specific words
+                               and phrases. This can also be used to add new
+                               words to the vocabulary of the recognizer.
+
+        :rtype: `~google.cloud.speech.operation.Operation`
+        :returns: ``Operation`` for asynchronous request to Google Speech API.
+        """
+        data = _build_request_data(sample, language_code, max_alternatives,
+                                   profanity_filter, speech_context)
+        api_response = self._connection.api_request(
+            method='POST', path='speech:asyncrecognize', data=data)
+
+        return Operation.from_api_repr(self, api_response)
 
     def sync_recognize(self, sample, language_code=None, max_alternatives=None,
                        profanity_filter=None, speech_context=None):
