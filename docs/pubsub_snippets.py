@@ -206,14 +206,8 @@ def topic_subscription(client, to_delete):
         sub_names.add(sub.full_name)
 
     # [START topic_list_subscriptions]
-    subscriptions, token = topic.list_subscriptions()   # API request
-    while True:
-        for subscription in subscriptions:
-            do_something_with(subscription)
-        if token is None:
-            break
-        subscriptions, token = topic.list_subscriptions(
-            page_token=token)                           # API request
+    for subscription in topic.list_subscriptions():   # API request(s)
+        do_something_with(subscription)
     # [END topic_list_subscriptions]
 
     assert sub_names.issuperset(expected_names)
