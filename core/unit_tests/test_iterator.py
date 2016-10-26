@@ -421,12 +421,12 @@ class TestGAXIterator(unittest.TestCase):
         import types
 
         client = _Client(None)
-        page_iter = object()
-        item_to_value = object()
         token = 'zzzyy78kl'
+        page_iter = SimpleIter(token)
+        item_to_value = object()
         max_results = 1337
         iterator = self._makeOne(client, page_iter, item_to_value,
-                                 page_token=token, max_results=max_results)
+                                 max_results=max_results)
 
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
@@ -448,7 +448,7 @@ class TestGAXIterator(unittest.TestCase):
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.iterator import Page
 
-        iterator = self._makeOne(None, (), self._do_nothing)
+        iterator = self._makeOne(None, SimpleIter(), self._do_nothing)
         if page_increment is not None:
             iterator._page_increment = page_increment
         # Make a mock ``google.gax.PageIterator``
@@ -543,3 +543,9 @@ class _Client(object):
 
     def __init__(self, connection):
         self.connection = connection
+
+
+class SimpleIter(object):
+
+    def __init__(self, page_token=None):
+        self.page_token = page_token
