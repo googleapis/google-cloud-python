@@ -27,6 +27,50 @@ class GAPICSpeechAPI(object):
     def __init__(self):
         self._gapic_api = SpeechApi()
 
+    def async_recognize(self, sample, language_code=None,
+                        max_alternatives=None, profanity_filter=None,
+                        speech_context=None):
+        """Asychronous Recognize request to Google Speech API.
+
+        .. _async_recognize: https://cloud.google.com/speech/reference/\
+                             rest/v1beta1/speech/asyncrecognize
+
+        See `async_recognize`_.
+
+        :type sample: :class:`~google.cloud.speech.sample.Sample`
+        :param sample: Instance of ``Sample`` containing audio information.
+
+        :type language_code: str
+        :param language_code: (Optional) The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-GB'``.
+                              If omitted, defaults to ``'en-US'``.
+
+        :type max_alternatives: int
+        :param max_alternatives: (Optional) Maximum number of recognition
+                                 hypotheses to be returned. The server may
+                                 return fewer than maxAlternatives.
+                                 Valid values are 0-30. A value of 0 or 1
+                                 will return a maximum of 1. Defaults to 1
+
+        :type profanity_filter: bool
+        :param profanity_filter: If True, the server will attempt to filter
+                                 out profanities, replacing all but the
+                                 initial character in each filtered word with
+                                 asterisks, e.g. ``'f***'``. If False or
+                                 omitted, profanities won't be filtered out.
+
+        :type speech_context: list
+        :param speech_context: A list of strings (max 50) containing words and
+                               phrases "hints" so that the speech recognition
+                               is more likely to recognize them. This can be
+                               used to improve the accuracy for specific words
+                               and phrases. This can also be used to add new
+                               words to the vocabulary of the recognizer.
+
+        :raises NotImplementedError: Always.
+        """
+        raise NotImplementedError
+
     def sync_recognize(self, sample, language_code=None, max_alternatives=None,
                        profanity_filter=None, speech_context=None):
         """Synchronous Speech Recognition.
