@@ -17,7 +17,7 @@
 These credentials are needed to run the system test for OAuth2 credentials.
 It's expected that a developer will run this program manually once to obtain
 a refresh token. It's highly recommended to use a Google account created
-specifically created for testing.
+specifically for testing.
 """
 
 import json
