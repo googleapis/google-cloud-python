@@ -318,6 +318,7 @@ class HTTPIterator(Iterator):
             items = response.get(self._items_key, ())
             page = Page(self, items, self._item_to_value)
             self._page_start(self, page, response)
+            self.next_page_token = response.get('nextPageToken')
             return page
         else:
             return None
@@ -329,6 +330,7 @@ class HTTPIterator(Iterator):
         """
         page = self._next_page()
         while page is not None:
+            self.page_number += 1
             if self._page_increment:
                 self.num_results += page.num_items
             yield page
@@ -369,14 +371,9 @@ class HTTPIterator(Iterator):
         :rtype: dict
         :returns: The parsed JSON response of the next page's contents.
         """
-        response = self.client.connection.api_request(
+        return self.client.connection.api_request(
             method='GET', path=self.path,
             query_params=self._get_query_params())
-
-        self.page_number += 1
-        self.next_page_token = response.get('nextPageToken')
-
-        return response
 
 
 class GAXIterator(Iterator):
@@ -438,6 +435,7 @@ class GAXIterator(Iterator):
         """
         page = self._next_page(page_iter)
         while page is not None:
+            self.page_number += 1
             if self._page_increment:
                 self.num_results += page.num_items
             yield page

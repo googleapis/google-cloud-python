@@ -400,8 +400,6 @@ class TestHTTPIterator(unittest.TestCase):
         iterator = self._makeOne(client, path, None)
         response = iterator._get_next_page_response()
         self.assertEqual(response['items'], [{'name': key1}, {'name': key2}])
-        self.assertEqual(iterator.page_number, 1)
-        self.assertEqual(iterator.next_page_token, token)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], path)
