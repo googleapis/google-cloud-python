@@ -77,7 +77,11 @@ class _PublisherAPI(object):
         page_iter = self._gax_api.list_topics(
             path, page_size=page_size, options=options)
 
-        return GAXIterator(self._client, page_iter, _item_to_topic)
+        iter_kwargs = {}
+        if page_size:  # page_size can be 0 or explicit None.
+            iter_kwargs['max_results'] = page_size
+        return GAXIterator(self._client, page_iter, _item_to_topic,
+                           **iter_kwargs)
 
     def topic_create(self, topic_path):
         """API call:  create a topic
