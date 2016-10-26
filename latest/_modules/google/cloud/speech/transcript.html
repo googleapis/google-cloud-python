@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.transcript &mdash; google-cloud 0f8fdb6 documentation</title>
+  <title>google.cloud.speech.transcript &mdash; google-cloud 2e6ac38 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0f8fdb6 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 2e6ac38 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -307,10 +307,24 @@
 <span class="sd">        :type transcript: dict</span>
 <span class="sd">        :param transcript: Dictionary response from the REST API.</span>
 
-<span class="sd">        :rtype: :class:`~Transcript`</span>
+<span class="sd">        :rtype: :class:`Transcript`</span>
 <span class="sd">        :returns: Instance of ``Transcript``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">transcript</span><span class="p">[</span><span class="s1">&#39;transcript&#39;</span><span class="p">],</span> <span class="n">transcript</span><span class="p">[</span><span class="s1">&#39;confidence&#39;</span><span class="p">])</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Transcript.from_pb"><a class="viewcode-back" href="../../../../speech-transcript.html#google.cloud.speech.transcript.Transcript.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">transcript</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct ``Transcript`` from protobuf response.</span>
+
+<span class="sd">        :type transcript:</span>
+<span class="sd">            :class:`google.cloud.speech.v1beta1.SpeechRecognitionAlternative`</span>
+<span class="sd">        :param transcript: Instance of ``SpeechRecognitionAlternative``</span>
+<span class="sd">                           from protobuf.</span>
+
+<span class="sd">        :rtype: :class:`Transcript`</span>
+<span class="sd">        :returns: Instance of ``Transcript``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">transcript</span><span class="o">.</span><span class="n">transcript</span><span class="p">,</span> <span class="n">transcript</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">transcript</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -362,7 +376,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0f8fdb6',
+            VERSION:'2e6ac38',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
