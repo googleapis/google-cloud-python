@@ -111,8 +111,6 @@ class TestIterator(unittest.TestCase):
         self.assertIs(iterator.client, client)
         self.assertIs(iterator._item_to_value, item_to_value)
         self.assertEqual(iterator.max_results, max_results)
-        self.assertEqual(list(iterator._page_iter), [])
-        self.assertFalse(iterator._page_increment)
         # Changing attributes.
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, token)
@@ -122,21 +120,32 @@ class TestIterator(unittest.TestCase):
         iterator = self._makeOne(None, None)
         self.assertFalse(iterator._started)
         mock_iter = object()
-        iterator._page_iter = mock_iter
+        incremented = []
+
+        def page_iter(increment):
+            incremented.append(increment)
+            return mock_iter
+
+        iterator._page_iter = page_iter
         self.assertIs(iterator.pages, mock_iter)
+        self.assertEqual(incremented, [True])
         # Check the side-effect.
         self.assertTrue(iterator._started)
 
     def test_pages_property_started(self):
+        import types
+
         iterator = self._makeOne(None, None)
-        self.assertEqual(list(iterator.pages), [])
+        self.assertIsInstance(iterator.pages, types.GeneratorType)
         # Make sure we cannot restart.
         with self.assertRaises(ValueError):
             getattr(iterator, 'pages')
 
     def test_pages_property_items_started(self):
+        import types
+
         iterator = self._makeOne(None, None)
-        self.assertEqual(list(iterator), [])
+        self.assertIsInstance(iter(iterator), types.GeneratorType)
         with self.assertRaises(ValueError):
             getattr(iterator, 'pages')
 
@@ -161,8 +170,13 @@ class TestIterator(unittest.TestCase):
 
         iterator = self._makeOne(None, None)
         # Fake the page iterator on the object.
-        iterator._page_iter = iter((page1, page2))
+        incremented = []
 
+        def page_iter(increment):
+            incremented.append(increment)
+            return iter((page1, page2))
+
+        iterator._page_iter = page_iter
         items_iter = iterator._items_iter()
         # Make sure it is a generator.
         self.assertIsInstance(items_iter, types.GeneratorType)
@@ -178,26 +192,43 @@ class TestIterator(unittest.TestCase):
         with self.assertRaises(StopIteration):
             six.next(items_iter)
 
+        # Make sure our page_iter() was called correctly.
+        self.assertEqual(incremented, [False])
+
     def test___iter__(self):
         iterator = self._makeOne(None, None)
         self.assertFalse(iterator._started)
-        mock_iter = object()
-        iterator._page_iter = mock_iter
-        self.assertIs(iterator.pages, mock_iter)
+        incremented = []
+
+        def page_iter(increment):
+            incremented.append(increment)
+            return iter(())
+
+        iterator._page_iter = page_iter
+        self.assertEqual(list(iterator), [])
         # Check the side-effect.
         self.assertTrue(iterator._started)
 
     def test___iter___started(self):
+        import types
+
         iterator = self._makeOne(None, None)
-        self.assertEqual(list(iterator), [])
+        self.assertIsInstance(iter(iterator), types.GeneratorType)
         with self.assertRaises(ValueError):
             iter(iterator)
 
     def test___iter___pages_started(self):
+        import types
+
         iterator = self._makeOne(None, None)
-        self.assertEqual(list(iterator.pages), [])
+        self.assertIsInstance(iterator.pages, types.GeneratorType)
         with self.assertRaises(ValueError):
             iter(iterator)
+
+    def test__next_page_virtual(self):
+        iterator = self._makeOne(None, None)
+        with self.assertRaises(NotImplementedError):
+            iterator._next_page()
 
 
 class TestHTTPIterator(unittest.TestCase):
@@ -416,8 +447,6 @@ class TestGAXIterator(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_constructor(self):
-        import types
-
         client = _Client(None)
         token = 'zzzyy78kl'
         page_iter = SimpleIter(token)
@@ -430,8 +459,7 @@ class TestGAXIterator(unittest.TestCase):
         self.assertIs(iterator.client, client)
         self.assertIs(iterator._item_to_value, item_to_value)
         self.assertEqual(iterator.max_results, max_results)
-        self.assertIsInstance(iterator._page_iter, types.GeneratorType)
-        self.assertFalse(iterator._page_increment)
+        self.assertIs(iterator._gax_page_iter, page_iter)
         # Changing attributes.
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, token)
@@ -441,44 +469,37 @@ class TestGAXIterator(unittest.TestCase):
     def _do_nothing(parent, value):
         return parent, value
 
-    def _wrap_gax_helper(self, page_increment=None):
-        import types
+    def test__next_page(self):
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.iterator import Page
 
-        iterator = self._makeOne(None, SimpleIter(), self._do_nothing)
-        if page_increment is not None:
-            iterator._page_increment = page_increment
         # Make a mock ``google.gax.PageIterator``
         page_items = (29, 31)  # Items for just one page.
         page_token = '2sde98ds2s0hh'
         page_iter = _GAXPageIterator(page_items, page_token=page_token)
-        wrapped = iterator._wrap_gax(page_iter)
-        self.assertIsInstance(wrapped, types.GeneratorType)
+        # Wrap the GAX iterator.
+        iterator = self._makeOne(None, page_iter, self._do_nothing)
 
-        pages = list(wrapped)
+        page = iterator._next_page()
         # First check the page token.
         self.assertEqual(iterator.next_page_token, page_token)
-        # Then check the pages of results.
-        self.assertEqual(len(pages), 1)
-        page = pages[0]
+        # Then check the page.
         self.assertIsInstance(page, Page)
         # _do_nothing will throw the iterator in front.
         expected = zip((iterator, iterator), page_items)
         self.assertEqual(list(page), list(expected))
-        return iterator
 
-    def test__wrap_gax(self):
-        iterator = self._wrap_gax_helper()
-        # Make sure no page incrementing happend.
-        self.assertFalse(iterator._page_increment)
-        self.assertEqual(iterator.num_results, 0)
+    def test__next_page_empty(self):
+        from google.cloud._testing import _GAXPageIterator
 
-    def test__wrap_gax_with_increment(self):
-        iterator = self._wrap_gax_helper(True)
-        # Make sure no page incrementing happend.
-        self.assertTrue(iterator._page_increment)
-        self.assertEqual(iterator.num_results, 2)
+        # Make a mock ``google.gax.PageIterator``
+        page_iter = _GAXPageIterator()
+        # Wrap the GAX iterator.
+        iterator = self._makeOne(None, page_iter, self._do_nothing)
+
+        page = iterator._next_page()
+        self.assertIsNone(page)
+        self.assertIsNone(iterator.next_page_token)
 
     def test_iterate(self):
         import six
