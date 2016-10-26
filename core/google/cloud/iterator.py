@@ -187,15 +187,6 @@ class Iterator(object):
         self.client = client
         self._item_to_value = item_to_value
         self.max_results = max_results
-        # NOTE: The _page_iter is not intended to come through the
-        #       constructor, instead subclasses should over-ride
-        #       this property.
-        self._page_iter = iter(())
-        # NOTE: This flag indicates if the total number of results should be
-        #       incremented. This is useful since a page iterator will
-        #       want to increment by results per page while an items
-        #       iterator will want to increment per item.
-        self._page_increment = False
         # The attributes below will change over the life of the iterator.
         self.page_number = 0
         self.next_page_token = page_token
@@ -212,12 +203,11 @@ class Iterator(object):
         if self._started:
             raise ValueError('Iterator has already started', self)
         self._started = True
-        self._page_increment = True
-        return self._page_iter
+        return self._page_iter(increment=True)
 
     def _items_iter(self):
         """Iterator for each item returned."""
-        for page in self._page_iter:
+        for page in self._page_iter(increment=False):
             for item in page:
                 self.num_results += 1
                 yield item
@@ -233,6 +223,37 @@ class Iterator(object):
             raise ValueError('Iterator has already started', self)
         self._started = True
         return self._items_iter()
+
+    def _page_iter(self, increment):
+        """Generator of pages of API responses.
+
+        :type increment: bool
+        :param increment: Flag indicating if the total number of results
+                          should be incremented on each page. This is useful
+                          since a page iterator will want to increment by
+                          results per page while an items iterator will want
+                          to increment per item.
+
+        Yields :class:`Page` instances.
+        """
+        page = self._next_page()
+        while page is not None:
+            self.page_number += 1
+            if increment:
+                self.num_results += page.num_items
+            yield page
+            page = self._next_page()
+
+    @staticmethod
+    def _next_page():
+        """Get the next page in the iterator.
+
+        This does nothing and is intended to be over-ridden by subclasses
+        to return the next :class:`Page`.
+
+        :raises NotImplementedError: Always.
+        """
+        raise NotImplementedError
 
 
 class HTTPIterator(Iterator):
@@ -292,7 +313,6 @@ class HTTPIterator(Iterator):
         # Verify inputs / provide defaults.
         if self.extra_params is None:
             self.extra_params = {}
-        self._page_iter = self._http_page_iter()
         self._verify_params()
 
     def _verify_params(self):
@@ -322,19 +342,6 @@ class HTTPIterator(Iterator):
             return page
         else:
             return None
-
-    def _http_page_iter(self):
-        """Generator of pages of API responses.
-
-        Yields :class:`Page` instances.
-        """
-        page = self._next_page()
-        while page is not None:
-            self.page_number += 1
-            if self._page_increment:
-                self.num_results += page.num_items
-            yield page
-            page = self._next_page()
 
     def _has_next_page(self):
         """Determines whether or not there are more pages with results.
@@ -402,41 +409,22 @@ class GAXIterator(Iterator):
         super(GAXIterator, self).__init__(
             client, item_to_value, page_token=page_iter.page_token,
             max_results=max_results)
-        self._page_iter = self._wrap_gax(page_iter)
+        self._gax_page_iter = page_iter
 
-    def _next_page(self, page_iter):
+    def _next_page(self):
         """Get the next page in the iterator.
 
-        :type page_iter: :class:`~google.gax.PageIterator`
-        :param page_iter: The GAX page iterator to consume.
+        Wraps the response from the :class:`~google.gax.PageIterator` in a
+        :class:`Page` instance and captures some state at each page.
 
         :rtype: :class:`Page`
         :returns: The next page in the iterator (or :data:`None` if
                   there are no pages left).
         """
         try:
-            items = six.next(page_iter)
+            items = six.next(self._gax_page_iter)
             page = Page(self, items, self._item_to_value)
-            self.next_page_token = page_iter.page_token or None
+            self.next_page_token = self._gax_page_iter.page_token or None
             return page
         except StopIteration:
             return None
-
-    def _wrap_gax(self, page_iter):
-        """Generator of pages of API responses.
-
-        Wraps each response from the :class:`~google.gax.PageIterator` in a
-        :class:`Page` instance and captures some state at each page.
-
-        :type page_iter: :class:`~google.gax.PageIterator`
-        :param page_iter: The GAX page iterator to wrap.
-
-        Yields :class:`Page` instances.
-        """
-        page = self._next_page(page_iter)
-        while page is not None:
-            self.page_number += 1
-            if self._page_increment:
-                self.num_results += page.num_items
-            yield page
-            page = self._next_page(page_iter)
