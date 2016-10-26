@@ -35,7 +35,7 @@ class Connection(base_connection.JSONConnection):
     API_BASE_URL = 'https://logging.googleapis.com'
     """The base of the API call URL."""
 
-    API_VERSION = 'v2beta1'
+    API_VERSION = 'v2'
     """The version of the API, used in building the API call's URL."""
 
     API_URL_TEMPLATE = '{api_base_url}/{api_version}{path}'
