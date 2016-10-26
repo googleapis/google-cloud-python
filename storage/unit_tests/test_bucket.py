@@ -1024,6 +1024,7 @@ class Test_Bucket(unittest.TestCase):
         response1 = {
             'items': [{'name': BLOB_NAME}],
             'prefixes': ['foo'],
+            'nextPageToken': 's39rmf9',
         }
         response2 = {
             'items': [],
