@@ -35,10 +35,24 @@ class Transcript(object):
         :type transcript: dict
         :param transcript: Dictionary response from the REST API.
 
-        :rtype: :class:`~Transcript`
+        :rtype: :class:`Transcript`
         :returns: Instance of ``Transcript``.
         """
         return cls(transcript['transcript'], transcript['confidence'])
+
+    @classmethod
+    def from_pb(cls, transcript):
+        """Factory: construct ``Transcript`` from protobuf response.
+
+        :type transcript:
+            :class:`google.cloud.speech.v1beta1.SpeechRecognitionAlternative`
+        :param transcript: Instance of ``SpeechRecognitionAlternative``
+                           from protobuf.
+
+        :rtype: :class:`Transcript`
+        :returns: Instance of ``Transcript``.
+        """
+        return cls(transcript.transcript, transcript.confidence)
 
     @property
     def transcript(self):
