@@ -118,9 +118,8 @@ class Client(BaseClient):
             raise ValueError('Only LINEAR16 encoding is supported by '
                              'asynchronous speech requests.')
         api = self.speech_api
-        response = api.async_recognize(sample, language_code, max_alternatives,
-                                       profanity_filter, speech_context)
-        return response
+        return api.async_recognize(sample, language_code, max_alternatives,
+                                   profanity_filter, speech_context)
 
     @staticmethod
     def sample(content=None, source_uri=None, encoding=None,
