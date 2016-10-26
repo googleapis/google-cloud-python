@@ -381,19 +381,15 @@ class GAXIterator(Iterator):
                           takes an :class:`Iterator` and a single item
                           from the API response as a protobuf.
 
-    :type page_token: str
-    :param page_token: (Optional) A token identifying a page in a result set.
-
     :type max_results: int
     :param max_results: (Optional) The maximum number of results to fetch.
 
     .. autoattribute:: pages
     """
 
-    def __init__(self, client, page_iter, item_to_value,
-                 page_token=None, max_results=None):
+    def __init__(self, client, page_iter, item_to_value, max_results=None):
         super(GAXIterator, self).__init__(
-            client, item_to_value, page_token=page_token,
+            client, item_to_value, page_token=page_iter.page_token,
             max_results=max_results)
         self._page_iter = self._wrap_gax(page_iter)
 
