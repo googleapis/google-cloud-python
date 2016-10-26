@@ -30,7 +30,6 @@ from google.cloud._helpers import _pb_timestamp_to_rfc3339
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import GAXIterator
-from google.cloud.iterator import Page
 from google.cloud.pubsub.topic import Topic
 
 
