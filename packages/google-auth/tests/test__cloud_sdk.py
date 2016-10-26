@@ -16,6 +16,7 @@ import json
 import os
 
 import mock
+import py
 import pytest
 
 from google.auth import _cloud_sdk
@@ -41,15 +42,20 @@ CONFIG_PATH_PATCH = mock.patch('google.auth._cloud_sdk.get_config_path')
 
 
 @pytest.fixture
-def config_file(tmpdir):
+def config_dir(tmpdir):
     config_dir = tmpdir.join(
         '.config', _cloud_sdk._CONFIG_DIRECTORY)
-    config_file = config_dir.join(
-        _cloud_sdk._ACTIVE_CONFIG_FILENAME)
 
     with CONFIG_PATH_PATCH as mock_get_config_dir:
         mock_get_config_dir.return_value = str(config_dir)
-        yield config_file
+        yield config_dir
+
+
+@pytest.fixture
+def config_file(config_dir):
+    config_file = py.path.local(_cloud_sdk._get_config_file(
+        str(config_dir), 'default'))
+    yield config_file
 
 
 def test_get_project_id(config_file):
@@ -73,6 +79,20 @@ def test_get_project_id_no_section(config_file):
     config_file.write('[section]', ensure=True)
     project_id = _cloud_sdk.get_project_id()
     assert project_id is None
+
+
+def test_get_project_id_non_default_config(config_dir):
+    active_config = config_dir.join('active_config')
+    test_config = py.path.local(_cloud_sdk._get_config_file(
+        str(config_dir), 'test'))
+
+    # Create an active config file that points to the 'test' config.
+    active_config.write('test', ensure=True)
+    test_config.write(CLOUD_SDK_CONFIG_DATA, ensure=True)
+
+    project_id = _cloud_sdk.get_project_id()
+
+    assert project_id == 'example-project'
 
 
 @CONFIG_PATH_PATCH

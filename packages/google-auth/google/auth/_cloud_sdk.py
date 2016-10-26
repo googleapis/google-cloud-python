@@ -14,6 +14,7 @@
 
 """Helpers for reading the Google Cloud SDK's configuration."""
 
+import io
 import os
 
 import six
@@ -32,10 +33,6 @@ _WINDOWS_CONFIG_ROOT_ENV_VAR = 'APPDATA'
 # The name of the file in the Cloud SDK config that contains default
 # credentials.
 _CREDENTIALS_FILENAME = 'application_default_credentials.json'
-# The name of the file in the Cloud SDK config that contains the
-# active configuration.
-_ACTIVE_CONFIG_FILENAME = os.path.join(
-    'configurations', 'config_default')
 # The config section and key for the project ID in the cloud SDK config.
 _PROJECT_CONFIG_SECTION = 'core'
 _PROJECT_CONFIG_KEY = 'project'
@@ -83,6 +80,40 @@ def get_application_default_credentials_path():
     return os.path.join(config_path, _CREDENTIALS_FILENAME)
 
 
+def _get_active_config(config_path):
+    """Gets the active config for the Cloud SDK.
+
+    Args:
+        config_path (str): The Cloud SDK's config path.
+
+    Returns:
+        str: The active configuration name.
+    """
+    active_config_filename = os.path.join(config_path, 'active_config')
+
+    if not os.path.isfile(active_config_filename):
+        return 'default'
+
+    with io.open(active_config_filename, 'r', encoding='utf-8') as file_obj:
+        active_config_name = file_obj.read().strip()
+
+    return active_config_name
+
+
+def _get_config_file(config_path, config_name):
+    """Returns the full path to a configuration's config file.
+
+    Args:
+        config_path (str): The Cloud SDK's config path.
+        config_name (str): The configuration name.
+
+    Returns:
+        str: The config file path.
+    """
+    return os.path.join(
+        config_path, 'configurations', 'config_{}'.format(config_name))
+
+
 def get_project_id():
     """Gets the project ID from the Cloud SDK's configuration.
 
@@ -90,7 +121,8 @@ def get_project_id():
         Optional[str]: The project ID.
     """
     config_path = get_config_path()
-    config_file = os.path.join(config_path, _ACTIVE_CONFIG_FILENAME)
+    active_config = _get_active_config(config_path)
+    config_file = _get_config_file(config_path, active_config)
 
     if not os.path.isfile(config_file):
         return None
