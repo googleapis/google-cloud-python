@@ -511,10 +511,13 @@ class Bucket(_PropertyMixin):
 
     @property
     def cors(self):
-        """Retrieve CORS policies configured for this bucket.
+        """Retrieve or set CORS policies configured for this bucket.
 
         See: http://www.w3.org/TR/cors/ and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :setter: Set CORS policies for this bucket.
+        :getter: Gets the CORS policies for this bucket.
 
         :rtype: list of dictionaries
         :returns: A sequence of mappings describing each CORS policy.
