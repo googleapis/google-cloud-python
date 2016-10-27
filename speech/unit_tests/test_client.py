@@ -245,7 +245,7 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(ValueError):
             client.async_recognize(sample)
 
-    def test_async_recognize(self):
+    def test_async_recognize_no_gax(self):
         from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
         from google.cloud import speech
         from google.cloud.speech.operation import Operation
@@ -254,7 +254,7 @@ class TestClient(unittest.TestCase):
         RETURNED = ASYNC_RECOGNIZE_RESPONSE
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._makeOne(credentials=credentials, use_gax=False)
         client.connection = _Connection(RETURNED)
 
         sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
@@ -264,6 +264,22 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(operation, Operation)
         self.assertFalse(operation.complete)
         self.assertIsNone(operation.metadata)
+
+    def test_async_recognize_with_gax(self):
+        from google.cloud.speech import _gax as MUT
+        from google.cloud._testing import _Monkey
+        from google.cloud import speech
+
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+        client.connection = _Connection()
+
+        sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
+                               encoding=speech.Encoding.LINEAR16,
+                               sample_rate=self.SAMPLE_RATE)
+        with _Monkey(MUT, SpeechApi=_MockGAPICSpeechAPI):
+            with self.assertRaises(NotImplementedError):
+                client.async_recognize(sample)
 
     def test_speech_api_with_gax(self):
         from google.cloud.speech import _gax as MUT
