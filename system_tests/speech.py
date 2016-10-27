@@ -87,7 +87,7 @@ class TestSpeechClient(unittest.TestCase):
         self.assertGreater(top_result.confidence, 0.90)
 
     def test_sync_recognize_local_file(self):
-        with open(Config.AUDIO_FILE, 'rb') as file_obj:
+        with open(AUDIO_FILE, 'rb') as file_obj:
             results = self._make_sync_request(content=file_obj.read(),
                                               max_alternatives=2)
             second_alternative = results[1]
@@ -102,7 +102,7 @@ class TestSpeechClient(unittest.TestCase):
         blob_name = 'hello.wav'
         blob = Config.TEST_BUCKET.blob(blob_name)
         self.to_delete_by_case.append(blob)  # Clean-up.
-        with open(Config.AUDIO_FILE, 'rb') as file_obj:
+        with open(AUDIO_FILE, 'rb') as file_obj:
             blob.upload_from_file(file_obj)
 
         source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
