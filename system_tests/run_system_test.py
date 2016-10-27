@@ -23,6 +23,7 @@ import language
 import logging_
 import monitoring
 import pubsub
+import speech
 import storage
 import system_test_utils
 import translate
@@ -30,6 +31,7 @@ import translate
 
 TEST_MODULES = {
     'datastore': datastore,
+    'speech': speech,
     'storage': storage,
     'pubsub': pubsub,
     'bigquery': bigquery,
