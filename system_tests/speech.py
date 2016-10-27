@@ -119,7 +119,6 @@ class TestSpeechClient(unittest.TestCase):
 
     def _check_results(self, results, num_results=1):
         self.assertEqual(len(results), num_results)
-
         top_result = results[0]
         self.assertIsInstance(top_result, Alternative)
         self.assertEqual(top_result.transcript,
@@ -153,8 +152,6 @@ class TestSpeechClient(unittest.TestCase):
         self._check_results(result)
 
     def test_async_recognize_local_file(self):
-        if Config.USE_GAX:
-            self.skipTest('async_recognize gRPC not yet implemented.')
         with open(AUDIO_FILE, 'rb') as file_obj:
             content = file_obj.read()
 
@@ -165,8 +162,6 @@ class TestSpeechClient(unittest.TestCase):
         self._check_results(operation.results, 2)
 
     def test_async_recognize_gcs_file(self):
-        if Config.USE_GAX:
-            self.skipTest('async_recognize gRPC not yet implemented.')
         bucket_name = Config.TEST_BUCKET.name
         blob_name = 'hello.wav'
         blob = Config.TEST_BUCKET.blob(blob_name)
