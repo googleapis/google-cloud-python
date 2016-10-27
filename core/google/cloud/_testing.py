@@ -15,6 +15,10 @@
 """Shared testing utilities."""
 
 
+# Avoid the grpc and google.cloud.grpc collision.
+from __future__ import absolute_import
+
+
 class _Monkey(object):
     # context-manager for replacing module names in the scope of a test.
 
