@@ -14,23 +14,36 @@
 
 """GAX/GAPIC module for managing Speech API requests."""
 
+
 from google.cloud.gapic.speech.v1beta1.speech_api import SpeechApi
-from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import SpeechContext
-from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import RecognitionConfig
 from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import RecognitionAudio
+from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import RecognitionConfig
+from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import SpeechContext
 from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
     StreamingRecognitionConfig)
 from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
     StreamingRecognizeRequest)
+from google.longrunning import operations_grpc
 
+from google.cloud._helpers import make_secure_stub
+from google.cloud.connection import DEFAULT_USER_AGENT
 
 from google.cloud.speech.alternative import Alternative
+from google.cloud.speech.operation import Operation
+
+OPERATIONS_API_HOST = 'speech.googleapis.com'
 
 
 class GAPICSpeechAPI(object):
     """Manage calls through GAPIC wrappers to the Speech API."""
-    def __init__(self):
+    def __init__(self, client=None):
+        self._client = client
         self._gapic_api = SpeechApi()
+        self._operations_stub = make_secure_stub(
+            self._client.connection.credentials,
+            DEFAULT_USER_AGENT,
+            operations_grpc.OperationsStub,
+            OPERATIONS_API_HOST)
 
     def async_recognize(self, sample, language_code=None,
                         max_alternatives=None, profanity_filter=None,
@@ -72,9 +85,21 @@ class GAPICSpeechAPI(object):
                                and phrases. This can also be used to add new
                                words to the vocabulary of the recognizer.
 
-        :raises NotImplementedError: Always.
+        :rtype: :class:`~google.cloud.speech.operation.Operation`
+        :returns: Instance of ``Operation`` to poll for results.
         """
-        raise NotImplementedError
+        config = RecognitionConfig(
+            encoding=sample.encoding, sample_rate=sample.sample_rate,
+            language_code=language_code, max_alternatives=max_alternatives,
+            profanity_filter=profanity_filter,
+            speech_context=SpeechContext(phrases=speech_context))
+
+        audio = RecognitionAudio(content=sample.content,
+                                 uri=sample.source_uri)
+        api = self._gapic_api
+        response = api.async_recognize(config=config, audio=audio)
+
+        return Operation.from_pb(response, self)
 
     def sync_recognize(self, sample, language_code=None, max_alternatives=None,
                        profanity_filter=None, speech_context=None):
