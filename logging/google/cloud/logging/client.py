@@ -95,8 +95,8 @@ class Client(JSONClient):
         """Helper for logging-related API calls.
 
         See:
-        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries
-        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs
+        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries
+        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs
         """
         if self._logging_api is None:
             if self._use_gax:
@@ -111,7 +111,7 @@ class Client(JSONClient):
         """Helper for log sink-related API calls.
 
         See:
-        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks
+        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks
         """
         if self._sinks_api is None:
             if _USE_GAX:
@@ -126,7 +126,7 @@ class Client(JSONClient):
         """Helper for log metric-related API calls.
 
         See:
-        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics
+        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics
         """
         if self._metrics_api is None:
             if _USE_GAX:
@@ -177,7 +177,7 @@ class Client(JSONClient):
         """Return a page of log entries.
 
         See:
-        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/list
+        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/list
 
         :type projects: list of strings
         :param projects: project IDs to include. If not passed,
@@ -244,7 +244,7 @@ class Client(JSONClient):
         """List sinks for the project associated with this client.
 
         See:
-        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/list
+        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks/list
 
         :type page_size: int
         :param page_size: maximum number of sinks to return, If not passed,
@@ -293,7 +293,7 @@ class Client(JSONClient):
         """List metrics for the project associated with this client.
 
         See:
-        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/list
+        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/list
 
         :type page_size: int
         :param page_size: maximum number of metrics to return, If not passed,

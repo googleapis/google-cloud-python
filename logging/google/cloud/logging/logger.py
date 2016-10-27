@@ -23,7 +23,7 @@ class Logger(object):
     """Loggers represent named targets for log entries.
 
     See:
-    https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs
+    https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs
 
     :type name: str
     :param name: the name of the logger
@@ -162,7 +162,7 @@ class Logger(object):
         """API call:  log a text message via a POST request
 
         See:
-        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/write
+        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write
 
         :type text: text
         :param text: the log message.
@@ -196,7 +196,7 @@ class Logger(object):
         """API call:  log a structured message via a POST request
 
         See:
-        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/write
+        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write
 
         :type info: dict
         :param info: the log entry information
@@ -230,7 +230,7 @@ class Logger(object):
         """API call:  log a protobuf message via a POST request
 
         See:
-        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/write
+        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write
 
         :type message: Protobuf message
         :param message: the message to be logged
@@ -263,7 +263,7 @@ class Logger(object):
         """API call:  delete all entries in a logger via a DELETE request
 
         See:
-        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs/delete
+        https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs/delete
 
         :type client: :class:`~google.cloud.logging.client.Client` or
                       ``NoneType``
@@ -278,7 +278,7 @@ class Logger(object):
         """Return a page of log entries.
 
         See:
-        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/list
+        https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/list
 
         :type projects: list of strings
         :param projects: project IDs to include. If not passed,
