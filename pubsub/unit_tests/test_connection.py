@@ -417,14 +417,17 @@ class Test_SubscriberAPI(_Base):
 
     def test_ctor(self):
         connection = _Connection()
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
         self.assertIs(api._connection, connection)
+        self.assertIs(api._client, client)
 
     def test_list_subscriptions_no_paging(self):
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         RETURNED = {'subscriptions': [SUB_INFO]}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         subscriptions, next_token = api.list_subscriptions(self.PROJECT)
 
@@ -450,7 +453,8 @@ class Test_SubscriberAPI(_Base):
             'nextPageToken': 'TOKEN2',
         }
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         subscriptions, next_token = api.list_subscriptions(
             self.PROJECT, page_token=TOKEN1, page_size=SIZE)
@@ -471,7 +475,8 @@ class Test_SubscriberAPI(_Base):
     def test_list_subscriptions_missing_key(self):
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         subscriptions, next_token = api.list_subscriptions(self.PROJECT)
 
@@ -488,7 +493,8 @@ class Test_SubscriberAPI(_Base):
         RETURNED = RESOURCE.copy()
         RETURNED['name'] = self.SUB_PATH
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         resource = api.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
 
@@ -511,7 +517,8 @@ class Test_SubscriberAPI(_Base):
         RETURNED = RESOURCE.copy()
         RETURNED['name'] = self.SUB_PATH
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         resource = api.subscription_create(
             self.SUB_PATH, self.TOPIC_PATH,
@@ -533,7 +540,8 @@ class Test_SubscriberAPI(_Base):
             'pushConfig': {'pushEndpoint': PUSH_ENDPOINT},
         }
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         resource = api.subscription_get(self.SUB_PATH)
 
@@ -545,7 +553,8 @@ class Test_SubscriberAPI(_Base):
     def test_subscription_delete(self):
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         api.subscription_delete(self.SUB_PATH)
 
@@ -560,7 +569,8 @@ class Test_SubscriberAPI(_Base):
         }
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         api.subscription_modify_push_config(self.SUB_PATH, PUSH_ENDPOINT)
 
@@ -580,7 +590,8 @@ class Test_SubscriberAPI(_Base):
             'receivedMessages': [{'ackId': ACK_ID, 'message': MESSAGE}],
         }
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
         BODY = {
             'returnImmediately': False,
             'maxMessages': 1,
@@ -606,7 +617,8 @@ class Test_SubscriberAPI(_Base):
             'receivedMessages': [{'ackId': ACK_ID, 'message': MESSAGE}],
         }
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
         MAX_MESSAGES = 10
         BODY = {
             'returnImmediately': True,
@@ -630,7 +642,8 @@ class Test_SubscriberAPI(_Base):
         }
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         api.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
 
@@ -649,7 +662,8 @@ class Test_SubscriberAPI(_Base):
         }
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         api.subscription_modify_ack_deadline(
             self.SUB_PATH, [ACK_ID1, ACK_ID2], NEW_DEADLINE)
