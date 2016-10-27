@@ -14,18 +14,56 @@
 
 import unittest
 
+from google.cloud import exceptions
+from google.cloud import speech
+from google.cloud import storage
+
+from system_test_utils import unique_resource_id
+from retry import RetryErrors
+
+
+class Config(object):
+    """Run-time configuration to be modified at set-up.
+    This is a mutable stand-in to allow test set-up to modify
+    global state.
+    """
+    CLIENT = None
+    TEST_BUCKET = None
+
+
+def setUpModule():
+    Config.CLIENT = speech.Client()
+    # Now create a bucket for GCS stored content.
+    storage_client = storage.Client()
+    bucket_name = 'new' + unique_resource_id()
+    Config.TEST_BUCKET = storage_client.bucket(bucket_name)
+    # 429 Too Many Requests in case API requests rate-limited.
+    retry_429 = RetryErrors(exceptions.TooManyRequests)
+    retry_429(Config.TEST_BUCKET.create)()
+
+
+def tearDownModule():
+    # 409 Conflict if the bucket is full.
+    # 429 Too Many Requests in case API requests rate-limited.
+    bucket_retry = RetryErrors(
+        (exceptions.TooManyRequests, exceptions.Conflict))
+    bucket_retry(Config.TEST_BUCKET.delete)(force=True)
+
 
 class TestSpeechClient(unittest.TestCase):
+    def setUp(self):
+        self.to_delete_by_case = []
+
+    def tearDown(self):
+        for value in self.to_delete_by_case:
+            value.delete()
 
     def _make_sync_request(self, content=None, source_uri=None,
                            max_alternatives=None):
-        from google.cloud.speech.encoding import Encoding
-        from google.cloud import speech
-
-        client = speech.Client()
+        client = Config.CLIENT
         sample = client.sample(content=content,
                                source_uri=source_uri,
-                               encoding=Encoding.LINEAR16,
+                               encoding=speech.Encoding.LINEAR16,
                                sample_rate=16000)
         result = client.sync_recognize(sample,
                                        language_code='en-US',
@@ -35,27 +73,45 @@ class TestSpeechClient(unittest.TestCase):
                                                        'cloud'])
         return result
 
+    def _check_best_results(self, results):
+        from google.cloud.speech.transcript import Transcript
+
+        top_result = results[0]
+        self.assertIsInstance(top_result, Transcript)
+        self.assertEqual(top_result.transcript,
+                         'hello thank you for using Google Cloud platform')
+        self.assertGreater(top_result.confidence, 0.90)
+
     def test_sync_recognize_local_file(self):
-        file_name = 'system_tests/data/hello.wav'
+        import os
+        from google.cloud.speech.transcript import Transcript
+
+        file_name = os.path.join('system_tests', 'data', 'hello.wav')
 
         with open(file_name, 'rb') as file_obj:
-            result = self._make_sync_request(content=file_obj.read(),
-                                             max_alternatives=2)
-
-            self.assertEqual(result[0]['transcript'],
-                             'hello thank you for using Google Cloud platform')
-            self.assertGreater(result[0]['confidence'], .90)
-            self.assertEqual(result[1]['transcript'],
+            results = self._make_sync_request(content=file_obj.read(),
+                                              max_alternatives=2)
+            second_alternative = results[1]
+            self.assertEqual(len(results), 2)
+            self._check_best_results(results)
+            self.assertIsInstance(second_alternative, Transcript)
+            self.assertEqual(second_alternative.transcript,
                              'thank you for using Google Cloud platform')
-            self.assertEqual(len(result), 2)
+            self.assertEqual(second_alternative.confidence, 0.0)
 
     def test_sync_recognize_gcs_file(self):
         import os
 
-        source_uri = os.getenv('SPEECH_GCS_URI')
+        file_name = os.path.join('system_tests', 'data', 'hello.wav')
+        bucket_name = Config.TEST_BUCKET.name
+        blob_name = 'document.txt'
+        blob = Config.TEST_BUCKET.blob(blob_name)
+        self.to_delete_by_case.append(blob)  # Clean-up.
+        with open(file_name, 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+
+        # source_uri = os.getenv('SPEECH_GCS_URI')
+        source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
         result = self._make_sync_request(source_uri=source_uri,
                                          max_alternatives=1)
-        self.assertEqual(result[0]['transcript'],
-                         'hello thank you for using Google Cloud platform')
-        self.assertGreater(result[0]['confidence'], .90)
-        self.assertEqual(len(result), 1)
+        self._check_best_results(result)
