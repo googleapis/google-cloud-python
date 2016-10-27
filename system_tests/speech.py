@@ -23,6 +23,8 @@ from google.cloud.speech.transcript import Transcript
 from system_test_utils import unique_resource_id
 from retry import RetryErrors
 
+AUDIO_FILE = os.path.join(os.path.dirname(__file__), 'data', 'hello.wav')
+
 
 class Config(object):
     """Run-time configuration to be modified at set-up.
@@ -32,8 +34,6 @@ class Config(object):
     """
     CLIENT = None
     TEST_BUCKET = None
-    AUDIO_FILE = os.path.join(os.path.dirname(__file__), 'data', 'hello.wav')
-    ASSERT_TEXT = 'thank you for using Google Cloud platform'
 
 
 def setUpModule():
@@ -56,6 +56,8 @@ def tearDownModule():
 
 
 class TestSpeechClient(unittest.TestCase):
+    ASSERT_TEXT = 'thank you for using Google Cloud platform'
+
     def setUp(self):
         self.to_delete_by_case = []
 
@@ -81,7 +83,7 @@ class TestSpeechClient(unittest.TestCase):
         top_result = results[0]
         self.assertIsInstance(top_result, Transcript)
         self.assertEqual(top_result.transcript,
-                         'hello ' + Config.ASSERT_TEXT)
+                         'hello ' + self.ASSERT_TEXT)
         self.assertGreater(top_result.confidence, 0.90)
 
     def test_sync_recognize_local_file(self):
@@ -92,7 +94,7 @@ class TestSpeechClient(unittest.TestCase):
             self.assertEqual(len(results), 2)
             self._check_best_results(results)
             self.assertIsInstance(second_alternative, Transcript)
-            self.assertEqual(second_alternative.transcript, Config.ASSERT_TEXT)
+            self.assertEqual(second_alternative.transcript, self.ASSERT_TEXT)
             self.assertEqual(second_alternative.confidence, 0.0)
 
     def test_sync_recognize_gcs_file(self):
