@@ -218,8 +218,9 @@ class _PublisherAPI(object):
         iter_kwargs = {}
         if page_size:  # page_size can be 0 or explicit None.
             iter_kwargs['max_results'] = page_size
-        iterator = GAXIterator(self._client, page_iter,
-                               _item_to_subscription, **iter_kwargs)
+        iterator = GAXIterator(
+            self._client, page_iter,
+            _item_to_subscription_for_topic, **iter_kwargs)
         iterator.topic = topic
         return iterator
 
@@ -563,7 +564,7 @@ def _item_to_topic(iterator, resource):
         {'name': resource.name}, iterator.client)
 
 
-def _item_to_subscription(iterator, subscription_path):
+def _item_to_subscription_for_topic(iterator, subscription_path):
     """Convert a subscription name to the native object.
 
     :type iterator: :class:`~google.cloud.iterator.Iterator`

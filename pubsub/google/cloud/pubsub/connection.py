@@ -238,7 +238,8 @@ class _PublisherAPI(object):
 
         iterator = HTTPIterator(
             client=self._client, path=path,
-            item_to_value=_item_to_subscription, items_key='subscriptions',
+            item_to_value=_item_to_subscription_for_topic,
+            items_key='subscriptions',
             page_token=page_token, extra_params=extra_params)
         iterator.topic = topic
         return iterator
@@ -591,7 +592,7 @@ def _item_to_topic(iterator, resource):
     return Topic.from_api_repr(resource, iterator.client)
 
 
-def _item_to_subscription(iterator, subscription_path):
+def _item_to_subscription_for_topic(iterator, subscription_path):
     """Convert a subscription name to the native object.
 
     :type iterator: :class:`~google.cloud.iterator.Iterator`
