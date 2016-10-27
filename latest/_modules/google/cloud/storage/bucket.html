@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.bucket &mdash; google-cloud 4becc0c documentation</title>
+  <title>google.cloud.storage.bucket &mdash; google-cloud f723397 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 4becc0c documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud f723397 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -783,10 +783,13 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retrieve CORS policies configured for this bucket.</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve or set CORS policies configured for this bucket.</span>
 
 <span class="sd">        See: http://www.w3.org/TR/cors/ and</span>
 <span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
+
+<span class="sd">        :setter: Set CORS policies for this bucket.</span>
+<span class="sd">        :getter: Gets the CORS policies for this bucket.</span>
 
 <span class="sd">        :rtype: list of dictionaries</span>
 <span class="sd">        :returns: A sequence of mappings describing each CORS policy.</span>
@@ -1138,7 +1141,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'4becc0c',
+            VERSION:'f723397',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
