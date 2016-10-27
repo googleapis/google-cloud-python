@@ -126,8 +126,9 @@ class TestClient(unittest.TestCase):
 
         class _GaxSubscriberAPI(object):
 
-            def __init__(self, _wrapped):
+            def __init__(self, _wrapped, client):
                 self._wrapped = _wrapped
+                self._client = client
 
         creds = _Credentials()
 
@@ -139,6 +140,7 @@ class TestClient(unittest.TestCase):
 
         self.assertIsInstance(api, _GaxSubscriberAPI)
         self.assertIs(api._wrapped, wrapped)
+        self.assertIs(api._client, client)
         # API instance is cached
         again = client.subscriber_api
         self.assertIs(again, api)
