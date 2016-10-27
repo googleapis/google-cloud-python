@@ -290,7 +290,7 @@ class _SubscriberAPI(object):
         # can be re-used by other subscriptions from the same topic.
         topics = {}
         item_to_value = functools.partial(
-            _item_to_subscription_for_client, topics=topics)
+            _item_to_sub_for_client, topics=topics)
         return HTTPIterator(
             client=self._client, path=path, item_to_value=item_to_value,
             items_key='subscriptions', page_token=page_token,
@@ -612,7 +612,7 @@ def _item_to_subscription_for_topic(iterator, subscription_path):
     return Subscription(subscription_name, iterator.topic)
 
 
-def _item_to_subscription_for_client(iterator, resource, topics):
+def _item_to_sub_for_client(iterator, resource, topics):
     """Convert a subscription to the native object.
 
     .. note::

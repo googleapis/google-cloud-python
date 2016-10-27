@@ -266,7 +266,7 @@ class _SubscriberAPI(object):
         # can be re-used by other subscriptions from the same topic.
         topics = {}
         item_to_value = functools.partial(
-            _item_to_subscription_for_client, topics=topics)
+            _item_to_sub_for_client, topics=topics)
         return GAXIterator(self._client, page_iter, item_to_value)
 
     def subscription_create(self, subscription_path, topic_path,
@@ -577,7 +577,7 @@ def _item_to_subscription_for_topic(iterator, subscription_path):
     return Subscription(subscription_name, iterator.topic)
 
 
-def _item_to_subscription_for_client(iterator, sub_pb, topics):
+def _item_to_sub_for_client(iterator, sub_pb, topics):
     """Convert a subscription protobuf to the native object.
 
     .. note::

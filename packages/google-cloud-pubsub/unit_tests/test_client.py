@@ -220,29 +220,52 @@ class TestClient(unittest.TestCase):
 
     def test_list_subscriptions_no_paging(self):
         from google.cloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.topic import Topic
+
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
-        client.connection = object()
-        api = client._subscriber_api = _FauxSubscriberAPI()
-        api._list_subscriptions_response = [SUB_INFO], None
+        client = self._makeOne(project=self.PROJECT, credentials=creds,
+                               use_gax=False)
+        returned = {'subscriptions': [SUB_INFO]}
+        client.connection = _Connection(returned)
 
-        subscriptions, next_page_token = client.list_subscriptions()
+        iterator = client.list_subscriptions()
+        subscriptions = list(iterator)
+        next_page_token = iterator.next_page_token
 
-        self.assertEqual(len(subscriptions), 1)
-        self.assertIsInstance(subscriptions[0], Subscription)
-        self.assertEqual(subscriptions[0].name, self.SUB_NAME)
-        self.assertEqual(subscriptions[0].topic.name, self.TOPIC_NAME)
+        # Check the token returned.
         self.assertIsNone(next_page_token)
+        # Check the subscription object returned.
+        self.assertEqual(len(subscriptions), 1)
+        subscription = subscriptions[0]
+        self.assertIsInstance(subscription, Subscription)
+        self.assertEqual(subscription.name, self.SUB_NAME)
+        self.assertIsInstance(subscription.topic, Topic)
+        self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
+        self.assertIs(subscription._client, client)
+        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertIsNone(subscription.ack_deadline)
+        self.assertIsNone(subscription.push_endpoint)
 
-        self.assertEqual(api._listed_subscriptions,
-                         (self.PROJECT, None, None))
+        called_with = client.connection._called_with
+        expected_path = '/projects/%s/subscriptions' % (self.PROJECT,)
+        self.assertEqual(called_with, {
+            'method': 'GET',
+            'path': expected_path,
+            'query_params': {},
+        })
 
     def test_list_subscriptions_with_paging(self):
+        import six
         from google.cloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.topic import Topic
+
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client = self._makeOne(project=self.PROJECT, credentials=creds,
+                               use_gax=False)
+
+        # Set up the mock response.
         ACK_DEADLINE = 42
         PUSH_ENDPOINT = 'https://push.example.com/endpoint'
         SUB_INFO = {'name': self.SUB_PATH,
@@ -252,23 +275,42 @@ class TestClient(unittest.TestCase):
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
-        client.connection = object()
-        api = client._subscriber_api = _FauxSubscriberAPI()
-        api._list_subscriptions_response = [SUB_INFO], TOKEN2
+        returned = {
+            'subscriptions': [SUB_INFO],
+            'nextPageToken': TOKEN2,
+        }
+        client.connection = _Connection(returned)
 
-        subscriptions, next_page_token = client.list_subscriptions(
+        iterator = client.list_subscriptions(
             SIZE, TOKEN1)
+        page = six.next(iterator.pages)
+        subscriptions = list(page)
+        next_page_token = iterator.next_page_token
 
-        self.assertEqual(len(subscriptions), 1)
-        self.assertIsInstance(subscriptions[0], Subscription)
-        self.assertEqual(subscriptions[0].name, self.SUB_NAME)
-        self.assertEqual(subscriptions[0].topic.name, self.TOPIC_NAME)
-        self.assertEqual(subscriptions[0].ack_deadline, ACK_DEADLINE)
-        self.assertEqual(subscriptions[0].push_endpoint, PUSH_ENDPOINT)
+        # Check the token returned.
         self.assertEqual(next_page_token, TOKEN2)
+        # Check the subscription object returned.
+        self.assertEqual(len(subscriptions), 1)
+        subscription = subscriptions[0]
+        self.assertIsInstance(subscription, Subscription)
+        self.assertEqual(subscription.name, self.SUB_NAME)
+        self.assertIsInstance(subscription.topic, Topic)
+        self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
+        self.assertIs(subscription._client, client)
+        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertEqual(subscription.ack_deadline, ACK_DEADLINE)
+        self.assertEqual(subscription.push_endpoint, PUSH_ENDPOINT)
 
-        self.assertEqual(api._listed_subscriptions,
-                         (self.PROJECT, SIZE, TOKEN1))
+        called_with = client.connection._called_with
+        expected_path = '/projects/%s/subscriptions' % (self.PROJECT,)
+        self.assertEqual(called_with, {
+            'method': 'GET',
+            'path': expected_path,
+            'query_params': {
+                'pageSize': SIZE,
+                'pageToken': TOKEN1,
+            },
+        })
 
     def test_list_subscriptions_w_missing_key(self):
         PROJECT = 'PROJECT'
@@ -341,3 +383,16 @@ class _FauxSubscriberAPI(object):
     def list_subscriptions(self, project, page_size, page_token):
         self._listed_subscriptions = (project, page_size, page_token)
         return self._list_subscriptions_response
+
+
+class _Connection(object):
+
+    _called_with = None
+
+    def __init__(self, *responses):
+        self._responses = responses
+
+    def api_request(self, **kw):
+        self._called_with = kw
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response

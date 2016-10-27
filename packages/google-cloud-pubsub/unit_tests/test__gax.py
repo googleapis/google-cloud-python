@@ -415,29 +415,40 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
         from google.pubsub.v1.pubsub_pb2 import PushConfig
-        from google.pubsub.v1.pubsub_pb2 import Subscription
+        from google.pubsub.v1.pubsub_pb2 import Subscription as SubscriptionPB
         from google.cloud._testing import _GAXPageIterator
+        from google.cloud.pubsub.client import Client
+        from google.cloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.topic import Topic
 
         push_cfg_pb = PushConfig(push_endpoint=self.PUSH_ENDPOINT)
-        sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH,
-                              push_config=push_cfg_pb)
+        local_sub_path = '%s/subscriptions/%s' % (
+            self.PROJECT_PATH, self.SUB_NAME)
+        sub_pb = SubscriptionPB(name=local_sub_path, topic=self.TOPIC_PATH,
+                                push_config=push_cfg_pb)
         response = _GAXPageIterator([sub_pb])
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
-        client = _Client(self.PROJECT)
+        creds = _Credentials()
+        client = Client(project=self.PROJECT, credentials=creds)
         api = self._makeOne(gax_api, client)
 
-        subscriptions, next_token = api.list_subscriptions(self.PROJECT)
+        iterator = api.list_subscriptions(self.PROJECT)
+        subscriptions = list(iterator)
+        next_token = iterator.next_page_token
 
+        # Check the token returned.
+        self.assertIsNone(next_token)
+        # Check the subscription object returned.
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
-        self.assertEqual(subscription, {
-            'name': self.SUB_PATH,
-            'topic': self.TOPIC_PATH,
-            'pushConfig': {
-                'pushEndpoint': self.PUSH_ENDPOINT,
-            },
-        })
-        self.assertIsNone(next_token)
+        self.assertIsInstance(subscription, Subscription)
+        self.assertEqual(subscription.name, self.SUB_NAME)
+        self.assertIsInstance(subscription.topic, Topic)
+        self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
+        self.assertIs(subscription._client, client)
+        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertIsNone(subscription.ack_deadline)
+        self.assertEqual(subscription.push_endpoint, self.PUSH_ENDPOINT)
 
         name, page_size, options = gax_api._list_subscriptions_called_with
         self.assertEqual(name, self.PROJECT_PATH)
@@ -446,33 +457,45 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_list_subscriptions_with_paging(self):
         from google.pubsub.v1.pubsub_pb2 import PushConfig
-        from google.pubsub.v1.pubsub_pb2 import Subscription
+        from google.pubsub.v1.pubsub_pb2 import Subscription as SubscriptionPB
         from google.cloud._testing import _GAXPageIterator
+        from google.cloud.pubsub.client import Client
+        from google.cloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.topic import Topic
 
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
         push_cfg_pb = PushConfig(push_endpoint=self.PUSH_ENDPOINT)
-        sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH,
-                              push_config=push_cfg_pb)
+        local_sub_path = '%s/subscriptions/%s' % (
+            self.PROJECT_PATH, self.SUB_NAME)
+        sub_pb = SubscriptionPB(name=local_sub_path, topic=self.TOPIC_PATH,
+                                push_config=push_cfg_pb)
         response = _GAXPageIterator([sub_pb], page_token=NEW_TOKEN)
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
         client = _Client(self.PROJECT)
+        creds = _Credentials()
+        client = Client(project=self.PROJECT, credentials=creds)
         api = self._makeOne(gax_api, client)
 
-        subscriptions, next_token = api.list_subscriptions(
+        iterator = api.list_subscriptions(
             self.PROJECT, page_size=SIZE, page_token=TOKEN)
+        subscriptions = list(iterator)
+        next_token = iterator.next_page_token
 
+        # Check the token returned.
+        self.assertEqual(next_token, NEW_TOKEN)
+        # Check the subscription object returned.
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
-        self.assertEqual(subscription, {
-            'name': self.SUB_PATH,
-            'topic': self.TOPIC_PATH,
-            'pushConfig': {
-                'pushEndpoint': self.PUSH_ENDPOINT,
-            },
-        })
-        self.assertEqual(next_token, NEW_TOKEN)
+        self.assertIsInstance(subscription, Subscription)
+        self.assertEqual(subscription.name, self.SUB_NAME)
+        self.assertIsInstance(subscription.topic, Topic)
+        self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
+        self.assertIs(subscription._client, client)
+        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertIsNone(subscription.ack_deadline)
+        self.assertEqual(subscription.push_endpoint, self.PUSH_ENDPOINT)
 
         name, page_size, options = gax_api._list_subscriptions_called_with
         self.assertEqual(name, self.PROJECT_PATH)
@@ -1096,12 +1119,6 @@ class _PublishResponsePB(object):
         self.message_ids = message_ids
 
 
-class _PushConfigPB(object):
-
-    def __init__(self, push_endpoint):
-        self.push_endpoint = push_endpoint
-
-
 class _PubsubMessagePB(object):
 
     def __init__(self, message_id, data, attributes, publish_time):
@@ -1135,3 +1152,10 @@ class _Client(object):
 
     def __init__(self, project):
         self.project = project
+
+
+class _Credentials(object):
+
+    @staticmethod
+    def create_scoped_required():
+        return False

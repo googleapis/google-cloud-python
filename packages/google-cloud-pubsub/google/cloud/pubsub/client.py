@@ -22,7 +22,6 @@ from google.cloud.pubsub.connection import Connection
 from google.cloud.pubsub.connection import _PublisherAPI as JSONPublisherAPI
 from google.cloud.pubsub.connection import _SubscriberAPI as JSONSubscriberAPI
 from google.cloud.pubsub.connection import _IAMPolicyAPI
-from google.cloud.pubsub.subscription import Subscription
 from google.cloud.pubsub.topic import Topic
 
 try:
