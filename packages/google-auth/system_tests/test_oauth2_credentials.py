@@ -20,7 +20,7 @@ import google.oauth2.credentials
 GOOGLE_OAUTH2_TOKEN_ENDPOINT = 'https://accounts.google.com/o/oauth2/token'
 
 
-def test_refresh(authorized_user_file, request, token_info):
+def test_refresh(authorized_user_file, http_request, token_info):
     with open(authorized_user_file, 'r') as fh:
         info = json.load(fh)
 
@@ -31,7 +31,7 @@ def test_refresh(authorized_user_file, request, token_info):
         client_id=info['client_id'],
         client_secret=info['client_secret'])
 
-    credentials.refresh(request)
+    credentials.refresh(http_request)
 
     assert credentials.token
 

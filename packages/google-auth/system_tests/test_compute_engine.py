@@ -20,15 +20,15 @@ from google.auth.compute_engine import _metadata
 
 
 @pytest.fixture(autouse=True)
-def check_gce_environment(request):
-    if not _metadata.ping(request):
+def check_gce_environment(http_request):
+    if not _metadata.ping(http_request):
         pytest.skip('Compute Engine metadata service is not available.')
 
 
-def test_refresh(request, token_info):
+def test_refresh(http_request, token_info):
     credentials = compute_engine.Credentials()
 
-    credentials.refresh(request)
+    credentials.refresh(http_request)
 
     assert credentials.token is not None
     assert credentials._service_account_email is not None

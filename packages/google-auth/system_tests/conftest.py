@@ -40,13 +40,13 @@ def authorized_user_file():
 
 
 @pytest.fixture
-def request():
+def http_request():
     """A transport.request object."""
     yield google.auth.transport.urllib3.Request(HTTP)
 
 
 @pytest.fixture
-def token_info(request):
+def token_info(http_request):
     """Returns a function that obtains OAuth2 token info."""
     def _token_info(access_token=None, id_token=None):
         query_params = {}
@@ -60,7 +60,7 @@ def token_info(request):
 
         url = _helpers.update_query(TOKEN_INFO_URL, query_params)
 
-        response = request(url=url, method='GET')
+        response = http_request(url=url, method='GET')
 
         return json.loads(response.data.decode('utf-8'))
 
