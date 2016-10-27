@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import unittest
 
 from google.cloud import exceptions
 from google.cloud import speech
 from google.cloud import storage
+from google.cloud.speech.transcript import Transcript
 
 from system_test_utils import unique_resource_id
 from retry import RetryErrors
@@ -24,11 +26,14 @@ from retry import RetryErrors
 
 class Config(object):
     """Run-time configuration to be modified at set-up.
+
     This is a mutable stand-in to allow test set-up to modify
     global state.
     """
     CLIENT = None
     TEST_BUCKET = None
+    AUDIO_FILE = os.path.join(os.path.dirname(__file__), 'data', 'hello.wav')
+    ASSERT_TEXT = 'thank you for using Google Cloud platform'
 
 
 def setUpModule():
@@ -69,48 +74,35 @@ class TestSpeechClient(unittest.TestCase):
                                        language_code='en-US',
                                        max_alternatives=max_alternatives,
                                        profanity_filter=True,
-                                       speech_context=['Google',
-                                                       'cloud'])
+                                       speech_context=['Google', 'cloud'])
         return result
 
     def _check_best_results(self, results):
-        from google.cloud.speech.transcript import Transcript
-
         top_result = results[0]
         self.assertIsInstance(top_result, Transcript)
         self.assertEqual(top_result.transcript,
-                         'hello thank you for using Google Cloud platform')
+                         'hello ' + Config.ASSERT_TEXT)
         self.assertGreater(top_result.confidence, 0.90)
 
     def test_sync_recognize_local_file(self):
-        import os
-        from google.cloud.speech.transcript import Transcript
-
-        file_name = os.path.join('system_tests', 'data', 'hello.wav')
-
-        with open(file_name, 'rb') as file_obj:
+        with open(Config.AUDIO_FILE, 'rb') as file_obj:
             results = self._make_sync_request(content=file_obj.read(),
                                               max_alternatives=2)
             second_alternative = results[1]
             self.assertEqual(len(results), 2)
             self._check_best_results(results)
             self.assertIsInstance(second_alternative, Transcript)
-            self.assertEqual(second_alternative.transcript,
-                             'thank you for using Google Cloud platform')
+            self.assertEqual(second_alternative.transcript, Config.ASSERT_TEXT)
             self.assertEqual(second_alternative.confidence, 0.0)
 
     def test_sync_recognize_gcs_file(self):
-        import os
-
-        file_name = os.path.join('system_tests', 'data', 'hello.wav')
         bucket_name = Config.TEST_BUCKET.name
-        blob_name = 'document.txt'
+        blob_name = 'hello.wav'
         blob = Config.TEST_BUCKET.blob(blob_name)
         self.to_delete_by_case.append(blob)  # Clean-up.
-        with open(file_name, 'rb') as file_obj:
+        with open(Config.AUDIO_FILE, 'rb') as file_obj:
             blob.upload_from_file(file_obj)
 
-        # source_uri = os.getenv('SPEECH_GCS_URI')
         source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
         result = self._make_sync_request(source_uri=source_uri,
                                          max_alternatives=1)
