@@ -17,6 +17,9 @@
 See: https://cloud.google.com/storage/docs/json_api/v1/status-codes
 """
 
+# Avoid the grpc and google.cloud.grpc collision.
+from __future__ import absolute_import
+
 import copy
 import json
 import six
