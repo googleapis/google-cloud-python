@@ -160,20 +160,14 @@ class Client(JSONClient):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: tuple, (list, str)
-        :returns: list of :class:`~.pubsub.subscription.Subscription`,
-                  plus a "next page token" string:  if not None, indicates that
-                  more topics can be retrieved with another call (pass that
-                  value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of
+                  :class:`~google.cloud.pubsub.subscription.Subscription`
+                  accessible to the current client.
         """
         api = self.subscriber_api
-        resources, next_token = api.list_subscriptions(
+        return api.list_subscriptions(
             self.project, page_size, page_token)
-        topics = {}
-        subscriptions = [Subscription.from_api_repr(resource, self,
-                                                    topics=topics)
-                         for resource in resources]
-        return subscriptions, next_token
 
     def topic(self, name, timestamp_messages=False):
         """Creates a topic bound to the current client.
