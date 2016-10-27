@@ -20,6 +20,8 @@ import os
 from google.cloud import connection as base_connection
 from google.cloud.environment_vars import PUBSUB_EMULATOR
 from google.cloud.iterator import HTTPIterator
+from google.cloud.pubsub._helpers import subscription_name_from_path
+from google.cloud.pubsub.subscription import Subscription
 from google.cloud.pubsub.topic import Topic
 
 
@@ -207,16 +209,14 @@ class _PublisherAPI(object):
             method='POST', path='/%s:publish' % (topic_path,), data=data)
         return response['messageIds']
 
-    def topic_list_subscriptions(self, topic_path, page_size=None,
-                                 page_token=None):
+    def topic_list_subscriptions(self, topic, page_size=None, page_token=None):
         """API call:  list subscriptions bound to a topic
 
         See:
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list
 
-        :type topic_path: str
-        :param topic_path: the fully-qualified path of the topic, in format
-                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+        :type topic: :class:`~google.cloud.pubsub.topic.Topic`
+        :param topic: The topic that owns the subscriptions.
 
         :type page_size: int
         :param page_size: maximum number of subscriptions to return, If not
@@ -231,18 +231,17 @@ class _PublisherAPI(object):
         :returns: fully-qualified names of subscriptions for the supplied
                   topic.
         """
-        conn = self._connection
-        params = {}
-
+        extra_params = {}
         if page_size is not None:
-            params['pageSize'] = page_size
+            extra_params['pageSize'] = page_size
+        path = '/%s/subscriptions' % (topic.full_name,)
 
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/%s/subscriptions' % (topic_path,)
-        resp = conn.api_request(method='GET', path=path, query_params=params)
-        return resp.get('subscriptions', ()), resp.get('nextPageToken')
+        iterator = HTTPIterator(
+            client=self._client, path=path,
+            item_to_value=_item_to_subscription, items_key='subscriptions',
+            page_token=page_token, extra_params=extra_params)
+        iterator.topic = topic
+        return iterator
 
 
 class _SubscriberAPI(object):
@@ -577,7 +576,7 @@ def _transform_messages_base64(messages, transform, key=None):
 
 
 def _item_to_topic(iterator, resource):
-    """Convert a JSON job to the native object.
+    """Convert a JSON topic to the native object.
 
     :type iterator: :class:`~google.cloud.iterator.Iterator`
     :param iterator: The iterator that is currently in use.
@@ -589,3 +588,20 @@ def _item_to_topic(iterator, resource):
     :returns: The next topic in the page.
     """
     return Topic.from_api_repr(resource, iterator.client)
+
+
+def _item_to_subscription(iterator, subscription_path):
+    """Convert a subscription name to the native object.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type subscription_path: str
+    :param subscription_path: Subscription path returned from the API.
+
+    :rtype: :class:`~google.cloud.pubsub.subscription.Subscription`
+    :returns: The next subscription in the page.
+    """
+    subscription_name = subscription_name_from_path(
+        subscription_path, iterator.client.project)
+    return Subscription(subscription_name, iterator.topic)
