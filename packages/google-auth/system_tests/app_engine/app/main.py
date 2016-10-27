@@ -33,6 +33,15 @@ import google.auth.transport.urllib3
 import urllib3.contrib.appengine
 import webapp2
 
+FAILED_TEST_TMPL = """
+Test {} failed: {}
+
+Stacktrace:
+{}
+
+Captured output:
+{}
+"""
 TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
 EMAIL_SCOPE = 'https://www.googleapis.com/auth/userinfo.email'
 HTTP = urllib3.contrib.appengine.AppEngineManager()
@@ -83,12 +92,9 @@ def run_test_func(func):
             func()
             return True, ''
         except Exception as exc:
-            output = (
-                'Test {} failed: {}\n\n'
-                'Stacktrace:\n{}\n\n'
-                'Captured output:\n{}').format(
-                    func.func_name, exc, traceback.format_exc(),
-                    capsys.getvalue())
+            output = FAILED_TEST_TMPL.format(
+                func.func_name, exc, traceback.format_exc(),
+                capsys.getvalue())
             return False, output
 
 
