@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.iterator &mdash; google-cloud 7bc467a documentation</title>
+  <title>google.cloud.iterator &mdash; google-cloud 5f97bc7 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud 7bc467a documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 5f97bc7 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -381,23 +381,19 @@
 <span class="sd">    :type parent: :class:`Iterator`</span>
 <span class="sd">    :param parent: The iterator that owns the current page.</span>
 
-<span class="sd">    :type response: dict</span>
-<span class="sd">    :param response: The JSON API response for a page.</span>
-
-<span class="sd">    :type items_key: str</span>
-<span class="sd">    :param items_key: The dictionary key used to retrieve items</span>
-<span class="sd">                      from the response.</span>
+<span class="sd">    :type items: iterable</span>
+<span class="sd">    :param items: An iterable (that also defines __len__) of items</span>
+<span class="sd">                  from a raw API response.</span>
 
 <span class="sd">    :type item_to_value: callable</span>
-<span class="sd">    :param item_to_value: Callable to convert an item from JSON</span>
-<span class="sd">                          into the native object. Assumed signature</span>
-<span class="sd">                          takes an :class:`Iterator` and a dictionary</span>
-<span class="sd">                          holding a single item.</span>
+<span class="sd">    :param item_to_value: Callable to convert an item from the type in the</span>
+<span class="sd">                          raw API response into the native object.</span>
+<span class="sd">                          Assumed signature takes an :class:`Iterator` and a</span>
+<span class="sd">                          raw API response with a single item.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">items_key</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
-        <span class="n">items</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">items_key</span><span class="p">,</span> <span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_items</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_remaining</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_items</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_item_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
@@ -439,14 +435,107 @@
 
 
 <div class="viewcode-block" id="Iterator"><a class="viewcode-back" href="../../../iterators.html#google.cloud.iterator.Iterator">[docs]</a><span class="k">class</span> <span class="nc">Iterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A generic class for iterating through API list responses.</span>
+
+<span class="sd">    :type client: :class:`~google.cloud.client.Client`</span>
+<span class="sd">    :param client: The client used to identify the application.</span>
+
+<span class="sd">    :type item_to_value: callable</span>
+<span class="sd">    :param item_to_value: Callable to convert an item from the type in the</span>
+<span class="sd">                          raw API response into the native object.</span>
+<span class="sd">                          Assumed signature takes an :class:`Iterator` and a</span>
+<span class="sd">                          raw API response with a single item.</span>
+
+<span class="sd">    :type page_token: str</span>
+<span class="sd">    :param page_token: (Optional) A token identifying a page in a result set.</span>
+
+<span class="sd">    :type max_results: int</span>
+<span class="sd">    :param max_results: (Optional) The maximum number of results to fetch.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span>
+                 <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span> <span class="o">=</span> <span class="n">item_to_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="o">=</span> <span class="n">max_results</span>
+        <span class="c1"># The attributes below will change over the life of the iterator.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Iterator of pages in the response.</span>
+
+<span class="sd">        :rtype: :class:`~types.GeneratorType`</span>
+<span class="sd">        :returns: A generator of :class:`Page` instances.</span>
+<span class="sd">        :raises ValueError: If the iterator has already been started.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Iterator has already started&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_items_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Iterator for each item returned.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">yield</span> <span class="n">item</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Iterator for each item returned.</span>
+
+<span class="sd">        :rtype: :class:`~types.GeneratorType`</span>
+<span class="sd">        :returns: A generator of items from the API.</span>
+<span class="sd">        :raises ValueError: If the iterator has already been started.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Iterator has already started&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_iter</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_page_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">increment</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generator of pages of API responses.</span>
+
+<span class="sd">        :type increment: bool</span>
+<span class="sd">        :param increment: Flag indicating if the total number of results</span>
+<span class="sd">                          should be incremented on each page. This is useful</span>
+<span class="sd">                          since a page iterator will want to increment by</span>
+<span class="sd">                          results per page while an items iterator will want</span>
+<span class="sd">                          to increment per item.</span>
+
+<span class="sd">        Yields :class:`Page` instances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_page</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">page</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">increment</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">+=</span> <span class="n">page</span><span class="o">.</span><span class="n">num_items</span>
+            <span class="k">yield</span> <span class="n">page</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_page</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_next_page</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Get the next page in the iterator.</span>
+
+<span class="sd">        This does nothing and is intended to be over-ridden by subclasses</span>
+<span class="sd">        to return the next :class:`Page`.</span>
+
+<span class="sd">        :raises NotImplementedError: Always.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="HTTPIterator"><a class="viewcode-back" href="../../../iterators.html#google.cloud.iterator.HTTPIterator">[docs]</a><span class="k">class</span> <span class="nc">HTTPIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A generic class for iterating through Cloud JSON APIs list responses.</span>
 
 <span class="sd">    :type client: :class:`~google.cloud.client.Client`</span>
-<span class="sd">    :param client: The client, which owns a connection to make requests.</span>
+<span class="sd">    :param client: The client used to identify the application.</span>
 
 <span class="sd">    :type path: str</span>
-<span class="sd">    :param path: The path to query for the list of items. Defaults</span>
-<span class="sd">                 to :attr:`PATH` on the current iterator class.</span>
+<span class="sd">    :param path: The path to query for the list of items.</span>
 
 <span class="sd">    :type item_to_value: callable</span>
 <span class="sd">    :param item_to_value: Callable to convert an item from JSON</span>
@@ -475,13 +564,7 @@
 <span class="sd">                       the :class:`Page` that was started and the dictionary</span>
 <span class="sd">                       containing the page response.</span>
 
-<span class="sd">    :type page_iter: callable</span>
-<span class="sd">    :param page_iter: (Optional) Callable to produce a pages iterator from the</span>
-<span class="sd">                      current iterator. Assumed signature takes the</span>
-<span class="sd">                      :class:`Iterator` that started the page. By default uses</span>
-<span class="sd">                      the HTTP pages iterator. Meant to provide a custom</span>
-<span class="sd">                      way to create pages (potentially with a custom</span>
-<span class="sd">                      transport such as gRPC).</span>
+<span class="sd">    .. autoattribute:: pages</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_PAGE_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;pageToken&#39;</span>
@@ -491,28 +574,18 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span>
                  <span class="n">items_key</span><span class="o">=</span><span class="n">DEFAULT_ITEMS_KEY</span><span class="p">,</span>
                  <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">page_start</span><span class="o">=</span><span class="n">_do_nothing_page_start</span><span class="p">,</span> <span class="n">page_iter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+                 <span class="n">page_start</span><span class="o">=</span><span class="n">_do_nothing_page_start</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">HTTPIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span> <span class="o">=</span> <span class="n">item_to_value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_items_key</span> <span class="o">=</span> <span class="n">items_key</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="o">=</span> <span class="n">max_results</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span> <span class="o">=</span> <span class="n">extra_params</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_page_start</span> <span class="o">=</span> <span class="n">page_start</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># Verify inputs / provide defaults.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="n">page_iter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_page_iter</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span> <span class="o">=</span> <span class="n">page_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_verify_params</span><span class="p">()</span>
-        <span class="c1"># The attributes below will change over the life of the iterator.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="nf">_verify_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Verifies the parameters don&#39;t use any reserved parameter.</span>
@@ -525,53 +598,22 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Using a reserved parameter&#39;</span><span class="p">,</span>
                              <span class="n">reserved_in_use</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_default_page_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generator of pages of API responses.</span>
+    <span class="k">def</span> <span class="nf">_next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the next page in the iterator.</span>
 
-<span class="sd">        Yields :class:`Page` instances.</span>
+<span class="sd">        :rtype: :class:`Page`</span>
+<span class="sd">        :returns: The next page in the iterator (or :data:`None` if</span>
+<span class="sd">                  there are no pages left).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_next_page</span><span class="p">():</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_next_page</span><span class="p">():</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_next_page_response</span><span class="p">()</span>
-            <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_key</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">)</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items_key</span><span class="p">,</span> <span class="p">())</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_page_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">+=</span> <span class="n">page</span><span class="o">.</span><span class="n">num_items</span>
-            <span class="k">yield</span> <span class="n">page</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Iterator of pages in the response.</span>
-
-<span class="sd">        :rtype: :class:`~types.GeneratorType`</span>
-<span class="sd">        :returns: A generator of :class:`Page` instances.</span>
-<span class="sd">        :raises ValueError: If the iterator has already been started.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Iterator has already started&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span>
-
-    <span class="k">def</span> <span class="nf">_items_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Iterator for each item returned.&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span><span class="p">:</span>
-            <span class="c1"># Decrement the total results since the pages iterator adds</span>
-            <span class="c1"># to it when each page is encountered.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">-=</span> <span class="n">page</span><span class="o">.</span><span class="n">num_items</span>
-            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">yield</span> <span class="n">item</span>
-
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Iterator for each item returned.</span>
-
-<span class="sd">        :rtype: :class:`~types.GeneratorType`</span>
-<span class="sd">        :returns: A generator of items from the API.</span>
-<span class="sd">        :raises ValueError: If the iterator has already been started.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Iterator has already started&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_iter</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">page</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_has_next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not there are more pages with results.</span>
@@ -608,14 +650,56 @@
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: The parsed JSON response of the next page&#39;s contents.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">query_params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_query_params</span><span class="p">())</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_query_params</span><span class="p">())</span></div>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">response</span></div>
+<div class="viewcode-block" id="GAXIterator"><a class="viewcode-back" href="../../../iterators.html#google.cloud.iterator.GAXIterator">[docs]</a><span class="k">class</span> <span class="nc">GAXIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A generic class for iterating through Cloud gRPC APIs list responses.</span>
+
+<span class="sd">    :type client: :class:`~google.cloud.client.Client`</span>
+<span class="sd">    :param client: The client used to identify the application.</span>
+
+<span class="sd">    :type page_iter: :class:`~google.gax.PageIterator`</span>
+<span class="sd">    :param page_iter: A GAX page iterator to be wrapped and conform to the</span>
+<span class="sd">                      :class:`~google.cloud.iterator.Iterator` surface.</span>
+
+<span class="sd">    :type item_to_value: callable</span>
+<span class="sd">    :param item_to_value: Callable to convert an item from a protobuf</span>
+<span class="sd">                          into the native object. Assumed signature</span>
+<span class="sd">                          takes an :class:`Iterator` and a single item</span>
+<span class="sd">                          from the API response as a protobuf.</span>
+
+<span class="sd">    :type max_results: int</span>
+<span class="sd">    :param max_results: (Optional) The maximum number of results to fetch.</span>
+
+<span class="sd">    .. autoattribute:: pages</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">page_iter</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GAXIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_iter</span><span class="o">.</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gax_page_iter</span> <span class="o">=</span> <span class="n">page_iter</span>
+
+    <span class="k">def</span> <span class="nf">_next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the next page in the iterator.</span>
+
+<span class="sd">        Wraps the response from the :class:`~google.gax.PageIterator` in a</span>
+<span class="sd">        :class:`Page` instance and captures some state at each page.</span>
+
+<span class="sd">        :rtype: :class:`Page`</span>
+<span class="sd">        :returns: The next page in the iterator (or :data:`None` if</span>
+<span class="sd">                  there are no pages left).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gax_page_iter</span><span class="p">)</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gax_page_iter</span><span class="o">.</span><span class="n">page_token</span> <span class="ow">or</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="n">page</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
 </pre></div>
 
            </div>
@@ -649,7 +733,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'7bc467a',
+            VERSION:'5f97bc7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

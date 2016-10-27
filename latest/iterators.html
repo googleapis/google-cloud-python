@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Iterators &mdash; google-cloud 7bc467a documentation</title>
+  <title>Iterators &mdash; google-cloud 5f97bc7 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 7bc467a documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 5f97bc7 documentation" href="index.html"/>
         <link rel="next" title="Long-Running Operations" href="operation-api.html"/>
         <link rel="prev" title="Authentication" href="google-cloud-auth.html"/> 
 
@@ -341,18 +341,60 @@ a request):</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.iterator.Iterator">
-<em class="property">class </em><code class="descclassname">google.cloud.iterator.</code><code class="descname">Iterator</code><span class="sig-paren">(</span><em>client</em>, <em>path</em>, <em>item_to_value</em>, <em>items_key='items'</em>, <em>page_token=None</em>, <em>max_results=None</em>, <em>extra_params=None</em>, <em>page_start=&lt;function _do_nothing_page_start&gt;</em>, <em>page_iter=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iterator.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iterator.Iterator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dt id="google.cloud.iterator.GAXIterator">
+<em class="property">class </em><code class="descclassname">google.cloud.iterator.</code><code class="descname">GAXIterator</code><span class="sig-paren">(</span><em>client</em>, <em>page_iter</em>, <em>item_to_value</em>, <em>max_results=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iterator.html#GAXIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iterator.GAXIterator" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iterator.Iterator</span></code></a></p>
+<p>A generic class for iterating through Cloud gRPC APIs list responses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>client</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client used to identify the application.</li>
+<li><strong>page_iter</strong> (<code class="xref py py-class docutils literal"><span class="pre">PageIterator</span></code>) &#8211; A GAX page iterator to be wrapped and conform to the
+<a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a> surface.</li>
+<li><strong>item_to_value</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; Callable to convert an item from a protobuf
+into the native object. Assumed signature
+takes an <a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a> and a single item
+from the API response as a protobuf.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) The maximum number of results to fetch.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="google.cloud.iterator.GAXIterator.pages">
+<code class="descname">pages</code><a class="headerlink" href="#google.cloud.iterator.GAXIterator.pages" title="Permalink to this definition">#</a></dt>
+<dd><p>Iterator of pages in the response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">GeneratorType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A generator of <a class="reference internal" href="#google.cloud.iterator.Page" title="google.cloud.iterator.Page"><code class="xref py py-class docutils literal"><span class="pre">Page</span></code></a> instances.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValueError</strong> &#8211; If the iterator has already been started.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iterator.HTTPIterator">
+<em class="property">class </em><code class="descclassname">google.cloud.iterator.</code><code class="descname">HTTPIterator</code><span class="sig-paren">(</span><em>client</em>, <em>path</em>, <em>item_to_value</em>, <em>items_key='items'</em>, <em>page_token=None</em>, <em>max_results=None</em>, <em>extra_params=None</em>, <em>page_start=&lt;function _do_nothing_page_start&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iterator.html#HTTPIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iterator.HTTPIterator" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iterator.Iterator</span></code></a></p>
 <p>A generic class for iterating through Cloud JSON APIs list responses.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client, which owns a connection to make requests.</li>
-<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The path to query for the list of items. Defaults
-to <code class="xref py py-attr docutils literal"><span class="pre">PATH</span></code> on the current iterator class.</li>
+<li><strong>client</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client used to identify the application.</li>
+<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The path to query for the list of items.</li>
 <li><strong>item_to_value</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; Callable to convert an item from JSON
 into the native object. Assumed signature
 takes an <a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a> and a dictionary
@@ -368,12 +410,48 @@ after a new page has been created. Assumed signature
 takes the <a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a> that started the page,
 the <a class="reference internal" href="#google.cloud.iterator.Page" title="google.cloud.iterator.Page"><code class="xref py py-class docutils literal"><span class="pre">Page</span></code></a> that was started and the dictionary
 containing the page response.</li>
-<li><strong>page_iter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; (Optional) Callable to produce a pages iterator from the
-current iterator. Assumed signature takes the
-<a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a> that started the page. By default uses
-the HTTP pages iterator. Meant to provide a custom
-way to create pages (potentially with a custom
-transport such as gRPC).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="google.cloud.iterator.HTTPIterator.pages">
+<code class="descname">pages</code><a class="headerlink" href="#google.cloud.iterator.HTTPIterator.pages" title="Permalink to this definition">#</a></dt>
+<dd><p>Iterator of pages in the response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">GeneratorType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A generator of <a class="reference internal" href="#google.cloud.iterator.Page" title="google.cloud.iterator.Page"><code class="xref py py-class docutils literal"><span class="pre">Page</span></code></a> instances.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>ValueError</strong> &#8211; If the iterator has already been started.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.iterator.Iterator">
+<em class="property">class </em><code class="descclassname">google.cloud.iterator.</code><code class="descname">Iterator</code><span class="sig-paren">(</span><em>client</em>, <em>item_to_value</em>, <em>page_token=None</em>, <em>max_results=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iterator.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iterator.Iterator" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A generic class for iterating through API list responses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>client</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client used to identify the application.</li>
+<li><strong>item_to_value</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; Callable to convert an item from the type in the
+raw API response into the native object.
+Assumed signature takes an <a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a> and a
+raw API response with a single item.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) A token identifying a page in a result set.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) The maximum number of results to fetch.</li>
 </ul>
 </td>
 </tr>
@@ -401,7 +479,7 @@ transport such as gRPC).</li>
 
 <dl class="class">
 <dt id="google.cloud.iterator.Page">
-<em class="property">class </em><code class="descclassname">google.cloud.iterator.</code><code class="descname">Page</code><span class="sig-paren">(</span><em>parent</em>, <em>response</em>, <em>items_key</em>, <em>item_to_value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iterator.html#Page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iterator.Page" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.iterator.</code><code class="descname">Page</code><span class="sig-paren">(</span><em>parent</em>, <em>items</em>, <em>item_to_value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/iterator.html#Page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.iterator.Page" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Single page of results in an iterator.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -410,13 +488,12 @@ transport such as gRPC).</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>parent</strong> (<a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a>) &#8211; The iterator that owns the current page.</li>
-<li><strong>response</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The JSON API response for a page.</li>
-<li><strong>items_key</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The dictionary key used to retrieve items
-from the response.</li>
-<li><strong>item_to_value</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; Callable to convert an item from JSON
-into the native object. Assumed signature
-takes an <a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a> and a dictionary
-holding a single item.</li>
+<li><strong>items</strong> (<em>iterable</em>) &#8211; An iterable (that also defines __len__) of items
+from a raw API response.</li>
+<li><strong>item_to_value</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#callable" title="(in Python v2.7)"><em>callable</em></a>) &#8211; Callable to convert an item from the type in the
+raw API response into the native object.
+Assumed signature takes an <a class="reference internal" href="#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a> and a
+raw API response with a single item.</li>
 </ul>
 </td>
 </tr>
@@ -505,7 +582,7 @@ holding a single item.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'7bc467a',
+            VERSION:'5f97bc7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
