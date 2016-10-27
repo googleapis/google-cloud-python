@@ -106,6 +106,97 @@ class GAPICSpeechAPI(object):
 
         return Operation.from_pb(response, self)
 
+    def streaming_recognize(self, sample, language_code=None,
+                            max_alternatives=None, profanity_filter=None,
+                            speech_context=None, single_utterance=False,
+                            interim_results=False):
+        """Streaming speech recognition.
+
+        .. note::
+
+            Streaming recognition requests are limited to 1 minute of audio.
+            See: https://cloud.google.com/speech/limits#content
+
+        Yields :class:`~streaming_response.StreamingSpeechResponse` containing
+        results and metadata from the streaming request.
+
+        :type sample: :class:`~google.cloud.speech.sample.Sample`
+        :param sample: Instance of ``Sample`` containing audio information.
+
+        :type language_code: str
+        :param language_code: (Optional) The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-GB'``.
+                              If omitted, defaults to ``'en-US'``.
+
+        :type max_alternatives: int
+        :param max_alternatives: (Optional) Maximum number of recognition
+                                 hypotheses to be returned. The server may
+                                 return fewer than maxAlternatives.
+                                 Valid values are 0-30. A value of 0 or 1
+                                 will return a maximum of 1. Defaults to 1
+
+        :type profanity_filter: bool
+        :param profanity_filter: If True, the server will attempt to filter
+                                 out profanities, replacing all but the
+                                 initial character in each filtered word with
+                                 asterisks, e.g. ``'f***'``. If False or
+                                 omitted, profanities won't be filtered out.
+
+        :type speech_context: list
+        :param speech_context: A list of strings (max 50) containing words and
+                               phrases "hints" so that the speech recognition
+                               is more likely to recognize them. This can be
+                               used to improve the accuracy for specific words
+                               and phrases. This can also be used to add new
+                               words to the vocabulary of the recognizer.
+
+        :type single_utterance: bool
+        :param single_utterance: (Optional) If false or omitted, the recognizer
+                                 will perform continuous recognition
+                                 (continuing to process audio even if the user
+                                 pauses speaking) until the client closes the
+                                 output stream (gRPC API) or when the maximum
+                                 time limit has been reached. Multiple
+                                 SpeechRecognitionResults with the is_final
+                                 flag set to true may be returned.
+                                 If true, the recognizer will detect a single
+                                 spoken utterance. When it detects that the
+                                 user has paused or stopped speaking, it will
+                                 return an END_OF_UTTERANCE event and cease
+                                 recognition. It will return no more than one
+                                 SpeechRecognitionResult with the is_final flag
+                                 set to true.
+
+        :type interim_results: bool
+        :param interim_results: (Optional) If true, interim results (tentative
+                                hypotheses) may be returned as they become
+                                available (these interim results are indicated
+                                with the is_final=false flag). If false or
+                                omitted, only is_final=true result(s) are
+                                returned.
+
+        :raises: :class:`ValueError` if sample.content is not a file-like
+                 object. :class:`ValueError` if stream has closed.
+
+        :rtype: :class:`~google.cloud.grpc.speech.v1beta1\
+                       .cloud_speech_pb2.StreamingRecognizeResponse`
+        :returns: ``StreamingRecognizeResponse`` instances.
+        """
+        if getattr(sample.content, 'closed', None) is None:
+            raise ValueError('Please use file-like object for data stream.')
+        if sample.content.closed:
+            raise ValueError('Stream is closed.')
+
+        requests = _stream_requests(sample, language_code=language_code,
+                                    max_alternatives=max_alternatives,
+                                    profanity_filter=profanity_filter,
+                                    speech_context=speech_context,
+                                    single_utterance=single_utterance,
+                                    interim_results=interim_results)
+        api = self._gapic_api
+        responses = api.streaming_recognize(requests)
+        return responses
+
     def sync_recognize(self, sample, language_code=None, max_alternatives=None,
                        profanity_filter=None, speech_context=None):
         """Synchronous Speech Recognition.
