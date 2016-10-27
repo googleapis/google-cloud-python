@@ -79,12 +79,11 @@ class TestClient(unittest.TestCase):
                 self._client = client
 
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
 
-        with _Monkey(MUT,
-                     _USE_GAX=True,
+        with _Monkey(MUT, _USE_GAX=True,
                      make_gax_publisher_api=_generated_api,
                      GAXPublisherAPI=_GaxPublisherAPI):
+            client = self._makeOne(project=self.PROJECT, credentials=creds)
             api = client.publisher_api
 
         self.assertIsInstance(api, _GaxPublisherAPI)
@@ -131,12 +130,11 @@ class TestClient(unittest.TestCase):
                 self._wrapped = _wrapped
 
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
 
-        with _Monkey(MUT,
-                     _USE_GAX=True,
+        with _Monkey(MUT, _USE_GAX=True,
                      make_gax_subscriber_api=_generated_api,
                      GAXSubscriberAPI=_GaxSubscriberAPI):
+            client = self._makeOne(project=self.PROJECT, credentials=creds)
             api = client.subscriber_api
 
         self.assertIsInstance(api, _GaxSubscriberAPI)

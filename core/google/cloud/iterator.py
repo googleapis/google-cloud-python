@@ -109,23 +109,19 @@ class Page(object):
     :type parent: :class:`Iterator`
     :param parent: The iterator that owns the current page.
 
-    :type response: dict
-    :param response: The JSON API response for a page.
-
-    :type items_key: str
-    :param items_key: The dictionary key used to retrieve items
-                      from the response.
+    :type items: iterable
+    :param items: An iterable (that also defines __len__) of items
+                  from a raw API response.
 
     :type item_to_value: callable
-    :param item_to_value: Callable to convert an item from JSON
-                          into the native object. Assumed signature
-                          takes an :class:`Iterator` and a dictionary
-                          holding a single item.
+    :param item_to_value: Callable to convert an item from the type in the
+                          raw API response into the native object.
+                          Assumed signature takes an :class:`Iterator` and a
+                          raw API response with a single item.
     """
 
-    def __init__(self, parent, response, items_key, item_to_value):
+    def __init__(self, parent, items, item_to_value):
         self._parent = parent
-        items = response.get(items_key, ())
         self._num_items = len(items)
         self._remaining = self._num_items
         self._item_iter = iter(items)
@@ -167,14 +163,107 @@ class Page(object):
 
 
 class Iterator(object):
+    """A generic class for iterating through API list responses.
+
+    :type client: :class:`~google.cloud.client.Client`
+    :param client: The client used to identify the application.
+
+    :type item_to_value: callable
+    :param item_to_value: Callable to convert an item from the type in the
+                          raw API response into the native object.
+                          Assumed signature takes an :class:`Iterator` and a
+                          raw API response with a single item.
+
+    :type page_token: str
+    :param page_token: (Optional) A token identifying a page in a result set.
+
+    :type max_results: int
+    :param max_results: (Optional) The maximum number of results to fetch.
+    """
+
+    def __init__(self, client, item_to_value,
+                 page_token=None, max_results=None):
+        self._started = False
+        self.client = client
+        self._item_to_value = item_to_value
+        self.max_results = max_results
+        # The attributes below will change over the life of the iterator.
+        self.page_number = 0
+        self.next_page_token = page_token
+        self.num_results = 0
+
+    @property
+    def pages(self):
+        """Iterator of pages in the response.
+
+        :rtype: :class:`~types.GeneratorType`
+        :returns: A generator of :class:`Page` instances.
+        :raises ValueError: If the iterator has already been started.
+        """
+        if self._started:
+            raise ValueError('Iterator has already started', self)
+        self._started = True
+        return self._page_iter(increment=True)
+
+    def _items_iter(self):
+        """Iterator for each item returned."""
+        for page in self._page_iter(increment=False):
+            for item in page:
+                self.num_results += 1
+                yield item
+
+    def __iter__(self):
+        """Iterator for each item returned.
+
+        :rtype: :class:`~types.GeneratorType`
+        :returns: A generator of items from the API.
+        :raises ValueError: If the iterator has already been started.
+        """
+        if self._started:
+            raise ValueError('Iterator has already started', self)
+        self._started = True
+        return self._items_iter()
+
+    def _page_iter(self, increment):
+        """Generator of pages of API responses.
+
+        :type increment: bool
+        :param increment: Flag indicating if the total number of results
+                          should be incremented on each page. This is useful
+                          since a page iterator will want to increment by
+                          results per page while an items iterator will want
+                          to increment per item.
+
+        Yields :class:`Page` instances.
+        """
+        page = self._next_page()
+        while page is not None:
+            self.page_number += 1
+            if increment:
+                self.num_results += page.num_items
+            yield page
+            page = self._next_page()
+
+    @staticmethod
+    def _next_page():
+        """Get the next page in the iterator.
+
+        This does nothing and is intended to be over-ridden by subclasses
+        to return the next :class:`Page`.
+
+        :raises NotImplementedError: Always.
+        """
+        raise NotImplementedError
+
+
+class HTTPIterator(Iterator):
     """A generic class for iterating through Cloud JSON APIs list responses.
 
     :type client: :class:`~google.cloud.client.Client`
-    :param client: The client, which owns a connection to make requests.
+    :param client: The client used to identify the application.
 
     :type path: str
-    :param path: The path to query for the list of items. Defaults
-                 to :attr:`PATH` on the current iterator class.
+    :param path: The path to query for the list of items.
 
     :type item_to_value: callable
     :param item_to_value: Callable to convert an item from JSON
@@ -203,13 +292,7 @@ class Iterator(object):
                        the :class:`Page` that was started and the dictionary
                        containing the page response.
 
-    :type page_iter: callable
-    :param page_iter: (Optional) Callable to produce a pages iterator from the
-                      current iterator. Assumed signature takes the
-                      :class:`Iterator` that started the page. By default uses
-                      the HTTP pages iterator. Meant to provide a custom
-                      way to create pages (potentially with a custom
-                      transport such as gRPC).
+    .. autoattribute:: pages
     """
 
     _PAGE_TOKEN = 'pageToken'
@@ -219,28 +302,18 @@ class Iterator(object):
     def __init__(self, client, path, item_to_value,
                  items_key=DEFAULT_ITEMS_KEY,
                  page_token=None, max_results=None, extra_params=None,
-                 page_start=_do_nothing_page_start, page_iter=None):
-        self._started = False
-        self.client = client
+                 page_start=_do_nothing_page_start):
+        super(HTTPIterator, self).__init__(
+            client, item_to_value, page_token=page_token,
+            max_results=max_results)
         self.path = path
-        self._item_to_value = item_to_value
         self._items_key = items_key
-        self.max_results = max_results
         self.extra_params = extra_params
         self._page_start = page_start
-        self._page_iter = None
         # Verify inputs / provide defaults.
         if self.extra_params is None:
             self.extra_params = {}
-        if page_iter is None:
-            self._page_iter = self._default_page_iter()
-        else:
-            self._page_iter = page_iter(self)
         self._verify_params()
-        # The attributes below will change over the life of the iterator.
-        self.page_number = 0
-        self.next_page_token = page_token
-        self.num_results = 0
 
     def _verify_params(self):
         """Verifies the parameters don't use any reserved parameter.
@@ -253,53 +326,22 @@ class Iterator(object):
             raise ValueError('Using a reserved parameter',
                              reserved_in_use)
 
-    def _default_page_iter(self):
-        """Generator of pages of API responses.
+    def _next_page(self):
+        """Get the next page in the iterator.
 
-        Yields :class:`Page` instances.
+        :rtype: :class:`Page`
+        :returns: The next page in the iterator (or :data:`None` if
+                  there are no pages left).
         """
-        while self._has_next_page():
+        if self._has_next_page():
             response = self._get_next_page_response()
-            page = Page(self, response, self._items_key,
-                        self._item_to_value)
+            items = response.get(self._items_key, ())
+            page = Page(self, items, self._item_to_value)
             self._page_start(self, page, response)
-            self.num_results += page.num_items
-            yield page
-
-    @property
-    def pages(self):
-        """Iterator of pages in the response.
-
-        :rtype: :class:`~types.GeneratorType`
-        :returns: A generator of :class:`Page` instances.
-        :raises ValueError: If the iterator has already been started.
-        """
-        if self._started:
-            raise ValueError('Iterator has already started', self)
-        self._started = True
-        return self._page_iter
-
-    def _items_iter(self):
-        """Iterator for each item returned."""
-        for page in self._page_iter:
-            # Decrement the total results since the pages iterator adds
-            # to it when each page is encountered.
-            self.num_results -= page.num_items
-            for item in page:
-                self.num_results += 1
-                yield item
-
-    def __iter__(self):
-        """Iterator for each item returned.
-
-        :rtype: :class:`~types.GeneratorType`
-        :returns: A generator of items from the API.
-        :raises ValueError: If the iterator has already been started.
-        """
-        if self._started:
-            raise ValueError('Iterator has already started', self)
-        self._started = True
-        return self._items_iter()
+            self.next_page_token = response.get('nextPageToken')
+            return page
+        else:
+            return None
 
     def _has_next_page(self):
         """Determines whether or not there are more pages with results.
@@ -336,11 +378,53 @@ class Iterator(object):
         :rtype: dict
         :returns: The parsed JSON response of the next page's contents.
         """
-        response = self.client.connection.api_request(
+        return self.client.connection.api_request(
             method='GET', path=self.path,
             query_params=self._get_query_params())
 
-        self.page_number += 1
-        self.next_page_token = response.get('nextPageToken')
 
-        return response
+class GAXIterator(Iterator):
+    """A generic class for iterating through Cloud gRPC APIs list responses.
+
+    :type client: :class:`~google.cloud.client.Client`
+    :param client: The client used to identify the application.
+
+    :type page_iter: :class:`~google.gax.PageIterator`
+    :param page_iter: A GAX page iterator to be wrapped and conform to the
+                      :class:`~google.cloud.iterator.Iterator` surface.
+
+    :type item_to_value: callable
+    :param item_to_value: Callable to convert an item from a protobuf
+                          into the native object. Assumed signature
+                          takes an :class:`Iterator` and a single item
+                          from the API response as a protobuf.
+
+    :type max_results: int
+    :param max_results: (Optional) The maximum number of results to fetch.
+
+    .. autoattribute:: pages
+    """
+
+    def __init__(self, client, page_iter, item_to_value, max_results=None):
+        super(GAXIterator, self).__init__(
+            client, item_to_value, page_token=page_iter.page_token,
+            max_results=max_results)
+        self._gax_page_iter = page_iter
+
+    def _next_page(self):
+        """Get the next page in the iterator.
+
+        Wraps the response from the :class:`~google.gax.PageIterator` in a
+        :class:`Page` instance and captures some state at each page.
+
+        :rtype: :class:`Page`
+        :returns: The next page in the iterator (or :data:`None` if
+                  there are no pages left).
+        """
+        try:
+            items = six.next(self._gax_page_iter)
+            page = Page(self, items, self._item_to_value)
+            self.next_page_token = self._gax_page_iter.page_token or None
+            return page
+        except StopIteration:
+            return None

@@ -12,11 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import base64
 import unittest
-
-from google.cloud.runtimeconfig.config import Config
-from google.cloud._helpers import _rfc3339_to_datetime
 
 
 class TestVariable(unittest.TestCase):
@@ -34,6 +30,9 @@ class TestVariable(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def _verifyResourceProperties(self, variable, resource):
+        import base64
+        from google.cloud._helpers import _rfc3339_to_datetime
+
         if 'name' in resource:
             self.assertEqual(variable.full_name, resource['name'])
 
@@ -54,6 +53,8 @@ class TestVariable(unittest.TestCase):
             self.assertIsNone(variable.update_time)
 
     def test_ctor(self):
+        from google.cloud.runtimeconfig.config import Config
+
         client = _Client(project=self.PROJECT)
         config = Config(name=self.CONFIG_NAME, client=client)
         variable = self._makeOne(name=self.VARIABLE_NAME, config=config)
@@ -63,13 +64,17 @@ class TestVariable(unittest.TestCase):
         self.assertIs(variable.client, client)
 
     def test_ctor_w_no_name(self):
+        from google.cloud.runtimeconfig.config import Config
+
         client = _Client(project=self.PROJECT)
         config = Config(name=self.CONFIG_NAME, client=client)
         variable = self._makeOne(name=None, config=config)
         with self.assertRaises(ValueError):
-            _ = variable.full_name
+            getattr(variable, 'full_name')
 
     def test_exists_miss_w_bound_client(self):
+        from google.cloud.runtimeconfig.config import Config
+
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         config = Config(name=self.CONFIG_NAME, client=client)
@@ -84,6 +89,8 @@ class TestVariable(unittest.TestCase):
         self.assertEqual(req['query_params'], {'fields': 'name'})
 
     def test_exists_hit_w_alternate_client(self):
+        from google.cloud.runtimeconfig.config import Config
+
         conn1 = _Connection()
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         CONFIG1 = Config(name=self.CONFIG_NAME, client=CLIENT1)
@@ -101,6 +108,8 @@ class TestVariable(unittest.TestCase):
         self.assertEqual(req['query_params'], {'fields': 'name'})
 
     def test_reload_w_bound_client(self):
+        from google.cloud.runtimeconfig.config import Config
+
         RESOURCE = {
             'name': self.PATH,
             'value': 'bXktdmFyaWFibGUtdmFsdWU=',  # base64 my-variable-value
@@ -121,6 +130,8 @@ class TestVariable(unittest.TestCase):
         self._verifyResourceProperties(variable, RESOURCE)
 
     def test_reload_w_empty_resource(self):
+        from google.cloud.runtimeconfig.config import Config
+
         RESOURCE = {}
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -139,6 +150,8 @@ class TestVariable(unittest.TestCase):
         self._verifyResourceProperties(variable, RESOURCE)
 
     def test_reload_w_alternate_client(self):
+        from google.cloud.runtimeconfig.config import Config
+
         RESOURCE = {
             'name': self.PATH,
             'value': 'bXktdmFyaWFibGUtdmFsdWU=',  # base64 my-variable-value

@@ -984,7 +984,7 @@ class Test_Bucket(unittest.TestCase):
         name = 'name'
         bucket = self._makeOne(client=client, name=name)
         iterator = bucket.list_blobs()
-        page = Page(iterator, {}, iterator._items_key, None)
+        page = Page(iterator, (), None)
         iterator._page = page
         blobs = list(page)
         self.assertEqual(blobs, [])
@@ -1024,6 +1024,7 @@ class Test_Bucket(unittest.TestCase):
         response1 = {
             'items': [{'name': BLOB_NAME}],
             'prefixes': ['foo'],
+            'nextPageToken': 's39rmf9',
         }
         response2 = {
             'items': [],
