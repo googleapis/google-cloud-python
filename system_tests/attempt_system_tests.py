@@ -59,6 +59,7 @@ from run_system_test import run_module_tests
 MODULES = (  # ordered from most to least stable
     'datastore',
     'storage',
+    'speech',
     'bigquery',
     'pubsub',
     'language',
