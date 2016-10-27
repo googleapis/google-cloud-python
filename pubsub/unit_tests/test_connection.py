@@ -301,21 +301,28 @@ class Test_PublisherAPI(_Base):
                          {'messages': [MESSAGE]})
 
     def test_topic_list_subscriptions_no_paging(self):
-        SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
-        RETURNED = {'subscriptions': [SUB_INFO]}
+        from google.cloud.pubsub.topic import Topic
+        from google.cloud.pubsub.subscription import Subscription
+
+        local_sub_path = 'projects/%s/subscriptions/%s' % (
+            self.PROJECT, self.SUB_NAME)
+        RETURNED = {'subscriptions': [local_sub_path]}
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
         api = self._makeOne(client)
 
-        subscriptions, next_token = api.topic_list_subscriptions(
-            self.TOPIC_PATH)
+        topic = Topic(self.TOPIC_NAME, client)
+        iterator = api.topic_list_subscriptions(topic)
+        subscriptions = list(iterator)
+        next_token = iterator.next_page_token
 
+        self.assertIsNone(next_token)
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
-        self.assertIsInstance(subscription, dict)
-        self.assertEqual(subscription['name'], self.SUB_PATH)
-        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
-        self.assertIsNone(next_token)
+        self.assertIsInstance(subscription, Subscription)
+        self.assertEqual(subscription.name, self.SUB_NAME)
+        self.assertEqual(subscription.topic, topic)
+        self.assertIs(subscription._client, client)
 
         self.assertEqual(connection._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_TOPIC_SUBSCRIPTIONS_PATH,)
@@ -323,27 +330,37 @@ class Test_PublisherAPI(_Base):
         self.assertEqual(connection._called_with['query_params'], {})
 
     def test_topic_list_subscriptions_with_paging(self):
+        import six
+        from google.cloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.topic import Topic
+
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
-        SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
+        local_sub_path = 'projects/%s/subscriptions/%s' % (
+            self.PROJECT, self.SUB_NAME)
         RETURNED = {
-            'subscriptions': [SUB_INFO],
-            'nextPageToken': 'TOKEN2',
+            'subscriptions': [local_sub_path],
+            'nextPageToken': TOKEN2,
         }
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
         api = self._makeOne(client)
 
-        subscriptions, next_token = api.topic_list_subscriptions(
-            self.TOPIC_PATH, page_token=TOKEN1, page_size=SIZE)
+        topic = Topic(self.TOPIC_NAME, client)
+        iterator = api.topic_list_subscriptions(
+            topic, page_token=TOKEN1, page_size=SIZE)
+        page = six.next(iterator.pages)
+        subscriptions = list(page)
+        next_token = iterator.next_page_token
 
+        self.assertEqual(next_token, TOKEN2)
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
-        self.assertIsInstance(subscription, dict)
-        self.assertEqual(subscription['name'], self.SUB_PATH)
-        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
-        self.assertEqual(next_token, TOKEN2)
+        self.assertIsInstance(subscription, Subscription)
+        self.assertEqual(subscription.name, self.SUB_NAME)
+        self.assertEqual(subscription.topic, topic)
+        self.assertIs(subscription._client, client)
 
         self.assertEqual(connection._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_TOPIC_SUBSCRIPTIONS_PATH,)
@@ -352,13 +369,16 @@ class Test_PublisherAPI(_Base):
                          {'pageToken': TOKEN1, 'pageSize': SIZE})
 
     def test_topic_list_subscriptions_missing_key(self):
-        RETURNED = {}
-        connection = _Connection(RETURNED)
+        from google.cloud.pubsub.topic import Topic
+
+        connection = _Connection({})
         client = _Client(connection, self.PROJECT)
         api = self._makeOne(client)
 
-        subscriptions, next_token = api.topic_list_subscriptions(
-            self.TOPIC_PATH)
+        topic = Topic(self.TOPIC_NAME, client)
+        iterator = api.topic_list_subscriptions(topic)
+        subscriptions = list(iterator)
+        next_token = iterator.next_page_token
 
         self.assertEqual(len(subscriptions), 0)
         self.assertIsNone(next_token)
@@ -370,12 +390,15 @@ class Test_PublisherAPI(_Base):
 
     def test_topic_list_subscriptions_miss(self):
         from google.cloud.exceptions import NotFound
+        from google.cloud.pubsub.topic import Topic
+
         connection = _Connection()
         client = _Client(connection, self.PROJECT)
         api = self._makeOne(client)
 
         with self.assertRaises(NotFound):
-            api.topic_list_subscriptions(self.TOPIC_PATH)
+            topic = Topic(self.TOPIC_NAME, client)
+            list(api.topic_list_subscriptions(topic))
 
         self.assertEqual(connection._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_TOPIC_SUBSCRIPTIONS_PATH,)
