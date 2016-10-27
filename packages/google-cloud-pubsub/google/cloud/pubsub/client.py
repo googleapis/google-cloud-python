@@ -98,9 +98,9 @@ class Client(JSONClient):
         if self._subscriber_api is None:
             if self._use_gax:
                 generated = make_gax_subscriber_api(self.connection)
-                self._subscriber_api = GAXSubscriberAPI(generated)
+                self._subscriber_api = GAXSubscriberAPI(generated, self)
             else:
-                self._subscriber_api = JSONSubscriberAPI(self.connection)
+                self._subscriber_api = JSONSubscriberAPI(self)
         return self._subscriber_api
 
     @property

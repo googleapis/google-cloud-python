@@ -20,6 +20,7 @@ from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
+from google.protobuf.json_format import MessageToDict
 from google.pubsub.v1.pubsub_pb2 import PubsubMessage
 from google.pubsub.v1.pubsub_pb2 import PushConfig
 from grpc import insecure_channel
@@ -228,9 +229,13 @@ class _SubscriberAPI(object):
 
     :type gax_api: :class:`google.pubsub.v1.publisher_api.SubscriberApi`
     :param gax_api: API object used to make GAX requests.
+
+    :type client: :class:`~google.cloud.pubsub.client.Client`
+    :param client: The client that owns this API object.
     """
-    def __init__(self, gax_api):
+    def __init__(self, gax_api, client):
         self._gax_api = gax_api
+        self._client = client
 
     def list_subscriptions(self, project, page_size=0, page_token=None):
         """List subscriptions for the project associated with this API.
@@ -262,7 +267,7 @@ class _SubscriberAPI(object):
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_subscriptions(
             path, page_size=page_size, options=options)
-        subscriptions = [_subscription_pb_to_mapping(sub_pb)
+        subscriptions = [MessageToDict(sub_pb)
                          for sub_pb in page_iter.next()]
         token = page_iter.page_token or None
         return subscriptions, token
@@ -313,7 +318,7 @@ class _SubscriberAPI(object):
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
                 raise Conflict(topic_path)
             raise
-        return _subscription_pb_to_mapping(sub_pb)
+        return MessageToDict(sub_pb)
 
     def subscription_get(self, subscription_path):
         """API call:  retrieve a subscription
@@ -335,7 +340,7 @@ class _SubscriberAPI(object):
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
             raise
-        return _subscription_pb_to_mapping(sub_pb)
+        return MessageToDict(sub_pb)
 
     def subscription_delete(self, subscription_path):
         """API call:  delete a subscription
@@ -472,24 +477,6 @@ def _message_pb_from_mapping(message):
     """
     return PubsubMessage(data=_to_bytes(message['data']),
                          attributes=message['attributes'])
-
-
-def _subscription_pb_to_mapping(sub_pb):
-    """Helper for :meth:`list_subscriptions`, et aliae
-
-    Performs "impedance matching" between the protobuf attrs and the keys
-    expected in the JSON API.
-    """
-    mapping = {
-        'name': sub_pb.name,
-        'topic': sub_pb.topic,
-        'ackDeadlineSeconds': sub_pb.ack_deadline_seconds,
-    }
-    if sub_pb.push_config.push_endpoint != '':
-        mapping['pushConfig'] = {
-            'pushEndpoint': sub_pb.push_config.push_endpoint,
-        }
-    return mapping
 
 
 def _message_pb_to_mapping(message_pb):

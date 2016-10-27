@@ -247,12 +247,13 @@ class _PublisherAPI(object):
 class _SubscriberAPI(object):
     """Helper mapping subscriber-related APIs.
 
-    :type connection: :class:`Connection`
-    :param connection: the connection used to make API requests.
+    :type client: :class:`~google.cloud.pubsub.client.Client`
+    :param client: the client used to make API requests.
     """
 
-    def __init__(self, connection):
-        self._connection = connection
+    def __init__(self, client):
+        self._client = client
+        self._connection = client.connection
 
     def list_subscriptions(self, project, page_size=None, page_token=None):
         """API call:  list subscriptions for a given project
