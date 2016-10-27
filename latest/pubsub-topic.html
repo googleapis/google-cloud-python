@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Topics &mdash; google-cloud 5f97bc7 documentation</title>
+  <title>Topics &mdash; google-cloud 2572967 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 5f97bc7 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 2572967 documentation" href="index.html"/>
         <link rel="next" title="Subscriptions" href="pubsub-subscription.html"/>
         <link rel="prev" title="Pub/Sub Client" href="pubsub-client.html"/> 
 
@@ -531,14 +531,8 @@ raising an exception.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list">https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list</a></p>
 <p>Example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscriptions</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">()</span>   <span class="c1"># API request</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">:</span>
-            <span class="n">do_something_with</span><span class="p">(</span><span class="n">subscription</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">break</span>
-        <span class="n">subscriptions</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span>
-            <span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>                           <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">topic</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">():</span>   <span class="c1"># API request(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">subscription</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -557,13 +551,12 @@ topics.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="iterators.html#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription" title="google.cloud.pubsub.subscription.Subscription"><code class="xref py py-class docutils literal"><span class="pre">Subscription</span></code></a>,
-plus a &#8220;next page token&#8221; string:  if not None, indicates that
-more topics can be retrieved with another call (pass that
-value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of
+<a class="reference internal" href="pubsub-subscription.html#google.cloud.pubsub.subscription.Subscription" title="google.cloud.pubsub.subscription.Subscription"><code class="xref py py-class docutils literal"><span class="pre">Subscription</span></code></a>
+accessible to the current topic.</p>
 </td>
 </tr>
 </tbody>
@@ -769,7 +762,7 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5f97bc7',
+            VERSION:'2572967',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

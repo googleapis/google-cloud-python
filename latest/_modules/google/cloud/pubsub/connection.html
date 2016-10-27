@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.connection &mdash; google-cloud 5f97bc7 documentation</title>
+  <title>google.cloud.pubsub.connection &mdash; google-cloud 2572967 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5f97bc7 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 2572967 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -292,6 +292,8 @@
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">PUBSUB_EMULATOR</span>
 <span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub._helpers</span> <span class="k">import</span> <span class="n">subscription_name_from_path</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub.subscription</span> <span class="k">import</span> <span class="n">Subscription</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub.topic</span> <span class="k">import</span> <span class="n">Topic</span>
 
 
@@ -479,16 +481,14 @@
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">:publish&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic_path</span><span class="p">,),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;messageIds&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">topic_list_subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                 <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">topic_list_subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  list subscriptions bound to a topic</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list</span>
 
-<span class="sd">        :type topic_path: str</span>
-<span class="sd">        :param topic_path: the fully-qualified path of the topic, in format</span>
-<span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
+<span class="sd">        :type topic: :class:`~google.cloud.pubsub.topic.Topic`</span>
+<span class="sd">        :param topic: The topic that owns the subscriptions.</span>
 
 <span class="sd">        :type page_size: int</span>
 <span class="sd">        :param page_size: maximum number of subscriptions to return, If not</span>
@@ -503,18 +503,17 @@
 <span class="sd">        :returns: fully-qualified names of subscriptions for the supplied</span>
 <span class="sd">                  topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
-
+        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">/subscriptions&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">,)</span>
 
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
-
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">/subscriptions&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic_path</span><span class="p">,)</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;subscriptions&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_subscription</span><span class="p">,</span> <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;subscriptions&#39;</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">topic</span> <span class="o">=</span> <span class="n">topic</span>
+        <span class="k">return</span> <span class="n">iterator</span>
 
 
 <span class="k">class</span> <span class="nc">_SubscriberAPI</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -849,7 +848,7 @@
 
 
 <span class="k">def</span> <span class="nf">_item_to_topic</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a JSON job to the native object.</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON topic to the native object.</span>
 
 <span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
@@ -861,6 +860,23 @@
 <span class="sd">    :returns: The next topic in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">Topic</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_item_to_subscription</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a subscription name to the native object.</span>
+
+<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">    :type subscription_path: str</span>
+<span class="sd">    :param subscription_path: Subscription path returned from the API.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.pubsub.subscription.Subscription`</span>
+<span class="sd">    :returns: The next subscription in the page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">subscription_name</span> <span class="o">=</span> <span class="n">subscription_name_from_path</span><span class="p">(</span>
+        <span class="n">subscription_path</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Subscription</span><span class="p">(</span><span class="n">subscription_name</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">topic</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -894,7 +910,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5f97bc7',
+            VERSION:'2572967',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
