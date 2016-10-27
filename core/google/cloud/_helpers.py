@@ -17,6 +17,9 @@
 This module is not part of the public API surface.
 """
 
+# Avoid the grpc and google.cloud.grpc collision.
+from __future__ import absolute_import
+
 import calendar
 import datetime
 import json
