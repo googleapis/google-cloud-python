@@ -202,14 +202,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(logger.client, client)
         self.assertEqual(logger.project, self.PROJECT)
 
-    def test__entry_from_resource_unknown_type(self):
-        PROJECT = 'PROJECT'
-        creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
-        loggers = {}
-        with self.assertRaises(ValueError):
-            client._entry_from_resource({'unknownPayload': {}}, loggers)
-
     def test_list_entries_defaults(self):
         from google.cloud.logging.entries import TextEntry
         IID = 'IID'

@@ -40,9 +40,6 @@ from google.cloud.logging.connection import Connection
 from google.cloud.logging.connection import _LoggingAPI as JSONLoggingAPI
 from google.cloud.logging.connection import _MetricsAPI as JSONMetricsAPI
 from google.cloud.logging.connection import _SinksAPI as JSONSinksAPI
-from google.cloud.logging.entries import ProtobufEntry
-from google.cloud.logging.entries import StructEntry
-from google.cloud.logging.entries import TextEntry
 from google.cloud.logging.logger import Logger
 from google.cloud.logging.metric import Metric
 from google.cloud.logging.sink import Sink
@@ -101,9 +98,9 @@ class Client(JSONClient):
         if self._logging_api is None:
             if self._use_gax:
                 generated = GeneratedLoggingAPI()
-                self._logging_api = GAXLoggingAPI(generated)
+                self._logging_api = GAXLoggingAPI(generated, self)
             else:
-                self._logging_api = JSONLoggingAPI(self.connection)
+                self._logging_api = JSONLoggingAPI(self)
         return self._logging_api
 
     @property
@@ -147,31 +144,6 @@ class Client(JSONClient):
         """
         return Logger(name, client=self)
 
-    def _entry_from_resource(self, resource, loggers):
-        """Detect correct entry type from resource and instantiate.
-
-        :type resource: dict
-        :param resource: one entry resource from API response
-
-        :type loggers: dict
-        :param loggers:
-            (Optional) A mapping of logger fullnames -> loggers.  If not
-            passed, the entry will have a newly-created logger.
-
-        :rtype: One of:
-                :class:`google.cloud.logging.entries.TextEntry`,
-                :class:`google.cloud.logging.entries.StructEntry`,
-                :class:`google.cloud.logging.entries.ProtobufEntry`
-        :returns: the entry instance, constructed via the resource
-        """
-        if 'textPayload' in resource:
-            return TextEntry.from_api_repr(resource, self, loggers)
-        elif 'jsonPayload' in resource:
-            return StructEntry.from_api_repr(resource, self, loggers)
-        elif 'protoPayload' in resource:
-            return ProtobufEntry.from_api_repr(resource, self, loggers)
-        raise ValueError('Cannot parse log entry resource')
-
     def list_entries(self, projects=None, filter_=None, order_by=None,
                      page_size=None, page_token=None):
         """Return a page of log entries.
@@ -184,8 +156,9 @@ class Client(JSONClient):
                             defaults to the project bound to the client.
 
         :type filter_: str
-        :param filter_: a filter expression. See:
-                        https://cloud.google.com/logging/docs/view/advanced_filters
+        :param filter_:
+            a filter expression. See:
+            https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: str
         :param order_by: One of :data:`~google.cloud.logging.ASCENDING`
@@ -200,22 +173,16 @@ class Client(JSONClient):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: tuple, (list, str)
-        :returns: list of :class:`google.cloud.logging.entry.TextEntry`, plus a
-                  "next page token" string:  if not None, indicates that
-                  more entries can be retrieved with another call (pass that
-                  value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`
+                  accessible to the current client.
         """
         if projects is None:
             projects = [self.project]
 
-        resources, token = self.logging_api.list_entries(
+        return self.logging_api.list_entries(
             projects=projects, filter_=filter_, order_by=order_by,
             page_size=page_size, page_token=page_token)
-        loggers = {}
-        entries = [self._entry_from_resource(resource, loggers)
-                   for resource in resources]
-        return entries, token
 
     def sink(self, name, filter_=None, destination=None):
         """Creates a sink bound to the current client.
