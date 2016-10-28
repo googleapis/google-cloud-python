@@ -14,6 +14,7 @@
 
 import pytest
 
+import google.auth
 from google.auth import _helpers
 from google.auth import compute_engine
 from google.auth.compute_engine import _metadata
@@ -36,3 +37,11 @@ def test_refresh(http_request, token_info):
     info = token_info(credentials.token)
     info_scopes = _helpers.string_to_scopes(info['scope'])
     assert set(info_scopes) == set(credentials.scopes)
+
+
+def test_default(verify_refresh):
+    credentials, project_id = google.auth.default()
+
+    assert project_id is not None
+    assert isinstance(credentials, compute_engine.Credentials)
+    verify_refresh(credentials)

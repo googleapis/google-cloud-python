@@ -19,7 +19,7 @@ import google.auth
 EXPECT_PROJECT_ID = os.environ.get('EXPECT_PROJECT_ID')
 
 
-def test_explicit_credentials(verify_refresh):
+def test_application_default_credentials(verify_refresh):
     credentials, project_id = google.auth.default()
 
     if EXPECT_PROJECT_ID is not None:
