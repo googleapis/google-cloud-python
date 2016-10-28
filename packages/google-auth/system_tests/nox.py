@@ -23,18 +23,23 @@ See the `nox docs`_ for details on how this file works:
 """
 
 import os
+import subprocess
 
 from nox.command import which
 import py.path
 
 
-HERE = os.path.dirname(__file__)
+HERE = os.path.abspath(os.path.dirname(__file__))
 DATA_DIR = os.path.join(HERE, 'data')
 SERVICE_ACCOUNT_FILE = os.path.join(DATA_DIR, 'service_account.json')
 AUTHORIZED_USER_FILE = os.path.join(DATA_DIR, 'authorized_user.json')
 EXPLICIT_CREDENTIALS_ENV = 'GOOGLE_APPLICATION_CREDENTIALS'
 EXPLICIT_PROJECT_ENV = 'GOOGLE_CLOUD_PROJECT'
 EXPECT_PROJECT_ENV = 'EXPECT_PROJECT_ID'
+
+SKIP_GAE_TEST_ENV = 'SKIP_APP_ENGINE_SYSTEM_TEST'
+GAE_APP_URL_TMPL = 'https://{}-dot-{}.appspot.com'
+GAE_TEST_APP_SERVICE = 'google-auth-system-tests'
 
 # The download location for the Cloud SDK
 CLOUD_SDK_DIST_FILENAME = 'google-cloud-sdk.tar.gz'
@@ -81,7 +86,8 @@ def install_cloud_sdk(session):
     # This tells gcloud which Python interpreter to use (always use 2.7)
     session.env[CLOUD_SDK_PYTHON_ENV] = CLOUD_SDK_PYTHON
 
-    # If the glcoud already exists, we don't need to do anything else.
+    # If gcloud cli executable already exists, we don't need to do anything
+    # else.
     # Note that because of this we do not attempt to update the sdk -
     # if the CLOUD_SDK_ROOT is cached, it will need to be periodically cleared.
     if py.path.local(GCLOUD).exists():
@@ -208,4 +214,37 @@ def session_compute_engine(session):
 
 def session_app_engine(session):
     session.virtualenv = False
-    session.run('pytest', 'app_engine/test_app_engine.py')
+
+    if SKIP_GAE_TEST_ENV in os.environ:
+        session.log('Skipping App Engine tests.')
+        return
+
+    # Unlike the default tests above, the App Engine system test require a
+    # 'real' gcloud sdk installation that is configured to deploy to an
+    # app engine project.
+    # Grab the project ID from the cloud sdk.
+    project_id = subprocess.check_output([
+        'gcloud', 'config', 'list', 'project', '--format',
+        'value(core.project)']).strip()
+
+    if not project_id:
+        session.error(
+            'The Cloud SDK must be installed and configured to deploy to App '
+            'Engine.')
+
+    application_url = GAE_APP_URL_TMPL.format(
+        GAE_TEST_APP_SERVICE, project_id)
+
+    # Vendor in the test application's dependencies
+    session.chdir(os.path.join(HERE, 'app_engine_test_app'))
+    session.run(
+        'pip', 'install', '--target', 'lib', '-r', 'requirements.txt',
+        silent=True)
+
+    # Deploy the application.
+    session.run('gcloud', 'app', 'deploy', '-q', 'app.yaml')
+
+    # Run the tests
+    session.env['TEST_APP_URL'] = application_url
+    session.chdir(HERE)
+    session.run('pytest', 'test_app_engine.py')
