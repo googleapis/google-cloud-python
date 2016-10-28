@@ -36,7 +36,7 @@ class OperationTests(unittest.TestCase):
 
     def test_from_api_repr(self):
         from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
-        from google.cloud.speech.operation import Transcript
+        from google.cloud.speech.transcript import Transcript
         from google.cloud.speech.metadata import Metadata
         RESPONSE = OPERATION_COMPLETE_RESPONSE
 
@@ -46,10 +46,12 @@ class OperationTests(unittest.TestCase):
         self.assertEqual('123456789', operation.name)
         self.assertTrue(operation.complete)
 
+        self.assertEqual(len(operation.results), 1)
         self.assertIsInstance(operation.results[0], Transcript)
         self.assertEqual(operation.results[0].transcript,
                          'how old is the Brooklyn Bridge')
-        self.assertEqual(operation.results[0].confidence, 0.98267895)
+        self.assertEqual(operation.results[0].confidence,
+                         0.98267895)
         self.assertTrue(operation.complete)
         self.assertIsInstance(operation.metadata, Metadata)
         self.assertEqual(operation.metadata.progress_percent, 100)
