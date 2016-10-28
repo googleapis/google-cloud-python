@@ -19,7 +19,8 @@ import datetime
 import six
 from six.moves.urllib.parse import urlencode
 
-from oauth2client import client
+import google.auth
+import google.auth.credentials
 
 from google.cloud._helpers import UTC
 from google.cloud._helpers import _NOW
@@ -84,7 +85,8 @@ def get_credentials():
     :returns: A new credentials instance corresponding to the implicit
               environment.
     """
-    return client.GoogleCredentials.get_application_default()
+    credentials, _ = google.auth.default()
+    return credentials
 
 
 def _get_signed_query_params(credentials, expiration, string_to_sign):
@@ -106,7 +108,7 @@ def _get_signed_query_params(credentials, expiration, string_to_sign):
     :returns: Query parameters matching the signing credentials with a
               signed payload.
     """
-    if not hasattr(credentials, 'sign_blob'):
+    if not isinstance(credentials, google.auth.credentials.Signing):
         auth_uri = ('http://google-cloud-python.readthedocs.io/en/latest/'
                     'google-cloud-auth.html#setting-up-a-service-account')
         raise AttributeError('you need a private key to sign credentials.'
@@ -114,7 +116,7 @@ def _get_signed_query_params(credentials, expiration, string_to_sign):
                              'just contains a token. see %s for more '
                              'details.' % (type(credentials), auth_uri))
 
-    _, signature_bytes = credentials.sign_blob(string_to_sign)
+    signature_bytes = credentials.sign_bytes(string_to_sign)
     signature = base64.b64encode(signature_bytes)
     service_account_name = credentials.service_account_email
     return {

@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 import unittest
+
+import mock
 
 
 class Test__LocalStack(unittest.TestCase):
@@ -126,329 +127,27 @@ class Test__ensure_tuple_or_list(unittest.TestCase):
             self._call_fut('ARGNAME', invalid_tuple_or_list)
 
 
-class Test__app_engine_id(unittest.TestCase):
-
-    def _call_fut(self):
-        from google.cloud._helpers import _app_engine_id
-        return _app_engine_id()
-
-    def test_no_value(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud import _helpers
-
-        with _Monkey(_helpers, app_identity=None):
-            dataset_id = self._call_fut()
-            self.assertIsNone(dataset_id)
-
-    def test_value_set(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud import _helpers
-
-        APP_ENGINE_ID = object()
-        APP_IDENTITY = _AppIdentity(APP_ENGINE_ID)
-        with _Monkey(_helpers, app_identity=APP_IDENTITY):
-            dataset_id = self._call_fut()
-            self.assertEqual(dataset_id, APP_ENGINE_ID)
-
-
-class Test__file_project_id(unittest.TestCase):
-
-    def _call_fut(self):
-        from google.cloud._helpers import _file_project_id
-        return _file_project_id()
-
-    def test_success(self):
-        from google.cloud.environment_vars import CREDENTIALS
-        from google.cloud._testing import _Monkey
-        from google.cloud._testing import _NamedTemporaryFile
-
-        project_id = 'test-project-id'
-        payload = '{"%s":"%s"}' % ('project_id', project_id)
-        with _NamedTemporaryFile() as temp:
-            with open(temp.name, 'w') as creds_file:
-                creds_file.write(payload)
-
-            environ = {CREDENTIALS: temp.name}
-            with _Monkey(os, getenv=environ.get):
-                result = self._call_fut()
-
-            self.assertEqual(result, project_id)
-
-    def test_no_environment_variable_set(self):
-        from google.cloud._testing import _Monkey
-
-        environ = {}
-        with _Monkey(os, getenv=environ.get):
-            result = self._call_fut()
-
-        self.assertIsNone(result)
-
-
-class Test__get_nix_config_path(unittest.TestCase):
-
-    def _call_fut(self):
-        from google.cloud._helpers import _get_nix_config_path
-        return _get_nix_config_path()
-
-    def test_it(self):
-        from google.cloud import _helpers as MUT
-        from google.cloud._testing import _Monkey
-
-        user_root = 'a'
-        config_file = 'b'
-        with _Monkey(MUT, _USER_ROOT=user_root,
-                     _GCLOUD_CONFIG_FILE=config_file):
-            result = self._call_fut()
-
-        expected = os.path.join(user_root, '.config', config_file)
-        self.assertEqual(result, expected)
-
-
-class Test__get_windows_config_path(unittest.TestCase):
-
-    def _call_fut(self):
-        from google.cloud._helpers import _get_windows_config_path
-        return _get_windows_config_path()
-
-    def test_it(self):
-        from google.cloud import _helpers as MUT
-        from google.cloud._testing import _Monkey
-
-        appdata_dir = 'a'
-        environ = {'APPDATA': appdata_dir}
-        config_file = 'b'
-        with _Monkey(os, getenv=environ.get):
-            with _Monkey(MUT, _GCLOUD_CONFIG_FILE=config_file):
-                result = self._call_fut()
-
-        expected = os.path.join(appdata_dir, config_file)
-        self.assertEqual(result, expected)
-
-
-class Test__default_service_project_id(unittest.TestCase):
-
-    CONFIG_TEMPLATE = '[%s]\n%s = %s\n'
-
-    def _call_fut(self):
-        from google.cloud._helpers import _default_service_project_id
-        return _default_service_project_id()
-
-    def test_nix(self):
-        from google.cloud import _helpers as MUT
-        from google.cloud._testing import _Monkey
-        from google.cloud._testing import _NamedTemporaryFile
-
-        project_id = 'test-project-id'
-        with _NamedTemporaryFile() as temp:
-            config_value = self.CONFIG_TEMPLATE % (
-                MUT._GCLOUD_CONFIG_SECTION,
-                MUT._GCLOUD_CONFIG_KEY, project_id)
-            with open(temp.name, 'w') as config_file:
-                config_file.write(config_value)
-
-            def mock_get_path():
-                return temp.name
-
-            with _Monkey(os, name='not-nt'):
-                with _Monkey(MUT, _get_nix_config_path=mock_get_path,
-                             _USER_ROOT='not-None'):
-                    result = self._call_fut()
-
-            self.assertEqual(result, project_id)
-
-    def test_nix_missing_prject_key(self):
-        from google.cloud import _helpers as MUT
-        from google.cloud._testing import _Monkey
-        from google.cloud._testing import _NamedTemporaryFile
-
-        with _NamedTemporaryFile() as temp:
-            config_value = '[%s]' % (MUT._GCLOUD_CONFIG_SECTION,)
-            with open(temp.name, 'w') as config_file:
-                config_file.write(config_value)
-
-            def mock_get_path():
-                return temp.name
-
-            with _Monkey(os, name='not-nt'):
-                with _Monkey(MUT, _get_nix_config_path=mock_get_path,
-                             _USER_ROOT='not-None'):
-                    result = self._call_fut()
-
-            self.assertEqual(result, None)
-
-    def test_windows(self):
-        from google.cloud import _helpers as MUT
-        from google.cloud._testing import _Monkey
-        from google.cloud._testing import _NamedTemporaryFile
-
-        project_id = 'test-project-id'
-        with _NamedTemporaryFile() as temp:
-            config_value = self.CONFIG_TEMPLATE % (
-                MUT._GCLOUD_CONFIG_SECTION,
-                MUT._GCLOUD_CONFIG_KEY, project_id)
-            with open(temp.name, 'w') as config_file:
-                config_file.write(config_value)
-
-            def mock_get_path():
-                return temp.name
-
-            with _Monkey(os, name='nt'):
-                with _Monkey(MUT, _get_windows_config_path=mock_get_path,
-                             _USER_ROOT=None):
-                    result = self._call_fut()
-
-            self.assertEqual(result, project_id)
-
-    def test_gae(self):
-        from google.cloud import _helpers as MUT
-        from google.cloud._testing import _Monkey
-
-        with _Monkey(os, name='not-nt'):
-            with _Monkey(MUT, _USER_ROOT=None):
-                result = self._call_fut()
-
-        self.assertIsNone(result)
-
-
-class Test__compute_engine_id(unittest.TestCase):
-
-    def _call_fut(self):
-        from google.cloud._helpers import _compute_engine_id
-        return _compute_engine_id()
-
-    def _monkeyConnection(self, connection):
-        from six.moves import http_client
-        from google.cloud._testing import _Monkey
-
-        def _connection_factory(host, timeout):
-            connection.host = host
-            connection.timeout = timeout
-            return connection
-
-        return _Monkey(http_client, HTTPConnection=_connection_factory)
-
-    def test_bad_status(self):
-        connection = _HTTPConnection(404, None)
-        with self._monkeyConnection(connection):
-            dataset_id = self._call_fut()
-            self.assertIsNone(dataset_id)
-
-    def test_success(self):
-        COMPUTE_ENGINE_ID = object()
-        connection = _HTTPConnection(200, COMPUTE_ENGINE_ID)
-        with self._monkeyConnection(connection):
-            dataset_id = self._call_fut()
-            self.assertEqual(dataset_id, COMPUTE_ENGINE_ID)
-
-    def test_socket_raises(self):
-        connection = _TimeoutHTTPConnection()
-        with self._monkeyConnection(connection):
-            dataset_id = self._call_fut()
-            self.assertIsNone(dataset_id)
-
-
-class Test__get_production_project(unittest.TestCase):
-
-    def _call_fut(self):
-        from google.cloud._helpers import _get_production_project
-        return _get_production_project()
-
-    def test_no_value(self):
-        from google.cloud._testing import _Monkey
-
-        environ = {}
-        with _Monkey(os, getenv=environ.get):
-            project = self._call_fut()
-            self.assertIsNone(project)
-
-    def test_value_set(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud._helpers import PROJECT
-
-        MOCK_PROJECT = object()
-        environ = {PROJECT: MOCK_PROJECT}
-        with _Monkey(os, getenv=environ.get):
-            project = self._call_fut()
-            self.assertEqual(project, MOCK_PROJECT)
-
-
 class Test__determine_default_project(unittest.TestCase):
 
     def _call_fut(self, project=None):
         from google.cloud._helpers import _determine_default_project
         return _determine_default_project(project=project)
 
-    def _determine_default_helper(self, prod=None, gae=None, gce=None,
-                                  file_id=None, srv_id=None, project=None):
-        from google.cloud._testing import _Monkey
-        from google.cloud import _helpers
+    def test(self):
+        with mock.patch('google.auth.default', autospec=True) as default:
+            default.return_value = (
+                mock.sentinel.credentials, mock.sentinel.project)
+            project = self._call_fut()
 
-        _callers = []
-
-        def prod_mock():
-            _callers.append('prod_mock')
-            return prod
-
-        def file_id_mock():
-            _callers.append('file_id_mock')
-            return file_id
-
-        def srv_id_mock():
-            _callers.append('srv_id_mock')
-            return srv_id
-
-        def gae_mock():
-            _callers.append('gae_mock')
-            return gae
-
-        def gce_mock():
-            _callers.append('gce_mock')
-            return gce
-
-        patched_methods = {
-            '_get_production_project': prod_mock,
-            '_file_project_id': file_id_mock,
-            '_default_service_project_id': srv_id_mock,
-            '_app_engine_id': gae_mock,
-            '_compute_engine_id': gce_mock,
-        }
-
-        with _Monkey(_helpers, **patched_methods):
-            returned_project = self._call_fut(project)
-
-        return returned_project, _callers
-
-    def test_no_value(self):
-        project, callers = self._determine_default_helper()
-        self.assertIsNone(project)
-        self.assertEqual(callers, ['prod_mock', 'file_id_mock', 'srv_id_mock',
-                                   'gae_mock', 'gce_mock'])
+        self.assertEqual(project, mock.sentinel.project)
+        default.assert_called_once_with()
 
     def test_explicit(self):
-        PROJECT = object()
-        project, callers = self._determine_default_helper(project=PROJECT)
-        self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, [])
+        with mock.patch('google.auth.default', autospec=True) as default:
+            project = self._call_fut(mock.sentinel.project)
 
-    def test_prod(self):
-        PROJECT = object()
-        project, callers = self._determine_default_helper(prod=PROJECT)
-        self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock'])
-
-    def test_gae(self):
-        PROJECT = object()
-        project, callers = self._determine_default_helper(gae=PROJECT)
-        self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock', 'file_id_mock',
-                                   'srv_id_mock', 'gae_mock'])
-
-    def test_gce(self):
-        PROJECT = object()
-        project, callers = self._determine_default_helper(gce=PROJECT)
-        self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock', 'file_id_mock', 'srv_id_mock',
-                                   'gae_mock', 'gce_mock'])
+        self.assertEqual(project, mock.sentinel.project)
+        self.assertFalse(default.called)
 
 
 class Test__millis(unittest.TestCase):
@@ -1088,60 +787,6 @@ class Test_make_insecure_stub(unittest.TestCase):
     def test_without_port_argument(self):
         host = 'HOST:1114'
         self._helper(host, host)
-
-
-class _AppIdentity(object):
-
-    def __init__(self, app_id):
-        self.app_id = app_id
-
-    def get_application_id(self):
-        return self.app_id
-
-
-class _HTTPResponse(object):
-
-    def __init__(self, status, data):
-        self.status = status
-        self.data = data
-
-    def read(self):
-        return self.data
-
-
-class _BaseHTTPConnection(object):
-
-    host = timeout = None
-
-    def __init__(self):
-        self._close_count = 0
-        self._called_args = []
-        self._called_kwargs = []
-
-    def request(self, method, uri, **kwargs):
-        self._called_args.append((method, uri))
-        self._called_kwargs.append(kwargs)
-
-    def close(self):
-        self._close_count += 1
-
-
-class _HTTPConnection(_BaseHTTPConnection):
-
-    def __init__(self, status, project):
-        super(_HTTPConnection, self).__init__()
-        self.status = status
-        self.project = project
-
-    def getresponse(self):
-        return _HTTPResponse(self.status, self.project)
-
-
-class _TimeoutHTTPConnection(_BaseHTTPConnection):
-
-    def getresponse(self):
-        import socket
-        raise socket.timeout('timed out')
 
 
 class _Credentials(object):
