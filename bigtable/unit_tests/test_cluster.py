@@ -257,8 +257,9 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(result.name, OP_NAME)
         self.assertIs(result.target, cluster)
         self.assertIs(result.client, client)
-        self.assertIsNone(result.pb_metadata)
-        self.assertEqual(result.metadata, {'request_type': 'CreateCluster'})
+        self.assertIsNone(result.metadata)
+        self.assertEqual(result.caller_metadata,
+                         {'request_type': 'CreateCluster'})
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]
@@ -323,10 +324,11 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(result.name, OP_NAME)
         self.assertIs(result.target, cluster)
         self.assertIs(result.client, client)
-        self.assertIsInstance(result.pb_metadata,
+        self.assertIsInstance(result.metadata,
                               messages_v2_pb2.UpdateClusterMetadata)
-        self.assertEqual(result.pb_metadata.request_time, NOW_PB)
-        self.assertEqual(result.metadata, {'request_type': 'UpdateCluster'})
+        self.assertEqual(result.metadata.request_time, NOW_PB)
+        self.assertEqual(result.caller_metadata,
+                         {'request_type': 'UpdateCluster'})
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]
