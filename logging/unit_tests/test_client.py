@@ -67,8 +67,9 @@ class TestClient(unittest.TestCase):
 
         class _GaxLoggingAPI(object):
 
-            def __init__(self, _wrapped):
+            def __init__(self, _wrapped, client):
                 self._wrapped = _wrapped
+                self.client = client
 
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
@@ -81,6 +82,7 @@ class TestClient(unittest.TestCase):
 
         self.assertIsInstance(api, _GaxLoggingAPI)
         self.assertIs(api._wrapped, wrapped)
+        self.assertIs(api.client, client)
         # API instance is cached
         again = client.logging_api
         self.assertIs(again, api)
@@ -203,7 +205,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(logger.project, self.PROJECT)
 
     def test_list_entries_defaults(self):
+        import six
         from google.cloud.logging.entries import TextEntry
+
         IID = 'IID'
         TEXT = 'TEXT'
         TOKEN = 'TOKEN'
@@ -217,11 +221,18 @@ class TestClient(unittest.TestCase):
                 self.PROJECT, self.LOGGER_NAME),
         }]
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
-        api = client._logging_api = _DummyLoggingAPI()
-        api._list_entries_response = ENTRIES, TOKEN
+        client = self._makeOne(project=self.PROJECT, credentials=creds,
+                               use_gax=False)
+        returned = {
+            'entries': ENTRIES,
+            'nextPageToken': TOKEN,
+        }
+        client.connection = _Connection(returned)
 
-        entries, token = client.list_entries()
+        iterator = client.list_entries()
+        page = six.next(iterator.pages)
+        entries = list(page)
+        token = iterator.next_page_token
 
         self.assertEqual(len(entries), 1)
         entry = entries[0]
@@ -234,9 +245,12 @@ class TestClient(unittest.TestCase):
         self.assertEqual(logger.project, self.PROJECT)
         self.assertEqual(token, TOKEN)
 
-        self.assertEqual(
-            api._list_entries_called_with,
-            ([self.PROJECT], None, None, None, None))
+        called_with = client.connection._called_with
+        self.assertEqual(called_with, {
+            'path': '/entries:list',
+            'method': 'POST',
+            'data': {'projectIds': [self.PROJECT]},
+        })
 
     def test_list_entries_explicit(self):
         from google.cloud.logging import DESCENDING
@@ -271,15 +285,21 @@ class TestClient(unittest.TestCase):
             'logName': 'projects/%s/logs/%s' % (
                 self.PROJECT, self.LOGGER_NAME),
         }]
-        client = self._makeOne(self.PROJECT, credentials=_Credentials())
-        api = client._logging_api = _DummyLoggingAPI()
-        api._list_entries_response = ENTRIES, None
+        client = self._makeOne(self.PROJECT, credentials=_Credentials(),
+                               use_gax=False)
+        returned = {'entries': ENTRIES}
+        client.connection = _Connection(returned)
 
-        entries, token = client.list_entries(
+        iterator = client.list_entries(
             projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
             page_size=PAGE_SIZE, page_token=TOKEN)
-        self.assertEqual(len(entries), 2)
+        entries = list(iterator)
+        token = iterator.next_page_token
 
+        # First, check the token.
+        self.assertIsNone(token)
+        # Then check the entries.
+        self.assertEqual(len(entries), 2)
         entry = entries[0]
         self.assertIsInstance(entry, StructEntry)
         self.assertEqual(entry.insert_id, IID1)
@@ -301,10 +321,18 @@ class TestClient(unittest.TestCase):
 
         self.assertIs(entries[0].logger, entries[1].logger)
 
-        self.assertIsNone(token)
-        self.assertEqual(
-            api._list_entries_called_with,
-            ([PROJECT1, PROJECT2], FILTER, DESCENDING, PAGE_SIZE, TOKEN))
+        called_with = client.connection._called_with
+        self.assertEqual(called_with, {
+            'path': '/entries:list',
+            'method': 'POST',
+            'data': {
+                'filter': FILTER,
+                'orderBy': DESCENDING,
+                'pageSize': PAGE_SIZE,
+                'pageToken': TOKEN,
+                'projectIds': [PROJECT1, PROJECT2],
+            },
+        })
 
     def test_sink_defaults(self):
         from google.cloud.logging.sink import Sink
@@ -479,14 +507,6 @@ class _Credentials(object):
         return self
 
 
-class _DummyLoggingAPI(object):
-
-    def list_entries(self, projects, filter_, order_by, page_size, page_token):
-        self._list_entries_called_with = (
-            projects, filter_, order_by, page_size, page_token)
-        return self._list_entries_response
-
-
 class _DummySinksAPI(object):
 
     def list_sinks(self, project, page_size, page_token):
@@ -499,3 +519,16 @@ class _DummyMetricsAPI(object):
     def list_metrics(self, project, page_size, page_token):
         self._list_metrics_called_with = (project, page_size, page_token)
         return self._list_metrics_response
+
+
+class _Connection(object):
+
+    _called_with = None
+
+    def __init__(self, *responses):
+        self._responses = responses
+
+    def api_request(self, **kw):
+        self._called_with = kw
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
