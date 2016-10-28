@@ -39,6 +39,7 @@ class _Base(object):
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
 class Test_LoggingAPI(_Base, unittest.TestCase):
     LOG_NAME = 'log_name'
+    LOG_PATH = 'projects/%s/logs/%s' % (_Base.PROJECT, LOG_NAME)
 
     def _getTargetClass(self):
         from google.cloud.logging._gax import _LoggingAPI
@@ -46,8 +47,10 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
     def test_ctor(self):
         gax_api = _GAXLoggingAPI()
-        api = self._makeOne(gax_api)
+        client = object()
+        api = self._makeOne(gax_api, client)
         self.assertIs(api._gax_api, gax_api)
+        self.assertIs(api._client, client)
 
     def test_list_entries_no_paging(self):
         import datetime
@@ -57,32 +60,47 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from google.logging.v2.log_entry_pb2 import LogEntry
 
         from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud._helpers import UTC
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.logging import DESCENDING
+        from google.cloud.logging.client import Client
+        from google.cloud.logging.entries import TextEntry
+        from google.cloud.logging.logger import Logger
 
         TOKEN = 'TOKEN'
         TEXT = 'TEXT'
         resource_pb = MonitoredResource(type='global')
-        timestamp_pb = _datetime_to_pb_timestamp(
-            datetime.datetime.utcnow())
-        entry_pb = LogEntry(log_name=self.LOG_NAME,
+        timestamp = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        timestamp_pb = _datetime_to_pb_timestamp(timestamp)
+        entry_pb = LogEntry(log_name=self.LOG_PATH,
                             resource=resource_pb,
                             timestamp=timestamp_pb,
                             text_payload=TEXT)
         response = _GAXPageIterator([entry_pb], page_token=TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
-        api = self._makeOne(gax_api)
+        client = Client(project=self.PROJECT, credentials=object(),
+                        use_gax=True)
+        api = self._makeOne(gax_api, client)
 
-        entries, next_token = api.list_entries(
+        iterator = api.list_entries(
             [self.PROJECT], self.FILTER, DESCENDING)
+        entries = list(iterator)
+        next_token = iterator.next_page_token
 
+        # First check the token.
+        self.assertEqual(next_token, TOKEN)
+        # Then check the entries returned.
         self.assertEqual(len(entries), 1)
         entry = entries[0]
-        self.assertIsInstance(entry, dict)
-        self.assertEqual(entry['logName'], self.LOG_NAME)
-        self.assertEqual(entry['resource'], {'type': 'global'})
-        self.assertEqual(entry['textPayload'], TEXT)
-        self.assertEqual(next_token, TOKEN)
+        self.assertIsInstance(entry, TextEntry)
+        self.assertEqual(entry.payload, TEXT)
+        self.assertIsInstance(entry.logger, Logger)
+        self.assertEqual(entry.logger.name, self.LOG_NAME)
+        self.assertIsNone(entry.insert_id)
+        self.assertEqual(entry.timestamp, timestamp)
+        self.assertIsNone(entry.labels)
+        self.assertIsNone(entry.severity)
+        self.assertIsNone(entry.http_request)
 
         projects, filter_, order_by, page_size, options = (
             gax_api._list_log_entries_called_with)
@@ -97,33 +115,47 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
         from google.api.monitored_resource_pb2 import MonitoredResource
         from google.logging.v2.log_entry_pb2 import LogEntry
-        from google.cloud._testing import _GAXPageIterator
         from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud._helpers import UTC
+        from google.cloud._testing import _GAXPageIterator
+        from google.cloud.logging.client import Client
+        from google.cloud.logging.entries import StructEntry
+        from google.cloud.logging.logger import Logger
 
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
         resource_pb = MonitoredResource(type='global')
-        timestamp_pb = _datetime_to_pb_timestamp(
-            datetime.datetime.utcnow())
-        entry_pb = LogEntry(log_name=self.LOG_NAME,
+        timestamp = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        timestamp_pb = _datetime_to_pb_timestamp(timestamp)
+        entry_pb = LogEntry(log_name=self.LOG_PATH,
                             resource=resource_pb,
                             timestamp=timestamp_pb,
                             json_payload=struct_pb)
         response = _GAXPageIterator([entry_pb], page_token=NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
-        api = self._makeOne(gax_api)
+        client = Client(project=self.PROJECT, credentials=object(),
+                        use_gax=True)
+        api = self._makeOne(gax_api, client)
 
-        entries, next_token = api.list_entries(
+        iterator = api.list_entries(
             [self.PROJECT], page_size=SIZE, page_token=TOKEN)
+        entries = list(iterator)
+        next_token = iterator.next_page_token
 
+        # First check the token.
+        self.assertEqual(next_token, NEW_TOKEN)
         self.assertEqual(len(entries), 1)
         entry = entries[0]
-        self.assertIsInstance(entry, dict)
-        self.assertEqual(entry['logName'], self.LOG_NAME)
-        self.assertEqual(entry['resource'], {'type': 'global'})
-        self.assertEqual(entry['jsonPayload'], payload)
-        self.assertEqual(next_token, NEW_TOKEN)
+        self.assertIsInstance(entry, StructEntry)
+        self.assertEqual(entry.payload, payload)
+        self.assertIsInstance(entry.logger, Logger)
+        self.assertEqual(entry.logger.name, self.LOG_NAME)
+        self.assertIsNone(entry.insert_id)
+        self.assertEqual(entry.timestamp, timestamp)
+        self.assertIsNone(entry.labels)
+        self.assertIsNone(entry.severity)
+        self.assertIsNone(entry.http_request)
 
         projects, filter_, order_by, page_size, options = (
             gax_api._list_log_entries_called_with)
@@ -201,7 +233,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
             last=True,
             id='OPID',
         )
-        entry_pb = LogEntry(log_name=self.LOG_NAME,
+        entry_pb = LogEntry(log_name=self.LOG_PATH,
                             resource=resource_pb,
                             proto_payload=proto_payload,
                             timestamp=timestamp_pb,
@@ -213,7 +245,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         return entry_pb
 
     def test_list_entries_with_extra_properties(self):
-        from datetime import datetime
+        import datetime
 
         # Import the wrappers to register the type URL for BoolValue
         # pylint: disable=unused-variable
@@ -221,10 +253,12 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         # pylint: enable=unused-variable
 
         from google.cloud._helpers import UTC
-        from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud._testing import _GAXPageIterator
+        from google.cloud.logging.client import Client
+        from google.cloud.logging.entries import ProtobufEntry
+        from google.cloud.logging.logger import Logger
 
-        NOW = datetime.utcnow().replace(tzinfo=UTC)
+        NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
@@ -239,47 +273,42 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
         response = _GAXPageIterator([entry_pb], page_token=NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
-        api = self._makeOne(gax_api)
+        client = Client(project=self.PROJECT, credentials=object(),
+                        use_gax=True)
+        api = self._makeOne(gax_api, client)
 
-        entries, next_token = api.list_entries(
+        iterator = api.list_entries(
             [self.PROJECT], page_size=SIZE, page_token=TOKEN)
+        entries = list(iterator)
+        next_token = iterator.next_page_token
 
+        # First check the token.
+        self.assertEqual(next_token, NEW_TOKEN)
+        # Then check the entries returned.
         self.assertEqual(len(entries), 1)
         entry = entries[0]
-        self.assertIsInstance(entry, dict)
-        self.assertEqual(entry['logName'], self.LOG_NAME)
-        self.assertEqual(entry['resource'],
-                         {'type': 'global', 'labels': {'foo': 'bar'}})
-        self.assertEqual(entry['protoPayload'], {
+        self.assertIsInstance(entry, ProtobufEntry)
+        self.assertEqual(entry.payload, {
             '@type': bool_type_url,
             'value': False,
         })
-        self.assertEqual(entry['severity'], SEVERITY)
-        self.assertEqual(entry['labels'], LABELS)
-        self.assertEqual(entry['insertId'], IID)
-        self.assertEqual(entry['timestamp'], _datetime_to_rfc3339(NOW))
-        request = entry_pb.http_request
-        EXPECTED_REQUEST = {
-            'requestMethod': request.request_method,
-            'requestUrl': request.request_url,
-            'status': request.status,
-            'requestSize': str(request.request_size),
-            'responseSize': str(request.response_size),
-            'referer': request.referer,
-            'userAgent': request.user_agent,
-            'remoteIp': request.remote_ip,
-            'cacheHit': request.cache_hit,
-        }
-        self.assertEqual(entry['httpRequest'], EXPECTED_REQUEST)
-        operation = entry_pb.operation
-        EXPECTED_OPERATION = {
-            'producer': operation.producer,
-            'id': operation.id,
-            'first': operation.first,
-            'last': operation.last,
-        }
-        self.assertEqual(entry['operation'], EXPECTED_OPERATION)
-        self.assertEqual(next_token, NEW_TOKEN)
+        self.assertIsInstance(entry.logger, Logger)
+        self.assertEqual(entry.logger.name, self.LOG_NAME)
+        self.assertEqual(entry.insert_id, IID)
+        self.assertEqual(entry.timestamp, NOW)
+        self.assertEqual(entry.labels, {'foo': 'bar'})
+        self.assertEqual(entry.severity, SEVERITY)
+        self.assertEqual(entry.http_request, {
+            'requestMethod': entry_pb.http_request.request_method,
+            'requestUrl': entry_pb.http_request.request_url,
+            'status': entry_pb.http_request.status,
+            'requestSize': str(entry_pb.http_request.request_size),
+            'responseSize': str(entry_pb.http_request.response_size),
+            'referer': entry_pb.http_request.referer,
+            'userAgent': entry_pb.http_request.user_agent,
+            'remoteIp': entry_pb.http_request.remote_ip,
+            'cacheHit': entry_pb.http_request.cache_hit,
+        })
 
         projects, filter_, order_by, page_size, options = (
             gax_api._list_log_entries_called_with)
@@ -292,14 +321,13 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
     def test_write_entries_single(self):
         from google.logging.v2.log_entry_pb2 import LogEntry
         TEXT = 'TEXT'
-        LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
         ENTRY = {
-            'logName': LOG_PATH,
+            'logName': self.LOG_PATH,
             'resource': {'type': 'global'},
             'textPayload': TEXT,
         }
         gax_api = _GAXLoggingAPI()
-        api = self._makeOne(gax_api)
+        api = self._makeOne(gax_api, None)
 
         api.write_entries([ENTRY])
 
@@ -309,7 +337,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
         entry = entries[0]
         self.assertIsInstance(entry, LogEntry)
-        self.assertEqual(entry.log_name, LOG_PATH)
+        self.assertEqual(entry.log_name, self.LOG_PATH)
         self.assertEqual(entry.resource.type, 'global')
         self.assertEqual(entry.labels, {})
         self.assertEqual(entry.text_payload, TEXT)
@@ -328,7 +356,6 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from google.cloud._helpers import UTC, _pb_timestamp_to_datetime
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         TEXT = 'TEXT'
-        LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
         SEVERITY = 'WARNING'
         LABELS = {
             'foo': 'bar',
@@ -362,7 +389,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
             'last': True,
         }
         ENTRY = {
-            'logName': LOG_PATH,
+            'logName': self.LOG_PATH,
             'resource': {'type': 'global'},
             'textPayload': TEXT,
             'severity': SEVERITY,
@@ -373,7 +400,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
             'operation': OPERATION,
         }
         gax_api = _GAXLoggingAPI()
-        api = self._makeOne(gax_api)
+        api = self._makeOne(gax_api, None)
 
         api.write_entries([ENTRY])
 
@@ -383,7 +410,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
         entry = entries[0]
         self.assertIsInstance(entry, LogEntry)
-        self.assertEqual(entry.log_name, LOG_PATH)
+        self.assertEqual(entry.log_name, self.LOG_PATH)
         self.assertEqual(entry.resource.type, 'global')
         self.assertEqual(entry.text_payload, TEXT)
         self.assertEqual(entry.severity, WARNING)
@@ -441,7 +468,6 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
             {'protoPayload': PROTO,
              'httpRequest': {'requestUrl': URL}},
         ]
-        LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
         RESOURCE = {
             'type': 'global',
         }
@@ -449,9 +475,9 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
             'foo': 'bar',
         }
         gax_api = _GAXLoggingAPI()
-        api = self._makeOne(gax_api)
+        api = self._makeOne(gax_api, None)
 
-        api.write_entries(ENTRIES, LOG_PATH, RESOURCE, LABELS)
+        api.write_entries(ENTRIES, self.LOG_PATH, RESOURCE, LABELS)
 
         entries, log_name, resource, labels, partial_success, options = (
             gax_api._write_log_entries_called_with)
@@ -486,7 +512,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         request = entry.http_request
         self.assertEqual(request.request_url, URL)
 
-        self.assertEqual(log_name, LOG_PATH)
+        self.assertEqual(log_name, self.LOG_PATH)
         self.assertEqual(resource, RESOURCE)
         self.assertEqual(labels, LABELS)
         self.assertEqual(partial_success, False)
@@ -532,40 +558,39 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self._write_entries_multiple_helper(json_payload, json_struct_pb)
 
     def test_logger_delete(self):
-        LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
         gax_api = _GAXLoggingAPI()
-        api = self._makeOne(gax_api)
+        api = self._makeOne(gax_api, None)
 
         api.logger_delete(self.PROJECT, self.LOG_NAME)
 
         log_name, options = gax_api._delete_log_called_with
-        self.assertEqual(log_name, LOG_PATH)
+        self.assertEqual(log_name, self.LOG_PATH)
         self.assertIsNone(options)
 
     def test_logger_delete_not_found(self):
         from google.cloud.exceptions import NotFound
-        LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
+
         gax_api = _GAXLoggingAPI(_delete_not_found=True)
-        api = self._makeOne(gax_api)
+        api = self._makeOne(gax_api, None)
 
         with self.assertRaises(NotFound):
             api.logger_delete(self.PROJECT, self.LOG_NAME)
 
         log_name, options = gax_api._delete_log_called_with
-        self.assertEqual(log_name, LOG_PATH)
+        self.assertEqual(log_name, self.LOG_PATH)
         self.assertIsNone(options)
 
     def test_logger_delete_error(self):
         from google.gax.errors import GaxError
-        LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
+
         gax_api = _GAXLoggingAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        api = self._makeOne(gax_api, None)
 
         with self.assertRaises(GaxError):
             api.logger_delete(self.PROJECT, self.LOG_NAME)
 
         log_name, options = gax_api._delete_log_called_with
-        self.assertEqual(log_name, LOG_PATH)
+        self.assertEqual(log_name, self.LOG_PATH)
         self.assertIsNone(options)
 
 
