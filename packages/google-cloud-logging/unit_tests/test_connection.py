@@ -51,19 +51,26 @@ class Test_LoggingAPI(unittest.TestCase):
 
     def test_ctor(self):
         connection = object()
-        api = self._makeOne(connection)
+        client = _Client(connection)
+        api = self._makeOne(client)
         self.assertIs(api._connection, connection)
+        self.assertIs(api._client, client)
 
     @staticmethod
     def _make_timestamp():
-        from datetime import datetime
+        import datetime
         from google.cloud._helpers import UTC
 
-        NOW = datetime.utcnow().replace(tzinfo=UTC)
-        return _datetime_to_rfc3339_w_nanos(NOW)
+        NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        return NOW, _datetime_to_rfc3339_w_nanos(NOW)
 
     def test_list_entries_no_paging(self):
-        TIMESTAMP = self._make_timestamp()
+        import six
+        from google.cloud.logging.client import Client
+        from google.cloud.logging.entries import TextEntry
+        from google.cloud.logging.logger import Logger
+
+        NOW, TIMESTAMP = self._make_timestamp()
         IID = 'IID'
         TEXT = 'TEXT'
         SENT = {
@@ -83,25 +90,49 @@ class Test_LoggingAPI(unittest.TestCase):
             }],
             'nextPageToken': TOKEN,
         }
-        conn = _Connection(RETURNED)
-        api = self._makeOne(conn)
+        client = Client(project=self.PROJECT, credentials=object(),
+                        use_gax=False)
+        client.connection = _Connection(RETURNED)
+        api = self._makeOne(client)
 
-        entries, token = api.list_entries([self.PROJECT])
+        iterator = api.list_entries([self.PROJECT])
+        page = six.next(iterator.pages)
+        entries = list(page)
+        token = iterator.next_page_token
 
-        self.assertEqual(entries, RETURNED['entries'])
+        # First check the token.
         self.assertEqual(token, TOKEN)
+        # Then check the entries returned.
+        self.assertEqual(len(entries), 1)
+        entry = entries[0]
+        self.assertIsInstance(entry, TextEntry)
+        self.assertEqual(entry.payload, TEXT)
+        self.assertIsInstance(entry.logger, Logger)
+        self.assertEqual(entry.logger.name, self.LOGGER_NAME)
+        self.assertEqual(entry.insert_id, IID)
+        self.assertEqual(entry.timestamp, NOW)
+        self.assertIsNone(entry.labels)
+        self.assertIsNone(entry.severity)
+        self.assertIsNone(entry.http_request)
 
-        self.assertEqual(conn._called_with['method'], 'POST')
-        path = '/%s' % self.LIST_ENTRIES_PATH
-        self.assertEqual(conn._called_with['path'], path)
-        self.assertEqual(conn._called_with['data'], SENT)
+        called_with = client.connection._called_with
+        expected_path = '/%s' % (self.LIST_ENTRIES_PATH,)
+        self.assertEqual(called_with, {
+            'method': 'POST',
+            'path': expected_path,
+            'data': SENT,
+        })
 
     def test_list_entries_w_paging(self):
         from google.cloud.logging import DESCENDING
+        from google.cloud.logging.client import Client
+        from google.cloud.logging.logger import Logger
+        from google.cloud.logging.entries import ProtobufEntry
+        from google.cloud.logging.entries import StructEntry
 
         PROJECT1 = 'PROJECT1'
         PROJECT2 = 'PROJECT2'
-        TIMESTAMP = self._make_timestamp()
+        NOW, TIMESTAMP = self._make_timestamp()
         IID1 = 'IID1'
         IID2 = 'IID2'
         PAYLOAD = {'message': 'MESSAGE', 'weather': 'partly cloudy'}
@@ -137,20 +168,50 @@ class Test_LoggingAPI(unittest.TestCase):
                     self.PROJECT, self.LOGGER_NAME),
             }],
         }
-        conn = _Connection(RETURNED)
-        api = self._makeOne(conn)
+        client = Client(project=self.PROJECT, credentials=object(),
+                        use_gax=False)
+        client.connection = _Connection(RETURNED)
+        api = self._makeOne(client)
 
-        entries, token = api.list_entries(
+        iterator = api.list_entries(
             projects=[PROJECT1, PROJECT2], filter_=self.FILTER,
             order_by=DESCENDING, page_size=PAGE_SIZE, page_token=TOKEN)
+        entries = list(iterator)
+        token = iterator.next_page_token
 
-        self.assertEqual(entries, RETURNED['entries'])
+        # First check the token.
         self.assertIsNone(token)
+        # Then check the entries returned.
+        self.assertEqual(len(entries), 2)
+        entry1 = entries[0]
+        self.assertIsInstance(entry1, StructEntry)
+        self.assertEqual(entry1.payload, PAYLOAD)
+        self.assertIsInstance(entry1.logger, Logger)
+        self.assertEqual(entry1.logger.name, self.LOGGER_NAME)
+        self.assertEqual(entry1.insert_id, IID1)
+        self.assertEqual(entry1.timestamp, NOW)
+        self.assertIsNone(entry1.labels)
+        self.assertIsNone(entry1.severity)
+        self.assertIsNone(entry1.http_request)
 
-        self.assertEqual(conn._called_with['method'], 'POST')
-        path = '/%s' % self.LIST_ENTRIES_PATH
-        self.assertEqual(conn._called_with['path'], path)
-        self.assertEqual(conn._called_with['data'], SENT)
+        entry2 = entries[1]
+        self.assertIsInstance(entry2, ProtobufEntry)
+        self.assertEqual(entry2.payload, PROTO_PAYLOAD)
+        self.assertIsInstance(entry2.logger, Logger)
+        self.assertEqual(entry2.logger.name, self.LOGGER_NAME)
+        self.assertEqual(entry2.insert_id, IID2)
+        self.assertEqual(entry2.timestamp, NOW)
+        self.assertIsNone(entry2.labels)
+        self.assertIsNone(entry2.severity)
+        self.assertIsNone(entry2.http_request)
+
+        called_with = client.connection._called_with
+        expected_path = '/%s' % (self.LIST_ENTRIES_PATH,)
+        self.assertEqual(called_with, {
+            'method': 'POST',
+            'path': expected_path,
+            'data': SENT,
+        })
 
     def test_write_entries_single(self):
         TEXT = 'TEXT'
@@ -166,7 +227,8 @@ class Test_LoggingAPI(unittest.TestCase):
             'entries': [ENTRY],
         }
         conn = _Connection({})
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         api.write_entries([ENTRY])
 
@@ -198,7 +260,8 @@ class Test_LoggingAPI(unittest.TestCase):
             'entries': [ENTRY1, ENTRY2],
         }
         conn = _Connection({})
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         api.write_entries([ENTRY1, ENTRY2], LOG_NAME, RESOURCE, LABELS)
 
@@ -210,7 +273,8 @@ class Test_LoggingAPI(unittest.TestCase):
     def test_logger_delete(self):
         path = '/projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
         conn = _Connection({})
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         api.logger_delete(self.PROJECT, self.LOGGER_NAME)
 
@@ -638,3 +702,9 @@ def _datetime_to_rfc3339_w_nanos(value):
     from google.cloud._helpers import _RFC3339_NO_FRACTION
     no_fraction = value.strftime(_RFC3339_NO_FRACTION)
     return '%s.%09dZ' % (no_fraction, value.microsecond * 1000)
+
+
+class _Client(object):
+
+    def __init__(self, connection):
+        self.connection = connection
