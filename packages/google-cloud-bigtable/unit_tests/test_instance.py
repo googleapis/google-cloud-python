@@ -265,10 +265,11 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(result.name, self.OP_NAME)
         self.assertIs(result.target, instance)
         self.assertIs(result.client, client)
-        self.assertIsInstance(result.pb_metadata,
+        self.assertIsInstance(result.metadata,
                               messages_v2_pb2.CreateInstanceMetadata)
-        self.assertEqual(result.pb_metadata.request_time, NOW_PB)
-        self.assertEqual(result.metadata, {'request_type': 'CreateInstance'})
+        self.assertEqual(result.metadata.request_time, NOW_PB)
+        self.assertEqual(result.caller_metadata,
+                         {'request_type': 'CreateInstance'})
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]
