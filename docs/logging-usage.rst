@@ -68,8 +68,7 @@ Fetch entries for the default project.
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
-   >>> entries, token = client.list_entries()  # API call
-   >>> for entry in entries:
+   >>> for entry in client.list_entries():  # API call(s)
    ...    timestamp = entry.timestamp.isoformat()
    ...    print('%sZ: %s' %
    ...          (timestamp, entry.payload))
@@ -82,8 +81,9 @@ Fetch entries across multiple projects.
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
-   >>> entries, token = client.list_entries(
-   ...     project_ids=['one-project', 'another-project'])  # API call
+   >>> iterator = client.list_entries(
+   ...     project_ids=['one-project', 'another-project'])
+   >>> entries = list(iterator)  # API call(s)
 
 Filter entries retrieved using the `Advanced Logs Filters`_ syntax
 
@@ -94,7 +94,8 @@ Filter entries retrieved using the `Advanced Logs Filters`_ syntax
    >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> FILTER = "log:log_name AND textPayload:simple"
-   >>> entries, token = client.list_entries(filter=FILTER)  # API call
+   >>> iterator = client.list_entries(filter=FILTER)
+   >>> entries = list(iterator)  # API call(s)
 
 Sort entries in descending timestamp order.
 
@@ -102,7 +103,8 @@ Sort entries in descending timestamp order.
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
-   >>> entries, token = client.list_entries(order_by=logging.DESCENDING)  # API call
+   >>> iterator = client.list_entries(order_by=logging.DESCENDING)
+   >>> entries = list(iterator)  # API call(s)
 
 Retrieve entries in batches of 10, iterating until done.
 
@@ -111,12 +113,15 @@ Retrieve entries in batches of 10, iterating until done.
    >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> retrieved = []
-   >>> token = None
-   >>> while True:
-   ...     entries, token = client.list_entries(page_size=10, page_token=token)  # API call
-   ...     retrieved.extend(entries)
-   ...     if token is None:
-   ...         break
+   >>> iterator = client.list_entries(page_size=10, page_token=token)
+   >>> pages = iterator.pages
+   >>> page1 = next(pages)  # API call
+   >>> for entry in page1:
+   ...     do_something(entry)
+   ...
+   >>> page2 = next(pages)  # API call
+   >>> for entry in page2:
+   ...     do_something_else(entry)
 
 Retrieve entries for a single logger, sorting in descending timestamp order:
 
@@ -125,7 +130,8 @@ Retrieve entries for a single logger, sorting in descending timestamp order:
    >>> from google.cloud import logging
    >>> client = logging.Client()
    >>> logger = client.logger('log_name')
-   >>> entries, token = logger.list_entries(order_by=logging.DESCENDING)  # API call
+   >>> iterator = logger.list_entries(order_by=logging.DESCENDING)
+   >>> entries = list(iterator)  # API call(s)
 
 Delete all entries for a logger
 -------------------------------
