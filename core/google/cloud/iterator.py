@@ -298,6 +298,7 @@ class HTTPIterator(Iterator):
     _PAGE_TOKEN = 'pageToken'
     _MAX_RESULTS = 'maxResults'
     _RESERVED_PARAMS = frozenset([_PAGE_TOKEN, _MAX_RESULTS])
+    _HTTP_METHOD = 'GET'
 
     def __init__(self, client, path, item_to_value,
                  items_key=DEFAULT_ITEMS_KEY,
@@ -378,9 +379,19 @@ class HTTPIterator(Iterator):
         :rtype: dict
         :returns: The parsed JSON response of the next page's contents.
         """
-        return self.client.connection.api_request(
-            method='GET', path=self.path,
-            query_params=self._get_query_params())
+        params = self._get_query_params()
+        if self._HTTP_METHOD == 'GET':
+            return self.client.connection.api_request(
+                method=self._HTTP_METHOD,
+                path=self.path,
+                query_params=params)
+        elif self._HTTP_METHOD == 'POST':
+            return self.client.connection.api_request(
+                method=self._HTTP_METHOD,
+                path=self.path,
+                data=params)
+        else:
+            raise ValueError('Unexpected HTTP method', self._HTTP_METHOD)
 
 
 class GAXIterator(Iterator):
