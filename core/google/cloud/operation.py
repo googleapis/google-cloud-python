@@ -17,7 +17,7 @@
 from google.longrunning import operations_pb2
 
 
-_GOOGLE_APIS_PREFIX = 'types.googleapis.com'
+_GOOGLE_APIS_PREFIX = 'type.googleapis.com'
 
 _TYPE_URL_MAP = {
 }
