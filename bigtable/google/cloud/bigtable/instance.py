@@ -28,7 +28,7 @@ from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.table import Table
 from google.cloud.operation import Operation
 from google.cloud.operation import _compute_type_url
-from google.cloud.operation import _register_type_url
+from google.cloud.operation import register_type_url
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
@@ -38,8 +38,10 @@ _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
 
 _CREATE_INSTANCE_METADATA_URL = _compute_type_url(
     messages_v2_pb2.CreateInstanceMetadata)
-_register_type_url(
+register_type_url(
     _CREATE_INSTANCE_METADATA_URL, messages_v2_pb2.CreateInstanceMetadata)
+_INSTANCE_METADATA_URL = _compute_type_url(data_v2_pb2.Instance)
+register_type_url(_INSTANCE_METADATA_URL, data_v2_pb2.Instance)
 
 
 def _prepare_create_request(instance):
@@ -237,7 +239,7 @@ class Instance(object):
 
         operation = Operation.from_pb(operation_pb, self._client)
         operation.target = self
-        operation.metadata['request_type'] = 'CreateInstance'
+        operation.caller_metadata['request_type'] = 'CreateInstance'
         return operation
 
     def update(self):
