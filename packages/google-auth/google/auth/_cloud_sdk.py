@@ -131,12 +131,13 @@ def get_project_id():
 
     try:
         config.read(config_file)
+
+        if config.has_section(_PROJECT_CONFIG_SECTION):
+            return config.get(
+                _PROJECT_CONFIG_SECTION, _PROJECT_CONFIG_KEY)
+
     except configparser.Error:
         return None
-
-    if config.has_section(_PROJECT_CONFIG_SECTION):
-        return config.get(
-            _PROJECT_CONFIG_SECTION, _PROJECT_CONFIG_KEY)
 
 
 def load_authorized_user_credentials(info):

@@ -21,7 +21,7 @@ from google.auth.compute_engine import _metadata
 
 @pytest.fixture(autouse=True)
 def check_gce_environment(http_request):
-    if not _metadata.ping(http_request):
+    if not _metadata.ping(http_request, timeout=1):
         pytest.skip('Compute Engine metadata service is not available.')
 
 

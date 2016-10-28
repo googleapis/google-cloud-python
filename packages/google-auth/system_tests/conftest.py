@@ -23,20 +23,22 @@ import urllib3
 
 HERE = os.path.dirname(__file__)
 DATA_DIR = os.path.join(HERE, 'data')
-HTTP = urllib3.PoolManager()
+SERVICE_ACCOUNT_FILE = os.path.join(DATA_DIR, 'service_account.json')
+AUTHORIZED_USER_FILE = os.path.join(DATA_DIR, 'authorized_user.json')
+HTTP = urllib3.PoolManager(retries=False)
 TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
 
 
 @pytest.fixture
 def service_account_file():
     """The full path to a valid service account key file."""
-    yield os.path.join(DATA_DIR, 'service_account.json')
+    yield SERVICE_ACCOUNT_FILE
 
 
 @pytest.fixture
 def authorized_user_file():
     """The full path to a valid authorized user file."""
-    yield os.path.join(DATA_DIR, 'authorized_user.json')
+    yield AUTHORIZED_USER_FILE
 
 
 @pytest.fixture
@@ -65,6 +67,21 @@ def token_info(http_request):
         return json.loads(response.data.decode('utf-8'))
 
     yield _token_info
+
+
+@pytest.fixture
+def verify_refresh(http_request):
+    """Returns a function that verifies that credentials can be refreshed."""
+    def _verify_refresh(credentials):
+        if credentials.requires_scopes:
+            credentials = credentials.with_scopes(['email', 'profile'])
+
+        credentials.refresh(http_request)
+
+        assert credentials.token
+        assert credentials.valid
+
+    yield _verify_refresh
 
 
 def verify_environment():
