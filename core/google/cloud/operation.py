@@ -39,17 +39,20 @@ def _compute_type_url(klass, prefix=_GOOGLE_APIS_PREFIX):
     return '%s/%s' % (prefix, name)
 
 
-def register_type_url(type_url, klass):
+def register_type(klass, type_url=None):
     """Register a klass as the factory for a given type URL.
-
-    :type type_url: str
-    :param type_url: URL naming the type
 
     :type klass: type
     :param klass: class to be used as a factory for the given type
 
+    :type type_url: str
+    :param type_url: (Optional) URL naming the type. If not provided,
+                     infers the URL from the type descriptor.
+
     :raises: ValueError if a registration already exists for the URL.
     """
+    if type_url is None:
+        type_url = _compute_type_url(klass)
     if type_url in _TYPE_URL_MAP:
         if _TYPE_URL_MAP[type_url] is not klass:
             raise ValueError("Conflict: %s" % (_TYPE_URL_MAP[type_url],))
@@ -123,7 +126,7 @@ class Operation(object):
     """Metadata about the current operation (as a protobuf).
 
     Code that uses operations must register the metadata types (via
-    :func:`register_type_url`) to ensure that the metadata fields can be
+    :func:`register_type`) to ensure that the metadata fields can be
     converted into the correct types.
     """
 

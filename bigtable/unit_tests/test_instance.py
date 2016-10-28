@@ -236,8 +236,6 @@ class TestInstance(unittest.TestCase):
         from unit_tests._testing import _FakeStub
         from google.cloud.operation import Operation
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
-        from google.cloud.bigtable.instance import (
-            _CREATE_INSTANCE_METADATA_URL)
 
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
@@ -247,10 +245,12 @@ class TestInstance(unittest.TestCase):
 
         # Create response_pb
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
+        type_url = 'type.googleapis.com/%s' % (
+            messages_v2_pb2.CreateInstanceMetadata.DESCRIPTOR.full_name,)
         response_pb = operations_pb2.Operation(
             name=self.OP_NAME,
             metadata=Any(
-                type_url=_CREATE_INSTANCE_METADATA_URL,
+                type_url=type_url,
                 value=metadata.SerializeToString(),
                 )
             )
