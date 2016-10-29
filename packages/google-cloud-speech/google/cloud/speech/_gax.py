@@ -18,6 +18,11 @@ from google.cloud.gapic.speech.v1beta1.speech_api import SpeechApi
 from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import SpeechContext
 from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import RecognitionConfig
 from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import RecognitionAudio
+from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+    StreamingRecognitionConfig)
+from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+    StreamingRecognizeRequest)
+
 
 from google.cloud.speech.transcript import Transcript
 
@@ -138,3 +143,84 @@ class GAPICSpeechAPI(object):
                     for alternative in alternatives]
         else:
             raise ValueError('More than one result or none returned from API.')
+
+
+def _make_streaming_request(sample, language_code,
+                            max_alternatives, profanity_filter,
+                            speech_context, single_utterance,
+                            interim_results):
+    """Build streaming request.
+
+    :type sample: :class:`~google.cloud.speech.sample.Sample`
+    :param sample: Instance of ``Sample`` containing audio information.
+
+    :type language_code: str
+    :param language_code: The language of the supplied audio as
+                          BCP-47 language tag. Example: ``'en-GB'``.
+                          If omitted, defaults to ``'en-US'``.
+
+    :type max_alternatives: int
+    :param max_alternatives: Maximum number of recognition
+                             hypotheses to be returned. The server may
+                             return fewer than maxAlternatives.
+                             Valid values are 0-30. A value of 0 or 1
+                             will return a maximum of 1. Defaults to 1
+
+    :type profanity_filter: bool
+    :param profanity_filter: If True, the server will attempt to filter
+                             out profanities, replacing all but the
+                             initial character in each filtered word with
+                             asterisks, e.g. ``'f***'``. If False or
+                             omitted, profanities won't be filtered out.
+
+    :type speech_context: list
+    :param speech_context: A list of strings (max 50) containing words and
+                           phrases "hints" so that the speech recognition
+                           is more likely to recognize them. This can be
+                           used to improve the accuracy for specific words
+                           and phrases. This can also be used to add new
+                           words to the vocabulary of the recognizer.
+
+    :type single_utterance: bool
+    :param single_utterance: If false or omitted, the recognizer
+                             will perform continuous recognition
+                             (continuing to process audio even if the user
+                             pauses speaking) until the client closes the
+                             output stream (gRPC API) or when the maximum
+                             time limit has been reached. Multiple
+                             SpeechRecognitionResults with the is_final
+                             flag set to true may be returned.
+
+                             If true, the recognizer will detect a single
+                             spoken utterance. When it detects that the
+                             user has paused or stopped speaking, it will
+                             return an END_OF_UTTERANCE event and cease
+                             recognition. It will return no more than one
+                             SpeechRecognitionResult with the is_final flag
+                             set to true.
+
+    :type interim_results: bool
+    :param interim_results: If true, interim results (tentative
+                            hypotheses) may be returned as they become
+                            available (these interim results are indicated
+                            with the is_final=false flag). If false or
+                            omitted, only is_final=true result(s) are
+                            returned.
+
+    :rtype:
+        :class:`~grpc.speech.v1beta1.cloud_speech_pb2.StreamingRecognizeRequest`
+    :returns: Instance of ``StreamingRecognizeRequest``.
+    """
+    config = RecognitionConfig(
+        encoding=sample.encoding, sample_rate=sample.sample_rate,
+        language_code=language_code, max_alternatives=max_alternatives,
+        profanity_filter=profanity_filter, speech_context=speech_context)
+
+    streaming_config = StreamingRecognitionConfig(
+        config=config, single_utterance=single_utterance,
+        interim_results=interim_results)
+
+    config_request = StreamingRecognizeRequest(
+        streaming_config=streaming_config)
+
+    return config_request
