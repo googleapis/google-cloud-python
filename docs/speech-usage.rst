@@ -69,9 +69,12 @@ See: `Speech Asynchronous Recognize`_
     ...     operation.poll()  # API call
     >>> operation.complete
     True
-    >>> operation.results[0].transcript
+    >>> for result in operation.results:
+    ...     print('=' * 20)
+    ...     print(result.transcript)
+    ...     print(result.confidence)
+    ====================
     'how old is the Brooklyn Bridge'
-    >>> operation.results[0].confidence
     0.98267895
 
 
