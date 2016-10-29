@@ -15,6 +15,7 @@
 """Create / interact with Google Cloud Pub/Sub connections."""
 
 import base64
+import functools
 import os
 
 from google.cloud import connection as base_connection
@@ -238,7 +239,8 @@ class _PublisherAPI(object):
 
         iterator = HTTPIterator(
             client=self._client, path=path,
-            item_to_value=_item_to_subscription, items_key='subscriptions',
+            item_to_value=_item_to_subscription_for_topic,
+            items_key='subscriptions',
             page_token=page_token, extra_params=extra_params)
         iterator.topic = topic
         return iterator
@@ -247,12 +249,13 @@ class _PublisherAPI(object):
 class _SubscriberAPI(object):
     """Helper mapping subscriber-related APIs.
 
-    :type connection: :class:`Connection`
-    :param connection: the connection used to make API requests.
+    :type client: :class:`~google.cloud.pubsub.client.Client`
+    :param client: the client used to make API requests.
     """
 
-    def __init__(self, connection):
-        self._connection = connection
+    def __init__(self, client):
+        self._client = client
+        self._connection = client.connection
 
     def list_subscriptions(self, project, page_size=None, page_token=None):
         """API call:  list subscriptions for a given project
@@ -272,24 +275,26 @@ class _SubscriberAPI(object):
                            If not passed, the API will return the first page
                            of subscriptions.
 
-        :rtype: tuple, (list, str)
-        :returns: list of ``Subscription`` resource dicts, plus a
-                  "next page token" string:  if not None, indicates that
-                  more subscriptions can be retrieved with another call (pass
-                  that value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of
+                  :class:`~google.cloud.pubsub.subscription.Subscription`
+                  accessible to the current API.
         """
-        conn = self._connection
-        params = {}
-
+        extra_params = {}
         if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
+            extra_params['pageSize'] = page_size
         path = '/projects/%s/subscriptions' % (project,)
-        resp = conn.api_request(method='GET', path=path, query_params=params)
-        return resp.get('subscriptions', ()), resp.get('nextPageToken')
+
+        # We attach a mutable topics dictionary so that as topic
+        # objects are created by Subscription.from_api_repr, they
+        # can be re-used by other subscriptions from the same topic.
+        topics = {}
+        item_to_value = functools.partial(
+            _item_to_sub_for_client, topics=topics)
+        return HTTPIterator(
+            client=self._client, path=path, item_to_value=item_to_value,
+            items_key='subscriptions', page_token=page_token,
+            extra_params=extra_params)
 
     def subscription_create(self, subscription_path, topic_path,
                             ack_deadline=None, push_endpoint=None):
@@ -590,7 +595,7 @@ def _item_to_topic(iterator, resource):
     return Topic.from_api_repr(resource, iterator.client)
 
 
-def _item_to_subscription(iterator, subscription_path):
+def _item_to_subscription_for_topic(iterator, subscription_path):
     """Convert a subscription name to the native object.
 
     :type iterator: :class:`~google.cloud.iterator.Iterator`
@@ -605,3 +610,32 @@ def _item_to_subscription(iterator, subscription_path):
     subscription_name = subscription_name_from_path(
         subscription_path, iterator.client.project)
     return Subscription(subscription_name, iterator.topic)
+
+
+def _item_to_sub_for_client(iterator, resource, topics):
+    """Convert a subscription to the native object.
+
+    .. note::
+
+       This method does not have the correct signature to be used as
+       the ``item_to_value`` argument to
+       :class:`~google.cloud.iterator.Iterator`. It is intended to be
+       patched with a mutable topics argument that can be updated
+       on subsequent calls. For an example, see how the method is
+       used above in :meth:`_SubscriberAPI.list_subscriptions`.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type resource: dict
+    :param resource: A subscription returned from the API.
+
+    :type topics: dict
+    :param topics: A dictionary of topics to be used (and modified)
+                   as new subscriptions are created bound to topics.
+
+    :rtype: :class:`~google.cloud.pubsub.subscription.Subscription`
+    :returns: The next subscription in the page.
+    """
+    return Subscription.from_api_repr(
+        resource, iterator.client, topics=topics)

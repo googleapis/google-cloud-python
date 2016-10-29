@@ -417,23 +417,41 @@ class Test_SubscriberAPI(_Base):
 
     def test_ctor(self):
         connection = _Connection()
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
         self.assertIs(api._connection, connection)
+        self.assertIs(api._client, client)
 
     def test_list_subscriptions_no_paging(self):
+        from google.cloud.pubsub.client import Client
+        from google.cloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.topic import Topic
+
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         RETURNED = {'subscriptions': [SUB_INFO]}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        creds = _Credentials()
+        client = Client(project=self.PROJECT, credentials=creds)
+        client.connection = connection
+        api = self._makeOne(client)
 
-        subscriptions, next_token = api.list_subscriptions(self.PROJECT)
+        iterator = api.list_subscriptions(self.PROJECT)
+        subscriptions = list(iterator)
+        next_token = iterator.next_page_token
 
+        # Check the token returned.
+        self.assertIsNone(next_token)
+        # Check the subscription object returned.
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
-        self.assertIsInstance(subscription, dict)
-        self.assertEqual(subscription['name'], self.SUB_PATH)
-        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
-        self.assertIsNone(next_token)
+        self.assertIsInstance(subscription, Subscription)
+        self.assertEqual(subscription.name, self.SUB_NAME)
+        self.assertIsInstance(subscription.topic, Topic)
+        self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
+        self.assertIs(subscription._client, client)
+        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertIsNone(subscription.ack_deadline)
+        self.assertIsNone(subscription.push_endpoint)
 
         self.assertEqual(connection._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_SUBSCRIPTIONS_PATH,)
@@ -441,6 +459,11 @@ class Test_SubscriberAPI(_Base):
         self.assertEqual(connection._called_with['query_params'], {})
 
     def test_list_subscriptions_with_paging(self):
+        import six
+        from google.cloud.pubsub.client import Client
+        from google.cloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.topic import Topic
+
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
@@ -450,17 +473,30 @@ class Test_SubscriberAPI(_Base):
             'nextPageToken': 'TOKEN2',
         }
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        creds = _Credentials()
+        client = Client(project=self.PROJECT, credentials=creds)
+        client.connection = connection
+        api = self._makeOne(client)
 
-        subscriptions, next_token = api.list_subscriptions(
+        iterator = api.list_subscriptions(
             self.PROJECT, page_token=TOKEN1, page_size=SIZE)
+        page = six.next(iterator.pages)
+        subscriptions = list(page)
+        next_token = iterator.next_page_token
 
+        # Check the token returned.
+        self.assertEqual(next_token, TOKEN2)
+        # Check the subscription object returned.
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
-        self.assertIsInstance(subscription, dict)
-        self.assertEqual(subscription['name'], self.SUB_PATH)
-        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
-        self.assertEqual(next_token, TOKEN2)
+        self.assertIsInstance(subscription, Subscription)
+        self.assertEqual(subscription.name, self.SUB_NAME)
+        self.assertIsInstance(subscription.topic, Topic)
+        self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
+        self.assertIs(subscription._client, client)
+        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertIsNone(subscription.ack_deadline)
+        self.assertIsNone(subscription.push_endpoint)
 
         self.assertEqual(connection._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_SUBSCRIPTIONS_PATH,)
@@ -471,9 +507,12 @@ class Test_SubscriberAPI(_Base):
     def test_list_subscriptions_missing_key(self):
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
-        subscriptions, next_token = api.list_subscriptions(self.PROJECT)
+        iterator = api.list_subscriptions(self.PROJECT)
+        subscriptions = list(iterator)
+        next_token = iterator.next_page_token
 
         self.assertEqual(len(subscriptions), 0)
         self.assertIsNone(next_token)
@@ -488,7 +527,8 @@ class Test_SubscriberAPI(_Base):
         RETURNED = RESOURCE.copy()
         RETURNED['name'] = self.SUB_PATH
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         resource = api.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
 
@@ -511,7 +551,8 @@ class Test_SubscriberAPI(_Base):
         RETURNED = RESOURCE.copy()
         RETURNED['name'] = self.SUB_PATH
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         resource = api.subscription_create(
             self.SUB_PATH, self.TOPIC_PATH,
@@ -533,7 +574,8 @@ class Test_SubscriberAPI(_Base):
             'pushConfig': {'pushEndpoint': PUSH_ENDPOINT},
         }
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         resource = api.subscription_get(self.SUB_PATH)
 
@@ -545,7 +587,8 @@ class Test_SubscriberAPI(_Base):
     def test_subscription_delete(self):
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         api.subscription_delete(self.SUB_PATH)
 
@@ -560,7 +603,8 @@ class Test_SubscriberAPI(_Base):
         }
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         api.subscription_modify_push_config(self.SUB_PATH, PUSH_ENDPOINT)
 
@@ -580,7 +624,8 @@ class Test_SubscriberAPI(_Base):
             'receivedMessages': [{'ackId': ACK_ID, 'message': MESSAGE}],
         }
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
         BODY = {
             'returnImmediately': False,
             'maxMessages': 1,
@@ -606,7 +651,8 @@ class Test_SubscriberAPI(_Base):
             'receivedMessages': [{'ackId': ACK_ID, 'message': MESSAGE}],
         }
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
         MAX_MESSAGES = 10
         BODY = {
             'returnImmediately': True,
@@ -630,7 +676,8 @@ class Test_SubscriberAPI(_Base):
         }
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         api.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
 
@@ -649,7 +696,8 @@ class Test_SubscriberAPI(_Base):
         }
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        client = _Client(connection, self.PROJECT)
+        api = self._makeOne(client)
 
         api.subscription_modify_ack_deadline(
             self.SUB_PATH, [ACK_ID1, ACK_ID2], NEW_DEADLINE)
@@ -829,3 +877,10 @@ class _Client(object):
     def __init__(self, connection, project):
         self.connection = connection
         self.project = project
+
+
+class _Credentials(object):
+
+    @staticmethod
+    def create_scoped_required():
+        return False

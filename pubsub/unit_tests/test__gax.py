@@ -407,30 +407,48 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_ctor(self):
         gax_api = _GAXSubscriberAPI()
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
         self.assertIs(api._gax_api, gax_api)
+        self.assertIs(api._client, client)
 
     def test_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
+        from google.pubsub.v1.pubsub_pb2 import PushConfig
+        from google.pubsub.v1.pubsub_pb2 import Subscription as SubscriptionPB
         from google.cloud._testing import _GAXPageIterator
+        from google.cloud.pubsub.client import Client
+        from google.cloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.topic import Topic
 
-        sub_pb = _SubscriptionPB(
-            self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)
+        push_cfg_pb = PushConfig(push_endpoint=self.PUSH_ENDPOINT)
+        local_sub_path = '%s/subscriptions/%s' % (
+            self.PROJECT_PATH, self.SUB_NAME)
+        sub_pb = SubscriptionPB(name=local_sub_path, topic=self.TOPIC_PATH,
+                                push_config=push_cfg_pb)
         response = _GAXPageIterator([sub_pb])
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
-        api = self._makeOne(gax_api)
+        creds = _Credentials()
+        client = Client(project=self.PROJECT, credentials=creds)
+        api = self._makeOne(gax_api, client)
 
-        subscriptions, next_token = api.list_subscriptions(self.PROJECT)
+        iterator = api.list_subscriptions(self.PROJECT)
+        subscriptions = list(iterator)
+        next_token = iterator.next_page_token
 
+        # Check the token returned.
+        self.assertIsNone(next_token)
+        # Check the subscription object returned.
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
-        self.assertIsInstance(subscription, dict)
-        self.assertEqual(subscription['name'], self.SUB_PATH)
-        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
-        self.assertEqual(subscription['pushConfig'],
-                         {'pushEndpoint': self.PUSH_ENDPOINT})
-        self.assertEqual(subscription['ackDeadlineSeconds'], 0)
-        self.assertIsNone(next_token)
+        self.assertIsInstance(subscription, Subscription)
+        self.assertEqual(subscription.name, self.SUB_NAME)
+        self.assertIsInstance(subscription.topic, Topic)
+        self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
+        self.assertIs(subscription._client, client)
+        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertIsNone(subscription.ack_deadline)
+        self.assertEqual(subscription.push_endpoint, self.PUSH_ENDPOINT)
 
         name, page_size, options = gax_api._list_subscriptions_called_with
         self.assertEqual(name, self.PROJECT_PATH)
@@ -438,28 +456,46 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_list_subscriptions_with_paging(self):
+        from google.pubsub.v1.pubsub_pb2 import PushConfig
+        from google.pubsub.v1.pubsub_pb2 import Subscription as SubscriptionPB
         from google.cloud._testing import _GAXPageIterator
+        from google.cloud.pubsub.client import Client
+        from google.cloud.pubsub.subscription import Subscription
+        from google.cloud.pubsub.topic import Topic
+
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
-        sub_pb = _SubscriptionPB(
-            self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)
+        push_cfg_pb = PushConfig(push_endpoint=self.PUSH_ENDPOINT)
+        local_sub_path = '%s/subscriptions/%s' % (
+            self.PROJECT_PATH, self.SUB_NAME)
+        sub_pb = SubscriptionPB(name=local_sub_path, topic=self.TOPIC_PATH,
+                                push_config=push_cfg_pb)
         response = _GAXPageIterator([sub_pb], page_token=NEW_TOKEN)
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        creds = _Credentials()
+        client = Client(project=self.PROJECT, credentials=creds)
+        api = self._makeOne(gax_api, client)
 
-        subscriptions, next_token = api.list_subscriptions(
+        iterator = api.list_subscriptions(
             self.PROJECT, page_size=SIZE, page_token=TOKEN)
+        subscriptions = list(iterator)
+        next_token = iterator.next_page_token
 
+        # Check the token returned.
+        self.assertEqual(next_token, NEW_TOKEN)
+        # Check the subscription object returned.
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
-        self.assertIsInstance(subscription, dict)
-        self.assertEqual(subscription['name'], self.SUB_PATH)
-        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
-        self.assertEqual(subscription['pushConfig'],
-                         {'pushEndpoint': self.PUSH_ENDPOINT})
-        self.assertEqual(subscription['ackDeadlineSeconds'], 0)
-        self.assertEqual(next_token, NEW_TOKEN)
+        self.assertIsInstance(subscription, Subscription)
+        self.assertEqual(subscription.name, self.SUB_NAME)
+        self.assertIsInstance(subscription.topic, Topic)
+        self.assertEqual(subscription.topic.name, self.TOPIC_NAME)
+        self.assertIs(subscription._client, client)
+        self.assertEqual(subscription._project, self.PROJECT)
+        self.assertIsNone(subscription.ack_deadline)
+        self.assertEqual(subscription.push_endpoint, self.PUSH_ENDPOINT)
 
         name, page_size, options = gax_api._list_subscriptions_called_with
         self.assertEqual(name, self.PROJECT_PATH)
@@ -467,16 +503,18 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, TOKEN)
 
     def test_subscription_create(self):
-        sub_pb = _SubscriptionPB(self.SUB_PATH, self.TOPIC_PATH, '', 0)
+        from google.pubsub.v1.pubsub_pb2 import Subscription
+
+        sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH)
         gax_api = _GAXSubscriberAPI(_create_subscription_response=sub_pb)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         resource = api.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
 
         expected = {
             'name': self.SUB_PATH,
             'topic': self.TOPIC_PATH,
-            'ackDeadlineSeconds': 0,
         }
         self.assertEqual(resource, expected)
         name, topic, push_config, ack_deadline, options = (
@@ -491,7 +529,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         from google.cloud.exceptions import Conflict
         DEADLINE = 600
         gax_api = _GAXSubscriberAPI(_create_subscription_conflict=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(Conflict):
             api.subscription_create(
@@ -508,7 +547,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_subscription_create_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
@@ -522,17 +562,21 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_subscription_get_hit(self):
-        sub_pb = _SubscriptionPB(
-            self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)
+        from google.pubsub.v1.pubsub_pb2 import PushConfig
+        from google.pubsub.v1.pubsub_pb2 import Subscription
+
+        push_cfg_pb = PushConfig(push_endpoint=self.PUSH_ENDPOINT)
+        sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH,
+                              push_config=push_cfg_pb)
         gax_api = _GAXSubscriberAPI(_get_subscription_response=sub_pb)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         resource = api.subscription_get(self.SUB_PATH)
 
         expected = {
             'name': self.SUB_PATH,
             'topic': self.TOPIC_PATH,
-            'ackDeadlineSeconds': 0,
             'pushConfig': {
                 'pushEndpoint': self.PUSH_ENDPOINT,
             },
@@ -545,7 +589,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_subscription_get_miss(self):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXSubscriberAPI()
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.subscription_get(self.SUB_PATH)
@@ -557,7 +602,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_subscription_get_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_get(self.SUB_PATH)
@@ -568,7 +614,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_delete_hit(self):
         gax_api = _GAXSubscriberAPI(_delete_subscription_ok=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         api.subscription_delete(self.TOPIC_PATH)
 
@@ -579,7 +626,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_subscription_delete_miss(self):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXSubscriberAPI(_delete_subscription_ok=False)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.subscription_delete(self.TOPIC_PATH)
@@ -591,7 +639,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_subscription_delete_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_delete(self.TOPIC_PATH)
@@ -602,7 +651,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_subscription_modify_push_config_hit(self):
         gax_api = _GAXSubscriberAPI(_modify_push_config_ok=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         api.subscription_modify_push_config(self.SUB_PATH, self.PUSH_ENDPOINT)
 
@@ -614,7 +664,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_subscription_modify_push_config_miss(self):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXSubscriberAPI()
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.subscription_modify_push_config(
@@ -628,7 +679,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_subscription_modify_push_config_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_modify_push_config(
@@ -645,6 +697,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud._helpers import _datetime_to_rfc3339
+
         NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
         NOW_PB = _datetime_to_pb_timestamp(NOW)
         NOW_RFC3339 = _datetime_to_rfc3339(NOW)
@@ -662,7 +715,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         message_pb = _PubsubMessagePB(MSG_ID, B64, {'a': 'b'}, NOW_PB)
         response_pb = _PullResponsePB([_ReceivedMessagePB(ACK_ID, message_pb)])
         gax_api = _GAXSubscriberAPI(_pull_response=response_pb)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
         MAX_MESSAGES = 10
 
         received = api.subscription_pull(
@@ -679,7 +733,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_subscription_pull_defaults_miss(self):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXSubscriberAPI()
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.subscription_pull(self.SUB_PATH)
@@ -694,7 +749,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_subscription_pull_defaults_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_pull(self.SUB_PATH)
@@ -710,7 +766,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         gax_api = _GAXSubscriberAPI(_acknowledge_ok=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         api.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
 
@@ -724,7 +781,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         gax_api = _GAXSubscriberAPI()
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
@@ -739,7 +797,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
@@ -754,7 +813,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         ACK_ID2 = 'BEADCAFE'
         NEW_DEADLINE = 90
         gax_api = _GAXSubscriberAPI(_modify_ack_deadline_ok=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         api.subscription_modify_ack_deadline(
             self.SUB_PATH, [ACK_ID1, ACK_ID2], NEW_DEADLINE)
@@ -772,7 +832,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         ACK_ID2 = 'BEADCAFE'
         NEW_DEADLINE = 90
         gax_api = _GAXSubscriberAPI()
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.subscription_modify_ack_deadline(
@@ -791,7 +852,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         ACK_ID2 = 'BEADCAFE'
         NEW_DEADLINE = 90
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api)
+        client = _Client(self.PROJECT)
+        api = self._makeOne(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_modify_ack_deadline(
@@ -1057,12 +1119,6 @@ class _PublishResponsePB(object):
         self.message_ids = message_ids
 
 
-class _PushConfigPB(object):
-
-    def __init__(self, push_endpoint):
-        self.push_endpoint = push_endpoint
-
-
 class _PubsubMessagePB(object):
 
     def __init__(self, message_id, data, attributes, publish_time):
@@ -1085,15 +1141,6 @@ class _PullResponsePB(object):
         self.received_messages = received_messages
 
 
-class _SubscriptionPB(object):
-
-    def __init__(self, name, topic, push_endpoint, ack_deadline_seconds):
-        self.name = name
-        self.topic = topic
-        self.push_config = _PushConfigPB(push_endpoint)
-        self.ack_deadline_seconds = ack_deadline_seconds
-
-
 class _Connection(object):
 
     def __init__(self, in_emulator=False, host=None):
@@ -1105,3 +1152,10 @@ class _Client(object):
 
     def __init__(self, project):
         self.project = project
+
+
+class _Credentials(object):
+
+    @staticmethod
+    def create_scoped_required():
+        return False
