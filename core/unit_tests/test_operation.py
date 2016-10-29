@@ -88,7 +88,7 @@ class Test_register_type_url(unittest.TestCase):
         self.assertEqual(type_url_map, {TYPE_URI: other})
 
 
-class OperationTests(unittest.TestCase):
+class TestOperation(unittest.TestCase):
 
     OPERATION_NAME = 'operations/projects/foo/instances/bar/operations/123'
 
@@ -110,6 +110,7 @@ class OperationTests(unittest.TestCase):
         self.assertIsNone(operation.error)
         self.assertIsNone(operation.metadata)
         self.assertEqual(operation.caller_metadata, {})
+        self.assertTrue(operation._use_grpc)
 
     def test_ctor_explicit(self):
         client = _Client()
@@ -123,6 +124,7 @@ class OperationTests(unittest.TestCase):
         self.assertIsNone(operation.error)
         self.assertIsNone(operation.metadata)
         self.assertEqual(operation.caller_metadata, {'foo': 'bar'})
+        self.assertTrue(operation._use_grpc)
 
     def test_from_pb_wo_metadata_or_kw(self):
         from google.longrunning import operations_pb2
@@ -187,6 +189,38 @@ class OperationTests(unittest.TestCase):
         self.assertEqual(operation.metadata, meta)
         self.assertEqual(operation.caller_metadata, {'baz': 'qux'})
 
+    def test_from_dict(self):
+        from google.protobuf.struct_pb2 import Struct
+        from google.cloud._testing import _Monkey
+        from google.cloud import operation as MUT
+
+        type_url = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
+        api_response = {
+            'name': self.OPERATION_NAME,
+            'metadata': {
+                '@type': type_url,
+                'value': {'foo': 'Bar'},
+            },
+        }
+
+        client = _Client()
+        klass = self._getTargetClass()
+
+        with _Monkey(MUT, _TYPE_URL_MAP={type_url: Struct}):
+            operation = klass.from_dict(api_response, client)
+
+        self.assertEqual(operation.name, self.OPERATION_NAME)
+        self.assertIs(operation.client, client)
+        self.assertIsNone(operation.target)
+        self.assertIsNone(operation.response)
+        self.assertIsNone(operation.error)
+        self.assertIsInstance(operation.metadata, Struct)
+        self.assertEqual(len(operation.metadata.fields), 1)
+        self.assertEqual(
+            operation.metadata.fields['foo'].string_value, 'Bar')
+        self.assertEqual(operation.caller_metadata, {})
+        self.assertFalse(operation._use_grpc)
+
     def test_complete_property(self):
         client = _Client()
         operation = self._makeOne(self.OPERATION_NAME, client)
@@ -233,6 +267,35 @@ class OperationTests(unittest.TestCase):
         request_pb = stub._get_operation_requested
         self.assertIsInstance(request_pb, operations_pb2.GetOperationRequest)
         self.assertEqual(request_pb.name, self.OPERATION_NAME)
+
+    def test_poll_http(self):
+        from google.protobuf.struct_pb2 import Struct
+        from google.cloud._testing import _Monkey
+        from google.cloud import operation as MUT
+
+        type_url = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
+        name = '2302903294023'
+        api_response = {
+            'name': name,
+            'done': True,
+            'metadata': {
+                '@type': type_url,
+                'value': {'foo': 'Bar'},
+            },
+        }
+        connection = _Connection(api_response)
+        client = _Client(connection)
+        operation = self._makeOne(name, client)
+        operation._use_grpc = False
+
+        with _Monkey(MUT, _TYPE_URL_MAP={type_url: Struct}):
+            self.assertTrue(operation.poll())
+
+        expected_path = 'operations/%s' % (name,)
+        self.assertEqual(connection._requested, [{
+            'method': 'GET',
+            'path': expected_path,
+        }])
 
     def test__update_state_done(self):
         from google.longrunning import operations_pb2
@@ -324,7 +387,20 @@ class _OperationsStub(object):
         return self._get_operation_response
 
 
+class _Connection(object):
+
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
+
+    def api_request(self, **kw):
+        self._requested.append(kw)
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
+
+
 class _Client(object):
 
-    def __init__(self):
+    def __init__(self, connection=None):
         self._operations_stub = _OperationsStub()
+        self.connection = connection
