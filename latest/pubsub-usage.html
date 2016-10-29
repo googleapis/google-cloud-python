@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 1cbc793 documentation</title>
+  <title>Using the API &mdash; google-cloud 53c189a documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 1cbc793 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 53c189a documentation" href="index.html"/>
         <link rel="next" title="Pub/Sub Client" href="pubsub-client.html"/>
         <link rel="prev" title="Batches" href="storage-batch.html"/> 
 
@@ -384,14 +384,8 @@ an exception.</p>
 <div class="section" id="manage-subscriptions-to-topics">
 <h2>Manage subscriptions to topics<a class="headerlink" href="#manage-subscriptions-to-topics" title="Permalink to this headline">#</a></h2>
 <p>List all subscriptions for the default project:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscriptions</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">()</span>   <span class="c1"># API request</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">:</span>
-            <span class="n">do_something_with</span><span class="p">(</span><span class="n">subscription</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">break</span>
-        <span class="n">subscriptions</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span>
-            <span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>                           <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">():</span>  <span class="c1"># API request(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">subscription</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>List subscriptions for a topic:</p>
@@ -540,7 +534,7 @@ which haven&#8217;t been deleted from <code class="docutils literal"><span class
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1cbc793',
+            VERSION:'53c189a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
