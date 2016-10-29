@@ -123,8 +123,9 @@ class Operation(operation.Operation):
         raw_results = response.get('response', {}).get('results', None)
         results = []
         if raw_results:
-            for result in raw_results[0]['alternatives']:
-                results.append(Transcript.from_api_repr(result))
+            for result in raw_results:
+                for alternative in result['alternatives']:
+                    results.append(Transcript.from_api_repr(alternative))
         if metadata:
             self._metadata = Metadata.from_api_repr(metadata)
 
