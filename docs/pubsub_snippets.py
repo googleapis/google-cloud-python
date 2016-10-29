@@ -60,14 +60,8 @@ def client_list_subscriptions(client,
         pass
 
     # [START client_list_subscriptions]
-    subscriptions, token = client.list_subscriptions()   # API request
-    while True:
-        for subscription in subscriptions:
-            do_something_with(subscription)
-        if token is None:
-            break
-        subscriptions, token = client.list_subscriptions(
-            page_token=token)                           # API request
+    for subscription in client.list_subscriptions():  # API request(s)
+        do_something_with(subscription)
     # [END client_list_subscriptions]
 
 

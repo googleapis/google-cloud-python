@@ -22,7 +22,6 @@ from google.cloud.pubsub.connection import Connection
 from google.cloud.pubsub.connection import _PublisherAPI as JSONPublisherAPI
 from google.cloud.pubsub.connection import _SubscriberAPI as JSONSubscriberAPI
 from google.cloud.pubsub.connection import _IAMPolicyAPI
-from google.cloud.pubsub.subscription import Subscription
 from google.cloud.pubsub.topic import Topic
 
 try:
@@ -98,9 +97,9 @@ class Client(JSONClient):
         if self._subscriber_api is None:
             if self._use_gax:
                 generated = make_gax_subscriber_api(self.connection)
-                self._subscriber_api = GAXSubscriberAPI(generated)
+                self._subscriber_api = GAXSubscriberAPI(generated, self)
             else:
-                self._subscriber_api = JSONSubscriberAPI(self.connection)
+                self._subscriber_api = JSONSubscriberAPI(self)
         return self._subscriber_api
 
     @property
@@ -160,20 +159,14 @@ class Client(JSONClient):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: tuple, (list, str)
-        :returns: list of :class:`~.pubsub.subscription.Subscription`,
-                  plus a "next page token" string:  if not None, indicates that
-                  more topics can be retrieved with another call (pass that
-                  value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of
+                  :class:`~google.cloud.pubsub.subscription.Subscription`
+                  accessible to the current client.
         """
         api = self.subscriber_api
-        resources, next_token = api.list_subscriptions(
+        return api.list_subscriptions(
             self.project, page_size, page_token)
-        topics = {}
-        subscriptions = [Subscription.from_api_repr(resource, self,
-                                                    topics=topics)
-                         for resource in resources]
-        return subscriptions, next_token
 
     def topic(self, name, timestamp_messages=False):
         """Creates a topic bound to the current client.
