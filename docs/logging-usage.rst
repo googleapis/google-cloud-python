@@ -171,7 +171,7 @@ List all metrics for a project:
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
-   >>> metrics, token = client.list_metrics()
+   >>> metrics = list(client.list_metrics())
    >>> len(metrics)
    1
    >>> metric = metrics[0]
