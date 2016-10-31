@@ -15,6 +15,7 @@
 """Wrap long-running operations returned from Google Cloud APIs."""
 
 from google.longrunning import operations_pb2
+from google.protobuf import json_format
 
 
 _GOOGLE_APIS_PREFIX = 'type.googleapis.com'
@@ -100,8 +101,13 @@ class Operation(object):
     :type name: str
     :param name: The fully-qualified path naming the operation.
 
-    :type client: object: must provide ``_operations_stub`` accessor.
+    :type client: :class:`~google.cloud.client.Client`
     :param client: The client used to poll for the status of the operation.
+                   If the operation was created via JSON/HTTP, the client
+                   must own a :class:`~google.cloud.connection.Connection`
+                   to send polling requests. If created via protobuf, the
+                   client must have a gRPC stub in the ``_operations_stub``
+                   attribute.
 
     :type caller_metadata: dict
     :param caller_metadata: caller-assigned metadata about the operation
@@ -130,6 +136,8 @@ class Operation(object):
     converted into the correct types.
     """
 
+    _from_grpc = True
+
     def __init__(self, name, client, **caller_metadata):
         self.name = name
         self.client = client
@@ -155,6 +163,30 @@ class Operation(object):
         """
         result = cls(operation_pb.name, client, **caller_metadata)
         result._update_state(operation_pb)
+        result._from_grpc = True
+        return result
+
+    @classmethod
+    def from_dict(cls, operation, client, **caller_metadata):
+        """Factory: construct an instance from a dictionary.
+
+        :type operation: dict
+        :param operation: Operation as a JSON object.
+
+        :type client: :class:`~google.cloud.client.Client`
+        :param client: The client used to poll for the status of the operation.
+
+        :type caller_metadata: dict
+        :param caller_metadata: caller-assigned metadata about the operation
+
+        :rtype: :class:`Operation`
+        :returns: new instance, with attributes based on the protobuf.
+        """
+        operation_pb = json_format.ParseDict(
+            operation, operations_pb2.Operation())
+        result = cls(operation_pb.name, client, **caller_metadata)
+        result._update_state(operation_pb)
+        result._from_grpc = False
         return result
 
     @property
@@ -169,11 +201,38 @@ class Operation(object):
     def _get_operation_rpc(self):
         """Polls the status of the current operation.
 
+        Uses gRPC request to check.
+
         :rtype: :class:`~google.longrunning.operations_pb2.Operation`
         :returns: The latest status of the current operation.
         """
         request_pb = operations_pb2.GetOperationRequest(name=self.name)
         return self.client._operations_stub.GetOperation(request_pb)
+
+    def _get_operation_http(self):
+        """Checks the status of the current operation.
+
+        Uses HTTP request to check.
+
+        :rtype: :class:`~google.longrunning.operations_pb2.Operation`
+        :returns: The latest status of the current operation.
+        """
+        path = 'operations/%s' % (self.name,)
+        api_response = self.client.connection.api_request(
+            method='GET', path=path)
+        return json_format.ParseDict(
+            api_response, operations_pb2.Operation())
+
+    def _get_operation(self):
+        """Checks the status of the current operation.
+
+        :rtype: :class:`~google.longrunning.operations_pb2.Operation`
+        :returns: The latest status of the current operation.
+        """
+        if self._from_grpc:
+            return self._get_operation_rpc()
+        else:
+            return self._get_operation_http()
 
     def _update_state(self, operation_pb):
         """Update the state of the current object based on operation.
@@ -205,7 +264,7 @@ class Operation(object):
         if self.complete:
             raise ValueError('The operation has completed.')
 
-        operation_pb = self._get_operation_rpc()
+        operation_pb = self._get_operation()
         self._update_state(operation_pb)
 
         return self.complete
