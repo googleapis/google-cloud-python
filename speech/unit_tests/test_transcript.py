@@ -31,3 +31,12 @@ class TestTranscript(unittest.TestCase):
         self.assertEqual('how old is the Brooklyn Bridge',
                          transcript.transcript)
         self.assertEqual(0.98267895, transcript.confidence)
+
+    def test_from_api_repr_with_no_confidence(self):
+        data = {
+            'transcript': 'testing 1 2 3'
+        }
+
+        transcript = self._getTargetClass().from_api_repr(data)
+        self.assertEqual(transcript.transcript, data['transcript'])
+        self.assertIsNone(transcript.confidence)
