@@ -15,10 +15,10 @@
 import unittest
 
 
-class TestSpeechGAX(unittest.TestCase):
+class TestSpeechGAXMakeRequests(unittest.TestCase):
     SAMPLE_RATE = 16000
     HINTS = ['hi']
-    AUDIO_CONTENT = '/9j/4QNURXhpZgAASUkq'
+    AUDIO_CONTENT = b'/9j/4QNURXhpZgAASUkq'
 
     def _callFUT(self, sample, language_code, max_alternatives,
                  profanity_filter, speech_context, single_utterance,
@@ -78,3 +78,62 @@ class TestSpeechGAX(unittest.TestCase):
         self.assertEqual(config.max_alternatives, max_alternatives)
         self.assertTrue(config.profanity_filter)
         self.assertEqual(config.speech_context.phrases, self.HINTS)
+
+
+class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
+    SAMPLE_RATE = 16000
+    HINTS = ['hi']
+    AUDIO_CONTENT = b'/9j/4QNURXhpZgAASUkq'
+
+    def _callFUT(self, sample, language_code, max_alternatives,
+                 profanity_filter, speech_context, single_utterance,
+                 interim_results):
+        from google.cloud.speech._gax import _stream_requests
+        return _stream_requests(sample=sample,
+                                language_code=language_code,
+                                max_alternatives=max_alternatives,
+                                profanity_filter=profanity_filter,
+                                speech_context=speech_context,
+                                single_utterance=single_utterance,
+                                interim_results=interim_results)
+
+    def test_stream_requests(self):
+        from io import BytesIO
+        from google.cloud import speech
+        from google.cloud.speech.sample import Sample
+        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+            SpeechContext)
+        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+            StreamingRecognitionConfig)
+        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
+            StreamingRecognizeRequest)
+
+        sample = Sample(content=BytesIO(self.AUDIO_CONTENT),
+                        encoding=speech.Encoding.FLAC,
+                        sample_rate=self.SAMPLE_RATE)
+        language_code = 'US-en'
+        max_alternatives = 2
+        profanity_filter = True
+        speech_context = SpeechContext(phrases=self.HINTS)
+        single_utterance = True
+        interim_results = False
+        streaming_requests = self._callFUT(sample, language_code,
+                                           max_alternatives, profanity_filter,
+                                           speech_context, single_utterance,
+                                           interim_results)
+        all_requests = []
+        for streaming_request in streaming_requests:
+            self.assertIsInstance(streaming_request, StreamingRecognizeRequest)
+            all_requests.append(streaming_request)
+
+        self.assertEqual(len(all_requests), 2)
+
+        config_request = all_requests[0]
+        streaming_request = all_requests[1]
+        # This isn't set by _make_streaming_request().
+        # The first request can only have `streaming_config` set.
+        # The following requests can only have `audio_content` set.
+        self.assertEqual(config_request.audio_content, b'')
+        self.assertEqual(streaming_request.audio_content, self.AUDIO_CONTENT)
+        self.assertIsInstance(config_request.streaming_config,
+                              StreamingRecognitionConfig)
