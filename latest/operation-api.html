@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Long-Running Operations &mdash; google-cloud 262a0e7 documentation</title>
+  <title>Long-Running Operations &mdash; google-cloud 319fd8f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 262a0e7 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 319fd8f documentation" href="index.html"/>
         <link rel="next" title="Datastore Client" href="datastore-client.html"/>
         <link rel="prev" title="Iterators" href="iterators.html"/> 
 
@@ -288,7 +288,12 @@ API that maps the same underlying data type.)</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The fully-qualified path naming the operation.</li>
-<li><strong>client</strong> (object: must provide <code class="docutils literal"><span class="pre">_operations_stub</span></code> accessor.) &#8211; The client used to poll for the status of the operation.</li>
+<li><strong>client</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client used to poll for the status of the operation.
+If the operation was created via JSON/HTTP, the client
+must own a <a class="reference internal" href="google-cloud-api.html#google.cloud.connection.Connection" title="google.cloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">Connection</span></code></a>
+to send polling requests. If created via protobuf, the
+client must have a gRPC stub in the <code class="docutils literal"><span class="pre">_operations_stub</span></code>
+attribute.</li>
 <li><strong>caller_metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; caller-assigned metadata about the operation</li>
 </ul>
 </td>
@@ -316,6 +321,31 @@ API that maps the same underlying data type.)</p>
 <code class="descname">error</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.operation.Operation.error" title="Permalink to this definition">#</a></dt>
 <dd><p>Error that resulted from a failed (complete) operation.</p>
 <p>Only one of this and <a class="reference internal" href="#google.cloud.operation.Operation.response" title="google.cloud.operation.Operation.response"><code class="xref py py-attr docutils literal"><span class="pre">response</span></code></a> can be populated.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.operation.Operation.from_dict">
+<em class="property">classmethod </em><code class="descname">from_dict</code><span class="sig-paren">(</span><em>operation</em>, <em>client</em>, <em>**caller_metadata</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/operation.html#Operation.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.operation.Operation.from_dict" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct an instance from a dictionary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>operation</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Operation as a JSON object.</li>
+<li><strong>client</strong> (<a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client used to poll for the status of the operation.</li>
+<li><strong>caller_metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; caller-assigned metadata about the operation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.operation.Operation" title="google.cloud.operation.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">new instance, with attributes based on the protobuf.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="classmethod">
@@ -451,7 +481,7 @@ infers the URL from the type descriptor.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'262a0e7',
+            VERSION:'319fd8f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

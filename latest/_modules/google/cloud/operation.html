@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.operation &mdash; google-cloud 262a0e7 documentation</title>
+  <title>google.cloud.operation &mdash; google-cloud 319fd8f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud 262a0e7 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 319fd8f documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -287,6 +287,7 @@
 <span class="sd">&quot;&quot;&quot;Wrap long-running operations returned from Google Cloud APIs.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">google.longrunning</span> <span class="k">import</span> <span class="n">operations_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">json_format</span>
 
 
 <span class="n">_GOOGLE_APIS_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;type.googleapis.com&#39;</span>
@@ -372,8 +373,13 @@
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param name: The fully-qualified path naming the operation.</span>
 
-<span class="sd">    :type client: object: must provide ``_operations_stub`` accessor.</span>
+<span class="sd">    :type client: :class:`~google.cloud.client.Client`</span>
 <span class="sd">    :param client: The client used to poll for the status of the operation.</span>
+<span class="sd">                   If the operation was created via JSON/HTTP, the client</span>
+<span class="sd">                   must own a :class:`~google.cloud.connection.Connection`</span>
+<span class="sd">                   to send polling requests. If created via protobuf, the</span>
+<span class="sd">                   client must have a gRPC stub in the ``_operations_stub``</span>
+<span class="sd">                   attribute.</span>
 
 <span class="sd">    :type caller_metadata: dict</span>
 <span class="sd">    :param caller_metadata: caller-assigned metadata about the operation</span>
@@ -402,6 +408,8 @@
 <span class="sd">    converted into the correct types.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">_from_grpc</span> <span class="o">=</span> <span class="kc">True</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
@@ -427,6 +435,30 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">operation_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">_update_state</span><span class="p">(</span><span class="n">operation_pb</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">_from_grpc</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Operation.from_dict"><a class="viewcode-back" href="../../../operation-api.html#google.cloud.operation.Operation.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct an instance from a dictionary.</span>
+
+<span class="sd">        :type operation: dict</span>
+<span class="sd">        :param operation: Operation as a JSON object.</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.client.Client`</span>
+<span class="sd">        :param client: The client used to poll for the status of the operation.</span>
+
+<span class="sd">        :type caller_metadata: dict</span>
+<span class="sd">        :param caller_metadata: caller-assigned metadata about the operation</span>
+
+<span class="sd">        :rtype: :class:`Operation`</span>
+<span class="sd">        :returns: new instance, with attributes based on the protobuf.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">operation_pb</span> <span class="o">=</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span>
+            <span class="n">operation</span><span class="p">,</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">Operation</span><span class="p">())</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">operation_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">_update_state</span><span class="p">(</span><span class="n">operation_pb</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">_from_grpc</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
     <span class="nd">@property</span>
@@ -441,11 +473,38 @@
     <span class="k">def</span> <span class="nf">_get_operation_rpc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Polls the status of the current operation.</span>
 
+<span class="sd">        Uses gRPC request to check.</span>
+
 <span class="sd">        :rtype: :class:`~google.longrunning.operations_pb2.Operation`</span>
 <span class="sd">        :returns: The latest status of the current operation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_pb</span> <span class="o">=</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">GetOperationRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_operations_stub</span><span class="o">.</span><span class="n">GetOperation</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_operation_http</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks the status of the current operation.</span>
+
+<span class="sd">        Uses HTTP request to check.</span>
+
+<span class="sd">        :rtype: :class:`~google.longrunning.operations_pb2.Operation`</span>
+<span class="sd">        :returns: The latest status of the current operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;operations/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,)</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span>
+            <span class="n">api_response</span><span class="p">,</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">Operation</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">_get_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks the status of the current operation.</span>
+
+<span class="sd">        :rtype: :class:`~google.longrunning.operations_pb2.Operation`</span>
+<span class="sd">        :returns: The latest status of the current operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_grpc</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_operation_rpc</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_operation_http</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_update_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the state of the current object based on operation.</span>
@@ -477,7 +536,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The operation has completed.&#39;</span><span class="p">)</span>
 
-        <span class="n">operation_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_operation_rpc</span><span class="p">()</span>
+        <span class="n">operation_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_operation</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_state</span><span class="p">(</span><span class="n">operation_pb</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete</span></div></div>
@@ -514,7 +573,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'262a0e7',
+            VERSION:'319fd8f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
