@@ -38,7 +38,7 @@ class Transcript(object):
         :rtype: :class:`Transcript`
         :returns: Instance of ``Transcript``.
         """
-        return cls(transcript.get('transcript'), transcript.get('confidence'))
+        return cls(transcript['transcript'], transcript.get('confidence'))
 
     @classmethod
     def from_pb(cls, transcript):
