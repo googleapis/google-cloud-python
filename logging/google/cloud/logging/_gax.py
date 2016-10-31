@@ -144,9 +144,13 @@ class _SinksAPI(object):
     :type gax_api:
         :class:`google.logging.v2.config_service_v2_api.ConfigServiceV2Api`
     :param gax_api: API object used to make GAX requests.
+
+    :type client: :class:`~google.cloud.logging.client.Client`
+    :param client: The client that owns this API object.
     """
-    def __init__(self, gax_api):
+    def __init__(self, gax_api, client):
         self._gax_api = gax_api
+        self._client = client
 
     def list_sinks(self, project, page_size=0, page_token=None):
         """List sinks for the project associated with this client.
@@ -291,9 +295,13 @@ class _MetricsAPI(object):
     :type gax_api:
         :class:`google.logging.v2.metrics_service_v2_api.MetricsServiceV2Api`
     :param gax_api: API object used to make GAX requests.
+
+    :type client: :class:`~google.cloud.logging.client.Client`
+    :param client: The client that owns this API object.
     """
-    def __init__(self, gax_api):
+    def __init__(self, gax_api, client):
         self._gax_api = gax_api
+        self._client = client
 
     def list_metrics(self, project, page_size=0, page_token=None):
         """List metrics for the project associated with this client.
