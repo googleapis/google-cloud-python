@@ -16,8 +16,10 @@ import json
 import os
 
 from google.auth import _helpers
+import google.auth.transport.requests
 import google.auth.transport.urllib3
 import pytest
+import requests
 import urllib3
 
 
@@ -25,7 +27,9 @@ HERE = os.path.dirname(__file__)
 DATA_DIR = os.path.join(HERE, 'data')
 SERVICE_ACCOUNT_FILE = os.path.join(DATA_DIR, 'service_account.json')
 AUTHORIZED_USER_FILE = os.path.join(DATA_DIR, 'authorized_user.json')
-HTTP = urllib3.PoolManager(retries=False)
+URLLIB3_HTTP = urllib3.PoolManager(retries=False)
+REQUESTS_SESSION = requests.Session()
+REQUESTS_SESSION.verify = False
 TOKEN_INFO_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
 
 
@@ -41,10 +45,13 @@ def authorized_user_file():
     yield AUTHORIZED_USER_FILE
 
 
-@pytest.fixture
-def http_request():
+@pytest.fixture(params=['urllib3', 'requests'])
+def http_request(request):
     """A transport.request object."""
-    yield google.auth.transport.urllib3.Request(HTTP)
+    if request.param == 'urllib3':
+        yield google.auth.transport.urllib3.Request(URLLIB3_HTTP)
+    elif request.param == 'requests':
+        yield google.auth.transport.requests.Request(REQUESTS_SESSION)
 
 
 @pytest.fixture

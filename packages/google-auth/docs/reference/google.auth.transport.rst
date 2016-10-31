@@ -11,5 +11,6 @@ Submodules
 
 .. toctree::
 
+   google.auth.transport.requests
    google.auth.transport.urllib3
 
