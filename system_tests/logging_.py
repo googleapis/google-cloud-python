@@ -15,6 +15,11 @@
 import logging
 import unittest
 
+from google.gax.errors import GaxError
+from grpc import StatusCode
+
+from google.cloud.exceptions import Conflict
+from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import TooManyRequests
 import google.cloud.logging
 import google.cloud.logging.handlers.handlers
@@ -34,12 +39,40 @@ retry_429 = RetryErrors(TooManyRequests)
 
 def _retry_on_unavailable(exc):
     """Retry only errors whose status code is 'UNAVAILABLE'."""
-    from grpc import StatusCode
     return exc.code() == StatusCode.UNAVAILABLE
 
 
+def _consume_entries(logger):
+    """Consume all log entries from logger iterator.
+
+    :type logger: :class:`~google.cloud.logging.logger.Logger`
+    :param logger: A Logger containing entries.
+
+    :rtype: list
+    :returns: List of all entries consumed.
+    """
+    return list(logger.list_entries())
+
+
+def _list_entries(logger):
+    """Retry-ing list entries in a logger.
+
+    Retry until there are actual results and retry on any
+    failures.
+
+    :type logger: :class:`~google.cloud.logging.logger.Logger`
+    :param logger: A Logger containing entries.
+
+    :rtype: list
+    :returns: List of all entries consumed.
+    """
+    inner = RetryResult(_has_entries)(_consume_entries)
+    outer = RetryErrors(GaxError, _retry_on_unavailable)(inner)
+    return outer(logger)
+
+
 def _has_entries(result):
-    return len(result[0]) > 0
+    return len(result) > 0
 
 
 class Config(object):
@@ -71,7 +104,6 @@ class TestLogging(unittest.TestCase):
         self._handlers_cache = logging.getLogger().handlers[:]
 
     def tearDown(self):
-        from google.cloud.exceptions import NotFound
         retry = RetryErrors(NotFound)
         for doomed in self.to_delete:
             retry(doomed.delete)()
@@ -81,19 +113,12 @@ class TestLogging(unittest.TestCase):
     def _logger_name():
         return 'system-tests-logger' + unique_resource_id('-')
 
-    def _list_entries(self, logger):
-        from google.gax.errors import GaxError
-
-        inner = RetryResult(_has_entries)(logger.list_entries)
-        outer = RetryErrors(GaxError, _retry_on_unavailable)(inner)
-        return outer()
-
     def test_log_text(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
         logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
         logger.log_text(TEXT_PAYLOAD)
-        entries, _ = self._list_entries(logger)
+        entries = _list_entries(logger)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
 
@@ -114,7 +139,7 @@ class TestLogging(unittest.TestCase):
 
         logger.log_text(TEXT_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
                         http_request=REQUEST)
-        entries, _ = self._list_entries(logger)
+        entries = _list_entries(logger)
 
         self.assertEqual(len(entries), 1)
 
@@ -133,7 +158,7 @@ class TestLogging(unittest.TestCase):
         self.to_delete.append(logger)
 
         logger.log_struct(self.JSON_PAYLOAD)
-        entries, _ = self._list_entries(logger)
+        entries = _list_entries(logger)
 
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, self.JSON_PAYLOAD)
@@ -149,7 +174,7 @@ class TestLogging(unittest.TestCase):
         cloud_logger = logging.getLogger(handler.name)
         cloud_logger.addHandler(handler)
         cloud_logger.warn(LOG_MESSAGE)
-        entries, _ = self._list_entries(logger)
+        entries = _list_entries(logger)
         expected_payload = {
             'message': LOG_MESSAGE,
             'python_logger': handler.name
@@ -173,7 +198,7 @@ class TestLogging(unittest.TestCase):
         cloud_logger.addHandler(handler)
         cloud_logger.warn(LOG_MESSAGE)
 
-        entries, _ = self._list_entries(logger)
+        entries = _list_entries(logger)
         expected_payload = {
             'message': LOG_MESSAGE,
             'python_logger': LOGGER_NAME
@@ -192,7 +217,7 @@ class TestLogging(unittest.TestCase):
         google.cloud.logging.handlers.handlers.setup_logging(handler)
         logging.warn(LOG_MESSAGE)
 
-        entries, _ = self._list_entries(logger)
+        entries = _list_entries(logger)
         expected_payload = {
             'message': LOG_MESSAGE,
             'python_logger': 'root'
@@ -217,7 +242,7 @@ class TestLogging(unittest.TestCase):
 
         logger.log_struct(self.JSON_PAYLOAD, insert_id=INSERT_ID,
                           severity=SEVERITY, http_request=REQUEST)
-        entries, _ = self._list_entries(logger)
+        entries = _list_entries(logger)
 
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, self.JSON_PAYLOAD)
@@ -253,7 +278,6 @@ class TestLogging(unittest.TestCase):
                          set([METRIC_NAME]))
 
     def test_reload_metric(self):
-        from google.cloud.exceptions import Conflict
         METRIC_NAME = 'test-reload-metric%s' % (_RESOURCE_ID,)
         retry = RetryErrors(Conflict)
         metric = Config.CLIENT.metric(
@@ -268,7 +292,6 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(metric.description, DEFAULT_DESCRIPTION)
 
     def test_update_metric(self):
-        from google.cloud.exceptions import Conflict
         METRIC_NAME = 'test-update-metric%s' % (_RESOURCE_ID,)
         retry = RetryErrors(Conflict)
         NEW_FILTER = 'logName:other'
@@ -386,7 +409,6 @@ class TestLogging(unittest.TestCase):
                          set([SINK_NAME]))
 
     def test_reload_sink(self):
-        from google.cloud.exceptions import Conflict
         SINK_NAME = 'test-reload-sink%s' % (_RESOURCE_ID,)
         retry = RetryErrors(Conflict)
         uri = self._init_bigquery_dataset()
@@ -401,7 +423,6 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(sink.destination, uri)
 
     def test_update_sink(self):
-        from google.cloud.exceptions import Conflict
         SINK_NAME = 'test-update-sink%s' % (_RESOURCE_ID,)
         retry = RetryErrors(Conflict)
         bucket_uri = self._init_storage_bucket()

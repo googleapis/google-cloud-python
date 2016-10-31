@@ -14,7 +14,11 @@
 
 """Create / interact with Stackdriver Logging connections."""
 
+import functools
+
 from google.cloud import connection as base_connection
+from google.cloud.iterator import HTTPIterator
+from google.cloud.logging._helpers import entry_from_resource
 
 
 class Connection(base_connection.JSONConnection):
@@ -55,11 +59,13 @@ class _LoggingAPI(object):
     https://cloud.google.com/logging/docs/api/reference/rest/v2/entries
     https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs
 
-    :type connection: :class:`google.cloud.logging.connection.Connection`
-    :param connection: the connection used to make API requests.
+    :type client: :class:`~google.cloud.logging.client.Client`
+    :param client: The client used to make API requests.
     """
-    def __init__(self, connection):
-        self._connection = connection
+
+    def __init__(self, client):
+        self._client = client
+        self._connection = client.connection
 
     def list_entries(self, projects, filter_=None, order_by=None,
                      page_size=None, page_token=None):
@@ -73,8 +79,9 @@ class _LoggingAPI(object):
                             defaults to the project bound to the client.
 
         :type filter_: str
-        :param filter_: a filter expression. See:
-                        https://cloud.google.com/logging/docs/view/advanced_filters
+        :param filter_:
+            a filter expression. See:
+            https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: str
         :param order_by: One of :data:`~google.cloud.logging.ASCENDING`
@@ -89,29 +96,35 @@ class _LoggingAPI(object):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: tuple, (list, str)
-        :returns: list of mappings, plus a "next page token" string:
-                  if not None, indicates that more entries can be retrieved
-                  with another call (pass that value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`
+                  accessible to the current API.
         """
-        params = {'projectIds': projects}
+        extra_params = {'projectIds': projects}
 
         if filter_ is not None:
-            params['filter'] = filter_
+            extra_params['filter'] = filter_
 
         if order_by is not None:
-            params['orderBy'] = order_by
+            extra_params['orderBy'] = order_by
 
         if page_size is not None:
-            params['pageSize'] = page_size
+            extra_params['pageSize'] = page_size
 
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        resp = self._connection.api_request(
-            method='POST', path='/entries:list', data=params)
-
-        return resp.get('entries', ()), resp.get('nextPageToken')
+        path = '/entries:list'
+        # We attach a mutable loggers dictionary so that as Logger
+        # objects are created by entry_from_resource, they can be
+        # re-used by other log entries from the same logger.
+        loggers = {}
+        item_to_value = functools.partial(
+            _item_to_entry, loggers=loggers)
+        iterator = HTTPIterator(
+            client=self._client, path=path,
+            item_to_value=item_to_value, items_key='entries',
+            page_token=page_token, extra_params=extra_params)
+        # This method uses POST to make a read-only request.
+        iterator._HTTP_METHOD = 'POST'
+        return iterator
 
     def write_entries(self, entries, logger_name=None, resource=None,
                       labels=None):
@@ -439,3 +452,33 @@ class _MetricsAPI(object):
         """
         target = '/projects/%s/metrics/%s' % (project, metric_name)
         self._connection.api_request(method='DELETE', path=target)
+
+
+def _item_to_entry(iterator, resource, loggers):
+    """Convert a log entry resource to the native object.
+
+    .. note::
+
+        This method does not have the correct signature to be used as
+        the ``item_to_value`` argument to
+        :class:`~google.cloud.iterator.Iterator`. It is intended to be
+        patched with a mutable ``loggers`` argument that can be updated
+        on subsequent calls. For an example, see how the method is
+        used above in :meth:`_LoggingAPI.list_entries`.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type resource: dict
+    :param resource: Log entry JSON resource returned from the API.
+
+    :type loggers: dict
+    :param loggers:
+        A mapping of logger fullnames -> loggers.  If the logger
+        that owns the entry is not in ``loggers``, the entry
+        will have a newly-created logger.
+
+    :rtype: :class:`~google.cloud.logging.entries._BaseEntry`
+    :returns: The next log entry in the page.
+    """
+    return entry_from_resource(resource, iterator.client, loggers)

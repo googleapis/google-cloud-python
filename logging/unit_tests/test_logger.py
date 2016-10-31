@@ -346,47 +346,75 @@ class TestLogger(unittest.TestCase):
                          (self.PROJECT, self.LOGGER_NAME))
 
     def test_list_entries_defaults(self):
-        LISTED = {
-            'projects': None,
-            'filter_': 'logName=projects/%s/logs/%s' %
-                       (self.PROJECT, self.LOGGER_NAME),
-            'order_by': None,
-            'page_size': None,
-            'page_token': None,
-        }
+        import six
+        from google.cloud.logging.client import Client
+
         TOKEN = 'TOKEN'
-        client = _Client(self.PROJECT)
-        client._token = TOKEN
+
+        client = Client(project=self.PROJECT, credentials=object(),
+                        use_gax=False)
+        returned = {
+            'nextPageToken': TOKEN,
+        }
+        client.connection = _Connection(returned)
+
         logger = self._makeOne(self.LOGGER_NAME, client=client)
-        entries, token = logger.list_entries()
+
+        iterator = logger.list_entries()
+        page = six.next(iterator.pages)
+        entries = list(page)
+        token = iterator.next_page_token
+
         self.assertEqual(len(entries), 0)
         self.assertEqual(token, TOKEN)
-        self.assertEqual(client._listed, LISTED)
+        called_with = client.connection._called_with
+        FILTER = 'logName=projects/%s/logs/%s' % (
+            self.PROJECT, self.LOGGER_NAME)
+        self.assertEqual(called_with, {
+            'method': 'POST',
+            'path': '/entries:list',
+            'data': {
+                'filter': FILTER,
+                'projectIds': [self.PROJECT],
+            },
+        })
 
     def test_list_entries_explicit(self):
         from google.cloud.logging import DESCENDING
+        from google.cloud.logging.client import Client
 
         PROJECT1 = 'PROJECT1'
         PROJECT2 = 'PROJECT2'
         FILTER = 'resource.type:global'
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
-        LISTED = {
-            'projects': ['PROJECT1', 'PROJECT2'],
-            'filter_': '%s AND logName=projects/%s/logs/%s' %
-                       (FILTER, self.PROJECT, self.LOGGER_NAME),
-            'order_by': DESCENDING,
-            'page_size': PAGE_SIZE,
-            'page_token': TOKEN,
-        }
-        client = _Client(self.PROJECT)
+        client = Client(project=self.PROJECT, credentials=object(),
+                        use_gax=False)
+        client.connection = _Connection({})
         logger = self._makeOne(self.LOGGER_NAME, client=client)
-        entries, token = logger.list_entries(
+        iterator = logger.list_entries(
             projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
             page_size=PAGE_SIZE, page_token=TOKEN)
+        entries = list(iterator)
+        token = iterator.next_page_token
+
         self.assertEqual(len(entries), 0)
         self.assertIsNone(token)
-        self.assertEqual(client._listed, LISTED)
+        # self.assertEqual(client._listed, LISTED)
+        called_with = client.connection._called_with
+        combined_filter = '%s AND logName=projects/%s/logs/%s' % (
+            FILTER, self.PROJECT, self.LOGGER_NAME)
+        self.assertEqual(called_with, {
+            'method': 'POST',
+            'path': '/entries:list',
+            'data': {
+                'filter': combined_filter,
+                'orderBy': DESCENDING,
+                'pageSize': PAGE_SIZE,
+                'pageToken': TOKEN,
+                'projectIds': [PROJECT1, PROJECT2],
+            },
+        })
 
 
 class TestBatch(unittest.TestCase):
@@ -689,17 +717,23 @@ class _DummyLoggingAPI(object):
 
 class _Client(object):
 
-    _listed = _token = None
-    _entries = ()
-
     def __init__(self, project, connection=None):
         self.project = project
         self.connection = connection
 
-    def list_entries(self, **kw):
-        self._listed = kw
-        return self._entries, self._token
-
 
 class _Bugout(Exception):
     pass
+
+
+class _Connection(object):
+
+    _called_with = None
+
+    def __init__(self, *responses):
+        self._responses = responses
+
+    def api_request(self, **kw):
+        self._called_with = kw
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
