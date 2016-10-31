@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.sample &mdash; google-cloud 016415a documentation</title>
+  <title>google.cloud.speech.sample &mdash; google-cloud c4ac484 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 016415a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud c4ac484 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -341,6 +341,15 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid encoding: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">encoding</span><span class="p">,))</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chunk_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Chunk size to send over gRPC. ~100ms</span>
+
+<span class="sd">        :rtype: int</span>
+<span class="sd">        :returns: Optimized chunk size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_rate</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">source_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Google Cloud Storage URI of audio source.</span>
 
@@ -408,7 +417,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'016415a',
+            VERSION:'c4ac484',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
