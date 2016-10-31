@@ -14,6 +14,7 @@
 
 """Client for interacting with the Google Stackdriver Logging API."""
 
+import logging
 import os
 
 try:
@@ -34,6 +35,12 @@ from google.cloud.logging._http import Connection
 from google.cloud.logging._http import _LoggingAPI as JSONLoggingAPI
 from google.cloud.logging._http import _MetricsAPI as JSONMetricsAPI
 from google.cloud.logging._http import _SinksAPI as JSONSinksAPI
+from google.cloud.logging.handlers import CloudLoggingHandler
+from google.cloud.logging.handlers import AppEngineHandler
+from google.cloud.logging.handlers import ContainerEngineHandler
+from google.cloud.logging.handlers import setup_logging
+from google.cloud.logging.handlers.handlers import EXCLUDED_LOGGER_DEFAULTS
+
 from google.cloud.logging.logger import Logger
 from google.cloud.logging.metric import Metric
 from google.cloud.logging.sink import Sink
@@ -41,6 +48,15 @@ from google.cloud.logging.sink import Sink
 
 _DISABLE_GAX = os.getenv(DISABLE_GRPC, False)
 _USE_GAX = _HAVE_GAX and not _DISABLE_GAX
+
+_APPENGINE_FLEXIBLE_ENV_VM = 'GAE_APPENGINE_HOSTNAME'
+"""Environment variable set in App Engine when vm:true is set."""
+
+_APPENGINE_FLEXIBLE_ENV_FLEX = 'GAE_INSTANCE'
+"""Environment variable set in App Engine when env:flex is set."""
+
+_CONTAINER_ENGINE_ENV = 'KUBERNETES_SERVICE'
+"""Environment variable set in a Google Container Engine environment."""
 
 
 class Client(JSONClient):
@@ -264,3 +280,40 @@ class Client(JSONClient):
         """
         return self.metrics_api.list_metrics(
             self.project, page_size, page_token)
+
+    def get_default_handler(self):
+        """Return the default logging handler based on the local environment.
+
+        :rtype: :class:`logging.Handler`
+        :returns: The default log handler based on the environment
+        """
+        if (_APPENGINE_FLEXIBLE_ENV_VM in os.environ or
+                _APPENGINE_FLEXIBLE_ENV_FLEX in os.environ):
+            return AppEngineHandler()
+        elif _CONTAINER_ENGINE_ENV in os.environ:
+            return ContainerEngineHandler()
+        else:
+            return CloudLoggingHandler(self)
+
+    def setup_logging(self, log_level=logging.INFO,
+                      excluded_loggers=EXCLUDED_LOGGER_DEFAULTS):
+        """Attach default Stackdriver logging handler to the root logger.
+
+        This method uses the default log handler, obtained by
+        :meth:`~get_default_handler`, and attaches it to the root Python
+        logger, so that a call such as ``logging.warn``, as well as all child
+        loggers, will report to Stackdriver logging.
+
+        :type log_level: int
+        :param log_level: (Optional) Python logging log level. Defaults to
+                          :const:`logging.INFO`.
+
+        :type excluded_loggers: tuple
+        :param excluded_loggers: (Optional) The loggers to not attach the
+                                 handler to. This will always include the
+                                 loggers in the path of the logging client
+                                 itself.
+        """
+        handler = self.get_default_handler()
+        setup_logging(handler, log_level=log_level,
+                      excluded_loggers=excluded_loggers)
