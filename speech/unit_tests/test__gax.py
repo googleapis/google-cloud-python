@@ -130,7 +130,6 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
 
         config_request = all_requests[0]
         streaming_request = all_requests[1]
-        self.assertIsInstance(config_request, StreamingRecognizeRequest)
         # This isn't set by _make_streaming_request().
         # The first request can only have `streaming_config` set.
         # The following requests can only have `audio_content` set.
