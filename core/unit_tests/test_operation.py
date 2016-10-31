@@ -110,7 +110,7 @@ class TestOperation(unittest.TestCase):
         self.assertIsNone(operation.error)
         self.assertIsNone(operation.metadata)
         self.assertEqual(operation.caller_metadata, {})
-        self.assertTrue(operation._use_grpc)
+        self.assertTrue(operation._from_grpc)
 
     def test_ctor_explicit(self):
         client = _Client()
@@ -124,7 +124,7 @@ class TestOperation(unittest.TestCase):
         self.assertIsNone(operation.error)
         self.assertIsNone(operation.metadata)
         self.assertEqual(operation.caller_metadata, {'foo': 'bar'})
-        self.assertTrue(operation._use_grpc)
+        self.assertTrue(operation._from_grpc)
 
     def test_from_pb_wo_metadata_or_kw(self):
         from google.longrunning import operations_pb2
@@ -219,7 +219,7 @@ class TestOperation(unittest.TestCase):
         self.assertEqual(
             operation.metadata.fields['foo'].string_value, 'Bar')
         self.assertEqual(operation.caller_metadata, {})
-        self.assertFalse(operation._use_grpc)
+        self.assertFalse(operation._from_grpc)
 
     def test_complete_property(self):
         client = _Client()
@@ -286,7 +286,7 @@ class TestOperation(unittest.TestCase):
         connection = _Connection(api_response)
         client = _Client(connection)
         operation = self._makeOne(name, client)
-        operation._use_grpc = False
+        operation._from_grpc = False
 
         with _Monkey(MUT, _TYPE_URL_MAP={type_url: Struct}):
             self.assertTrue(operation.poll())
