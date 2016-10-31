@@ -205,7 +205,7 @@ class Credentials(credentials.Signing,
         return cls._from_signer_and_info(signer, info, **kwargs)
 
     def to_jwt_credentials(self):
-        """Creates a :cls:`google.auth.jwt.Credentials` instance from this
+        """Creates a :class:`google.auth.jwt.Credentials` instance from this
         instance.
 
         The new instance will use the same private key as this instance and

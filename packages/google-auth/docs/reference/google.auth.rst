@@ -19,6 +19,7 @@ Submodules
 
 .. toctree::
 
+   google.auth.app_engine
    google.auth.credentials
    google.auth.crypt
    google.auth.environment_vars
