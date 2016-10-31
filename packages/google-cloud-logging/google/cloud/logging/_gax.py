@@ -33,6 +33,7 @@ from google.cloud.exceptions import NotFound
 from google.cloud.iterator import GAXIterator
 from google.cloud.logging._helpers import entry_from_resource
 from google.cloud.logging.sink import Sink
+from google.cloud.logging.metric import Metric
 
 
 class _LoggingAPI(object):
@@ -316,10 +317,10 @@ class _MetricsAPI(object):
                            passed, the API will return the first page of
                            metrics.
 
-        :rtype: tuple, (list, str)
-        :returns: list of mappings, plus a "next page token" string:
-                  if not None, indicates that more metrics can be retrieved
-                  with another call (pass that value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of
+                  :class:`~google.cloud.logging.metric.Metric`
+                  accessible to the current API.
         """
         if page_token is None:
             page_token = INITIAL_PAGE
@@ -327,10 +328,7 @@ class _MetricsAPI(object):
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_log_metrics(
             path, page_size=page_size, options=options)
-        metrics = [MessageToDict(log_metric_pb)
-                   for log_metric_pb in page_iter.next()]
-        token = page_iter.page_token or None
-        return metrics, token
+        return GAXIterator(self._client, page_iter, _item_to_metric)
 
     def metric_create(self, project, metric_name, filter_, description):
         """API call:  create a metric resource.
@@ -496,3 +494,21 @@ def _item_to_sink(iterator, log_sink_pb):
     """
     resource = MessageToDict(log_sink_pb)
     return Sink.from_api_repr(resource, iterator.client)
+
+
+
+def _item_to_metric(iterator, log_metric_pb):
+    """Convert a metric protobuf to the native object.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type log_metric_pb:
+        :class:`~google.logging.v2.logging_metrics_pb2.LogMetric`
+    :param log_metric_pb: Metric protobuf returned from the API.
+
+    :rtype: :class:`~google.cloud.logging.metric.Metric`
+    :returns: The next metric in the page.
+    """
+    resource = MessageToDict(log_metric_pb)
+    return Metric.from_api_repr(resource, iterator.client)
