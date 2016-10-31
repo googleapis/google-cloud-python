@@ -44,11 +44,11 @@ class Test__compute_type_url(unittest.TestCase):
             '%s/%s' % (PREFIX, Struct.DESCRIPTOR.full_name))
 
 
-class Test__register_type_url(unittest.TestCase):
+class Test_register_type_url(unittest.TestCase):
 
     def _callFUT(self, type_url, klass):
-        from google.cloud.operation import _register_type_url
-        _register_type_url(type_url, klass)
+        from google.cloud.operation import register_type_url
+        register_type_url(type_url, klass)
 
     def test_simple(self):
         from google.cloud import operation as MUT
@@ -106,19 +106,23 @@ class OperationTests(unittest.TestCase):
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertIs(operation.client, client)
         self.assertIsNone(operation.target)
-        self.assertIsNone(operation.pb_metadata)
-        self.assertEqual(operation.metadata, {})
+        self.assertIsNone(operation.response)
+        self.assertIsNone(operation.error)
+        self.assertIsNone(operation.metadata)
+        self.assertEqual(operation.caller_metadata, {})
 
     def test_ctor_explicit(self):
         client = _Client()
-        pb_metadata = object()
         operation = self._makeOne(
-            self.OPERATION_NAME, client, pb_metadata, foo='bar')
+            self.OPERATION_NAME, client, foo='bar')
+
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertIs(operation.client, client)
         self.assertIsNone(operation.target)
-        self.assertIs(operation.pb_metadata, pb_metadata)
-        self.assertEqual(operation.metadata, {'foo': 'bar'})
+        self.assertIsNone(operation.response)
+        self.assertIsNone(operation.error)
+        self.assertIsNone(operation.metadata)
+        self.assertEqual(operation.caller_metadata, {'foo': 'bar'})
 
     def test_from_pb_wo_metadata_or_kw(self):
         from google.longrunning import operations_pb2
@@ -130,41 +134,47 @@ class OperationTests(unittest.TestCase):
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertIs(operation.client, client)
-        self.assertIsNone(operation.pb_metadata)
-        self.assertEqual(operation.metadata, {})
+        self.assertIsNone(operation.metadata)
+        self.assertEqual(operation.caller_metadata, {})
 
     def test_from_pb_w_unknown_metadata(self):
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
-        from google.protobuf.struct_pb2 import Struct, Value
-        TYPE_URI = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
+        from google.protobuf.json_format import ParseDict
+        from google.protobuf.struct_pb2 import Struct
+        from google.cloud._testing import _Monkey
+        from google.cloud import operation as MUT
 
+        type_url = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
         client = _Client()
-        meta = Struct(fields={'foo': Value(string_value=u'Bar')})
-        metadata_pb = Any(type_url=TYPE_URI, value=meta.SerializeToString())
+        meta = ParseDict({'foo': 'Bar'}, Struct())
+        metadata_pb = Any(type_url=type_url, value=meta.SerializeToString())
         operation_pb = operations_pb2.Operation(
             name=self.OPERATION_NAME, metadata=metadata_pb)
         klass = self._getTargetClass()
 
-        operation = klass.from_pb(operation_pb, client)
+        with _Monkey(MUT, _TYPE_URL_MAP={type_url: Struct}):
+            operation = klass.from_pb(operation_pb, client)
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertIs(operation.client, client)
-        self.assertIsNone(operation.pb_metadata)
-        self.assertEqual(operation.metadata, {})
+        self.assertEqual(operation.metadata, meta)
+        self.assertEqual(operation.caller_metadata, {})
 
     def test_from_pb_w_metadata_and_kwargs(self):
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
-        from google.protobuf.struct_pb2 import Struct, Value
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
         from google.cloud import operation as MUT
         from google.cloud._testing import _Monkey
-        TYPE_URI = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
-        type_url_map = {TYPE_URI: Struct}
+
+        type_url = 'type.googleapis.com/%s' % (Struct.DESCRIPTOR.full_name,)
+        type_url_map = {type_url: Struct}
 
         client = _Client()
         meta = Struct(fields={'foo': Value(string_value=u'Bar')})
-        metadata_pb = Any(type_url=TYPE_URI, value=meta.SerializeToString())
+        metadata_pb = Any(type_url=type_url, value=meta.SerializeToString())
         operation_pb = operations_pb2.Operation(
             name=self.OPERATION_NAME, metadata=metadata_pb)
         klass = self._getTargetClass()
@@ -174,11 +184,8 @@ class OperationTests(unittest.TestCase):
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertIs(operation.client, client)
-        pb_metadata = operation.pb_metadata
-        self.assertIsInstance(pb_metadata, Struct)
-        self.assertEqual(list(pb_metadata.fields), ['foo'])
-        self.assertEqual(pb_metadata.fields['foo'].string_value, 'Bar')
-        self.assertEqual(operation.metadata, {'baz': 'qux'})
+        self.assertEqual(operation.metadata, meta)
+        self.assertEqual(operation.caller_metadata, {'baz': 'qux'})
 
     def test_complete_property(self):
         client = _Client()
@@ -198,8 +205,9 @@ class OperationTests(unittest.TestCase):
             operation.poll()
 
     def test_poll_false(self):
-        from google.longrunning.operations_pb2 import GetOperationRequest
-        response_pb = _GetOperationResponse(False)
+        from google.longrunning import operations_pb2
+
+        response_pb = operations_pb2.Operation(done=False)
         client = _Client()
         stub = client._operations_stub
         stub._get_operation_response = response_pb
@@ -208,12 +216,13 @@ class OperationTests(unittest.TestCase):
         self.assertFalse(operation.poll())
 
         request_pb = stub._get_operation_requested
-        self.assertIsInstance(request_pb, GetOperationRequest)
+        self.assertIsInstance(request_pb, operations_pb2.GetOperationRequest)
         self.assertEqual(request_pb.name, self.OPERATION_NAME)
 
     def test_poll_true(self):
-        from google.longrunning.operations_pb2 import GetOperationRequest
-        response_pb = _GetOperationResponse(True)
+        from google.longrunning import operations_pb2
+
+        response_pb = operations_pb2.Operation(done=True)
         client = _Client()
         stub = client._operations_stub
         stub._get_operation_response = response_pb
@@ -222,13 +231,90 @@ class OperationTests(unittest.TestCase):
         self.assertTrue(operation.poll())
 
         request_pb = stub._get_operation_requested
-        self.assertIsInstance(request_pb, GetOperationRequest)
+        self.assertIsInstance(request_pb, operations_pb2.GetOperationRequest)
         self.assertEqual(request_pb.name, self.OPERATION_NAME)
 
+    def test__update_state_done(self):
+        from google.longrunning import operations_pb2
 
-class _GetOperationResponse(object):
-    def __init__(self, done):
-        self.done = done
+        operation = self._makeOne(None, None)
+        self.assertFalse(operation.complete)
+        operation_pb = operations_pb2.Operation(done=True)
+        operation._update_state(operation_pb)
+        self.assertTrue(operation.complete)
+
+    def test__update_state_metadata(self):
+        from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
+        from google.protobuf.struct_pb2 import Value
+        from google.cloud._testing import _Monkey
+        from google.cloud import operation as MUT
+
+        operation = self._makeOne(None, None)
+        self.assertIsNone(operation.metadata)
+
+        val_pb = Value(number_value=1337)
+        type_url = 'type.googleapis.com/%s' % (Value.DESCRIPTOR.full_name,)
+        val_any = Any(type_url=type_url, value=val_pb.SerializeToString())
+        operation_pb = operations_pb2.Operation(metadata=val_any)
+
+        with _Monkey(MUT, _TYPE_URL_MAP={type_url: Value}):
+            operation._update_state(operation_pb)
+
+        self.assertEqual(operation.metadata, val_pb)
+
+    def test__update_state_error(self):
+        from google.longrunning import operations_pb2
+        from google.rpc.status_pb2 import Status
+        from google.cloud._testing import _Monkey
+
+        operation = self._makeOne(None, None)
+        self.assertIsNone(operation.error)
+        self.assertIsNone(operation.response)
+
+        error_pb = Status(code=1)
+        operation_pb = operations_pb2.Operation(error=error_pb)
+        operation._update_state(operation_pb)
+
+        self.assertEqual(operation.error, error_pb)
+        self.assertIsNone(operation.response)
+
+    def test__update_state_response(self):
+        from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
+        from google.protobuf.struct_pb2 import Value
+        from google.cloud._testing import _Monkey
+        from google.cloud import operation as MUT
+
+        operation = self._makeOne(None, None)
+        self.assertIsNone(operation.error)
+        self.assertIsNone(operation.response)
+
+        response_pb = Value(string_value='totes a response')
+        type_url = 'type.googleapis.com/%s' % (Value.DESCRIPTOR.full_name,)
+        response_any = Any(type_url=type_url,
+                           value=response_pb.SerializeToString())
+        operation_pb = operations_pb2.Operation(response=response_any)
+
+        with _Monkey(MUT, _TYPE_URL_MAP={type_url: Value}):
+            operation._update_state(operation_pb)
+
+        self.assertIsNone(operation.error)
+        self.assertEqual(operation.response, response_pb)
+
+    def test__update_state_no_result(self):
+        from google.longrunning import operations_pb2
+
+        operation = self._makeOne(None, None)
+        self.assertIsNone(operation.error)
+        self.assertIsNone(operation.response)
+
+        operation_pb = operations_pb2.Operation()
+        operation._update_state(operation_pb)
+
+        # Make sure nothing changed.
+        self.assertIsNone(operation.error)
+        self.assertIsNone(operation.response)
 
 
 class _OperationsStub(object):
