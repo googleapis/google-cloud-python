@@ -23,7 +23,7 @@ from google.cloud.bigtable._generated import (
     bigtable_instance_admin_pb2 as messages_v2_pb2)
 from google.cloud.operation import Operation
 from google.cloud.operation import _compute_type_url
-from google.cloud.operation import _register_type_url
+from google.cloud.operation import register_type_url
 
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
@@ -36,7 +36,7 @@ DEFAULT_SERVE_NODES = 3
 
 _UPDATE_CLUSTER_METADATA_URL = _compute_type_url(
     messages_v2_pb2.UpdateClusterMetadata)
-_register_type_url(
+register_type_url(
     _UPDATE_CLUSTER_METADATA_URL, messages_v2_pb2.UpdateClusterMetadata)
 
 
@@ -218,7 +218,7 @@ class Cluster(object):
 
         operation = Operation.from_pb(operation_pb, client)
         operation.target = self
-        operation.metadata['request_type'] = 'CreateCluster'
+        operation.caller_metadata['request_type'] = 'CreateCluster'
         return operation
 
     def update(self):
@@ -249,7 +249,7 @@ class Cluster(object):
 
         operation = Operation.from_pb(operation_pb, client)
         operation.target = self
-        operation.metadata['request_type'] = 'UpdateCluster'
+        operation.caller_metadata['request_type'] = 'UpdateCluster'
         return operation
 
     def delete(self):
