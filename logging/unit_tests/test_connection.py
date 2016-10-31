@@ -300,8 +300,10 @@ class Test_SinksAPI(unittest.TestCase):
 
     def test_ctor(self):
         connection = object()
-        api = self._makeOne(connection)
+        client = _Client(connection)
+        api = self._makeOne(client)
         self.assertIs(api._connection, connection)
+        self.assertIs(api._client, client)
 
     def test_list_sinks_no_paging(self):
         TOKEN = 'TOKEN'
@@ -314,7 +316,8 @@ class Test_SinksAPI(unittest.TestCase):
             'nextPageToken': TOKEN,
         }
         conn = _Connection(RETURNED)
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         sinks, token = api.list_sinks(self.PROJECT)
 
@@ -337,7 +340,8 @@ class Test_SinksAPI(unittest.TestCase):
             }],
         }
         conn = _Connection(RETURNED)
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         sinks, token = api.list_sinks(
             self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
@@ -360,7 +364,8 @@ class Test_SinksAPI(unittest.TestCase):
         }
         conn = _Connection()
         conn._raise_conflict = True
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         with self.assertRaises(Conflict):
             api.sink_create(
@@ -379,7 +384,8 @@ class Test_SinksAPI(unittest.TestCase):
             'destination': self.DESTINATION_URI,
         }
         conn = _Connection({})
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         api.sink_create(
             self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
@@ -392,7 +398,8 @@ class Test_SinksAPI(unittest.TestCase):
     def test_sink_get_miss(self):
         from google.cloud.exceptions import NotFound
         conn = _Connection()
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         with self.assertRaises(NotFound):
             api.sink_get(self.PROJECT, self.SINK_NAME)
@@ -408,7 +415,8 @@ class Test_SinksAPI(unittest.TestCase):
             'destination': self.DESTINATION_URI,
         }
         conn = _Connection(RESPONSE)
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         response = api.sink_get(self.PROJECT, self.SINK_NAME)
 
@@ -425,7 +433,8 @@ class Test_SinksAPI(unittest.TestCase):
             'destination': self.DESTINATION_URI,
         }
         conn = _Connection()
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         with self.assertRaises(NotFound):
             api.sink_update(
@@ -444,7 +453,8 @@ class Test_SinksAPI(unittest.TestCase):
             'destination': self.DESTINATION_URI,
         }
         conn = _Connection({})
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         api.sink_update(
             self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
@@ -457,7 +467,8 @@ class Test_SinksAPI(unittest.TestCase):
     def test_sink_delete_miss(self):
         from google.cloud.exceptions import NotFound
         conn = _Connection()
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         with self.assertRaises(NotFound):
             api.sink_delete(self.PROJECT, self.SINK_NAME)
@@ -468,7 +479,8 @@ class Test_SinksAPI(unittest.TestCase):
 
     def test_sink_delete_hit(self):
         conn = _Connection({})
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         api.sink_delete(self.PROJECT, self.SINK_NAME)
 
@@ -503,7 +515,8 @@ class Test_MetricsAPI(unittest.TestCase):
             'nextPageToken': TOKEN,
         }
         conn = _Connection(RETURNED)
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         metrics, token = api.list_metrics(self.PROJECT)
 
@@ -524,7 +537,8 @@ class Test_MetricsAPI(unittest.TestCase):
             }],
         }
         conn = _Connection(RETURNED)
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         metrics, token = api.list_metrics(
             self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
@@ -547,7 +561,8 @@ class Test_MetricsAPI(unittest.TestCase):
         }
         conn = _Connection()
         conn._raise_conflict = True
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         with self.assertRaises(Conflict):
             api.metric_create(
@@ -566,7 +581,8 @@ class Test_MetricsAPI(unittest.TestCase):
             'description': self.DESCRIPTION,
         }
         conn = _Connection({})
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         api.metric_create(
             self.PROJECT, self.METRIC_NAME, self.FILTER, self.DESCRIPTION)
@@ -579,7 +595,8 @@ class Test_MetricsAPI(unittest.TestCase):
     def test_metric_get_miss(self):
         from google.cloud.exceptions import NotFound
         conn = _Connection()
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         with self.assertRaises(NotFound):
             api.metric_get(self.PROJECT, self.METRIC_NAME)
@@ -595,7 +612,8 @@ class Test_MetricsAPI(unittest.TestCase):
             'description': self.DESCRIPTION,
         }
         conn = _Connection(RESPONSE)
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         response = api.metric_get(self.PROJECT, self.METRIC_NAME)
 
@@ -612,7 +630,8 @@ class Test_MetricsAPI(unittest.TestCase):
             'description': self.DESCRIPTION,
         }
         conn = _Connection()
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         with self.assertRaises(NotFound):
             api.metric_update(
@@ -631,7 +650,8 @@ class Test_MetricsAPI(unittest.TestCase):
             'description': self.DESCRIPTION,
         }
         conn = _Connection({})
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         api.metric_update(
             self.PROJECT, self.METRIC_NAME, self.FILTER, self.DESCRIPTION)
@@ -644,7 +664,8 @@ class Test_MetricsAPI(unittest.TestCase):
     def test_metric_delete_miss(self):
         from google.cloud.exceptions import NotFound
         conn = _Connection()
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         with self.assertRaises(NotFound):
             api.metric_delete(self.PROJECT, self.METRIC_NAME)
@@ -655,7 +676,8 @@ class Test_MetricsAPI(unittest.TestCase):
 
     def test_metric_delete_hit(self):
         conn = _Connection({})
-        api = self._makeOne(conn)
+        client = _Client(conn)
+        api = self._makeOne(client)
 
         api.metric_delete(self.PROJECT, self.METRIC_NAME)
 
