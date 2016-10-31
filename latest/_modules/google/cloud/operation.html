@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.operation &mdash; google-cloud e1fd690 documentation</title>
+  <title>google.cloud.operation &mdash; google-cloud 838ec59 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud e1fd690 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 838ec59 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -311,7 +311,7 @@
     <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_register_type_url</span><span class="p">(</span><span class="n">type_url</span><span class="p">,</span> <span class="n">klass</span><span class="p">):</span>
+<div class="viewcode-block" id="register_type_url"><a class="viewcode-back" href="../../../operation-api.html#google.cloud.operation.register_type_url">[docs]</a><span class="k">def</span> <span class="nf">register_type_url</span><span class="p">(</span><span class="n">type_url</span><span class="p">,</span> <span class="n">klass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Register a klass as the factory for a given type URL.</span>
 
 <span class="sd">    :type type_url: str</span>
@@ -326,11 +326,45 @@
         <span class="k">if</span> <span class="n">_TYPE_URL_MAP</span><span class="p">[</span><span class="n">type_url</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">klass</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Conflict: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">_TYPE_URL_MAP</span><span class="p">[</span><span class="n">type_url</span><span class="p">],))</span>
 
-    <span class="n">_TYPE_URL_MAP</span><span class="p">[</span><span class="n">type_url</span><span class="p">]</span> <span class="o">=</span> <span class="n">klass</span>
+    <span class="n">_TYPE_URL_MAP</span><span class="p">[</span><span class="n">type_url</span><span class="p">]</span> <span class="o">=</span> <span class="n">klass</span></div>
+
+
+<span class="k">def</span> <span class="nf">_from_any</span><span class="p">(</span><span class="n">any_pb</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert an ``Any`` protobuf into the actual class.</span>
+
+<span class="sd">    Uses the type URL to do the conversion.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This assumes that the type URL is already registered.</span>
+
+<span class="sd">    :type any_pb: :class:`google.protobuf.any_pb2.Any`</span>
+<span class="sd">    :param any_pb: An any object to be converted.</span>
+
+<span class="sd">    :rtype: object</span>
+<span class="sd">    :returns: The instance (of the correct type) stored in the any</span>
+<span class="sd">              instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">klass</span> <span class="o">=</span> <span class="n">_TYPE_URL_MAP</span><span class="p">[</span><span class="n">any_pb</span><span class="o">.</span><span class="n">type_url</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">klass</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="n">any_pb</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../operation-api.html#google.cloud.operation.Operation">[docs]</a><span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Representation of a Google API Long-Running Operation.</span>
+
+<span class="sd">    .. _protobuf: https://github.com/googleapis/googleapis/blob/\</span>
+<span class="sd">                  050400df0fdb16f63b63e9dee53819044bffc857/\</span>
+<span class="sd">                  google/longrunning/operations.proto#L80</span>
+<span class="sd">    .. _service: https://github.com/googleapis/googleapis/blob/\</span>
+<span class="sd">                 050400df0fdb16f63b63e9dee53819044bffc857/\</span>
+<span class="sd">                 google/longrunning/operations.proto#L38</span>
+<span class="sd">    .. _JSON: https://cloud.google.com/speech/reference/rest/\</span>
+<span class="sd">              v1beta1/operations#Operation</span>
+
+<span class="sd">    This wraps an operation `protobuf`_ object and attempts to</span>
+<span class="sd">    interact with the long-running operations `service`_ (specific</span>
+<span class="sd">    to a given API). (Some services also offer a `JSON`_</span>
+<span class="sd">    API that maps the same underlying data type.)</span>
 
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param name: The fully-qualified path naming the operation.</span>
@@ -338,46 +372,59 @@
 <span class="sd">    :type client: object: must provide ``_operations_stub`` accessor.</span>
 <span class="sd">    :param client: The client used to poll for the status of the operation.</span>
 
-<span class="sd">    :type pb_metadata: object</span>
-<span class="sd">    :param pb_metadata: Instance of protobuf metadata class</span>
-
-<span class="sd">    :type kw: dict</span>
-<span class="sd">    :param kw: caller-assigned metadata about the operation</span>
+<span class="sd">    :type caller_metadata: dict</span>
+<span class="sd">    :param caller_metadata: caller-assigned metadata about the operation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">target</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="sd">&quot;&quot;&quot;Instance assocated with the operations:  callers may set.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">pb_metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;Response returned from completed operation.</span>
+
+<span class="sd">    Only one of this and :attr:`error` can be populated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;Error that resulted from a failed (complete) operation.</span>
+
+<span class="sd">    Only one of this and :attr:`response` can be populated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">metadata</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;Metadata about the current operation (as a protobuf).</span>
+
+<span class="sd">    Code that uses operations must register the metadata types (via</span>
+<span class="sd">    :func:`register_type_url`) to ensure that the metadata fields can be</span>
+<span class="sd">    converted into the correct types.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pb_metadata</span> <span class="o">=</span> <span class="n">pb_metadata</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">caller_metadata</span> <span class="o">=</span> <span class="n">caller_metadata</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_complete</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Operation.from_pb"><a class="viewcode-back" href="../../../operation-api.html#google.cloud.operation.Operation.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">op_pb</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<div class="viewcode-block" id="Operation.from_pb"><a class="viewcode-back" href="../../../operation-api.html#google.cloud.operation.Operation.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">operation_pb</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct an instance from a protobuf.</span>
 
-<span class="sd">        :type op_pb: :class:`google.longrunning.operations_pb2.Operation`</span>
-<span class="sd">        :param op_pb: Protobuf to be parsed.</span>
+<span class="sd">        :type operation_pb:</span>
+<span class="sd">            :class:`~google.longrunning.operations_pb2.Operation`</span>
+<span class="sd">        :param operation_pb: Protobuf to be parsed.</span>
 
 <span class="sd">        :type client: object: must provide ``_operations_stub`` accessor.</span>
 <span class="sd">        :param client: The client used to poll for the status of the operation.</span>
 
-<span class="sd">        :type kw: dict</span>
-<span class="sd">        :param kw: caller-assigned metadata about the operation</span>
+<span class="sd">        :type caller_metadata: dict</span>
+<span class="sd">        :param caller_metadata: caller-assigned metadata about the operation</span>
 
 <span class="sd">        :rtype: :class:`Operation`</span>
 <span class="sd">        :returns: new instance, with attributes based on the protobuf.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">pb_metadata</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">op_pb</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">type_url</span><span class="p">:</span>
-            <span class="n">type_url</span> <span class="o">=</span> <span class="n">op_pb</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">type_url</span>
-            <span class="n">md_klass</span> <span class="o">=</span> <span class="n">_TYPE_URL_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">type_url</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">md_klass</span><span class="p">:</span>
-                <span class="n">pb_metadata</span> <span class="o">=</span> <span class="n">md_klass</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="n">op_pb</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">op_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">pb_metadata</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">operation_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="o">**</span><span class="n">caller_metadata</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">_update_state</span><span class="p">(</span><span class="n">operation_pb</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -388,23 +435,47 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complete</span>
 
+    <span class="k">def</span> <span class="nf">_get_operation_rpc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Polls the status of the current operation.</span>
+
+<span class="sd">        :rtype: :class:`~google.longrunning.operations_pb2.Operation`</span>
+<span class="sd">        :returns: The latest status of the current operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">GetOperationRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_operations_stub</span><span class="o">.</span><span class="n">GetOperation</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_update_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_pb</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the state of the current object based on operation.</span>
+
+<span class="sd">        :type operation_pb:</span>
+<span class="sd">            :class:`~google.longrunning.operations_pb2.Operation`</span>
+<span class="sd">        :param operation_pb: Protobuf to be parsed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">operation_pb</span><span class="o">.</span><span class="n">done</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_complete</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">operation_pb</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;metadata&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">_from_any</span><span class="p">(</span><span class="n">operation_pb</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+
+        <span class="n">result_type</span> <span class="o">=</span> <span class="n">operation_pb</span><span class="o">.</span><span class="n">WhichOneof</span><span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result_type</span> <span class="o">==</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">operation_pb</span><span class="o">.</span><span class="n">error</span>
+        <span class="k">elif</span> <span class="n">result_type</span> <span class="o">==</span> <span class="s1">&#39;response&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">_from_any</span><span class="p">(</span><span class="n">operation_pb</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
+
 <div class="viewcode-block" id="Operation.poll"><a class="viewcode-back" href="../../../operation-api.html#google.cloud.operation.Operation.poll">[docs]</a>    <span class="k">def</span> <span class="nf">poll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if the operation has finished.</span>
 
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: A boolean indicating if the current operation has completed.</span>
-<span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if the operation</span>
+<span class="sd">        :raises: :class:`~exceptions.ValueError` if the operation</span>
 <span class="sd">                 has already completed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The operation has completed.&#39;</span><span class="p">)</span>
 
-        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">GetOperationRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="c1"># We expect a `google.longrunning.operations_pb2.Operation`.</span>
-        <span class="n">operation_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_operations_stub</span><span class="o">.</span><span class="n">GetOperation</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">operation_pb</span><span class="o">.</span><span class="n">done</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_complete</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">operation_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_operation_rpc</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_state</span><span class="p">(</span><span class="n">operation_pb</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete</span></div></div>
 </pre></div>
@@ -440,7 +511,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'e1fd690',
+            VERSION:'838ec59',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

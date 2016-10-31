@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Long-Running Operations &mdash; google-cloud e1fd690 documentation</title>
+  <title>Long-Running Operations &mdash; google-cloud 838ec59 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud e1fd690 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 838ec59 documentation" href="index.html"/>
         <link rel="next" title="Datastore Client" href="datastore-client.html"/>
         <link rel="prev" title="Iterators" href="iterators.html"/> 
 
@@ -275,9 +275,13 @@
 <p>Wrap long-running operations returned from Google Cloud APIs.</p>
 <dl class="class">
 <dt id="google.cloud.operation.Operation">
-<em class="property">class </em><code class="descclassname">google.cloud.operation.</code><code class="descname">Operation</code><span class="sig-paren">(</span><em>name</em>, <em>client</em>, <em>pb_metadata=None</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/operation.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.operation.Operation" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.operation.</code><code class="descname">Operation</code><span class="sig-paren">(</span><em>name</em>, <em>client</em>, <em>**caller_metadata</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/operation.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.operation.Operation" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Representation of a Google API Long-Running Operation.</p>
+<p>This wraps an operation <a class="reference external" href="https://github.com/googleapis/googleapis/blob/050400df0fdb16f63b63e9dee53819044bffc857/google/longrunning/operations.proto#L80">protobuf</a> object and attempts to
+interact with the long-running operations <a class="reference external" href="https://github.com/googleapis/googleapis/blob/050400df0fdb16f63b63e9dee53819044bffc857/google/longrunning/operations.proto#L38">service</a> (specific
+to a given API). (Some services also offer a <a class="reference external" href="https://cloud.google.com/speech/reference/rest/v1beta1/operations#Operation">JSON</a>
+API that maps the same underlying data type.)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -285,8 +289,7 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The fully-qualified path naming the operation.</li>
 <li><strong>client</strong> (object: must provide <code class="docutils literal"><span class="pre">_operations_stub</span></code> accessor.) &#8211; The client used to poll for the status of the operation.</li>
-<li><strong>pb_metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><em>object</em></a>) &#8211; Instance of protobuf metadata class</li>
-<li><strong>kw</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; caller-assigned metadata about the operation</li>
+<li><strong>caller_metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; caller-assigned metadata about the operation</li>
 </ul>
 </td>
 </tr>
@@ -308,18 +311,25 @@
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.operation.Operation.error">
+<code class="descname">error</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.operation.Operation.error" title="Permalink to this definition">#</a></dt>
+<dd><p>Error that resulted from a failed (complete) operation.</p>
+<p>Only one of this and <a class="reference internal" href="#google.cloud.operation.Operation.response" title="google.cloud.operation.Operation.response"><code class="xref py py-attr docutils literal"><span class="pre">response</span></code></a> can be populated.</p>
+</dd></dl>
+
 <dl class="classmethod">
 <dt id="google.cloud.operation.Operation.from_pb">
-<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>op_pb</em>, <em>client</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/operation.html#Operation.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.operation.Operation.from_pb" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>operation_pb</em>, <em>client</em>, <em>**caller_metadata</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/operation.html#Operation.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.operation.Operation.from_pb" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory:  construct an instance from a protobuf.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>op_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.longrunning.operations_pb2.Operation</span></code>) &#8211; Protobuf to be parsed.</li>
+<li><strong>operation_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">Operation</span></code>) &#8211; Protobuf to be parsed.</li>
 <li><strong>client</strong> (object: must provide <code class="docutils literal"><span class="pre">_operations_stub</span></code> accessor.) &#8211; The client used to poll for the status of the operation.</li>
-<li><strong>kw</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; caller-assigned metadata about the operation</li>
+<li><strong>caller_metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; caller-assigned metadata about the operation</li>
 </ul>
 </td>
 </tr>
@@ -331,6 +341,15 @@
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.operation.Operation.metadata">
+<code class="descname">metadata</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.operation.Operation.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata about the current operation (as a protobuf).</p>
+<p>Code that uses operations must register the metadata types (via
+<a class="reference internal" href="#google.cloud.operation.register_type_url" title="google.cloud.operation.register_type_url"><code class="xref py py-func docutils literal"><span class="pre">register_type_url()</span></code></a>) to ensure that the metadata fields can be
+converted into the correct types.</p>
 </dd></dl>
 
 <dl class="method">
@@ -353,11 +372,39 @@ has already completed.</td>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.operation.Operation.response">
+<code class="descname">response</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.operation.Operation.response" title="Permalink to this definition">#</a></dt>
+<dd><p>Response returned from completed operation.</p>
+<p>Only one of this and <a class="reference internal" href="#google.cloud.operation.Operation.error" title="google.cloud.operation.Operation.error"><code class="xref py py-attr docutils literal"><span class="pre">error</span></code></a> can be populated.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.operation.Operation.target">
 <code class="descname">target</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.operation.Operation.target" title="Permalink to this definition">#</a></dt>
 <dd><p>Instance assocated with the operations:  callers may set.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="google.cloud.operation.register_type_url">
+<code class="descclassname">google.cloud.operation.</code><code class="descname">register_type_url</code><span class="sig-paren">(</span><em>type_url</em>, <em>klass</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/operation.html#register_type_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.operation.register_type_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Register a klass as the factory for a given type URL.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>type_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; URL naming the type</li>
+<li><strong>klass</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#type" title="(in Python v2.7)"><em>type</em></a>) &#8211; class to be used as a factory for the given type</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError if a registration already exists for the URL.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -403,7 +450,7 @@ has already completed.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'e1fd690',
+            VERSION:'838ec59',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

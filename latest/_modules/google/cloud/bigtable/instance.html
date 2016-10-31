@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigtable.instance &mdash; google-cloud e1fd690 documentation</title>
+  <title>google.cloud.bigtable.instance &mdash; google-cloud 838ec59 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud e1fd690 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 838ec59 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -300,7 +300,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.table</span> <span class="k">import</span> <span class="n">Table</span>
 <span class="kn">from</span> <span class="nn">google.cloud.operation</span> <span class="k">import</span> <span class="n">Operation</span>
 <span class="kn">from</span> <span class="nn">google.cloud.operation</span> <span class="k">import</span> <span class="n">_compute_type_url</span>
-<span class="kn">from</span> <span class="nn">google.cloud.operation</span> <span class="k">import</span> <span class="n">_register_type_url</span>
+<span class="kn">from</span> <span class="nn">google.cloud.operation</span> <span class="k">import</span> <span class="n">register_type_url</span>
 
 
 <span class="n">_EXISTING_INSTANCE_LOCATION_ID</span> <span class="o">=</span> <span class="s1">&#39;see-existing-cluster&#39;</span>
@@ -310,8 +310,10 @@
 
 <span class="n">_CREATE_INSTANCE_METADATA_URL</span> <span class="o">=</span> <span class="n">_compute_type_url</span><span class="p">(</span>
     <span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">CreateInstanceMetadata</span><span class="p">)</span>
-<span class="n">_register_type_url</span><span class="p">(</span>
+<span class="n">register_type_url</span><span class="p">(</span>
     <span class="n">_CREATE_INSTANCE_METADATA_URL</span><span class="p">,</span> <span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">CreateInstanceMetadata</span><span class="p">)</span>
+<span class="n">_INSTANCE_METADATA_URL</span> <span class="o">=</span> <span class="n">_compute_type_url</span><span class="p">(</span><span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">)</span>
+<span class="n">register_type_url</span><span class="p">(</span><span class="n">_INSTANCE_METADATA_URL</span><span class="p">,</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_prepare_create_request</span><span class="p">(</span><span class="n">instance</span><span class="p">):</span>
@@ -509,7 +511,7 @@
 
         <span class="n">operation</span> <span class="o">=</span> <span class="n">Operation</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">operation_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
         <span class="n">operation</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span>
-        <span class="n">operation</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;request_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;CreateInstance&#39;</span>
+        <span class="n">operation</span><span class="o">.</span><span class="n">caller_metadata</span><span class="p">[</span><span class="s1">&#39;request_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;CreateInstance&#39;</span>
         <span class="k">return</span> <span class="n">operation</span></div>
 
 <div class="viewcode-block" id="Instance.update"><a class="viewcode-back" href="../../../../bigtable-instance.html#google.cloud.bigtable.instance.Instance.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -659,7 +661,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'e1fd690',
+            VERSION:'838ec59',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
