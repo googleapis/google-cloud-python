@@ -44,48 +44,63 @@ class Test__compute_type_url(unittest.TestCase):
             '%s/%s' % (PREFIX, Struct.DESCRIPTOR.full_name))
 
 
-class Test_register_type_url(unittest.TestCase):
+class Test_register_type(unittest.TestCase):
 
-    def _callFUT(self, type_url, klass):
-        from google.cloud.operation import register_type_url
-        register_type_url(type_url, klass)
+    def _callFUT(self, klass, type_url=None):
+        from google.cloud.operation import register_type
+        register_type(klass, type_url=type_url)
 
-    def test_simple(self):
+    def test_explicit(self):
         from google.cloud import operation as MUT
         from google.cloud._testing import _Monkey
-        TYPE_URI = 'testing.google-cloud-python.com/testing'
+
+        type_url = 'testing.google-cloud-python.com/testing'
         klass = object()
         type_url_map = {}
 
         with _Monkey(MUT, _TYPE_URL_MAP=type_url_map):
-            self._callFUT(TYPE_URI, klass)
+            self._callFUT(klass, type_url)
 
-        self.assertEqual(type_url_map, {TYPE_URI: klass})
+        self.assertEqual(type_url_map, {type_url: klass})
+
+    def test_default(self):
+        from google.protobuf.struct_pb2 import Struct
+        from google.cloud._testing import _Monkey
+        from google.cloud import operation as MUT
+
+        type_url_map = {}
+        with _Monkey(MUT, _TYPE_URL_MAP=type_url_map):
+            self._callFUT(Struct)
+
+        type_url = MUT._compute_type_url(Struct)
+        self.assertEqual(type_url_map, {type_url: Struct})
 
     def test_w_same_class(self):
         from google.cloud import operation as MUT
         from google.cloud._testing import _Monkey
-        TYPE_URI = 'testing.google-cloud-python.com/testing'
+
+        type_url = 'testing.google-cloud-python.com/testing'
         klass = object()
-        type_url_map = {TYPE_URI: klass}
+        type_url_map = {type_url: klass}
 
         with _Monkey(MUT, _TYPE_URL_MAP=type_url_map):
-            self._callFUT(TYPE_URI, klass)
+            self._callFUT(klass, type_url)
 
-        self.assertEqual(type_url_map, {TYPE_URI: klass})
+        self.assertEqual(type_url_map, {type_url: klass})
 
     def test_w_conflict(self):
         from google.cloud import operation as MUT
         from google.cloud._testing import _Monkey
-        TYPE_URI = 'testing.google-cloud-python.com/testing'
+
+        type_url = 'testing.google-cloud-python.com/testing'
         klass, other = object(), object()
-        type_url_map = {TYPE_URI: other}
+        type_url_map = {type_url: other}
 
         with _Monkey(MUT, _TYPE_URL_MAP=type_url_map):
             with self.assertRaises(ValueError):
-                self._callFUT(TYPE_URI, klass)
+                self._callFUT(klass, type_url)
 
-        self.assertEqual(type_url_map, {TYPE_URI: other})
+        self.assertEqual(type_url_map, {type_url: other})
 
 
 class OperationTests(unittest.TestCase):
