@@ -496,7 +496,6 @@ def _item_to_sink(iterator, log_sink_pb):
     return Sink.from_api_repr(resource, iterator.client)
 
 
-
 def _item_to_metric(iterator, log_metric_pb):
     """Convert a metric protobuf to the native object.
 
