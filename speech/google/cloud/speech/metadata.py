@@ -46,7 +46,7 @@ class Metadata(object):
         """
         last_update = _rfc3339_to_datetime(response['lastUpdateTime'])
         start_time = _rfc3339_to_datetime(response['startTime'])
-        progress_percent = response['progressPercent']
+        progress_percent = response.get('progressPercent')
 
         return cls(last_update, start_time, progress_percent)
 
