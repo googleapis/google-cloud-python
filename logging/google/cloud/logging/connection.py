@@ -184,11 +184,12 @@ class _SinksAPI(object):
     See:
     https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks
 
-    :type connection: :class:`google.cloud.logging.connection.Connection`
-    :param connection: the connection used to make API requests.
+    :type client: :class:`~google.cloud.logging.client.Client`
+    :param client: The client used to make API requests.
     """
-    def __init__(self, connection):
-        self._connection = connection
+    def __init__(self, client):
+        self._client = client
+        self._connection = client.connection
 
     def list_sinks(self, project, page_size=None, page_token=None):
         """List sinks for the project associated with this client.
@@ -323,11 +324,12 @@ class _MetricsAPI(object):
     See:
     https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics
 
-    :type connection: :class:`google.cloud.logging.connection.Connection`
-    :param connection: the connection used to make API requests.
+    :type client: :class:`~google.cloud.logging.client.Client`
+    :param client: The client used to make API requests.
     """
-    def __init__(self, connection):
-        self._connection = connection
+    def __init__(self, client):
+        self._client = client
+        self._connection = client.connection
 
     def list_metrics(self, project, page_size=None, page_token=None):
         """List metrics for the project associated with this client.

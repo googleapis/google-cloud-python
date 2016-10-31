@@ -113,9 +113,9 @@ class Client(JSONClient):
         if self._sinks_api is None:
             if _USE_GAX:
                 generated = GeneratedSinksAPI()
-                self._sinks_api = GAXSinksAPI(generated)
+                self._sinks_api = GAXSinksAPI(generated, self)
             else:
-                self._sinks_api = JSONSinksAPI(self.connection)
+                self._sinks_api = JSONSinksAPI(self)
         return self._sinks_api
 
     @property
@@ -128,9 +128,9 @@ class Client(JSONClient):
         if self._metrics_api is None:
             if _USE_GAX:
                 generated = GeneratedMetricsAPI()
-                self._metrics_api = GAXMetricsAPI(generated)
+                self._metrics_api = GAXMetricsAPI(generated, self)
             else:
-                self._metrics_api = JSONMetricsAPI(self.connection)
+                self._metrics_api = JSONMetricsAPI(self)
         return self._metrics_api
 
     def logger(self, name):
