@@ -92,3 +92,34 @@ def test_scoped_credentials_scopes():
 def test_scoped_credentials_requires_scopes():
     credentials = ScopedCredentialsImpl()
     assert not credentials.requires_scopes
+
+
+class RequiresScopedCredentialsImpl(credentials.Scoped, CredentialsImpl):
+    def __init__(self, scopes=None):
+        super(RequiresScopedCredentialsImpl, self).__init__()
+        self._scopes = scopes
+
+    @property
+    def requires_scopes(self):
+        return not self.scopes
+
+    def with_scopes(self, scopes):
+        return RequiresScopedCredentialsImpl(scopes=scopes)
+
+
+def test_create_scoped_if_required_scoped():
+    unscoped_credentials = RequiresScopedCredentialsImpl()
+    scoped_credentials = credentials.with_scopes_if_required(
+        unscoped_credentials, ['one', 'two'])
+
+    assert scoped_credentials is not unscoped_credentials
+    assert not scoped_credentials.requires_scopes
+    assert scoped_credentials.has_scopes(['one', 'two'])
+
+
+def test_create_scoped_if_required_not_scopes():
+    unscoped_credentials = CredentialsImpl()
+    scoped_credentials = credentials.with_scopes_if_required(
+        unscoped_credentials, ['one', 'two'])
+
+    assert scoped_credentials is unscoped_credentials
