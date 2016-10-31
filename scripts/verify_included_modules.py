@@ -30,30 +30,29 @@ from script_utils import PROJECT_ROOT
 DOCS_DIR = os.path.join(PROJECT_ROOT, 'docs')
 IGNORED_PREFIXES = ('test_', '_')
 IGNORED_MODULES = frozenset([
-    'google.cloud.__init__',
-    'google.cloud.bigquery.__init__',
-    'google.cloud.bigtable.__init__',
-    'google.cloud.datastore.__init__',
-    'google.cloud.dns.__init__',
-    'google.cloud.error_reporting.__init__',
-    'google.cloud.language.__init__',
-    'google.cloud.logging.__init__',
-    'google.cloud.logging.handlers.__init__',
-    'google.cloud.logging.handlers.transports.__init__',
-    'google.cloud.monitoring.__init__',
-    'google.cloud.pubsub.__init__',
-    'google.cloud.resource_manager.__init__',
-    'google.cloud.speech.__init__',
-    'google.cloud.storage.__init__',
-    'google.cloud.streaming.__init__',
+    'google.cloud',
+    'google.cloud.bigquery',
+    'google.cloud.bigtable',
+    'google.cloud.dns',
+    'google.cloud.error_reporting',
+    'google.cloud.language',
+    'google.cloud.logging',
+    'google.cloud.logging.handlers',
+    'google.cloud.logging.handlers.transports',
+    'google.cloud.monitoring',
+    'google.cloud.pubsub',
+    'google.cloud.resource_manager',
+    'google.cloud.speech',
+    'google.cloud.storage',
+    'google.cloud.streaming',
     'google.cloud.streaming.buffered_stream',
     'google.cloud.streaming.exceptions',
     'google.cloud.streaming.http_wrapper',
     'google.cloud.streaming.stream_slice',
     'google.cloud.streaming.transfer',
     'google.cloud.streaming.util',
-    'google.cloud.translate.__init__',
-    'google.cloud.vision.__init__',
+    'google.cloud.translate',
+    'google.cloud.vision',
     'google.cloud.vision.fixtures',
 ])
 PACKAGES = (
@@ -131,7 +130,11 @@ def get_public_modules(path, base_package=None):
                 if base_package is not None:
                     rel_path = os.path.join(base_package, rel_path)
                 # Turn into a Python module rather than a file path.
-                result.append(rel_path.replace(os.path.sep, '.'))
+                rel_path = rel_path.replace(os.path.sep, '.')
+                if mod_name == '__init__':
+                    result.append(rel_path[:-len('.__init__')])
+                else:
+                    result.append(rel_path)
 
     return result
 
