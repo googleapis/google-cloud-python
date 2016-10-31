@@ -133,7 +133,7 @@ class Operation(object):
     converted into the correct types.
     """
 
-    _use_grpc = True
+    _from_grpc = True
 
     def __init__(self, name, client, **caller_metadata):
         self.name = name
@@ -160,7 +160,7 @@ class Operation(object):
         """
         result = cls(operation_pb.name, client, **caller_metadata)
         result._update_state(operation_pb)
-        result._use_grpc = True
+        result._from_grpc = True
         return result
 
     @classmethod
@@ -183,7 +183,7 @@ class Operation(object):
             operation, operations_pb2.Operation())
         result = cls(operation_pb.name, client, **caller_metadata)
         result._update_state(operation_pb)
-        result._use_grpc = False
+        result._from_grpc = False
         return result
 
     @property
@@ -226,7 +226,7 @@ class Operation(object):
         :rtype: :class:`~google.longrunning.operations_pb2.Operation`
         :returns: The latest status of the current operation.
         """
-        if self._use_grpc:
+        if self._from_grpc:
             return self._get_operation_rpc()
         else:
             return self._get_operation_http()
