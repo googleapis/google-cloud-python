@@ -19,6 +19,7 @@ import functools
 from google.cloud import connection as base_connection
 from google.cloud.iterator import HTTPIterator
 from google.cloud.logging._helpers import entry_from_resource
+from google.cloud.logging.sink import Sink
 
 
 class Connection(base_connection.JSONConnection):
@@ -209,24 +210,21 @@ class _SinksAPI(object):
                            passed, the API will return the first page of
                            sinks.
 
-        :rtype: tuple, (list, str)
-        :returns: list of mappings, plus a "next page token" string:
-                  if not None, indicates that more sinks can be retrieved
-                  with another call (pass that value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of
+                  :class:`~google.cloud.logging.sink.Sink`
+                  accessible to the current API.
         """
-        params = {}
+        extra_params = {}
 
         if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
+            extra_params['pageSize'] = page_size
 
         path = '/projects/%s/sinks' % (project,)
-        resp = self._connection.api_request(
-            method='GET', path=path, query_params=params)
-        sinks = resp.get('sinks', ())
-        return sinks, resp.get('nextPageToken')
+        return HTTPIterator(
+            client=self._client, path=path,
+            item_to_value=_item_to_sink, items_key='sinks',
+            page_token=page_token, extra_params=extra_params)
 
     def sink_create(self, project, sink_name, filter_, destination):
         """API call:  create a sink resource.
@@ -484,3 +482,18 @@ def _item_to_entry(iterator, resource, loggers):
     :returns: The next log entry in the page.
     """
     return entry_from_resource(resource, iterator.client, loggers)
+
+
+def _item_to_sink(iterator, resource):
+    """Convert a sink resource to the native object.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type resource: dict
+    :param resource: Sink JSON resource returned from the API.
+
+    :rtype: :class:`~google.cloud.logging.sink.Sink`
+    :returns: The next sink in the page.
+    """
+    return Sink.from_api_repr(resource, iterator.client)
