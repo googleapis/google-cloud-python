@@ -612,27 +612,36 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertIs(api._client, client)
 
     def test_list_sinks_no_paging(self):
+        import six
         from google.gax import INITIAL_PAGE
-        from google.cloud._testing import _GAXPageIterator
         from google.logging.v2.logging_config_pb2 import LogSink
+        from google.cloud._testing import _GAXPageIterator
+        from google.cloud.logging.sink import Sink
 
         TOKEN = 'TOKEN'
-        SINKS = [{
-            'name': self.SINK_PATH,
-            'filter': self.FILTER,
-            'destination': self.DESTINATION_URI,
-        }]
         sink_pb = LogSink(name=self.SINK_PATH,
                           destination=self.DESTINATION_URI,
                           filter=self.FILTER)
         response = _GAXPageIterator([sink_pb], page_token=TOKEN)
         gax_api = _GAXSinksAPI(_list_sinks_response=response)
-        api = self._makeOne(gax_api, None)
+        client = object()
+        api = self._makeOne(gax_api, client)
 
-        sinks, token = api.list_sinks(self.PROJECT)
+        iterator = api.list_sinks(self.PROJECT)
+        page = six.next(iterator.pages)
+        sinks = list(page)
+        token = iterator.next_page_token
 
-        self.assertEqual(sinks, SINKS)
+        # First check the token.
         self.assertEqual(token, TOKEN)
+        # Then check the sinks returned.
+        self.assertEqual(len(sinks), 1)
+        sink = sinks[0]
+        self.assertIsInstance(sink, Sink)
+        self.assertEqual(sink.name, self.SINK_PATH)
+        self.assertEqual(sink.filter_, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertIs(sink.client, client)
 
         project, page_size, options = gax_api._list_sinks_called_with
         self.assertEqual(project, self.PROJECT_PATH)
@@ -640,28 +649,35 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, INITIAL_PAGE)
 
     def test_list_sinks_w_paging(self):
-        from google.cloud._testing import _GAXPageIterator
         from google.logging.v2.logging_config_pb2 import LogSink
+        from google.cloud._testing import _GAXPageIterator
+        from google.cloud.logging.sink import Sink
 
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
-        SINKS = [{
-            'name': self.SINK_PATH,
-            'filter': self.FILTER,
-            'destination': self.DESTINATION_URI,
-        }]
         sink_pb = LogSink(name=self.SINK_PATH,
                           destination=self.DESTINATION_URI,
                           filter=self.FILTER)
         response = _GAXPageIterator([sink_pb])
         gax_api = _GAXSinksAPI(_list_sinks_response=response)
-        api = self._makeOne(gax_api, None)
+        client = object()
+        api = self._makeOne(gax_api, client)
 
-        sinks, token = api.list_sinks(
+        iterator = api.list_sinks(
             self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
+        sinks = list(iterator)
+        token = iterator.next_page_token
 
-        self.assertEqual(sinks, SINKS)
+        # First check the token.
         self.assertIsNone(token)
+        # Then check the sinks returned.
+        self.assertEqual(len(sinks), 1)
+        sink = sinks[0]
+        self.assertIsInstance(sink, Sink)
+        self.assertEqual(sink.name, self.SINK_PATH)
+        self.assertEqual(sink.filter_, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertIs(sink.client, client)
 
         project, page_size, options = gax_api._list_sinks_called_with
         self.assertEqual(project, self.PROJECT_PATH)
