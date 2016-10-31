@@ -125,6 +125,32 @@ class TestSpeechClient(unittest.TestCase):
 
     def test_sync_recognize_local_file(self):
         with open(AUDIO_FILE, 'rb') as file_obj:
+            content = file_obj.read()
+        results = self._make_sync_request(content=content,
+                                          max_alternatives=2)
+
+        self.assertEqual(len(results), 2)
+        second_alternative = results[1]
+        self._check_best_results(results)
+        self.assertIsInstance(second_alternative, Transcript)
+        self.assertEqual(second_alternative.transcript, self.ASSERT_TEXT)
+        self.assertEqual(second_alternative.confidence, 0.0)
+
+    def test_sync_recognize_gcs_file(self):
+        bucket_name = Config.TEST_BUCKET.name
+        blob_name = 'hello.wav'
+        blob = Config.TEST_BUCKET.blob(blob_name)
+        self.to_delete_by_case.append(blob)  # Clean-up.
+        with open(AUDIO_FILE, 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+
+        source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
+        result = self._make_sync_request(source_uri=source_uri,
+                                         max_alternatives=1)
+        self._check_best_results(result)
+
+    def test_sync_recognize_local_file_rest(self):
+        with open(AUDIO_FILE, 'rb') as file_obj:
             results = self._make_sync_request(content=file_obj.read(),
                                               max_alternatives=2)
             second_alternative = results[1]
@@ -134,7 +160,7 @@ class TestSpeechClient(unittest.TestCase):
             self.assertEqual(second_alternative.transcript, self.ASSERT_TEXT)
             self.assertEqual(second_alternative.confidence, 0.0)
 
-    def test_sync_recognize_gcs_file(self):
+    def test_sync_recognize_gcs_file_rest(self):
         bucket_name = Config.TEST_BUCKET.name
         blob_name = 'hello.wav'
         blob = Config.TEST_BUCKET.blob(blob_name)
