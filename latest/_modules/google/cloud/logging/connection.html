@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.connection &mdash; google-cloud c4ac484 documentation</title>
+  <title>google.cloud.logging.connection &mdash; google-cloud 6842d49 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud c4ac484 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6842d49 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -456,11 +456,12 @@
 <span class="sd">    See:</span>
 <span class="sd">    https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks</span>
 
-<span class="sd">    :type connection: :class:`google.cloud.logging.connection.Connection`</span>
-<span class="sd">    :param connection: the connection used to make API requests.</span>
+<span class="sd">    :type client: :class:`~google.cloud.logging.client.Client`</span>
+<span class="sd">    :param client: The client used to make API requests.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span>
 
     <span class="k">def</span> <span class="nf">list_sinks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List sinks for the project associated with this client.</span>
@@ -595,11 +596,12 @@
 <span class="sd">    See:</span>
 <span class="sd">    https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics</span>
 
-<span class="sd">    :type connection: :class:`google.cloud.logging.connection.Connection`</span>
-<span class="sd">    :param connection: the connection used to make API requests.</span>
+<span class="sd">    :type client: :class:`~google.cloud.logging.client.Client`</span>
+<span class="sd">    :param client: The client used to make API requests.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span>
 
     <span class="k">def</span> <span class="nf">list_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List metrics for the project associated with this client.</span>
@@ -787,7 +789,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'c4ac484',
+            VERSION:'6842d49',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
