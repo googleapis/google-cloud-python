@@ -436,6 +436,32 @@ class TestHTTPIterator(unittest.TestCase):
         self.assertEqual(kw['path'], path)
         self.assertEqual(kw['query_params'], {})
 
+    def test__get_next_page_response_with_post(self):
+        path = '/foo'
+        returned = {'green': 'eggs', 'ham': 55}
+        connection = _Connection(returned)
+        client = _Client(connection)
+        iterator = self._makeOne(client, path, None)
+        iterator._HTTP_METHOD = 'POST'
+        response = iterator._get_next_page_response()
+        self.assertEqual(response, returned)
+
+        self.assertEqual(len(connection._requested), 1)
+        called_kwargs = connection._requested[0]
+        self.assertEqual(called_kwargs, {
+            'method': iterator._HTTP_METHOD,
+            'path': path,
+            'data': {},
+        })
+
+    def test__get_next_page_bad_http_method(self):
+        path = '/foo'
+        client = _Client(None)
+        iterator = self._makeOne(client, path, None)
+        iterator._HTTP_METHOD = 'NOT-A-VERB'
+        with self.assertRaises(ValueError):
+            iterator._get_next_page_response()
+
 
 class TestGAXIterator(unittest.TestCase):
 
