@@ -104,11 +104,12 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging.connection import _SinksAPI
         from google.cloud.logging import client as MUT
         from google.cloud._testing import _Monkey
-        client = self._makeOne(self.PROJECT, credentials=_Credentials())
-        conn = client.connection = object()
 
         with _Monkey(MUT, _USE_GAX=False):
-            api = client.sinks_api
+            client = self._makeOne(self.PROJECT, credentials=_Credentials())
+
+        conn = client.connection = object()
+        api = client.sinks_api
 
         self.assertIsInstance(api, _SinksAPI)
         self.assertIs(api._connection, conn)
@@ -153,11 +154,12 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging.connection import _MetricsAPI
         from google.cloud.logging import client as MUT
         from google.cloud._testing import _Monkey
-        client = self._makeOne(self.PROJECT, credentials=_Credentials())
-        conn = client.connection = object()
 
         with _Monkey(MUT, _USE_GAX=False):
-            api = client.metrics_api
+            client = self._makeOne(self.PROJECT, credentials=_Credentials())
+
+        conn = client.connection = object()
+        api = client.metrics_api
 
         self.assertIsInstance(api, _MetricsAPI)
         self.assertIs(api._connection, conn)
