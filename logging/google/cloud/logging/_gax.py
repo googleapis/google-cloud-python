@@ -32,6 +32,7 @@ from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import GAXIterator
 from google.cloud.logging._helpers import entry_from_resource
+from google.cloud.logging.sink import Sink
 
 
 class _LoggingAPI(object):
@@ -178,10 +179,7 @@ class _SinksAPI(object):
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_sinks(path, page_size=page_size,
                                              options=options)
-        sinks = [MessageToDict(log_sink_pb)
-                 for log_sink_pb in page_iter.next()]
-        token = page_iter.page_token or None
-        return sinks, token
+        return GAXIterator(self._client, page_iter, _item_to_sink)
 
     def sink_create(self, project, sink_name, filter_, destination):
         """API call:  create a sink resource.
@@ -481,3 +479,20 @@ def _item_to_entry(iterator, entry_pb, loggers):
     """
     resource = MessageToDict(entry_pb)
     return entry_from_resource(resource, iterator.client, loggers)
+
+
+def _item_to_sink(iterator, log_sink_pb):
+    """Convert a sink protobuf to the native object.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type log_sink_pb:
+        :class:`~google.logging.v2.logging_config_pb2.LogSink`
+    :param log_sink_pb: Sink protobuf returned from the API.
+
+    :rtype: :class:`~google.cloud.logging.sink.Sink`
+    :returns: The next sink in the page.
+    """
+    resource = MessageToDict(log_sink_pb)
+    return Sink.from_api_repr(resource, iterator.client)

@@ -24,7 +24,7 @@ def entry_from_resource(resource, client, loggers):
     """Detect correct entry type from resource and instantiate.
 
     :type resource: dict
-    :param resource: one entry resource from API response
+    :param resource: One entry resource from API response.
 
     :type client: :class:`~google.cloud.logging.client.Client`
     :param client: Client that owns the log entry.
@@ -45,4 +45,4 @@ def entry_from_resource(resource, client, loggers):
     elif 'protoPayload' in resource:
         return ProtobufEntry.from_api_repr(resource, client, loggers)
 
-    raise ValueError('Cannot parse log entry resource')
+    raise ValueError('Cannot parse log entry resource.')
