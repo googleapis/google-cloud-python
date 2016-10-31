@@ -230,6 +230,15 @@ class _JSONSpeechAPI(object):
         self._client = client
         self._connection = client.connection
 
+    @property
+    def connection(self):
+        """Connection property.
+
+        :rtype: :class:`~google.cloud.core.connection.Connection`
+        :returns: Instance of ``Connection``
+        """
+        return self._connection
+
     def async_recognize(self, sample, language_code=None,
                         max_alternatives=None, profanity_filter=None,
                         speech_context=None):
