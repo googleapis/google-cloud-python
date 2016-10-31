@@ -843,27 +843,36 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertIs(api._gax_api, gax_api)
 
     def test_list_metrics_no_paging(self):
+        import six
         from google.gax import INITIAL_PAGE
-        from google.cloud._testing import _GAXPageIterator
         from google.logging.v2.logging_metrics_pb2 import LogMetric
+        from google.cloud._testing import _GAXPageIterator
+        from google.cloud.logging.metric import Metric
 
         TOKEN = 'TOKEN'
-        METRICS = [{
-            'name': self.METRIC_PATH,
-            'filter': self.FILTER,
-            'description': self.DESCRIPTION,
-        }]
         metric_pb = LogMetric(name=self.METRIC_PATH,
                               description=self.DESCRIPTION,
                               filter=self.FILTER)
         response = _GAXPageIterator([metric_pb], page_token=TOKEN)
         gax_api = _GAXMetricsAPI(_list_log_metrics_response=response)
-        api = self._makeOne(gax_api, None)
+        client = object()
+        api = self._makeOne(gax_api, client)
 
-        metrics, token = api.list_metrics(self.PROJECT)
+        iterator = api.list_metrics(self.PROJECT)
+        page = six.next(iterator.pages)
+        metrics = list(page)
+        token = iterator.next_page_token
 
-        self.assertEqual(metrics, METRICS)
+        # First check the token.
         self.assertEqual(token, TOKEN)
+        # Then check the metrics returned.
+        self.assertEqual(len(metrics), 1)
+        metric = metrics[0]
+        self.assertIsInstance(metric, Metric)
+        self.assertEqual(metric.name, self.METRIC_PATH)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, self.DESCRIPTION)
+        self.assertIs(metric.client, client)
 
         project, page_size, options = gax_api._list_log_metrics_called_with
         self.assertEqual(project, self.PROJECT_PATH)
@@ -871,28 +880,35 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, INITIAL_PAGE)
 
     def test_list_metrics_w_paging(self):
-        from google.cloud._testing import _GAXPageIterator
         from google.logging.v2.logging_metrics_pb2 import LogMetric
+        from google.cloud._testing import _GAXPageIterator
+        from google.cloud.logging.metric import Metric
 
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
-        METRICS = [{
-            'name': self.METRIC_PATH,
-            'filter': self.FILTER,
-            'description': self.DESCRIPTION,
-        }]
         metric_pb = LogMetric(name=self.METRIC_PATH,
                               description=self.DESCRIPTION,
                               filter=self.FILTER)
         response = _GAXPageIterator([metric_pb])
         gax_api = _GAXMetricsAPI(_list_log_metrics_response=response)
-        api = self._makeOne(gax_api, None)
+        client = object()
+        api = self._makeOne(gax_api, client)
 
-        metrics, token = api.list_metrics(
+        iterator = api.list_metrics(
             self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
+        metrics = list(iterator)
+        token = iterator.next_page_token
 
-        self.assertEqual(metrics, METRICS)
+        # First check the token.
         self.assertIsNone(token)
+        # Then check the metrics returned.
+        self.assertEqual(len(metrics), 1)
+        metric = metrics[0]
+        self.assertIsInstance(metric, Metric)
+        self.assertEqual(metric.name, self.METRIC_PATH)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, self.DESCRIPTION)
+        self.assertIs(metric.client, client)
 
         project, page_size, options = gax_api._list_log_metrics_called_with
         self.assertEqual(project, self.PROJECT_PATH)
