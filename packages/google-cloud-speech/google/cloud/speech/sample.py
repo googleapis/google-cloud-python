@@ -69,6 +69,15 @@ class Sample(object):
             raise ValueError('Invalid encoding: %s' % (encoding,))
 
     @property
+    def chunk_size(self):
+        """Chunk size to send over gRPC. ~100ms
+
+        :rtype: int
+        :returns: Optimized chunk size.
+        """
+        return int(self.sample_rate / 10.0)
+
+    @property
     def source_uri(self):
         """Google Cloud Storage URI of audio source.
 
