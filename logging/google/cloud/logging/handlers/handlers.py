@@ -12,30 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Python :mod:`logging` handlers for Google Cloud Logging."""
+"""Python :mod:`logging` handlers for Stackdriver Logging."""
 
 import logging
 
 from google.cloud.logging.handlers.transports import BackgroundThreadTransport
 
-
-EXCLUDE_LOGGER_DEFAULTS = (
-    'google.cloud',
-    'oauth2client'
-)
-
 DEFAULT_LOGGER_NAME = 'python'
+
+EXCLUDED_LOGGER_DEFAULTS = ('google.cloud', 'oauth2client')
 
 
 class CloudLoggingHandler(logging.StreamHandler):
-    """Python standard ``logging`` handler.
+    """Handler that directly makes Stackdriver logging API calls.
 
-    This handler can be used to route Python standard logging messages
-    directly to the Stackdriver Logging API.
+    This is a Python standard ``logging`` handler using that can be used to
+    route Python standard logging messages directly to the Stackdriver
+    Logging API.
 
-    Note that this handler currently only supports a synchronous API call,
-    which means each logging statement that uses this handler will require
-    an API call.
+    This handler supports both an asynchronous and synchronous transport.
 
     :type client: :class:`google.cloud.logging.client`
     :param client: the authenticated Google Cloud Logging client for this
@@ -93,8 +88,9 @@ class CloudLoggingHandler(logging.StreamHandler):
         self.transport.send(record, message)
 
 
-def setup_logging(handler, excluded_loggers=EXCLUDE_LOGGER_DEFAULTS):
-    """Attach the ``CloudLogging`` handler to the Python root logger
+def setup_logging(handler, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS,
+                  log_level=logging.INFO):
+    """Attach a logging handler to the Python root logger
 
     Excludes loggers that this library itself uses to avoid
     infinite recursion.
@@ -103,9 +99,13 @@ def setup_logging(handler, excluded_loggers=EXCLUDE_LOGGER_DEFAULTS):
     :param handler: the handler to attach to the global handler
 
     :type excluded_loggers: tuple
-    :param excluded_loggers: The loggers to not attach the handler to. This
-                             will always include the loggers in the path of
-                             the logging client itself.
+    :param excluded_loggers: (Optional) The loggers to not attach the handler
+                             to. This will always include the loggers in the
+                             path of the logging client itself.
+
+    :type log_level: int
+    :param log_level: (Optional) Python logging log level. Defaults to
+                      :const:`logging.INFO`.
 
     Example:
 
@@ -123,8 +123,9 @@ def setup_logging(handler, excluded_loggers=EXCLUDE_LOGGER_DEFAULTS):
         logging.error('bad news')  # API call
 
     """
-    all_excluded_loggers = set(excluded_loggers + EXCLUDE_LOGGER_DEFAULTS)
+    all_excluded_loggers = set(excluded_loggers + EXCLUDED_LOGGER_DEFAULTS)
     logger = logging.getLogger()
+    logger.setLevel(log_level)
     logger.addHandler(handler)
     logger.addHandler(logging.StreamHandler())
     for logger_name in all_excluded_loggers:

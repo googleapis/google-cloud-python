@@ -111,6 +111,8 @@
   logging-sink
   logging-stdlib-usage
   logging-handlers
+  logging-handlers-app-engine
+  logging-handlers-container-engine
   logging-transports-sync
   logging-transports-thread
   logging-transports-base

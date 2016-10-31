@@ -36,31 +36,22 @@ class TestSyncHandler(unittest.TestCase):
 
     def test_send(self):
         client = _Client(self.PROJECT)
-        STACKDRIVER_LOGGER_NAME = 'python'
-        PYTHON_LOGGER_NAME = 'mylogger'
-        transport = self._make_one(client, STACKDRIVER_LOGGER_NAME)
-        MESSAGE = 'hello world'
-        record = _Record(PYTHON_LOGGER_NAME, logging.INFO, MESSAGE)
 
-        transport.send(record, MESSAGE)
+        stackdriver_logger_name = 'python'
+        python_logger_name = 'mylogger'
+        transport = self._make_one(client, stackdriver_logger_name)
+        message = 'hello world'
+        record = logging.LogRecord(python_logger_name, logging.INFO,
+                                   None, None, message, None, None)
+
+        transport.send(record, message)
         EXPECTED_STRUCT = {
-            'message': MESSAGE,
-            'python_logger': PYTHON_LOGGER_NAME
+            'message': message,
+            'python_logger': python_logger_name,
         }
-        EXPECTED_SENT = (EXPECTED_STRUCT, logging.INFO)
+        EXPECTED_SENT = (EXPECTED_STRUCT, 'INFO')
         self.assertEqual(
             transport.logger.log_struct_called_with, EXPECTED_SENT)
-
-
-class _Record(object):
-
-    def __init__(self, name, level, message):
-        self.name = name
-        self.levelname = level
-        self.message = message
-        self.exc_info = None
-        self.exc_text = None
-        self.stack_info = None
 
 
 class _Logger(object):
