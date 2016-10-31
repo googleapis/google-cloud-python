@@ -14,6 +14,8 @@
 
 """GAX wrapper for Logging API requests."""
 
+import functools
+
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
@@ -28,6 +30,8 @@ from grpc import StatusCode
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
+from google.cloud.iterator import GAXIterator
+from google.cloud.logging._helpers import entry_from_resource
 
 
 class _LoggingAPI(object):
@@ -36,9 +40,13 @@ class _LoggingAPI(object):
     :type gax_api:
         :class:`google.logging.v2.logging_service_v2_api.LoggingServiceV2Api`
     :param gax_api: API object used to make GAX requests.
+
+    :type client: :class:`~google.cloud.logging.client.Client`
+    :param client: The client that owns this API object.
     """
-    def __init__(self, gax_api):
+    def __init__(self, gax_api, client):
         self._gax_api = gax_api
+        self._client = client
 
     def list_entries(self, projects, filter_='', order_by='',
                      page_size=0, page_token=None):
@@ -49,8 +57,9 @@ class _LoggingAPI(object):
                          defaults to the project bound to the API's client.
 
         :type filter_: str
-        :param filter_: a filter expression. See:
-                        https://cloud.google.com/logging/docs/view/advanced_filters
+        :param filter_:
+            a filter expression. See:
+            https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: str
         :param order_by: One of :data:`~google.cloud.logging.ASCENDING`
@@ -65,10 +74,9 @@ class _LoggingAPI(object):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: tuple, (list, str)
-        :returns: list of mappings, plus a "next page token" string:
-                  if not None, indicates that more entries can be retrieved
-                  with another call (pass that value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`
+                  accessible to the current API.
         """
         if page_token is None:
             page_token = INITIAL_PAGE
@@ -76,10 +84,14 @@ class _LoggingAPI(object):
         page_iter = self._gax_api.list_log_entries(
             projects, filter_=filter_, order_by=order_by,
             page_size=page_size, options=options)
-        entries = [MessageToDict(entry_pb)
-                   for entry_pb in page_iter.next()]
-        token = page_iter.page_token or None
-        return entries, token
+
+        # We attach a mutable loggers dictionary so that as Logger
+        # objects are created by entry_from_resource, they can be
+        # re-used by other log entries from the same logger.
+        loggers = {}
+        item_to_value = functools.partial(
+            _item_to_entry, loggers=loggers)
+        return GAXIterator(self._client, page_iter, item_to_value)
 
     def write_entries(self, entries, logger_name=None, resource=None,
                       labels=None):
@@ -430,3 +442,34 @@ def _log_entry_mapping_to_pb(mapping):
         mapping['timestamp'] = _datetime_to_rfc3339(mapping['timestamp'])
     ParseDict(mapping, entry_pb)
     return entry_pb
+
+
+def _item_to_entry(iterator, entry_pb, loggers):
+    """Convert a log entry protobuf to the native object.
+
+    .. note::
+
+        This method does not have the correct signature to be used as
+        the ``item_to_value`` argument to
+        :class:`~google.cloud.iterator.Iterator`. It is intended to be
+        patched with a mutable ``loggers`` argument that can be updated
+        on subsequent calls. For an example, see how the method is
+        used above in :meth:`_LoggingAPI.list_entries`.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type entry_pb: :class:`~google.logging.v2.log_entry_pb2.LogEntry`
+    :param entry_pb: Log entry protobuf returned from the API.
+
+    :type loggers: dict
+    :param loggers:
+        A mapping of logger fullnames -> loggers.  If the logger
+        that owns the entry is not in ``loggers``, the entry
+        will have a newly-created logger.
+
+    :rtype: :class:`~google.cloud.logging.entries._BaseEntry`
+    :returns: The next log entry in the page.
+    """
+    resource = MessageToDict(entry_pb)
+    return entry_from_resource(resource, iterator.client, loggers)

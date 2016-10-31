@@ -47,8 +47,7 @@ Example of fetching entries:
 
 .. code:: python
 
-    entries, token = logger.list_entries()
-    for entry in entries:
+    for entry in logger.list_entries():
         print(entry.payload)
 
 See the ``google-cloud-python`` API `logging documentation`_ to learn how to

@@ -285,8 +285,9 @@ class Logger(object):
                             defaults to the project bound to the client.
 
         :type filter_: str
-        :param filter_: a filter expression. See:
-                        https://cloud.google.com/logging/docs/view/advanced_filters
+        :param filter_:
+            a filter expression. See:
+            https://cloud.google.com/logging/docs/view/advanced_filters
 
         :type order_by: str
         :param order_by: One of :data:`~google.cloud.logging.ASCENDING`
@@ -301,11 +302,9 @@ class Logger(object):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: tuple, (list, str)
-        :returns: list of :class:`google.cloud.logging.entry.TextEntry`, plus a
-                  "next page token" string:  if not None, indicates that
-                  more entries can be retrieved with another call (pass that
-                  value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`
+                  accessible to the current logger.
         """
         log_filter = 'logName=%s' % (self.full_name,)
         if filter_ is not None:
