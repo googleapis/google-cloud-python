@@ -222,17 +222,13 @@ class Client(JSONClient):
                            passed, the API will return the first page of
                            sinks.
 
-        :rtype: tuple, (list, str)
-        :returns: list of :class:`google.cloud.logging.sink.Sink`, plus a
-                  "next page token" string:  if not None, indicates that
-                  more sinks can be retrieved with another call (pass that
-                  value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of
+                  :class:`~google.cloud.logging.sink.Sink`
+                  accessible to the current client.
         """
-        resources, token = self.sinks_api.list_sinks(
+        return self.sinks_api.list_sinks(
             self.project, page_size, page_token)
-        sinks = [Sink.from_api_repr(resource, self)
-                 for resource in resources]
-        return sinks, token
 
     def metric(self, name, filter_=None, description=''):
         """Creates a metric bound to the current client.

@@ -365,7 +365,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(sink.project, self.PROJECT)
 
     def test_list_sinks_no_paging(self):
+        import six
         from google.cloud.logging.sink import Sink
+
         PROJECT = 'PROJECT'
         TOKEN = 'TOKEN'
         SINK_NAME = 'sink_name'
@@ -375,25 +377,42 @@ class TestClient(unittest.TestCase):
             'filter': FILTER,
             'destination': self.DESTINATION_URI,
         }]
-        client = self._makeOne(project=PROJECT, credentials=_Credentials())
-        api = client._sinks_api = _DummySinksAPI()
-        api._list_sinks_response = SINKS, TOKEN
+        client = self._makeOne(project=PROJECT, credentials=_Credentials(),
+                               use_gax=False)
+        returned = {
+            'sinks': SINKS,
+            'nextPageToken': TOKEN,
+        }
+        client.connection = _Connection(returned)
 
-        sinks, token = client.list_sinks()
+        iterator = client.list_sinks()
+        page = six.next(iterator.pages)
+        sinks = list(page)
+        token = iterator.next_page_token
 
+        # First check the token.
+        self.assertEqual(token, TOKEN)
+        # Then check the sinks returned.
         self.assertEqual(len(sinks), 1)
         sink = sinks[0]
         self.assertIsInstance(sink, Sink)
         self.assertEqual(sink.name, SINK_NAME)
         self.assertEqual(sink.filter_, FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertIs(sink.client, client)
 
-        self.assertEqual(token, TOKEN)
-        self.assertEqual(api._list_sinks_called_with,
-                         (PROJECT, None, None))
+        # Verify the mocked transport.
+        called_with = client.connection._called_with
+        path = '/projects/%s/sinks' % (self.PROJECT,)
+        self.assertEqual(called_with, {
+            'method': 'GET',
+            'path': path,
+            'query_params': {},
+        })
 
     def test_list_sinks_with_paging(self):
         from google.cloud.logging.sink import Sink
+
         PROJECT = 'PROJECT'
         SINK_NAME = 'sink_name'
         FILTER = 'logName:syslog AND severity>=ERROR'
@@ -404,21 +423,39 @@ class TestClient(unittest.TestCase):
             'filter': FILTER,
             'destination': self.DESTINATION_URI,
         }]
-        client = self._makeOne(project=PROJECT, credentials=_Credentials())
-        api = client._sinks_api = _DummySinksAPI()
-        api._list_sinks_response = SINKS, None
+        client = self._makeOne(project=PROJECT, credentials=_Credentials(),
+                               use_gax=False)
+        returned = {
+            'sinks': SINKS,
+        }
+        client.connection = _Connection(returned)
 
-        sinks, token = client.list_sinks(PAGE_SIZE, TOKEN)
+        iterator = client.list_sinks(PAGE_SIZE, TOKEN)
+        sinks = list(iterator)
+        token = iterator.next_page_token
 
+        # First check the token.
+        self.assertIsNone(token)
+        # Then check the sinks returned.
         self.assertEqual(len(sinks), 1)
         sink = sinks[0]
         self.assertIsInstance(sink, Sink)
         self.assertEqual(sink.name, SINK_NAME)
         self.assertEqual(sink.filter_, FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
-        self.assertIsNone(token)
-        self.assertEqual(api._list_sinks_called_with,
-                         (PROJECT, PAGE_SIZE, TOKEN))
+        self.assertIs(sink.client, client)
+
+        # Verify the mocked transport.
+        called_with = client.connection._called_with
+        path = '/projects/%s/sinks' % (self.PROJECT,)
+        self.assertEqual(called_with, {
+            'method': 'GET',
+            'path': path,
+            'query_params': {
+                'pageSize': PAGE_SIZE,
+                'pageToken': TOKEN,
+            },
+        })
 
     def test_metric_defaults(self):
         from google.cloud.logging.metric import Metric
@@ -511,13 +548,6 @@ class _Credentials(object):
     def create_scoped(self, scope):
         self._scopes = scope
         return self
-
-
-class _DummySinksAPI(object):
-
-    def list_sinks(self, project, page_size, page_token):
-        self._list_sinks_called_with = (project, page_size, page_token)
-        return self._list_sinks_response
 
 
 class _DummyMetricsAPI(object):

@@ -306,6 +306,9 @@ class Test_SinksAPI(unittest.TestCase):
         self.assertIs(api._client, client)
 
     def test_list_sinks_no_paging(self):
+        import six
+        from google.cloud.logging.sink import Sink
+
         TOKEN = 'TOKEN'
         RETURNED = {
             'sinks': [{
@@ -319,17 +322,33 @@ class Test_SinksAPI(unittest.TestCase):
         client = _Client(conn)
         api = self._makeOne(client)
 
-        sinks, token = api.list_sinks(self.PROJECT)
+        iterator = api.list_sinks(self.PROJECT)
+        page = six.next(iterator.pages)
+        sinks = list(page)
+        token = iterator.next_page_token
 
-        self.assertEqual(sinks, RETURNED['sinks'])
+        # First check the token.
         self.assertEqual(token, TOKEN)
+        # Then check the sinks returned.
+        self.assertEqual(len(sinks), 1)
+        sink = sinks[0]
+        self.assertIsInstance(sink, Sink)
+        self.assertEqual(sink.name, self.SINK_PATH)
+        self.assertEqual(sink.filter_, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertIs(sink.client, client)
 
-        self.assertEqual(conn._called_with['method'], 'GET')
+        called_with = conn._called_with
         path = '/%s' % (self.LIST_SINKS_PATH,)
-        self.assertEqual(conn._called_with['path'], path)
-        self.assertEqual(conn._called_with['query_params'], {})
+        self.assertEqual(called_with, {
+            'method': 'GET',
+            'path': path,
+            'query_params': {},
+        })
 
     def test_list_sinks_w_paging(self):
+        from google.cloud.logging.sink import Sink
+
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
         RETURNED = {
@@ -343,17 +362,32 @@ class Test_SinksAPI(unittest.TestCase):
         client = _Client(conn)
         api = self._makeOne(client)
 
-        sinks, token = api.list_sinks(
+        iterator = api.list_sinks(
             self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
+        sinks = list(iterator)
+        token = iterator.next_page_token
 
-        self.assertEqual(sinks, RETURNED['sinks'])
+        # First check the token.
         self.assertIsNone(token)
+        # Then check the sinks returned.
+        self.assertEqual(len(sinks), 1)
+        sink = sinks[0]
+        self.assertIsInstance(sink, Sink)
+        self.assertEqual(sink.name, self.SINK_PATH)
+        self.assertEqual(sink.filter_, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertIs(sink.client, client)
 
-        self.assertEqual(conn._called_with['method'], 'GET')
+        called_with = conn._called_with
         path = '/%s' % (self.LIST_SINKS_PATH,)
-        self.assertEqual(conn._called_with['path'], path)
-        self.assertEqual(conn._called_with['query_params'],
-                         {'pageSize': PAGE_SIZE, 'pageToken': TOKEN})
+        self.assertEqual(called_with, {
+            'method': 'GET',
+            'path': path,
+            'query_params': {
+                'pageSize': PAGE_SIZE,
+                'pageToken': TOKEN,
+            },
+        })
 
     def test_sink_create_conflict(self):
         from google.cloud.exceptions import Conflict
