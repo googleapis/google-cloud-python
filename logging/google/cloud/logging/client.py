@@ -111,7 +111,7 @@ class Client(JSONClient):
         https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.sinks
         """
         if self._sinks_api is None:
-            if _USE_GAX:
+            if self._use_gax:
                 generated = GeneratedSinksAPI()
                 self._sinks_api = GAXSinksAPI(generated, self)
             else:
@@ -126,7 +126,7 @@ class Client(JSONClient):
         https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics
         """
         if self._metrics_api is None:
-            if _USE_GAX:
+            if self._use_gax:
                 generated = GeneratedMetricsAPI()
                 self._metrics_api = GAXMetricsAPI(generated, self)
             else:
