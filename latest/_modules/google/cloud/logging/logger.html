@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.logger &mdash; google-cloud 319fd8f documentation</title>
+  <title>google.cloud.logging.logger &mdash; google-cloud 56fb77c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 319fd8f documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 56fb77c documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -557,8 +557,9 @@
 <span class="sd">                            defaults to the project bound to the client.</span>
 
 <span class="sd">        :type filter_: str</span>
-<span class="sd">        :param filter_: a filter expression. See:</span>
-<span class="sd">                        https://cloud.google.com/logging/docs/view/advanced_filters</span>
+<span class="sd">        :param filter_:</span>
+<span class="sd">            a filter expression. See:</span>
+<span class="sd">            https://cloud.google.com/logging/docs/view/advanced_filters</span>
 
 <span class="sd">        :type order_by: str</span>
 <span class="sd">        :param order_by: One of :data:`~google.cloud.logging.ASCENDING`</span>
@@ -573,11 +574,9 @@
 <span class="sd">                           passed, the API will return the first page of</span>
 <span class="sd">                           entries.</span>
 
-<span class="sd">        :rtype: tuple, (list, str)</span>
-<span class="sd">        :returns: list of :class:`google.cloud.logging.entry.TextEntry`, plus a</span>
-<span class="sd">                  &quot;next page token&quot; string:  if not None, indicates that</span>
-<span class="sd">                  more entries can be retrieved with another call (pass that</span>
-<span class="sd">                  value as ``page_token``).</span>
+<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`</span>
+<span class="sd">                  accessible to the current logger.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">log_filter</span> <span class="o">=</span> <span class="s1">&#39;logName=</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,)</span>
         <span class="k">if</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -756,7 +755,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'319fd8f',
+            VERSION:'56fb77c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

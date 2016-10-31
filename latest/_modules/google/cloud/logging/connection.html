@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.connection &mdash; google-cloud 319fd8f documentation</title>
+  <title>google.cloud.logging.connection &mdash; google-cloud 56fb77c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 319fd8f documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 56fb77c documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -286,7 +286,11 @@
 
 <span class="sd">&quot;&quot;&quot;Create / interact with Stackdriver Logging connections.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">functools</span>
+
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
+<span class="kn">from</span> <span class="nn">google.cloud.logging._helpers</span> <span class="k">import</span> <span class="n">entry_from_resource</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../../logging-client.html#google.cloud.logging.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
@@ -327,11 +331,13 @@
 <span class="sd">    https://cloud.google.com/logging/docs/api/reference/rest/v2/entries</span>
 <span class="sd">    https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.logs</span>
 
-<span class="sd">    :type connection: :class:`google.cloud.logging.connection.Connection`</span>
-<span class="sd">    :param connection: the connection used to make API requests.</span>
+<span class="sd">    :type client: :class:`~google.cloud.logging.client.Client`</span>
+<span class="sd">    :param client: The client used to make API requests.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span>
 
     <span class="k">def</span> <span class="nf">list_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -345,8 +351,9 @@
 <span class="sd">                            defaults to the project bound to the client.</span>
 
 <span class="sd">        :type filter_: str</span>
-<span class="sd">        :param filter_: a filter expression. See:</span>
-<span class="sd">                        https://cloud.google.com/logging/docs/view/advanced_filters</span>
+<span class="sd">        :param filter_:</span>
+<span class="sd">            a filter expression. See:</span>
+<span class="sd">            https://cloud.google.com/logging/docs/view/advanced_filters</span>
 
 <span class="sd">        :type order_by: str</span>
 <span class="sd">        :param order_by: One of :data:`~google.cloud.logging.ASCENDING`</span>
@@ -361,29 +368,35 @@
 <span class="sd">                           passed, the API will return the first page of</span>
 <span class="sd">                           entries.</span>
 
-<span class="sd">        :rtype: tuple, (list, str)</span>
-<span class="sd">        :returns: list of mappings, plus a &quot;next page token&quot; string:</span>
-<span class="sd">                  if not None, indicates that more entries can be retrieved</span>
-<span class="sd">                  with another call (pass that value as ``page_token``).</span>
+<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`</span>
+<span class="sd">                  accessible to the current API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;projectIds&#39;</span><span class="p">:</span> <span class="n">projects</span><span class="p">}</span>
+        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;projectIds&#39;</span><span class="p">:</span> <span class="n">projects</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_</span>
 
         <span class="k">if</span> <span class="n">order_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;orderBy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">order_by</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;orderBy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">order_by</span>
 
         <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
 
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
-
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/entries:list&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;entries&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/entries:list&#39;</span>
+        <span class="c1"># We attach a mutable loggers dictionary so that as Logger</span>
+        <span class="c1"># objects are created by entry_from_resource, they can be</span>
+        <span class="c1"># re-used by other log entries from the same logger.</span>
+        <span class="n">loggers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">item_to_value</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+            <span class="n">_item_to_entry</span><span class="p">,</span> <span class="n">loggers</span><span class="o">=</span><span class="n">loggers</span><span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">item_to_value</span><span class="p">,</span> <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;entries&#39;</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+        <span class="c1"># This method uses POST to make a read-only request.</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">_HTTP_METHOD</span> <span class="o">=</span> <span class="s1">&#39;POST&#39;</span>
+        <span class="k">return</span> <span class="n">iterator</span>
 
     <span class="k">def</span> <span class="nf">write_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entries</span><span class="p">,</span> <span class="n">logger_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                       <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -711,6 +724,36 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/metrics/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_item_to_entry</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">loggers</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a log entry resource to the native object.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This method does not have the correct signature to be used as</span>
+<span class="sd">        the ``item_to_value`` argument to</span>
+<span class="sd">        :class:`~google.cloud.iterator.Iterator`. It is intended to be</span>
+<span class="sd">        patched with a mutable ``loggers`` argument that can be updated</span>
+<span class="sd">        on subsequent calls. For an example, see how the method is</span>
+<span class="sd">        used above in :meth:`_LoggingAPI.list_entries`.</span>
+
+<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">    :type resource: dict</span>
+<span class="sd">    :param resource: Log entry JSON resource returned from the API.</span>
+
+<span class="sd">    :type loggers: dict</span>
+<span class="sd">    :param loggers:</span>
+<span class="sd">        A mapping of logger fullnames -&gt; loggers.  If the logger</span>
+<span class="sd">        that owns the entry is not in ``loggers``, the entry</span>
+<span class="sd">        will have a newly-created logger.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.logging.entries._BaseEntry`</span>
+<span class="sd">    :returns: The next log entry in the page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">entry_from_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">loggers</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -744,7 +787,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'319fd8f',
+            VERSION:'56fb77c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

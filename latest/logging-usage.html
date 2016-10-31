@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 319fd8f documentation</title>
+  <title>Using the API &mdash; google-cloud 56fb77c documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 319fd8f documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 56fb77c documentation" href="index.html"/>
         <link rel="next" title="Stackdriver Logging Client" href="logging-client.html"/>
         <link rel="prev" title="Change Sets" href="dns-changes.html"/> 
 
@@ -341,8 +341,7 @@ non-empty string, e.g.:  <code class="docutils literal"><span class="pre">$</spa
 <p>Fetch entries for the default project.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">():</span>  <span class="c1"># API call(s)</span>
 <span class="gp">... </span>   <span class="n">timestamp</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">timestamp</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 <span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">Z: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
 <span class="gp">... </span>         <span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">payload</span><span class="p">))</span>
@@ -353,40 +352,47 @@ non-empty string, e.g.:  <code class="docutils literal"><span class="pre">$</spa
 <p>Fetch entries across multiple projects.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">project_ids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;one-project&#39;</span><span class="p">,</span> <span class="s1">&#39;another-project&#39;</span><span class="p">])</span>  <span class="c1"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">project_ids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;one-project&#39;</span><span class="p">,</span> <span class="s1">&#39;another-project&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>  <span class="c1"># API call(s)</span>
 </pre></div>
 </div>
 <p>Filter entries retrieved using the <a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">Advanced Logs Filters</a> syntax</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">FILTER</span> <span class="o">=</span> <span class="s2">&quot;log:log_name AND textPayload:simple&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="n">FILTER</span><span class="p">)</span>  <span class="c1"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="n">FILTER</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>  <span class="c1"># API call(s)</span>
 </pre></div>
 </div>
 <p>Sort entries in descending timestamp order.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">order_by</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DESCENDING</span><span class="p">)</span>  <span class="c1"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">order_by</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DESCENDING</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>  <span class="c1"># API call(s)</span>
 </pre></div>
 </div>
 <p>Retrieve entries in batches of 10, iterating until done.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">retrieved</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">entries</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">page_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>  <span class="c1"># API call</span>
-<span class="gp">... </span>    <span class="n">retrieved</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">break</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">page_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pages</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">pages</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">page1</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>  <span class="c1"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">page1</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">do_something</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">page2</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>  <span class="c1"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">page2</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">do_something_else</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Retrieve entries for a single logger, sorting in descending timestamp order:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">logging</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">logger</span><span class="p">(</span><span class="s1">&#39;log_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">order_by</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DESCENDING</span><span class="p">)</span>  <span class="c1"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iterator</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span><span class="n">order_by</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DESCENDING</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>  <span class="c1"># API call(s)</span>
 </pre></div>
 </div>
 </div>
@@ -708,7 +714,7 @@ logging statement to write the entry.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'319fd8f',
+            VERSION:'56fb77c',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
