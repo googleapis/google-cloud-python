@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigtable.cluster &mdash; google-cloud 838ec59 documentation</title>
+  <title>google.cloud.bigtable.cluster &mdash; google-cloud 262a0e7 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 838ec59 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 262a0e7 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -294,8 +294,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable._generated</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">bigtable_instance_admin_pb2</span> <span class="k">as</span> <span class="n">messages_v2_pb2</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">google.cloud.operation</span> <span class="k">import</span> <span class="n">Operation</span>
-<span class="kn">from</span> <span class="nn">google.cloud.operation</span> <span class="k">import</span> <span class="n">_compute_type_url</span>
-<span class="kn">from</span> <span class="nn">google.cloud.operation</span> <span class="k">import</span> <span class="n">register_type_url</span>
+<span class="kn">from</span> <span class="nn">google.cloud.operation</span> <span class="k">import</span> <span class="n">register_type</span>
 
 
 <span class="n">_CLUSTER_NAME_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^projects/(?P&lt;project&gt;[^/]+)/&#39;</span>
@@ -306,10 +305,7 @@
 <span class="sd">&quot;&quot;&quot;Default number of nodes to use when creating a cluster.&quot;&quot;&quot;</span>
 
 
-<span class="n">_UPDATE_CLUSTER_METADATA_URL</span> <span class="o">=</span> <span class="n">_compute_type_url</span><span class="p">(</span>
-    <span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">UpdateClusterMetadata</span><span class="p">)</span>
-<span class="n">register_type_url</span><span class="p">(</span>
-    <span class="n">_UPDATE_CLUSTER_METADATA_URL</span><span class="p">,</span> <span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">UpdateClusterMetadata</span><span class="p">)</span>
+<span class="n">register_type</span><span class="p">(</span><span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">UpdateClusterMetadata</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_prepare_create_request</span><span class="p">(</span><span class="n">cluster</span><span class="p">):</span>
@@ -580,7 +576,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'838ec59',
+            VERSION:'262a0e7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
