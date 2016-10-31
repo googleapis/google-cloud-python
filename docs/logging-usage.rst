@@ -342,8 +342,7 @@ List all sinks for a project:
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
-   >>> sinks, token = client.list_sinks()
-   >>> for sink in sinks:
+   >>> for sink in client.list_sinks():  # API call(s)
    ...     print('%s: %s' % (sink.name, sink.destination))
    robots-storage: storage.googleapis.com/my-bucket-name
    robots-bq: bigquery.googleapis.com/projects/my-project/datasets/my-dataset
