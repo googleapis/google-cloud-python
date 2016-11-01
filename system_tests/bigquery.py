@@ -265,9 +265,11 @@ class TestBigQuery(unittest.TestCase):
 
     @staticmethod
     def _fetch_single_page(table):
+        import six
+
         iterator = table.fetch_data()
-        iterator.update_page()
-        return list(iterator.page)
+        page = six.next(iterator.pages)
+        return list(page)
 
     def test_insert_data_then_dump_table(self):
         import datetime

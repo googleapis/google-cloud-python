@@ -1015,6 +1015,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_fetch_data_w_bound_client(self):
         import datetime
+        import six
         from google.cloud._helpers import UTC
         from google.cloud.bigquery.table import SchemaField
 
@@ -1069,9 +1070,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
                               schema=[full_name, age, joined])
 
         iterator = table.fetch_data()
-        iterator.update_page()
-        rows = list(iterator.page)
-        total_rows = iterator.page.total_rows
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = page.total_rows
         page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 4)
@@ -1088,7 +1089,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_fetch_data_w_alternate_client(self):
+        import six
         from google.cloud.bigquery.table import SchemaField
+
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         MAX = 10
@@ -1135,9 +1138,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         iterator = table.fetch_data(
             client=client2, max_results=MAX, page_token=TOKEN)
-        iterator.update_page()
-        rows = list(iterator.page)
-        total_rows = getattr(iterator.page, 'total_rows', None)
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = getattr(page, 'total_rows', None)
         page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 4)
@@ -1157,7 +1160,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
                          {'maxResults': MAX, 'pageToken': TOKEN})
 
     def test_fetch_data_w_repeated_fields(self):
+        import six
         from google.cloud.bigquery.table import SchemaField
+
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         ROWS = 1234
@@ -1185,9 +1190,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
                               schema=[full_name, struct])
 
         iterator = table.fetch_data()
-        iterator.update_page()
-        rows = list(iterator.page)
-        total_rows = iterator.page.total_rows
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = page.total_rows
         page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 1)
@@ -1203,7 +1208,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_fetch_data_w_record_schema(self):
+        import six
         from google.cloud.bigquery.table import SchemaField
+
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         ROWS = 1234
@@ -1239,9 +1246,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
                               schema=[full_name, phone])
 
         iterator = table.fetch_data()
-        iterator.update_page()
-        rows = list(iterator.page)
-        total_rows = iterator.page.total_rows
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = page.total_rows
         page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 3)

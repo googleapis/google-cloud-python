@@ -26,6 +26,8 @@ need to be deleted during teardown.
 import operator
 import time
 
+import six
+
 from google.cloud.bigquery import SchemaField
 from google.cloud.bigquery.client import Client
 
@@ -342,8 +344,8 @@ def _warm_up_inserted_table_data(table):
     while len(rows) == 0 and counter > 0:
         counter -= 1
         iterator = table.fetch_data()
-        iterator.update_page()
-        rows = list(iterator.page)
+        page = six.next(iterator.pages)
+        rows = list(page)
         if len(rows) == 0:
             time.sleep(5)
 
@@ -422,9 +424,9 @@ def table_upload_from_file(client, to_delete):
     _warm_up_inserted_table_data(table)
 
     iterator = table.fetch_data()
-    iterator.update_page()
-    rows = list(iterator.page)
-    total = iterator.page.total_rows
+    page = six.next(iterator.pages)
+    rows = list(page)
+    total = page.total_rows
     token = iterator.next_page_token
 
     assert len(rows) == total == 2

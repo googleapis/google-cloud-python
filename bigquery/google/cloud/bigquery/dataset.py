@@ -18,7 +18,7 @@ import six
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.table import Table
-from google.cloud.iterator import Iterator
+from google.cloud.iterator import HTTPIterator
 
 
 class AccessGrant(object):
@@ -556,9 +556,9 @@ class Dataset(object):
                   contained within the current dataset.
         """
         path = '/projects/%s/datasets/%s/tables' % (self.project, self.name)
-        result = Iterator(client=self._client, path=path,
-                          item_to_value=_item_to_table, items_key='tables',
-                          page_token=page_token, max_results=max_results)
+        result = HTTPIterator(client=self._client, path=path,
+                              item_to_value=_item_to_table, items_key='tables',
+                              page_token=page_token, max_results=max_results)
         result.dataset = self
         return result
 
