@@ -267,12 +267,12 @@ class TestLogging(unittest.TestCase):
         metric = Config.CLIENT.metric(
             METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
         self.assertFalse(metric.exists())
-        before_metrics, _ = Config.CLIENT.list_metrics()
+        before_metrics = list(Config.CLIENT.list_metrics())
         before_names = set(metric.name for metric in before_metrics)
         metric.create()
         self.to_delete.append(metric)
         self.assertTrue(metric.exists())
-        after_metrics, _ = Config.CLIENT.list_metrics()
+        after_metrics = list(Config.CLIENT.list_metrics())
         after_names = set(metric.name for metric in after_metrics)
         self.assertEqual(after_names - before_names,
                          set([METRIC_NAME]))
@@ -304,7 +304,7 @@ class TestLogging(unittest.TestCase):
         metric.filter_ = NEW_FILTER
         metric.description = NEW_DESCRIPTION
         metric.update()
-        after_metrics, _ = Config.CLIENT.list_metrics()
+        after_metrics = list(Config.CLIENT.list_metrics())
         after_info = {metric.name: metric for metric in after_metrics}
         after = after_info[METRIC_NAME]
         self.assertEqual(after.filter_, NEW_FILTER)
