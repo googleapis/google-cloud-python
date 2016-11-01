@@ -26,9 +26,10 @@ class TestCredentials(object):
     REFRESH_TOKEN = 'refresh_token'
     CLIENT_ID = 'client_id'
     CLIENT_SECRET = 'client_secret'
+    credentials = None
 
     @pytest.fixture(autouse=True)
-    def credentials(self):
+    def credentials_fixture(self):
         self.credentials = credentials.Credentials(
             token=None, refresh_token=self.REFRESH_TOKEN,
             token_uri=self.TOKEN_URI, client_id=self.CLIENT_ID,
