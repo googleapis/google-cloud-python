@@ -28,6 +28,7 @@ class TestClient(unittest.TestCase):
     def test_constructor(self):
         import mock
         from google.cloud.shiny.connection import Connection
+        from google.cloud.shiny.client import _JSONShinyAPI
 
         project = 'prujekt4'
         http = object()
@@ -43,6 +44,9 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client.connection, Connection)
         self.assertEqual(client.connection._credentials, scoped_credentials)
         self.assertEqual(client.connection._http, http)
+        self.assertIsInstance(client.shiny_api, _JSONShinyAPI)
+
+        # Check the mocks.
         credentials.create_scoped_required.assert_called_once_with()
         credentials.create_scoped.assert_called_once_with(Connection.SCOPE)
 
@@ -58,3 +62,25 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(unicorn, Unicorn)
         self.assertEqual(unicorn.name, name)
         self.assertIs(unicorn.client, client)
+
+
+class Test_JSONShinyAPI(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.shiny.client import _JSONShinyAPI
+        return _JSONShinyAPI
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_constructor(self):
+        import mock
+
+        client = mock.Mock()
+        connection = object()
+        client.connection = connection
+
+        shiny_api = self._make_one(client)
+        self.assertIs(shiny_api._client, client)
+        self.assertIs(shiny_api._connection, connection)

@@ -42,6 +42,11 @@ class Client(JSONClient):
 
     _connection_class = Connection
 
+    def __init__(self, project=None, credentials=None, http=None):
+        super(Client, self).__init__(
+            project=project, credentials=credentials, http=http)
+        self.shiny_api = _JSONShinyAPI(self)
+
     def unicorn(self, name):
         """Create a unicorn instance bound to the current client.
 
@@ -52,3 +57,15 @@ class Client(JSONClient):
         :returns: A unicorn instance for the current client.
         """
         return Unicorn(name, self)
+
+
+class _JSONShinyAPI(object):
+    """Low-level class for making API calls via JSON-over-HTTP.
+
+    :type client: :class:`~google.cloud.shiny.client.Client`
+    :param client: The client that will make API requests.
+    """
+
+    def __init__(self, client):
+        self._client = client
+        self._connection = client.connection
