@@ -69,3 +69,14 @@ class _JSONShinyAPI(object):
     def __init__(self, client):
         self._client = client
         self._connection = client.connection
+
+    def do_nothing(self, unicorn_name):
+        """Send a request to the Shiny API backend's "do nothing" method.
+
+        :type unicorn_name: str
+        :param unicorn_name: The name of a unicorn.
+        """
+        path = 'do-nothing/{}'.format(unicorn_name)
+        data = {'transmogrify': 'doodad'}
+        self._connection.api_request(
+            method='POST', path=path, data=data)

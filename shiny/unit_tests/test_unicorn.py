@@ -41,3 +41,19 @@ class TestUnicorn(unittest.TestCase):
         client = object()
         unicorn = self._make_one(None, client)
         self.assertIs(unicorn.client, client)
+
+    def test_do_nothing(self):
+        import mock
+
+        client = mock.Mock()
+        shiny_api = mock.Mock()
+        client.shiny_api = shiny_api
+
+        name = 'Starflower Rainbow Mane'
+        unicorn = self._make_one(name, client)
+
+        # Make the request.
+        self.assertIsNone(unicorn.do_nothing())
+
+        # Verify which request was made.
+        shiny_api.do_nothing.assert_called_once_with(name)

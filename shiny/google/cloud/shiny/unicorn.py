@@ -54,3 +54,7 @@ class Unicorn(object):
         :returns: The client that owns the current unicorn.
         """
         return self._client
+
+    def do_nothing(self):
+        """Send the current unicorn to Shiny API's "do nothing" method."""
+        self._client.shiny_api.do_nothing(self.name)

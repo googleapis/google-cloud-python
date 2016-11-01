@@ -84,3 +84,22 @@ class Test_JSONShinyAPI(unittest.TestCase):
         shiny_api = self._make_one(client)
         self.assertIs(shiny_api._client, client)
         self.assertIs(shiny_api._connection, connection)
+
+    def test_do_nothing(self):
+        import mock
+
+        client = mock.Mock()
+        connection = mock.Mock()
+        client.connection = connection
+
+        shiny_api = self._make_one(client)
+        name = 'Clover Sparkle Boy'
+
+        # Make the request.
+        self.assertIsNone(shiny_api.do_nothing(name))
+
+        # Verify which request was made.
+        expected_path = 'do-nothing/{}'.format(name)
+        expected_data = {'transmogrify': 'doodad'}
+        connection.api_request.assert_called_once_with(
+            method='POST', path=expected_path, data=expected_data)

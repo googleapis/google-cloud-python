@@ -41,3 +41,5 @@ doing something.
     client = shiny.Client()
     # Create a unicorn bound to the current client.
     unicorn = client.unicorn('Boris')
+    # Do "nothing" with this unicorn.
+    unicorn.do_nothing()
