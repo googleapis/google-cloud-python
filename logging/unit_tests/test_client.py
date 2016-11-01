@@ -485,33 +485,26 @@ class TestClient(unittest.TestCase):
         self.assertEqual(metric.project, self.PROJECT)
 
     def test_list_metrics_no_paging(self):
-        import six
         from google.cloud.logging.metric import Metric
 
-        PROJECT = 'PROJECT'
-        TOKEN = 'TOKEN'
-        METRICS = [{
+        metrics = [{
             'name': self.METRIC_NAME,
             'filter': self.FILTER,
             'description': self.DESCRIPTION,
         }]
-        client = self._makeOne(project=PROJECT, credentials=_Credentials(),
-                               use_gax=False)
+        client = self._makeOne(
+            project=self.PROJECT, credentials=_Credentials(),
+            use_gax=False)
         returned = {
-            'metrics': METRICS,
-            'nextPageToken': TOKEN,
+            'metrics': metrics,
         }
         client.connection = _Connection(returned)
 
         # Execute request.
         iterator = client.list_metrics()
-        page = six.next(iterator.pages)
-        metrics = list(page)
-        token = iterator.next_page_token
+        metrics = list(iterator)
 
-        # First check the token.
-        self.assertEqual(token, TOKEN)
-        # Then check the metrics returned.
+        # Check the metrics returned.
         self.assertEqual(len(metrics), 1)
         metric = metrics[0]
         self.assertIsInstance(metric, Metric)
@@ -530,29 +523,33 @@ class TestClient(unittest.TestCase):
         })
 
     def test_list_metrics_with_paging(self):
+        import six
         from google.cloud.logging.metric import Metric
-        PROJECT = 'PROJECT'
-        TOKEN = 'TOKEN'
-        PAGE_SIZE = 42
-        METRICS = [{
+
+        token = 'TOKEN'
+        next_token = 'T00KEN'
+        page_size = 42
+        metrics = [{
             'name': self.METRIC_NAME,
             'filter': self.FILTER,
             'description': self.DESCRIPTION,
         }]
-        client = self._makeOne(project=PROJECT, credentials=_Credentials(),
-                               use_gax=False)
+        client = self._makeOne(
+            project=self.PROJECT, credentials=_Credentials(),
+            use_gax=False)
         returned = {
-            'metrics': METRICS,
+            'metrics': metrics,
+            'nextPageToken': next_token,
         }
         client.connection = _Connection(returned)
 
         # Execute request.
-        iterator = client.list_metrics(PAGE_SIZE, TOKEN)
-        metrics = list(iterator)
-        token = iterator.next_page_token
+        iterator = client.list_metrics(page_size, token)
+        page = six.next(iterator.pages)
+        metrics = list(page)
 
         # First check the token.
-        self.assertIsNone(token)
+        self.assertEqual(iterator.next_page_token, next_token)
         # Then check the metrics returned.
         self.assertEqual(len(metrics), 1)
         metric = metrics[0]
@@ -569,8 +566,8 @@ class TestClient(unittest.TestCase):
             'method': 'GET',
             'path': path,
             'query_params': {
-                'pageSize': PAGE_SIZE,
-                'pageToken': TOKEN,
+                'pageSize': page_size,
+                'pageToken': token,
             },
         })
 
