@@ -14,6 +14,7 @@
   :hidden:
   :caption: Datastore
 
+  datastore-usage
   Client <datastore-client>
   datastore-entities
   datastore-keys
