@@ -297,6 +297,7 @@ class HTTPIterator(Iterator):
 
     _PAGE_TOKEN = 'pageToken'
     _MAX_RESULTS = 'maxResults'
+    _NEXT_TOKEN = 'nextPageToken'
     _RESERVED_PARAMS = frozenset([_PAGE_TOKEN, _MAX_RESULTS])
     _HTTP_METHOD = 'GET'
 
@@ -339,7 +340,7 @@ class HTTPIterator(Iterator):
             items = response.get(self._items_key, ())
             page = Page(self, items, self._item_to_value)
             self._page_start(self, page, response)
-            self.next_page_token = response.get('nextPageToken')
+            self.next_page_token = response.get(self._NEXT_TOKEN)
             return page
         else:
             return None

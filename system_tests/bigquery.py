@@ -25,6 +25,10 @@ from retry import RetryResult
 from system_test_utils import unique_resource_id
 
 
+def _has_rows(result):
+    return len(result) > 0
+
+
 def _make_dataset_name(prefix):
     return '%s%s' % (prefix, unique_resource_id())
 
@@ -186,9 +190,10 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.append(dataset)
 
         # Retrieve tables before any are created for the dataset.
-        all_tables, token = dataset.list_tables()
+        iterator = dataset.list_tables()
+        all_tables = list(iterator)
         self.assertEqual(all_tables, [])
-        self.assertIsNone(token)
+        self.assertIsNone(iterator.next_page_token)
 
         # Insert some tables to be listed.
         tables_to_create = [
@@ -205,8 +210,9 @@ class TestBigQuery(unittest.TestCase):
             self.to_delete.insert(0, table)
 
         # Retrieve the tables.
-        all_tables, token = dataset.list_tables()
-        self.assertIsNone(token)
+        iterator = dataset.list_tables()
+        all_tables = list(iterator)
+        self.assertIsNone(iterator.next_page_token)
         created = [table for table in all_tables
                    if (table.name in tables_to_create and
                        table.dataset_name == DATASET_NAME)]
@@ -261,6 +267,14 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(found.field_type, expected.field_type)
             self.assertEqual(found.mode, expected.mode)
 
+    @staticmethod
+    def _fetch_single_page(table):
+        import six
+
+        iterator = table.fetch_data()
+        page = six.next(iterator.pages)
+        return list(page)
+
     def test_insert_data_then_dump_table(self):
         import datetime
         from google.cloud._helpers import UTC
@@ -298,14 +312,11 @@ class TestBigQuery(unittest.TestCase):
 
         rows = ()
 
-        def _has_rows(result):
-            return len(result[0]) > 0
-
-        # Allow for 90 seconds of "warm up" before rows visible.  See:
+        # Allow for "warm up" before rows visible.  See:
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
         retry = RetryResult(_has_rows, max_tries=8)
-        rows, _, _ = retry(table.fetch_data)()
+        rows = retry(self._fetch_single_page)(table)
 
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),
@@ -359,7 +370,7 @@ class TestBigQuery(unittest.TestCase):
 
         self.assertEqual(job.output_rows, len(ROWS))
 
-        rows, _, _ = table.fetch_data()
+        rows = self._fetch_single_page(table)
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),
                          sorted(ROWS, key=by_age))
@@ -429,7 +440,7 @@ class TestBigQuery(unittest.TestCase):
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
 
-        rows, _, _ = table.fetch_data()
+        rows = self._fetch_single_page(table)
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),
                          sorted(ROWS, key=by_age))

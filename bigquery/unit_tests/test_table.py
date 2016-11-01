@@ -1015,6 +1015,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_fetch_data_w_bound_client(self):
         import datetime
+        import six
         from google.cloud._helpers import UTC
         from google.cloud.bigquery.table import SchemaField
 
@@ -1068,7 +1069,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, age, joined])
 
-        rows, total_rows, page_token = table.fetch_data()
+        iterator = table.fetch_data()
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = iterator.total_rows
+        page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0], ('Phred Phlyntstone', 32, WHEN))
@@ -1084,7 +1089,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_fetch_data_w_alternate_client(self):
+        import six
         from google.cloud.bigquery.table import SchemaField
+
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         MAX = 10
@@ -1129,9 +1136,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, age, voter, score])
 
-        rows, total_rows, page_token = table.fetch_data(client=client2,
-                                                        max_results=MAX,
-                                                        page_token=TOKEN)
+        iterator = table.fetch_data(
+            client=client2, max_results=MAX, page_token=TOKEN)
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = iterator.total_rows
+        page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0], ('Phred Phlyntstone', 32, True, 3.1415926))
@@ -1150,7 +1160,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
                          {'maxResults': MAX, 'pageToken': TOKEN})
 
     def test_fetch_data_w_repeated_fields(self):
+        import six
         from google.cloud.bigquery.table import SchemaField
+
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         ROWS = 1234
@@ -1177,7 +1189,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, struct])
 
-        rows, total_rows, page_token = table.fetch_data()
+        iterator = table.fetch_data()
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = iterator.total_rows
+        page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0][0], ['red', 'green'])
@@ -1192,7 +1208,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_fetch_data_w_record_schema(self):
+        import six
         from google.cloud.bigquery.table import SchemaField
+
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         ROWS = 1234
@@ -1227,7 +1245,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, phone])
 
-        rows, total_rows, page_token = table.fetch_data()
+        iterator = table.fetch_data()
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = iterator.total_rows
+        page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 3)
         self.assertEqual(rows[0][0], 'Phred Phlyntstone')
