@@ -636,14 +636,16 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_tables_empty(self):
+        import six
+
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = self._makeOne(self.DS_NAME, client=client)
 
         iterator = dataset.list_tables()
         self.assertIs(iterator.dataset, dataset)
-        iterator.update_page()
-        tables = list(iterator.page)
+        page = six.next(iterator.pages)
+        tables = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(tables, [])
@@ -655,6 +657,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_tables_defaults(self):
+        import six
         from google.cloud.bigquery.table import Table
 
         TABLE_1 = 'table_one'
@@ -685,8 +688,8 @@ class TestDataset(unittest.TestCase):
 
         iterator = dataset.list_tables()
         self.assertIs(iterator.dataset, dataset)
-        iterator.update_page()
-        tables = list(iterator.page)
+        page = six.next(iterator.pages)
+        tables = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(tables), len(DATA['tables']))
@@ -702,6 +705,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_tables_explicit(self):
+        import six
         from google.cloud.bigquery.table import Table
 
         TABLE_1 = 'table_one'
@@ -731,8 +735,8 @@ class TestDataset(unittest.TestCase):
 
         iterator = dataset.list_tables(max_results=3, page_token=TOKEN)
         self.assertIs(iterator.dataset, dataset)
-        iterator.update_page()
-        tables = list(iterator.page)
+        page = six.next(iterator.pages)
+        tables = list(page)
         token = iterator.next_page_token
 
         self.assertEqual(len(tables), len(DATA['tables']))

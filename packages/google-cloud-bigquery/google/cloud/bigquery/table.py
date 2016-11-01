@@ -33,7 +33,7 @@ from google.cloud.streaming.transfer import RESUMABLE_UPLOAD
 from google.cloud.streaming.transfer import Upload
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery._helpers import _row_from_json
-from google.cloud.iterator import Iterator
+from google.cloud.iterator import HTTPIterator
 
 
 _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'table.reload()'"
@@ -676,10 +676,10 @@ class Table(object):
         """
         client = self._require_client(client)
         path = '%s/data' % (self.path,)
-        iterator = Iterator(client=client, path=path,
-                            item_to_value=_item_to_row, items_key='rows',
-                            page_token=page_token, max_results=max_results,
-                            page_start=_rows_page_start)
+        iterator = HTTPIterator(client=client, path=path,
+                                item_to_value=_item_to_row, items_key='rows',
+                                page_token=page_token, max_results=max_results,
+                                page_start=_rows_page_start)
         iterator.schema = self._schema
         # Over-ride the key used to retrieve the next page token.
         iterator._NEXT_TOKEN = 'pageToken'
