@@ -37,7 +37,10 @@ class Entity(dict):
     This means you could take an existing entity and change the key
     to duplicate the object.
 
-    Use :func:`google.cloud.datastore.get` to retrieve an existing entity.
+    Use :meth:`~google.cloud.datastore.client.Client.get` to retrieve an
+    existing entity:
+
+    .. code-block:: python
 
       >>> from google.cloud import datastore
       >>> client = datastore.Client()
@@ -47,16 +50,20 @@ class Entity(dict):
     You can the set values on the entity just like you would on any
     other dictionary.
 
-    >>> entity['age'] = 20
-    >>> entity['name'] = 'JJ'
-    >>> entity
-    <Entity[{'kind': 'EntityKind', id: 1234}] {'age': 20, 'name': 'JJ'}>
+    .. code-block:: python
+
+      >>> entity['age'] = 20
+      >>> entity['name'] = 'JJ'
+      >>> entity
+      <Entity[{'kind': 'EntityKind', id: 1234}] {'age': 20, 'name': 'JJ'}>
 
     And you can convert an entity to a regular Python dictionary with the
     ``dict`` builtin:
 
-    >>> dict(entity)
-    {'age': 20, 'name': 'JJ'}
+    .. code-block:: python
+
+      >>> dict(entity)
+      {'age': 20, 'name': 'JJ'}
 
     .. note::
 
