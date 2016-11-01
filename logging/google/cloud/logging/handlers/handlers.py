@@ -55,7 +55,7 @@ class CloudLoggingHandler(logging.StreamHandler):
 
     Example:
 
-    .. doctest::
+    .. code-block:: python
 
         import google.cloud.logging
         from google.cloud.logging.handlers import CloudLoggingHandler
@@ -109,7 +109,7 @@ def setup_logging(handler, excluded_loggers=EXCLUDE_LOGGER_DEFAULTS):
 
     Example:
 
-    .. doctest::
+    .. code-block:: python
 
         import logging
         import google.cloud.logging

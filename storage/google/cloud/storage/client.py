@@ -147,7 +147,9 @@ class Client(JSONClient):
         If the bucket isn't found, this will raise a
         :class:`google.cloud.storage.exceptions.NotFound`.
 
-        For example::
+        For example:
+
+        .. code-block:: python
 
           >>> try:
           >>>   bucket = client.get_bucket('my-bucket')
@@ -171,7 +173,9 @@ class Client(JSONClient):
         """Get a bucket by name, returning None if not found.
 
         You can use this if you would rather check for a None value
-        than catching an exception::
+        than catching an exception:
+
+        .. code-block:: python
 
           >>> bucket = client.lookup_bucket('doesnt-exist')
           >>> print(bucket)
@@ -194,7 +198,9 @@ class Client(JSONClient):
     def create_bucket(self, bucket_name):
         """Create a new bucket.
 
-        For example::
+        For example:
+
+        .. code-block:: python
 
           >>> bucket = client.create_bucket('my-bucket')
           >>> print(bucket)
@@ -221,6 +227,8 @@ class Client(JSONClient):
 
         This will not populate the list of blobs available in each
         bucket.
+
+        .. code-block:: python
 
           >>> for bucket in client.list_buckets():
           ...   print(bucket)

@@ -13,7 +13,7 @@ For an overview of authentication in ``google-cloud-python``, see :doc:`google-c
 Assuming your environment is set up as described in that document,
 create an instance of :class:`Client <google.cloud.dns.client.Client>`.
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import dns
      >>> client = dns.Client()
@@ -31,7 +31,7 @@ To override the project inferred from the environment, pass an explicit
 ``project`` to the constructor, or to either of the alternative
 ``classmethod`` factories:
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
@@ -41,7 +41,7 @@ Project Quotas
 
 Query the quotas for a given project:
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
@@ -70,7 +70,7 @@ Managed Zones
 A "managed zone" is the container for DNS records for the same DNS name
 suffix and has a set of name servers that accept and responds to queries:
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
@@ -85,7 +85,7 @@ suffix and has a set of name servers that accept and responds to queries:
 
 List the zones for a given project:
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
@@ -99,7 +99,7 @@ Resource Record Sets
 
 Each managed zone exposes a read-only set of resource records:
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
@@ -117,7 +117,7 @@ Each managed zone exposes a read-only set of resource records:
    ``zone.list_resource_record_sets()``, passing the ``page_token``, until
    the token is ``None``.  E.g.
 
-   .. doctest::
+   .. code-block:: python
 
       >>> records, page_token = zone.list_resource_record_sets()  # API request
       >>> while page_token is not None:
@@ -132,7 +132,7 @@ Change requests
 Update the resource record set for a zone by creating a change request
 bundling additions to or deletions from the set.
 
-  .. doctest::
+  .. code-block:: python
 
      >>> import time
      >>> from google.cloud import dns
@@ -152,7 +152,7 @@ bundling additions to or deletions from the set.
 
 List changes made to the resource record set for a given zone:
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
@@ -168,7 +168,7 @@ List changes made to the resource record set for a given zone:
    ``zone.list_changes()``, passing the ``page_token``, until the token
    is ``None``.  E.g.:
 
-   .. doctest::
+   .. code-block:: python
 
       >>> changes, page_token = zone.list_changes()  # API request
       >>> while page_token is not None:
