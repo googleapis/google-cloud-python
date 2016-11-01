@@ -426,7 +426,7 @@ def table_upload_from_file(client, to_delete):
     iterator = table.fetch_data()
     page = six.next(iterator.pages)
     rows = list(page)
-    total = page.total_rows
+    total = iterator.total_rows
     token = iterator.next_page_token
 
     assert len(rows) == total == 2

@@ -25,6 +25,10 @@ from retry import RetryResult
 from system_test_utils import unique_resource_id
 
 
+def _has_rows(result):
+    return len(result) > 0
+
+
 def _make_dataset_name(prefix):
     return '%s%s' % (prefix, unique_resource_id())
 
@@ -307,9 +311,6 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(len(errors), 0)
 
         rows = ()
-
-        def _has_rows(result):
-            return len(result[0]) > 0
 
         # Allow for "warm up" before rows visible.  See:
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability

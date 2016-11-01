@@ -668,7 +668,7 @@ class Table(object):
                        back to the ``client`` stored on the current dataset.
 
         :rtype: :class:`~google.cloud.iterator.Iterator`
-        :returns: Iterator of row data :class:`tuple`s. Each page in the
+        :returns: Iterator of row data :class:`tuple`s. During each page, the
                   iterator will have the ``total_rows`` attribute set,
                   which counts the total number of rows **in the table**
                   (this is distinct from the total number of rows in the
@@ -1109,7 +1109,8 @@ def _rows_page_start(iterator, page, response):
     """
     total_rows = response.get('totalRows')
     if total_rows is not None:
-        page.total_rows = int(total_rows)
+        total_rows = int(total_rows)
+    iterator.total_rows = total_rows
 # pylint: enable=unused-argument
 
 
