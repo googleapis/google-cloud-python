@@ -20,7 +20,7 @@ Authentication / Configuration
   :envvar:`GOOGLE_CLOUD_PROJECT` environment variables, create an instance of
   :class:`Client <google.cloud.bigquery.client.Client>`.
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import bigquery
      >>> client = bigquery.Client()
@@ -39,7 +39,7 @@ To override the project inferred from the environment, pass an explicit
 ``project`` to the constructor, or to either of the alternative
 ``classmethod`` factories:
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import bigquery
      >>> client = bigquery.Client(project='PROJECT_ID')
@@ -101,7 +101,7 @@ Patch metadata for a dataset:
 
 Replace the ACL for a dataset, and update all writeable fields:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import bigquery
    >>> client = bigquery.Client()
@@ -231,7 +231,7 @@ Querying data (asynchronous)
 
 Background a query, loading the results into a table:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import bigquery
    >>> client = bigquery.Client()
@@ -262,7 +262,7 @@ Background a query, loading the results into a table:
 
 Then, begin executing the job on the server:
 
-.. doctest::
+.. code-block:: python
 
    >>> job.begin()  # API call
    >>> job.created
@@ -272,7 +272,7 @@ Then, begin executing the job on the server:
 
 Poll until the job is complete:
 
-.. doctest::
+.. code-block:: python
 
    >>> import time
    >>> retry_count = 100
@@ -287,7 +287,7 @@ Poll until the job is complete:
 
 Retrieve the results:
 
-.. doctest::
+.. code-block:: python
 
    >>> results = job.results()
    >>> rows, total_count, token = query.fetch_data()  # API requet
@@ -306,7 +306,7 @@ Start a job loading data asynchronously from a set of CSV files, located on
 Google Cloud Storage, appending rows into an existing table.  First, create
 the job locally:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import bigquery
    >>> from google.cloud.bigquery import SchemaField
@@ -337,7 +337,7 @@ the job locally:
 
 Then, begin executing the job on the server:
 
-.. doctest::
+.. code-block:: python
 
    >>> job.begin()  # API call
    >>> job.created
@@ -347,7 +347,7 @@ Then, begin executing the job on the server:
 
 Poll until the job is complete:
 
-.. doctest::
+.. code-block:: python
 
    >>> import time
    >>> retry_count = 100
@@ -367,7 +367,7 @@ Exporting data (async)
 Start a job exporting a table's data asynchronously to a set of CSV files,
 located on Google Cloud Storage.  First, create the job locally:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import bigquery
    >>> client = bigquery.Client()
@@ -395,7 +395,7 @@ located on Google Cloud Storage.  First, create the job locally:
 
 Then, begin executing the job on the server:
 
-.. doctest::
+.. code-block:: python
 
    >>> job.begin()  # API call
    >>> job.created
@@ -405,7 +405,7 @@ Then, begin executing the job on the server:
 
 Poll until the job is complete:
 
-.. doctest::
+.. code-block:: python
 
    >>> import time
    >>> retry_count = 100
@@ -424,7 +424,7 @@ Copy tables (async)
 
 First, create the job locally:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import bigquery
    >>> client = bigquery.Client()
@@ -449,7 +449,7 @@ First, create the job locally:
 
 Then, begin executing the job on the server:
 
-.. doctest::
+.. code-block:: python
 
    >>> job.begin()  # API call
    >>> job.created
@@ -459,7 +459,7 @@ Then, begin executing the job on the server:
 
 Poll until the job is complete:
 
-.. doctest::
+.. code-block:: python
 
    >>> import time
    >>> retry_count = 100

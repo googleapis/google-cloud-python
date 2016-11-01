@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Error Reporting Client &mdash; google-cloud b4d87f7 documentation</title>
+  <title>Error Reporting Client &mdash; google-cloud 1f8a79d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud b4d87f7 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 1f8a79d documentation" href="index.html"/>
         <link rel="next" title="Using the API" href="monitoring-usage.html"/>
         <link rel="prev" title="Using the API" href="error-reporting-usage.html"/> 
 
@@ -317,57 +317,32 @@ set in the environment.</p>
 <dl class="method">
 <dt id="google.cloud.error_reporting.client.Client.report">
 <code class="descname">report</code><span class="sig-paren">(</span><em>message</em>, <em>http_context=None</em>, <em>user=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/error_reporting/client.html#Client.report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.error_reporting.client.Client.report" title="Permalink to this definition">#</a></dt>
-<dd><p>Reports a message to Stackdriver Error Reporting
-<a class="reference external" href="https://cloud.google.com/error-reporting/docs/formatting-error-messages">https://cloud.google.com/error-reporting/docs/formatting-error-messages</a></p>
-<blockquote>
-<div><blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">type message:</th><td class="field-body">str</td>
-</tr>
-<tr class="field-even field"><th class="field-name">param message:</th><td class="field-body">A user-supplied message to report</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
+<dd><p>Reports a message to Stackdriver Error Reporting</p>
+<p><a class="reference external" href="https://cloud.google.com/error-reporting/docs/formatting-error-messages">https://cloud.google.com/error-reporting/docs/formatting-error-messages</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">type http_context:</th></tr>
-<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first">:class`google.cloud.error_reporting.HTTPContext`</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">param http_context:</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first">The HTTP request which was processed when the
-error was triggered.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">type user:</th><td class="field-body"><p class="first">str</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">param user:</th><td class="field-body"><dl class="first last docutils">
-<dt>The user who caused or was affected by the crash. This</dt>
-<dd><p class="first last">can be a user ID, an email address, or an arbitrary
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>message</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; A user-supplied message to report</li>
+<li><strong>http_context</strong> (<em>:class`google.cloud.error_reporting.HTTPContext`</em>) &#8211; The HTTP request which was processed when the
+error was triggered.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The user who caused or was affected by the crash. This
+can be a user ID, an email address, or an arbitrary
 token that uniquely identifies the user. When sending
 an error report, leave this field empty if the user
 was not logged in. In this case the Error Reporting
 system will use other data, such as remote IP address,
-to distinguish affected users.</p>
-</dd>
-<dt>Example::</dt>
-<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="n">client</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s2">&quot;Something went wrong!&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
-</dl>
+to distinguish affected users.</li>
+</ul>
 </td>
 </tr>
 </tbody>
 </table>
-</div></blockquote>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span> <span class="n">client</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="s2">&quot;Something went wrong!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -482,7 +457,7 @@ provided in the error report.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'b4d87f7',
+            VERSION:'1f8a79d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

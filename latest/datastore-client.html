@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Datastore Client &mdash; google-cloud b4d87f7 documentation</title>
+  <title>Datastore Client &mdash; google-cloud 1f8a79d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud b4d87f7 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 1f8a79d documentation" href="index.html"/>
         <link rel="next" title="Entities" href="datastore-entities.html"/>
         <link rel="prev" title="Using the API" href="datastore-usage.html"/> 
 
@@ -526,7 +526,7 @@ entity or multiple entities in a commit request.</p>
 <dd><p>Proxy to <a class="reference internal" href="datastore-queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.query.Query</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">project</span></code>.</p>
 <p>Using query to search a datastore:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;MyKind&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s1">&#39;property&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">)</span>
@@ -534,7 +534,7 @@ entity or multiple entities in a commit request.</p>
 </div>
 <p>Using the query iterator&#8217;s
 <a class="reference internal" href="datastore-queries.html#google.cloud.datastore.query.Iterator.next_page" title="google.cloud.datastore.query.Iterator.next_page"><code class="xref py py-meth docutils literal"><span class="pre">next_page()</span></code></a> method:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entities</span><span class="p">,</span> <span class="n">more_results</span><span class="p">,</span> <span class="n">cursor</span> <span class="o">=</span> <span class="n">query_iter</span><span class="o">.</span><span class="n">next_page</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entities</span>
 <span class="go">[&lt;list of Entity unmarshalled from protobuf&gt;]</span>
@@ -545,7 +545,7 @@ entity or multiple entities in a commit request.</p>
 </pre></div>
 </div>
 <p>Under the hood this is doing:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">,</span> <span class="n">query</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">,</span> <span class="n">query</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
 <span class="go">[&lt;list of Entity Protobufs&gt;], cursor, more_results, skipped_results</span>
 </pre></div>
 </div>
@@ -743,7 +743,7 @@ that was completed in the commit.</td>
 and <code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore._generated.entity_pb2.Entity</span></code>
 as output). It is used under the hood in
 <a class="reference internal" href="#google.cloud.datastore.client.Client.get" title="google.cloud.datastore.client.Client.get"><code class="xref py py-meth docutils literal"><span class="pre">Client.get()</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;project&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;MyKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -751,7 +751,7 @@ as output). It is used under the hood in
 </pre></div>
 </div>
 <p>Using a <a class="reference internal" href="#google.cloud.datastore.connection.Connection" title="google.cloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">Connection</span></code></a> directly:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()])</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()])</span>
 <span class="go">[&lt;Entity protobuf&gt;]</span>
 </pre></div>
 </div>
@@ -899,7 +899,7 @@ enum and a count of the number of skipped results.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'b4d87f7',
+            VERSION:'1f8a79d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

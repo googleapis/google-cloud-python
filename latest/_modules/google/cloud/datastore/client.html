@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.client &mdash; google-cloud b4d87f7 documentation</title>
+  <title>google.cloud.datastore.client &mdash; google-cloud 1f8a79d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud b4d87f7 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1f8a79d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -720,29 +720,35 @@
 
 <span class="sd">        Passes our ``project``.</span>
 
-<span class="sd">        Using query to search a datastore::</span>
+<span class="sd">        Using query to search a datastore:</span>
 
-<span class="sd">        &gt;&gt;&gt; from google.cloud import datastore</span>
-<span class="sd">        &gt;&gt;&gt; client = datastore.Client()</span>
-<span class="sd">        &gt;&gt;&gt; query = client.query(kind=&#39;MyKind&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; query.add_filter(&#39;property&#39;, &#39;=&#39;, &#39;val&#39;)</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">          &gt;&gt;&gt; from google.cloud import datastore</span>
+<span class="sd">          &gt;&gt;&gt; client = datastore.Client()</span>
+<span class="sd">          &gt;&gt;&gt; query = client.query(kind=&#39;MyKind&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; query.add_filter(&#39;property&#39;, &#39;=&#39;, &#39;val&#39;)</span>
 
 <span class="sd">        Using the query iterator&#39;s</span>
 <span class="sd">        :meth:`~google.cloud.datastore.query.Iterator.next_page` method:</span>
 
-<span class="sd">        &gt;&gt;&gt; query_iter = query.fetch()</span>
-<span class="sd">        &gt;&gt;&gt; entities, more_results, cursor = query_iter.next_page()</span>
-<span class="sd">        &gt;&gt;&gt; entities</span>
-<span class="sd">        [&lt;list of Entity unmarshalled from protobuf&gt;]</span>
-<span class="sd">        &gt;&gt;&gt; more_results</span>
-<span class="sd">        &lt;boolean of more results&gt;</span>
-<span class="sd">        &gt;&gt;&gt; cursor</span>
-<span class="sd">        &lt;string containing cursor where fetch stopped&gt;</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">          &gt;&gt;&gt; query_iter = query.fetch()</span>
+<span class="sd">          &gt;&gt;&gt; entities, more_results, cursor = query_iter.next_page()</span>
+<span class="sd">          &gt;&gt;&gt; entities</span>
+<span class="sd">          [&lt;list of Entity unmarshalled from protobuf&gt;]</span>
+<span class="sd">          &gt;&gt;&gt; more_results</span>
+<span class="sd">          &lt;boolean of more results&gt;</span>
+<span class="sd">          &gt;&gt;&gt; cursor</span>
+<span class="sd">          &lt;string containing cursor where fetch stopped&gt;</span>
 
 <span class="sd">        Under the hood this is doing:</span>
 
-<span class="sd">        &gt;&gt;&gt; connection.run_query(&#39;project&#39;, query.to_protobuf())</span>
-<span class="sd">        [&lt;list of Entity Protobufs&gt;], cursor, more_results, skipped_results</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">          &gt;&gt;&gt; connection.run_query(&#39;project&#39;, query.to_protobuf())</span>
+<span class="sd">          [&lt;list of Entity Protobufs&gt;], cursor, more_results, skipped_results</span>
 
 <span class="sd">        :type kwargs: dict</span>
 <span class="sd">        :param kwargs: Parameters for initializing and instance of</span>
@@ -792,7 +798,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'b4d87f7',
+            VERSION:'1f8a79d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

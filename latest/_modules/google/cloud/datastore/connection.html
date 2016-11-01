@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.connection &mdash; google-cloud b4d87f7 documentation</title>
+  <title>google.cloud.datastore.connection &mdash; google-cloud 1f8a79d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud b4d87f7 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1f8a79d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -747,16 +747,20 @@
 <span class="sd">        as output). It is used under the hood in</span>
 <span class="sd">        :meth:`Client.get() &lt;.datastore.client.Client.get&gt;`:</span>
 
-<span class="sd">        &gt;&gt;&gt; from google.cloud import datastore</span>
-<span class="sd">        &gt;&gt;&gt; client = datastore.Client(project=&#39;project&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; key = client.key(&#39;MyKind&#39;, 1234)</span>
-<span class="sd">        &gt;&gt;&gt; client.get(key)</span>
-<span class="sd">        [&lt;Entity object&gt;]</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">          &gt;&gt;&gt; from google.cloud import datastore</span>
+<span class="sd">          &gt;&gt;&gt; client = datastore.Client(project=&#39;project&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; key = client.key(&#39;MyKind&#39;, 1234)</span>
+<span class="sd">          &gt;&gt;&gt; client.get(key)</span>
+<span class="sd">          [&lt;Entity object&gt;]</span>
 
 <span class="sd">        Using a :class:`Connection` directly:</span>
 
-<span class="sd">        &gt;&gt;&gt; connection.lookup(&#39;project&#39;, [key.to_protobuf()])</span>
-<span class="sd">        [&lt;Entity protobuf&gt;]</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">          &gt;&gt;&gt; connection.lookup(&#39;project&#39;, [key.to_protobuf()])</span>
+<span class="sd">          [&lt;Entity protobuf&gt;]</span>
 
 <span class="sd">        :type project: str</span>
 <span class="sd">        :param project: The project to look up the keys in.</span>
@@ -1016,7 +1020,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'b4d87f7',
+            VERSION:'1f8a79d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

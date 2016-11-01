@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud b4d87f7 documentation</title>
+  <title>Using the API &mdash; google-cloud 1f8a79d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud b4d87f7 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 1f8a79d documentation" href="index.html"/>
         <link rel="next" title="Stackdriver Monitoring Client" href="monitoring-client.html"/>
         <link rel="prev" title="Error Reporting Client" href="error-reporting-client.html"/> 
 
@@ -325,7 +325,7 @@ a monitored project.</p>
 implicitly from your environment. See <a class="reference internal" href="google-cloud-auth.html"><span class="doc">Authentication</span></a> for
 more information.</p>
 <p>It is thus typical to create a client object as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">monitoring</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">monitoring</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;target-project&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -334,11 +334,11 @@ the current project is the default target project. This default
 can be further overridden with the <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code>
 environment variable. Using the default target project is
 even easier:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">monitoring</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">monitoring</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>If necessary, you can pass in <code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">project</span></code> explicitly:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">monitoring</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;target-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=...</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">monitoring</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;target-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=...</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -347,8 +347,8 @@ even easier:</p>
 <p>The available monitored resource types are defined by <em>monitored resource
 descriptors</em>. You can fetch a list of these with the
 <a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client.list_resource_descriptors" title="google.cloud.monitoring.client.Client.list_resource_descriptors"><code class="xref py py-meth docutils literal"><span class="pre">list_resource_descriptors()</span></code></a> method:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">descriptor</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_resource_descriptors</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">descriptor</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">descriptor</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_resource_descriptors</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">descriptor</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Each <a class="reference internal" href="monitoring-resource.html#google.cloud.monitoring.resource.ResourceDescriptor" title="google.cloud.monitoring.resource.ResourceDescriptor"><code class="xref py py-class docutils literal"><span class="pre">ResourceDescriptor</span></code></a>
@@ -363,8 +363,8 @@ for more information.</p>
 They include <a class="reference external" href="https://cloud.google.com/monitoring/api/metrics">platform metrics</a>, <a class="reference external" href="https://cloud.google.com/monitoring/agent/">agent metrics</a>, and <a class="reference external" href="https://cloud.google.com/monitoring/custom-metrics/">custom metrics</a>.
 You can list all of these with the
 <a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client.list_metric_descriptors" title="google.cloud.monitoring.client.Client.list_metric_descriptors"><code class="xref py py-meth docutils literal"><span class="pre">list_metric_descriptors()</span></code></a> method:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">descriptor</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_metric_descriptors</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">descriptor</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">descriptor</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_metric_descriptors</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">descriptor</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="monitoring-metric.html#google.cloud.monitoring.metric.MetricDescriptor" title="google.cloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a> and the
@@ -375,7 +375,7 @@ the <code class="docutils literal"><span class="pre">custom.googleapis.com</span
 client&#8217;s <a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client.metric_descriptor" title="google.cloud.monitoring.client.Client.metric_descriptor"><code class="xref py py-meth docutils literal"><span class="pre">metric_descriptor()</span></code></a>
 factory and then calling the object&#8217;s
 <a class="reference internal" href="monitoring-metric.html#google.cloud.monitoring.metric.MetricDescriptor.create" title="google.cloud.monitoring.metric.MetricDescriptor.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> method:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.monitoring</span> <span class="k">import</span> <span class="n">MetricKind</span><span class="p">,</span> <span class="n">ValueType</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.monitoring</span> <span class="kn">import</span> <span class="n">MetricKind</span><span class="p">,</span> <span class="n">ValueType</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric_descriptor</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="s1">&#39;custom.googleapis.com/my_metric&#39;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">metric_kind</span><span class="o">=</span><span class="n">MetricKind</span><span class="o">.</span><span class="n">GAUGE</span><span class="p">,</span>
@@ -385,7 +385,7 @@ factory and then calling the object&#8217;s
 </pre></div>
 </div>
 <p>You can delete such a metric descriptor as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric_descriptor</span><span class="p">(</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric_descriptor</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="s1">&#39;custom.googleapis.com/my_metric&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </pre></div>
@@ -397,7 +397,7 @@ and include them in the
 <a class="reference internal" href="monitoring-metric.html#google.cloud.monitoring.metric.MetricDescriptor" title="google.cloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a> object
 before you call
 <a class="reference internal" href="monitoring-metric.html#google.cloud.monitoring.metric.MetricDescriptor.create" title="google.cloud.monitoring.metric.MetricDescriptor.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.monitoring</span> <span class="k">import</span> <span class="n">LabelDescriptor</span><span class="p">,</span> <span class="n">LabelValueType</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.monitoring</span> <span class="kn">import</span> <span class="n">LabelDescriptor</span><span class="p">,</span> <span class="n">LabelValueType</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">label</span> <span class="o">=</span> <span class="n">LabelDescriptor</span><span class="p">(</span><span class="s1">&#39;response_code&#39;</span><span class="p">,</span> <span class="n">LabelValueType</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span>
 <span class="gp">... </span>                        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;HTTP status code&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric_descriptor</span><span class="p">(</span>
@@ -416,8 +416,8 @@ before you call
 defined by a <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/filters#group-filter">filter</a>.  These groups are usually created via the
 <a class="reference external" href="https://support.stackdriver.com/customer/portal/articles/1535145-creating-groups">Stackdriver dashboard</a>. You can list all the groups in a project with the
 <a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client.list_groups" title="google.cloud.monitoring.client.Client.list_groups"><code class="xref py py-meth docutils literal"><span class="pre">list_groups()</span></code></a> method:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_groups</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">parent_id</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_groups</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">parent_id</span><span class="p">)</span>
 <span class="go">(&#39;a001&#39;, &#39;Production&#39;, None)</span>
 <span class="go">(&#39;a002&#39;, &#39;Front-end&#39;, &#39;a001&#39;)</span>
 <span class="go">(&#39;1003&#39;, &#39;Back-end&#39;, &#39;a001&#39;)</span>
@@ -426,13 +426,13 @@ defined by a <a class="reference external" href="https://cloud.google.com/monito
 <p>See <a class="reference internal" href="monitoring-group.html#google.cloud.monitoring.group.Group" title="google.cloud.monitoring.group.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a> and the API documentation for
 <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.groups">Groups</a> and <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.groups.members">Group members</a> for more information.</p>
 <p>You can get a specific group based on it&#8217;s ID as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">fetch_group</span><span class="p">(</span><span class="s1">&#39;a001&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">fetch_group</span><span class="p">(</span><span class="s1">&#39;a001&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You can get the current members of this group using the
 <a class="reference internal" href="monitoring-group.html#google.cloud.monitoring.group.Group.list_members" title="google.cloud.monitoring.group.Group.list_members"><code class="xref py py-meth docutils literal"><span class="pre">list_members()</span></code></a> method:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">list_members</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">member</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">list_members</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">member</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Passing in <code class="docutils literal"><span class="pre">end_time</span></code> and <code class="docutils literal"><span class="pre">start_time</span></code> to the above method will return
@@ -443,12 +443,12 @@ change properties.</p>
 You do this by creating a <a class="reference internal" href="monitoring-group.html#google.cloud.monitoring.group.Group" title="google.cloud.monitoring.group.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a> object using
 the client&#8217;s <a class="reference internal" href="monitoring-client.html#google.cloud.monitoring.client.Client.group" title="google.cloud.monitoring.client.Client.group"><code class="xref py py-meth docutils literal"><span class="pre">group()</span></code></a> factory and then
 calling the object&#8217;s <a class="reference internal" href="monitoring-group.html#google.cloud.monitoring.group.Group.create" title="google.cloud.monitoring.group.Group.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> method:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filter_string</span> <span class="o">=</span> <span class="s1">&#39;resource.zone = &quot;us-central1-a&quot;&#39;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filter_string</span> <span class="o">=</span> <span class="s1">&#39;resource.zone = &quot;us-central1-a&quot;&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">group</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">display_name</span><span class="o">=</span><span class="s1">&#39;My group&#39;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">filter_string</span><span class="o">=</span><span class="n">filter_string</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">parent_id</span><span class="o">=</span><span class="s1">&#39;a001&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">is_cluster</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">is_cluster</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">id</span>
 <span class="go">&#39;1234&#39;</span>
@@ -457,14 +457,14 @@ calling the object&#8217;s <a class="reference internal" href="monitoring-group.
 <p>You can further manipulate an existing group by first initializing a Group
 object with it&#8217;s ID or name, and then calling various methods on it.</p>
 <p>Delete a group:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;1234&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;1234&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Update a group:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;1234&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;1234&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">group</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
@@ -487,9 +487,9 @@ single time series. For this, you must have <a class="reference external" href="
 it is not a required dependency of <code class="docutils literal"><span class="pre">google-cloud-python</span></code>.</p>
 <p>You can display CPU utilization across your GCE instances over a five minute duration ending at
 the start of the current minute as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">METRIC</span> <span class="o">=</span> <span class="s1">&#39;compute.googleapis.com/instance/cpu/utilization&#39;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">METRIC</span> <span class="o">=</span> <span class="s1">&#39;compute.googleapis.com/instance/cpu/utilization&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">METRIC</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">())</span>
 </pre></div>
 </div>
 <p><a class="reference internal" href="monitoring-query.html#google.cloud.monitoring.query.Query" title="google.cloud.monitoring.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> objects provide a variety of
@@ -502,13 +502,13 @@ information.</p>
 across GCE instances with names beginning with <code class="docutils literal"><span class="pre">&quot;mycluster-&quot;</span></code>,
 averaged over five-minute intervals and aggregated per zone, as
 follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.monitoring</span> <span class="k">import</span> <span class="n">Aligner</span><span class="p">,</span> <span class="n">Reducer</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.monitoring</span> <span class="kn">import</span> <span class="n">Aligner</span><span class="p">,</span> <span class="n">Reducer</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">METRIC</span> <span class="o">=</span> <span class="s1">&#39;compute.googleapis.com/instance/cpu/utilization&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">METRIC</span><span class="p">,</span> <span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>         <span class="o">.</span><span class="n">select_metrics</span><span class="p">(</span><span class="n">instance_name_prefix</span><span class="o">=</span><span class="s1">&#39;mycluster-&#39;</span><span class="p">)</span>
 <span class="gp">... </span>         <span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">Aligner</span><span class="o">.</span><span class="n">ALIGN_MEAN</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="gp">... </span>         <span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">Reducer</span><span class="o">.</span><span class="n">REDUCE_MEAN</span><span class="p">,</span> <span class="s1">&#39;resource.zone&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -529,7 +529,7 @@ monitored resource type of <code class="docutils literal"><span class="pre">gce_
 circumstances, such as when only a single process writes to the custom metric, you may choose to
 use the <code class="docutils literal"><span class="pre">global</span></code> monitored resource type.</p>
 <p>See <a class="reference external" href="https://cloud.google.com/monitoring/api/resources">Monitored resource types</a> for more information about particular monitored resource types.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">monitoring</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">monitoring</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a Resource object for the desired monitored resource type.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;gce_instance&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">{</span>
 <span class="gp">... </span>    <span class="s1">&#39;instance_id&#39;</span><span class="p">:</span> <span class="s1">&#39;1234567890123456789&#39;</span><span class="p">,</span>
@@ -549,13 +549,13 @@ descriptor associated with the metric. For example, a Python float will map to <
 However, <code class="docutils literal"><span class="pre">DELTA</span></code> is not supported for custom metrics.</p>
 <p><code class="docutils literal"><span class="pre">GAUGE</span></code> metrics represent only a single point in time, so only the <code class="docutils literal"><span class="pre">end_time</span></code> should be
 specified:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
 <span class="gp">... </span>                   <span class="n">value</span><span class="o">=</span><span class="mf">3.14</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p>By default, <code class="docutils literal"><span class="pre">end_time</span></code> defaults to <a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime.utcnow" title="(in Python v2.7)"><code class="xref py py-meth docutils literal"><span class="pre">utcnow()</span></code></a>, so metrics can be written
 to the current time as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">)</span>  <span class="c1"># API call</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">)</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">CUMULATIVE</span></code> metrics enable the monitoring system to compute rates of increase on metrics that
@@ -563,14 +563,14 @@ sometimes reset, such as after a process restart. Without cumulative metrics, th
 reset would otherwise show up as a huge negative spike. For cumulative metrics, the same start
 time should be re-used repeatedly as more points are written to the time series.</p>
 <p>In the examples below, the <code class="docutils literal"><span class="pre">end_time</span></code> again defaults to the current time:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">RESET</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">RESET</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">RESET</span><span class="p">)</span>  <span class="c1"># API call</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_point</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">RESET</span><span class="p">)</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 <p>To write multiple <code class="docutils literal"><span class="pre">TimeSeries</span></code> in a single batch, you can use
 <code class="xref py py-meth docutils literal"><span class="pre">write_time_series()</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ts1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">metric1</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ts1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">metric1</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ts2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">metric2</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">write_time_series</span><span class="p">([</span><span class="n">ts1</span><span class="p">,</span> <span class="n">ts2</span><span class="p">])</span>  <span class="c1"># API call</span>
 </pre></div>
@@ -622,7 +622,7 @@ the API must only include a single point.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'b4d87f7',
+            VERSION:'1f8a79d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
