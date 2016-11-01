@@ -1072,7 +1072,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
         rows = list(page)
-        total_rows = page.total_rows
+        total_rows = iterator.total_rows
         page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 4)
@@ -1140,7 +1140,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             client=client2, max_results=MAX, page_token=TOKEN)
         page = six.next(iterator.pages)
         rows = list(page)
-        total_rows = getattr(page, 'total_rows', None)
+        total_rows = iterator.total_rows
         page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 4)
@@ -1192,7 +1192,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
         rows = list(page)
-        total_rows = page.total_rows
+        total_rows = iterator.total_rows
         page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 1)
@@ -1248,7 +1248,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
         rows = list(page)
-        total_rows = page.total_rows
+        total_rows = iterator.total_rows
         page_token = iterator.next_page_token
 
         self.assertEqual(len(rows), 3)
