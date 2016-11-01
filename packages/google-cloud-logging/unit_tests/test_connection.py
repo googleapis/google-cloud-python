@@ -540,6 +540,9 @@ class Test_MetricsAPI(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_list_metrics_no_paging(self):
+        import six
+        from google.cloud.logging.metric import Metric
+
         TOKEN = 'TOKEN'
         RETURNED = {
             'metrics': [{
@@ -552,16 +555,33 @@ class Test_MetricsAPI(unittest.TestCase):
         client = _Client(conn)
         api = self._makeOne(client)
 
-        metrics, token = api.list_metrics(self.PROJECT)
+        iterator = api.list_metrics(self.PROJECT)
+        page = six.next(iterator.pages)
+        metrics = list(page)
+        token = iterator.next_page_token
 
-        self.assertEqual(metrics, RETURNED['metrics'])
+        # First check the token.
         self.assertEqual(token, TOKEN)
+        # Then check the metrics returned.
+        self.assertEqual(len(metrics), 1)
+        metric = metrics[0]
+        self.assertIsInstance(metric, Metric)
+        self.assertEqual(metric.name, self.METRIC_PATH)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, '')
+        self.assertIs(metric.client, client)
 
-        self.assertEqual(conn._called_with['method'], 'GET')
+        called_with = conn._called_with
         path = '/%s' % (self.LIST_METRICS_PATH,)
-        self.assertEqual(conn._called_with['path'], path)
+        self.assertEqual(called_with, {
+            'method': 'GET',
+            'path': path,
+            'query_params': {},
+        })
 
     def test_list_metrics_w_paging(self):
+        from google.cloud.logging.metric import Metric
+
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
         RETURNED = {
@@ -574,17 +594,32 @@ class Test_MetricsAPI(unittest.TestCase):
         client = _Client(conn)
         api = self._makeOne(client)
 
-        metrics, token = api.list_metrics(
+        iterator = api.list_metrics(
             self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
+        metrics = list(iterator)
+        token = iterator.next_page_token
 
-        self.assertEqual(metrics, RETURNED['metrics'])
+        # First check the token.
         self.assertIsNone(token)
+        # Then check the metrics returned.
+        self.assertEqual(len(metrics), 1)
+        metric = metrics[0]
+        self.assertIsInstance(metric, Metric)
+        self.assertEqual(metric.name, self.METRIC_PATH)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, '')
+        self.assertIs(metric.client, client)
 
-        self.assertEqual(conn._called_with['method'], 'GET')
+        called_with = conn._called_with
         path = '/%s' % (self.LIST_METRICS_PATH,)
-        self.assertEqual(conn._called_with['path'], path)
-        self.assertEqual(conn._called_with['query_params'],
-                         {'pageSize': PAGE_SIZE, 'pageToken': TOKEN})
+        self.assertEqual(called_with, {
+            'method': 'GET',
+            'path': path,
+            'query_params': {
+                'pageSize': PAGE_SIZE,
+                'pageToken': TOKEN,
+            },
+        })
 
     def test_metric_create_conflict(self):
         from google.cloud.exceptions import Conflict
