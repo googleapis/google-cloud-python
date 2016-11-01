@@ -16,14 +16,14 @@ Authentication and Configuration
 - After configuring your environment, create a
   :class:`Client <google.cloud.error_reporting.client.Client>`
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import error_reporting
      >>> client = error_reporting.Client()
 
   or pass in ``credentials`` and ``project`` explicitly
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import error_reporting
      >>> client = error_reporting.Client(project='my-project', credentials=creds)
@@ -34,7 +34,7 @@ Authentication and Configuration
   which defaults to "default."
 
 
-    .. doctest::
+    .. code-block:: python
 
        >>> from google.cloud import error_reporting
        >>> client = error_reporting.Client(project='my-project',
@@ -46,7 +46,7 @@ Reporting an exception
 
 Report a stacktrace to Stackdriver Error Reporting after an exception
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
@@ -63,7 +63,7 @@ The user and HTTP context can also be included in the exception. The HTTP contex
 can be constructed using :class:`google.cloud.error_reporting.HTTPContext`. This will
 be used by Stackdriver Error Reporting to help group exceptions.
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
@@ -83,7 +83,7 @@ Errors can also be reported to Stackdriver Error Reporting outside the context o
 The library will include the file path, function name, and line number of the location where the
 error was reported.
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()
@@ -91,7 +91,7 @@ error was reported.
 
 Similarly to reporting an exception, the user and HTTP context can be provided:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import error_reporting
    >>> client = error_reporting.Client()

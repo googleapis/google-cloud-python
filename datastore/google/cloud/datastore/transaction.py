@@ -25,22 +25,27 @@ class Transaction(Batch):
 
     For example, the following snippet of code will put the two ``save``
     operations (either ``insert`` or ``upsert``) into the same
-    mutation, and execute those within a transaction::
+    mutation, and execute those within a transaction:
 
-      >>> from google.cloud import datastore
+    .. code-block:: python
+
       >>> client = datastore.Client()
       >>> with client.transaction():
       ...     client.put_multi([entity1, entity2])
 
-    Because it derives from :class:`Batch <.datastore.batch.Batch>`,
-    :class:`Transaction` also provides :meth:`put` and :meth:`delete` methods::
+    Because it derives from :class:`~google.cloud.datastore.batch.Batch`,
+    :class:`Transaction` also provides :meth:`put` and :meth:`delete` methods:
+
+    .. code-block:: python
 
       >>> with client.transaction() as xact:
       ...     xact.put(entity1)
       ...     xact.delete(entity2.key)
 
     By default, the transaction is rolled back if the transaction block
-    exits with an error::
+    exits with an error:
+
+    .. code-block:: python
 
       >>> with client.transaction():
       ...     do_some_work()
@@ -49,9 +54,13 @@ class Transaction(Batch):
     If the transaction block exists without an exception, it will commit
     by default.
 
-    .. warning:: Inside a transaction, automatically assigned IDs for
+    .. warning::
+
+       Inside a transaction, automatically assigned IDs for
        entities will not be available at save time!  That means, if you
-       try::
+       try:
+
+       .. code-block:: python
 
          >>> with client.transaction():
          ...     entity = datastore.Entity(key=client.key('Thing'))
@@ -61,7 +70,9 @@ class Transaction(Batch):
        committed.
 
        Once you exit the transaction (or call :meth:`commit`), the
-       automatically generated ID will be assigned to the entity::
+       automatically generated ID will be assigned to the entity:
+
+       .. code-block:: python
 
          >>> with client.transaction():
          ...     entity = datastore.Entity(key=client.key('Thing'))
@@ -73,7 +84,9 @@ class Transaction(Batch):
          False
 
     If you don't want to use the context manager you can initialize a
-    transaction manually::
+    transaction manually:
+
+    .. code-block:: python
 
       >>> transaction = client.transaction()
       >>> transaction.begin()

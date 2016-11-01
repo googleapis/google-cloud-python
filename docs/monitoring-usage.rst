@@ -52,7 +52,9 @@ Most often the authentication credentials will be determined
 implicitly from your environment. See :doc:`google-cloud-auth` for
 more information.
 
-It is thus typical to create a client object as follows::
+It is thus typical to create a client object as follows:
+
+.. code-block:: python
 
     >>> from google.cloud import monitoring
     >>> client = monitoring.Client(project='target-project')
@@ -61,11 +63,15 @@ If you are running in Google Compute Engine or Google App Engine,
 the current project is the default target project. This default
 can be further overridden with the :envvar:`GOOGLE_CLOUD_PROJECT`
 environment variable. Using the default target project is
-even easier::
+even easier:
+
+.. code-block:: python
 
     >>> client = monitoring.Client()
 
-If necessary, you can pass in ``credentials`` and ``project`` explicitly::
+If necessary, you can pass in ``credentials`` and ``project`` explicitly:
+
+.. code-block:: python
 
     >>> client = monitoring.Client(project='target-project', credentials=...)
 
@@ -77,7 +83,9 @@ Monitored Resource Descriptors
 
 The available monitored resource types are defined by *monitored resource
 descriptors*. You can fetch a list of these with the
-:meth:`~google.cloud.monitoring.client.Client.list_resource_descriptors` method::
+:meth:`~google.cloud.monitoring.client.Client.list_resource_descriptors` method:
+
+.. code-block:: python
 
     >>> for descriptor in client.list_resource_descriptors():
     ...     print(descriptor.type)
@@ -98,7 +106,9 @@ Metric Descriptors
 The available metric types are defined by *metric descriptors*.
 They include `platform metrics`_, `agent metrics`_, and `custom metrics`_.
 You can list all of these with the
-:meth:`~google.cloud.monitoring.client.Client.list_metric_descriptors` method::
+:meth:`~google.cloud.monitoring.client.Client.list_metric_descriptors` method:
+
+.. code-block:: python
 
     >>> for descriptor in client.list_metric_descriptors():
     ...     print(descriptor.type)
@@ -111,7 +121,9 @@ the ``custom.googleapis.com`` namespace. You do this by creating a
 :class:`~google.cloud.monitoring.metric.MetricDescriptor` object using the
 client's :meth:`~google.cloud.monitoring.client.Client.metric_descriptor`
 factory and then calling the object's
-:meth:`~google.cloud.monitoring.metric.MetricDescriptor.create` method::
+:meth:`~google.cloud.monitoring.metric.MetricDescriptor.create` method:
+
+.. code-block:: python
 
     >>> from google.cloud.monitoring import MetricKind, ValueType
     >>> descriptor = client.metric_descriptor(
@@ -121,7 +133,9 @@ factory and then calling the object's
     ...     description='This is a simple example of a custom metric.')
     >>> descriptor.create()
 
-You can delete such a metric descriptor as follows::
+You can delete such a metric descriptor as follows:
+
+.. code-block:: python
 
     >>> descriptor = client.metric_descriptor(
     ...     'custom.googleapis.com/my_metric')
@@ -133,7 +147,9 @@ you must build the appropriate
 and include them in the
 :class:`~google.cloud.monitoring.metric.MetricDescriptor` object
 before you call
-:meth:`~google.cloud.monitoring.metric.MetricDescriptor.create`::
+:meth:`~google.cloud.monitoring.metric.MetricDescriptor.create`:
+
+.. code-block:: python
 
     >>> from google.cloud.monitoring import LabelDescriptor, LabelValueType
     >>> label = LabelDescriptor('response_code', LabelValueType.INT64,
@@ -160,7 +176,9 @@ Groups
 A group is a dynamic collection of *monitored resources* whose membership is
 defined by a `filter`_.  These groups are usually created via the
 `Stackdriver dashboard`_. You can list all the groups in a project with the
-:meth:`~google.cloud.monitoring.client.Client.list_groups` method::
+:meth:`~google.cloud.monitoring.client.Client.list_groups` method:
+
+.. code-block:: python
 
     >>> for group in client.list_groups():
     ...     print(group.id, group.display_name, group.parent_id)
@@ -171,12 +189,16 @@ defined by a `filter`_.  These groups are usually created via the
 See :class:`~google.cloud.monitoring.group.Group` and the API documentation for
 `Groups`_ and `Group members`_ for more information.
 
-You can get a specific group based on it's ID as follows::
+You can get a specific group based on it's ID as follows:
+
+.. code-block:: python
 
     >>> group = client.fetch_group('a001')
 
 You can get the current members of this group using the
-:meth:`~google.cloud.monitoring.group.Group.list_members` method::
+:meth:`~google.cloud.monitoring.group.Group.list_members` method:
+
+.. code-block:: python
 
     >>> for member in group.list_members():
     ...     print(member)
@@ -189,7 +211,9 @@ change properties.
 You can create new groups to define new collections of *monitored resources*.
 You do this by creating a :class:`~google.cloud.monitoring.group.Group` object using
 the client's :meth:`~google.cloud.monitoring.client.Client.group` factory and then
-calling the object's :meth:`~google.cloud.monitoring.group.Group.create` method::
+calling the object's :meth:`~google.cloud.monitoring.group.Group.create` method:
+
+.. code-block:: python
 
     >>> filter_string = 'resource.zone = "us-central1-a"'
     >>> group = client.group(
@@ -204,7 +228,9 @@ calling the object's :meth:`~google.cloud.monitoring.group.Group.create` method:
 You can further manipulate an existing group by first initializing a Group
 object with it's ID or name, and then calling various methods on it.
 
-Delete a group::
+Delete a group:
+
+.. code-block:: python
 
     >>> group = client.group('1234')
     >>> group.exists()
@@ -212,7 +238,9 @@ Delete a group::
     >>> group.delete()
 
 
-Update a group::
+Update a group:
+
+.. code-block:: python
 
     >>> group = client.group('1234')
     >>> group.exists()
@@ -250,7 +278,9 @@ single time series. For this, you must have :mod:`pandas` installed;
 it is not a required dependency of ``google-cloud-python``.
 
 You can display CPU utilization across your GCE instances over a five minute duration ending at
-the start of the current minute as follows::
+the start of the current minute as follows:
+
+.. code-block:: python
 
     >>> METRIC = 'compute.googleapis.com/instance/cpu/utilization'
     >>> query = client.query(METRIC, minutes=5)
@@ -266,7 +296,9 @@ information.
 For example, you can display CPU utilization during the last hour
 across GCE instances with names beginning with ``"mycluster-"``,
 averaged over five-minute intervals and aggregated per zone, as
-follows::
+follows:
+
+.. code-block:: python
 
     >>> from google.cloud.monitoring import Aligner, Reducer
     >>> METRIC = 'compute.googleapis.com/instance/cpu/utilization'
@@ -302,16 +334,18 @@ use the ``global`` monitored resource type.
 
 See `Monitored resource types`_ for more information about particular monitored resource types.
 
->>> from google.cloud import monitoring
->>> # Create a Resource object for the desired monitored resource type.
->>> resource = client.resource('gce_instance', labels={
-...     'instance_id': '1234567890123456789',
-...     'zone': 'us-central1-f'
-... })
->>> # Create a Metric object, specifying the metric type as well as values for any metric labels.
->>> metric = client.metric(type='custom.googleapis.com/my_metric', labels={
-...      'status': 'successful'
-... })
+.. code-block:: python
+
+  >>> from google.cloud import monitoring
+  >>> # Create a Resource object for the desired monitored resource type.
+  >>> resource = client.resource('gce_instance', labels={
+  ...     'instance_id': '1234567890123456789',
+  ...     'zone': 'us-central1-f'
+  ... })
+  >>> # Create a Metric object, specifying the metric type as well as values for any metric labels.
+  >>> metric = client.metric(type='custom.googleapis.com/my_metric', labels={
+  ...      'status': 'successful'
+  ... })
 
 With a ``Metric`` and ``Resource`` in hand, the :class:`~google.cloud.monitoring.client.Client`
 can be used to write :class:`~google.cloud.monitoring.timeseries.Point` values.
@@ -323,13 +357,17 @@ Stackdriver Monitoring supports several *metric kinds*: ``GAUGE``, ``CUMULATIVE`
 However, ``DELTA`` is not supported for custom metrics.
 
 ``GAUGE`` metrics represent only a single point in time, so only the ``end_time`` should be
-specified::
+specified:
+
+.. code-block:: python
 
     >>> client.write_point(metric=metric, resource=resource,
     ...                    value=3.14, end_time=end_time)  # API call
 
 By default, ``end_time`` defaults to :meth:`~datetime.datetime.utcnow()`, so metrics can be written
-to the current time as follows::
+to the current time as follows:
+
+.. code-block:: python
 
    >>> client.write_point(metric, resource, 3.14)  # API call
 
@@ -338,14 +376,18 @@ sometimes reset, such as after a process restart. Without cumulative metrics, th
 reset would otherwise show up as a huge negative spike. For cumulative metrics, the same start
 time should be re-used repeatedly as more points are written to the time series.
 
-In the examples below, the ``end_time`` again defaults to the current time::
+In the examples below, the ``end_time`` again defaults to the current time:
+
+.. code-block:: python
 
     >>> RESET = datetime.utcnow()
     >>> client.write_point(metric, resource, 3, start_time=RESET)  # API call
     >>> client.write_point(metric, resource, 6, start_time=RESET)  # API call
 
 To write multiple ``TimeSeries`` in a single batch, you can use
-:meth:`~google.cloud.monitoring.client.write_time_series`::
+:meth:`~google.cloud.monitoring.client.write_time_series`:
+
+.. code-block:: python
 
     >>> ts1 = client.time_series(metric1, resource, 3.14, end_time=end_time)
     >>> ts2 = client.time_series(metric2, resource, 42, end_time=end_time)
