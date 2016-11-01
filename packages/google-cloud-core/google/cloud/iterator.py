@@ -340,7 +340,7 @@ class HTTPIterator(Iterator):
             items = response.get(self._items_key, ())
             page = Page(self, items, self._item_to_value)
             self._page_start(self, page, response)
-            self.next_page_token = response.get('nextPageToken')
+            self.next_page_token = response.get(self._NEXT_TOKEN)
             return page
         else:
             return None
