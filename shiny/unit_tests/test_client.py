@@ -45,3 +45,16 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.connection._http, http)
         credentials.create_scoped_required.assert_called_once_with()
         credentials.create_scoped.assert_called_once_with(Connection.SCOPE)
+
+    def test_unicorn_factory(self):
+        from google.cloud.shiny.unicorn import Unicorn
+
+        project = 'pro-geckt'
+        credentials = object()
+        client = self._make_one(project=project, credentials=credentials)
+
+        name = 'Plum Charming Cheeks'
+        unicorn = client.unicorn(name)
+        self.assertIsInstance(unicorn, Unicorn)
+        self.assertEqual(unicorn.name, name)
+        self.assertIs(unicorn.client, client)
