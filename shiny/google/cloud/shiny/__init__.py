@@ -19,8 +19,10 @@ do "nothing" with them in the API.
 """
 
 from google.cloud.shiny.client import Client
+from google.cloud.shiny.unicorn import Unicorn
 
 
 __all__ = [
     'Client',
+    'Unicorn',
 ]

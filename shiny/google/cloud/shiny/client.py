@@ -17,6 +17,7 @@
 
 from google.cloud.client import JSONClient
 from google.cloud.shiny.connection import Connection
+from google.cloud.shiny.unicorn import Unicorn
 
 
 class Client(JSONClient):
@@ -40,3 +41,14 @@ class Client(JSONClient):
     """
 
     _connection_class = Connection
+
+    def unicorn(self, name):
+        """Create a unicorn instance bound to the current client.
+
+        :type name: str
+        :param name: The name of the unicorn.
+
+        :rtype: :class:`~google.cloud.shiny.unicorn.Unicorn`
+        :returns: A unicorn instance for the current client.
+        """
+        return Unicorn(name, self)

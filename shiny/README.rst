@@ -39,3 +39,5 @@ doing something.
     from google.cloud import shiny
 
     client = shiny.Client()
+    # Create a unicorn bound to the current client.
+    unicorn = client.unicorn('Boris')
