@@ -267,14 +267,9 @@ class Client(JSONClient):
                            passed, the API will return the first page of
                            metrics.
 
-        :rtype: tuple, (list, str)
-        :returns: list of :class:`google.cloud.logging.metric.Metric`, plus a
-                  "next page token" string:  if not None, indicates that
-                  more metrics can be retrieved with another call (pass that
-                  value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.logging.metric.Metric`
+                  accessible to the current client.
         """
-        resources, token = self.metrics_api.list_metrics(
+        return self.metrics_api.list_metrics(
             self.project, page_size, page_token)
-        metrics = [Metric.from_api_repr(resource, self)
-                   for resource in resources]
-        return metrics, token

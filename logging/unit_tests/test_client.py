@@ -486,55 +486,90 @@ class TestClient(unittest.TestCase):
 
     def test_list_metrics_no_paging(self):
         from google.cloud.logging.metric import Metric
-        PROJECT = 'PROJECT'
-        TOKEN = 'TOKEN'
-        METRICS = [{
+
+        metrics = [{
             'name': self.METRIC_NAME,
             'filter': self.FILTER,
             'description': self.DESCRIPTION,
         }]
-        client = self._makeOne(project=PROJECT, credentials=_Credentials())
-        api = client._metrics_api = _DummyMetricsAPI()
-        api._list_metrics_response = METRICS, TOKEN
-
-        metrics, token = client.list_metrics()
-
-        self.assertEqual(len(metrics), 1)
-        metric = metrics[0]
-        self.assertIsInstance(metric, Metric)
-        self.assertEqual(metric.name, self.METRIC_NAME)
-        self.assertEqual(metric.filter_, self.FILTER)
-        self.assertEqual(metric.description, self.DESCRIPTION)
-        self.assertEqual(token, TOKEN)
-        self.assertEqual(api._list_metrics_called_with,
-                         (PROJECT, None, None))
-
-    def test_list_metrics_with_paging(self):
-        from google.cloud.logging.metric import Metric
-        PROJECT = 'PROJECT'
-        TOKEN = 'TOKEN'
-        PAGE_SIZE = 42
-        METRICS = [{
-            'name': self.METRIC_NAME,
-            'filter': self.FILTER,
-            'description': self.DESCRIPTION,
-        }]
-        client = self._makeOne(project=PROJECT, credentials=_Credentials())
-        api = client._metrics_api = _DummyMetricsAPI()
-        api._list_metrics_response = METRICS, None
+        client = self._makeOne(
+            project=self.PROJECT, credentials=_Credentials(),
+            use_gax=False)
+        returned = {
+            'metrics': metrics,
+        }
+        client.connection = _Connection(returned)
 
         # Execute request.
-        metrics, token = client.list_metrics(PAGE_SIZE, TOKEN)
-        # Test values are correct.
+        iterator = client.list_metrics()
+        metrics = list(iterator)
+
+        # Check the metrics returned.
         self.assertEqual(len(metrics), 1)
         metric = metrics[0]
         self.assertIsInstance(metric, Metric)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
-        self.assertIsNone(token)
-        self.assertEqual(api._list_metrics_called_with,
-                         (PROJECT, PAGE_SIZE, TOKEN))
+        self.assertIs(metric.client, client)
+
+        # Verify mocked transport.
+        called_with = client.connection._called_with
+        path = '/projects/%s/metrics' % (self.PROJECT,)
+        self.assertEqual(called_with, {
+            'method': 'GET',
+            'path': path,
+            'query_params': {},
+        })
+
+    def test_list_metrics_with_paging(self):
+        import six
+        from google.cloud.logging.metric import Metric
+
+        token = 'TOKEN'
+        next_token = 'T00KEN'
+        page_size = 42
+        metrics = [{
+            'name': self.METRIC_NAME,
+            'filter': self.FILTER,
+            'description': self.DESCRIPTION,
+        }]
+        client = self._makeOne(
+            project=self.PROJECT, credentials=_Credentials(),
+            use_gax=False)
+        returned = {
+            'metrics': metrics,
+            'nextPageToken': next_token,
+        }
+        client.connection = _Connection(returned)
+
+        # Execute request.
+        iterator = client.list_metrics(page_size, token)
+        page = six.next(iterator.pages)
+        metrics = list(page)
+
+        # First check the token.
+        self.assertEqual(iterator.next_page_token, next_token)
+        # Then check the metrics returned.
+        self.assertEqual(len(metrics), 1)
+        metric = metrics[0]
+        self.assertIsInstance(metric, Metric)
+        self.assertEqual(metric.name, self.METRIC_NAME)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, self.DESCRIPTION)
+        self.assertIs(metric.client, client)
+
+        # Verify mocked transport.
+        called_with = client.connection._called_with
+        path = '/projects/%s/metrics' % (self.PROJECT,)
+        self.assertEqual(called_with, {
+            'method': 'GET',
+            'path': path,
+            'query_params': {
+                'pageSize': page_size,
+                'pageToken': token,
+            },
+        })
 
 
 class _Credentials(object):
@@ -548,13 +583,6 @@ class _Credentials(object):
     def create_scoped(self, scope):
         self._scopes = scope
         return self
-
-
-class _DummyMetricsAPI(object):
-
-    def list_metrics(self, project, page_size, page_token):
-        self._list_metrics_called_with = (project, page_size, page_token)
-        return self._list_metrics_response
 
 
 class _Connection(object):

@@ -20,6 +20,7 @@ from google.cloud import connection as base_connection
 from google.cloud.iterator import HTTPIterator
 from google.cloud.logging._helpers import entry_from_resource
 from google.cloud.logging.sink import Sink
+from google.cloud.logging.metric import Metric
 
 
 class Connection(base_connection.JSONConnection):
@@ -347,24 +348,21 @@ class _MetricsAPI(object):
                            passed, the API will return the first page of
                            metrics.
 
-        :rtype: tuple, (list, str)
-        :returns: list of mappings, plus a "next page token" string:
-                  if not None, indicates that more metrics can be retrieved
-                  with another call (pass that value as ``page_token``).
+        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :returns: Iterator of
+                  :class:`~google.cloud.logging.metric.Metric`
+                  accessible to the current API.
         """
-        params = {}
+        extra_params = {}
 
         if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
+            extra_params['pageSize'] = page_size
 
         path = '/projects/%s/metrics' % (project,)
-        resp = self._connection.api_request(
-            method='GET', path=path, query_params=params)
-        metrics = resp.get('metrics', ())
-        return metrics, resp.get('nextPageToken')
+        return HTTPIterator(
+            client=self._client, path=path,
+            item_to_value=_item_to_metric, items_key='metrics',
+            page_token=page_token, extra_params=extra_params)
 
     def metric_create(self, project, metric_name, filter_, description=None):
         """API call:  create a metric resource.
@@ -497,3 +495,18 @@ def _item_to_sink(iterator, resource):
     :returns: The next sink in the page.
     """
     return Sink.from_api_repr(resource, iterator.client)
+
+
+def _item_to_metric(iterator, resource):
+    """Convert a metric resource to the native object.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type resource: dict
+    :param resource: Metric JSON resource returned from the API.
+
+    :rtype: :class:`~google.cloud.logging.metric.Metric`
+    :returns: The next metric in the page.
+    """
+    return Metric.from_api_repr(resource, iterator.client)
