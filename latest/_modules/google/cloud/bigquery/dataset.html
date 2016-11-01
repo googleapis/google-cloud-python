@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.dataset &mdash; google-cloud 4c4d056 documentation</title>
+  <title>google.cloud.bigquery.dataset &mdash; google-cloud 4b4023f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 4c4d056 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 4b4023f documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -291,6 +291,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
 
 
 <div class="viewcode-block" id="AccessGrant"><a class="viewcode-back" href="../../../../bigquery-dataset.html#google.cloud.bigquery.dataset.AccessGrant">[docs]</a><span class="k">class</span> <span class="nc">AccessGrant</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -815,35 +816,24 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/tables/list</span>
 
 <span class="sd">        :type max_results: int</span>
-<span class="sd">        :param max_results: maximum number of tables to return, If not</span>
-<span class="sd">                            passed, defaults to a value set by the API.</span>
+<span class="sd">        :param max_results: (Optional) Maximum number of tables to return.</span>
+<span class="sd">                            If not passed, defaults to a value set by the API.</span>
 
 <span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of datasets. If</span>
-<span class="sd">                           not passed, the API will return the first page of</span>
-<span class="sd">                           datasets.</span>
+<span class="sd">        :param page_token: (Optional) Opaque marker for the next &quot;page&quot; of</span>
+<span class="sd">                           datasets. If not passed, the API will return the</span>
+<span class="sd">                           first page of datasets.</span>
 
-<span class="sd">        :rtype: tuple, (list, str)</span>
-<span class="sd">        :returns: list of :class:`google.cloud.bigquery.table.Table`, plus a</span>
-<span class="sd">                  &quot;next page token&quot; string:  if not ``None``, indicates that</span>
-<span class="sd">                  more tables can be retrieved with another call (pass that</span>
-<span class="sd">                  value as ``page_token``).</span>
+<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`</span>
+<span class="sd">                  contained within the current dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
-
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
-
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">/tables&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">connection</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-                                      <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">tables</span> <span class="o">=</span> <span class="p">[</span><span class="n">Table</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-                  <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tables&#39;</span><span class="p">,</span> <span class="p">())]</span>
-        <span class="k">return</span> <span class="n">tables</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span></div>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">HTTPIterator</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                              <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_table</span><span class="p">,</span> <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;tables&#39;</span><span class="p">,</span>
+                              <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="Dataset.table"><a class="viewcode-back" href="../../../../bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="p">()):</span>
         <span class="sd">&quot;&quot;&quot;Construct a table bound to this dataset.</span>
@@ -858,6 +848,21 @@
 <span class="sd">        :returns: a new ``Table`` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_item_to_table</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON table to the native object.</span>
+
+<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">    :type resource: dict</span>
+<span class="sd">    :param resource: An item to be converted to a table.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.bigquery.table.Table`</span>
+<span class="sd">    :returns: The next table in the page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -891,7 +896,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'4c4d056',
+            VERSION:'4b4023f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

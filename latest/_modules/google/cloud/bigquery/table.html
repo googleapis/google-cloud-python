@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.table &mdash; google-cloud 4c4d056 documentation</title>
+  <title>google.cloud.bigquery.table &mdash; google-cloud 4b4023f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 4c4d056 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 4b4023f documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -305,7 +305,8 @@
 <span class="kn">from</span> <span class="nn">google.cloud.streaming.transfer</span> <span class="k">import</span> <span class="n">RESUMABLE_UPLOAD</span>
 <span class="kn">from</span> <span class="nn">google.cloud.streaming.transfer</span> <span class="k">import</span> <span class="n">Upload</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">SchemaField</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_rows_from_json</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_row_from_json</span>
+<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
 
 
 <span class="n">_TABLE_HAS_NO_SCHEMA</span> <span class="o">=</span> <span class="s2">&quot;Table has no schema:  call &#39;table.reload()&#39;&quot;</span>
@@ -926,47 +927,36 @@
 <span class="sd">           up-to-date with the schema as defined on the back-end:  if the</span>
 <span class="sd">           two schemas are not identical, the values returned may be</span>
 <span class="sd">           incomplete.  To ensure that the local copy of the schema is</span>
-<span class="sd">           up-to-date, call the table&#39;s ``reload`` method.</span>
+<span class="sd">           up-to-date, call :meth:`reload`.</span>
 
 <span class="sd">        :type max_results: int</span>
-<span class="sd">        :param max_results: (Optional) maximum number of rows to return.</span>
+<span class="sd">        :param max_results: (Optional) Maximum number of rows to return.</span>
 
 <span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token:</span>
-<span class="sd">            (Optional) token representing a cursor into the table&#39;s rows.</span>
+<span class="sd">        :param page_token: (Optional) Token representing a cursor into the</span>
+<span class="sd">                           table&#39;s rows.</span>
 
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
+<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
+<span class="sd">        :param client: (Optional) The client to use.  If not passed, falls</span>
+<span class="sd">                       back to the ``client`` stored on the current dataset.</span>
 
-<span class="sd">        :rtype: tuple</span>
-<span class="sd">        :returns: ``(row_data, total_rows, page_token)``, where ``row_data``</span>
-<span class="sd">                  is a list of tuples, one per result row, containing only</span>
-<span class="sd">                  the values;  ``total_rows`` is a count of the total number</span>
-<span class="sd">                  of rows in the table;  and ``page_token`` is an opaque</span>
-<span class="sd">                  string which can be used to fetch the next batch of rows</span>
-<span class="sd">                  (``None`` if no further batches can be fetched).</span>
+<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :returns: Iterator of row data :class:`tuple`s. During each page, the</span>
+<span class="sd">                  iterator will have the ``total_rows`` attribute set,</span>
+<span class="sd">                  which counts the total number of rows **in the table**</span>
+<span class="sd">                  (this is distinct from the total number of rows in the</span>
+<span class="sd">                  current page: ``iterator.page.num_items``).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
-
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
-
-        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-                                                 <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/data&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                                 <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">total_rows</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalRows&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">total_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">total_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_rows</span><span class="p">)</span>
-        <span class="n">page_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pageToken&#39;</span><span class="p">)</span>
-        <span class="n">rows_data</span> <span class="o">=</span> <span class="n">_rows_from_json</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">rows_data</span><span class="p">,</span> <span class="n">total_rows</span><span class="p">,</span> <span class="n">page_token</span></div>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/data&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">HTTPIterator</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                                <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_row</span><span class="p">,</span> <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span>
+                                <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+                                <span class="n">page_start</span><span class="o">=</span><span class="n">_rows_page_start</span><span class="p">)</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span>
+        <span class="c1"># Over-ride the key used to retrieve the next page token.</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">_NEXT_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;pageToken&#39;</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
 
 <div class="viewcode-block" id="Table.insert_data"><a class="viewcode-back" href="../../../../bigquery-table.html#google.cloud.bigquery.table.Table.insert_data">[docs]</a>    <span class="k">def</span> <span class="nf">insert_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                     <span class="n">rows</span><span class="p">,</span>
@@ -1356,6 +1346,47 @@
     <span class="k">return</span> <span class="n">infos</span>
 
 
+<span class="k">def</span> <span class="nf">_item_to_row</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON row to the native object.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This assumes that the ``schema`` attribute has been</span>
+<span class="sd">        added to the iterator after being created, which</span>
+<span class="sd">        should be done by the caller.</span>
+
+<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">    :type resource: dict</span>
+<span class="sd">    :param resource: An item to be converted to a row.</span>
+
+<span class="sd">    :rtype: tuple</span>
+<span class="sd">    :returns: The next row in the page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_row_from_json</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+
+
+<span class="c1"># pylint: disable=unused-argument</span>
+<span class="k">def</span> <span class="nf">_rows_page_start</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Grab total rows after a :class:`~google.cloud.iterator.Page` started.</span>
+
+<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">    :type page: :class:`~google.cloud.iterator.Page`</span>
+<span class="sd">    :param page: The page that was just created.</span>
+
+<span class="sd">    :type response: dict</span>
+<span class="sd">    :param response: The JSON API response for a page of rows in a table.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">total_rows</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalRows&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">total_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">total_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_rows</span><span class="p">)</span>
+    <span class="n">iterator</span><span class="o">.</span><span class="n">total_rows</span> <span class="o">=</span> <span class="n">total_rows</span>
+<span class="c1"># pylint: enable=unused-argument</span>
+
+
 <span class="k">class</span> <span class="nc">_UploadConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Faux message FBO apitools&#39; &#39;configure_request&#39;.&quot;&quot;&quot;</span>
     <span class="n">accept</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*/*&#39;</span><span class="p">]</span>
@@ -1404,7 +1435,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'4c4d056',
+            VERSION:'4b4023f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

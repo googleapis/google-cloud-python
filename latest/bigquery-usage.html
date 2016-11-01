@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 4c4d056 documentation</title>
+  <title>Using the API &mdash; google-cloud 4b4023f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 4c4d056 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 4b4023f documentation" href="index.html"/>
         <link rel="next" title="BigQuery Client" href="bigquery-client.html"/>
         <link rel="prev" title="IAM Policy" href="pubsub-iam.html"/> 
 
@@ -410,13 +410,12 @@ dataset will have the value as their expiration period.</li>
 <div class="section" id="tables">
 <h2>Tables<a class="headerlink" href="#tables" title="Permalink to this headline">#</a></h2>
 <p>Tables exist within datasets.  List tables for the dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">tables</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">list_tables</span><span class="p">()</span>   <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">list_tables</span><span class="p">())</span>  <span class="c1"># API request(s)</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-    <span class="k">assert</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">TABLE_NAME</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">view_query</span> <span class="o">=</span> <span class="n">QUERY</span>
     <span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>                          <span class="c1"># API request</span>
-    <span class="n">tables</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">list_tables</span><span class="p">()</span>   <span class="c1"># API request</span>
+    <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">list_tables</span><span class="p">())</span>  <span class="c1"># API request(s)</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
     <span class="k">assert</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">TABLE_NAME</span>
 </pre></div>
@@ -469,13 +468,8 @@ dataset will have the value as their expiration period.</li>
 </pre></div>
 </div>
 <p>Get rows from a table&#8217;s data:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">rows</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">()</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
-            <span class="n">do_something</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">break</span>
-        <span class="n">rows</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">():</span>
+        <span class="n">do_something</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Insert rows into a table&#8217;s data:</p>
@@ -537,8 +531,9 @@ dataset will have the value as their expiration period.</li>
     <span class="k">assert</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">schema</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>If the rows returned by the query do not fit into the inital response,
-then we need to fetch the remaining rows via <code class="docutils literal"><span class="pre">fetch_data</span></code>:</p>
+<p>If the rows returned by the query do not fit into the initial response,
+then we need to fetch the remaining rows via
+<a class="reference internal" href="bigquery-query.html#google.cloud.bigquery.query.QueryResults.fetch_data" title="google.cloud.bigquery.query.QueryResults.fetch_data"><code class="xref py py-meth docutils literal"><span class="pre">fetch_data()</span></code></a>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_sync_query</span><span class="p">(</span><span class="n">LIMITED</span><span class="p">)</span>
     <span class="n">query</span><span class="o">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="n">TIMEOUT_MS</span>
     <span class="n">query</span><span class="o">.</span><span class="n">max_results</span> <span class="o">=</span> <span class="n">PAGE_SIZE</span>
@@ -562,7 +557,7 @@ then we need to fetch the remaining rows via <code class="docutils literal"><spa
 </div>
 <p>If the query takes longer than the timeout allowed, <code class="docutils literal"><span class="pre">query.complete</span></code>
 will be <code class="docutils literal"><span class="pre">False</span></code>.  In that case, we need to poll the associated job until
-it is done, and then fetch the reuslts:</p>
+it is done, and then fetch the results:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_sync_query</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>
     <span class="n">query</span><span class="o">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="n">TIMEOUT_MS</span>
     <span class="n">query</span><span class="o">.</span><span class="n">use_query_cache</span> <span class="o">=</span> <span class="kc">False</span>
@@ -860,7 +855,7 @@ is submitted to the BigQuery back-end.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'4c4d056',
+            VERSION:'4b4023f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
