@@ -16,6 +16,7 @@ import logging
 import unittest
 
 from google.gax.errors import GaxError
+from google.gax.grpc import exc_to_code
 from grpc import StatusCode
 
 from google.cloud.exceptions import Conflict
@@ -38,8 +39,15 @@ retry_429 = RetryErrors(TooManyRequests)
 
 
 def _retry_on_unavailable(exc):
-    """Retry only errors whose status code is 'UNAVAILABLE'."""
-    return exc.code() == StatusCode.UNAVAILABLE
+    """Retry only errors whose status code is 'UNAVAILABLE'.
+
+    :type exc: :class:`~google.gax.errors.GaxError`
+    :param exc: The exception that was caught.
+
+    :rtype: bool
+    :returns: Boolean indicating if the exception was UNAVAILABLE.
+    """
+    return exc_to_code(exc) == StatusCode.UNAVAILABLE
 
 
 def _consume_entries(logger):
