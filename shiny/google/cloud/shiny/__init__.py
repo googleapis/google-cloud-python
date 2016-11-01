@@ -17,3 +17,10 @@
 This library allows you to create magical unicorns and then
 do "nothing" with them in the API.
 """
+
+from google.cloud.shiny.client import Client
+
+
+__all__ = [
+    'Client',
+]

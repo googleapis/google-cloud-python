@@ -37,3 +37,5 @@ doing something.
 .. code:: python
 
     from google.cloud import shiny
+
+    client = shiny.Client()
