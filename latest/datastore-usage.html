@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Resource Manager Overview &mdash; google-cloud 4c4d056 documentation</title>
+  <title>Using the API &mdash; google-cloud 4c4d056 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="google-cloud 4c4d056 documentation" href="index.html"/>
-        <link rel="next" title="Client" href="resource-manager-client.html"/>
-        <link rel="prev" title="Row Data" href="bigtable-row-data.html"/> 
+        <link rel="next" title="Datastore Client" href="datastore-client.html"/>
+        <link rel="prev" title="Long-Running Operations" href="operation-api.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -91,8 +91,8 @@
 <li class="toctree-l1"><a class="reference internal" href="operation-api.html">Long-Running Operations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="datastore-usage.html">Using the API</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
@@ -145,11 +145,8 @@
 <li class="toctree-l1"><a class="reference internal" href="bigtable-row-data.html">Row Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Resource Manager</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#authentication">Authentication</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-api.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resource-manager-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resource-manager-project.html">Projects</a></li>
 </ul>
@@ -260,11 +257,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Resource Manager Overview</li>
+    <li>Using the API</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/resource-manager-api.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/datastore-usage.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -274,87 +271,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="resource-manager-overview">
-<h1>Resource Manager Overview<a class="headerlink" href="#resource-manager-overview" title="Permalink to this headline">#</a></h1>
-<p>The Cloud Resource Manager API provides methods that you can use
-to programmatically manage your projects in the Google Cloud Platform.
-With this API, you can do the following:</p>
+  <div class="section" id="module-google.cloud.datastore">
+<span id="using-the-api"></span><h1>Using the API<a class="headerlink" href="#module-google.cloud.datastore" title="Permalink to this headline">#</a></h1>
+<p>Shortcut methods for getting set up with Google Cloud Datastore.</p>
+<p>You&#8217;ll typically use these to get started with the API:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
+<span class="n">entity</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The main concepts with this API are:</p>
 <ul class="simple">
-<li>Get a list of all projects associated with an account</li>
-<li>Create new projects</li>
-<li>Update existing projects</li>
-<li>Delete projects</li>
-<li>Undelete, or recover, projects that you don&#8217;t want to delete</li>
+<li><a class="reference internal" href="datastore-client.html#google.cloud.datastore.connection.Connection" title="google.cloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">Connection</span></code></a>
+which represents a connection between your machine and the Cloud Datastore
+API.</li>
+<li><a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>
+which represents a project (string) and namespace (string) bundled with
+a connection and has convenience methods for constructing objects with that
+project / namespace.</li>
+<li><a class="reference internal" href="datastore-entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a>
+which represents a single entity in the datastore
+(akin to a row in relational database world).</li>
+<li><a class="reference internal" href="datastore-keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a>
+which represents a pointer to a particular entity in the datastore
+(akin to a unique identifier in relational database world).</li>
+<li><a class="reference internal" href="datastore-queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>
+which represents a lookup or search over the rows in the datastore.</li>
+<li><a class="reference internal" href="datastore-transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>
+which represents an all-or-none transaction and enables consistency
+when race conditions may occur.</li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Don&#8217;t forget to look at the <a class="reference internal" href="#authentication"><span class="std std-ref">Authentication</span></a> section below.
-It&#8217;s slightly different from the rest of this library.</p>
-</div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p>Alpha</p>
-<p class="last">The <a class="reference external" href="https://cloud.google.com/resource-manager/docs/creating-project">projects.create() API method</a> is in the Alpha stage. It might be changed in
-backward-incompatible ways and is not recommended for production use. It is
-not subject to any SLA or deprecation policy. Access to this feature is
-currently invite-only. For an invitation, contact our sales team at
-<a class="reference external" href="https://cloud.google.com/contact">https://cloud.google.com/contact</a>.</p>
-</div>
-<p>Here&#8217;s a quick example of the full life-cycle:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">resource_manager</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">resource_manager</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># List all projects you have access to</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_projects</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a new project</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">new_project</span><span class="p">(</span><span class="s1">&#39;your-project-id-here&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                                 <span class="n">name</span><span class="o">=</span><span class="s1">&#39;My new project&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_project</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Update an existing project</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">fetch_project</span><span class="p">(</span><span class="s1">&#39;my-existing-project&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-<span class="go">&lt;Project: Existing Project (my-existing-project)&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Modified name&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-<span class="go">&lt;Project: Modified name (my-existing-project)&gt;</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Delete a project</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">new_project</span><span class="p">(</span><span class="s1">&#39;my-existing-project&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Undelete a project</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">new_project</span><span class="p">(</span><span class="s1">&#39;my-existing-project&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">undelete</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="section" id="authentication">
-<span id="id1"></span><h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">#</a></h2>
-<p>Unlike the other APIs, the Resource Manager API is focused on managing your
-various projects inside Google Cloud Platform. What this means (currently, as
-of August 2015) is that you can&#8217;t use a Service Account to work with some
-parts of this API (for example, creating projects).</p>
-<p>The reason is actually pretty simple: if your API call is trying to do
-something like create a project, what project&#8217;s Service Account can you use?
-Currently none.</p>
-<p>This means that for this API you should always use the credentials
-provided by the <a class="reference external" href="http://cloud.google.com/sdk">Google Cloud SDK</a>, which you can get by running
-<code class="docutils literal"><span class="pre">gcloud</span> <span class="pre">auth</span> <span class="pre">login</span></code>.</p>
-<p>Once you run that command, <code class="docutils literal"><span class="pre">google-cloud-python</span></code> will automatically pick up the
-credentials, and you can use the &#8220;automatic discovery&#8221; feature of the library.</p>
-<p>Start by authenticating:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ gcloud auth login
-</pre></div>
-</div>
-<p>And then simply create a client:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">resource_manager</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">resource_manager</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
 </div>
 
 
@@ -364,10 +313,10 @@ credentials, and you can use the &#8220;automatic discovery&#8221; feature of th
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="resource-manager-client.html" class="btn btn-neutral float-right" title="Client" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="datastore-client.html" class="btn btn-neutral float-right" title="Datastore Client" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="bigtable-row-data.html" class="btn btn-neutral" title="Row Data" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="operation-api.html" class="btn btn-neutral" title="Long-Running Operations" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
