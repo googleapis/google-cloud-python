@@ -87,10 +87,10 @@ _CELLDATA_FROM_JSON = {
 
 
 def _row_from_json(row, schema):
-    """Convert JSON row data to row w/ appropriate types.
+    """Convert JSON row data to row with appropriate types.
 
     :type row: dict
-    :param row:
+    :param row: A JSON response row to be converted.
 
     :type schema: tuple
     :param schema: A tuple of
@@ -112,7 +112,7 @@ def _row_from_json(row, schema):
 
 
 def _rows_from_json(rows, schema):
-    """Convert JSON row data to rows w/ appropriate types."""
+    """Convert JSON row data to rows with appropriate types."""
     return [_row_from_json(row, schema) for row in rows]
 
 
