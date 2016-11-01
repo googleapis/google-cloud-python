@@ -474,16 +474,20 @@ class Connection(connection_module.Connection):
         as output). It is used under the hood in
         :meth:`Client.get() <.datastore.client.Client.get>`:
 
-        >>> from google.cloud import datastore
-        >>> client = datastore.Client(project='project')
-        >>> key = client.key('MyKind', 1234)
-        >>> client.get(key)
-        [<Entity object>]
+        .. code-block:: python
+
+          >>> from google.cloud import datastore
+          >>> client = datastore.Client(project='project')
+          >>> key = client.key('MyKind', 1234)
+          >>> client.get(key)
+          [<Entity object>]
 
         Using a :class:`Connection` directly:
 
-        >>> connection.lookup('project', [key.to_protobuf()])
-        [<Entity protobuf>]
+        .. code-block:: python
+
+          >>> connection.lookup('project', [key.to_protobuf()])
+          [<Entity protobuf>]
 
         :type project: str
         :param project: The project to look up the keys in.

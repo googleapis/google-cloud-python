@@ -30,7 +30,7 @@ Authentication / Configuration
 - After setting ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GOOGLE_CLOUD_PROJECT``
   environment variables, create a :class:`Client <google.cloud.pubsub.client.Client>`
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import pubsub
      >>> client = pubsub.Client()
