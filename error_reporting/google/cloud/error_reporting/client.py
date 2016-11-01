@@ -184,27 +184,30 @@ class Client(object):
 
     def report(self, message, http_context=None, user=None):
         """ Reports a message to Stackdriver Error Reporting
+
         https://cloud.google.com/error-reporting/docs/formatting-error-messages
 
-           :type message: str
-           :param message: A user-supplied message to report
+        :type message: str
+        :param message: A user-supplied message to report
 
+        :type http_context: :class`google.cloud.error_reporting.HTTPContext`
+        :param http_context: The HTTP request which was processed when the
+                             error was triggered.
 
-          :type http_context: :class`google.cloud.error_reporting.HTTPContext`
-          :param http_context: The HTTP request which was processed when the
-                               error was triggered.
+        :type user: str
+        :param user: The user who caused or was affected by the crash. This
+                     can be a user ID, an email address, or an arbitrary
+                     token that uniquely identifies the user. When sending
+                     an error report, leave this field empty if the user
+                     was not logged in. In this case the Error Reporting
+                     system will use other data, such as remote IP address,
+                     to distinguish affected users.
 
-          :type user: str
-          :param user: The user who caused or was affected by the crash. This
-                       can be a user ID, an email address, or an arbitrary
-                       token that uniquely identifies the user. When sending
-                       an error report, leave this field empty if the user
-                       was not logged in. In this case the Error Reporting
-                       system will use other data, such as remote IP address,
-                       to distinguish affected users.
+        Example:
 
-           Example::
-                >>>  client.report("Something went wrong!")
+        .. code-block:: python
+
+          >>>  client.report("Something went wrong!")
         """
         stack = traceback.extract_stack()
         last_call = stack[-2]

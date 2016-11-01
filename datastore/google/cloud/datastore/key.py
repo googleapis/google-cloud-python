@@ -25,6 +25,8 @@ class Key(object):
 
     To create a basic key:
 
+    .. code-block:: python
+
       >>> Key('EntityKind', 1234)
       <Key[{'kind': 'EntityKind', 'id': 1234}]>
       >>> Key('EntityKind', 'foo')
@@ -32,12 +34,16 @@ class Key(object):
 
     To create a key with a parent:
 
+    .. code-block:: python
+
       >>> Key('Parent', 'foo', 'Child', 1234)
       <Key[{'kind': 'Parent', 'name': 'foo'}, {'kind': 'Child', 'id': 1234}]>
       >>> Key('Child', 1234, parent=parent_key)
       <Key[{'kind': 'Parent', 'name': 'foo'}, {'kind': 'Child', 'id': 1234}]>
 
     To create a partial key:
+
+    .. code-block:: python
 
       >>> Key('Parent', 'foo', 'Child')
       <Key[{'kind': 'Parent', 'name': 'foo'}, {'kind': 'Child'}]>

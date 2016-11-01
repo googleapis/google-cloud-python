@@ -22,14 +22,14 @@ Authentication and Configuration
 - After configuring your environment, create a
   :class:`Client <google.cloud.logging.client.Client>`
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import logging
      >>> client = logging.Client()
 
   or pass in ``credentials`` and ``project`` explicitly
 
-  .. doctest::
+  .. code-block:: python
 
      >>> from google.cloud import logging
      >>> client = logging.Client(project='my-project', credentials=creds)
@@ -40,7 +40,7 @@ Writing log entries
 
 Write a simple text entry to a logger.
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -49,7 +49,7 @@ Write a simple text entry to a logger.
 
 Write a dictionary entry to a logger.
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -64,7 +64,7 @@ Retrieving log entries
 
 Fetch entries for the default project.
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -77,7 +77,7 @@ Fetch entries for the default project.
 
 Fetch entries across multiple projects.
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -89,7 +89,7 @@ Filter entries retrieved using the `Advanced Logs Filters`_ syntax
 
 .. _Advanced Logs Filters: https://cloud.google.com/logging/docs/view/advanced_filters
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -99,7 +99,7 @@ Filter entries retrieved using the `Advanced Logs Filters`_ syntax
 
 Sort entries in descending timestamp order.
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -108,7 +108,7 @@ Sort entries in descending timestamp order.
 
 Retrieve entries in batches of 10, iterating until done.
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -125,7 +125,7 @@ Retrieve entries in batches of 10, iterating until done.
 
 Retrieve entries for a single logger, sorting in descending timestamp order:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -136,7 +136,7 @@ Retrieve entries for a single logger, sorting in descending timestamp order:
 Delete all entries for a logger
 -------------------------------
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -152,7 +152,7 @@ used within Stackdriver Monitoring to create charts and alerts.
 
 Create a metric:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -167,7 +167,7 @@ Create a metric:
 
 List all metrics for a project:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -180,7 +180,7 @@ List all metrics for a project:
 
 Refresh local information about a metric:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -193,7 +193,7 @@ Refresh local information about a metric:
 
 Update a metric:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -206,7 +206,7 @@ Update a metric:
 
 Delete a metric:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -231,7 +231,7 @@ Make sure that the storage bucket you want to export logs too has
 
 Add ``cloud-logs@google.com`` as the owner of ``my-bucket-name``:
 
-.. doctest::
+.. code-block:: python
 
     >>> from google.cloud import storage
     >>> client = storage.Client()
@@ -252,7 +252,7 @@ and add ``cloud-logs@google.com`` to a dataset.
 
 See: `Setting permissions for BigQuery`_
 
-.. doctest::
+.. code-block:: python
 
     >>> from google.cloud import bigquery
     >>> from google.cloud.bigquery.dataset import AccessGrant
@@ -276,7 +276,7 @@ and add ``cloud-logs@google.com`` to a topic.
 
 See: `Setting permissions for Pub/Sub`_
 
-.. doctest::
+.. code-block:: python
 
     >>> from google.cloud import pubsub
     >>> client = pubsub.Client()
@@ -289,7 +289,7 @@ See: `Setting permissions for Pub/Sub`_
 
 Create a Cloud Storage sink:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -305,7 +305,7 @@ Create a Cloud Storage sink:
 
 Create a BigQuery sink:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -321,7 +321,7 @@ Create a BigQuery sink:
 
 Create a Cloud Pub/Sub sink:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -338,7 +338,7 @@ Create a Cloud Pub/Sub sink:
 
 List all sinks for a project:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -350,7 +350,7 @@ List all sinks for a project:
 
 Refresh local information about a sink:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -365,7 +365,7 @@ Refresh local information about a sink:
 
 Update a sink:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -376,7 +376,7 @@ Update a sink:
 
 Delete a sink:
 
-.. doctest::
+.. code-block:: python
 
    >>> from google.cloud import logging
    >>> client = logging.Client()
@@ -397,7 +397,7 @@ It's possible to tie the Python :mod:`logging` module directly into Google Cloud
 create a :class:`CloudLoggingHandler <google.cloud.logging.CloudLoggingHandler>` instance from your
 Logging client.
 
-.. doctest::
+.. code-block:: python
 
     >>> import logging
     >>> import google.cloud.logging # Don't conflict with standard logging
@@ -419,7 +419,7 @@ All logs will go to a single custom log, which defaults to "python". The name of
 logger will be included in the structured log entry under the "python_logger" field. You can
 change it by providing a name to the handler:
 
-.. doctest::
+.. code-block:: python
 
     >>> handler = CloudLoggingHandler(client, name="mycustomlog")
 
@@ -429,7 +429,7 @@ you must avoid infinite recursion from the logging calls the client itself makes
 method :meth:`setup_logging <google.cloud.logging.handlers.setup_logging>` is provided to configure
 this automatically:
 
-.. doctest::
+.. code-block:: python
 
     >>> import logging
     >>> import google.cloud.logging # Don't conflict with standard logging
@@ -442,7 +442,7 @@ this automatically:
 
 You can also exclude certain loggers:
 
-.. doctest::
+.. code-block:: python
 
    >>> setup_logging(handler, excluded_loggers=('werkzeug',)))
 
