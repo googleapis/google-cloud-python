@@ -176,7 +176,6 @@
   speech-usage
   Client <speech-client>
   speech-encoding
-  speech-metadata
   speech-operation
   speech-sample
   speech-transcript
