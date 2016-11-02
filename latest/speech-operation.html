@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Speech Operation &mdash; google-cloud 1f8a79d documentation</title>
+  <title>Speech Operation &mdash; google-cloud 1d1a729 documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 1f8a79d documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 1d1a729 documentation" href="index.html"/>
         <link rel="next" title="Speech Sample" href="speech-sample.html"/>
-        <link rel="prev" title="Speech Metadata" href="speech-metadata.html"/> 
+        <link rel="prev" title="Speech Encoding" href="speech-encoding.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -216,7 +216,6 @@
 <li class="toctree-l1"><a class="reference internal" href="speech-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-encoding.html">Speech Encoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="speech-metadata.html">Speech Metadata</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Speech Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-sample.html">Speech Sample</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-transcript.html">Speech Transcript</a></li>
@@ -276,113 +275,26 @@
 <p>Long running operation representation for Google Speech API</p>
 <dl class="class">
 <dt id="google.cloud.speech.operation.Operation">
-<em class="property">class </em><code class="descclassname">google.cloud.speech.operation.</code><code class="descname">Operation</code><span class="sig-paren">(</span><em>client</em>, <em>name</em>, <em>complete=False</em>, <em>metadata=None</em>, <em>results=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/operation.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.operation.Operation" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.speech.operation.</code><code class="descname">Operation</code><span class="sig-paren">(</span><em>name</em>, <em>client</em>, <em>**caller_metadata</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/operation.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.operation.Operation" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="operation-api.html#google.cloud.operation.Operation" title="google.cloud.operation.Operation"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.operation.Operation</span></code></a></p>
-<p>Representation of a Google API Long-Running Operation.</p>
+<p>Custom Long-Running Operation for Google Speech API.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="speech-client.html#google.cloud.speech.client.Client" title="google.cloud.speech.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; Instance of speech client.</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; ID assigned to an operation.</li>
-<li><strong>complete</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; True if operation is complete, else False.</li>
-<li><strong>metadata</strong> (<a class="reference internal" href="speech-metadata.html#google.cloud.speech.metadata.Metadata" title="google.cloud.speech.metadata.Metadata"><code class="xref py py-class docutils literal"><span class="pre">Metadata</span></code></a>) &#8211; Instance of <code class="docutils literal"><span class="pre">Metadata</span></code> with operation information.</li>
-<li><strong>results</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary with transcript and score of operation.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The fully-qualified path naming the operation.</li>
+<li><strong>client</strong> (<a class="reference internal" href="speech-client.html#google.cloud.speech.client.Client" title="google.cloud.speech.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; Client that created the current operation.</li>
+<li><strong>caller_metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; caller-assigned metadata about the operation</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="google.cloud.speech.operation.Operation.complete">
-<code class="descname">complete</code><a class="headerlink" href="#google.cloud.speech.operation.Operation.complete" title="Permalink to this definition">#</a></dt>
-<dd><p>Completion state of the <cite>Operation</cite>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if already completed, else false.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="google.cloud.speech.operation.Operation.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>client</em>, <em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/operation.html#Operation.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.operation.Operation.from_api_repr" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory:  construct an instance from Google Speech API.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client</strong> (<a class="reference internal" href="speech-client.html#google.cloud.speech.client.Client" title="google.cloud.speech.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; Instance of speech client.</li>
-<li><strong>response</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary response from Google Speech Operations API.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.speech.operation.Operation" title="google.cloud.speech.operation.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Instance of <cite>~google.cloud.speech.operations.Operation</cite>.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.speech.operation.Operation.metadata">
-<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.speech.operation.Operation.metadata" title="Permalink to this definition">#</a></dt>
-<dd><p>Metadata of operation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="speech-metadata.html#google.cloud.speech.metadata.Metadata" title="google.cloud.speech.metadata.Metadata"><code class="xref py py-class docutils literal"><span class="pre">Metadata</span></code></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">Metadata</span></code>.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.speech.operation.Operation.poll">
-<code class="descname">poll</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/operation.html#Operation.poll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.operation.Operation.poll" title="Permalink to this definition">#</a></dt>
-<dd><p>Check if the operation has finished.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A boolean indicating if the current operation has completed.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the operation
-has already completed.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="google.cloud.speech.operation.Operation.results">
-<code class="descname">results</code><a class="headerlink" href="#google.cloud.speech.operation.Operation.results" title="Permalink to this definition">#</a></dt>
-<dd><p>Results dictionary with transcript information.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionary with transcript and confidence score.</td>
-</tr>
-</tbody>
-</table>
+<code class="descname">results</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.speech.operation.Operation.results" title="Permalink to this definition">#</a></dt>
+<dd><p>List of transcriptions from the speech-to-text process.</p>
 </dd></dl>
 
 </dd></dl>
@@ -399,7 +311,7 @@ has already completed.</td>
         <a href="speech-sample.html" class="btn btn-neutral float-right" title="Speech Sample" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="speech-metadata.html" class="btn btn-neutral" title="Speech Metadata" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="speech-encoding.html" class="btn btn-neutral" title="Speech Encoding" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -430,7 +342,7 @@ has already completed.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1f8a79d',
+            VERSION:'1d1a729',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.client &mdash; google-cloud 1f8a79d documentation</title>
+  <title>google.cloud.speech.client &mdash; google-cloud 1d1a729 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 1f8a79d documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1d1a729 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -215,7 +215,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-encoding.html">Speech Encoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-metadata.html">Speech Metadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-operation.html">Speech Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-sample.html">Speech Sample</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-transcript.html">Speech Transcript</a></li>
@@ -290,10 +289,11 @@
 <span class="kn">from</span> <span class="nn">base64</span> <span class="k">import</span> <span class="n">b64encode</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">Client</span> <span class="k">as</span> <span class="n">BaseClient</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_bytes_to_unicode</span>
+<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">Client</span> <span class="k">as</span> <span class="n">BaseClient</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
+
 <span class="kn">from</span> <span class="nn">google.cloud.speech.connection</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.encoding</span> <span class="k">import</span> <span class="n">Encoding</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.operation</span> <span class="k">import</span> <span class="n">Operation</span>
@@ -384,8 +384,8 @@
 <span class="sd">                               and phrases. This can also be used to add new</span>
 <span class="sd">                               words to the vocabulary of the recognizer.</span>
 
-<span class="sd">        :rtype: `~google.cloud.speech.operation.Operation`</span>
-<span class="sd">        :returns: ``Operation`` for asynchronous request to Google Speech API.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.speech.operation.Operation`</span>
+<span class="sd">        :returns: Operation for asynchronous request to Google Speech API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">sample</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">Encoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Only LINEAR16 encoding is supported by &#39;</span>
@@ -552,15 +552,17 @@
 <span class="sd">                               and phrases. This can also be used to add new</span>
 <span class="sd">                               words to the vocabulary of the recognizer.</span>
 
-<span class="sd">        :rtype: `~google.cloud.speech.operation.Operation`</span>
-<span class="sd">        :returns: ``Operation`` for asynchronous request to Google Speech API.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.speech.operation.Operation`</span>
+<span class="sd">        :returns: Operation for asynchronous request to Google Speech API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">_build_request_data</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="p">,</span>
                                    <span class="n">profanity_filter</span><span class="p">,</span> <span class="n">speech_context</span><span class="p">)</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;speech:asyncrecognize&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">Operation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_response</span><span class="p">)</span>
+        <span class="n">operation</span> <span class="o">=</span> <span class="n">Operation</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">api_response</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+        <span class="n">operation</span><span class="o">.</span><span class="n">caller_metadata</span><span class="p">[</span><span class="s1">&#39;request_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;AsyncRecognize&#39;</span>
+        <span class="k">return</span> <span class="n">operation</span>
 
     <span class="k">def</span> <span class="nf">sync_recognize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="n">profanity_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -719,7 +721,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'1f8a79d',
+            VERSION:'1d1a729',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
