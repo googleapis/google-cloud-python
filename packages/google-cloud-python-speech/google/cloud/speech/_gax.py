@@ -24,7 +24,7 @@ from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
     StreamingRecognizeRequest)
 
 
-from google.cloud.speech.transcript import Transcript
+from google.cloud.speech.alternative import Alternative
 
 
 class GAPICSpeechAPI(object):
@@ -139,7 +139,7 @@ class GAPICSpeechAPI(object):
         if len(api_response.results) == 1:
             results = api_response.results.pop()
             alternatives = results.alternatives
-            return [Transcript.from_pb(alternative)
+            return [Alternative.from_pb(alternative)
                     for alternative in alternatives]
         else:
             raise ValueError('More than one result or none returned from API.')
