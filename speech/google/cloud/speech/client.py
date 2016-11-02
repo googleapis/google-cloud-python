@@ -22,23 +22,15 @@ from google.cloud._helpers import _bytes_to_unicode
 from google.cloud.client import Client as BaseClient
 from google.cloud.environment_vars import DISABLE_GRPC
 
+from google.cloud.speech._gax import GAPICSpeechAPI
 from google.cloud.speech.connection import Connection
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
 from google.cloud.speech.sample import Sample
 from google.cloud.speech.transcript import Transcript
 
-try:
-    from google.cloud.speech._gax import GAPICSpeechAPI
-except ImportError:  # pragma: NO COVER
-    _HAVE_GAX = False
-    GAPICSpeechAPI = None
-else:
-    _HAVE_GAX = True
 
-
-_DISABLE_GAX = os.getenv(DISABLE_GRPC, False)
-_USE_GAX = _HAVE_GAX and not _DISABLE_GAX
+_USE_GAX = not os.getenv(DISABLE_GRPC, False)
 
 
 class Client(BaseClient):
