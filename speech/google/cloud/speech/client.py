@@ -17,10 +17,11 @@
 from base64 import b64encode
 import os
 
-from google.cloud.client import Client as BaseClient
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
+from google.cloud.client import Client as BaseClient
 from google.cloud.environment_vars import DISABLE_GRPC
+
 from google.cloud.speech.connection import Connection
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
@@ -111,8 +112,8 @@ class Client(BaseClient):
                                and phrases. This can also be used to add new
                                words to the vocabulary of the recognizer.
 
-        :rtype: `~google.cloud.speech.operation.Operation`
-        :returns: ``Operation`` for asynchronous request to Google Speech API.
+        :rtype: :class:`~google.cloud.speech.operation.Operation`
+        :returns: Operation for asynchronous request to Google Speech API.
         """
         if sample.encoding is not Encoding.LINEAR16:
             raise ValueError('Only LINEAR16 encoding is supported by '
@@ -279,15 +280,17 @@ class _JSONSpeechAPI(object):
                                and phrases. This can also be used to add new
                                words to the vocabulary of the recognizer.
 
-        :rtype: `~google.cloud.speech.operation.Operation`
-        :returns: ``Operation`` for asynchronous request to Google Speech API.
+        :rtype: :class:`~google.cloud.speech.operation.Operation`
+        :returns: Operation for asynchronous request to Google Speech API.
         """
         data = _build_request_data(sample, language_code, max_alternatives,
                                    profanity_filter, speech_context)
         api_response = self._connection.api_request(
             method='POST', path='speech:asyncrecognize', data=data)
 
-        return Operation.from_api_repr(self, api_response)
+        operation = Operation.from_dict(api_response, self._client)
+        operation.caller_metadata['request_type'] = 'AsyncRecognize'
+        return operation
 
     def sync_recognize(self, sample, language_code=None, max_alternatives=None,
                        profanity_filter=None, speech_context=None):

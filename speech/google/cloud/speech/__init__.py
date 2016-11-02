@@ -17,4 +17,5 @@
 from google.cloud.speech.client import Client
 from google.cloud.speech.connection import Connection
 from google.cloud.speech.encoding import Encoding
+from google.cloud.speech.operation import Operation
 from google.cloud.speech.transcript import Transcript
