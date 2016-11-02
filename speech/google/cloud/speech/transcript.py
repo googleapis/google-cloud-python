@@ -52,7 +52,10 @@ class Transcript(object):
         :rtype: :class:`Transcript`
         :returns: Instance of ``Transcript``.
         """
-        return cls(transcript.transcript, transcript.confidence)
+        confidence = transcript.confidence
+        if confidence == 0.0:  # In the protobof 0.0 means unset.
+            confidence = None
+        return cls(transcript.transcript, confidence)
 
     @property
     def transcript(self):

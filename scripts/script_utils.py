@@ -231,7 +231,14 @@ def get_affected_files(allow_limited=True):
         print('Diff base not specified, listing all files in repository.')
         result = subprocess.check_output(['git', 'ls-files'])
 
-    return result.rstrip('\n').split('\n'), diff_base
+    # Only return filenames that exist. For example, 'git diff --name-only'
+    # could spit out deleted / renamed files. Another alternative could
+    # be to use 'git diff --name-status' and filter out files with a
+    # status of 'D'.
+    filenames = [filename
+                 for filename in result.rstrip('\n').split('\n')
+                 if os.path.exists(filename)]
+    return filenames, diff_base
 
 
 def get_required_packages(file_contents):
