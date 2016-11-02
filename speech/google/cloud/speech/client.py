@@ -26,7 +26,7 @@ from google.cloud.speech.connection import Connection
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
 from google.cloud.speech.sample import Sample
-from google.cloud.speech.transcript import Transcript
+from google.cloud.speech.alternative import Alternative
 
 try:
     from google.cloud.speech._gax import GAPICSpeechAPI
@@ -349,7 +349,7 @@ class _JSONSpeechAPI(object):
 
         if len(api_response['results']) == 1:
             result = api_response['results'][0]
-            return [Transcript.from_api_repr(alternative)
+            return [Alternative.from_api_repr(alternative)
                     for alternative in result['alternatives']]
         else:
             raise ValueError('More than one result or none returned from API.')
