@@ -17,7 +17,7 @@
 from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
 
 from google.cloud import operation
-from google.cloud.speech.transcript import Transcript
+from google.cloud.speech.alternative import Alternative
 
 
 operation.register_type(cloud_speech_pb2.AsyncRecognizeMetadata)
@@ -64,5 +64,5 @@ class Operation(operation.Operation):
                              pb_results)
 
         result = pb_results[0]
-        self.results = [Transcript.from_pb(alternative)
+        self.results = [Alternative.from_pb(alternative)
                         for alternative in result.alternatives]

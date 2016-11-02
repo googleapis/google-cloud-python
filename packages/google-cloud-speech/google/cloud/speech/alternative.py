@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Transcript representation for Google Speech API"""
+"""Representation of Speech Alternative for the Google Speech API."""
 
 
-class Transcript(object):
-    """Representation of Speech Transcripts.
+class Alternative(object):
+    """Representation of Speech Alternative.
 
     :type transcript: str
     :param transcript: String of transcribed data.
@@ -29,33 +29,33 @@ class Transcript(object):
         self._confidence = confidence
 
     @classmethod
-    def from_api_repr(cls, transcript):
-        """Factory: construct ``Transcript`` from JSON response.
+    def from_api_repr(cls, alternative):
+        """Factory: construct ``Alternative`` from JSON response.
 
-        :type transcript: dict
-        :param transcript: Dictionary response from the REST API.
+        :type alternative: dict
+        :param alternative: Dictionary response from the REST API.
 
-        :rtype: :class:`Transcript`
-        :returns: Instance of ``Transcript``.
+        :rtype: :class:`Alternative`
+        :returns: Instance of ``Alternative``.
         """
-        return cls(transcript['transcript'], transcript.get('confidence'))
+        return cls(alternative['transcript'], alternative.get('confidence'))
 
     @classmethod
-    def from_pb(cls, transcript):
-        """Factory: construct ``Transcript`` from protobuf response.
+    def from_pb(cls, alternative):
+        """Factory: construct ``Alternative`` from protobuf response.
 
-        :type transcript:
+        :type alternative:
             :class:`google.cloud.speech.v1beta1.SpeechRecognitionAlternative`
-        :param transcript: Instance of ``SpeechRecognitionAlternative``
+        :param alternative: Instance of ``SpeechRecognitionAlternative``
                            from protobuf.
 
-        :rtype: :class:`Transcript`
-        :returns: Instance of ``Transcript``.
+        :rtype: :class:`Alternative`
+        :returns: Instance of ``Alternative``.
         """
-        confidence = transcript.confidence
+        confidence = alternative.confidence
         if confidence == 0.0:  # In the protobof 0.0 means unset.
             confidence = None
-        return cls(transcript.transcript, confidence)
+        return cls(alternative.transcript, confidence)
 
     @property
     def transcript(self):
