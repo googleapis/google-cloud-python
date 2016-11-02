@@ -15,7 +15,7 @@
 import unittest
 
 
-class OperationTests(unittest.TestCase):
+class TestOperation(unittest.TestCase):
 
     OPERATION_NAME = '123456789'
 
@@ -26,97 +26,89 @@ class OperationTests(unittest.TestCase):
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
-    def test_ctor_defaults(self):
-        client = _Client()
-        operation = self._makeOne(client, self.OPERATION_NAME)
-        self.assertEqual(operation.name, '123456789')
-        self.assertFalse(operation.complete)
+    def test_constructor(self):
+        client = object()
+        operation = self._makeOne(
+            self.OPERATION_NAME, client)
+        self.assertEqual(operation.name, self.OPERATION_NAME)
+        self.assertIs(operation.client, client)
+        self.assertIsNone(operation.target)
+        self.assertIsNone(operation.response)
+        self.assertIsNone(operation.results)
+        self.assertIsNone(operation.error)
         self.assertIsNone(operation.metadata)
+        self.assertEqual(operation.caller_metadata, {})
+        self.assertTrue(operation._from_grpc)
+
+    @staticmethod
+    def _make_result(transcript, confidence):
+        from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+
+        return cloud_speech_pb2.SpeechRecognitionResult(
+            alternatives=[
+                cloud_speech_pb2.SpeechRecognitionAlternative(
+                    transcript=transcript,
+                    confidence=confidence,
+                ),
+            ],
+        )
+
+    def _make_operation_pb(self, *results):
+        from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+        from google.longrunning import operations_pb2
+        from google.protobuf.any_pb2 import Any
+
+        any_pb = None
+        if results:
+            result_pb = cloud_speech_pb2.AsyncRecognizeResponse(
+                results=results,
+            )
+            type_url = 'type.googleapis.com/%s' % (
+                result_pb.DESCRIPTOR.full_name,)
+            any_pb = Any(type_url=type_url,
+                         value=result_pb.SerializeToString())
+
+        return operations_pb2.Operation(
+            name=self.OPERATION_NAME,
+            response=any_pb)
+
+    def test__update_state_no_response(self):
+        client = object()
+        operation = self._makeOne(
+            self.OPERATION_NAME, client)
+
+        operation_pb = self._make_operation_pb()
+        operation._update_state(operation_pb)
+        self.assertIsNone(operation.response)
         self.assertIsNone(operation.results)
 
-    def test_from_api_repr(self):
-        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
+    def test__update_state_with_response(self):
         from google.cloud.speech.transcript import Transcript
-        from google.cloud.speech.metadata import Metadata
-        RESPONSE = OPERATION_COMPLETE_RESPONSE
 
-        client = _Client()
-        operation = self._getTargetClass().from_api_repr(client, RESPONSE)
+        client = object()
+        operation = self._makeOne(
+            self.OPERATION_NAME, client)
 
-        self.assertEqual('123456789', operation.name)
-        self.assertTrue(operation.complete)
+        text = 'hi mom'
+        confidence = 0.75
+        result = self._make_result(text, confidence)
+        operation_pb = self._make_operation_pb(result)
+        operation._update_state(operation_pb)
+        self.assertIsNotNone(operation.response)
 
         self.assertEqual(len(operation.results), 1)
-        self.assertIsInstance(operation.results[0], Transcript)
-        self.assertEqual(operation.results[0].transcript,
-                         'how old is the Brooklyn Bridge')
-        self.assertEqual(operation.results[0].confidence,
-                         0.98267895)
-        self.assertTrue(operation.complete)
-        self.assertIsInstance(operation.metadata, Metadata)
-        self.assertEqual(operation.metadata.progress_percent, 100)
+        transcript = operation.results[0]
+        self.assertIsInstance(transcript, Transcript)
+        self.assertEqual(transcript.transcript, text)
+        self.assertEqual(transcript.confidence, confidence)
 
-    def test_update_response(self):
-        from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
-        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
-        RESPONSE = ASYNC_RECOGNIZE_RESPONSE
+    def test__update_state_bad_response(self):
+        client = object()
+        operation = self._makeOne(
+            self.OPERATION_NAME, client)
 
-        client = _Client()
-        operation = self._getTargetClass().from_api_repr(client, RESPONSE)
-        self.assertEqual(operation.name, '123456789')
-        operation._update(OPERATION_COMPLETE_RESPONSE)
-        self.assertTrue(operation.complete)
-
-    def test_poll(self):
-        from google.cloud.speech.operation import Metadata
-        from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
-        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
-        RESPONSE = ASYNC_RECOGNIZE_RESPONSE
-        client = _Client()
-        connection = _Connection(OPERATION_COMPLETE_RESPONSE)
-        client.connection = connection
-
-        operation = self._getTargetClass().from_api_repr(client, RESPONSE)
-        self.assertFalse(operation.complete)
-        operation.poll()
-        self.assertTrue(operation.complete)
-        self.assertIsInstance(operation.metadata, Metadata)
-        self.assertEqual(operation.metadata.progress_percent, 100)
-        requested = client.connection._requested
-        self.assertEqual(requested[0]['method'], 'GET')
-        self.assertEqual(requested[0]['path'],
-                         'operations/%s' % (operation.name,))
-
-    def test_poll_complete(self):
-        from unit_tests._fixtures import OPERATION_COMPLETE_RESPONSE
-        from unit_tests._fixtures import OPERATION_INCOMPLETE_RESPONSE
-        RESPONSE = OPERATION_INCOMPLETE_RESPONSE
-
-        client = _Client()
-        connection = _Connection(OPERATION_COMPLETE_RESPONSE)
-        client.connection = connection
-        operation = self._getTargetClass().from_api_repr(client, RESPONSE)
-
-        self.assertFalse(operation.complete)
-        operation.poll()  # Update the operation with complete data.
-
+        result1 = self._make_result('is this ok?', 0.625)
+        result2 = self._make_result('ease is ok', None)
+        operation_pb = self._make_operation_pb(result1, result2)
         with self.assertRaises(ValueError):
-            operation.poll()
-        requested = client.connection._requested
-        self.assertEqual(requested[0]['method'], 'GET')
-        self.assertEqual(requested[0]['path'],
-                         'operations/%s' % (operation.name,))
-
-
-class _Connection(object):
-    def __init__(self, response=None):
-        self.response = response
-        self._requested = []
-
-    def api_request(self, method, path):
-        self._requested.append({'method': method, 'path': path})
-        return self.response
-
-
-class _Client(object):
-    connection = None
+            operation._update_state(operation_pb)
