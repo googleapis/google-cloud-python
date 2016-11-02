@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc. All rights reserved.
+# Copyright 2016 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,120 +14,55 @@
 
 """Long running operation representation for Google Speech API"""
 
-from google.cloud.speech.metadata import Metadata
-from google.cloud.speech.transcript import Transcript
+from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+
 from google.cloud import operation
+from google.cloud.speech.transcript import Transcript
+
+
+operation.register_type(cloud_speech_pb2.AsyncRecognizeMetadata)
+operation.register_type(cloud_speech_pb2.AsyncRecognizeResponse)
 
 
 class Operation(operation.Operation):
-    """Representation of a Google API Long-Running Operation.
+    """Custom Long-Running Operation for Google Speech API.
+
+    :type name: str
+    :param name: The fully-qualified path naming the operation.
 
     :type client: :class:`~google.cloud.speech.client.Client`
-    :param client: Instance of speech client.
+    :param client: Client that created the current operation.
 
-    :type name: int
-    :param name: ID assigned to an operation.
-
-    :type complete: bool
-    :param complete: True if operation is complete, else False.
-
-    :type metadata: :class:`~google.cloud.speech.metadata.Metadata`
-    :param metadata: Instance of ``Metadata`` with operation information.
-
-    :type results: dict
-    :param results: Dictionary with transcript and score of operation.
+    :type caller_metadata: dict
+    :param caller_metadata: caller-assigned metadata about the operation
     """
-    def __init__(self, client, name, complete=False, metadata=None,
-                 results=None):
-        self.client = client
-        self.name = name
-        self._complete = complete
-        self._metadata = metadata
-        self._results = results
 
-    @classmethod
-    def from_api_repr(cls, client, response):
-        """Factory:  construct an instance from Google Speech API.
+    results = None
+    """List of transcriptions from the speech-to-text process."""
 
-        :type client: :class:`~google.cloud.speech.client.Client`
-        :param client: Instance of speech client.
+    def _update_state(self, operation_pb):
+        """Update the state of the current object based on operation.
 
-        :type response: dict
-        :param response: Dictionary response from Google Speech Operations API.
+        This mostly does what the base class does, but all populates
+        results.
 
-        :rtype: :class:`Operation`
-        :returns: Instance of `~google.cloud.speech.operations.Operation`.
+        :type operation_pb:
+            :class:`~google.longrunning.operations_pb2.Operation`
+        :param operation_pb: Protobuf to be parsed.
+
+        :raises ValueError: If there is more than one entry in ``results``.
         """
-        name = response['name']
-        complete = response.get('done', False)
+        super(Operation, self)._update_state(operation_pb)
 
-        operation_instance = cls(client, name, complete)
-        operation_instance._update(response)
-        return operation_instance
+        result_type = operation_pb.WhichOneof('result')
+        if result_type != 'response':
+            return
 
-    @property
-    def complete(self):
-        """Completion state of the `Operation`.
+        pb_results = self.response.results
+        if len(pb_results) != 1:
+            raise ValueError('Expected exactly one result, found:',
+                             pb_results)
 
-        :rtype: bool
-        :returns: True if already completed, else false.
-        """
-        return self._complete
-
-    @property
-    def metadata(self):
-        """Metadata of operation.
-
-        :rtype: :class:`~google.cloud.speech.metadata.Metadata`
-        :returns: Instance of ``Metadata``.
-        """
-        return self._metadata
-
-    @property
-    def results(self):
-        """Results dictionary with transcript information.
-
-        :rtype: dict
-        :returns: Dictionary with transcript and confidence score.
-        """
-        return self._results
-
-    def poll(self):
-        """Check if the operation has finished.
-
-        :rtype: bool
-        :returns: A boolean indicating if the current operation has completed.
-        :raises: :class:`ValueError <exceptions.ValueError>` if the operation
-                 has already completed.
-        """
-        if self.complete:
-            raise ValueError('The operation has completed.')
-
-        path = 'operations/%s' % (self.name,)
-        api_response = self.client.connection.api_request(method='GET',
-                                                          path=path)
-        self._update(api_response)
-        return self.complete
-
-    def _update(self, response):
-        """Update Operation instance with latest data from Speech API.
-
-        .. _speech_operations: https://cloud.google.com/speech/reference/\
-                               rest/v1beta1/operations
-
-        :type response: dict
-        :param response: Response from Speech API Operations endpoint.
-                         See: `speech_operations`_.
-        """
-        metadata = response.get('metadata', None)
-        raw_results = response.get('response', {}).get('results', None)
-        results = []
-        if raw_results:
-            for result in raw_results:
-                for alternative in result['alternatives']:
-                    results.append(Transcript.from_api_repr(alternative))
-        if metadata:
-            self._metadata = Metadata.from_api_repr(metadata)
-
-        self._results = results
-        self._complete = response.get('done', False)
+        result = pb_results[0]
+        self.results = [Transcript.from_pb(alternative)
+                        for alternative in result.alternatives]
