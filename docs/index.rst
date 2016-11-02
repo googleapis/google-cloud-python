@@ -178,7 +178,7 @@
   speech-encoding
   speech-operation
   speech-sample
-  speech-transcript
+  speech-alternative
 
 .. toctree::
   :maxdepth: 0
