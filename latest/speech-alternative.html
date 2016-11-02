@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Speech Transcript &mdash; google-cloud 1d1a729 documentation</title>
+  <title>Speech Alternative &mdash; google-cloud 6c59755 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 1d1a729 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 6c59755 documentation" href="index.html"/>
         <link rel="prev" title="Speech Sample" href="speech-sample.html"/> 
 
   
@@ -217,7 +217,7 @@
 <li class="toctree-l1"><a class="reference internal" href="speech-encoding.html">Speech Encoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-operation.html">Speech Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-sample.html">Speech Sample</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Speech Transcript</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Speech Alternative</a></li>
 </ul>
 <p class="caption"><span class="caption-text">External Links</span></p>
 <ul>
@@ -255,11 +255,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Speech Transcript</li>
+    <li>Speech Alternative</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/speech-transcript.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/speech-alternative.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -269,14 +269,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-google.cloud.speech.transcript">
-<span id="speech-transcript"></span><h1>Speech Transcript<a class="headerlink" href="#module-google.cloud.speech.transcript" title="Permalink to this headline">#</a></h1>
-<p>Transcript representation for Google Speech API</p>
+  <div class="section" id="module-google.cloud.speech.alternative">
+<span id="speech-alternative"></span><h1>Speech Alternative<a class="headerlink" href="#module-google.cloud.speech.alternative" title="Permalink to this headline">#</a></h1>
+<p>Representation of Speech Alternative for the Google Speech API.</p>
 <dl class="class">
-<dt id="google.cloud.speech.transcript.Transcript">
-<em class="property">class </em><code class="descclassname">google.cloud.speech.transcript.</code><code class="descname">Transcript</code><span class="sig-paren">(</span><em>transcript</em>, <em>confidence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/transcript.html#Transcript"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.transcript.Transcript" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.speech.alternative.Alternative">
+<em class="property">class </em><code class="descclassname">google.cloud.speech.alternative.</code><code class="descname">Alternative</code><span class="sig-paren">(</span><em>transcript</em>, <em>confidence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/alternative.html#Alternative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.alternative.Alternative" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Representation of Speech Transcripts.</p>
+<p>Representation of Speech Alternative.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -290,8 +290,8 @@
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="google.cloud.speech.transcript.Transcript.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.speech.transcript.Transcript.confidence" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.speech.alternative.Alternative.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.speech.alternative.Alternative.confidence" title="Permalink to this definition">#</a></dt>
 <dd><p>Confidence score for recognized speech.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -306,45 +306,45 @@
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="google.cloud.speech.transcript.Transcript.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>transcript</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/transcript.html#Transcript.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.transcript.Transcript.from_api_repr" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory: construct <code class="docutils literal"><span class="pre">Transcript</span></code> from JSON response.</p>
+<dt id="google.cloud.speech.alternative.Alternative.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>alternative</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/alternative.html#Alternative.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.alternative.Alternative.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct <code class="docutils literal"><span class="pre">Alternative</span></code> from JSON response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transcript</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary response from the REST API.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>alternative</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Dictionary response from the REST API.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.speech.transcript.Transcript" title="google.cloud.speech.transcript.Transcript"><code class="xref py py-class docutils literal"><span class="pre">Transcript</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.speech.alternative.Alternative" title="google.cloud.speech.alternative.Alternative"><code class="xref py py-class docutils literal"><span class="pre">Alternative</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">Transcript</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">Alternative</span></code>.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="classmethod">
-<dt id="google.cloud.speech.transcript.Transcript.from_pb">
-<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>transcript</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/transcript.html#Transcript.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.transcript.Transcript.from_pb" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory: construct <code class="docutils literal"><span class="pre">Transcript</span></code> from protobuf response.</p>
+<dt id="google.cloud.speech.alternative.Alternative.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>alternative</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/alternative.html#Alternative.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.alternative.Alternative.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct <code class="docutils literal"><span class="pre">Alternative</span></code> from protobuf response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transcript</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.cloud.speech.v1beta1.SpeechRecognitionAlternative</span></code>) &#8211; Instance of <code class="docutils literal"><span class="pre">SpeechRecognitionAlternative</span></code>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>alternative</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.cloud.speech.v1beta1.SpeechRecognitionAlternative</span></code>) &#8211; Instance of <code class="docutils literal"><span class="pre">SpeechRecognitionAlternative</span></code>
 from protobuf.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.speech.transcript.Transcript" title="google.cloud.speech.transcript.Transcript"><code class="xref py py-class docutils literal"><span class="pre">Transcript</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.speech.alternative.Alternative" title="google.cloud.speech.alternative.Alternative"><code class="xref py py-class docutils literal"><span class="pre">Alternative</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">Transcript</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">Alternative</span></code>.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.speech.transcript.Transcript.transcript">
-<code class="descname">transcript</code><a class="headerlink" href="#google.cloud.speech.transcript.Transcript.transcript" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.speech.alternative.Alternative.transcript">
+<code class="descname">transcript</code><a class="headerlink" href="#google.cloud.speech.alternative.Alternative.transcript" title="Permalink to this definition">#</a></dt>
 <dd><p>Transcript text from audio.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -401,7 +401,7 @@ from protobuf.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1d1a729',
+            VERSION:'6c59755',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

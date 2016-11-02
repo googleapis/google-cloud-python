@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.operation &mdash; google-cloud 1d1a729 documentation</title>
+  <title>google.cloud.speech.operation &mdash; google-cloud 6c59755 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 1d1a729 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 6c59755 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -217,7 +217,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-encoding.html">Speech Encoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-operation.html">Speech Operation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-sample.html">Speech Sample</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../speech-transcript.html">Speech Transcript</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech-alternative.html">Speech Alternative</a></li>
 </ul>
 <p class="caption"><span class="caption-text">External Links</span></p>
 <ul>
@@ -289,7 +289,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.grpc.speech.v1beta1</span> <span class="k">import</span> <span class="n">cloud_speech_pb2</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">operation</span>
-<span class="kn">from</span> <span class="nn">google.cloud.speech.transcript</span> <span class="k">import</span> <span class="n">Transcript</span>
+<span class="kn">from</span> <span class="nn">google.cloud.speech.alternative</span> <span class="k">import</span> <span class="n">Alternative</span>
 
 
 <span class="n">operation</span><span class="o">.</span><span class="n">register_type</span><span class="p">(</span><span class="n">cloud_speech_pb2</span><span class="o">.</span><span class="n">AsyncRecognizeMetadata</span><span class="p">)</span>
@@ -336,7 +336,7 @@
                              <span class="n">pb_results</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">pb_results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">Transcript</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">alternative</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">Alternative</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">alternative</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">]</span></div>
 </pre></div>
 
@@ -371,7 +371,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'1d1a729',
+            VERSION:'6c59755',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
