@@ -262,6 +262,9 @@ class TestClient(unittest.TestCase):
                         sample_rate=self.SAMPLE_RATE)
         operation = client.async_recognize(sample)
         self.assertIsInstance(operation, Operation)
+        self.assertIs(operation.client, client)
+        self.assertEqual(operation.caller_metadata,
+                         {'request_type': 'AsyncRecognize'})
         self.assertFalse(operation.complete)
         self.assertIsNone(operation.metadata)
 
