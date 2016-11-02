@@ -83,7 +83,7 @@ class TestOperation(unittest.TestCase):
         self.assertIsNone(operation.results)
 
     def test__update_state_with_response(self):
-        from google.cloud.speech.transcript import Transcript
+        from google.cloud.speech.alternative import Alternative
 
         client = object()
         operation = self._makeOne(
@@ -97,10 +97,10 @@ class TestOperation(unittest.TestCase):
         self.assertIsNotNone(operation.response)
 
         self.assertEqual(len(operation.results), 1)
-        transcript = operation.results[0]
-        self.assertIsInstance(transcript, Transcript)
-        self.assertEqual(transcript.transcript, text)
-        self.assertEqual(transcript.confidence, confidence)
+        alternative = operation.results[0]
+        self.assertIsInstance(alternative, Alternative)
+        self.assertEqual(alternative.transcript, text)
+        self.assertEqual(alternative.confidence, confidence)
 
     def test__update_state_bad_response(self):
         client = object()
