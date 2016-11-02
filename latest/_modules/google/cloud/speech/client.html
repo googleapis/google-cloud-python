@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.client &mdash; google-cloud 6c59755 documentation</title>
+  <title>google.cloud.speech.client &mdash; google-cloud 40d545d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 6c59755 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 40d545d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -294,23 +294,15 @@
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">Client</span> <span class="k">as</span> <span class="n">BaseClient</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
 
+<span class="kn">from</span> <span class="nn">google.cloud.speech._gax</span> <span class="k">import</span> <span class="n">GAPICSpeechAPI</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.connection</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.encoding</span> <span class="k">import</span> <span class="n">Encoding</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.operation</span> <span class="k">import</span> <span class="n">Operation</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.sample</span> <span class="k">import</span> <span class="n">Sample</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.alternative</span> <span class="k">import</span> <span class="n">Alternative</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.speech._gax</span> <span class="k">import</span> <span class="n">GAPICSpeechAPI</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
-    <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">GAPICSpeechAPI</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">True</span>
 
-
-<span class="n">_DISABLE_GAX</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-<span class="n">_USE_GAX</span> <span class="o">=</span> <span class="n">_HAVE_GAX</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_DISABLE_GAX</span>
+<span class="n">_USE_GAX</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">BaseClient</span><span class="p">):</span>
@@ -721,7 +713,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'6c59755',
+            VERSION:'40d545d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
