@@ -18,7 +18,7 @@ import unittest
 from google.cloud import exceptions
 from google.cloud import speech
 from google.cloud import storage
-from google.cloud.speech.transcript import Transcript
+from google.cloud.speech.alternative import Alternative
 
 from system_test_utils import unique_resource_id
 from retry import RetryErrors
@@ -121,13 +121,13 @@ class TestSpeechClient(unittest.TestCase):
         self.assertEqual(len(results), num_results)
 
         top_result = results[0]
-        self.assertIsInstance(top_result, Transcript)
+        self.assertIsInstance(top_result, Alternative)
         self.assertEqual(top_result.transcript,
                          'hello ' + self.ASSERT_TEXT)
         self.assertGreater(top_result.confidence, 0.90)
         if num_results == 2:
             second_alternative = results[1]
-            self.assertIsInstance(second_alternative, Transcript)
+            self.assertIsInstance(second_alternative, Alternative)
             self.assertEqual(second_alternative.transcript, self.ASSERT_TEXT)
             self.assertIsNone(second_alternative.confidence)
 

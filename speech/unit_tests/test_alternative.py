@@ -15,11 +15,11 @@
 import unittest
 
 
-class TestTranscript(unittest.TestCase):
+class TestAlternative(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.speech.transcript import Transcript
-        return Transcript
+        from google.cloud.speech.alternative import Alternative
+        return Alternative
 
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
@@ -27,19 +27,19 @@ class TestTranscript(unittest.TestCase):
     def test_constructor(self):
         text = 'hello goodbye upstairs'
         confidence = 0.5546875
-        transcript = self._makeOne(text, confidence)
-        self.assertEqual(transcript._transcript, text)
-        self.assertEqual(transcript._confidence, confidence)
+        alternative = self._makeOne(text, confidence)
+        self.assertEqual(alternative._transcript, text)
+        self.assertEqual(alternative._confidence, confidence)
 
     def test_transcript_property(self):
         text = 'is this thing on?'
-        transcript = self._makeOne(text, None)
-        self.assertEqual(transcript.transcript, text)
+        alternative = self._makeOne(text, None)
+        self.assertEqual(alternative.transcript, text)
 
     def test_confidence_property(self):
         confidence = 0.412109375
-        transcript = self._makeOne(None, confidence)
-        self.assertEqual(transcript.confidence, confidence)
+        alternative = self._makeOne(None, confidence)
+        self.assertEqual(alternative.confidence, confidence)
 
     def test_from_api_repr_with_no_confidence(self):
         data = {
@@ -47,9 +47,9 @@ class TestTranscript(unittest.TestCase):
         }
 
         klass = self._getTargetClass()
-        transcript = klass.from_api_repr(data)
-        self.assertEqual(transcript.transcript, data['transcript'])
-        self.assertIsNone(transcript.confidence)
+        alternative = klass.from_api_repr(data)
+        self.assertEqual(alternative.transcript, data['transcript'])
+        self.assertIsNone(alternative.confidence)
 
     def test_from_pb_with_no_confidence(self):
         from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
@@ -60,6 +60,6 @@ class TestTranscript(unittest.TestCase):
         self.assertEqual(pb_value.confidence, 0.0)
 
         klass = self._getTargetClass()
-        transcript = klass.from_pb(pb_value)
-        self.assertEqual(transcript.transcript, text)
-        self.assertIsNone(transcript.confidence)
+        alternative = klass.from_pb(pb_value)
+        self.assertEqual(alternative.transcript, text)
+        self.assertIsNone(alternative.confidence)
