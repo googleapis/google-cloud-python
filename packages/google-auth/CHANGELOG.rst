@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v0.2.0
+------
+
+- Added gRPC support. (#67)
+- Added Requests support. (#66)
+- Added ``google.auth.credentials.with_scopes_if_required`` helper. (#65)
+- Added private helper for oauth2client migration. (#70)
+
 v0.1.0
 ------
 

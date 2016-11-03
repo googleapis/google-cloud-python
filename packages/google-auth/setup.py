@@ -29,7 +29,7 @@ with open('README.rst', 'r') as fh:
 
 setup(
     name='google-auth',
-    version='0.1.0',
+    version='0.2.0',
     author='Google Cloud Platform',
     author_email='jonwayne+google-auth@google.com',
     description='Google Authentication Library',
