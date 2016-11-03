@@ -17,17 +17,17 @@
 from base64 import b64encode
 import os
 
-from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
+from google.cloud._helpers import _to_bytes
 from google.cloud.client import Client as BaseClient
 from google.cloud.environment_vars import DISABLE_GRPC
 
 from google.cloud.speech._gax import GAPICSpeechAPI
+from google.cloud.speech.alternative import Alternative
 from google.cloud.speech.connection import Connection
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
 from google.cloud.speech.sample import Sample
-from google.cloud.speech.alternative import Alternative
 
 
 _USE_GAX = not os.getenv(DISABLE_GRPC, False)
@@ -154,7 +154,7 @@ class Client(BaseClient):
         """Helper for speech-related API calls."""
         if self._speech_api is None:
             if self._use_gax:
-                self._speech_api = GAPICSpeechAPI()
+                self._speech_api = GAPICSpeechAPI(self)
             else:
                 self._speech_api = _JSONSpeechAPI(self)
         return self._speech_api
