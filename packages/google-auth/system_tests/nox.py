@@ -248,3 +248,9 @@ def session_app_engine(session):
     session.env['TEST_APP_URL'] = application_url
     session.chdir(HERE)
     session.run('pytest', 'test_app_engine.py')
+
+
+def session_grpc(session):
+    session.virtualenv = False
+    session.env[EXPLICIT_CREDENTIALS_ENV] = SERVICE_ACCOUNT_FILE
+    session.run('pytest', 'test_grpc.py')

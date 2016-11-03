@@ -73,11 +73,12 @@ _TEST_RC_ADDITIONS['MESSAGES CONTROL']['disable'].extend([
     'no-self-use',
     'redefined-outer-name',
     'unused-argument',
+    'no-name-in-module',
 ])
 _TEST_RC_REPLACEMENTS = copy.deepcopy(_PRODUCTION_RC_REPLACEMENTS)
 _TEST_RC_REPLACEMENTS.setdefault('BASIC', {})
 _TEST_RC_REPLACEMENTS['BASIC'].update({
-    'good-names': ['i', 'j', 'k', 'ex', 'Run', '_', 'fh'],
+    'good-names': ['i', 'j', 'k', 'ex', 'Run', '_', 'fh', 'pytestmark'],
     'method-rgx': '[a-z_][a-z0-9_]{2,80}$',
     'function-rgx': '[a-z_][a-z0-9_]{2,80}$',
 })
