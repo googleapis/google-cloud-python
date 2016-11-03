@@ -21,6 +21,28 @@ class TestClient(unittest.TestCase):
     AUDIO_SOURCE_URI = 'gs://sample-bucket/sample-recording.flac'
     AUDIO_CONTENT = '/9j/4QNURXhpZgAASUkq'
 
+    @staticmethod
+    def _make_result(alternatives):
+        from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+
+        return cloud_speech_pb2.SpeechRecognitionResult(
+            alternatives=[
+                cloud_speech_pb2.SpeechRecognitionAlternative(
+                    transcript=alternative['transcript'],
+                    confidence=alternative['confidence'],
+                ) for alternative in alternatives
+            ],
+        )
+
+    def _make_sync_response(self, *results):
+        from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
+
+        response = cloud_speech_pb2.SyncRecognizeResponse(
+            results=results,
+        )
+
+        return response
+
     def _getTargetClass(self):
         from google.cloud.speech.client import Client
 
@@ -69,15 +91,15 @@ class TestClient(unittest.TestCase):
 
     def test_sync_recognize_content_with_optional_params_no_gax(self):
         from base64 import b64encode
-        from google.cloud._helpers import _to_bytes
-        from google.cloud._helpers import _bytes_to_unicode
 
+        from google.cloud._helpers import _bytes_to_unicode
+        from google.cloud._helpers import _to_bytes
         from google.cloud._testing import _Monkey
-        from google.cloud.speech import client as MUT
+
         from google.cloud import speech
+        from google.cloud.speech import client as MUT
         from google.cloud.speech.alternative import Alternative
         from google.cloud.speech.sample import Sample
-
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
 
         _AUDIO_CONTENT = _to_bytes(self.AUDIO_CONTENT)
@@ -131,8 +153,9 @@ class TestClient(unittest.TestCase):
 
     def test_sync_recognize_source_uri_without_optional_params_no_gax(self):
         from google.cloud._testing import _Monkey
-        from google.cloud.speech import client as MUT
+
         from google.cloud import speech
+        from google.cloud.speech import client as MUT
         from google.cloud.speech.alternative import Alternative
         from google.cloud.speech.sample import Sample
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
@@ -174,8 +197,9 @@ class TestClient(unittest.TestCase):
 
     def test_sync_recognize_with_empty_results_no_gax(self):
         from google.cloud._testing import _Monkey
-        from google.cloud.speech import client as MUT
+
         from google.cloud import speech
+        from google.cloud.speech import client as MUT
         from google.cloud.speech.sample import Sample
         from unit_tests._fixtures import SYNC_RECOGNIZE_EMPTY_RESPONSE
 
@@ -192,45 +216,71 @@ class TestClient(unittest.TestCase):
 
     def test_sync_recognize_with_empty_results_gax(self):
         from google.cloud._testing import _Monkey
-        from google.cloud.speech import _gax as MUT
+
         from google.cloud import speech
+        from google.cloud.speech import _gax
         from google.cloud.speech.sample import Sample
 
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials, use_gax=True)
         client.connection = _Connection()
+        client.connection.credentials = credentials
+
+        def speech_api():
+            return _MockGAPICSpeechAPI(response=self._make_sync_response())
+
+        with _Monkey(_gax, SpeechApi=speech_api):
+            client._speech_api = _gax.GAPICSpeechAPI(client)
+
+        sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
+                        encoding=speech.Encoding.FLAC,
+                        sample_rate=self.SAMPLE_RATE)
 
         with self.assertRaises(ValueError):
-            mock_no_results = _MockGAPICSpeechAPI
-            mock_no_results._results = []
-            with _Monkey(MUT, SpeechApi=mock_no_results):
-                sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
-                                encoding=speech.Encoding.FLAC,
-                                sample_rate=self.SAMPLE_RATE)
-                client.sync_recognize(sample)
+            client.sync_recognize(sample)
 
     def test_sync_recognize_with_gax(self):
-        from google.cloud import speech
-        from google.cloud.speech import _gax as MUT
         from google.cloud._testing import _Monkey
+
+        from google.cloud import speech
+        from google.cloud.speech import _gax
 
         creds = _Credentials()
         client = self._makeOne(credentials=creds, use_gax=True)
         client.connection = _Connection()
+        client.connection.credentials = creds
         client._speech_api = None
+        alternatives = [{
+            'transcript': 'testing 1 2 3',
+            'confidence': 0.9224355,
+        }, {
+            'transcript': 'testing 4 5 6',
+            'confidence': 0.0123456,
+        }]
+        result = self._make_result(alternatives)
 
-        mock_no_results = _MockGAPICSpeechAPI
-        mock_no_results._results = [_MockGAPICSyncResult()]
+        def speech_api():
+            return _MockGAPICSpeechAPI(
+                response=self._make_sync_response(result))
 
-        with _Monkey(MUT, SpeechApi=_MockGAPICSpeechAPI):
-            sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
-                                   encoding=speech.Encoding.FLAC,
-                                   sample_rate=self.SAMPLE_RATE)
-            results = client.sync_recognize(sample)
-            self.assertEqual(results[0].transcript,
-                             _MockGAPICAlternative.transcript)
-            self.assertEqual(results[0].confidence,
-                             _MockGAPICAlternative.confidence)
+        sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
+                               encoding=speech.Encoding.FLAC,
+                               sample_rate=self.SAMPLE_RATE)
+
+        with _Monkey(_gax, SpeechApi=speech_api):
+            client._speech_api = _gax.GAPICSpeechAPI(client)
+
+        results = client.sync_recognize(sample)
+
+        self.assertEqual(len(results), 2)
+        self.assertEqual(results[0].transcript,
+                         alternatives[0]['transcript'])
+        self.assertEqual(results[0].confidence,
+                         alternatives[0]['confidence'])
+        self.assertEqual(results[1].transcript,
+                         alternatives[1]['transcript'])
+        self.assertEqual(results[1].confidence,
+                         alternatives[1]['confidence'])
 
     def test_async_supported_encodings(self):
         from google.cloud import speech
@@ -247,10 +297,10 @@ class TestClient(unittest.TestCase):
             client.async_recognize(sample)
 
     def test_async_recognize_no_gax(self):
-        from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
         from google.cloud import speech
         from google.cloud.speech.operation import Operation
         from google.cloud.speech.sample import Sample
+        from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
 
         RETURNED = ASYNC_RECOGNIZE_RESPONSE
 
@@ -270,30 +320,37 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(operation.metadata)
 
     def test_async_recognize_with_gax(self):
-        from google.cloud.speech import _gax as MUT
         from google.cloud._testing import _Monkey
+
         from google.cloud import speech
+        from google.cloud.speech import _gax
+        from google.cloud.speech.operation import Operation
 
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials)
         client.connection = _Connection()
+        client.connection.credentials = credentials
 
         sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
                                encoding=speech.Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
-        with _Monkey(MUT, SpeechApi=_MockGAPICSpeechAPI):
-            with self.assertRaises(NotImplementedError):
-                client.async_recognize(sample)
+        with _Monkey(_gax, SpeechApi=_MockGAPICSpeechAPI):
+            operation = client.async_recognize(sample)
+
+        self.assertIsInstance(operation, Operation)
+        self.assertFalse(operation.complete)
+        self.assertIsNone(operation.response)
 
     def test_speech_api_with_gax(self):
-        from google.cloud.speech import _gax as MUT
         from google.cloud._testing import _Monkey
+
+        from google.cloud.speech import _gax
         from google.cloud.speech.client import GAPICSpeechAPI
 
         creds = _Credentials()
         client = self._makeOne(credentials=creds, use_gax=True)
 
-        with _Monkey(MUT, SpeechApi=_MockGAPICSpeechAPI):
+        with _Monkey(_gax, SpeechApi=_MockGAPICSpeechAPI):
             self.assertIsNone(client._speech_api)
             self.assertIsInstance(client.speech_api, GAPICSpeechAPI)
 
@@ -316,33 +373,26 @@ class TestClient(unittest.TestCase):
         self.assertIs(client.speech_api, fake_api)
 
 
-class _MockGAPICAlternative(object):
-    transcript = 'testing 1 2 3'
-    confidence = 0.95234356
-
-
-class _MockGAPICSyncResult(object):
-    alternatives = [_MockGAPICAlternative()]
-
-
-class _MockGAPICSpeechResponse(object):
-    error = None
-    endpointer_type = None
-    results = []
-    result_index = 0
-
-
 class _MockGAPICSpeechAPI(object):
     _requests = None
-    _response = _MockGAPICSpeechResponse()
-    _results = [_MockGAPICSyncResult()]
+    _response = None
+    _results = None
+
+    def __init__(self, response=None):
+        self._response = response
+
+    def async_recognize(self, config, audio):
+        from google.longrunning.operations_pb2 import Operation
+
+        self.config = config
+        self.audio = audio
+        operation = Operation()
+        return operation
 
     def sync_recognize(self, config, audio):
         self.config = config
         self.audio = audio
-        mock_response = self._response
-        mock_response.results = self._results
-        return mock_response
+        return self._response
 
 
 class _Credentials(object):
