@@ -25,12 +25,14 @@ Authentication and Configuration
   .. literalinclude:: logging_snippets.py
      :start-after: [START client_create_default]
      :end-before: [END client_create_default]
+     :dedent: 4
 
   or pass in ``credentials`` and ``project`` explicitly
 
   .. literalinclude:: logging_snippets.py
      :start-after: [START client_create_explicit]
      :end-before: [END client_create_explicit]
+     :dedent: 4
 
 
 Writing log entries
@@ -43,18 +45,21 @@ which to associate the entries:
 .. literalinclude:: logging_snippets.py
     :start-after: [START logger_create]
     :end-before: [END logger_create]
+    :dedent: 4
 
 Write a simple text entry to the logger.
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START logger_log_text]
     :end-before: [END logger_log_text]
+    :dedent: 4
 
 Write a dictionary entry to the logger.
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START logger_log_struct]
     :end-before: [END logger_log_struct]
+    :dedent: 4
 
 
 Retrieving log entries
@@ -65,12 +70,14 @@ Fetch entries for the default project.
 .. literalinclude:: logging_snippets.py
     :start-after: [START client_list_entries_default]
     :end-before: [END client_list_entries_default]
+    :dedent: 4
 
 Fetch entries across multiple projects.
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START client_list_entries_multi_project]
     :end-before: [END client_list_entries_multi_project]
+    :dedent: 4
 
 Filter entries retrieved using the `Advanced Logs Filters`_ syntax
 
@@ -81,24 +88,28 @@ Fetch entries for the default project.
 .. literalinclude:: logging_snippets.py
     :start-after: [START client_list_entries_filter]
     :end-before: [END client_list_entries_filter]
+    :dedent: 4
 
 Sort entries in descending timestamp order.
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START client_list_entries_order_by]
     :end-before: [END client_list_entries_order_by]
+    :dedent: 4
 
 Retrieve entries in batches of 10, iterating until done.
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START client_list_entries_paged]
     :end-before: [END client_list_entries_paged]
+    :dedent: 4
 
 Retrieve entries for a single logger, sorting in descending timestamp order:
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START logger_list_entries]
     :end-before: [END logger_list_entries]
+    :dedent: 4
 
 
 Delete all entries for a logger
@@ -107,6 +118,7 @@ Delete all entries for a logger
 .. literalinclude:: logging_snippets.py
     :start-after: [START logger_delete]
     :end-before: [END logger_delete]
+    :dedent: 8
 
 
 Manage log metrics
@@ -120,30 +132,35 @@ List all metrics for a project:
 .. literalinclude:: logging_snippets.py
     :start-after: [START client_list_metrics]
     :end-before: [END client_list_metrics]
+    :dedent: 4
 
 Create a metric:
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START metric_create]
     :end-before: [END metric_create]
+    :dedent: 4
 
 Refresh local information about a metric:
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START metric_reload]
     :end-before: [END metric_reload]
+    :dedent: 4
 
 Update a metric:
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START metric_update]
     :end-before: [END metric_update]
+    :dedent: 4
 
 Delete a metric:
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START metric_delete]
     :end-before: [END metric_delete]
+    :dedent: 4
 
 Export log entries using sinks
 ------------------------------
@@ -165,12 +182,14 @@ Add ``cloud-logs@google.com`` as the owner of the bucket:
 .. literalinclude:: logging_snippets.py
     :start-after: [START sink_bucket_permissions]
     :end-before: [END sink_bucket_permissions]
+    :dedent: 4
 
 Create a Cloud Storage sink:
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START sink_storage_create]
     :end-before: [END sink_storage_create]
+    :dedent: 4
 
 
 Export to BigQuery
@@ -186,12 +205,14 @@ See: `Setting permissions for BigQuery`_
 .. literalinclude:: logging_snippets.py
     :start-after: [START sink_dataset_permissions]
     :end-before: [END sink_dataset_permissions]
+    :dedent: 4
 
 Create a BigQuery sink:
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START sink_bigquery_create]
     :end-before: [END sink_bigquery_create]
+    :dedent: 4
 
 
 Export to Pub/Sub
@@ -207,12 +228,14 @@ See: `Setting permissions for Pub/Sub`_
 .. literalinclude:: logging_snippets.py
     :start-after: [START sink_topic_permissions]
     :end-before: [END sink_topic_permissions]
+    :dedent: 4
 
 Create a Cloud Pub/Sub sink:
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START sink_pubsub_create]
     :end-before: [END sink_pubsub_create]
+    :dedent: 4
 
 Manage Sinks
 ~~~~~~~~~~~~
@@ -222,21 +245,25 @@ List all sinks for a project:
 .. literalinclude:: logging_snippets.py
     :start-after: [START client_list_sinks]
     :end-before: [END client_list_sinks]
+    :dedent: 4
 
 Refresh local information about a sink:
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START sink_reload]
     :end-before: [END sink_reload]
+    :dedent: 4
 
 Update a sink:
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START sink_update]
     :end-before: [END sink_update]
+    :dedent: 4
 
 Delete a sink:
 
 .. literalinclude:: logging_snippets.py
     :start-after: [START sink_delete]
     :end-before: [END sink_delete]
+    :dedent: 4
