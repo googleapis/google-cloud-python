@@ -70,7 +70,7 @@ def client_list_entries(client, to_delete):  # pylint: disable=unused-argument
     # [END client_list_entries_default]
 
     # [START client_list_entries_filter]
-    FILTER = "logName:log_name AND textPayload:simple"
+    FILTER = 'logName:log_name AND textPayload:simple'
     for entry in client.list_entries(filter_=FILTER):  # API call(s)
         do_something_with(entry)
     # [END client_list_entries_filter]
@@ -124,7 +124,8 @@ def logger_usage(client, to_delete):
     # [START logger_log_struct]
     logger.log_struct({
         'message': 'My second entry',
-        'weather': 'partly cloudy'})  # API call
+        'weather': 'partly cloudy',
+    })  # API call
     # [END logger_log_struct]
 
     # [START logger_list_entries]
@@ -198,11 +199,11 @@ def _sink_storage_setup(client):
     bucket.create()
 
     # [START sink_bucket_permissions]
-    bucket.acl.reload()
+    bucket.acl.reload()  # API call
     logs_group = bucket.acl.group('cloud-logs@google.com')
     logs_group.grant_owner()
     bucket.acl.add_entity(logs_group)
-    bucket.acl.save()
+    bucket.acl.save()  # API call
     # [END sink_bucket_permissions]
 
     return bucket
@@ -240,7 +241,7 @@ def _sink_bigquery_setup(client):
     grants.append(AccessGrant(
         'WRITER', 'groupByEmail', 'cloud-logs@google.com'))
     dataset.access_grants = grants
-    dataset.update()
+    dataset.update()  # API call
     # [END sink_dataset_permissions]
 
     return dataset
@@ -255,7 +256,7 @@ def sink_bigquery(client, to_delete):
     FILTER = 'textPayload:robot'
 
     # [START sink_bigquery_create]
-    DESTINATION = 'bigquery.googleapis.com%s' % (dataset.path)
+    DESTINATION = 'bigquery.googleapis.com%s' % (dataset.path,)
     sink = client.sink(SINK_NAME, filter_=FILTER, destination=DESTINATION)
     assert not sink.exists()  # API call
     sink.create()  # API call
@@ -272,9 +273,9 @@ def _sink_pubsub_setup(client):
     topic.create()
 
     # [START sink_topic_permissions]
-    policy = topic.get_iam_policy()
+    policy = topic.get_iam_policy()  # API call
     policy.owners.add(policy.group('cloud-logs@google.com'))
-    topic.set_iam_policy(policy)
+    topic.set_iam_policy(policy)  # API call
     # [END sink_topic_permissions]
 
     return topic
@@ -290,7 +291,7 @@ def sink_pubsub(client, to_delete):
     UPDATED_FILTER = 'textPayload:robot'
 
     # [START sink_pubsub_create]
-    DESTINATION = 'pubsub.googleapis.com/%s' % (topic.full_name)
+    DESTINATION = 'pubsub.googleapis.com/%s' % (topic.full_name,)
     sink = client.sink(SINK_NAME, filter_=FILTER, destination=DESTINATION)
     assert not sink.exists()  # API call
     sink.create()  # API call
@@ -324,8 +325,7 @@ def sink_pubsub(client, to_delete):
 
 
 def _line_no(func):
-    code = getattr(func, '__code__', None) or getattr(func, 'func_code')
-    return code.co_firstlineno
+    return func.__code__.co_firstlineno
 
 
 def _find_examples():
@@ -358,10 +358,10 @@ def main():
         print('%-25s: %s' % _name_and_doc(example))
         try:
             example(client, to_delete)
-        except AssertionError as e:
-            print('   FAIL: %s' % (e,))
-        except Exception as e:  # pylint: disable=broad-except
-            print('  ERROR: %r' % (e,))
+        except AssertionError as failure:
+            print('   FAIL: %s' % (failure,))
+        except Exception as error:  # pylint: disable=broad-except
+            print('  ERROR: %r' % (error,))
         for item in to_delete:
             _backoff_not_found(item.delete)
 
