@@ -5,6 +5,8 @@ Python Client for Google Translate
 
 .. _Google Translate: https://cloud.google.com/translate/
 
+|pypi| |versions|
+
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/translate-usage.html
@@ -40,3 +42,8 @@ See the ``google-cloud-python`` API `Translate documentation`_ to learn
 how to translate text using this library.
 
 .. _Translate documentation: https://google-cloud-python.readthedocs.io/en/stable/translate-usage.html
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-translate.svg
+   :target: https://pypi.python.org/pypi/google-cloud-translate
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-translate.svg
+   :target: https://pypi.python.org/pypi/google-cloud-translate

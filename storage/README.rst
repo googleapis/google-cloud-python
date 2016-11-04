@@ -5,6 +5,8 @@ Python Client for Google Cloud Storage
 
 .. _Google Cloud Storage: https://cloud.google.com/storage/docs
 
+|pypi| |versions|
+
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/storage-client.html
@@ -60,3 +62,8 @@ how to create a bucket.
     blob.upload_from_string('New contents!')
     blob2 = bucket.blob('remote/path/storage.txt')
     blob2.upload_from_filename(filename='/local/path.txt')
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-storage.svg
+   :target: https://pypi.python.org/pypi/google-cloud-storage
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage.svg
+   :target: https://pypi.python.org/pypi/google-cloud-storage

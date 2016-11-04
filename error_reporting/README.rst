@@ -5,6 +5,8 @@ Python Client for Stackdriver Error Reporting
 
 .. _Stackdriver Error Reporting: https://cloud.google.com/error-reporting/
 
+|pypi| |versions|
+
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/error-reporting-usage.html
@@ -45,3 +47,8 @@ See the ``google-cloud-python`` API `Error Reporting documentation`_ to learn
 how to get started using this library.
 
 .. _Error Reporting documentation: https://google-cloud-python.readthedocs.io/en/stable/error-reporting-usage.html
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
+   :target: https://pypi.python.org/pypi/google-cloud-error-reporting
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-error-reporting.svg
+   :target: https://pypi.python.org/pypi/google-cloud-error-reporting
