@@ -5,6 +5,8 @@ Python Client for Google Cloud Resource Manager
 
 .. _Google Cloud Resource Manager: https://cloud.google.com/resource-manager/
 
+|pypi| |versions|
+
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/resource-manager-api.html
@@ -41,3 +43,8 @@ See the ``google-cloud-python`` API `Resource Manager documentation`_ to learn
 how to manage projects using this Client Library.
 
 .. _Resource Manager documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/resource-manager-api.html
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-resource-manager.svg
+   :target: https://pypi.python.org/pypi/google-cloud-resource-manager
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-resource-manager.svg
+   :target: https://pypi.python.org/pypi/google-cloud-resource-manager

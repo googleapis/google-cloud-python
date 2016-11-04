@@ -5,6 +5,8 @@ Python Client for Stackdriver Monitoring
 
 .. _Stackdriver Monitoring: https://cloud.google.com/monitoring/
 
+|pypi| |versions|
+
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/monitoring-usage.html
@@ -64,3 +66,8 @@ See the ``google-cloud-python`` API `monitoring documentation`_ to learn how
 to connect to Stackdriver Monitoring using this Client Library.
 
 .. _monitoring documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/monitoring-usage.html
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-monitoring.svg
+   :target: https://pypi.python.org/pypi/google-cloud-monitoring
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring.svg
+   :target: https://pypi.python.org/pypi/google-cloud-monitoring
