@@ -183,6 +183,16 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: Runtime Configuration
+
+  runtimeconfig-usage
+  Client <runtimeconfig-client>
+  runtimeconfig-config
+  runtimeconfig-variable
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: External Links
 
   GitHub <https://github.com/GoogleCloudPlatform/google-cloud-python/>
