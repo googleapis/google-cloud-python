@@ -456,5 +456,6 @@ def main():
         for item in to_delete:
             item.delete()
 
+
 if __name__ == '__main__':
     main()
