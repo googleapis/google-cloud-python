@@ -879,18 +879,32 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         from google.cloud.pubsub import _gax as MUT
 
         channels = []
+        channel_args = []
+        channel_obj = object()
         mock_result = object()
+        host = 'foo.apis.invalid'
 
         def mock_publisher_api(channel):
             channels.append(channel)
             return mock_result
 
-        connection = _Connection(in_emulator=False)
-        with _Monkey(MUT, PublisherApi=mock_publisher_api):
+        def make_channel(*args):
+            channel_args.append(args)
+            return channel_obj
+
+        mock_publisher_api.SERVICE_ADDRESS = host
+
+        creds = _Credentials()
+        connection = _Connection(in_emulator=False,
+                                 credentials=creds)
+        with _Monkey(MUT, PublisherApi=mock_publisher_api,
+                     make_secure_channel=make_channel):
             result = self._callFUT(connection)
 
         self.assertIs(result, mock_result)
-        self.assertEqual(channels, [None])
+        self.assertEqual(channels, [channel_obj])
+        self.assertEqual(channel_args,
+                         [(creds, MUT.DEFAULT_USER_AGENT, host)])
 
     def test_emulator(self):
         from google.cloud._testing import _Monkey
@@ -932,18 +946,32 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
         from google.cloud.pubsub import _gax as MUT
 
         channels = []
+        channel_args = []
+        channel_obj = object()
         mock_result = object()
+        host = 'foo.apis.invalid'
 
         def mock_subscriber_api(channel):
             channels.append(channel)
             return mock_result
 
-        connection = _Connection(in_emulator=False)
-        with _Monkey(MUT, SubscriberApi=mock_subscriber_api):
+        def make_channel(*args):
+            channel_args.append(args)
+            return channel_obj
+
+        mock_subscriber_api.SERVICE_ADDRESS = host
+
+        creds = _Credentials()
+        connection = _Connection(in_emulator=False,
+                                 credentials=creds)
+        with _Monkey(MUT, SubscriberApi=mock_subscriber_api,
+                     make_secure_channel=make_channel):
             result = self._callFUT(connection)
 
         self.assertIs(result, mock_result)
-        self.assertEqual(channels, [None])
+        self.assertEqual(channels, [channel_obj])
+        self.assertEqual(channel_args,
+                         [(creds, MUT.DEFAULT_USER_AGENT, host)])
 
     def test_emulator(self):
         from google.cloud._testing import _Monkey
@@ -1143,9 +1171,11 @@ class _PullResponsePB(object):
 
 class _Connection(object):
 
-    def __init__(self, in_emulator=False, host=None):
+    def __init__(self, in_emulator=False, host=None,
+                 credentials=None):
         self.in_emulator = in_emulator
         self.host = host
+        self.credentials = credentials
 
 
 class _Client(object):
