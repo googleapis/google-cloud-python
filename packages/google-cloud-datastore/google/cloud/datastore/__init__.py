@@ -54,12 +54,8 @@ The main concepts with this API are:
 
 
 from google.cloud.datastore.batch import Batch
-from google.cloud.datastore.connection import Connection
 from google.cloud.datastore.client import Client
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
 from google.cloud.datastore.query import Query
 from google.cloud.datastore.transaction import Transaction
-
-
-SCOPE = Connection.SCOPE
