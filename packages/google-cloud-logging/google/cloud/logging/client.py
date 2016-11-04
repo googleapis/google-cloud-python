@@ -30,10 +30,10 @@ else:
 
 from google.cloud.client import JSONClient
 from google.cloud.environment_vars import DISABLE_GRPC
-from google.cloud.logging.connection import Connection
-from google.cloud.logging.connection import _LoggingAPI as JSONLoggingAPI
-from google.cloud.logging.connection import _MetricsAPI as JSONMetricsAPI
-from google.cloud.logging.connection import _SinksAPI as JSONSinksAPI
+from google.cloud.logging._http import Connection
+from google.cloud.logging._http import _LoggingAPI as JSONLoggingAPI
+from google.cloud.logging._http import _MetricsAPI as JSONMetricsAPI
+from google.cloud.logging._http import _SinksAPI as JSONSinksAPI
 from google.cloud.logging.logger import Logger
 from google.cloud.logging.metric import Metric
 from google.cloud.logging.sink import Sink

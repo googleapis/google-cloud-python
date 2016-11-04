@@ -39,7 +39,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, self.PROJECT)
 
     def test_logging_api_wo_gax(self):
-        from google.cloud.logging.connection import _LoggingAPI
+        from google.cloud.logging._http import _LoggingAPI
 
         client = self._makeOne(self.PROJECT, credentials=_Credentials(),
                                use_gax=False)
@@ -79,7 +79,7 @@ class TestClient(unittest.TestCase):
     def test_no_gax_ctor(self):
         from google.cloud._testing import _Monkey
         from google.cloud.logging import client as MUT
-        from google.cloud.logging.connection import _LoggingAPI
+        from google.cloud.logging._http import _LoggingAPI
 
         creds = _Credentials()
         with _Monkey(MUT, _USE_GAX=True):
@@ -90,7 +90,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(api, _LoggingAPI)
 
     def test_sinks_api_wo_gax(self):
-        from google.cloud.logging.connection import _SinksAPI
+        from google.cloud.logging._http import _SinksAPI
         from google.cloud.logging import client as MUT
         from google.cloud._testing import _Monkey
 
@@ -131,7 +131,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_metrics_api_wo_gax(self):
-        from google.cloud.logging.connection import _MetricsAPI
+        from google.cloud.logging._http import _MetricsAPI
         from google.cloud.logging import client as MUT
         from google.cloud._testing import _Monkey
 
