@@ -25,7 +25,7 @@ class TestClient(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor(self):
-        from google.cloud.bigquery.connection import Connection
+        from google.cloud.bigquery._http import Connection
         PROJECT = 'PROJECT'
         creds = _Credentials()
         http = object()

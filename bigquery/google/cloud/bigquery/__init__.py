@@ -24,11 +24,7 @@ The main concepts with this API are:
 
 
 from google.cloud.bigquery.client import Client
-from google.cloud.bigquery.connection import Connection
 from google.cloud.bigquery.dataset import AccessGrant
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
-
-
-SCOPE = Connection.SCOPE

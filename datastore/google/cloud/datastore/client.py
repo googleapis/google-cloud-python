@@ -20,8 +20,8 @@ from google.cloud._helpers import (
     _determine_default_project as _base_default_project)
 from google.cloud.client import _ClientProjectMixin
 from google.cloud.client import Client as _BaseClient
+from google.cloud.datastore._http import Connection
 from google.cloud.datastore import helpers
-from google.cloud.datastore.connection import Connection
 from google.cloud.datastore.batch import Batch
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
