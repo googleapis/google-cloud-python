@@ -71,7 +71,7 @@ class _DatastoreAPIOverHttp(object):
     Methods make bare API requests without any helpers for constructing
     the requests or parsing the responses.
 
-    :type connection: :class:`google.cloud.datastore.connection.Connection`
+    :type connection: :class:`Connection`
     :param connection: A connection object that contains helpful
                        information for making requests.
     """
@@ -268,7 +268,7 @@ class _DatastoreAPIOverGRPC(object):
     Methods make bare API requests without any helpers for constructing
     the requests or parsing the responses.
 
-    :type connection: :class:`google.cloud.datastore.connection.Connection`
+    :type connection: :class:`Connection`
     :param connection: A connection object that contains helpful
                        information for making requests.
 
