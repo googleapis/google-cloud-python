@@ -5,6 +5,8 @@ Python Client for Google Cloud Vision
 
 .. _Google Cloud Vision: https://cloud.google.com/vision/
 
+|pypi| |versions|
+
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/vision-usage.html
@@ -48,3 +50,8 @@ See the ``google-cloud-python`` API `Vision documentation`_ to learn
 how to analyze images using this library.
 
 .. _Vision documentation: https://google-cloud-python.readthedocs.io/en/stable/vision-usage.html
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-vision.svg
+   :target: https://pypi.python.org/pypi/google-cloud-vision
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vision.svg
+   :target: https://pypi.python.org/pypi/google-cloud-vision
