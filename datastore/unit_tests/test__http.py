@@ -14,13 +14,13 @@
 
 import unittest
 
-from google.cloud.datastore.connection import _HAVE_GRPC
+from google.cloud.datastore._http import _HAVE_GRPC
 
 
 class Test_DatastoreAPIOverHttp(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.datastore.connection import _DatastoreAPIOverHttp
+        from google.cloud.datastore._http import _DatastoreAPIOverHttp
         return _DatastoreAPIOverHttp
 
     def _makeOne(self, *args, **kw):
@@ -110,7 +110,7 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
 class Test__grpc_catch_rendezvous(unittest.TestCase):
 
     def _callFUT(self):
-        from google.cloud.datastore.connection import _grpc_catch_rendezvous
+        from google.cloud.datastore._http import _grpc_catch_rendezvous
         return _grpc_catch_rendezvous()
 
     @staticmethod
@@ -175,12 +175,12 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
 class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.datastore.connection import _DatastoreAPIOverGRPC
+        from google.cloud.datastore._http import _DatastoreAPIOverGRPC
         return _DatastoreAPIOverGRPC
 
     def _makeOne(self, stub, connection=None, secure=True, mock_args=None):
         from google.cloud._testing import _Monkey
-        from google.cloud.datastore import connection as MUT
+        from google.cloud.datastore import _http as MUT
 
         if connection is None:
             connection = _Connection(None)
@@ -202,7 +202,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
             return self._getTargetClass()(connection, secure)
 
     def test_constructor(self):
-        from google.cloud.datastore import connection as MUT
+        from google.cloud.datastore import _http as MUT
 
         conn = _Connection(None)
         conn.credentials = object()
@@ -222,7 +222,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         )])
 
     def test_constructor_insecure(self):
-        from google.cloud.datastore import connection as MUT
+        from google.cloud.datastore import _http as MUT
 
         conn = _Connection(None)
         conn.credentials = object()
@@ -351,7 +351,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 class TestConnection(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.datastore.connection import Connection
+        from google.cloud.datastore._http import Connection
 
         return Connection
 
@@ -370,7 +370,7 @@ class TestConnection(unittest.TestCase):
 
     def _makeOne(self, credentials=None, http=None, use_grpc=False):
         from google.cloud._testing import _Monkey
-        from google.cloud.datastore import connection as MUT
+        from google.cloud.datastore import _http as MUT
         with _Monkey(MUT, _USE_GRPC=use_grpc):
             return self._getTargetClass()(credentials=credentials, http=http)
 
@@ -408,7 +408,7 @@ class TestConnection(unittest.TestCase):
 
     def test_ctor_without_grpc(self):
         from google.cloud._testing import _Monkey
-        from google.cloud.datastore import connection as MUT
+        from google.cloud.datastore import _http as MUT
 
         connections = []
         return_val = object()
@@ -426,7 +426,7 @@ class TestConnection(unittest.TestCase):
 
     def test_ctor_with_grpc(self):
         from google.cloud._testing import _Monkey
-        from google.cloud.datastore import connection as MUT
+        from google.cloud.datastore import _http as MUT
 
         api_args = []
         return_val = object()
@@ -921,7 +921,7 @@ class TestConnection(unittest.TestCase):
     def test_commit_wo_transaction(self):
         from google.cloud._testing import _Monkey
         from google.cloud.datastore._generated import datastore_pb2
-        from google.cloud.datastore import connection as MUT
+        from google.cloud.datastore import _http as MUT
         from google.cloud.datastore.helpers import _new_value_pb
 
         PROJECT = 'PROJECT'
@@ -967,7 +967,7 @@ class TestConnection(unittest.TestCase):
     def test_commit_w_transaction(self):
         from google.cloud._testing import _Monkey
         from google.cloud.datastore._generated import datastore_pb2
-        from google.cloud.datastore import connection as MUT
+        from google.cloud.datastore import _http as MUT
         from google.cloud.datastore.helpers import _new_value_pb
 
         PROJECT = 'PROJECT'
@@ -1091,7 +1091,7 @@ class TestConnection(unittest.TestCase):
 class Test__parse_commit_response(unittest.TestCase):
 
     def _callFUT(self, commit_response_pb):
-        from google.cloud.datastore.connection import _parse_commit_response
+        from google.cloud.datastore._http import _parse_commit_response
         return _parse_commit_response(commit_response_pb)
 
     def test_it(self):

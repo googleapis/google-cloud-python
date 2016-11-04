@@ -28,13 +28,10 @@ You'll typically use these to get started with the API:
 
 The main concepts with this API are:
 
-- :class:`google.cloud.storage.connection.Connection` which represents a
-  connection between your machine and the Cloud Storage API.
-
-- :class:`google.cloud.storage.bucket.Bucket` which represents a particular
+- :class:`~google.cloud.storage.bucket.Bucket` which represents a particular
   bucket (akin to a mounted disk on a computer).
 
-- :class:`google.cloud.storage.blob.Blob` which represents a pointer to a
+- :class:`~google.cloud.storage.blob.Blob` which represents a pointer to a
   particular entity in Cloud Storage (akin to a file path on a remote
   machine).
 """
@@ -43,7 +40,3 @@ from google.cloud.storage.batch import Batch
 from google.cloud.storage.blob import Blob
 from google.cloud.storage.bucket import Bucket
 from google.cloud.storage.client import Client
-from google.cloud.storage.connection import Connection
-
-
-SCOPE = Connection.SCOPE
