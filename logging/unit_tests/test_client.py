@@ -39,12 +39,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project, self.PROJECT)
 
     def test_logging_api_wo_gax(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.logging import client as MUT
         from google.cloud.logging.connection import _LoggingAPI
 
-        with _Monkey(MUT, _USE_GAX=False):
-            client = self._makeOne(self.PROJECT, credentials=_Credentials())
+        client = self._makeOne(self.PROJECT, credentials=_Credentials(),
+                               use_gax=False)
         conn = client.connection = object()
         api = client.logging_api
 
@@ -58,31 +56,22 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging import client as MUT
         from google.cloud._testing import _Monkey
 
-        wrapped = object()
-        _called_with = []
+        clients = []
+        api_obj = object()
 
-        def _generated_api(*args, **kw):
-            _called_with.append((args, kw))
-            return wrapped
-
-        class _GaxLoggingAPI(object):
-
-            def __init__(self, _wrapped, client):
-                self._wrapped = _wrapped
-                self.client = client
+        def make_api(client_obj):
+            clients.append(client_obj)
+            return api_obj
 
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client = self._makeOne(project=self.PROJECT, credentials=creds,
+                               use_gax=True)
 
-        with _Monkey(MUT,
-                     _USE_GAX=True,
-                     GeneratedLoggingAPI=_generated_api,
-                     GAXLoggingAPI=_GaxLoggingAPI):
+        with _Monkey(MUT, make_gax_logging_api=make_api):
             api = client.logging_api
 
-        self.assertIsInstance(api, _GaxLoggingAPI)
-        self.assertIs(api._wrapped, wrapped)
-        self.assertIs(api.client, client)
+        self.assertIs(api, api_obj)
+        self.assertEqual(clients, [client])
         # API instance is cached
         again = client.logging_api
         self.assertIs(again, api)
@@ -121,31 +110,22 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging import client as MUT
         from google.cloud._testing import _Monkey
 
-        wrapped = object()
-        _called_with = []
+        clients = []
+        api_obj = object()
 
-        def _generated_api(*args, **kw):
-            _called_with.append((args, kw))
-            return wrapped
-
-        class _GaxSinksAPI(object):
-
-            def __init__(self, _wrapped, client):
-                self._wrapped = _wrapped
-                self.client = client
+        def make_api(client_obj):
+            clients.append(client_obj)
+            return api_obj
 
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client = self._makeOne(project=self.PROJECT, credentials=creds,
+                               use_gax=True)
 
-        with _Monkey(MUT,
-                     _USE_GAX=True,
-                     GeneratedSinksAPI=_generated_api,
-                     GAXSinksAPI=_GaxSinksAPI):
+        with _Monkey(MUT, make_gax_sinks_api=make_api):
             api = client.sinks_api
 
-        self.assertIsInstance(api, _GaxSinksAPI)
-        self.assertIs(api._wrapped, wrapped)
-        self.assertIs(api.client, client)
+        self.assertIs(api, api_obj)
+        self.assertEqual(clients, [client])
         # API instance is cached
         again = client.sinks_api
         self.assertIs(again, api)
@@ -171,31 +151,22 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging import client as MUT
         from google.cloud._testing import _Monkey
 
-        wrapped = object()
-        _called_with = []
+        clients = []
+        api_obj = object()
 
-        def _generated_api(*args, **kw):
-            _called_with.append((args, kw))
-            return wrapped
-
-        class _GaxMetricsAPI(object):
-
-            def __init__(self, _wrapped, client):
-                self._wrapped = _wrapped
-                self.client = client
+        def make_api(client_obj):
+            clients.append(client_obj)
+            return api_obj
 
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client = self._makeOne(project=self.PROJECT, credentials=creds,
+                               use_gax=True)
 
-        with _Monkey(MUT,
-                     _USE_GAX=True,
-                     GeneratedMetricsAPI=_generated_api,
-                     GAXMetricsAPI=_GaxMetricsAPI):
+        with _Monkey(MUT, make_gax_metrics_api=make_api):
             api = client.metrics_api
 
-        self.assertIsInstance(api, _GaxMetricsAPI)
-        self.assertIs(api._wrapped, wrapped)
-        self.assertIs(api.client, client)
+        self.assertIs(api, api_obj)
+        self.assertEqual(clients, [client])
         # API instance is cached
         again = client.metrics_api
         self.assertIs(again, api)

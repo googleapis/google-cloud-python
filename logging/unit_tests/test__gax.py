@@ -1058,6 +1058,132 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
 
+@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_make_gax_logging_api(unittest.TestCase):
+
+    def _call_fut(self, client):
+        from google.cloud.logging._gax import make_gax_logging_api
+        return make_gax_logging_api(client)
+
+    def test_it(self):
+        from google.cloud._testing import _Monkey
+        from google.cloud.logging import _gax as MUT
+
+        creds = object()
+        client = _Client(creds)
+        channels = []
+        channel_args = []
+        channel_obj = object()
+        generated = object()
+
+        def make_channel(*args):
+            channel_args.append(args)
+            return channel_obj
+
+        def generated_api(channel=None):
+            channels.append(channel)
+            return generated
+
+        host = 'foo.apis.invalid'
+        generated_api.SERVICE_ADDRESS = host
+
+        with _Monkey(MUT, LoggingServiceV2Api=generated_api,
+                     make_secure_channel=make_channel):
+            logging_api = self._call_fut(client)
+
+        self.assertEqual(channels, [channel_obj])
+        self.assertEqual(channel_args,
+                         [(creds, MUT.DEFAULT_USER_AGENT, host)])
+
+        self.assertIsInstance(logging_api, MUT._LoggingAPI)
+        self.assertIs(logging_api._gax_api, generated)
+        self.assertIs(logging_api._client, client)
+
+
+@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_make_gax_metrics_api(unittest.TestCase):
+
+    def _call_fut(self, client):
+        from google.cloud.logging._gax import make_gax_metrics_api
+        return make_gax_metrics_api(client)
+
+    def test_it(self):
+        from google.cloud._testing import _Monkey
+        from google.cloud.logging import _gax as MUT
+
+        creds = object()
+        client = _Client(creds)
+        channels = []
+        channel_args = []
+        channel_obj = object()
+        generated = object()
+
+        def make_channel(*args):
+            channel_args.append(args)
+            return channel_obj
+
+        def generated_api(channel=None):
+            channels.append(channel)
+            return generated
+
+        host = 'foo.apis.invalid'
+        generated_api.SERVICE_ADDRESS = host
+
+        with _Monkey(MUT, MetricsServiceV2Api=generated_api,
+                     make_secure_channel=make_channel):
+            metrics_api = self._call_fut(client)
+
+        self.assertEqual(channels, [channel_obj])
+        self.assertEqual(channel_args,
+                         [(creds, MUT.DEFAULT_USER_AGENT, host)])
+
+        self.assertIsInstance(metrics_api, MUT._MetricsAPI)
+        self.assertIs(metrics_api._gax_api, generated)
+        self.assertIs(metrics_api._client, client)
+
+
+@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_make_gax_sinks_api(unittest.TestCase):
+
+    def _call_fut(self, client):
+        from google.cloud.logging._gax import make_gax_sinks_api
+        return make_gax_sinks_api(client)
+
+    def test_it(self):
+        from google.cloud._testing import _Monkey
+        from google.cloud.logging import _gax as MUT
+
+        creds = object()
+        client = _Client(creds)
+        channels = []
+        channel_args = []
+        channel_obj = object()
+        generated = object()
+
+        def make_channel(*args):
+            channel_args.append(args)
+            return channel_obj
+
+        def generated_api(channel=None):
+            channels.append(channel)
+            return generated
+
+        host = 'foo.apis.invalid'
+        generated_api.SERVICE_ADDRESS = host
+
+        with _Monkey(MUT, ConfigServiceV2Api=generated_api,
+                     make_secure_channel=make_channel):
+            sinks_api = self._call_fut(client)
+
+        self.assertEqual(channels, [channel_obj])
+        self.assertEqual(channel_args,
+                         [(creds, MUT.DEFAULT_USER_AGENT, host)])
+
+        self.assertIsInstance(sinks_api, MUT._SinksAPI)
+        self.assertIs(sinks_api._gax_api, generated)
+        self.assertIs(sinks_api._client, client)
+
+
 class _GAXLoggingAPI(_GAXBaseAPI):
 
     _delete_not_found = False
@@ -1172,3 +1298,15 @@ class _GAXMetricsAPI(_GAXBaseAPI):
             raise GaxError('error')
         if self._log_metric_not_found:
             raise GaxError('notfound', self._make_grpc_not_found())
+
+
+class _Connection(object):
+
+    def __init__(self, credentials):
+        self.credentials = credentials
+
+
+class _Client(object):
+
+    def __init__(self, credentials):
+        self.connection = _Connection(credentials)
