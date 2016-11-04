@@ -16,6 +16,12 @@
 
 import functools
 
+from google.cloud.gapic.logging.v2.config_service_v2_api import (
+    ConfigServiceV2Api)
+from google.cloud.gapic.logging.v2.logging_service_v2_api import (
+    LoggingServiceV2Api)
+from google.cloud.gapic.logging.v2.metrics_service_v2_api import (
+    MetricsServiceV2Api)
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
@@ -28,6 +34,8 @@ from google.protobuf.json_format import ParseDict
 from grpc import StatusCode
 
 from google.cloud._helpers import _datetime_to_rfc3339
+from google.cloud._helpers import make_secure_channel
+from google.cloud.connection import DEFAULT_USER_AGENT
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import GAXIterator
@@ -511,3 +519,51 @@ def _item_to_metric(iterator, log_metric_pb):
     """
     resource = MessageToDict(log_metric_pb)
     return Metric.from_api_repr(resource, iterator.client)
+
+
+def make_gax_logging_api(client):
+    """Create an instance of the GAX Logging API.
+
+    :type client: :class:`~google.cloud.logging.client.Client`
+    :param client: The client that holds configuration details.
+
+    :rtype: :class:`_LoggingAPI`
+    :returns: A metrics API instance with the proper credentials.
+    """
+    channel = make_secure_channel(
+        client.connection.credentials, DEFAULT_USER_AGENT,
+        LoggingServiceV2Api.SERVICE_ADDRESS)
+    generated = LoggingServiceV2Api(channel=channel)
+    return _LoggingAPI(generated, client)
+
+
+def make_gax_metrics_api(client):
+    """Create an instance of the GAX Metrics API.
+
+    :type client: :class:`~google.cloud.logging.client.Client`
+    :param client: The client that holds configuration details.
+
+    :rtype: :class:`_MetricsAPI`
+    :returns: A metrics API instance with the proper credentials.
+    """
+    channel = make_secure_channel(
+        client.connection.credentials, DEFAULT_USER_AGENT,
+        MetricsServiceV2Api.SERVICE_ADDRESS)
+    generated = MetricsServiceV2Api(channel=channel)
+    return _MetricsAPI(generated, client)
+
+
+def make_gax_sinks_api(client):
+    """Create an instance of the GAX Sinks API.
+
+    :type client: :class:`~google.cloud.logging.client.Client`
+    :param client: The client that holds configuration details.
+
+    :rtype: :class:`_SinksAPI`
+    :returns: A metrics API instance with the proper credentials.
+    """
+    channel = make_secure_channel(
+        client.connection.credentials, DEFAULT_USER_AGENT,
+        ConfigServiceV2Api.SERVICE_ADDRESS)
+    generated = ConfigServiceV2Api(channel=channel)
+    return _SinksAPI(generated, client)

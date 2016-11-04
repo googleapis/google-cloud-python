@@ -218,11 +218,30 @@ class TestClient(unittest.TestCase):
         client.connection = _Connection()
         client.connection.credentials = credentials
 
-        def speech_api():
-            return _MockGAPICSpeechAPI(response=self._make_sync_response())
+        channel_args = []
+        channel_obj = object()
 
-        with _Monkey(_gax, SpeechApi=speech_api):
+        def make_channel(*args):
+            channel_args.append(args)
+            return channel_obj
+
+        def speech_api(channel=None):
+            return _MockGAPICSpeechAPI(response=self._make_sync_response(),
+                                       channel=channel)
+
+        host = 'foo.apis.invalid'
+        speech_api.SERVICE_ADDRESS = host
+
+        with _Monkey(_gax, SpeechApi=speech_api,
+                     make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
+
+        low_level = client.speech_api._gapic_api
+        self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
+        self.assertIs(low_level._channel, channel_obj)
+        self.assertEqual(
+            channel_args,
+            [(credentials, _gax.DEFAULT_USER_AGENT, host)])
 
         sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
                         encoding=speech.Encoding.FLAC,
@@ -251,16 +270,35 @@ class TestClient(unittest.TestCase):
         }]
         result = self._make_result(alternatives)
 
-        def speech_api():
+        channel_args = []
+        channel_obj = object()
+
+        def make_channel(*args):
+            channel_args.append(args)
+            return channel_obj
+
+        def speech_api(channel=None):
             return _MockGAPICSpeechAPI(
-                response=self._make_sync_response(result))
+                response=self._make_sync_response(result),
+                channel=channel)
+
+        host = 'foo.apis.invalid'
+        speech_api.SERVICE_ADDRESS = host
 
         sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
                                encoding=speech.Encoding.FLAC,
                                sample_rate=self.SAMPLE_RATE)
 
-        with _Monkey(_gax, SpeechApi=speech_api):
+        with _Monkey(_gax, SpeechApi=speech_api,
+                     make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
+
+        low_level = client.speech_api._gapic_api
+        self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
+        self.assertIs(low_level._channel, channel_obj)
+        self.assertEqual(
+            channel_args,
+            [(creds, _gax.DEFAULT_USER_AGENT, host)])
 
         results = client.sync_recognize(sample)
 
@@ -319,20 +357,40 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech.operation import Operation
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._makeOne(credentials=credentials,
+                               use_gax=True)
         client.connection = _Connection()
         client.connection.credentials = credentials
+
+        channel_args = []
+        channel_obj = object()
+
+        def make_channel(*args):
+            channel_args.append(args)
+            return channel_obj
 
         sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
                                encoding=speech.Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
 
-        def speech_api():
-            return _MockGAPICSpeechAPI()
+        def speech_api(channel=None):
+            return _MockGAPICSpeechAPI(channel=channel)
 
-        with _Monkey(_gax, SpeechApi=speech_api):
-            operation = client.async_recognize(sample)
+        host = 'foo.apis.invalid'
+        speech_api.SERVICE_ADDRESS = host
 
+        with _Monkey(_gax, SpeechApi=speech_api,
+                     make_secure_channel=make_channel):
+            api = client.speech_api
+
+        low_level = api._gapic_api
+        self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
+        self.assertIs(low_level._channel, channel_obj)
+        expected = (credentials, _gax.DEFAULT_USER_AGENT,
+                    low_level.SERVICE_ADDRESS)
+        self.assertEqual(channel_args, [expected])
+
+        operation = client.async_recognize(sample)
         self.assertIsInstance(operation, Operation)
         self.assertFalse(operation.complete)
         self.assertIsNone(operation.response)
@@ -341,22 +399,35 @@ class TestClient(unittest.TestCase):
         from google.cloud._testing import _Monkey
 
         from google.cloud.speech import _gax
-        from google.cloud.speech.client import GAPICSpeechAPI
 
         creds = _Credentials()
         client = self._makeOne(credentials=creds, use_gax=True)
         client.connection = _Connection()
         client.connection.credentials = creds
 
-        def speech_api():
-            return _MockGAPICSpeechAPI()
+        channel_args = []
+        channel_obj = object()
 
-        self.assertIsNone(client._speech_api)
+        def make_channel(*args):
+            channel_args.append(args)
+            return channel_obj
 
-        with _Monkey(_gax, SpeechApi=speech_api):
+        def speech_api(channel=None):
+            return _MockGAPICSpeechAPI(channel=channel)
+
+        host = 'foo.apis.invalid'
+        speech_api.SERVICE_ADDRESS = host
+
+        with _Monkey(_gax, SpeechApi=speech_api,
+                     make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
-        self.assertIsInstance(client.speech_api, GAPICSpeechAPI)
+        low_level = client.speech_api._gapic_api
+        self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
+        self.assertIs(low_level._channel, channel_obj)
+        expected = (creds, _gax.DEFAULT_USER_AGENT,
+                    low_level.SERVICE_ADDRESS)
+        self.assertEqual(channel_args, [expected])
 
     def test_speech_api_without_gax(self):
         from google.cloud.connection import Connection
@@ -381,9 +452,11 @@ class _MockGAPICSpeechAPI(object):
     _requests = None
     _response = None
     _results = None
+    SERVICE_ADDRESS = 'foo.apis.invalid'
 
-    def __init__(self, response=None):
+    def __init__(self, response=None, channel=None):
         self._response = response
+        self._channel = channel
 
     def async_recognize(self, config, audio):
         from google.longrunning.operations_pb2 import Operation

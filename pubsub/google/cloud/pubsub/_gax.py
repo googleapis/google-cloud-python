@@ -30,6 +30,8 @@ from grpc import StatusCode
 
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _pb_timestamp_to_rfc3339
+from google.cloud._helpers import make_secure_channel
+from google.cloud.connection import DEFAULT_USER_AGENT
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import GAXIterator
@@ -518,9 +520,12 @@ def make_gax_publisher_api(connection):
               configuration.
     :rtype: :class:`~google.cloud.pubsub.v1.subscriber_api.SubscriberApi`
     """
-    channel = None
     if connection.in_emulator:
         channel = insecure_channel(connection.host)
+    else:
+        channel = make_secure_channel(
+            connection.credentials, DEFAULT_USER_AGENT,
+            PublisherApi.SERVICE_ADDRESS)
     return PublisherApi(channel=channel)
 
 
@@ -538,9 +543,12 @@ def make_gax_subscriber_api(connection):
     :returns: A subscriber API instance with the proper connection
               configuration.
     """
-    channel = None
     if connection.in_emulator:
         channel = insecure_channel(connection.host)
+    else:
+        channel = make_secure_channel(
+            connection.credentials, DEFAULT_USER_AGENT,
+            SubscriberApi.SERVICE_ADDRESS)
     return SubscriberApi(channel=channel)
 
 

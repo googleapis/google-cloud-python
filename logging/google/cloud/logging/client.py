@@ -17,20 +17,14 @@
 import os
 
 try:
-    from google.cloud.gapic.logging.v2.config_service_v2_api import (
-        ConfigServiceV2Api as GeneratedSinksAPI)
-    from google.cloud.gapic.logging.v2.logging_service_v2_api import (
-        LoggingServiceV2Api as GeneratedLoggingAPI)
-    from google.cloud.gapic.logging.v2.metrics_service_v2_api import (
-        MetricsServiceV2Api as GeneratedMetricsAPI)
-    from google.cloud.logging._gax import _LoggingAPI as GAXLoggingAPI
-    from google.cloud.logging._gax import _MetricsAPI as GAXMetricsAPI
-    from google.cloud.logging._gax import _SinksAPI as GAXSinksAPI
+    from google.cloud.logging._gax import make_gax_logging_api
+    from google.cloud.logging._gax import make_gax_metrics_api
+    from google.cloud.logging._gax import make_gax_sinks_api
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False
-    GeneratedLoggingAPI = GAXLoggingAPI = None
-    GeneratedMetricsAPI = GAXMetricsAPI = None
-    GeneratedSinksAPI = GAXSinksAPI = None
+    make_gax_logging_api = None
+    make_gax_metrics_api = None
+    make_gax_sinks_api = None
 else:
     _HAVE_GAX = True
 
@@ -97,8 +91,7 @@ class Client(JSONClient):
         """
         if self._logging_api is None:
             if self._use_gax:
-                generated = GeneratedLoggingAPI()
-                self._logging_api = GAXLoggingAPI(generated, self)
+                self._logging_api = make_gax_logging_api(self)
             else:
                 self._logging_api = JSONLoggingAPI(self)
         return self._logging_api
@@ -112,8 +105,7 @@ class Client(JSONClient):
         """
         if self._sinks_api is None:
             if self._use_gax:
-                generated = GeneratedSinksAPI()
-                self._sinks_api = GAXSinksAPI(generated, self)
+                self._sinks_api = make_gax_sinks_api(self)
             else:
                 self._sinks_api = JSONSinksAPI(self)
         return self._sinks_api
@@ -127,8 +119,7 @@ class Client(JSONClient):
         """
         if self._metrics_api is None:
             if self._use_gax:
-                generated = GeneratedMetricsAPI()
-                self._metrics_api = GAXMetricsAPI(generated, self)
+                self._metrics_api = make_gax_metrics_api(self)
             else:
                 self._metrics_api = JSONMetricsAPI(self)
         return self._metrics_api
