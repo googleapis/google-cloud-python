@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.client &mdash; google-cloud 5840bab documentation</title>
+  <title>google.cloud.logging.client &mdash; google-cloud 0516837 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5840bab documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 0516837 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -289,20 +289,14 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.gapic.logging.v2.config_service_v2_api</span> <span class="k">import</span> <span class="p">(</span>
-        <span class="n">ConfigServiceV2Api</span> <span class="k">as</span> <span class="n">GeneratedSinksAPI</span><span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.gapic.logging.v2.logging_service_v2_api</span> <span class="k">import</span> <span class="p">(</span>
-        <span class="n">LoggingServiceV2Api</span> <span class="k">as</span> <span class="n">GeneratedLoggingAPI</span><span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.gapic.logging.v2.metrics_service_v2_api</span> <span class="k">import</span> <span class="p">(</span>
-        <span class="n">MetricsServiceV2Api</span> <span class="k">as</span> <span class="n">GeneratedMetricsAPI</span><span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.logging._gax</span> <span class="k">import</span> <span class="n">_LoggingAPI</span> <span class="k">as</span> <span class="n">GAXLoggingAPI</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.logging._gax</span> <span class="k">import</span> <span class="n">_MetricsAPI</span> <span class="k">as</span> <span class="n">GAXMetricsAPI</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.logging._gax</span> <span class="k">import</span> <span class="n">_SinksAPI</span> <span class="k">as</span> <span class="n">GAXSinksAPI</span>
+    <span class="kn">from</span> <span class="nn">google.cloud.logging._gax</span> <span class="k">import</span> <span class="n">make_gax_logging_api</span>
+    <span class="kn">from</span> <span class="nn">google.cloud.logging._gax</span> <span class="k">import</span> <span class="n">make_gax_metrics_api</span>
+    <span class="kn">from</span> <span class="nn">google.cloud.logging._gax</span> <span class="k">import</span> <span class="n">make_gax_sinks_api</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
     <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">GeneratedLoggingAPI</span> <span class="o">=</span> <span class="n">GAXLoggingAPI</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">GeneratedMetricsAPI</span> <span class="o">=</span> <span class="n">GAXMetricsAPI</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">GeneratedSinksAPI</span> <span class="o">=</span> <span class="n">GAXSinksAPI</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">make_gax_logging_api</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">make_gax_metrics_api</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">make_gax_sinks_api</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -369,8 +363,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logging_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
-                <span class="n">generated</span> <span class="o">=</span> <span class="n">GeneratedLoggingAPI</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_logging_api</span> <span class="o">=</span> <span class="n">GAXLoggingAPI</span><span class="p">(</span><span class="n">generated</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_logging_api</span> <span class="o">=</span> <span class="n">make_gax_logging_api</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_logging_api</span> <span class="o">=</span> <span class="n">JSONLoggingAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logging_api</span>
@@ -384,8 +377,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sinks_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
-                <span class="n">generated</span> <span class="o">=</span> <span class="n">GeneratedSinksAPI</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_sinks_api</span> <span class="o">=</span> <span class="n">GAXSinksAPI</span><span class="p">(</span><span class="n">generated</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_sinks_api</span> <span class="o">=</span> <span class="n">make_gax_sinks_api</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_sinks_api</span> <span class="o">=</span> <span class="n">JSONSinksAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sinks_api</span>
@@ -399,8 +391,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metrics_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
-                <span class="n">generated</span> <span class="o">=</span> <span class="n">GeneratedMetricsAPI</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_metrics_api</span> <span class="o">=</span> <span class="n">GAXMetricsAPI</span><span class="p">(</span><span class="n">generated</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_metrics_api</span> <span class="o">=</span> <span class="n">make_gax_metrics_api</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_metrics_api</span> <span class="o">=</span> <span class="n">JSONMetricsAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metrics_api</span>
@@ -578,7 +569,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5840bab',
+            VERSION:'0516837',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
