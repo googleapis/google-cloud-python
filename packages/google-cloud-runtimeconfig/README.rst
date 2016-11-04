@@ -5,9 +5,15 @@ Python Client for Google Cloud RuntimeConfig
 
 .. _Google Cloud RuntimeConfig: https://cloud.google.com/deployment-manager/runtime-configurator/
 
+|alpha|
+
 -  `Documentation`_
 
 .. _Documentation: http://googlecloudplatform.github.io/google-cloud-python/
+
+.. |alpha| image:: https://img.shields.io/badge/status-alpha-orange.svg
+
+**This client library is currently in alpha and may be subject to change.**
 
 Quick Start
 -----------
