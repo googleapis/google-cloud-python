@@ -67,6 +67,7 @@ PACKAGES = (
     'monitoring',
     'pubsub',
     'resource_manager',
+    'runtimeconfig',
     'speech',
     'storage',
     'translate',
