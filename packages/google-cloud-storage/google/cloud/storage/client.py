@@ -19,9 +19,9 @@ from google.cloud._helpers import _LocalStack
 from google.cloud.client import JSONClient
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import HTTPIterator
+from google.cloud.storage._http import Connection
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
-from google.cloud.storage.connection import Connection
 
 
 class Client(JSONClient):
@@ -57,7 +57,7 @@ class Client(JSONClient):
     def connection(self):
         """Get connection or batch on the client.
 
-        :rtype: :class:`google.cloud.storage.connection.Connection`
+        :rtype: :class:`google.cloud.storage._http.Connection`
         :returns: The connection set on the client, or the batch
                   if one is set.
         """
@@ -74,7 +74,7 @@ class Client(JSONClient):
             self.connection = connection
         Will raise if the connection is set more than once.
 
-        :type value: :class:`google.cloud.storage.connection.Connection`
+        :type value: :class:`google.cloud.storage._http.Connection`
         :param value: The connection set on the client.
 
         :raises: :class:`ValueError` if connection has already been set.

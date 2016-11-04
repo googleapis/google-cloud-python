@@ -18,7 +18,7 @@ import unittest
 class TestConnection(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.storage.connection import Connection
+        from google.cloud.storage._http import Connection
         return Connection
 
     def _makeOne(self, *args, **kw):

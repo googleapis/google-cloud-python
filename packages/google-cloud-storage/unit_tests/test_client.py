@@ -25,7 +25,7 @@ class TestClient(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor_connection_type(self):
-        from google.cloud.storage.connection import Connection
+        from google.cloud.storage._http import Connection
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
