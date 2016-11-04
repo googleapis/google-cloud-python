@@ -5,6 +5,8 @@ Python Client for Google Cloud Datastore
 
 .. _Google Cloud Datastore: https://cloud.google.com/datastore/docs
 
+|pypi| |versions|
+
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/datastore-client.html
@@ -63,3 +65,8 @@ how to activate Cloud Datastore for your project.
     query = datastore.Query(kind='EntityKind')
     for result in query.fetch():
         print(result)
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-datastore.svg
+   :target: https://pypi.python.org/pypi/google-cloud-datastore
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datastore.svg
+   :target: https://pypi.python.org/pypi/google-cloud-datastore

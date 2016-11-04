@@ -5,6 +5,8 @@ Python Client for Google Cloud Natural Language
 
 .. _Google Cloud Natural Language: https://cloud.google.com/natural-language/
 
+|pypi| |versions|
+
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/language-usage.html
@@ -44,3 +46,8 @@ See the ``google-cloud-python`` API `Natural Language documentation`_ to learn
 how to analyze text with this API.
 
 .. _Natural Language documentation: https://google-cloud-python.readthedocs.io/en/stable/language-usage.html
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-language.svg
+   :target: https://pypi.python.org/pypi/google-cloud-language
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-language.svg
+   :target: https://pypi.python.org/pypi/google-cloud-language
