@@ -653,5 +653,6 @@ def main():
     if args.show_toc:
         print(json.dumps(toc, indent=4))
 
+
 if __name__ == '__main__':
     main()
