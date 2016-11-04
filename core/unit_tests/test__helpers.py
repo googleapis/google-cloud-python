@@ -917,19 +917,16 @@ class TestMetadataPlugin(unittest.TestCase):
         self.assertEqual(len(credentials._tokens), 1)
 
 
-class Test_make_secure_stub(unittest.TestCase):
+class Test_make_secure_channel(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from google.cloud._helpers import make_secure_stub
-        return make_secure_stub(*args, **kwargs)
+        from google.cloud._helpers import make_secure_channel
+        return make_secure_channel(*args, **kwargs)
 
     def test_it(self):
         from six.moves import http_client
         from google.cloud._testing import _Monkey
         from google.cloud import _helpers as MUT
-
-        mock_result = object()
-        stub_inputs = []
 
         SSL_CREDS = object()
         METADATA_CREDS = object()
@@ -961,11 +958,6 @@ class Test_make_secure_stub(unittest.TestCase):
                 return CHANNEL
 
         grpc_mod = _GRPCModule()
-
-        def mock_stub_class(channel):
-            stub_inputs.append(channel)
-            return mock_result
-
         metadata_plugin = object()
         plugin_args = []
 
@@ -978,11 +970,9 @@ class Test_make_secure_stub(unittest.TestCase):
         user_agent = 'USER_AGENT'
         with _Monkey(MUT, grpc=grpc_mod,
                      MetadataPlugin=mock_plugin):
-            result = self._callFUT(credentials, user_agent,
-                                   mock_stub_class, host)
+            result = self._callFUT(credentials, user_agent, host)
 
-        self.assertIs(result, mock_result)
-        self.assertEqual(stub_inputs, [CHANNEL])
+        self.assertIs(result, CHANNEL)
         self.assertEqual(plugin_args, [(credentials,)])
         self.assertEqual(grpc_mod.ssl_channel_credentials_args, ())
         self.assertEqual(grpc_mod.metadata_call_credentials_args,
@@ -997,6 +987,42 @@ class Test_make_secure_stub(unittest.TestCase):
         }
         self.assertEqual(grpc_mod.secure_channel_args,
                          (secure_args, secure_kwargs))
+
+
+class Test_make_secure_stub(unittest.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from google.cloud._helpers import make_secure_stub
+        return make_secure_stub(*args, **kwargs)
+
+    def test_it(self):
+        from google.cloud._testing import _Monkey
+        from google.cloud import _helpers as MUT
+
+        result = object()
+        channel_obj = object()
+        channels = []
+        channel_args = []
+
+        def stub_class(channel):
+            channels.append(channel)
+            return result
+
+        def mock_channel(*args):
+            channel_args.append(args)
+            return channel_obj
+
+        credentials = object()
+        user_agent = 'you-sir-age-int'
+        host = 'localhost'
+        with _Monkey(MUT, make_secure_channel=mock_channel):
+            stub = self._callFUT(credentials, user_agent,
+                                 stub_class, host)
+
+        self.assertIs(stub, result)
+        self.assertEqual(channels, [channel_obj])
+        self.assertEqual(channel_args,
+                         [(credentials, user_agent, host)])
 
 
 class Test_make_insecure_stub(unittest.TestCase):
