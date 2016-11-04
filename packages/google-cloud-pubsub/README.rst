@@ -5,6 +5,8 @@ Python Client for Google Cloud Pub / Sub
 
 .. _Google Cloud Pub / Sub: https://cloud.google.com/pubsub/docs
 
+|pypi| |versions|
+
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/pubsub-usage.html
@@ -57,3 +59,8 @@ To get started with this API, you'll need to create
 
     topic.publish('this is the message_payload',
                   attr1='value1', attr2='value2')
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
+   :target: https://pypi.python.org/pypi/google-cloud-pubsub
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsub.svg
+   :target: https://pypi.python.org/pypi/google-cloud-pubsub
