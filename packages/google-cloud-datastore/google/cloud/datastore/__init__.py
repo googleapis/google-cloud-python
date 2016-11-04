@@ -27,10 +27,6 @@ You'll typically use these to get started with the API:
 
 The main concepts with this API are:
 
-- :class:`~google.cloud.datastore.connection.Connection`
-  which represents a connection between your machine and the Cloud Datastore
-  API.
-
 - :class:`~google.cloud.datastore.client.Client`
   which represents a project (string) and namespace (string) bundled with
   a connection and has convenience methods for constructing objects with that

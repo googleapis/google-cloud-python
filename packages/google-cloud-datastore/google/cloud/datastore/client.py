@@ -72,7 +72,7 @@ def _extended_lookup(connection, project, key_pbs,
 
     Helper function for :meth:`Client.get_multi`.
 
-    :type connection: :class:`google.cloud.datastore.connection.Connection`
+    :type connection: :class:`google.cloud.datastore._http.Connection`
     :param connection: The connection used to connect to datastore.
 
     :type project: str
