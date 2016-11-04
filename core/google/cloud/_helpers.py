@@ -620,8 +620,8 @@ class MetadataPlugin(object):
         callback(headers, None)
 
 
-def make_secure_stub(credentials, user_agent, stub_class, host):
-    """Makes a secure stub for an RPC service.
+def make_secure_channel(credentials, user_agent, host):
+    """Makes a secure channel for an RPC service.
 
     Uses / depends on gRPC.
 
@@ -630,16 +630,13 @@ def make_secure_stub(credentials, user_agent, stub_class, host):
                         access tokens.
 
     :type user_agent: str
-    :param user_agent: (Optional) The user agent to be used with API requests.
-
-    :type stub_class: type
-    :param stub_class: A gRPC stub type for a given service.
+    :param user_agent: The user agent to be used with API requests.
 
     :type host: str
     :param host: The host for the service.
 
-    :rtype: object, instance of ``stub_class``
-    :returns: The stub object used to make gRPC requests to a given API.
+    :rtype: :class:`grpc._channel.Channel`
+    :returns: gRPC secure channel with credentials attached.
     """
     # ssl_channel_credentials() loads root certificates from
     # `grpc/_adapter/credentials/roots.pem`.
@@ -653,8 +650,32 @@ def make_secure_stub(credentials, user_agent, stub_class, host):
     channel_args = (
         ('grpc.primary_user_agent', user_agent),
     )
-    channel = grpc.secure_channel(target, channel_creds,
-                                  options=channel_args)
+    return grpc.secure_channel(target, channel_creds,
+                               options=channel_args)
+
+
+def make_secure_stub(credentials, user_agent, stub_class, host):
+    """Makes a secure stub for an RPC service.
+
+    Uses / depends on gRPC.
+
+    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
+    :param credentials: The OAuth2 Credentials to use for creating
+                        access tokens.
+
+    :type user_agent: str
+    :param user_agent: The user agent to be used with API requests.
+
+    :type stub_class: type
+    :param stub_class: A gRPC stub type for a given service.
+
+    :type host: str
+    :param host: The host for the service.
+
+    :rtype: object, instance of ``stub_class``
+    :returns: The stub object used to make gRPC requests to a given API.
+    """
+    channel = make_secure_channel(credentials, user_agent, host)
     return stub_class(channel)
 
 
