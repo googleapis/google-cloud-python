@@ -5,6 +5,8 @@ Python Client for Google Cloud DNS
 
 .. _Google Cloud DNS: https://cloud.google.com/dns/
 
+|pypi| |versions|
+
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/dns-usage.html
@@ -40,3 +42,8 @@ See the ``google-cloud-python`` API `DNS documentation`_ to learn
 how to manage DNS records using this Client Library.
 
 .. _DNS documentation: https://google-cloud-python.readthedocs.io/en/stable/dns-usage.html
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
+   :target: https://pypi.python.org/pypi/google-cloud-dns
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dns.svg
+   :target: https://pypi.python.org/pypi/google-cloud-dns
