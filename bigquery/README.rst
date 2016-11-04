@@ -5,6 +5,8 @@ Python Client for Google BigQuery
 
 .. _Google BigQuery: https://cloud.google.com/bigquery/what-is-bigquery
 
+|pypi| |versions|
+
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery-usage.html
@@ -85,3 +87,8 @@ See the ``google-cloud-python`` API `BigQuery documentation`_ to learn how
 to connect to BigQuery using this Client Library.
 
 .. _BigQuery documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigquery-usage.html
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigquery.svg
+   :target: https://pypi.python.org/pypi/google-cloud-bigquery
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery.svg
+   :target: https://pypi.python.org/pypi/google-cloud-bigquery
