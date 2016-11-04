@@ -30,7 +30,7 @@ class TestClient(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_publisher_api_wo_gax(self):
-        from google.cloud.pubsub.connection import _PublisherAPI
+        from google.cloud.pubsub._http import _PublisherAPI
         from google.cloud.pubsub import client as MUT
         from google.cloud._testing import _Monkey
         creds = _Credentials()
@@ -49,7 +49,7 @@ class TestClient(unittest.TestCase):
 
     def test_no_gax_ctor(self):
         from google.cloud._testing import _Monkey
-        from google.cloud.pubsub.connection import _PublisherAPI
+        from google.cloud.pubsub._http import _PublisherAPI
         from google.cloud.pubsub import client as MUT
 
         creds = _Credentials()
@@ -96,7 +96,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(_called_with, [(args, {})])
 
     def test_subscriber_api_wo_gax(self):
-        from google.cloud.pubsub.connection import _SubscriberAPI
+        from google.cloud.pubsub._http import _SubscriberAPI
         from google.cloud.pubsub import client as MUT
         from google.cloud._testing import _Monkey
         creds = _Credentials()
@@ -148,7 +148,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(_called_with, [(args, {})])
 
     def test_iam_policy_api(self):
-        from google.cloud.pubsub.connection import _IAMPolicyAPI
+        from google.cloud.pubsub._http import _IAMPolicyAPI
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = object()

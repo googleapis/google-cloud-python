@@ -32,7 +32,7 @@ class _Base(unittest.TestCase):
 class TestConnection(_Base):
 
     def _getTargetClass(self):
-        from google.cloud.pubsub.connection import Connection
+        from google.cloud.pubsub._http import Connection
         return Connection
 
     def test_default_url(self):
@@ -93,7 +93,7 @@ class TestConnection(_Base):
 class Test_PublisherAPI(_Base):
 
     def _getTargetClass(self):
-        from google.cloud.pubsub.connection import _PublisherAPI
+        from google.cloud.pubsub._http import _PublisherAPI
         return _PublisherAPI
 
     def _makeOne(self, *args, **kw):
@@ -409,7 +409,7 @@ class Test_PublisherAPI(_Base):
 class Test_SubscriberAPI(_Base):
 
     def _getTargetClass(self):
-        from google.cloud.pubsub.connection import _SubscriberAPI
+        from google.cloud.pubsub._http import _SubscriberAPI
         return _SubscriberAPI
 
     def _makeOne(self, *args, **kw):
@@ -711,7 +711,7 @@ class Test_SubscriberAPI(_Base):
 class Test_IAMPolicyAPI(_Base):
 
     def _getTargetClass(self):
-        from google.cloud.pubsub.connection import _IAMPolicyAPI
+        from google.cloud.pubsub._http import _IAMPolicyAPI
         return _IAMPolicyAPI
 
     def test_ctor(self):
@@ -824,7 +824,7 @@ class Test_IAMPolicyAPI(_Base):
 
 class Test__transform_messages_base64_empty(unittest.TestCase):
     def _callFUT(self, messages, transform, key=None):
-        from google.cloud.pubsub.connection import _transform_messages_base64
+        from google.cloud.pubsub._http import _transform_messages_base64
         return _transform_messages_base64(messages, transform, key)
 
     def test__transform_messages_base64_empty_message(self):

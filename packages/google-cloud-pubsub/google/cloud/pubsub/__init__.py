@@ -25,9 +25,5 @@ The main concepts with this API are:
 
 
 from google.cloud.pubsub.client import Client
-from google.cloud.pubsub.connection import Connection
 from google.cloud.pubsub.subscription import Subscription
 from google.cloud.pubsub.topic import Topic
-
-
-SCOPE = Connection.SCOPE
