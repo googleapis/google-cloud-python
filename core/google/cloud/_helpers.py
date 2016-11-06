@@ -53,8 +53,10 @@ _RFC3339_NANOS = re.compile(r"""
     (?P<no_fraction>
         \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}  # YYYY-MM-DDTHH:MM:SS
     )
-    \.                                       # decimal point
-    (?P<nanos>\d{1,9})                       # nanoseconds, maybe truncated
+    (                                        # Optional decimal part
+     \.                                      # decimal point
+     (?P<nanos>\d{1,9})                      # nanoseconds, maybe truncated
+    )?
     Z                                        # Zulu
 """, re.VERBOSE)
 # NOTE: Catching this ImportError is a workaround for GAE not supporting the
@@ -429,9 +431,12 @@ def _rfc3339_nanos_to_datetime(dt_str):
     bare_seconds = datetime.datetime.strptime(
         with_nanos.group('no_fraction'), _RFC3339_NO_FRACTION)
     fraction = with_nanos.group('nanos')
-    scale = 9 - len(fraction)
-    nanos = int(fraction) * (10 ** scale)
-    micros = nanos // 1000
+    if fraction is None:
+        micros = 0
+    else:
+        scale = 9 - len(fraction)
+        nanos = int(fraction) * (10 ** scale)
+        micros = nanos // 1000
     return bare_seconds.replace(microsecond=micros, tzinfo=UTC)
 
 
