@@ -667,6 +667,24 @@ class Test__rfc3339_nanos_to_datetime(unittest.TestCase):
                 year, month, day, hour, minute, seconds, micros, UTC)
             self.assertEqual(result, expected_result)
 
+    def test_without_nanos(self):
+        import datetime
+        from google.cloud._helpers import UTC
+
+        year = 1988
+        month = 4
+        day = 29
+        hour = 12
+        minute = 12
+        seconds = 12
+
+        dt_str = '%d-%02d-%02dT%02d:%02d:%02dZ' % (
+            year, month, day, hour, minute, seconds)
+        result = self._callFUT(dt_str)
+        expected_result = datetime.datetime(
+            year, month, day, hour, minute, seconds, 0, UTC)
+        self.assertEqual(result, expected_result)
+
     def test_w_naonseconds(self):
         import datetime
         from google.cloud._helpers import UTC
