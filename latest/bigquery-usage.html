@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 9ae33e7 documentation</title>
+  <title>Using the API &mdash; google-cloud 15eb091 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 9ae33e7 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 15eb091 documentation" href="index.html"/>
         <link rel="next" title="BigQuery Client" href="bigquery-client.html"/>
         <link rel="prev" title="IAM Policy" href="pubsub-iam.html"/> 
 
@@ -669,7 +669,7 @@ the job locally:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;person_ages&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
 <span class="gp">... </span>    <span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;full_name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;required&#39;</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;required)]</span>
+<span class="gp">... </span>    <span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;required&#39;</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_storage</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="s1">&#39;load-from-storage-job&#39;</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="s1">&#39;gs://bucket-name/object-prefix*&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
@@ -861,7 +861,7 @@ is submitted to the BigQuery back-end.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'9ae33e7',
+            VERSION:'15eb091',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
