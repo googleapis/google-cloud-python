@@ -314,7 +314,7 @@ the job locally:
    >>> table = dataset.table(name='person_ages')
    >>> table.schema = [
    ...     SchemaField('full_name', 'STRING', mode='required'),
-   ...     SchemaField('age', 'INTEGER', mode='required)]
+   ...     SchemaField('age', 'INTEGER', mode='required')]
    >>> job = client.load_table_from_storage(
    ...     'load-from-storage-job', table, 'gs://bucket-name/object-prefix*')
    >>> job.source_format = 'CSV'
