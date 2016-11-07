@@ -18,7 +18,9 @@ CORE_DIR = os.path.abspath(
     os.path.join(CURR_DIR, '..', 'core'))
 EXTRA_PATH_TEMPLATE = (
     'import sys;'
-    'mp = sys.modules[{!r}].__path__;'
+    'import types;'
+    'm = sys.modules.setdefault({!r}, types.ModuleType({!r}));'
+    "mp = m.__dict__.setdefault('__path__', []);"
     'p1 = {!r};'
     '(p1 not in mp) and mp.append(p1);'
     'p2 = {!r};'
@@ -44,11 +46,12 @@ def add_hacked_pth_file(site_packages):
     installer = namespaces.Installer()
     part1 = installer._gen_nspkg_line('google')
     part2 = EXTRA_PATH_TEMPLATE.format(
-        'google', os.path.join(CORE_DIR, 'google'),
+        'google', 'google', os.path.join(CORE_DIR, 'google'),
         os.path.join(CURR_DIR, 'google'))
     part3 = installer._gen_nspkg_line('google.cloud')
     part4 = EXTRA_PATH_TEMPLATE.format(
-        'google.cloud', os.path.join(CORE_DIR, 'google', 'cloud'),
+        'google.cloud', 'google.cloud',
+        os.path.join(CORE_DIR, 'google', 'cloud'),
         os.path.join(CURR_DIR, 'google', 'cloud'))
 
     file_contents = ''.join([part1, part2, part3, part4])
