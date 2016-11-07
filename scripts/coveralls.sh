@@ -16,14 +16,19 @@
 
 set -ev
 
-##################################################
-# Only run coveralls during a Travis push build. #
-##################################################
+#############################################################
+# Only run coveralls during a CircleCI / Travis push build. #
+#############################################################
 if [[ "${TRAVIS_BRANCH}" == "master" ]] && \
        [[ "${TRAVIS_PULL_REQUEST}" == "false" ]]; then
-  echo "Sending coverage report on a merge to master."
-  tox -e coveralls
+  echo "Sending coverage report on a Travis merge to master."
+elif [[ "${CIRCLECI}" == "true" ]] && \
+       [[ "${CIRCLE_BRANCH}" == "master" ]] && \
+       [[ "${CI_PULL_REQUEST}" == "" ]]; then
+  echo "Sending coverage report on a CircleCI merge to master."
 else
   echo "Not on a push build for master, skipping coveralls."
   exit
 fi
+
+tox -e coveralls
