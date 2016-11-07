@@ -107,7 +107,7 @@ class Batch(object):
     def connection(self):
         """Getter for connection over which the batch will run.
 
-        :rtype: :class:`google.cloud.datastore.connection.Connection`
+        :rtype: :class:`google.cloud.datastore._http.Connection`
         :returns: The connection over which the batch will run.
         """
         return self._client.connection

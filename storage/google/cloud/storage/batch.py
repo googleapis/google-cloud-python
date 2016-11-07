@@ -27,7 +27,7 @@ import httplib2
 import six
 
 from google.cloud.exceptions import make_exception
-from google.cloud.storage.connection import Connection
+from google.cloud.storage._http import Connection
 
 
 class MIMEApplicationHTTP(MIMEApplication):

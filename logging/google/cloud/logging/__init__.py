@@ -16,10 +16,8 @@
 
 
 from google.cloud.logging.client import Client
-from google.cloud.logging.connection import Connection
 
 
-SCOPE = Connection.SCOPE
 ASCENDING = 'timestamp asc'
 """Query string to order by ascending timestamps."""
 DESCENDING = 'timestamp desc'

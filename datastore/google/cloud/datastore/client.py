@@ -20,8 +20,8 @@ from google.cloud._helpers import (
     _determine_default_project as _base_default_project)
 from google.cloud.client import _ClientProjectMixin
 from google.cloud.client import Client as _BaseClient
+from google.cloud.datastore._http import Connection
 from google.cloud.datastore import helpers
-from google.cloud.datastore.connection import Connection
 from google.cloud.datastore.batch import Batch
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
@@ -72,7 +72,7 @@ def _extended_lookup(connection, project, key_pbs,
 
     Helper function for :meth:`Client.get_multi`.
 
-    :type connection: :class:`google.cloud.datastore.connection.Connection`
+    :type connection: :class:`google.cloud.datastore._http.Connection`
     :param connection: The connection used to connect to datastore.
 
     :type project: str
