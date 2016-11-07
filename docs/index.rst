@@ -109,6 +109,7 @@
   logging-entries
   logging-metric
   logging-sink
+  logging-stdlib-usage
   logging-handlers
   logging-transports-sync
   logging-transports-thread
