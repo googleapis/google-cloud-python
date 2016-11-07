@@ -1,3 +1,19 @@
+# Copyright 2016 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""Make a hacked PTH file to simulate "setup.py develop"."""
+
 import argparse
 import json
 import os
@@ -31,6 +47,9 @@ def fake_core_dist_info(site_packages):
     """Fake the dist. info of google-cloud-core.
 
     It needs to be faked since we don't actually install it.
+
+    :type site_packages: str
+    :param site_packages: Path to a site packages directory.
     """
     dist_info = os.path.join(site_packages, CORE_DIST_INFO)
     if not os.path.isdir(dist_info):
@@ -42,7 +61,11 @@ def fake_core_dist_info(site_packages):
 
 
 def add_hacked_pth_file(site_packages):
-    """Add the hacked .PTH file to the site packages dir."""
+    """Add the hacked .PTH file to the site packages dir.
+
+    :type site_packages: str
+    :param site_packages: Path to a site packages directory.
+    """
     installer = namespaces.Installer()
     part1 = installer._gen_nspkg_line('google')
     part2 = EXTRA_PATH_TEMPLATE.format(
@@ -60,16 +83,18 @@ def add_hacked_pth_file(site_packages):
         file_obj.write(file_contents)
 
 
-def main(site_packages):
-    add_hacked_pth_file(site_packages)
-    fake_core_dist_info(site_packages)
-
-
-if __name__ == '__main__':
+def main():
+    """Main script for making a hacked PTH file."""
     parser = argparse.ArgumentParser(
         description='Make a hacked PTH file to emulate "setup.py develop"')
     help_txt = 'Site packages directory where .pth file will be added.'
     parser.add_argument('--site-packages', dest='site_packages',
                         required=True, help=help_txt)
     args = parser.parse_args()
-    main(args.site_packages)
+
+    add_hacked_pth_file(args.site_packages)
+    fake_core_dist_info(args.site_packages)
+
+
+if __name__ == '__main__':
+    main()
