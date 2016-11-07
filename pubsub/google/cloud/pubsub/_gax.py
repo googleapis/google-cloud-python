@@ -512,7 +512,7 @@ def make_gax_publisher_api(connection):
     an insecure ``channel`` is created pointing at the local
     Pub / Sub server.
 
-    :type connection: :class:`~google.cloud.pubsub.connection.Connection`
+    :type connection: :class:`~google.cloud.pubsub._http.Connection`
     :param connection: The connection that holds configuration details.
 
     :rtype: :class:`~google.cloud.pubsub.v1.publisher_api.PublisherApi`
@@ -536,7 +536,7 @@ def make_gax_subscriber_api(connection):
     an insecure ``channel`` is created pointing at the local
     Pub / Sub server.
 
-    :type connection: :class:`~google.cloud.pubsub.connection.Connection`
+    :type connection: :class:`~google.cloud.pubsub._http.Connection`
     :param connection: The connection that holds configuration details.
 
     :rtype: :class:`~google.cloud.pubsub.v1.subscriber_api.SubscriberApi`

@@ -18,10 +18,10 @@ import os
 
 from google.cloud.client import JSONClient
 from google.cloud.environment_vars import DISABLE_GRPC
-from google.cloud.pubsub.connection import Connection
-from google.cloud.pubsub.connection import _PublisherAPI as JSONPublisherAPI
-from google.cloud.pubsub.connection import _SubscriberAPI as JSONSubscriberAPI
-from google.cloud.pubsub.connection import _IAMPolicyAPI
+from google.cloud.pubsub._http import Connection
+from google.cloud.pubsub._http import _PublisherAPI as JSONPublisherAPI
+from google.cloud.pubsub._http import _SubscriberAPI as JSONSubscriberAPI
+from google.cloud.pubsub._http import _IAMPolicyAPI
 from google.cloud.pubsub.topic import Topic
 
 try:

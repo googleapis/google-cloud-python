@@ -21,7 +21,7 @@ class TestConnection(unittest.TestCase):
     FILTER = 'logName:syslog AND severity>=ERROR'
 
     def _getTargetClass(self):
-        from google.cloud.logging.connection import Connection
+        from google.cloud.logging._http import Connection
         return Connection
 
     def _makeOne(self, *args, **kw):
@@ -43,7 +43,7 @@ class Test_LoggingAPI(unittest.TestCase):
     FILTER = 'logName:syslog AND severity>=ERROR'
 
     def _getTargetClass(self):
-        from google.cloud.logging.connection import _LoggingAPI
+        from google.cloud.logging._http import _LoggingAPI
         return _LoggingAPI
 
     def _makeOne(self, *args, **kw):
@@ -292,7 +292,7 @@ class Test_SinksAPI(unittest.TestCase):
     DESTINATION_URI = 'faux.googleapis.com/destination'
 
     def _getTargetClass(self):
-        from google.cloud.logging.connection import _SinksAPI
+        from google.cloud.logging._http import _SinksAPI
         return _SinksAPI
 
     def _makeOne(self, *args, **kw):
@@ -533,7 +533,7 @@ class Test_MetricsAPI(unittest.TestCase):
     DESCRIPTION = 'DESCRIPTION'
 
     def _getTargetClass(self):
-        from google.cloud.logging.connection import _MetricsAPI
+        from google.cloud.logging._http import _MetricsAPI
         return _MetricsAPI
 
     def _makeOne(self, *args, **kw):

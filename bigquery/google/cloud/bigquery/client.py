@@ -16,7 +16,7 @@
 
 
 from google.cloud.client import JSONClient
-from google.cloud.bigquery.connection import Connection
+from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractTableToStorageJob
