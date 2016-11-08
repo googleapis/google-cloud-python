@@ -492,7 +492,7 @@ class Table(object):
         client = self._require_client(client)
         path = '/projects/%s/datasets/%s/tables' % (
             self._dataset.project, self._dataset.name)
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)
 
@@ -513,8 +513,8 @@ class Table(object):
         client = self._require_client(client)
 
         try:
-            client.connection.api_request(method='GET', path=self.path,
-                                          query_params={'fields': 'id'})
+            client._connection.api_request(method='GET', path=self.path,
+                                           query_params={'fields': 'id'})
         except NotFound:
             return False
         else:
@@ -533,7 +533,7 @@ class Table(object):
         """
         client = self._require_client(client)
 
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='GET', path=self.path)
         self._set_properties(api_response)
 
@@ -608,7 +608,7 @@ class Table(object):
                 partial['schema'] = {
                     'fields': _build_schema_resource(schema)}
 
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='PATCH', path=self.path, data=partial)
         self._set_properties(api_response)
 
@@ -624,7 +624,7 @@ class Table(object):
                        ``client`` stored on the current dataset.
         """
         client = self._require_client(client)
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='PUT', path=self.path, data=self._build_resource())
         self._set_properties(api_response)
 
@@ -640,7 +640,7 @@ class Table(object):
                        ``client`` stored on the current dataset.
         """
         client = self._require_client(client)
-        client.connection.api_request(method='DELETE', path=self.path)
+        client._connection.api_request(method='DELETE', path=self.path)
 
     def fetch_data(self, max_results=None, page_token=None, client=None):
         """API call:  fetch the table data via a GET request
@@ -764,7 +764,7 @@ class Table(object):
         if template_suffix is not None:
             data['templateSuffix'] = template_suffix
 
-        response = client.connection.api_request(
+        response = client._connection.api_request(
             method='POST',
             path='%s/insertAll' % self.path,
             data=data)
@@ -885,7 +885,7 @@ class Table(object):
                  a file opened in text mode.
         """
         client = self._require_client(client)
-        connection = client.connection
+        connection = client._connection
         content_type = 'application/octet-stream'
 
         # Rewind the file if desired.
