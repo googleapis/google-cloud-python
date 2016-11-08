@@ -309,39 +309,39 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.distinct_on, _DISTINCT_ON2)
 
     def test_fetch_defaults_w_client_attr(self):
-        from google.cloud.datastore.query import AltIterator
+        from google.cloud.datastore.query import Iterator
 
         connection = _Connection()
         client = self._makeClient(connection)
         query = self._makeOne(client)
         iterator = query.fetch()
 
-        self.assertIsInstance(iterator, AltIterator)
+        self.assertIsInstance(iterator, Iterator)
         self.assertIs(iterator._query, query)
         self.assertIs(iterator.client, client)
         self.assertIsNone(iterator.max_results)
         self.assertEqual(iterator._offset, 0)
 
     def test_fetch_w_explicit_client(self):
-        from google.cloud.datastore.query import AltIterator
+        from google.cloud.datastore.query import Iterator
 
         connection = _Connection()
         client = self._makeClient(connection)
         other_client = self._makeClient(connection)
         query = self._makeOne(client)
         iterator = query.fetch(limit=7, offset=8, client=other_client)
-        self.assertIsInstance(iterator, AltIterator)
+        self.assertIsInstance(iterator, Iterator)
         self.assertIs(iterator._query, query)
         self.assertIs(iterator.client, other_client)
         self.assertEqual(iterator.max_results, 7)
         self.assertEqual(iterator._offset, 8)
 
 
-class TestAltIterator(unittest.TestCase):
+class TestIterator(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.datastore.query import AltIterator
-        return AltIterator
+        from google.cloud.datastore.query import Iterator
+        return Iterator
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)

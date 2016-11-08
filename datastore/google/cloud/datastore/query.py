@@ -358,7 +358,7 @@ class Query(object):
         :param client: client used to connect to datastore.
                        If not supplied, uses the query's value.
 
-        :rtype: :class:`AltIterator`
+        :rtype: :class:`Iterator`
         :returns: The iterator for the query.
         :raises: ValueError if ``connection`` is not passed and no implicit
                  default has been set.
@@ -366,12 +366,12 @@ class Query(object):
         if client is None:
             client = self._client
 
-        return AltIterator(
+        return Iterator(
             self, client, limit=limit, offset=offset,
             start_cursor=start_cursor, end_cursor=end_cursor)
 
 
-class AltIterator(BaseIterator):
+class Iterator(BaseIterator):
     """Represent the state of a given execution of a Query.
 
     :type query: :class:`~google.cloud.datastore.query.Query`
@@ -399,7 +399,7 @@ class AltIterator(BaseIterator):
 
     def __init__(self, query, client, limit=None, offset=None,
                  start_cursor=None, end_cursor=None):
-        super(AltIterator, self).__init__(
+        super(Iterator, self).__init__(
             client=client, item_to_value=_item_to_entity,
             page_token=start_cursor, max_results=limit)
         self._query = query
