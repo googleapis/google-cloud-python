@@ -117,6 +117,16 @@ class TestSpeechClient(unittest.TestCase):
                                       profanity_filter=True,
                                       speech_context=['Google', 'cloud'])
 
+    def _make_streaming_request(self, file_obj, single_utterance=True,
+                                interim_results=False):
+        client = Config.CLIENT
+        sample = client.sample(content=file_obj,
+                               encoding=speech.Encoding.LINEAR16,
+                               sample_rate=16000)
+        return client.streaming_recognize(sample,
+                                          single_utterance=single_utterance,
+                                          interim_results=interim_results)
+
     def _check_results(self, results, num_results=1):
         self.assertEqual(len(results), num_results)
         top_result = results[0]
@@ -175,3 +185,40 @@ class TestSpeechClient(unittest.TestCase):
 
         _wait_until_complete(operation)
         self._check_results(operation.results, 2)
+
+    def test_stream_recognize(self):
+        if not Config.USE_GAX:
+            self.skipTest('gRPC is required for Speech Streaming Recognize.')
+
+        with open(AUDIO_FILE, 'rb') as file_obj:
+            for results in self._make_streaming_request(file_obj):
+                self._check_results(results)
+
+    def test_stream_recognize_interim_results(self):
+        if not Config.USE_GAX:
+            self.skipTest('gRPC is required for Speech Streaming Recognize.')
+
+        # These extra words are interim_results that the API returns as it's
+        # deciphering the speech audio. This has a high probability of becoming
+        # out of date and causing the test to fail.
+        extras = ' Google Now who hello thank you for you for use hello '
+        with open(AUDIO_FILE, 'rb') as file_obj:
+            recognize = self._make_streaming_request(file_obj,
+                                                     interim_results=True)
+            responses = list(recognize)
+            for response in responses:
+                if response[0].transcript:
+                    self.assertIn(response[0].transcript,
+                                  extras + self.ASSERT_TEXT)
+
+            self.assertGreater(len(responses), 5)
+            self._check_results(responses[-1])
+
+    def test_stream_recognize_single_utterance(self):
+        if not Config.USE_GAX:
+            self.skipTest('gRPC is required for Speech Streaming Recognize.')
+
+        with open(AUDIO_FILE, 'rb') as file_obj:
+            for results in self._make_streaming_request(
+                    file_obj, single_utterance=False):
+                self._check_results(results)

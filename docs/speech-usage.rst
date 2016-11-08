@@ -151,5 +151,85 @@ words to the vocabulary of the recognizer.
     transcript: Hello, this is a test
     confidence: 0.81
 
+
+Streaming Recognition
+---------------------
+
+The :meth:`~google.cloud.speech.Client.streaming_recognize` method converts
+speech data to possible text alternatives on the fly.
+
+.. note::
+    Streaming recognition requests are limited to 1 minute of audio.
+
+    See: https://cloud.google.com/speech/limits#content
+
+.. code-block:: python
+
+    >>> from google.cloud import speech
+    >>> client = speech.Client()
+    >>> with open('./hello.wav', 'rb') as stream:
+    ...     sample = client.sample(content=stream,
+    ...                            encoding=speech.Encoding.LINEAR16,
+    ...                            sample_rate=16000)
+    ...     alternatives = list(client.streaming_recognize(sample))
+    >>> print(alternatives[0].transcript)
+    'hello'
+    >>> print(alternatives[0].confidence)
+    0.973458576
+
+
+By default the API will perform continuous recognition
+(continuing to process audio even if the speaker in the audio pauses speaking)
+until the client closes the output stream or until the maximum time limit has
+been reached.
+
+If you only want to recognize a single utterance you can set
+ ``single_utterance`` to :data:`True` and only one result will be returned.
+
+See: `Single Utterance`_
+
+.. code-block:: python
+
+    >>> with open('./hello_pause_goodbye.wav', 'rb') as stream:
+    ...     sample = client.sample(content=stream,
+    ...                            encoding=speech.Encoding.LINEAR16,
+    ...                            sample_rate=16000)
+    ...     responses = client.streaming_recognize(sample,
+    ...                                            single_utterance=True)
+    ...     alternatives = list(responses)
+    >>> print(alternatives[0].transcript)
+    hello
+    >>> print(alternatives[0].confidence)
+    0.96523453546
+
+
+If ``interim_results`` is set to :data:`True`, interim results
+(tentative hypotheses) may be returned as they become available.
+
+.. code-block:: python
+
+    >>> from google.cloud import speech
+    >>> client = speech.Client()
+    >>> with open('./hello.wav', 'rb') as stream:
+    ...     sample = client.sample(content=stream,
+    ...                            encoding=speech.Encoding.LINEAR16,
+    ...                            sample_rate=16000)
+    ...     for alternatives in client.streaming_recognize(sample,
+    ...                                                    interim_results=True):
+    ...         print('=' * 20)
+    ...         print(alternatives[0].transcript)
+    ...         print(alternatives[0].confidence)
+    ====================
+    'he'
+    None
+    ====================
+    'hell'
+    None
+    ====================
+    'hello'
+    0.973458576
+
+
+.. _Single Utterance: https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#streamingrecognitionconfig
 .. _sync_recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize
 .. _Speech Asynchronous Recognize: https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize
