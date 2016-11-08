@@ -44,7 +44,7 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(self.PROJECT, credentials=_Credentials(),
                                 use_gax=False)
-        conn = client.connection = object()
+        conn = client._connection = object()
         api = client.logging_api
 
         self.assertIsInstance(api, _LoggingAPI)
@@ -98,7 +98,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=False):
             client = self._make_one(self.PROJECT, credentials=_Credentials())
 
-        conn = client.connection = object()
+        conn = client._connection = object()
         api = client.sinks_api
 
         self.assertIsInstance(api, _SinksAPI)
@@ -139,7 +139,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=False):
             client = self._make_one(self.PROJECT, credentials=_Credentials())
 
-        conn = client.connection = object()
+        conn = client._connection = object()
         api = client.metrics_api
 
         self.assertIsInstance(api, _MetricsAPI)
@@ -205,7 +205,7 @@ class TestClient(unittest.TestCase):
             'entries': ENTRIES,
             'nextPageToken': TOKEN,
         }
-        client.connection = _Connection(returned)
+        client._connection = _Connection(returned)
 
         iterator = client.list_entries()
         page = six.next(iterator.pages)
@@ -223,7 +223,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(logger.project, self.PROJECT)
         self.assertEqual(token, TOKEN)
 
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         self.assertEqual(called_with, {
             'path': '/entries:list',
             'method': 'POST',
@@ -266,7 +266,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(self.PROJECT, credentials=_Credentials(),
                                 use_gax=False)
         returned = {'entries': ENTRIES}
-        client.connection = _Connection(returned)
+        client._connection = _Connection(returned)
 
         iterator = client.list_entries(
             projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
@@ -299,7 +299,7 @@ class TestClient(unittest.TestCase):
 
         self.assertIs(entries[0].logger, entries[1].logger)
 
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         self.assertEqual(called_with, {
             'path': '/entries:list',
             'method': 'POST',
@@ -355,7 +355,7 @@ class TestClient(unittest.TestCase):
             'sinks': SINKS,
             'nextPageToken': TOKEN,
         }
-        client.connection = _Connection(returned)
+        client._connection = _Connection(returned)
 
         iterator = client.list_sinks()
         page = six.next(iterator.pages)
@@ -374,7 +374,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(sink.client, client)
 
         # Verify the mocked transport.
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         path = '/projects/%s/sinks' % (self.PROJECT,)
         self.assertEqual(called_with, {
             'method': 'GET',
@@ -400,7 +400,7 @@ class TestClient(unittest.TestCase):
         returned = {
             'sinks': SINKS,
         }
-        client.connection = _Connection(returned)
+        client._connection = _Connection(returned)
 
         iterator = client.list_sinks(PAGE_SIZE, TOKEN)
         sinks = list(iterator)
@@ -418,7 +418,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(sink.client, client)
 
         # Verify the mocked transport.
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         path = '/projects/%s/sinks' % (self.PROJECT,)
         self.assertEqual(called_with, {
             'method': 'GET',
@@ -470,7 +470,7 @@ class TestClient(unittest.TestCase):
         returned = {
             'metrics': metrics,
         }
-        client.connection = _Connection(returned)
+        client._connection = _Connection(returned)
 
         # Execute request.
         iterator = client.list_metrics()
@@ -486,7 +486,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(metric.client, client)
 
         # Verify mocked transport.
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         path = '/projects/%s/metrics' % (self.PROJECT,)
         self.assertEqual(called_with, {
             'method': 'GET',
@@ -513,7 +513,7 @@ class TestClient(unittest.TestCase):
             'metrics': metrics,
             'nextPageToken': next_token,
         }
-        client.connection = _Connection(returned)
+        client._connection = _Connection(returned)
 
         # Execute request.
         iterator = client.list_metrics(page_size, token)
@@ -532,7 +532,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(metric.client, client)
 
         # Verify mocked transport.
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         path = '/projects/%s/metrics' % (self.PROJECT,)
         self.assertEqual(called_with, {
             'method': 'GET',
