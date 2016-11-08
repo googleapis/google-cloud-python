@@ -382,12 +382,12 @@ class HTTPIterator(Iterator):
         """
         params = self._get_query_params()
         if self._HTTP_METHOD == 'GET':
-            return self.client.connection.api_request(
+            return self.client._connection.api_request(
                 method=self._HTTP_METHOD,
                 path=self.path,
                 query_params=params)
         elif self._HTTP_METHOD == 'POST':
-            return self.client.connection.api_request(
+            return self.client._connection.api_request(
                 method=self._HTTP_METHOD,
                 path=self.path,
                 data=params)

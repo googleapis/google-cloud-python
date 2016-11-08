@@ -419,4 +419,4 @@ class _Client(object):
 
     def __init__(self, connection=None):
         self._operations_stub = _OperationsStub()
-        self.connection = connection
+        self._connection = connection
