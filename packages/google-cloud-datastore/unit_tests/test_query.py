@@ -309,306 +309,32 @@ class TestQuery(unittest.TestCase):
         self.assertEqual(query.distinct_on, _DISTINCT_ON2)
 
     def test_fetch_defaults_w_client_attr(self):
+        from google.cloud.datastore.query import AltIterator
+
         connection = _Connection()
         client = self._makeClient(connection)
         query = self._makeOne(client)
         iterator = query.fetch()
+
+        self.assertIsInstance(iterator, AltIterator)
         self.assertIs(iterator._query, query)
-        self.assertIs(iterator._client, client)
-        self.assertIsNone(iterator._limit)
+        self.assertIs(iterator.client, client)
+        self.assertIsNone(iterator.max_results)
         self.assertEqual(iterator._offset, 0)
 
     def test_fetch_w_explicit_client(self):
+        from google.cloud.datastore.query import AltIterator
+
         connection = _Connection()
         client = self._makeClient(connection)
         other_client = self._makeClient(connection)
         query = self._makeOne(client)
         iterator = query.fetch(limit=7, offset=8, client=other_client)
+        self.assertIsInstance(iterator, AltIterator)
         self.assertIs(iterator._query, query)
-        self.assertIs(iterator._client, other_client)
-        self.assertEqual(iterator._limit, 7)
+        self.assertIs(iterator.client, other_client)
+        self.assertEqual(iterator.max_results, 7)
         self.assertEqual(iterator._offset, 8)
-
-
-class TestIterator(unittest.TestCase):
-    _PROJECT = 'PROJECT'
-    _NAMESPACE = 'NAMESPACE'
-    _KIND = 'KIND'
-    _ID = 123
-    _START = b'\x00'
-    _END = b'\xFF'
-
-    def _getTargetClass(self):
-        from google.cloud.datastore.query import Iterator
-        return Iterator
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
-
-    def _addQueryResults(self, connection, cursor=_END, more=False,
-                         skipped_results=None, no_entity=False):
-        from google.cloud.datastore._generated import entity_pb2
-        from google.cloud.datastore._generated import query_pb2
-        from google.cloud.datastore.helpers import _new_value_pb
-
-        if more:
-            more_enum = query_pb2.QueryResultBatch.NOT_FINISHED
-        else:
-            more_enum = query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
-        _ID = 123
-        if no_entity:
-            entities = []
-        else:
-            entity_pb = entity_pb2.Entity()
-            entity_pb.key.partition_id.project_id = self._PROJECT
-            path_element = entity_pb.key.path.add()
-            path_element.kind = self._KIND
-            path_element.id = _ID
-            value_pb = _new_value_pb(entity_pb, 'foo')
-            value_pb.string_value = u'Foo'
-            entities = [entity_pb]
-
-        connection._results.append(
-            (entities, cursor, more_enum, skipped_results))
-
-    def _makeClient(self, connection=None):
-        if connection is None:
-            connection = _Connection()
-        return _Client(self._PROJECT, connection)
-
-    def test_ctor_defaults(self):
-        connection = _Connection()
-        query = object()
-        iterator = self._makeOne(query, connection)
-        self.assertIs(iterator._query, query)
-        self.assertIsNone(iterator._limit)
-        self.assertIsNone(iterator._offset)
-        self.assertIsNone(iterator._skipped_results)
-
-    def test_ctor_explicit(self):
-        client = self._makeClient()
-        query = _Query(client)
-        iterator = self._makeOne(query, client, 13, 29)
-        self.assertIs(iterator._query, query)
-        self.assertEqual(iterator._limit, 13)
-        self.assertEqual(iterator._offset, 29)
-
-    def test_next_page_no_cursors_no_more(self):
-        from google.cloud.datastore.query import _pb_from_query
-        connection = _Connection()
-        client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
-        self._addQueryResults(connection, cursor=b'')
-        iterator = self._makeOne(query, client)
-        entities, more_results, cursor = iterator.next_page()
-        self.assertIsNone(iterator._skipped_results)
-
-        self.assertIsNone(cursor)
-        self.assertFalse(more_results)
-        self.assertFalse(iterator._more_results)
-        self.assertEqual(len(entities), 1)
-        self.assertEqual(entities[0].key.path,
-                         [{'kind': self._KIND, 'id': self._ID}])
-        self.assertEqual(entities[0]['foo'], u'Foo')
-        qpb = _pb_from_query(query)
-        qpb.offset = 0
-        EXPECTED = {
-            'project': self._PROJECT,
-            'query_pb': qpb,
-            'namespace': self._NAMESPACE,
-            'transaction_id': None,
-        }
-        self.assertEqual(connection._called_with, [EXPECTED])
-
-    def test_next_page_no_cursors_no_more_w_offset_and_limit(self):
-        from google.cloud.datastore.query import _pb_from_query
-        connection = _Connection()
-        client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
-        skipped_results = object()
-        self._addQueryResults(connection, cursor=b'',
-                              skipped_results=skipped_results)
-        iterator = self._makeOne(query, client, 13, 29)
-        entities, more_results, cursor = iterator.next_page()
-
-        self.assertIsNone(cursor)
-        self.assertFalse(more_results)
-        self.assertFalse(iterator._more_results)
-        self.assertEqual(iterator._skipped_results, skipped_results)
-        self.assertEqual(len(entities), 1)
-        self.assertEqual(entities[0].key.path,
-                         [{'kind': self._KIND, 'id': self._ID}])
-        self.assertEqual(entities[0]['foo'], u'Foo')
-        qpb = _pb_from_query(query)
-        qpb.limit.value = 13
-        qpb.offset = 29
-        EXPECTED = {
-            'project': self._PROJECT,
-            'query_pb': qpb,
-            'namespace': self._NAMESPACE,
-            'transaction_id': None,
-        }
-        self.assertEqual(connection._called_with, [EXPECTED])
-
-    def test_next_page_w_cursors_w_more(self):
-        from base64 import urlsafe_b64decode
-        from base64 import urlsafe_b64encode
-        from google.cloud.datastore.query import _pb_from_query
-        connection = _Connection()
-        client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
-        self._addQueryResults(connection, cursor=self._END, more=True)
-        iterator = self._makeOne(query, client)
-        iterator._start_cursor = self._START
-        iterator._end_cursor = self._END
-        entities, more_results, cursor = iterator.next_page()
-
-        self.assertEqual(cursor, urlsafe_b64encode(self._END))
-        self.assertTrue(more_results)
-        self.assertTrue(iterator._more_results)
-        self.assertIsNone(iterator._skipped_results)
-        self.assertIsNone(iterator._end_cursor)
-        self.assertEqual(urlsafe_b64decode(iterator._start_cursor), self._END)
-        self.assertEqual(len(entities), 1)
-        self.assertEqual(entities[0].key.path,
-                         [{'kind': self._KIND, 'id': self._ID}])
-        self.assertEqual(entities[0]['foo'], u'Foo')
-        qpb = _pb_from_query(query)
-        qpb.offset = 0
-        qpb.start_cursor = urlsafe_b64decode(self._START)
-        qpb.end_cursor = urlsafe_b64decode(self._END)
-        EXPECTED = {
-            'project': self._PROJECT,
-            'query_pb': qpb,
-            'namespace': self._NAMESPACE,
-            'transaction_id': None,
-        }
-        self.assertEqual(connection._called_with, [EXPECTED])
-
-    def test_next_page_w_cursors_w_bogus_more(self):
-        connection = _Connection()
-        client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
-        self._addQueryResults(connection, cursor=self._END, more=True)
-        epb, cursor, _, _ = connection._results.pop()
-        connection._results.append((epb, cursor, 5, None))  # invalid enum
-        iterator = self._makeOne(query, client)
-        self.assertRaises(ValueError, iterator.next_page)
-
-    def test___iter___no_more(self):
-        from google.cloud.datastore.query import _pb_from_query
-        connection = _Connection()
-        client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
-        self._addQueryResults(connection)
-        iterator = self._makeOne(query, client)
-        entities = list(iterator)
-
-        self.assertFalse(iterator._more_results)
-        self.assertEqual(len(entities), 1)
-        self.assertEqual(entities[0].key.path,
-                         [{'kind': self._KIND, 'id': self._ID}])
-        self.assertEqual(entities[0]['foo'], u'Foo')
-        qpb = _pb_from_query(query)
-        qpb.offset = 0
-        EXPECTED = {
-            'project': self._PROJECT,
-            'query_pb': qpb,
-            'namespace': self._NAMESPACE,
-            'transaction_id': None,
-        }
-        self.assertEqual(connection._called_with, [EXPECTED])
-
-    def test___iter___w_more(self):
-        from google.cloud.datastore.query import _pb_from_query
-        connection = _Connection()
-        client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
-        self._addQueryResults(connection, cursor=self._END, more=True)
-        self._addQueryResults(connection)
-        iterator = self._makeOne(query, client)
-        entities = list(iterator)
-
-        self.assertFalse(iterator._more_results)
-        self.assertEqual(len(entities), 2)
-        for entity in entities:
-            self.assertEqual(
-                entity.key.path,
-                [{'kind': self._KIND, 'id': self._ID}])
-            self.assertEqual(entities[1]['foo'], u'Foo')
-        qpb1 = _pb_from_query(query)
-        qpb2 = _pb_from_query(query)
-        qpb2.start_cursor = self._END
-        EXPECTED1 = {
-            'project': self._PROJECT,
-            'query_pb': qpb1,
-            'namespace': self._NAMESPACE,
-            'transaction_id': None,
-        }
-        EXPECTED2 = {
-            'project': self._PROJECT,
-            'query_pb': qpb2,
-            'namespace': self._NAMESPACE,
-            'transaction_id': None,
-        }
-        self.assertEqual(len(connection._called_with), 2)
-        self.assertEqual(connection._called_with[0], EXPECTED1)
-        self.assertEqual(connection._called_with[1], EXPECTED2)
-
-    def test___iter___w_limit(self):
-        from google.cloud.datastore.query import _pb_from_query
-
-        connection = _Connection()
-        client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
-        skip1 = 4
-        skip2 = 9
-        self._addQueryResults(connection, more=True, skipped_results=skip1,
-                              no_entity=True)
-        self._addQueryResults(connection, more=True, skipped_results=skip2)
-        self._addQueryResults(connection)
-        offset = skip1 + skip2
-        iterator = self._makeOne(query, client, limit=2, offset=offset)
-        entities = list(iterator)
-
-        self.assertFalse(iterator._more_results)
-        self.assertEqual(len(entities), 2)
-        for entity in entities:
-            self.assertEqual(
-                entity.key.path,
-                [{'kind': self._KIND, 'id': self._ID}])
-        qpb1 = _pb_from_query(query)
-        qpb1.limit.value = 2
-        qpb1.offset = offset
-        qpb2 = _pb_from_query(query)
-        qpb2.start_cursor = self._END
-        qpb2.limit.value = 2
-        qpb2.offset = offset - skip1
-        qpb3 = _pb_from_query(query)
-        qpb3.start_cursor = self._END
-        qpb3.limit.value = 1
-        EXPECTED1 = {
-            'project': self._PROJECT,
-            'query_pb': qpb1,
-            'namespace': self._NAMESPACE,
-            'transaction_id': None,
-        }
-        EXPECTED2 = {
-            'project': self._PROJECT,
-            'query_pb': qpb2,
-            'namespace': self._NAMESPACE,
-            'transaction_id': None,
-        }
-        EXPECTED3 = {
-            'project': self._PROJECT,
-            'query_pb': qpb3,
-            'namespace': self._NAMESPACE,
-            'transaction_id': None,
-        }
-        self.assertEqual(len(connection._called_with), 3)
-        self.assertEqual(connection._called_with[0], EXPECTED1)
-        self.assertEqual(connection._called_with[1], EXPECTED2)
-        self.assertEqual(connection._called_with[2], EXPECTED3)
 
 
 class TestAltIterator(unittest.TestCase):

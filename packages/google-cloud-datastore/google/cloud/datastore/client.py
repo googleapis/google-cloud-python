@@ -456,19 +456,13 @@ class Client(_BaseClient, _ClientProjectMixin):
           >>> query = client.query(kind='MyKind')
           >>> query.add_filter('property', '=', 'val')
 
-        Using the query iterator's
-        :meth:`~google.cloud.datastore.query.Iterator.next_page` method:
+        Using the query iterator
 
         .. code-block:: python
 
           >>> query_iter = query.fetch()
-          >>> entities, more_results, cursor = query_iter.next_page()
-          >>> entities
-          [<list of Entity unmarshalled from protobuf>]
-          >>> more_results
-          <boolean of more results>
-          >>> cursor
-          <string containing cursor where fetch stopped>
+          >>> for entity in query_iter:
+          ...     do_something(entity)
 
         Under the hood this is doing:
 

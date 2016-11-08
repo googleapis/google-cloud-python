@@ -358,7 +358,7 @@ class Query(object):
         :param client: client used to connect to datastore.
                        If not supplied, uses the query's value.
 
-        :rtype: :class:`Iterator`
+        :rtype: :class:`AltIterator`
         :returns: The iterator for the query.
         :raises: ValueError if ``connection`` is not passed and no implicit
                  default has been set.
@@ -366,8 +366,9 @@ class Query(object):
         if client is None:
             client = self._client
 
-        return Iterator(
-            self, client, limit, offset, start_cursor, end_cursor)
+        return AltIterator(
+            self, client, limit=limit, offset=offset,
+            start_cursor=start_cursor, end_cursor=end_cursor)
 
 
 class AltIterator(BaseIterator):
@@ -497,152 +498,6 @@ class AltIterator(BaseIterator):
         )
         entity_pbs = self._process_query_results(*query_results)
         return Page(self, entity_pbs, self._item_to_value)
-
-
-class Iterator(object):
-    """Represent the state of a given execution of a Query.
-
-    :type query: :class:`google.cloud.datastore.query.Query`
-    :param query: Query object holding permanent configuration (i.e.
-                  things that don't change on with each page in
-                  a results set).
-
-    :type client: :class:`google.cloud.datastore.client.Client`
-    :param client: The client used to make a request.
-
-    :type limit: int
-    :param limit: (Optional) Limit the number of results returned.
-
-    :type offset: int
-    :param offset: (Optional) Offset used to begin a query.
-
-    :type start_cursor: bytes
-    :param start_cursor: (Optional) Cursor to begin paging through
-                         query results.
-
-    :type end_cursor: bytes
-    :param end_cursor: (Optional) Cursor to end paging through
-                       query results.
-    """
-
-    def __init__(self, query, client, limit=None, offset=None,
-                 start_cursor=None, end_cursor=None):
-        self._query = query
-        self._client = client
-        self._limit = limit
-        self._offset = offset
-        self._start_cursor = start_cursor
-        self._end_cursor = end_cursor
-        self._page = self._more_results = None
-        self._skipped_results = None
-
-    def _build_protobuf(self):
-        """Build a query protobuf.
-
-        Relies on the current state of the iterator.
-
-        :rtype: `google.cloud.datastore._generated.query_pb2.Query`
-        :returns: The query protobuf object for the current
-                  state of the iterator.
-        """
-        pb = _pb_from_query(self._query)
-
-        start_cursor = self._start_cursor
-        if start_cursor is not None:
-            pb.start_cursor = base64.urlsafe_b64decode(start_cursor)
-
-        end_cursor = self._end_cursor
-        if end_cursor is not None:
-            pb.end_cursor = base64.urlsafe_b64decode(end_cursor)
-
-        if self._limit is not None:
-            pb.limit.value = self._limit
-
-        if self._offset is not None:
-            pb.offset = self._offset
-
-        return pb
-
-    def _process_query_results(self, entity_pbs, cursor_as_bytes,
-                               more_results_enum, skipped_results):
-        """Process the response from a datastore query.
-
-        :type entity_pbs: iterable
-        :param entity_pbs: The entities returned in the current page.
-
-        :type cursor_as_bytes: bytes
-        :param cursor_as_bytes: The end cursor of the query.
-
-        :type more_results_enum:
-            :class:`._generated.query_pb2.QueryResultBatch.MoreResultsType`
-        :param more_results_enum: Enum indicating if there are more results.
-
-        :type skipped_results: int
-        :param skipped_results: The number of skipped results.
-
-        :rtype: list
-        :returns: The next page of results.
-        :raises ValueError: If ``more_results`` is an unexpected value.
-        """
-        self._skipped_results = skipped_results
-
-        if cursor_as_bytes == b'':
-            self._start_cursor = None
-        else:
-            self._start_cursor = base64.urlsafe_b64encode(cursor_as_bytes)
-        self._end_cursor = None
-
-        if more_results_enum == _NOT_FINISHED:
-            self._more_results = True
-        elif more_results_enum in _FINISHED:
-            self._more_results = False
-        else:
-            raise ValueError('Unexpected value returned for `more_results`.')
-
-        page = [
-            helpers.entity_from_protobuf(entity)
-            for entity in entity_pbs]
-        return page
-
-    def next_page(self):
-        """Fetch a single "page" of query results.
-
-        Low-level API for fine control:  the more convenient API is
-        to iterate on the current Iterator.
-
-        :rtype: tuple, (entities, more_results, cursor)
-        :returns: The next page of results.
-        """
-        pb = self._build_protobuf()
-        transaction = self._client.current_transaction
-
-        query_results = self._client.connection.run_query(
-            query_pb=pb,
-            project=self._query.project,
-            namespace=self._query.namespace,
-            transaction_id=transaction and transaction.id,
-        )
-        self._page = self._process_query_results(*query_results)
-        return self._page, self._more_results, self._start_cursor
-
-    def __iter__(self):
-        """Generator yielding all results matching our query.
-
-        :rtype: sequence of :class:`google.cloud.datastore.entity.Entity`
-        """
-        while True:
-            self.next_page()
-            for entity in self._page:
-                yield entity
-            if not self._more_results:
-                break
-            num_results = len(self._page)
-            if self._limit is not None:
-                self._limit -= num_results
-            if self._offset is not None and self._skipped_results is not None:
-                # NOTE: The offset goes down relative to the location
-                #       because we are updating the cursor each time.
-                self._offset -= self._skipped_results
 
 
 def _pb_from_query(query):
