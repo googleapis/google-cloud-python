@@ -175,7 +175,7 @@ class Group(object):
         (normally affecting only ``name``).
         """
         path = '/projects/%s/groups/' % (self.client.project,)
-        info = self.client.connection.api_request(
+        info = self.client._connection.api_request(
             method='POST', path=path, data=self._to_dict())
         self._set_properties_from_dict(info)
 
@@ -186,7 +186,7 @@ class Group(object):
         :returns: Boolean indicating existence of the group.
         """
         try:
-            self.client.connection.api_request(
+            self.client._connection.api_request(
                 method='GET', path=self.path, query_params={'fields': 'name'})
         except NotFound:
             return False
@@ -201,12 +201,13 @@ class Group(object):
             This will overwrite any local changes you've made and not saved
             via :meth:`update`.
         """
-        info = self.client.connection.api_request(method='GET', path=self.path)
+        info = self.client._connection.api_request(
+            method='GET', path=self.path)
         self._set_properties_from_dict(info)
 
     def update(self):
         """Update the group via a ``PUT`` request."""
-        info = self.client.connection.api_request(
+        info = self.client._connection.api_request(
             method='PUT', path=self.path, data=self._to_dict())
         self._set_properties_from_dict(info)
 
@@ -225,7 +226,8 @@ class Group(object):
             This method will fail for groups that have one or more children
             groups.
         """
-        self.client.connection.api_request(method='DELETE', path=self.path)
+        self.client._connection.api_request(
+            method='DELETE', path=self.path)
 
     def fetch_parent(self):
         """Returns the parent group of this group via a ``GET`` request.
@@ -349,7 +351,7 @@ class Group(object):
             if page_token is not None:
                 params['pageToken'] = page_token
 
-            response = self.client.connection.api_request(
+            response = self.client._connection.api_request(
                 method='GET', path=path, query_params=params.copy())
             for info in response.get('members', ()):
                 resources.append(Resource._from_dict(info))
@@ -426,7 +428,7 @@ class Group(object):
             if page_token is not None:
                 params['pageToken'] = page_token
 
-            response = client.connection.api_request(
+            response = client._connection.api_request(
                 method='GET', path=path, query_params=params.copy())
             for info in response.get('group', ()):
                 groups.append(cls._from_dict(client, info))

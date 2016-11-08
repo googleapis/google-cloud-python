@@ -78,7 +78,7 @@ class ResourceDescriptor(object):
         path = ('/projects/{project}/monitoredResourceDescriptors/{type}'
                 .format(project=client.project,
                         type=resource_type))
-        info = client.connection.api_request(method='GET', path=path)
+        info = client._connection.api_request(method='GET', path=path)
         return cls._from_dict(info)
 
     @classmethod
@@ -114,7 +114,7 @@ class ResourceDescriptor(object):
             if page_token is not None:
                 params['pageToken'] = page_token
 
-            response = client.connection.api_request(
+            response = client._connection.api_request(
                 method='GET', path=path, query_params=params)
             for info in response.get('resourceDescriptors', ()):
                 descriptors.append(cls._from_dict(info))

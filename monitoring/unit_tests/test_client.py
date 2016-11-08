@@ -86,7 +86,7 @@ class TestClient(unittest.TestCase):
         RESPONSE = {'timeSeries': [SERIES1, SERIES2]}
 
         client = self._make_one(project=PROJECT, credentials=_Credentials())
-        connection = client.connection = _Connection(RESPONSE)
+        connection = client._connection = _Connection(RESPONSE)
 
         # A simple query. In practice, it can be very convenient to let the
         # end time default to the start of the current minute.
@@ -139,7 +139,7 @@ class TestClient(unittest.TestCase):
         DESCRIPTION = 'This is my metric.'
 
         client = self._make_one(project=PROJECT, credentials=_Credentials())
-        client.connection = _Connection()   # For safety's sake.
+        client._connection = _Connection()   # For safety's sake.
         descriptor = client.metric_descriptor(TYPE,
                                               metric_kind=METRIC_KIND,
                                               value_type=VALUE_TYPE,
@@ -165,7 +165,7 @@ class TestClient(unittest.TestCase):
         }
 
         client = self._make_one(project=PROJECT, credentials=_Credentials())
-        client.connection = _Connection()   # For safety's sake.
+        client._connection = _Connection()   # For safety's sake.
         metric = client.metric(TYPE, LABELS)
         self.assertEqual(metric.type, TYPE)
         self.assertEqual(metric.labels, LABELS)
@@ -178,7 +178,7 @@ class TestClient(unittest.TestCase):
         }
 
         client = self._make_one(project=PROJECT, credentials=_Credentials())
-        client.connection = _Connection()   # For safety's sake.
+        client._connection = _Connection()   # For safety's sake.
         resource = client.resource(TYPE, LABELS)
         self.assertEqual(resource.type, TYPE)
         self.assertEqual(resource.labels, LABELS)
@@ -204,7 +204,7 @@ class TestClient(unittest.TestCase):
         TIME1_STR = _datetime_to_rfc3339(TIME1, ignore_zone=False)
 
         client = self._make_one(project=PROJECT, credentials=_Credentials())
-        client.connection = _Connection()   # For safety's sake.
+        client._connection = _Connection()   # For safety's sake.
         metric = client.metric(METRIC_TYPE, METRIC_LABELS)
         resource = client.resource(RESOURCE_TYPE, RESOURCE_LABELS)
 
@@ -243,7 +243,7 @@ class TestClient(unittest.TestCase):
         }
 
         client = self._make_one(project=PROJECT, credentials=_Credentials())
-        client.connection = _Connection()   # For safety's sake.
+        client._connection = _Connection()   # For safety's sake.
         resource = client.resource(RESOURCE_TYPE, RESOURCE_LABELS)
 
         VALUE = 42
@@ -297,7 +297,7 @@ class TestClient(unittest.TestCase):
         # This test is identical to TestMetricDescriptor.test_fetch()
         # except for the following three lines.
         client = self._make_one(project=PROJECT, credentials=_Credentials())
-        connection = client.connection = _Connection(METRIC_DESCRIPTOR)
+        connection = client._connection = _Connection(METRIC_DESCRIPTOR)
         descriptor = client.fetch_metric_descriptor(TYPE)
 
         self.assertIs(descriptor.client, client)
@@ -341,7 +341,7 @@ class TestClient(unittest.TestCase):
         # This test is identical to TestMetricDescriptor.test_list()
         # except for the following three lines.
         client = self._make_one(project=PROJECT, credentials=_Credentials())
-        connection = client.connection = _Connection(RESPONSE)
+        connection = client._connection = _Connection(RESPONSE)
         descriptors = client.list_metric_descriptors()
 
         self.assertEqual(len(descriptors), 2)
@@ -386,7 +386,7 @@ class TestClient(unittest.TestCase):
         # This test is identical to TestResourceDescriptor.test_fetch()
         # except for the following three lines.
         client = self._make_one(project=PROJECT, credentials=_Credentials())
-        connection = client.connection = _Connection(RESOURCE_DESCRIPTOR)
+        connection = client._connection = _Connection(RESOURCE_DESCRIPTOR)
         descriptor = client.fetch_resource_descriptor(TYPE)
 
         self.assertEqual(descriptor.name, NAME)
@@ -434,7 +434,7 @@ class TestClient(unittest.TestCase):
         # This test is identical to TestResourceDescriptor.test_list()
         # except for the following three lines.
         client = self._make_one(project=PROJECT, credentials=_Credentials())
-        connection = client.connection = _Connection(RESPONSE)
+        connection = client._connection = _Connection(RESPONSE)
         descriptors = client.list_resource_descriptors()
 
         self.assertEqual(len(descriptors), 2)
@@ -500,7 +500,7 @@ class TestClient(unittest.TestCase):
         }
 
         client = self._make_one(project=PROJECT, credentials=_Credentials())
-        connection = client.connection = _Connection(GROUP)
+        connection = client._connection = _Connection(GROUP)
         group = client.fetch_group(GROUP_ID)
 
         self.assertEqual(group.id, GROUP_ID)
@@ -533,7 +533,7 @@ class TestClient(unittest.TestCase):
             'group': [GROUP],
         }
         client = self._make_one(project=PROJECT, credentials=_Credentials())
-        connection = client.connection = _Connection(RESPONSE)
+        connection = client._connection = _Connection(RESPONSE)
         groups = client.list_groups()
 
         self.assertEqual(len(groups), 1)
@@ -569,7 +569,7 @@ class TestClient(unittest.TestCase):
             'request_ip': '127.0.0.1'
         }
 
-        connection = client.connection = _Connection({})
+        connection = client._connection = _Connection({})
 
         METRIC = client.metric(METRIC_TYPE, METRIC_LABELS)
         METRIC2 = client.metric(METRIC_TYPE2, METRIC_LABELS2)
@@ -607,7 +607,7 @@ class TestClient(unittest.TestCase):
             'status': 'successful'
         }
 
-        connection = client.connection = _Connection({})
+        connection = client._connection = _Connection({})
 
         METRIC = client.metric(METRIC_TYPE, METRIC_LABELS)
         RESOURCE = client.resource(RESOURCE_TYPE, RESOURCE_LABELS)

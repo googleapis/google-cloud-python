@@ -55,7 +55,7 @@ class Client(JSONClient):
                   sub-mapping of the project resource.
         """
         path = '/projects/%s' % (self.project,)
-        resp = self.connection.api_request(method='GET', path=path)
+        resp = self._connection.api_request(method='GET', path=path)
 
         return {key: int(value)
                 for key, value in resp['quota'].items()
