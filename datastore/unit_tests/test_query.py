@@ -700,6 +700,56 @@ class TestAltIterator(unittest.TestCase):
         expected_pb.limit.value = limit - iterator.num_results
         self.assertEqual(pb, expected_pb)
 
+    def test__process_query_results(self):
+        from google.cloud.datastore._generated import query_pb2
+
+        iterator = self._makeOne(None, None,
+                                 end_cursor='abcd')
+        self.assertIsNotNone(iterator._end_cursor)
+
+        entity_pbs = object()
+        cursor_as_bytes = b'\x9ai\xe7'
+        cursor = 'mmnn'
+        skipped_results = 4
+        more_results_enum = query_pb2.QueryResultBatch.NOT_FINISHED
+        result = iterator._process_query_results(
+            entity_pbs, cursor_as_bytes,
+            more_results_enum, skipped_results)
+        self.assertIs(result, entity_pbs)
+
+        self.assertEqual(iterator._skipped_results, skipped_results)
+        self.assertEqual(iterator.next_page_token, cursor)
+        self.assertTrue(iterator._more_results)
+
+    def test__process_query_results_done(self):
+        from google.cloud.datastore._generated import query_pb2
+
+        iterator = self._makeOne(None, None,
+                                 end_cursor='abcd')
+        self.assertIsNotNone(iterator._end_cursor)
+
+        entity_pbs = object()
+        cursor_as_bytes = b''
+        skipped_results = 44
+        more_results_enum = query_pb2.QueryResultBatch.NO_MORE_RESULTS
+        result = iterator._process_query_results(
+            entity_pbs, cursor_as_bytes,
+            more_results_enum, skipped_results)
+        self.assertIs(result, entity_pbs)
+
+        self.assertEqual(iterator._skipped_results, skipped_results)
+        self.assertIsNone(iterator.next_page_token)
+        self.assertFalse(iterator._more_results)
+
+    def test__process_query_results_bad_enum(self):
+        from google.cloud.datastore._generated import query_pb2
+
+        iterator = self._makeOne(None, None)
+        more_results_enum = 999
+        with self.assertRaises(ValueError):
+            iterator._process_query_results(
+                None, b'', more_results_enum, None)
+
 
 class Test__item_to_entity(unittest.TestCase):
 
