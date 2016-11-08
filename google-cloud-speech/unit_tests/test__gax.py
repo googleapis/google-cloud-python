@@ -15,6 +15,35 @@
 import unittest
 
 
+class TestGAPICSpeechAPI(unittest.TestCase):
+    SAMPLE_RATE = 16000
+
+    def _getTargetClass(self):
+        from google.cloud.speech._gax import GAPICSpeechAPI
+
+        return GAPICSpeechAPI
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_use_bytes_instead_of_file_like_object(self):
+        from google.cloud import speech
+        from google.cloud.speech.sample import Sample
+
+        credentials = {}
+        client = speech.Client(credentials=credentials, use_gax=True)
+        client.connection = _Connection()
+        client.connection.credentials = credentials
+
+        sample = Sample(content=b'', encoding=speech.Encoding.FLAC,
+                        sample_rate=self.SAMPLE_RATE)
+
+        api = self._makeOne(client)
+        with self.assertRaises(ValueError):
+            api.streaming_recognize(sample)
+        self.assertEqual(client.connection._requested, [])
+
+
 class TestSpeechGAXMakeRequests(unittest.TestCase):
     SAMPLE_RATE = 16000
     HINTS = ['hi']
@@ -137,3 +166,10 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
         self.assertEqual(streaming_request.audio_content, self.AUDIO_CONTENT)
         self.assertIsInstance(config_request.streaming_config,
                               StreamingRecognitionConfig)
+
+
+class _Connection(object):
+
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
