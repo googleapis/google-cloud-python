@@ -403,14 +403,14 @@ class Iterator(object):
         self._page = self._more_results = None
         self._skipped_results = None
 
-    def next_page(self):
-        """Fetch a single "page" of query results.
+    def _build_protobuf(self):
+        """Build a query protobuf.
 
-        Low-level API for fine control:  the more convenient API is
-        to iterate on the current Iterator.
+        Relies on the current state of the iterator.
 
-        :rtype: tuple, (entities, more_results, cursor)
-        :returns: The next page of results.
+        :rtype: `google.cloud.datastore._generated.query_pb2.Query`
+        :returns: The query protobuf object for the current
+                  state of the iterator.
         """
         pb = _pb_from_query(self._query)
 
@@ -428,6 +428,18 @@ class Iterator(object):
         if self._offset is not None:
             pb.offset = self._offset
 
+        return pb
+
+    def next_page(self):
+        """Fetch a single "page" of query results.
+
+        Low-level API for fine control:  the more convenient API is
+        to iterate on the current Iterator.
+
+        :rtype: tuple, (entities, more_results, cursor)
+        :returns: The next page of results.
+        """
+        pb = self._build_protobuf()
         transaction = self._client.current_transaction
 
         query_results = self._client.connection.run_query(
