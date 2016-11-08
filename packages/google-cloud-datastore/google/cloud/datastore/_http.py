@@ -21,7 +21,7 @@ from google.rpc import status_pb2
 
 from google.cloud._helpers import make_insecure_stub
 from google.cloud._helpers import make_secure_stub
-from google.cloud import connection as connection_module
+from google.cloud import _http as connection_module
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_HOST
 from google.cloud import exceptions

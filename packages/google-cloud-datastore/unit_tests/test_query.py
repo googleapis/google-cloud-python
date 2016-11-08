@@ -679,7 +679,7 @@ class _Client(object):
 
     def __init__(self, project, connection, namespace=None):
         self.project = project
-        self.connection = connection
+        self._connection = connection
         self.namespace = namespace
 
     @property

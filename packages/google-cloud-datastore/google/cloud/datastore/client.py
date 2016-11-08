@@ -294,7 +294,7 @@ class Client(_BaseClient, _ClientProjectMixin):
             transaction = self.current_transaction
 
         entity_pbs = _extended_lookup(
-            connection=self.connection,
+            connection=self._connection,
             project=self.project,
             key_pbs=[k.to_protobuf() for k in keys],
             missing=missing,
@@ -414,7 +414,7 @@ class Client(_BaseClient, _ClientProjectMixin):
         incomplete_key_pb = incomplete_key.to_protobuf()
         incomplete_key_pbs = [incomplete_key_pb] * num_ids
 
-        conn = self.connection
+        conn = self._connection
         allocated_key_pbs = conn.allocate_ids(incomplete_key.project,
                                               incomplete_key_pbs)
         allocated_ids = [allocated_key_pb.path[-1].id

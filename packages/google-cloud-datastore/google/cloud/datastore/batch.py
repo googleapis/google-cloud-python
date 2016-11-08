@@ -103,15 +103,6 @@ class Batch(object):
         """
         return self._client.namespace
 
-    @property
-    def connection(self):
-        """Getter for connection over which the batch will run.
-
-        :rtype: :class:`google.cloud.datastore._http.Connection`
-        :returns: The connection over which the batch will run.
-        """
-        return self._client.connection
-
     def _add_partial_key_entity_pb(self):
         """Adds a new mutation for an entity with a partial key.
 
@@ -247,7 +238,7 @@ class Batch(object):
         This is called by :meth:`commit`.
         """
         # NOTE: ``self._commit_request`` will be modified.
-        _, updated_keys = self.connection.commit(
+        _, updated_keys = self._client._connection.commit(
             self.project, self._commit_request, self._id)
         # If the back-end returns without error, we are guaranteed that
         # :meth:`Connection.commit` will return keys that match (length and
