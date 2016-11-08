@@ -131,8 +131,8 @@ class Project(object):
             'name': self.name,
             'labels': self.labels,
         }
-        resp = client.connection.api_request(method='POST', path='/projects',
-                                             data=data)
+        resp = client._connection.api_request(method='POST', path='/projects',
+                                              data=data)
         self.set_properties_from_api_repr(resource=resp)
 
     def reload(self, client=None):
@@ -161,7 +161,7 @@ class Project(object):
 
         # We assume the project exists. If it doesn't it will raise a NotFound
         # exception.
-        resp = client.connection.api_request(method='GET', path=self.path)
+        resp = client._connection.api_request(method='GET', path=self.path)
         self.set_properties_from_api_repr(resource=resp)
 
     def exists(self, client=None):
@@ -183,7 +183,7 @@ class Project(object):
         try:
             # Note that we have to request the entire resource as the API
             # doesn't provide a way tocheck for existence only.
-            client.connection.api_request(method='GET', path=self.path)
+            client._connection.api_request(method='GET', path=self.path)
         except NotFound:
             return False
         else:
@@ -203,8 +203,8 @@ class Project(object):
         client = self._require_client(client)
 
         data = {'name': self.name, 'labels': self.labels}
-        resp = client.connection.api_request(method='PUT', path=self.path,
-                                             data=data)
+        resp = client._connection.api_request(
+            method='PUT', path=self.path, data=data)
         self.set_properties_from_api_repr(resp)
 
     def delete(self, client=None, reload_data=False):
@@ -232,7 +232,7 @@ class Project(object):
                             Default: :data:`False`.
         """
         client = self._require_client(client)
-        client.connection.api_request(method='DELETE', path=self.path)
+        client._connection.api_request(method='DELETE', path=self.path)
 
         # If the reload flag is set, reload the project.
         if reload_data:
@@ -262,8 +262,8 @@ class Project(object):
                             Default: :data:`False`.
         """
         client = self._require_client(client)
-        client.connection.api_request(method='POST',
-                                      path=self.path + ':undelete')
+        client._connection.api_request(
+            method='POST', path=self.path + ':undelete')
 
         # If the reload flag is set, reload the project.
         if reload_data:
