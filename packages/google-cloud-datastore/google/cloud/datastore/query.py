@@ -22,6 +22,15 @@ from google.cloud.datastore import helpers
 from google.cloud.datastore.key import Key
 
 
+_NOT_FINISHED = _query_pb2.QueryResultBatch.NOT_FINISHED
+
+_FINISHED = (
+    _query_pb2.QueryResultBatch.NO_MORE_RESULTS,
+    _query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
+    _query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_CURSOR,
+)
+
+
 class Query(object):
     """A Query against the Cloud Datastore.
 
@@ -384,14 +393,6 @@ class Iterator(object):
                        query results.
     """
 
-    _NOT_FINISHED = _query_pb2.QueryResultBatch.NOT_FINISHED
-
-    _FINISHED = (
-        _query_pb2.QueryResultBatch.NO_MORE_RESULTS,
-        _query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
-        _query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_CURSOR,
-    )
-
     def __init__(self, query, client, limit=None, offset=None,
                  start_cursor=None, end_cursor=None):
         self._query = query
@@ -459,9 +460,9 @@ class Iterator(object):
             self._start_cursor = base64.urlsafe_b64encode(cursor_as_bytes)
         self._end_cursor = None
 
-        if more_results_enum == self._NOT_FINISHED:
+        if more_results_enum == _NOT_FINISHED:
             self._more_results = True
-        elif more_results_enum in self._FINISHED:
+        elif more_results_enum in _FINISHED:
             self._more_results = False
         else:
             raise ValueError('Unexpected value returned for `more_results`.')
