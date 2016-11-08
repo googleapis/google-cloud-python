@@ -16,14 +16,14 @@
 
 import functools
 
-from google.cloud import connection as base_connection
+from google.cloud import _http
 from google.cloud.iterator import HTTPIterator
 from google.cloud.logging._helpers import entry_from_resource
 from google.cloud.logging.sink import Sink
 from google.cloud.logging.metric import Metric
 
 
-class Connection(base_connection.JSONConnection):
+class Connection(_http.JSONConnection):
     """A connection to Google Stackdriver Logging via the JSON REST API.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
@@ -67,7 +67,7 @@ class _LoggingAPI(object):
 
     def __init__(self, client):
         self._client = client
-        self._connection = client.connection
+        self._connection = client._connection
 
     def list_entries(self, projects, filter_=None, order_by=None,
                      page_size=None, page_token=None):
@@ -191,7 +191,7 @@ class _SinksAPI(object):
     """
     def __init__(self, client):
         self._client = client
-        self._connection = client.connection
+        self._connection = client._connection
 
     def list_sinks(self, project, page_size=None, page_token=None):
         """List sinks for the project associated with this client.
@@ -328,7 +328,7 @@ class _MetricsAPI(object):
     """
     def __init__(self, client):
         self._client = client
-        self._connection = client.connection
+        self._connection = client._connection
 
     def list_metrics(self, project, page_size=None, page_token=None):
         """List metrics for the project associated with this client.

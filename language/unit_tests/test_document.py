@@ -390,4 +390,4 @@ class _Connection(object):
 class _Client(object):
 
     def __init__(self, connection=None):
-        self.connection = connection
+        self._connection = connection

@@ -1312,4 +1312,4 @@ class _Connection(object):
 class _Client(object):
 
     def __init__(self, credentials):
-        self.connection = _Connection(credentials)
+        self._connection = _Connection(credentials)
