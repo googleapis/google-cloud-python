@@ -398,7 +398,7 @@ class AltIterator(BaseIterator):
     def __init__(self, query, client, limit=None, offset=None,
                  start_cursor=None, end_cursor=None):
         super(AltIterator, self).__init__(
-            client=client, item_to_value=None,
+            client=client, item_to_value=_item_to_entity,
             page_token=start_cursor, max_results=limit)
         self._query = query
         self._offset = offset
@@ -616,3 +616,21 @@ def _pb_from_query(query):
         pb.distinct_on.add().name = distinct_on_name
 
     return pb
+
+
+# pylint: disable=unused-argument
+def _item_to_entity(iterator, entity_pb):
+    """Convert a raw protobuf entity to the native object.
+
+    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type entity_pb:
+        :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+    :param entity_pb: An entity protobuf to convert to a native entity.
+
+    :rtype: :class:`~google.cloud.datastore.entity.Entity`
+    :returns: The next entity in the page.
+    """
+    return helpers.entity_from_protobuf(entity_pb)
+# pylint: enable=unused-argument

@@ -627,7 +627,7 @@ class TestAltIterator(unittest.TestCase):
 
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
-        self.assertIsNone(iterator._item_to_value)
+        self.assertIsNotNone(iterator._item_to_value)
         self.assertIsNone(iterator.max_results)
         self.assertEqual(iterator.page_number, 0)
         self.assertIsNone(iterator.next_page_token,)
@@ -650,7 +650,7 @@ class TestAltIterator(unittest.TestCase):
 
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
-        self.assertIsNone(iterator._item_to_value)
+        self.assertIsNotNone(iterator._item_to_value)
         self.assertEqual(iterator.max_results, limit)
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, start_cursor)
@@ -659,6 +659,30 @@ class TestAltIterator(unittest.TestCase):
         self.assertEqual(iterator._offset, offset)
         self.assertEqual(iterator._end_cursor, end_cursor)
         self.assertTrue(iterator._more_results)
+
+
+class Test__item_to_entity(unittest.TestCase):
+
+    def _callFUT(self, iterator, entity_pb):
+        from google.cloud.datastore.query import _item_to_entity
+        return _item_to_entity(iterator, entity_pb)
+
+    def test_it(self):
+        from google.cloud._testing import _Monkey
+        from google.cloud.datastore import helpers
+
+        result = object()
+        entities = []
+
+        def mocked(entity_pb):
+            entities.append(entity_pb)
+            return result
+
+        entity_pb = object()
+        with _Monkey(helpers, entity_from_protobuf=mocked):
+            self.assertIs(result, self._callFUT(None, entity_pb))
+
+        self.assertEqual(entities, [entity_pb])
 
 
 class Test__pb_from_query(unittest.TestCase):
