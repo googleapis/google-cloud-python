@@ -405,6 +405,37 @@ class AltIterator(BaseIterator):
         self._end_cursor = end_cursor
         # The attributes below will change over the life of the iterator.
         self._more_results = True
+        self._skipped_results = 0
+
+    def _build_protobuf(self):
+        """Build a query protobuf.
+
+        Relies on the current state of the iterator.
+
+        :rtype:
+            :class:`google.cloud.datastore._generated.query_pb2.Query`
+        :returns: The query protobuf object for the current
+                  state of the iterator.
+        """
+        pb = _pb_from_query(self._query)
+
+        start_cursor = self.next_page_token
+        if start_cursor is not None:
+            pb.start_cursor = base64.urlsafe_b64decode(start_cursor)
+
+        end_cursor = self._end_cursor
+        if end_cursor is not None:
+            pb.end_cursor = base64.urlsafe_b64decode(end_cursor)
+
+        if self.max_results is not None:
+            pb.limit.value = self.max_results - self.num_results
+
+        if self._offset is not None:
+            # NOTE: The offset goes down relative to the location
+            #       because we are updating the cursor each time.
+            pb.offset = self._offset - self._skipped_results
+
+        return pb
 
 
 class Iterator(object):

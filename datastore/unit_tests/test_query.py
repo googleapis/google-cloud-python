@@ -660,6 +660,46 @@ class TestAltIterator(unittest.TestCase):
         self.assertEqual(iterator._end_cursor, end_cursor)
         self.assertTrue(iterator._more_results)
 
+    def test__build_protobuf_empty(self):
+        from google.cloud.datastore._generated import query_pb2
+        from google.cloud.datastore.query import Query
+
+        client = _Client(None, None)
+        query = Query(client)
+        iterator = self._makeOne(query, client)
+
+        pb = iterator._build_protobuf()
+        expected_pb = query_pb2.Query()
+        self.assertEqual(pb, expected_pb)
+
+    def test__build_protobuf_all_values(self):
+        from google.cloud.datastore._generated import query_pb2
+        from google.cloud.datastore.query import Query
+
+        client = _Client(None, None)
+        query = Query(client)
+        limit = 15
+        offset = 9
+        start_bytes = b'i\xb7\x1d'
+        start_cursor = 'abcd'
+        end_bytes = b'\xc3\x1c\xb3'
+        end_cursor = 'wxyz'
+        iterator = self._makeOne(
+            query, client, limit=limit, offset=offset,
+            start_cursor=start_cursor, end_cursor=end_cursor)
+        self.assertEqual(iterator.max_results, limit)
+        iterator.num_results = 4
+        iterator._skipped_results = 1
+
+        pb = iterator._build_protobuf()
+        expected_pb = query_pb2.Query(
+            start_cursor=start_bytes,
+            end_cursor=end_bytes,
+            offset=offset - iterator._skipped_results,
+        )
+        expected_pb.limit.value = limit - iterator.num_results
+        self.assertEqual(pb, expected_pb)
+
 
 class Test__item_to_entity(unittest.TestCase):
 
