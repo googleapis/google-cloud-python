@@ -28,6 +28,7 @@ from google.auth import compute_engine
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth.compute_engine import _metadata
+import google.auth.credentials
 import google.auth.transport._http_client
 from google.oauth2 import service_account
 import google.oauth2.credentials
@@ -185,7 +186,7 @@ def _get_gce_credentials(request=None):
         return None, None
 
 
-def default(request=None):
+def default(scopes=None, request=None):
     """Gets the default credentials for the current environment.
 
     `Application Default Credentials`_ provides an easy way to obtain
@@ -238,6 +239,9 @@ def default(request=None):
         credentials, project_id = google.auth.default()
 
     Args:
+        scopes (Sequence[str]): The list of scopes for the credentials. If
+            specified, the credentials will automatically be scoped if
+            necessary.
         request (google.auth.transport.Request): An object used to make
             HTTP requests. This is used to detect whether the application
             is running on Compute Engine. If not specified, then it will
@@ -267,6 +271,8 @@ def default(request=None):
     for checker in checkers:
         credentials, project_id = checker()
         if credentials is not None:
+            credentials = google.auth.credentials.with_scopes_if_required(
+                credentials, scopes)
             return credentials, explicit_project_id or project_id
 
     raise exceptions.DefaultCredentialsError(_HELP_MESSAGE)

@@ -290,3 +290,19 @@ def test_default_explict_legacy_project_id(get_mock, monkeypatch):
 def test_default_fail(unused_gce, unused_gae, unused_sdk, unused_explicit):
     with pytest.raises(exceptions.DefaultCredentialsError):
         assert _default.default()
+
+
+@mock.patch(
+    'google.auth._default._get_explicit_environ_credentials',
+    return_value=(mock.sentinel.credentials, mock.sentinel.project_id))
+@mock.patch(
+    'google.auth.credentials.with_scopes_if_required')
+def test_default_scoped(with_scopes_mock, get_mock):
+    scopes = ['one', 'two']
+
+    credentials, project_id = _default.default(scopes=scopes)
+
+    assert credentials == with_scopes_mock.return_value
+    assert project_id == mock.sentinel.project_id
+    with_scopes_mock.assert_called_once_with(
+        mock.sentinel.credentials, scopes)
