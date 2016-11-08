@@ -41,7 +41,7 @@ from google.cloud.bigtable.instance import Instance
 from google.cloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
 from google.cloud.client import _ClientFactoryMixin
 from google.cloud.client import _ClientProjectMixin
-from google.cloud.connection import DEFAULT_USER_AGENT
+from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.credentials import get_credentials
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 

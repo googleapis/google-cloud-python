@@ -171,9 +171,9 @@ class TestClient(unittest.TestCase):
                 client = klass()
         self.assertEqual(client.project, OTHER)
         self.assertIsNone(client.namespace)
-        self.assertIsInstance(client.connection, _MockConnection)
-        self.assertIs(client.connection.credentials, creds)
-        self.assertIsNone(client.connection.http)
+        self.assertIsInstance(client._connection, _MockConnection)
+        self.assertIs(client._connection.credentials, creds)
+        self.assertIsNone(client._connection.http)
         self.assertIsNone(client.current_batch)
         self.assertIsNone(client.current_transaction)
         self.assertEqual(default_called, [None])
@@ -189,9 +189,9 @@ class TestClient(unittest.TestCase):
                                 http=http)
         self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, NAMESPACE)
-        self.assertIsInstance(client.connection, _MockConnection)
-        self.assertIs(client.connection.credentials, creds)
-        self.assertIs(client.connection.http, http)
+        self.assertIsInstance(client._connection, _MockConnection)
+        self.assertIs(client._connection.credentials, creds)
+        self.assertIs(client._connection.http, http)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
 
@@ -269,7 +269,7 @@ class TestClient(unittest.TestCase):
 
         creds = object()
         client = self._make_one(credentials=creds)
-        client.connection._add_lookup_result()
+        client._connection._add_lookup_result()
         key = Key('Kind', 1234, project=self.PROJECT)
         results = client.get_multi([key])
         self.assertEqual(results, [])
@@ -291,7 +291,7 @@ class TestClient(unittest.TestCase):
         creds = object()
         client = self._make_one(credentials=creds)
         # Set missing entity on mock connection.
-        client.connection._add_lookup_result(missing=[missed])
+        client._connection._add_lookup_result(missing=[missed])
 
         key = Key(KIND, ID, project=self.PROJECT)
         missing = []
@@ -330,7 +330,7 @@ class TestClient(unittest.TestCase):
         # Set deferred entity on mock connection.
         creds = object()
         client = self._make_one(credentials=creds)
-        client.connection._add_lookup_result(deferred=[key.to_protobuf()])
+        client._connection._add_lookup_result(deferred=[key.to_protobuf()])
 
         deferred = []
         entities = client.get_multi([key], deferred=deferred)
@@ -356,8 +356,8 @@ class TestClient(unittest.TestCase):
         creds = object()
         client = self._make_one(credentials=creds)
         # mock up two separate requests
-        client.connection._add_lookup_result([entity1_pb], deferred=[key2_pb])
-        client.connection._add_lookup_result([entity2_pb])
+        client._connection._add_lookup_result([entity1_pb], deferred=[key2_pb])
+        client._connection._add_lookup_result([entity2_pb])
 
         missing = []
         found = client.get_multi([key1, key2], missing=missing)
@@ -373,7 +373,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(found[1].key.path, key2.path)
         self.assertEqual(found[1].key.project, key2.project)
 
-        cw = client.connection._lookup_cw
+        cw = client._connection._lookup_cw
         self.assertEqual(len(cw), 2)
 
         ds_id, k_pbs, eventual, tid = cw[0]
@@ -404,7 +404,7 @@ class TestClient(unittest.TestCase):
         # Make a connection to return the entity pb.
         creds = object()
         client = self._make_one(credentials=creds)
-        client.connection._add_lookup_result([entity_pb])
+        client._connection._add_lookup_result([entity_pb])
 
         key = Key(KIND, ID, project=self.PROJECT)
         result, = client.get_multi([key])
@@ -431,7 +431,7 @@ class TestClient(unittest.TestCase):
         # Make a connection to return the entity pb.
         creds = object()
         client = self._make_one(credentials=creds)
-        client.connection._add_lookup_result([entity_pb])
+        client._connection._add_lookup_result([entity_pb])
 
         key = Key(KIND, ID, project=self.PROJECT)
         txn = client.transaction()
@@ -446,7 +446,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
-        cw = client.connection._lookup_cw
+        cw = client._connection._lookup_cw
         self.assertEqual(len(cw), 1)
         _, _, _, transaction_id = cw[0]
         self.assertEqual(transaction_id, TXN_ID)
@@ -465,7 +465,7 @@ class TestClient(unittest.TestCase):
         # Make a connection to return the entity pbs.
         creds = object()
         client = self._make_one(credentials=creds)
-        client.connection._add_lookup_result([entity_pb1, entity_pb2])
+        client._connection._add_lookup_result([entity_pb1, entity_pb2])
 
         key1 = Key(KIND, ID1, project=self.PROJECT)
         key2 = Key(KIND, ID2, project=self.PROJECT)
@@ -508,7 +508,7 @@ class TestClient(unittest.TestCase):
         # Make a connection to return the entity pb.
         creds = object()
         client = self._make_one(credentials=creds)
-        client.connection._add_lookup_result([entity_pb])
+        client._connection._add_lookup_result([entity_pb])
 
         key = Key(KIND, ID, project=self.PROJECT)
         deferred = []
@@ -564,14 +564,14 @@ class TestClient(unittest.TestCase):
 
         creds = object()
         client = self._make_one(credentials=creds)
-        client.connection._commit.append([_KeyPB(key)])
+        client._connection._commit.append([_KeyPB(key)])
 
         result = client.put_multi([entity])
         self.assertIsNone(result)
 
-        self.assertEqual(len(client.connection._commit_cw), 1)
+        self.assertEqual(len(client._connection._commit_cw), 1)
         (project,
-         commit_req, transaction_id) = client.connection._commit_cw[0]
+         commit_req, transaction_id) = client._connection._commit_cw[0]
         self.assertEqual(project, self.PROJECT)
 
         mutated_entity = _mutated_pb(self, commit_req.mutations, 'insert')
@@ -627,20 +627,20 @@ class TestClient(unittest.TestCase):
         client = self._make_one(credentials=creds)
         result = client.delete_multi([])
         self.assertIsNone(result)
-        self.assertEqual(len(client.connection._commit_cw), 0)
+        self.assertEqual(len(client._connection._commit_cw), 0)
 
     def test_delete_multi_no_batch(self):
         key = _Key(self.PROJECT)
 
         creds = object()
         client = self._make_one(credentials=creds)
-        client.connection._commit.append([])
+        client._connection._commit.append([])
 
         result = client.delete_multi([key])
         self.assertIsNone(result)
-        self.assertEqual(len(client.connection._commit_cw), 1)
+        self.assertEqual(len(client._connection._commit_cw), 1)
         (project,
-         commit_req, transaction_id) = client.connection._commit_cw[0]
+         commit_req, transaction_id) = client._connection._commit_cw[0]
         self.assertEqual(project, self.PROJECT)
 
         mutated_key = _mutated_pb(self, commit_req.mutations, 'delete')
@@ -658,7 +658,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(result)
         mutated_key = _mutated_pb(self, CURR_BATCH.mutations, 'delete')
         self.assertEqual(mutated_key, key._key)
-        self.assertEqual(len(client.connection._commit_cw), 0)
+        self.assertEqual(len(client._connection._commit_cw), 0)
 
     def test_delete_multi_w_existing_transaction(self):
         creds = object()
@@ -671,7 +671,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(result)
         mutated_key = _mutated_pb(self, CURR_XACT.mutations, 'delete')
         self.assertEqual(mutated_key, key._key)
-        self.assertEqual(len(client.connection._commit_cw), 0)
+        self.assertEqual(len(client._connection._commit_cw), 0)
 
     def test_allocate_ids_w_partial_key(self):
         NUM_IDS = 2

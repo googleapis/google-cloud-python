@@ -31,9 +31,9 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
-        self.assertIsInstance(client.connection, Connection)
-        self.assertIs(client.connection.credentials, creds)
-        self.assertIs(client.connection.http, http)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, creds)
+        self.assertIs(client._connection.http, http)
 
     def test_list_projects_defaults(self):
         import six
@@ -59,7 +59,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _Credentials()
         client = self._make_one(PROJECT_1, creds)
-        conn = client.connection = _Connection(DATA)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_projects()
         page = six.next(iterator.pages)
@@ -88,7 +88,7 @@ class TestClient(unittest.TestCase):
         DATA = {}
         creds = _Credentials()
         client = self._make_one(PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_projects(max_results=3, page_token=TOKEN)
         page = six.next(iterator.pages)
@@ -130,7 +130,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _Credentials()
         client = self._make_one(PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_datasets()
         page = six.next(iterator.pages)
@@ -158,7 +158,7 @@ class TestClient(unittest.TestCase):
         DATA = {}
         creds = _Credentials()
         client = self._make_one(PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_datasets(
             include_all=True, max_results=3, page_token=TOKEN)
@@ -306,7 +306,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _Credentials()
         client = self._make_one(PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_jobs()
         page = six.next(iterator.pages)
@@ -362,7 +362,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _Credentials()
         client = self._make_one(PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_jobs()
         page = six.next(iterator.pages)
@@ -390,7 +390,7 @@ class TestClient(unittest.TestCase):
         TOKEN = 'TOKEN'
         creds = _Credentials()
         client = self._make_one(PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_jobs(max_results=1000, page_token=TOKEN,
                                     all_users=True, state_filter='done')

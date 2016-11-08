@@ -1880,7 +1880,7 @@ class _Client(object):
 
     def __init__(self, project='project', connection=None):
         self.project = project
-        self.connection = connection
+        self._connection = connection
 
     def job_from_resource(self, resource):  # pylint: disable=unused-argument
         return self._job

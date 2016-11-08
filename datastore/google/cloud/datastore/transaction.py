@@ -145,7 +145,8 @@ class Transaction(Batch):
         """
         super(Transaction, self).begin()
         try:
-            self._id = self.connection.begin_transaction(self.project)
+            self._id = self._client._connection.begin_transaction(
+                self.project)
         except:
             self._status = self._ABORTED
             raise
@@ -159,7 +160,7 @@ class Transaction(Batch):
         - Sets the current transaction's ID to None.
         """
         try:
-            self.connection.rollback(self.project, self._id)
+            self._client._connection.rollback(self.project, self._id)
         finally:
             super(Transaction, self).rollback()
             # Clear our own ID in case this gets accidentally reused.
