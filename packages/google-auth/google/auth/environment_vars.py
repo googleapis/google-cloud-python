@@ -22,6 +22,13 @@ This used by :func:`google.auth.default` to explicitly set a project ID. This
 environment variable is also used by the Google Cloud Python Library.
 """
 
+LEGACY_PROJECT = 'GCLOUD_PROJECT'
+"""Previously used environment variable defining the default project.
+
+This environment variable is used instead of the current one in some
+situations (such as Google App Engine).
+"""
+
 CREDENTIALS = 'GOOGLE_APPLICATION_CREDENTIALS'
 """Environment variable defining the location of Google application default
 credentials."""

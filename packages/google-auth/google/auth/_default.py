@@ -254,7 +254,9 @@ def default(request=None):
             If no credentials were found, or if the credentials found were
             invalid.
     """
-    explicit_project_id = os.environ.get(environment_vars.PROJECT)
+    explicit_project_id = os.environ.get(
+        environment_vars.PROJECT,
+        os.environ.get(environment_vars.LEGACY_PROJECT))
 
     checkers = (
         _get_explicit_environ_credentials,

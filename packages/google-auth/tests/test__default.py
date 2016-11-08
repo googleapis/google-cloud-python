@@ -268,6 +268,15 @@ def test_default_explict_project_id(get_mock, monkeypatch):
 
 @mock.patch(
     'google.auth._default._get_explicit_environ_credentials',
+    return_value=(mock.sentinel.credentials, mock.sentinel.project_id))
+def test_default_explict_legacy_project_id(get_mock, monkeypatch):
+    monkeypatch.setenv(environment_vars.LEGACY_PROJECT, 'explicit-env')
+    assert _default.default() == (
+        mock.sentinel.credentials, 'explicit-env')
+
+
+@mock.patch(
+    'google.auth._default._get_explicit_environ_credentials',
     return_value=(None, None))
 @mock.patch(
     'google.auth._default._get_gcloud_sdk_credentials',
