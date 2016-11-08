@@ -492,7 +492,7 @@ class Iterator(BaseIterator):
         pb = self._build_protobuf()
         transaction = self.client.current_transaction
 
-        query_results = self.client.connection.run_query(
+        query_results = self.client._connection.run_query(
             query_pb=pb,
             project=self._query.project,
             namespace=self._query.namespace,
