@@ -468,8 +468,6 @@ class TestIterator(unittest.TestCase):
         self.assertFalse(iterator._more_results)
 
     def test__process_query_results_bad_enum(self):
-        from google.cloud.datastore._generated import query_pb2
-
         iterator = self._makeOne(None, None)
         more_results_enum = 999
         with self.assertRaises(ValueError):
