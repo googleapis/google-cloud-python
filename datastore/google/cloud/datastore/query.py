@@ -18,6 +18,7 @@ import base64
 
 from google.cloud._helpers import _ensure_tuple_or_list
 from google.cloud.iterator import Iterator as BaseIterator
+from google.cloud.iterator import Page
 
 from google.cloud.datastore._generated import query_pb2 as _query_pb2
 from google.cloud.datastore import helpers
@@ -474,6 +475,28 @@ class AltIterator(BaseIterator):
             raise ValueError('Unexpected value returned for `more_results`.')
 
         return entity_pbs
+
+    def _next_page(self):
+        """Get the next page in the iterator.
+
+        :rtype: :class:`~google.cloud.iterator.Page`
+        :returns: The next page in the iterator (or :data:`None` if
+                  there are no pages left).
+        """
+        if not self._more_results:
+            return None
+
+        pb = self._build_protobuf()
+        transaction = self.client.current_transaction
+
+        query_results = self.client.connection.run_query(
+            query_pb=pb,
+            project=self._query.project,
+            namespace=self._query.namespace,
+            transaction_id=transaction and transaction.id,
+        )
+        entity_pbs = self._process_query_results(*query_results)
+        return Page(self, entity_pbs, self._item_to_value)
 
 
 class Iterator(object):
