@@ -39,7 +39,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=False):
             client = self._make_one(project=self.PROJECT, credentials=creds)
 
-        conn = client.connection = object()
+        conn = client._connection = object()
         api = client.publisher_api
 
         self.assertIsInstance(api, _PublisherAPI)
@@ -93,7 +93,7 @@ class TestClient(unittest.TestCase):
         # API instance is cached
         again = client.publisher_api
         self.assertIs(again, api)
-        args = (client.connection,)
+        args = (client._connection,)
         self.assertEqual(_called_with, [(args, {})])
 
     def test_subscriber_api_wo_gax(self):
@@ -105,7 +105,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=False):
             client = self._make_one(project=self.PROJECT, credentials=creds)
 
-        conn = client.connection = object()
+        conn = client._connection = object()
         api = client.subscriber_api
 
         self.assertIsInstance(api, _SubscriberAPI)
@@ -145,14 +145,14 @@ class TestClient(unittest.TestCase):
         # API instance is cached
         again = client.subscriber_api
         self.assertIs(again, api)
-        args = (client.connection,)
+        args = (client._connection,)
         self.assertEqual(_called_with, [(args, {})])
 
     def test_iam_policy_api(self):
         from google.cloud.pubsub._http import _IAMPolicyAPI
         creds = _Credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client.connection = object()
+        conn = client._connection = object()
         api = client.iam_policy_api
         self.assertIsInstance(api, _IAMPolicyAPI)
         self.assertIs(api._connection, conn)
@@ -165,7 +165,7 @@ class TestClient(unittest.TestCase):
 
         creds = _Credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        client.connection = object()
+        client._connection = object()
         api = _FauxPublisherAPI(items=[Topic(self.TOPIC_NAME, client)])
         client._publisher_api = api
 
@@ -188,7 +188,7 @@ class TestClient(unittest.TestCase):
         SIZE = 1
         creds = _Credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        client.connection = object()
+        client._connection = object()
         api = _FauxPublisherAPI([Topic(self.TOPIC_NAME, client)], TOKEN2)
         client._publisher_api = api
 
@@ -206,7 +206,7 @@ class TestClient(unittest.TestCase):
     def test_list_topics_missing_key(self):
         creds = _Credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        client.connection = object()
+        client._connection = object()
         api = _FauxPublisherAPI()
         client._publisher_api = api
 
@@ -228,7 +228,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 use_gax=False)
         returned = {'subscriptions': [SUB_INFO]}
-        client.connection = _Connection(returned)
+        client._connection = _Connection(returned)
 
         iterator = client.list_subscriptions()
         subscriptions = list(iterator)
@@ -248,7 +248,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(subscription.ack_deadline)
         self.assertIsNone(subscription.push_endpoint)
 
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         expected_path = '/projects/%s/subscriptions' % (self.PROJECT,)
         self.assertEqual(called_with, {
             'method': 'GET',
@@ -280,7 +280,7 @@ class TestClient(unittest.TestCase):
             'subscriptions': [SUB_INFO],
             'nextPageToken': TOKEN2,
         }
-        client.connection = _Connection(returned)
+        client._connection = _Connection(returned)
 
         iterator = client.list_subscriptions(
             SIZE, TOKEN1)
@@ -302,7 +302,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(subscription.ack_deadline, ACK_DEADLINE)
         self.assertEqual(subscription.push_endpoint, PUSH_ENDPOINT)
 
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         expected_path = '/projects/%s/subscriptions' % (self.PROJECT,)
         self.assertEqual(called_with, {
             'method': 'GET',
@@ -318,7 +318,7 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
 
         client = self._make_one(project=PROJECT, credentials=creds)
-        client.connection = object()
+        client._connection = object()
         api = client._subscriber_api = _FauxSubscriberAPI()
         api._list_subscriptions_response = (), None
 
