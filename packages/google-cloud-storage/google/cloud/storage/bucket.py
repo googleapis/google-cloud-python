@@ -144,9 +144,9 @@ class Bucket(_PropertyMixin):
             query_params = {'fields': 'name'}
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
-            client.connection.api_request(method='GET', path=self.path,
-                                          query_params=query_params,
-                                          _target_object=None)
+            client._connection.api_request(
+                method='GET', path=self.path,
+                query_params=query_params, _target_object=None)
             # NOTE: This will not fail immediately in a batch. However, when
             #       Batch.finish() is called, the resulting `NotFound` will be
             #       raised.
@@ -171,7 +171,7 @@ class Bucket(_PropertyMixin):
         query_params = {'project': client.project}
         properties = {key: self._properties[key] for key in self._changes}
         properties['name'] = self.name
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='POST', path='/b', query_params=query_params,
             data=properties, _target_object=self)
         self._set_properties(api_response)
@@ -233,7 +233,7 @@ class Bucket(_PropertyMixin):
         client = self._require_client(client)
         blob = Blob(bucket=self, name=blob_name)
         try:
-            response = client.connection.api_request(
+            response = client._connection.api_request(
                 method='GET', path=blob.path, _target_object=blob)
             # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
@@ -363,8 +363,8 @@ class Bucket(_PropertyMixin):
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
-        client.connection.api_request(method='DELETE', path=self.path,
-                                      _target_object=None)
+        client._connection.api_request(
+            method='DELETE', path=self.path, _target_object=None)
 
     def delete_blob(self, blob_name, client=None):
         """Deletes a blob from the current bucket.
@@ -405,8 +405,8 @@ class Bucket(_PropertyMixin):
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
-        client.connection.api_request(method='DELETE', path=blob_path,
-                                      _target_object=None)
+        client._connection.api_request(
+            method='DELETE', path=blob_path, _target_object=None)
 
     def delete_blobs(self, blobs, on_error=None, client=None):
         """Deletes a list of blobs from the current bucket.
@@ -472,7 +472,7 @@ class Bucket(_PropertyMixin):
             new_name = blob.name
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
-        copy_result = client.connection.api_request(
+        copy_result = client._connection.api_request(
             method='POST', path=api_path, _target_object=new_blob)
         if not preserve_acl:
             new_blob.acl.save(acl={}, client=client)

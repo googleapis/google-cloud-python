@@ -48,13 +48,13 @@ class Client(JSONClient):
     _connection_class = Connection
 
     def __init__(self, project=None, credentials=None, http=None):
-        self._connection = None
+        self._base_connection = None
         super(Client, self).__init__(project=project, credentials=credentials,
                                      http=http)
         self._batch_stack = _LocalStack()
 
     @property
-    def connection(self):
+    def _connection(self):
         """Get connection or batch on the client.
 
         :rtype: :class:`google.cloud.storage._http.Connection`
@@ -64,14 +64,14 @@ class Client(JSONClient):
         if self.current_batch is not None:
             return self.current_batch
         else:
-            return self._connection
+            return self._base_connection
 
-    @connection.setter
-    def connection(self, value):
+    @_connection.setter
+    def _connection(self, value):
         """Set connection on the client.
 
         Intended to be used by constructor (since the base class calls)
-            self.connection = connection
+            self._connection = connection
         Will raise if the connection is set more than once.
 
         :type value: :class:`google.cloud.storage._http.Connection`
@@ -79,9 +79,9 @@ class Client(JSONClient):
 
         :raises: :class:`ValueError` if connection has already been set.
         """
-        if self._connection is not None:
+        if self._base_connection is not None:
             raise ValueError('Connection already set on client')
-        self._connection = value
+        self._base_connection = value
 
     def _push_batch(self, batch):
         """Push a batch onto our stack.

@@ -1747,11 +1747,11 @@ class _Signer(object):
 class _Client(object):
 
     def __init__(self, connection):
-        self._connection = connection
+        self._base_connection = connection
 
     @property
-    def connection(self):
-        return self._connection
+    def _connection(self):
+        return self._base_connection
 
 
 class _Stream(object):

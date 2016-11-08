@@ -33,8 +33,8 @@ class TestClient(unittest.TestCase):
 
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         self.assertEqual(client.project, PROJECT)
-        self.assertIsInstance(client.connection, Connection)
-        self.assertIs(client.connection.credentials, CREDENTIALS)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, CREDENTIALS)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
 
@@ -59,36 +59,36 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._pop_batch(), batch1)
         self.assertEqual(list(client._batch_stack), [])
 
-    def test_connection_setter(self):
+    def test__connection_setter(self):
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
-        client._connection = None  # Unset the value from the constructor
-        client.connection = connection = object()
-        self.assertIs(client._connection, connection)
+        client._base_connection = None  # Unset the value from the constructor
+        client._connection = connection = object()
+        self.assertIs(client._base_connection, connection)
 
-    def test_connection_setter_when_set(self):
+    def test__connection_setter_when_set(self):
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
-        self.assertRaises(ValueError, setattr, client, 'connection', None)
+        self.assertRaises(ValueError, setattr, client, '_connection', None)
 
-    def test_connection_getter_no_batch(self):
+    def test__connection_getter_no_batch(self):
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
-        self.assertIs(client.connection, client._connection)
+        self.assertIs(client._connection, client._base_connection)
         self.assertIsNone(client.current_batch)
 
-    def test_connection_getter_with_batch(self):
+    def test__connection_getter_with_batch(self):
         from google.cloud.storage.batch import Batch
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         batch = Batch(client)
         client._push_batch(batch)
-        self.assertIsNot(client.connection, client._connection)
-        self.assertIs(client.connection, batch)
+        self.assertIsNot(client._connection, client._base_connection)
+        self.assertIs(client._connection, batch)
         self.assertIs(client.current_batch, batch)
 
     def test_bucket(self):
@@ -124,13 +124,13 @@ class TestClient(unittest.TestCase):
 
         NONESUCH = 'nonesuch'
         URI = '/'.join([
-            client.connection.API_BASE_URL,
+            client._connection.API_BASE_URL,
             'storage',
-            client.connection.API_VERSION,
+            client._connection.API_VERSION,
             'b',
             'nonesuch?projection=noAcl',
         ])
-        http = client.connection._http = _Http(
+        http = client._connection._http = _Http(
             {'status': '404', 'content-type': 'application/json'},
             b'{}',
         )
@@ -147,13 +147,13 @@ class TestClient(unittest.TestCase):
 
         BLOB_NAME = 'blob-name'
         URI = '/'.join([
-            client.connection.API_BASE_URL,
+            client._connection.API_BASE_URL,
             'storage',
-            client.connection.API_VERSION,
+            client._connection.API_VERSION,
             'b',
             '%s?projection=noAcl' % (BLOB_NAME,),
         ])
-        http = client.connection._http = _Http(
+        http = client._connection._http = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
@@ -171,13 +171,13 @@ class TestClient(unittest.TestCase):
 
         NONESUCH = 'nonesuch'
         URI = '/'.join([
-            client.connection.API_BASE_URL,
+            client._connection.API_BASE_URL,
             'storage',
-            client.connection.API_VERSION,
+            client._connection.API_VERSION,
             'b',
             'nonesuch?projection=noAcl',
         ])
-        http = client.connection._http = _Http(
+        http = client._connection._http = _Http(
             {'status': '404', 'content-type': 'application/json'},
             b'{}',
         )
@@ -195,13 +195,13 @@ class TestClient(unittest.TestCase):
 
         BLOB_NAME = 'blob-name'
         URI = '/'.join([
-            client.connection.API_BASE_URL,
+            client._connection.API_BASE_URL,
             'storage',
-            client.connection.API_VERSION,
+            client._connection.API_VERSION,
             'b',
             '%s?projection=noAcl' % (BLOB_NAME,),
         ])
-        http = client.connection._http = _Http(
+        http = client._connection._http = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
@@ -221,12 +221,12 @@ class TestClient(unittest.TestCase):
 
         BLOB_NAME = 'blob-name'
         URI = '/'.join([
-            client.connection.API_BASE_URL,
+            client._connection.API_BASE_URL,
             'storage',
-            client.connection.API_VERSION,
+            client._connection.API_VERSION,
             'b?project=%s' % (PROJECT,),
         ])
-        http = client.connection._http = _Http(
+        http = client._connection._http = _Http(
             {'status': '409', 'content-type': 'application/json'},
             '{"error": {"message": "Conflict"}}',
         )
@@ -244,12 +244,12 @@ class TestClient(unittest.TestCase):
 
         BLOB_NAME = 'blob-name'
         URI = '/'.join([
-            client.connection.API_BASE_URL,
+            client._connection.API_BASE_URL,
             'storage',
-            client.connection.API_VERSION,
+            client._connection.API_VERSION,
             'b?project=%s' % (PROJECT,),
         ])
-        http = client.connection._http = _Http(
+        http = client._connection._http = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
@@ -272,7 +272,7 @@ class TestClient(unittest.TestCase):
             'project': [PROJECT],
             'projection': ['noAcl'],
         }
-        http = client.connection._http = _Http(
+        http = client._connection._http = _Http(
             {'status': '200', 'content-type': 'application/json'},
             b'{}',
         )
@@ -282,9 +282,9 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(http._called_with['body'])
 
         BASE_URI = '/'.join([
-            client.connection.API_BASE_URL,
+            client._connection.API_BASE_URL,
             'storage',
-            client.connection.API_VERSION,
+            client._connection.API_VERSION,
             'b',
         ])
         URI = http._called_with['uri']
@@ -303,12 +303,12 @@ class TestClient(unittest.TestCase):
         BUCKET_NAME = 'bucket-name'
         query_params = urlencode({'project': PROJECT, 'projection': 'noAcl'})
         BASE_URI = '/'.join([
-            client.connection.API_BASE_URL,
+            client._connection.API_BASE_URL,
             'storage',
-            client.connection.API_VERSION,
+            client._connection.API_VERSION,
         ])
         URI = '/'.join([BASE_URI, 'b?%s' % (query_params,)])
-        http = client.connection._http = _Http(
+        http = client._connection._http = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"items": [{{"name": "{0}"}}]}}'.format(BUCKET_NAME)
             .encode('utf-8'),
@@ -343,7 +343,7 @@ class TestClient(unittest.TestCase):
             'fields': [FIELDS],
         }
 
-        http = client.connection._http = _Http(
+        http = client._connection._http = _Http(
             {'status': '200', 'content-type': 'application/json'},
             '{"items": []}',
         )
@@ -360,9 +360,9 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(http._called_with['body'])
 
         BASE_URI = '/'.join([
-            client.connection.API_BASE_URL,
+            client._connection.API_BASE_URL,
             'storage',
-            client.connection.API_VERSION,
+            client._connection.API_VERSION,
             'b'
         ])
         URI = http._called_with['uri']
