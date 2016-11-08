@@ -22,41 +22,44 @@ Authentication and Configuration
 - After configuring your environment, create a
   :class:`Client <google.cloud.logging.client.Client>`
 
-  .. code-block:: python
-
-     >>> from google.cloud import logging
-     >>> client = logging.Client()
+  .. literalinclude:: logging_snippets.py
+     :start-after: [START client_create_default]
+     :end-before: [END client_create_default]
+     :dedent: 4
 
   or pass in ``credentials`` and ``project`` explicitly
 
-  .. code-block:: python
-
-     >>> from google.cloud import logging
-     >>> client = logging.Client(project='my-project', credentials=creds)
+  .. literalinclude:: logging_snippets.py
+     :start-after: [START client_create_explicit]
+     :end-before: [END client_create_explicit]
+     :dedent: 4
 
 
 Writing log entries
 -------------------
 
-Write a simple text entry to a logger.
+To write log entries, first create a
+:class:`~google.cloud.logging.logger.Logger`, passing the "log name" with
+which to associate the entries:
 
-.. code-block:: python
+.. literalinclude:: logging_snippets.py
+    :start-after: [START logger_create]
+    :end-before: [END logger_create]
+    :dedent: 4
 
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> logger = client.logger('log_name')
-   >>> logger.log_text("A simple entry")  # API call
+Write a simple text entry to the logger.
 
-Write a dictionary entry to a logger.
+.. literalinclude:: logging_snippets.py
+    :start-after: [START logger_log_text]
+    :end-before: [END logger_log_text]
+    :dedent: 4
 
-.. code-block:: python
+Write a dictionary entry to the logger.
 
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> logger = client.logger('log_name')
-   >>> logger.log_struct({
-   ...     'message': 'My second entry',
-   ...     'weather': 'partly cloudy'})  # API call
+.. literalinclude:: logging_snippets.py
+    :start-after: [START logger_log_struct]
+    :end-before: [END logger_log_struct]
+    :dedent: 4
 
 
 Retrieving log entries
@@ -64,84 +67,58 @@ Retrieving log entries
 
 Fetch entries for the default project.
 
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> for entry in client.list_entries():  # API call(s)
-   ...    timestamp = entry.timestamp.isoformat()
-   ...    print('%sZ: %s' %
-   ...          (timestamp, entry.payload))
-   2016-02-17T20:35:49.031864072Z: A simple entry | None
-   2016-02-17T20:38:15.944418531Z: None | {'message': 'My second entry', 'weather': 'partly cloudy'}
+.. literalinclude:: logging_snippets.py
+    :start-after: [START client_list_entries_default]
+    :end-before: [END client_list_entries_default]
+    :dedent: 4
 
 Fetch entries across multiple projects.
 
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> iterator = client.list_entries(
-   ...     project_ids=['one-project', 'another-project'])
-   >>> entries = list(iterator)  # API call(s)
+.. literalinclude:: logging_snippets.py
+    :start-after: [START client_list_entries_multi_project]
+    :end-before: [END client_list_entries_multi_project]
+    :dedent: 4
 
 Filter entries retrieved using the `Advanced Logs Filters`_ syntax
 
 .. _Advanced Logs Filters: https://cloud.google.com/logging/docs/view/advanced_filters
 
-.. code-block:: python
+Fetch entries for the default project.
 
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> FILTER = "log:log_name AND textPayload:simple"
-   >>> iterator = client.list_entries(filter=FILTER)
-   >>> entries = list(iterator)  # API call(s)
+.. literalinclude:: logging_snippets.py
+    :start-after: [START client_list_entries_filter]
+    :end-before: [END client_list_entries_filter]
+    :dedent: 4
 
 Sort entries in descending timestamp order.
 
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> iterator = client.list_entries(order_by=logging.DESCENDING)
-   >>> entries = list(iterator)  # API call(s)
+.. literalinclude:: logging_snippets.py
+    :start-after: [START client_list_entries_order_by]
+    :end-before: [END client_list_entries_order_by]
+    :dedent: 4
 
 Retrieve entries in batches of 10, iterating until done.
 
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> retrieved = []
-   >>> iterator = client.list_entries(page_size=10, page_token=token)
-   >>> pages = iterator.pages
-   >>> page1 = next(pages)  # API call
-   >>> for entry in page1:
-   ...     do_something(entry)
-   ...
-   >>> page2 = next(pages)  # API call
-   >>> for entry in page2:
-   ...     do_something_else(entry)
+.. literalinclude:: logging_snippets.py
+    :start-after: [START client_list_entries_paged]
+    :end-before: [END client_list_entries_paged]
+    :dedent: 4
 
 Retrieve entries for a single logger, sorting in descending timestamp order:
 
-.. code-block:: python
+.. literalinclude:: logging_snippets.py
+    :start-after: [START logger_list_entries]
+    :end-before: [END logger_list_entries]
+    :dedent: 4
 
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> logger = client.logger('log_name')
-   >>> iterator = logger.list_entries(order_by=logging.DESCENDING)
-   >>> entries = list(iterator)  # API call(s)
 
 Delete all entries for a logger
 -------------------------------
 
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> logger = client.logger('log_name')
-   >>> logger.delete()  # API call
+.. literalinclude:: logging_snippets.py
+    :start-after: [START logger_delete]
+    :end-before: [END logger_delete]
+    :dedent: 8
 
 
 Manage log metrics
@@ -150,72 +127,40 @@ Manage log metrics
 Metrics are counters of entries which match a given filter.  They can be
 used within Stackdriver Monitoring to create charts and alerts.
 
-Create a metric:
-
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> metric = client.metric(
-   ...     "robots", "Robots all up in your server",
-   ...     filter='log:apache-access AND textPayload:robot')
-   >>> metric.exists()  # API call
-   False
-   >>> metric.create()  # API call
-   >>> metric.exists()  # API call
-   True
-
 List all metrics for a project:
 
-.. code-block:: python
+.. literalinclude:: logging_snippets.py
+    :start-after: [START client_list_metrics]
+    :end-before: [END client_list_metrics]
+    :dedent: 4
 
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> metrics = list(client.list_metrics())
-   >>> len(metrics)
-   1
-   >>> metric = metrics[0]
-   >>> metric.name
-   "robots"
+Create a metric:
+
+.. literalinclude:: logging_snippets.py
+    :start-after: [START metric_create]
+    :end-before: [END metric_create]
+    :dedent: 4
 
 Refresh local information about a metric:
 
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> metric = client.metric("robots")
-   >>> metric.reload()  # API call
-   >>> metric.description
-   "Robots all up in your server"
-   >>> metric.filter_
-   "log:apache-access AND textPayload:robot"
+.. literalinclude:: logging_snippets.py
+    :start-after: [START metric_reload]
+    :end-before: [END metric_reload]
+    :dedent: 4
 
 Update a metric:
 
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> metric = client.metric("robots")
-   >>> metric.exists()  # API call
-   True
-   >>> metric.reload()  # API call
-   >>> metric.description = "Danger, Will Robinson!"
-   >>> metric.update()  # API call
+.. literalinclude:: logging_snippets.py
+    :start-after: [START metric_update]
+    :end-before: [END metric_update]
+    :dedent: 4
 
 Delete a metric:
 
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> metric = client.metric("robots")
-   >>> metric.exists()  # API call
-   True
-   >>> metric.delete()  # API call
-   >>> metric.exists()  # API call
-   False
+.. literalinclude:: logging_snippets.py
+    :start-after: [START metric_delete]
+    :end-before: [END metric_delete]
+    :dedent: 4
 
 Export log entries using sinks
 ------------------------------
@@ -227,22 +172,25 @@ Export to Cloud Storage
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Make sure that the storage bucket you want to export logs too has
-``cloud-logs@google.com`` as the owner. See `Set permission for writing exported logs`_.
+``cloud-logs@google.com`` as the owner. See
+`Setting permissions for Cloud Storage`_.
 
-Add ``cloud-logs@google.com`` as the owner of ``my-bucket-name``:
+.. _Setting permissions for Cloud Storage: https://cloud.google.com/logging/docs/export/configure_export#setting_product_name_short_permissions_for_writing_exported_logs
 
-.. code-block:: python
+Add ``cloud-logs@google.com`` as the owner of the bucket:
 
-    >>> from google.cloud import storage
-    >>> client = storage.Client()
-    >>> bucket = client.get_bucket('my-bucket-name')
-    >>> bucket.acl.reload()
-    >>> logs_group = bucket.acl.group('cloud-logs@google.com')
-    >>> logs_group.grant_owner()
-    >>> bucket.acl.add_entity(logs_group)
-    >>> bucket.acl.save()
+.. literalinclude:: logging_snippets.py
+    :start-after: [START sink_bucket_permissions]
+    :end-before: [END sink_bucket_permissions]
+    :dedent: 4
 
-.. _Set permission for writing exported logs: https://cloud.google.com/logging/docs/export/configure_export#setting_product_name_short_permissions_for_writing_exported_logs
+Create a Cloud Storage sink:
+
+.. literalinclude:: logging_snippets.py
+    :start-after: [START sink_storage_create]
+    :end-before: [END sink_storage_create]
+    :dedent: 4
+
 
 Export to BigQuery
 ~~~~~~~~~~~~~~~~~~
@@ -252,21 +200,20 @@ and add ``cloud-logs@google.com`` to a dataset.
 
 See: `Setting permissions for BigQuery`_
 
-.. code-block:: python
-
-    >>> from google.cloud import bigquery
-    >>> from google.cloud.bigquery.dataset import AccessGrant
-    >>> bigquery_client = bigquery.Client()
-    >>> dataset = bigquery_client.dataset('my-dataset-name')
-    >>> dataset.create()
-    >>> dataset.reload()
-    >>> grants = dataset.access_grants
-    >>> grants.append(AccessGrant(
-    ...     'WRITER', 'groupByEmail', 'cloud-logs@google.com')))
-    >>> dataset.access_grants = grants
-    >>> dataset.update()
-
 .. _Setting permissions for BigQuery: https://cloud.google.com/logging/docs/export/configure_export#manual-access-bq
+
+.. literalinclude:: logging_snippets.py
+    :start-after: [START sink_dataset_permissions]
+    :end-before: [END sink_dataset_permissions]
+    :dedent: 4
+
+Create a BigQuery sink:
+
+.. literalinclude:: logging_snippets.py
+    :start-after: [START sink_bigquery_create]
+    :end-before: [END sink_bigquery_create]
+    :dedent: 4
+
 
 Export to Pub/Sub
 ~~~~~~~~~~~~~~~~~
@@ -276,186 +223,47 @@ and add ``cloud-logs@google.com`` to a topic.
 
 See: `Setting permissions for Pub/Sub`_
 
-.. code-block:: python
-
-    >>> from google.cloud import pubsub
-    >>> client = pubsub.Client()
-    >>> topic = client.topic('your-topic-name')
-    >>> policy = top.get_iam_policy()
-    >>> policy.owners.add(policy.group('cloud-logs@google.com'))
-    >>> topic.set_iam_policy(policy)
-
 .. _Setting permissions for Pub/Sub: https://cloud.google.com/logging/docs/export/configure_export#manual-access-pubsub
 
-Create a Cloud Storage sink:
-
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> sink = client.sink(
-   ...     "robots-storage",
-   ...     'log:apache-access AND textPayload:robot',
-   ...     'storage.googleapis.com/my-bucket-name')
-   >>> sink.exists()  # API call
-   False
-   >>> sink.create()  # API call
-   >>> sink.exists()  # API call
-   True
-
-Create a BigQuery sink:
-
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> sink = client.sink(
-   ...     "robots-bq",
-   ...     'log:apache-access AND textPayload:robot',
-   ...     'bigquery.googleapis.com/projects/projects/my-project/datasets/my-dataset')
-   >>> sink.exists()  # API call
-   False
-   >>> sink.create()  # API call
-   >>> sink.exists()  # API call
-   True
+.. literalinclude:: logging_snippets.py
+    :start-after: [START sink_topic_permissions]
+    :end-before: [END sink_topic_permissions]
+    :dedent: 4
 
 Create a Cloud Pub/Sub sink:
 
-.. code-block:: python
+.. literalinclude:: logging_snippets.py
+    :start-after: [START sink_pubsub_create]
+    :end-before: [END sink_pubsub_create]
+    :dedent: 4
 
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-
-   >>> sink = client.sink(
-   ...     "robots-pubsub",
-   ...      'log:apache-access AND textPayload:robot',
-   ...      'pubsub.googleapis.com/projects/my-project/topics/my-topic')
-   >>> sink.exists()  # API call
-   False
-   >>> sink.create()  # API call
-   >>> sink.exists()  # API call
-   True
+Manage Sinks
+~~~~~~~~~~~~
 
 List all sinks for a project:
 
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> for sink in client.list_sinks():  # API call(s)
-   ...     print('%s: %s' % (sink.name, sink.destination))
-   robots-storage: storage.googleapis.com/my-bucket-name
-   robots-bq: bigquery.googleapis.com/projects/my-project/datasets/my-dataset
-   robots-pubsub: pubsub.googleapis.com/projects/my-project/topics/my-topic
+.. literalinclude:: logging_snippets.py
+    :start-after: [START client_list_sinks]
+    :end-before: [END client_list_sinks]
+    :dedent: 4
 
 Refresh local information about a sink:
 
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> sink = client.sink('robots-storage')
-   >>> sink.filter_ is None
-   True
-   >>> sink.reload()  # API call
-   >>> sink.filter_
-   'log:apache-access AND textPayload:robot'
-   >>> sink.destination
-   'storage.googleapis.com/my-bucket-name'
+.. literalinclude:: logging_snippets.py
+    :start-after: [START sink_reload]
+    :end-before: [END sink_reload]
+    :dedent: 4
 
 Update a sink:
 
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> sink = client.sink("robots")
-   >>> sink.reload()  # API call
-   >>> sink.filter_ = "log:apache-access"
-   >>> sink.update()  # API call
+.. literalinclude:: logging_snippets.py
+    :start-after: [START sink_update]
+    :end-before: [END sink_update]
+    :dedent: 4
 
 Delete a sink:
 
-.. code-block:: python
-
-   >>> from google.cloud import logging
-   >>> client = logging.Client()
-   >>> sink = client.sink(
-   ...     "robots",
-   ...     filter='log:apache-access AND textPayload:robot')
-   >>> sink.exists()  # API call
-   True
-   >>> sink.delete()  # API call
-   >>> sink.exists()  # API call
-   False
-
-Integration with Python logging module
----------------------------------------------
-
-
-It's possible to tie the Python :mod:`logging` module directly into Google Cloud Logging. To use it,
-create a :class:`CloudLoggingHandler <google.cloud.logging.CloudLoggingHandler>` instance from your
-Logging client.
-
-.. code-block:: python
-
-    >>> import logging
-    >>> import google.cloud.logging # Don't conflict with standard logging
-    >>> from google.cloud.logging.handlers import CloudLoggingHandler
-    >>> client = google.cloud.logging.Client()
-    >>> handler = CloudLoggingHandler(client)
-    >>> cloud_logger = logging.getLogger('cloudLogger')
-    >>> cloud_logger.setLevel(logging.INFO) # defaults to WARN
-    >>> cloud_logger.addHandler(handler)
-    >>> cloud_logger.error('bad news')
-
-.. note::
-
-    This handler by default uses an asynchronous transport that sends log entries on a background
-     thread. However, the API call will still be made in the same process. For other transport
-     options, see the transports section.
-
-All logs will go to a single custom log, which defaults to "python". The name of the Python
-logger will be included in the structured log entry under the "python_logger" field. You can
-change it by providing a name to the handler:
-
-.. code-block:: python
-
-    >>> handler = CloudLoggingHandler(client, name="mycustomlog")
-
-It is also possible to attach the handler to the root Python logger, so that for example a plain
-`logging.warn` call would be sent to Cloud Logging, as well as any other loggers created. However,
-you must avoid infinite recursion from the logging calls the client itself makes. A helper
-method :meth:`setup_logging <google.cloud.logging.handlers.setup_logging>` is provided to configure
-this automatically:
-
-.. code-block:: python
-
-    >>> import logging
-    >>> import google.cloud.logging # Don't conflict with standard logging
-    >>> from google.cloud.logging.handlers import CloudLoggingHandler, setup_logging
-    >>> client = google.cloud.logging.Client()
-    >>> handler = CloudLoggingHandler(client)
-    >>> logging.getLogger().setLevel(logging.INFO) # defaults to WARN
-    >>> setup_logging(handler)
-    >>> logging.error('bad news')
-
-You can also exclude certain loggers:
-
-.. code-block:: python
-
-   >>> setup_logging(handler, excluded_loggers=('werkzeug',)))
-
-
-
-Python logging handler transports
-==================================
-
-The Python logging handler can use different transports. The default is
-:class:`google.cloud.logging.handlers.BackgroundThreadTransport`.
-
- 1. :class:`google.cloud.logging.handlers.BackgroundThreadTransport` this is the default. It writes
- entries on a background :class:`python.threading.Thread`.
-
- 1. :class:`google.cloud.logging.handlers.SyncTransport` this handler does a direct API call on each
- logging statement to write the entry.
+.. literalinclude:: logging_snippets.py
+    :start-after: [START sink_delete]
+    :end-before: [END sink_delete]
+    :dedent: 4
