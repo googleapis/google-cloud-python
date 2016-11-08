@@ -31,7 +31,7 @@ from grpc import StatusCode
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _pb_timestamp_to_rfc3339
 from google.cloud._helpers import make_secure_channel
-from google.cloud.connection import DEFAULT_USER_AGENT
+from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.iterator import GAXIterator

@@ -18,7 +18,7 @@ import base64
 import functools
 import os
 
-from google.cloud import connection as base_connection
+from google.cloud import _http
 from google.cloud.environment_vars import PUBSUB_EMULATOR
 from google.cloud.iterator import HTTPIterator
 from google.cloud.pubsub._helpers import subscription_name_from_path
@@ -30,7 +30,7 @@ PUBSUB_API_HOST = 'pubsub.googleapis.com'
 """Pub / Sub API request host."""
 
 
-class Connection(base_connection.JSONConnection):
+class Connection(_http.JSONConnection):
     """A connection to Google Cloud Pub/Sub via the JSON REST API.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
@@ -108,7 +108,7 @@ class _PublisherAPI(object):
 
     def __init__(self, client):
         self._client = client
-        self._connection = client.connection
+        self._connection = client._connection
 
     def list_topics(self, project, page_size=None, page_token=None):
         """API call:  list topics for a given project
@@ -255,7 +255,7 @@ class _SubscriberAPI(object):
 
     def __init__(self, client):
         self._client = client
-        self._connection = client.connection
+        self._connection = client._connection
 
     def list_subscriptions(self, project, page_size=None, page_token=None):
         """API call:  list subscriptions for a given project
