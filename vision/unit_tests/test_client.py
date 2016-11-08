@@ -81,6 +81,51 @@ class TestClient(unittest.TestCase):
         image = client.image(source_uri=IMAGE_SOURCE)
         self.assertIsInstance(image, Image)
 
+    def test_multiple_detection_from_content(self):
+        from google.cloud.vision.feature import Feature
+        from google.cloud.vision.feature import FeatureTypes
+        from unit_tests._fixtures import LABEL_DETECTION_RESPONSE
+        from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
+        RETURNED = LABEL_DETECTION_RESPONSE
+        LOGOS = LOGO_DETECTION_RESPONSE['responses'][0]['logoAnnotations']
+        RETURNED['responses'][0]['logoAnnotations'] = LOGOS
+
+        credentials = _Credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials)
+        client._connection = _Connection(RETURNED)
+
+        limit = 2
+        label_feature = Feature(FeatureTypes.LABEL_DETECTION, limit)
+        logo_feature = Feature(FeatureTypes.LOGO_DETECTION, limit)
+        features = [label_feature, logo_feature]
+        image = client.image(content=IMAGE_CONTENT)
+        items = image.detect(features)
+
+        self.assertEqual(len(items.logos), 2)
+        self.assertEqual(len(items.labels), 3)
+        self.assertEqual(items.logos[0].description, 'Brand1')
+        self.assertEqual(items.logos[0].score, 0.63192177)
+        self.assertEqual(items.logos[1].description, 'Brand2')
+        self.assertEqual(items.logos[1].score, 0.5492993)
+
+        self.assertEqual(items.labels[0].description, 'automobile')
+        self.assertEqual(items.labels[0].score, 0.9776855)
+        self.assertEqual(items.labels[1].description, 'vehicle')
+        self.assertEqual(items.labels[1].score, 0.947987)
+        self.assertEqual(items.labels[2].description, 'truck')
+        self.assertEqual(items.labels[2].score, 0.88429511)
+
+        image_request = client._connection._requested[0]['data']['requests'][0]
+        label_request = image_request['features'][0]
+        logo_request = image_request['features'][1]
+
+        self.assertEqual(B64_IMAGE_CONTENT,
+                         image_request['image']['content'])
+        self.assertEqual(label_request['maxResults'], 2)
+        self.assertEqual(label_request['type'], 'LABEL_DETECTION')
+        self.assertEqual(logo_request['maxResults'], 2)
+        self.assertEqual(logo_request['type'], 'LOGO_DETECTION')
+
     def test_face_detection_from_source(self):
         from google.cloud.vision.face import Face
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE

@@ -31,6 +31,35 @@ or pass in ``credentials`` and ``project`` explicitly.
      >>> client = vision.Client(project='my-project', credentials=creds)
 
 
+Manual Detection
+~~~~~~~~~~~~~~~~
+
+You can call the detection method manually.
+
+.. code-block:: python
+
+    >>> from google.cloud import vision
+    >>> from google.cloud.vision.feature import Feature
+    >>> from google.cloud.vision.feature import FeatureTypes
+    >>> client = vision.Client()
+    >>> image = client.image(source_uri='gs://my-test-bucket/image.jpg')
+    >>> features = [Feature(FeatureTypes.FACE_DETECTION, 5),
+    ...             Feature(FeatureTypes.LOGO_DETECTION, 3)]
+    >>> annotations = image.detect(features)
+    >>> len(annotations.faces)
+    2
+    >>> for face in annotations.faces:
+    ...     print(face.joy_likelihood)
+    0.94099093
+    0.54453093
+    >>> len(annotations.logos)
+    2
+    >>> for logo in annotations.logos:
+    ...     print(logo.description)
+    'google'
+    'github'
+
+
 Face Detection
 ~~~~~~~~~~~~~~
 
