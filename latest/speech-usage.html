@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 8a01e38 documentation</title>
+  <title>Using the API &mdash; google-cloud 1dd7032 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 8a01e38 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 1dd7032 documentation" href="index.html"/>
         <link rel="next" title="Speech Client" href="speech-client.html"/>
         <link rel="prev" title="Natural Language Response Classes" href="language-responses.html"/> 
 
@@ -217,6 +217,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#client">Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#asychronous-recognition">Asychronous Recognition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#synchronous-recognition">Synchronous Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#streaming-recognition">Streaming Recognition</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="speech-client.html">Client</a></li>
@@ -414,6 +415,75 @@ words to the vocabulary of the recognizer.</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="streaming-recognition">
+<h2>Streaming Recognition<a class="headerlink" href="#streaming-recognition" title="Permalink to this headline">#</a></h2>
+<p>The <code class="xref py py-meth docutils literal"><span class="pre">streaming_recognize()</span></code> method converts
+speech data to possible text alternatives on the fly.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Streaming recognition requests are limited to 1 minute of audio.</p>
+<p class="last">See: <a class="reference external" href="https://cloud.google.com/speech/limits#content">https://cloud.google.com/speech/limits#content</a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./hello.wav&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
+<span class="gp">... </span>                           <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span>
+<span class="gp">... </span>                           <span class="n">sample_rate</span><span class="o">=</span><span class="mi">16000</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">alternatives</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span><span class="n">sample</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
+<span class="go">&#39;hello&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
+<span class="go">0.973458576</span>
+</pre></div>
+</div>
+<p>By default the API will perform continuous recognition
+(continuing to process audio even if the speaker in the audio pauses speaking)
+until the client closes the output stream or until the maximum time limit has
+been reached.</p>
+<dl class="docutils">
+<dt>If you only want to recognize a single utterance you can set</dt>
+<dd><code class="docutils literal"><span class="pre">single_utterance</span></code> to <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> and only one result will be returned.</dd>
+</dl>
+<p>See: <a class="reference external" href="https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#streamingrecognitionconfig">Single Utterance</a></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./hello_pause_goodbye.wav&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
+<span class="gp">... </span>                           <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span>
+<span class="gp">... </span>                           <span class="n">sample_rate</span><span class="o">=</span><span class="mi">16000</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">responses</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span>
+<span class="gp">... </span>                                           <span class="n">single_utterance</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">alternatives</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">responses</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
+<span class="go">hello</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
+<span class="go">0.96523453546</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal"><span class="pre">interim_results</span></code> is set to <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>, interim results
+(tentative hypotheses) may be returned as they become available.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">speech</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./hello.wav&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
+<span class="gp">... </span>                           <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">LINEAR16</span><span class="p">,</span>
+<span class="gp">... </span>                           <span class="n">sample_rate</span><span class="o">=</span><span class="mi">16000</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">alternatives</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span>
+<span class="gp">... </span>                                                   <span class="n">interim_results</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
+<span class="go">====================</span>
+<span class="go">&#39;he&#39;</span>
+<span class="go">None</span>
+<span class="go">====================</span>
+<span class="go">&#39;hell&#39;</span>
+<span class="go">None</span>
+<span class="go">====================</span>
+<span class="go">&#39;hello&#39;</span>
+<span class="go">0.973458576</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -457,7 +527,7 @@ words to the vocabulary of the recognizer.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'8a01e38',
+            VERSION:'1dd7032',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
