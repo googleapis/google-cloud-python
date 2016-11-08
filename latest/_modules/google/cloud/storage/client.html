@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.client &mdash; google-cloud 8b899d1 documentation</title>
+  <title>google.cloud.storage.client &mdash; google-cloud a52010e documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 8b899d1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a52010e documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -298,9 +298,9 @@
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">JSONClient</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
+<span class="kn">from</span> <span class="nn">google.cloud.storage._http</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.batch</span> <span class="k">import</span> <span class="n">Batch</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.bucket</span> <span class="k">import</span> <span class="n">Bucket</span>
-<span class="kn">from</span> <span class="nn">google.cloud.storage.connection</span> <span class="k">import</span> <span class="n">Connection</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../storage-client.html#google.cloud.storage.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
@@ -336,7 +336,7 @@
     <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get connection or batch on the client.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.storage.connection.Connection`</span>
+<span class="sd">        :rtype: :class:`google.cloud.storage._http.Connection`</span>
 <span class="sd">        :returns: The connection set on the client, or the batch</span>
 <span class="sd">                  if one is set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -353,7 +353,7 @@
 <span class="sd">            self.connection = connection</span>
 <span class="sd">        Will raise if the connection is set more than once.</span>
 
-<span class="sd">        :type value: :class:`google.cloud.storage.connection.Connection`</span>
+<span class="sd">        :type value: :class:`google.cloud.storage._http.Connection`</span>
 <span class="sd">        :param value: The connection set on the client.</span>
 
 <span class="sd">        :raises: :class:`ValueError` if connection has already been set.</span>
@@ -607,7 +607,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'8b899d1',
+            VERSION:'a52010e',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
