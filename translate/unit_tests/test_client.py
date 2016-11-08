@@ -33,9 +33,9 @@ class TestClient(unittest.TestCase):
 
         http = object()
         client = self._make_one(self.KEY, http=http)
-        self.assertIsInstance(client.connection, Connection)
-        self.assertIsNone(client.connection.credentials)
-        self.assertIs(client.connection.http, http)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIsNone(client._connection.credentials)
+        self.assertIs(client._connection.http, http)
         self.assertEqual(client.target_language, ENGLISH_ISO_639)
 
     def test_ctor_non_default(self):
@@ -44,9 +44,9 @@ class TestClient(unittest.TestCase):
         http = object()
         target = 'es'
         client = self._make_one(self.KEY, http=http, target_language=target)
-        self.assertIsInstance(client.connection, Connection)
-        self.assertIsNone(client.connection.credentials)
-        self.assertIs(client.connection.http, http)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIsNone(client._connection.credentials)
+        self.assertIs(client._connection.http, http)
         self.assertEqual(client.target_language, target)
 
     def test_get_languages(self):
@@ -63,7 +63,7 @@ class TestClient(unittest.TestCase):
                 'languages': supported,
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.get_languages()
         self.assertEqual(result, supported)
@@ -88,7 +88,7 @@ class TestClient(unittest.TestCase):
                 'languages': supported,
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.get_languages()
         self.assertEqual(result, supported)
@@ -113,7 +113,7 @@ class TestClient(unittest.TestCase):
                 'languages': supported,
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.get_languages(target_language)
         self.assertEqual(result, supported)
@@ -129,7 +129,7 @@ class TestClient(unittest.TestCase):
     def test_detect_language_bad_result(self):
         client = self._make_one(self.KEY)
         value = 'takoy'
-        conn = client.connection = _Connection({})
+        conn = client._connection = _Connection({})
 
         with self.assertRaises(ValueError):
             client.detect_language(value)
@@ -159,7 +159,7 @@ class TestClient(unittest.TestCase):
                 'detections': [[detection]],
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.detect_language(value)
         self.assertEqual(result, detection)
@@ -199,7 +199,7 @@ class TestClient(unittest.TestCase):
                 ],
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.detect_language([value1, value2])
         self.assertEqual(result, [detection1, detection2])
@@ -236,7 +236,7 @@ class TestClient(unittest.TestCase):
                 'detections': [[detection1, detection2]],
             },
         }
-        client.connection = _Connection(data)
+        client._connection = _Connection(data)
 
         with self.assertRaises(ValueError):
             client.detect_language(value)
@@ -244,7 +244,7 @@ class TestClient(unittest.TestCase):
     def test_translate_bad_result(self):
         client = self._make_one(self.KEY)
         value = 'hvala ti'
-        conn = client.connection = _Connection({})
+        conn = client._connection = _Connection({})
 
         with self.assertRaises(ValueError):
             client.translate(value)
@@ -274,7 +274,7 @@ class TestClient(unittest.TestCase):
                 'translations': [translation],
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.translate(value)
         self.assertEqual(result, translation)
@@ -310,7 +310,7 @@ class TestClient(unittest.TestCase):
                 'translations': [translation1, translation2],
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.translate([value1, value2])
         self.assertEqual(result, [translation1, translation2])
@@ -342,7 +342,7 @@ class TestClient(unittest.TestCase):
                 'translations': [translation],
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         cid = '123'
         format_ = 'text'

@@ -15,10 +15,10 @@
 """Create / interact with Google Cloud Resource Manager connections."""
 
 
-from google.cloud import connection as base_connection
+from google.cloud import _http
 
 
-class Connection(base_connection.JSONConnection):
+class Connection(_http.JSONConnection):
     """A connection to Google Cloud Resource Manager via the JSON REST API.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`

@@ -435,7 +435,7 @@ class Test_SubscriberAPI(_Base):
         connection = _Connection(RETURNED)
         creds = _Credentials()
         client = Client(project=self.PROJECT, credentials=creds)
-        client.connection = connection
+        client._connection = connection
         api = self._make_one(client)
 
         iterator = api.list_subscriptions(self.PROJECT)
@@ -478,7 +478,7 @@ class Test_SubscriberAPI(_Base):
         connection = _Connection(RETURNED)
         creds = _Credentials()
         client = Client(project=self.PROJECT, credentials=creds)
-        client.connection = connection
+        client._connection = connection
         api = self._make_one(client)
 
         iterator = api.list_subscriptions(
@@ -879,7 +879,7 @@ class _Connection(object):
 class _Client(object):
 
     def __init__(self, connection, project):
-        self.connection = connection
+        self._connection = connection
         self.project = project
 
 
