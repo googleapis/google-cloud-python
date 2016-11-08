@@ -709,7 +709,7 @@ class TestAltIterator(unittest.TestCase):
 
         entity_pbs = object()
         cursor_as_bytes = b'\x9ai\xe7'
-        cursor = 'mmnn'
+        cursor = b'mmnn'
         skipped_results = 4
         more_results_enum = query_pb2.QueryResultBatch.NOT_FINISHED
         result = iterator._process_query_results(
@@ -749,6 +749,44 @@ class TestAltIterator(unittest.TestCase):
         with self.assertRaises(ValueError):
             iterator._process_query_results(
                 None, b'', more_results_enum, None)
+
+    def test__next_page(self):
+        from google.cloud.iterator import Page
+        from google.cloud.datastore._generated import query_pb2
+        from google.cloud.datastore.query import Query
+
+        connection = _Connection()
+        more_enum = query_pb2.QueryResultBatch.NOT_FINISHED
+        result = ([], b'', more_enum, 0)
+        connection._results = [result]
+        project = 'prujekt'
+        client = _Client(project, connection)
+        query = Query(client)
+        iterator = self._makeOne(query, client)
+
+        page = iterator._next_page()
+        self.assertIsInstance(page, Page)
+        self.assertIs(page._parent, iterator)
+
+        self.assertEqual(connection._called_with, [{
+            'query_pb': query_pb2.Query(),
+            'project': project,
+            'namespace': None,
+            'transaction_id': None,
+        }])
+
+    def test__next_page_no_more(self):
+        from google.cloud.datastore.query import Query
+
+        connection = _Connection()
+        client = _Client(None, connection)
+        query = Query(client)
+        iterator = self._makeOne(query, client)
+        iterator._more_results = False
+
+        page = iterator._next_page()
+        self.assertIsNone(page)
+        self.assertEqual(connection._called_with, [])
 
 
 class Test__item_to_entity(unittest.TestCase):
