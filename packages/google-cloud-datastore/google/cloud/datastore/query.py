@@ -430,6 +430,47 @@ class Iterator(object):
 
         return pb
 
+    def _process_query_results(self, entity_pbs, cursor_as_bytes,
+                               more_results_enum, skipped_results):
+        """Process the response from a datastore query.
+
+        :type entity_pbs: iterable
+        :param entity_pbs: The entities returned in the current page.
+
+        :type cursor_as_bytes: bytes
+        :param cursor_as_bytes: The end cursor of the query.
+
+        :type more_results_enum:
+            :class:`._generated.query_pb2.QueryResultBatch.MoreResultsType`
+        :param more_results_enum: Enum indicating if there are more results.
+
+        :type skipped_results: int
+        :param skipped_results: The number of skipped results.
+
+        :rtype: list
+        :returns: The next page of results.
+        :raises ValueError: If ``more_results`` is an unexpected value.
+        """
+        self._skipped_results = skipped_results
+
+        if cursor_as_bytes == b'':
+            self._start_cursor = None
+        else:
+            self._start_cursor = base64.urlsafe_b64encode(cursor_as_bytes)
+        self._end_cursor = None
+
+        if more_results_enum == self._NOT_FINISHED:
+            self._more_results = True
+        elif more_results_enum in self._FINISHED:
+            self._more_results = False
+        else:
+            raise ValueError('Unexpected value returned for `more_results`.')
+
+        page = [
+            helpers.entity_from_protobuf(entity)
+            for entity in entity_pbs]
+        return page
+
     def next_page(self):
         """Fetch a single "page" of query results.
 
@@ -447,26 +488,8 @@ class Iterator(object):
             project=self._query.project,
             namespace=self._query.namespace,
             transaction_id=transaction and transaction.id,
-            )
-        (entity_pbs, cursor_as_bytes,
-         more_results_enum, self._skipped_results) = query_results
-
-        if cursor_as_bytes == b'':
-            self._start_cursor = None
-        else:
-            self._start_cursor = base64.urlsafe_b64encode(cursor_as_bytes)
-        self._end_cursor = None
-
-        if more_results_enum == self._NOT_FINISHED:
-            self._more_results = True
-        elif more_results_enum in self._FINISHED:
-            self._more_results = False
-        else:
-            raise ValueError('Unexpected value returned for `more_results`.')
-
-        self._page = [
-            helpers.entity_from_protobuf(entity)
-            for entity in entity_pbs]
+        )
+        self._page = self._process_query_results(*query_results)
         return self._page, self._more_results, self._start_cursor
 
     def __iter__(self):
