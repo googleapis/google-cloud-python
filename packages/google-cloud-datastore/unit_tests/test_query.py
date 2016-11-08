@@ -611,6 +611,56 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(connection._called_with[2], EXPECTED3)
 
 
+class TestAltIterator(unittest.TestCase):
+
+    def _getTargetClass(self):
+        from google.cloud.datastore.query import AltIterator
+        return AltIterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_constructor_defaults(self):
+        query = object()
+        client = object()
+        iterator = self._makeOne(query, client)
+
+        self.assertFalse(iterator._started)
+        self.assertIs(iterator.client, client)
+        self.assertIsNone(iterator._item_to_value)
+        self.assertIsNone(iterator.max_results)
+        self.assertEqual(iterator.page_number, 0)
+        self.assertIsNone(iterator.next_page_token,)
+        self.assertEqual(iterator.num_results, 0)
+        self.assertIs(iterator._query, query)
+        self.assertIsNone(iterator._offset)
+        self.assertIsNone(iterator._end_cursor)
+        self.assertTrue(iterator._more_results)
+
+    def test_constructor_explicit(self):
+        query = object()
+        client = object()
+        limit = 43
+        offset = 9
+        start_cursor = b'8290\xff'
+        end_cursor = b'so20rc\ta'
+        iterator = self._makeOne(
+            query, client, limit=limit, offset=offset,
+            start_cursor=start_cursor, end_cursor=end_cursor)
+
+        self.assertFalse(iterator._started)
+        self.assertIs(iterator.client, client)
+        self.assertIsNone(iterator._item_to_value)
+        self.assertEqual(iterator.max_results, limit)
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, start_cursor)
+        self.assertEqual(iterator.num_results, 0)
+        self.assertIs(iterator._query, query)
+        self.assertEqual(iterator._offset, offset)
+        self.assertEqual(iterator._end_cursor, end_cursor)
+        self.assertTrue(iterator._more_results)
+
+
 class Test__pb_from_query(unittest.TestCase):
 
     def _callFUT(self, query):
