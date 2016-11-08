@@ -437,6 +437,44 @@ class AltIterator(BaseIterator):
 
         return pb
 
+    def _process_query_results(self, entity_pbs, cursor_as_bytes,
+                               more_results_enum, skipped_results):
+        """Process the response from a datastore query.
+
+        :type entity_pbs: iterable
+        :param entity_pbs: The entities returned in the current page.
+
+        :type cursor_as_bytes: bytes
+        :param cursor_as_bytes: The end cursor of the query.
+
+        :type more_results_enum:
+            :class:`._generated.query_pb2.QueryResultBatch.MoreResultsType`
+        :param more_results_enum: Enum indicating if there are more results.
+
+        :type skipped_results: int
+        :param skipped_results: The number of skipped results.
+
+        :rtype: iterable
+        :returns: The next page of entity results.
+        :raises ValueError: If ``more_results`` is an unexpected value.
+        """
+        self._skipped_results = skipped_results
+
+        if cursor_as_bytes == b'':  # Empty-value for bytes.
+            self.next_page_token = None
+        else:
+            self.next_page_token = base64.urlsafe_b64encode(cursor_as_bytes)
+        self._end_cursor = None
+
+        if more_results_enum == _NOT_FINISHED:
+            self._more_results = True
+        elif more_results_enum in _FINISHED:
+            self._more_results = False
+        else:
+            raise ValueError('Unexpected value returned for `more_results`.')
+
+        return entity_pbs
+
 
 class Iterator(object):
     """Represent the state of a given execution of a Query.
