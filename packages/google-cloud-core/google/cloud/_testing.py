@@ -89,6 +89,3 @@ class _GAXPageIterator(object):
         return six.next(self._pages)
 
     __next__ = next
-
-    def __iter__(self):
-        return self
