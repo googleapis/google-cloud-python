@@ -63,7 +63,7 @@ class TestCredentials(object):
 
         assert (credentials._signer.key_id ==
                 SERVICE_ACCOUNT_INFO['private_key_id'])
-        assert (credentials._service_account_email ==
+        assert (credentials.service_account_email ==
                 SERVICE_ACCOUNT_INFO['client_email'])
         assert credentials._token_uri == SERVICE_ACCOUNT_INFO['token_uri']
 
@@ -77,8 +77,8 @@ class TestCredentials(object):
             info, scopes=scopes, subject=subject,
             additional_claims=additional_claims)
 
+        assert credentials.service_account_email == info['client_email']
         assert credentials._signer.key_id == info['private_key_id']
-        assert credentials._service_account_email == info['client_email']
         assert credentials._token_uri == info['token_uri']
         assert credentials._scopes == scopes
         assert credentials._subject == subject
@@ -90,8 +90,8 @@ class TestCredentials(object):
         credentials = service_account.Credentials.from_service_account_file(
             SERVICE_ACCOUNT_JSON_FILE)
 
+        assert credentials.service_account_email == info['client_email']
         assert credentials._signer.key_id == info['private_key_id']
-        assert credentials._service_account_email == info['client_email']
         assert credentials._token_uri == info['token_uri']
 
     def test_from_service_account_file_args(self):
@@ -104,8 +104,8 @@ class TestCredentials(object):
             SERVICE_ACCOUNT_JSON_FILE, subject=subject,
             scopes=scopes, additional_claims=additional_claims)
 
+        assert credentials.service_account_email == info['client_email']
         assert credentials._signer.key_id == info['private_key_id']
-        assert credentials._service_account_email == info['client_email']
         assert credentials._token_uri == info['token_uri']
         assert credentials._scopes == scopes
         assert credentials._subject == subject

@@ -32,7 +32,7 @@ def test_refresh(http_request, token_info):
     credentials.refresh(http_request)
 
     assert credentials.token is not None
-    assert credentials._service_account_email is not None
+    assert credentials.service_account_email is not None
 
     info = token_info(credentials.token)
     info_scopes = _helpers.string_to_scopes(info['scope'])

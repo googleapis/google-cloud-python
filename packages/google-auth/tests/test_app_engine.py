@@ -70,6 +70,23 @@ class TestCredentials(object):
         assert scoped_credentials.has_scopes(['email'])
         assert not scoped_credentials.requires_scopes
 
+    def test_service_account_email_implicit(self, app_identity_mock):
+        app_identity_mock.get_service_account_name.return_value = (
+            mock.sentinel.service_account_email)
+        credentials = app_engine.Credentials()
+
+        assert (credentials.service_account_email ==
+                mock.sentinel.service_account_email)
+        assert app_identity_mock.get_service_account_name.called
+
+    def test_service_account_email_explicit(self, app_identity_mock):
+        credentials = app_engine.Credentials(
+            service_account_id=mock.sentinel.service_account_email)
+
+        assert (credentials.service_account_email ==
+                mock.sentinel.service_account_email)
+        assert not app_identity_mock.get_service_account_name.called
+
     @mock.patch(
         'google.auth._helpers.utcnow',
         return_value=datetime.datetime.min)

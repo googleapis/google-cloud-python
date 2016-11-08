@@ -232,6 +232,11 @@ class Credentials(credentials.Signing,
             subject=self._service_account_email)
 
     @property
+    def service_account_email(self):
+        """The service account email."""
+        return self._service_account_email
+
+    @property
     def requires_scopes(self):
         """Checks if the credentials requires scopes.
 

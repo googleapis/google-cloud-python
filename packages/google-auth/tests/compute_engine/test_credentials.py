@@ -34,6 +34,8 @@ class TestCredentials(object):
         assert not self.credentials.expired
         # Scopes aren't needed
         assert not self.credentials.requires_scopes
+        # Service account email hasn't been populated
+        assert self.credentials.service_account_email == 'default'
 
     @mock.patch(
         'google.auth._helpers.utcnow', return_value=datetime.datetime.min)
@@ -58,7 +60,7 @@ class TestCredentials(object):
             datetime.datetime.min + datetime.timedelta(seconds=500))
 
         # Check the credential info
-        assert (self.credentials._service_account_email ==
+        assert (self.credentials.service_account_email ==
                 'service-account@example.com')
         assert self.credentials._scopes == ['one', 'two']
 

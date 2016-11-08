@@ -54,7 +54,7 @@ def test__convert_service_account_credentials():
     new_credentials = _oauth2client._convert_service_account_credentials(
         old_credentials)
 
-    assert (new_credentials._service_account_email ==
+    assert (new_credentials.service_account_email ==
             old_credentials.service_account_email)
     assert new_credentials._signer.key_id == old_credentials._private_key_id
     assert new_credentials._token_uri == old_credentials.token_uri
@@ -68,7 +68,7 @@ def test__convert_service_account_credentials_with_jwt():
     new_credentials = _oauth2client._convert_service_account_credentials(
         old_credentials)
 
-    assert (new_credentials._service_account_email ==
+    assert (new_credentials.service_account_email ==
             old_credentials.service_account_email)
     assert new_credentials._signer.key_id == old_credentials._private_key_id
     assert new_credentials._token_uri == old_credentials.token_uri
@@ -81,7 +81,7 @@ def test__convert_gce_app_assertion_credentials():
     new_credentials = _oauth2client._convert_gce_app_assertion_credentials(
         old_credentials)
 
-    assert (new_credentials._service_account_email ==
+    assert (new_credentials.service_account_email ==
             old_credentials.service_account_email)
 
 
