@@ -397,6 +397,8 @@ class Iterator(BaseIterator):
                        query results.
     """
 
+    next_page_token = None
+
     def __init__(self, query, client, limit=None, offset=None,
                  start_cursor=None, end_cursor=None):
         super(Iterator, self).__init__(
