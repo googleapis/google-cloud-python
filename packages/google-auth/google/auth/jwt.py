@@ -110,7 +110,7 @@ def _unverified_decode(token):
         token (Union[str, bytes]): The encoded JWT.
 
     Returns:
-        Tuple(str, str, str, str): header, payload, signed_section, and
+        Tuple[str, str, str, str]: header, payload, signed_section, and
             signature.
 
     Raises:
@@ -406,7 +406,7 @@ class Credentials(credentials.Signing,
             audience (str): Overrides the instance's current audience claim.
 
         Returns:
-            Tuple(bytes, datetime): The encoded JWT and the expiration.
+            Tuple[bytes, datetime]: The encoded JWT and the expiration.
         """
         now = _helpers.utcnow()
         lifetime = datetime.timedelta(seconds=self._token_lifetime)
