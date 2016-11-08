@@ -82,9 +82,9 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         http = object()
         client = self._make_one(credentials=creds, http=http)
-        self.assertIsInstance(client.connection, Connection)
-        self.assertTrue(client.connection.credentials is creds)
-        self.assertTrue(client.connection.http is http)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertTrue(client._connection.credentials is creds)
+        self.assertTrue(client._connection.http is http)
 
     def test_ctor_use_gax_preset(self):
         creds = _Credentials()
@@ -147,7 +147,7 @@ class TestClient(unittest.TestCase):
         }
         credentials = _Credentials()
         client = self._make_one(credentials=credentials, use_gax=False)
-        client.connection = _Connection(RETURNED)
+        client._connection = _Connection(RETURNED)
 
         encoding = speech.Encoding.FLAC
 
@@ -160,8 +160,8 @@ class TestClient(unittest.TestCase):
                                          profanity_filter=True,
                                          speech_context=self.HINTS)
 
-        self.assertEqual(len(client.connection._requested), 1)
-        req = client.connection._requested[0]
+        self.assertEqual(len(client._connection._requested), 1)
+        req = client._connection._requested[0]
         self.assertEqual(len(req), 3)
         self.assertEqual(req['data'], REQUEST)
         self.assertEqual(req['method'], 'POST')
@@ -192,7 +192,7 @@ class TestClient(unittest.TestCase):
         }
         credentials = _Credentials()
         client = self._make_one(credentials=credentials, use_gax=False)
-        client.connection = _Connection(RETURNED)
+        client._connection = _Connection(RETURNED)
 
         encoding = speech.Encoding.FLAC
 
@@ -201,8 +201,8 @@ class TestClient(unittest.TestCase):
 
         response = client.sync_recognize(sample)
 
-        self.assertEqual(len(client.connection._requested), 1)
-        req = client.connection._requested[0]
+        self.assertEqual(len(client._connection._requested), 1)
+        req = client._connection._requested[0]
         self.assertEqual(len(req), 3)
         self.assertEqual(req['data'], REQUEST)
         self.assertEqual(req['method'], 'POST')
@@ -222,7 +222,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _Credentials()
         client = self._make_one(credentials=credentials, use_gax=False)
-        client.connection = _Connection(SYNC_RECOGNIZE_EMPTY_RESPONSE)
+        client._connection = _Connection(SYNC_RECOGNIZE_EMPTY_RESPONSE)
 
         sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
                         encoding=speech.Encoding.FLAC,
@@ -240,8 +240,8 @@ class TestClient(unittest.TestCase):
 
         credentials = _Credentials()
         client = self._make_one(credentials=credentials, use_gax=True)
-        client.connection = _Connection()
-        client.connection.credentials = credentials
+        client._connection = _Connection()
+        client._connection.credentials = credentials
 
         channel_args = []
         channel_obj = object()
@@ -283,8 +283,8 @@ class TestClient(unittest.TestCase):
 
         creds = _Credentials()
         client = self._make_one(credentials=creds, use_gax=True)
-        client.connection = _Connection()
-        client.connection.credentials = creds
+        client._connection = _Connection()
+        client._connection.credentials = creds
         client._speech_api = None
 
         alternatives = [{
@@ -344,7 +344,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _Credentials()
         client = self._make_one(credentials=credentials)
-        client.connection = _Connection({})
+        client._connection = _Connection({})
 
         sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
                         encoding=speech.Encoding.FLAC,
@@ -362,7 +362,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _Credentials()
         client = self._make_one(credentials=credentials, use_gax=False)
-        client.connection = _Connection(RETURNED)
+        client._connection = _Connection(RETURNED)
 
         sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
                         encoding=speech.Encoding.LINEAR16,
@@ -385,8 +385,8 @@ class TestClient(unittest.TestCase):
         credentials = _Credentials()
         client = self._make_one(credentials=credentials,
                                 use_gax=True)
-        client.connection = _Connection()
-        client.connection.credentials = credentials
+        client._connection = _Connection()
+        client._connection.credentials = credentials
 
         channel_args = []
         channel_obj = object()
@@ -652,8 +652,8 @@ class TestClient(unittest.TestCase):
 
         creds = _Credentials()
         client = self._make_one(credentials=creds, use_gax=True)
-        client.connection = _Connection()
-        client.connection.credentials = creds
+        client._connection = _Connection()
+        client._connection.credentials = creds
 
         channel_args = []
         channel_obj = object()
@@ -680,14 +680,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(channel_args, [expected])
 
     def test_speech_api_without_gax(self):
-        from google.cloud.connection import Connection
+        from google.cloud._http import Connection
         from google.cloud.speech.client import _JSONSpeechAPI
 
         creds = _Credentials()
         client = self._make_one(credentials=creds, use_gax=False)
         self.assertIsNone(client._speech_api)
         self.assertIsInstance(client.speech_api, _JSONSpeechAPI)
-        self.assertIsInstance(client.speech_api.connection, Connection)
+        self.assertIsInstance(client.speech_api._connection, Connection)
 
     def test_speech_api_preset(self):
         creds = _Credentials()
