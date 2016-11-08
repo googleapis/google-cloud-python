@@ -17,6 +17,8 @@
 import base64
 
 from google.cloud._helpers import _ensure_tuple_or_list
+from google.cloud.iterator import Iterator as BaseIterator
+
 from google.cloud.datastore._generated import query_pb2 as _query_pb2
 from google.cloud.datastore import helpers
 from google.cloud.datastore.key import Key
@@ -365,6 +367,44 @@ class Query(object):
 
         return Iterator(
             self, client, limit, offset, start_cursor, end_cursor)
+
+
+class AltIterator(BaseIterator):
+    """Represent the state of a given execution of a Query.
+
+    :type query: :class:`~google.cloud.datastore.query.Query`
+    :param query: Query object holding permanent configuration (i.e.
+                  things that don't change on with each page in
+                  a results set).
+
+    :type client: :class:`~google.cloud.datastore.client.Client`
+    :param client: The client used to make a request.
+
+    :type limit: int
+    :param limit: (Optional) Limit the number of results returned.
+
+    :type offset: int
+    :param offset: (Optional) Offset used to begin a query.
+
+    :type start_cursor: bytes
+    :param start_cursor: (Optional) Cursor to begin paging through
+                         query results.
+
+    :type end_cursor: bytes
+    :param end_cursor: (Optional) Cursor to end paging through
+                       query results.
+    """
+
+    def __init__(self, query, client, limit=None, offset=None,
+                 start_cursor=None, end_cursor=None):
+        super(AltIterator, self).__init__(
+            client=client, item_to_value=None,
+            page_token=start_cursor, max_results=limit)
+        self._query = query
+        self._offset = offset
+        self._end_cursor = end_cursor
+        # The attributes below will change over the life of the iterator.
+        self._more_results = True
 
 
 class Iterator(object):
