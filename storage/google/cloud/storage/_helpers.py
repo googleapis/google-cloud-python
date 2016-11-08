@@ -74,7 +74,7 @@ class _PropertyMixin(object):
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
         query_params = {'projection': 'noAcl'}
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='GET', path=self.path, query_params=query_params,
             _target_object=self)
         self._set_properties(api_response)
@@ -122,7 +122,7 @@ class _PropertyMixin(object):
         # to work properly w/ 'noAcl'.
         update_properties = {key: self._properties[key]
                              for key in self._changes}
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='PATCH', path=self.path, data=update_properties,
             query_params={'projection': 'full'}, _target_object=self)
         self._set_properties(api_response)

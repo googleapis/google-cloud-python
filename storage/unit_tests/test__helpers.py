@@ -223,4 +223,4 @@ class _Base64(object):
 class _Client(object):
 
     def __init__(self, connection):
-        self.connection = connection
+        self._connection = connection
