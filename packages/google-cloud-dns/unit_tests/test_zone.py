@@ -21,7 +21,8 @@ class TestManagedZone(unittest.TestCase):
     DESCRIPTION = 'ZONE DESCRIPTION'
     DNS_NAME = 'test.example.com'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.dns.zone import ManagedZone
         return ManagedZone
 
