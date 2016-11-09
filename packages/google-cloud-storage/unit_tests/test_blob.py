@@ -416,7 +416,7 @@ class Test_Blob(unittest.TestCase):
         properties = {'mediaLink': MEDIA_LINK,
                       'updated': '2014-12-06T13:13:50.690Z'}
         blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties,
-                             encryption_key=KEY)
+                              encryption_key=KEY)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
 
@@ -861,7 +861,7 @@ class Test_Blob(unittest.TestCase):
         client = _Client(connection)
         bucket = _Bucket(client)
         blob = self._make_one(BLOB_NAME, bucket=bucket,
-                             properties=properties, encryption_key=KEY)
+                              properties=properties, encryption_key=KEY)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
 
@@ -914,7 +914,7 @@ class Test_Blob(unittest.TestCase):
         client = _Client(connection)
         bucket = _Bucket(client)
         blob = self._make_one(BLOB_NAME, bucket=bucket,
-                             properties=properties)
+                              properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
 
@@ -1268,7 +1268,8 @@ class Test_Blob(unittest.TestCase):
         client = _Client(connection)
         bucket = _Bucket(client=client)
         plain = self._make_one(BLOB_NAME, bucket=bucket)
-        encrypted = self._make_one(BLOB_NAME, bucket=bucket, encryption_key=KEY)
+        encrypted = self._make_one(BLOB_NAME, bucket=bucket,
+                                   encryption_key=KEY)
 
         token, rewritten, size = encrypted.rewrite(plain)
 
@@ -1322,7 +1323,8 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket(client=client)
         source = self._make_one(
             BLOB_NAME, bucket=bucket, encryption_key=SOURCE_KEY)
-        dest = self._make_one(BLOB_NAME, bucket=bucket, encryption_key=DEST_KEY)
+        dest = self._make_one(BLOB_NAME, bucket=bucket,
+                              encryption_key=DEST_KEY)
 
         token, rewritten, size = dest.rewrite(source, token=TOKEN)
 
@@ -1376,7 +1378,7 @@ class Test_Blob(unittest.TestCase):
         BUCKET = object()
         COMPONENT_COUNT = 42
         blob = self._make_one('blob-name', bucket=BUCKET,
-                             properties={'componentCount': COMPONENT_COUNT})
+                              properties={'componentCount': COMPONENT_COUNT})
         self.assertEqual(blob.component_count, COMPONENT_COUNT)
 
     def test_component_count_unset(self):
@@ -1489,7 +1491,7 @@ class Test_Blob(unittest.TestCase):
         BUCKET = object()
         GENERATION = 42
         blob = self._make_one('blob-name', bucket=BUCKET,
-                             properties={'generation': GENERATION})
+                              properties={'generation': GENERATION})
         self.assertEqual(blob.generation, GENERATION)
 
     def test_generation_unset(self):
@@ -1501,7 +1503,7 @@ class Test_Blob(unittest.TestCase):
         BUCKET = object()
         GENERATION = 42
         blob = self._make_one('blob-name', bucket=BUCKET,
-                             properties={'generation': str(GENERATION)})
+                              properties={'generation': str(GENERATION)})
         self.assertEqual(blob.generation, GENERATION)
 
     def test_id(self):
@@ -1558,7 +1560,7 @@ class Test_Blob(unittest.TestCase):
         BUCKET = object()
         METAGENERATION = 42
         blob = self._make_one('blob-name', bucket=BUCKET,
-                             properties={'metageneration': METAGENERATION})
+                              properties={'metageneration': METAGENERATION})
         self.assertEqual(blob.metageneration, METAGENERATION)
 
     def test_metageneration_unset(self):
@@ -1596,7 +1598,7 @@ class Test_Blob(unittest.TestCase):
         BUCKET = object()
         SIZE = 42
         blob = self._make_one('blob-name', bucket=BUCKET,
-                             properties={'size': SIZE})
+                              properties={'size': SIZE})
         self.assertEqual(blob.size, SIZE)
 
     def test_size_unset(self):
@@ -1608,7 +1610,7 @@ class Test_Blob(unittest.TestCase):
         BUCKET = object()
         SIZE = 42
         blob = self._make_one('blob-name', bucket=BUCKET,
-                             properties={'size': str(SIZE)})
+                              properties={'size': str(SIZE)})
         self.assertEqual(blob.size, SIZE)
 
     def test_storage_class(self):
