@@ -28,7 +28,7 @@ class TestClient(unittest.TestCase):
         return Client
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_publisher_api_wo_gax(self):
         from google.cloud.pubsub._http import _PublisherAPI

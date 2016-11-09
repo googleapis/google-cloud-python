@@ -30,7 +30,7 @@ class TestSubscription(unittest.TestCase):
         return Subscription
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         client = _Client(project=self.PROJECT)
@@ -74,7 +74,7 @@ class TestSubscription(unittest.TestCase):
                     'name': self.SUB_PATH,
                     'ackDeadlineSeconds': self.DEADLINE,
                     'pushConfig': {'pushEndpoint': self.ENDPOINT}}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         client = _Client(project=self.PROJECT)
         subscription = klass.from_api_repr(resource, client)
         self.assertEqual(subscription.name, self.SUB_NAME)
@@ -86,12 +86,12 @@ class TestSubscription(unittest.TestCase):
         self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
 
     def test_from_api_repr_w_deleted_topic(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         resource = {'topic': klass._DELETED_TOPIC_PATH,
                     'name': self.SUB_PATH,
                     'ackDeadlineSeconds': self.DEADLINE,
                     'pushConfig': {'pushEndpoint': self.ENDPOINT}}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         client = _Client(project=self.PROJECT)
         subscription = klass.from_api_repr(resource, client)
         self.assertEqual(subscription.name, self.SUB_NAME)
@@ -106,7 +106,7 @@ class TestSubscription(unittest.TestCase):
                     'ackDeadlineSeconds': self.DEADLINE,
                     'pushConfig': {'pushEndpoint': self.ENDPOINT}}
         topics = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         client = _Client(project=self.PROJECT)
         subscription = klass.from_api_repr(resource, client, topics=topics)
         self.assertEqual(subscription.name, self.SUB_NAME)
@@ -126,7 +126,7 @@ class TestSubscription(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         topic = _Topic(self.TOPIC_NAME, client=client)
         topics = {self.TOPIC_PATH: topic}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         subscription = klass.from_api_repr(resource, client, topics=topics)
         self.assertEqual(subscription.name, self.SUB_NAME)
         self.assertIs(subscription.topic, topic)
@@ -678,7 +678,7 @@ class TestAutoAck(unittest.TestCase):
         return AutoAck
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         subscription = _FauxSubscription(())

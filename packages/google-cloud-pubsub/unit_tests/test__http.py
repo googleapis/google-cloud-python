@@ -26,7 +26,7 @@ class _Base(unittest.TestCase):
     SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
 
 class TestConnection(_Base):
@@ -38,7 +38,7 @@ class TestConnection(_Base):
 
     def test_default_url(self):
         conn = self._makeOne()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 
     def test_custom_url_from_env(self):
@@ -52,7 +52,7 @@ class TestConnection(_Base):
         with _Monkey(os, getenv=fake_environ.get):
             conn = self._makeOne()
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         self.assertNotEqual(conn.api_base_url, klass.API_BASE_URL)
         self.assertEqual(conn.api_base_url, 'http://' + HOST)
 
@@ -99,7 +99,7 @@ class Test_PublisherAPI(_Base):
         return _PublisherAPI
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         connection = _Connection()
@@ -416,7 +416,7 @@ class Test_SubscriberAPI(_Base):
         return _SubscriberAPI
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         connection = _Connection()

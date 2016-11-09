@@ -38,7 +38,7 @@ class _Base(object):
     SUB_PATH = '%s/subscriptions/%s' % (TOPIC_PATH, SUB_NAME)
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')

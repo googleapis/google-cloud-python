@@ -23,7 +23,7 @@ class TestMessage(unittest.TestCase):
         return Message
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_no_attributes(self):
         DATA = b'DEADBEEF'
@@ -84,7 +84,7 @@ class TestMessage(unittest.TestCase):
     def test_from_api_repr_missing_data(self):
         MESSAGE_ID = '12345'
         api_repr = {'messageId': MESSAGE_ID}
-        message = self._getTargetClass().from_api_repr(api_repr)
+        message = self._get_target_class().from_api_repr(api_repr)
         self.assertEqual(message.data, b'')
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.attributes, {})
@@ -99,7 +99,7 @@ class TestMessage(unittest.TestCase):
             'messageId': MESSAGE_ID,
             'publishTime': TIMESTAMP,
         }
-        message = self._getTargetClass().from_api_repr(api_repr)
+        message = self._get_target_class().from_api_repr(api_repr)
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.attributes, {})
@@ -116,7 +116,7 @@ class TestMessage(unittest.TestCase):
             'publishTime': TIMESTAMP,
             'attributes': ATTRS,
         }
-        message = self._getTargetClass().from_api_repr(api_repr)
+        message = self._get_target_class().from_api_repr(api_repr)
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.service_timestamp, TIMESTAMP)
