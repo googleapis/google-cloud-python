@@ -21,7 +21,8 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
     PROJECT = 'PROJECT'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.handlers.transports import (
             BackgroundThreadTransport)
         return BackgroundThreadTransport
@@ -57,7 +58,8 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
 class TestWorker(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.handlers.transports import background_thread
         return background_thread._Worker
 

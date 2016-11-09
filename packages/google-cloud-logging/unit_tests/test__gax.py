@@ -41,7 +41,8 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
     LOG_NAME = 'log_name'
     LOG_PATH = 'projects/%s/logs/%s' % (_Base.PROJECT, LOG_NAME)
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging._gax import _LoggingAPI
         return _LoggingAPI
 
@@ -600,7 +601,8 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     SINK_PATH = 'projects/%s/sinks/%s' % (_Base.PROJECT, SINK_NAME)
     DESTINATION_URI = 'faux.googleapis.com/destination'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging._gax import _SinksAPI
         return _SinksAPI
 
@@ -833,7 +835,8 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     METRIC_PATH = 'projects/%s/metrics/%s' % (_Base.PROJECT, METRIC_NAME)
     DESCRIPTION = 'Description'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging._gax import _MetricsAPI
         return _MetricsAPI
 

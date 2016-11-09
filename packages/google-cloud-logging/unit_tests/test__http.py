@@ -20,7 +20,8 @@ class TestConnection(unittest.TestCase):
     PROJECT = 'project'
     FILTER = 'logName:syslog AND severity>=ERROR'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging._http import Connection
         return Connection
 
@@ -42,7 +43,8 @@ class Test_LoggingAPI(unittest.TestCase):
     LOGGER_NAME = 'LOGGER_NAME'
     FILTER = 'logName:syslog AND severity>=ERROR'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging._http import _LoggingAPI
         return _LoggingAPI
 
@@ -291,7 +293,8 @@ class Test_SinksAPI(unittest.TestCase):
     SINK_PATH = 'projects/%s/sinks/%s' % (PROJECT, SINK_NAME)
     DESTINATION_URI = 'faux.googleapis.com/destination'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging._http import _SinksAPI
         return _SinksAPI
 
@@ -532,7 +535,8 @@ class Test_MetricsAPI(unittest.TestCase):
     METRIC_PATH = 'projects/%s/metrics/%s' % (PROJECT, METRIC_NAME)
     DESCRIPTION = 'DESCRIPTION'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging._http import _MetricsAPI
         return _MetricsAPI
 

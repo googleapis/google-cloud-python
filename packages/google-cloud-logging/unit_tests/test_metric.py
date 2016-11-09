@@ -22,7 +22,8 @@ class TestMetric(unittest.TestCase):
     FILTER = 'logName:syslog AND severity>=ERROR'
     DESCRIPTION = 'DESCRIPTION'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.metric import Metric
         return Metric
 
