@@ -62,10 +62,10 @@ class Test_generate_signed_url(unittest.TestCase):
 
         with _Monkey(MUT, _get_signed_query_params=_get_signed_query_params):
             url = self._call_fut(CREDENTIALS, RESOURCE, 1000,
-                                api_access_endpoint=ENDPOINT,
-                                response_type=response_type,
-                                response_disposition=response_disposition,
-                                generation=generation)
+                                 api_access_endpoint=ENDPOINT,
+                                 response_type=response_type,
+                                 response_disposition=response_disposition,
+                                 generation=generation)
 
         scheme, netloc, path, qs, frag = urlsplit(url)
         self.assertEqual(scheme, 'http')
@@ -130,7 +130,7 @@ class Test__get_signed_query_params(unittest.TestCase):
         EXPIRATION = 100
         STRING_TO_SIGN = 'dummy_signature'
         result = self._call_fut(CREDENTIALS, EXPIRATION,
-                               STRING_TO_SIGN)
+                                STRING_TO_SIGN)
 
         self.assertEqual(result, {
             'GoogleAccessId': ACCOUNT_NAME,

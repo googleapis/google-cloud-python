@@ -125,9 +125,9 @@ class TestDocument(unittest.TestCase):
         gcs_url = 'gs://some-bucket/some-obj.html'
         language = 'ja'
         document = self._make_one(client, gcs_url=gcs_url,
-                                 doc_type=MUT.Document.HTML,
-                                 language=language,
-                                 encoding=MUT.Encoding.UTF32)
+                                  doc_type=MUT.Document.HTML,
+                                  language=language,
+                                  encoding=MUT.Encoding.UTF32)
         self.assertIs(document.client, client)
         self.assertIsNone(document.content)
         self.assertEqual(document.gcs_url, gcs_url)
@@ -142,7 +142,7 @@ class TestDocument(unittest.TestCase):
     def test_constructor_text_and_gcs(self):
         with self.assertRaises(ValueError):
             self._make_one(None, content='abc',
-                          gcs_url='gs://some-bucket/some-obj.txt')
+                           gcs_url='gs://some-bucket/some-obj.txt')
 
     def test__to_dict_with_content(self):
         klass = self._get_target_class()

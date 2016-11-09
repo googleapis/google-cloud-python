@@ -383,7 +383,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _Credentials()
         client = self._make_one(credentials=credentials,
-                               use_gax=True)
+                                use_gax=True)
         client.connection = _Connection()
         client.connection.credentials = credentials
 

@@ -45,7 +45,7 @@ class TestSubscription(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._make_one(self.SUB_NAME, topic,
-                                     self.DEADLINE, self.ENDPOINT)
+                                      self.DEADLINE, self.ENDPOINT)
         self.assertEqual(subscription.name, self.SUB_NAME)
         self.assertIs(subscription.topic, topic)
         self.assertEqual(subscription.ack_deadline, self.DEADLINE)
@@ -198,7 +198,7 @@ class TestSubscription(unittest.TestCase):
         api._subscription_create_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._make_one(self.SUB_NAME, topic,
-                                     self.DEADLINE, self.ENDPOINT)
+                                      self.DEADLINE, self.ENDPOINT)
 
         subscription.create(client=client2)
 
@@ -259,7 +259,7 @@ class TestSubscription(unittest.TestCase):
         api._subscription_get_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._make_one(self.SUB_NAME, topic,
-                                     self.DEADLINE, self.ENDPOINT)
+                                      self.DEADLINE, self.ENDPOINT)
 
         subscription.reload(client=client2)
 
@@ -287,7 +287,7 @@ class TestSubscription(unittest.TestCase):
         api._subscription_delete_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._make_one(self.SUB_NAME, topic,
-                                     self.DEADLINE, self.ENDPOINT)
+                                      self.DEADLINE, self.ENDPOINT)
 
         subscription.delete(client=client2)
 
@@ -313,7 +313,7 @@ class TestSubscription(unittest.TestCase):
         api._subscription_modify_push_config_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._make_one(self.SUB_NAME, topic,
-                                     push_endpoint=self.ENDPOINT)
+                                      push_endpoint=self.ENDPOINT)
 
         subscription.modify_push_configuration(push_endpoint=None,
                                                client=client2)

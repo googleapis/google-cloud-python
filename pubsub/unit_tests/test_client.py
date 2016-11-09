@@ -56,7 +56,7 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         with _Monkey(MUT, _USE_GAX=True):
             client = self._make_one(project=self.PROJECT, credentials=creds,
-                                   use_gax=False)
+                                    use_gax=False)
 
         self.assertFalse(client._use_gax)
         api = client.publisher_api
@@ -226,7 +226,7 @@ class TestClient(unittest.TestCase):
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         creds = _Credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                               use_gax=False)
+                                use_gax=False)
         returned = {'subscriptions': [SUB_INFO]}
         client.connection = _Connection(returned)
 
@@ -264,7 +264,7 @@ class TestClient(unittest.TestCase):
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         creds = _Credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                               use_gax=False)
+                                use_gax=False)
 
         # Set up the mock response.
         ACK_DEADLINE = 42

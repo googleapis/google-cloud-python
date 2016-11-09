@@ -51,8 +51,8 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
     AUDIO_CONTENT = b'/9j/4QNURXhpZgAASUkq'
 
     def _call_fut(self, sample, language_code, max_alternatives,
-                 profanity_filter, speech_context, single_utterance,
-                 interim_results):
+                  profanity_filter, speech_context, single_utterance,
+                  interim_results):
         from google.cloud.speech._gax import _make_streaming_request
         return _make_streaming_request(sample=sample,
                                        language_code=language_code,
@@ -85,9 +85,9 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
         interim_results = False
 
         streaming_request = self._call_fut(sample, language_code,
-                                          max_alternatives, profanity_filter,
-                                          speech_context, single_utterance,
-                                          interim_results)
+                                           max_alternatives, profanity_filter,
+                                           speech_context, single_utterance,
+                                           interim_results)
         self.assertIsInstance(streaming_request, StreamingRecognizeRequest)
 
         # This isn't set by _make_streaming_request().
@@ -116,8 +116,8 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
     AUDIO_CONTENT = b'/9j/4QNURXhpZgAASUkq'
 
     def _call_fut(self, sample, language_code, max_alternatives,
-                 profanity_filter, speech_context, single_utterance,
-                 interim_results):
+                  profanity_filter, speech_context, single_utterance,
+                  interim_results):
         from google.cloud.speech._gax import _stream_requests
         return _stream_requests(sample=sample,
                                 language_code=language_code,
@@ -148,9 +148,9 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
         single_utterance = True
         interim_results = False
         streaming_requests = self._call_fut(sample, language_code,
-                                           max_alternatives, profanity_filter,
-                                           speech_context, single_utterance,
-                                           interim_results)
+                                            max_alternatives, profanity_filter,
+                                            speech_context, single_utterance,
+                                            interim_results)
         all_requests = []
         for streaming_request in streaming_requests:
             self.assertIsInstance(streaming_request, StreamingRecognizeRequest)

@@ -180,7 +180,8 @@ class TestJSONClient(unittest.TestCase):
         CREDENTIALS = object()
         HTTP = object()
         with self.assertRaises(ValueError):
-            self._make_one(project=object(), credentials=CREDENTIALS, http=HTTP)
+            self._make_one(project=object(), credentials=CREDENTIALS,
+                           http=HTTP)
 
     def _explicit_ctor_helper(self, project):
         import six
@@ -189,7 +190,7 @@ class TestJSONClient(unittest.TestCase):
         HTTP = object()
 
         client_obj = self._make_one(project=project, credentials=CREDENTIALS,
-                                   http=HTTP)
+                                    http=HTTP)
 
         if isinstance(project, six.binary_type):
             self.assertEqual(client_obj.project, project.decode('utf-8'))

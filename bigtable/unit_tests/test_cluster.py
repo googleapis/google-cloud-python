@@ -49,7 +49,7 @@ class TestCluster(unittest.TestCase):
         instance = _Instance(self.INSTANCE_ID, client)
 
         cluster = self._make_one(self.CLUSTER_ID, instance,
-                                serve_nodes=SERVE_NODES)
+                                 serve_nodes=SERVE_NODES)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
@@ -60,7 +60,7 @@ class TestCluster(unittest.TestCase):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
-                                serve_nodes=SERVE_NODES)
+                                 serve_nodes=SERVE_NODES)
         new_cluster = cluster.copy()
 
         # Make sure the client copy succeeded.
@@ -293,7 +293,7 @@ class TestCluster(unittest.TestCase):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
         cluster = self._make_one(self.CLUSTER_ID, instance,
-                                serve_nodes=SERVE_NODES)
+                                 serve_nodes=SERVE_NODES)
 
         # Create request_pb
         request_pb = _ClusterPB(
