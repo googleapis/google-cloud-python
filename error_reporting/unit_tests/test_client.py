@@ -28,7 +28,7 @@ class TestClient(unittest.TestCase):
         return HTTPContext
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def _makeHTTP(self, *args, **kw):
         return self._getHttpContext()(*args, **kw)

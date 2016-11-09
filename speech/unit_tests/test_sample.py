@@ -25,7 +25,7 @@ class TestSample(unittest.TestCase):
         return Sample
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_initialize_sample(self):
         from google.cloud.speech.encoding import Encoding

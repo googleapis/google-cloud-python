@@ -26,7 +26,7 @@ class TestSyncHandler(unittest.TestCase):
         return SyncTransport
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)

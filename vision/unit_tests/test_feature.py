@@ -22,7 +22,7 @@ class TestFeature(unittest.TestCase):
         return Feature
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_construct_feature(self):
         from google.cloud.vision.feature import FeatureTypes

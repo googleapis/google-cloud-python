@@ -25,7 +25,7 @@ class Test__LocalStack(unittest.TestCase):
         return _LocalStack
 
     def _makeOne(self):
-        return self._getTargetClass()()
+        return self._get_target_class()()
 
     def test_it(self):
         batch1, batch2 = object(), object()
@@ -53,11 +53,11 @@ class Test__UTC(unittest.TestCase):
         return _UTC
 
     def _makeOne(self):
-        return self._getTargetClass()()
+        return self._get_target_class()()
 
     def test_module_property(self):
         from google.cloud import _helpers as MUT
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         try:
             import pytz
         except ImportError:
@@ -913,7 +913,7 @@ class TestMetadataPlugin(unittest.TestCase):
         return MetadataPlugin
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         credentials = object()

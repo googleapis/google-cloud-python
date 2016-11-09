@@ -26,7 +26,7 @@ class TestConfig(unittest.TestCase):
         return Config
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def _verifyResourceProperties(self, config, resource):
         from google.cloud.runtimeconfig._helpers import (

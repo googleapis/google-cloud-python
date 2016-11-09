@@ -23,7 +23,7 @@ class TestClient(unittest.TestCase):
         return Client
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_connection_type(self):
         from google.cloud.storage._http import Connection

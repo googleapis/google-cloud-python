@@ -27,11 +27,11 @@ class TestEntity(unittest.TestCase):
         return Entity
 
     def _makeOne(self, key=None, exclude_from_indexes=()):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         return klass(key=key, exclude_from_indexes=exclude_from_indexes)
 
     def test_ctor_defaults(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         entity = klass()
         self.assertIsNone(entity.key)
         self.assertIsNone(entity.kind)

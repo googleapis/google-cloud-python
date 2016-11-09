@@ -26,7 +26,7 @@ class TestTopic(unittest.TestCase):
         return Topic
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_w_explicit_timestamp(self):
         client = _Client(project=self.PROJECT)
@@ -41,7 +41,7 @@ class TestTopic(unittest.TestCase):
     def test_from_api_repr(self):
         client = _Client(project=self.PROJECT)
         resource = {'name': self.TOPIC_PATH}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         topic = klass.from_api_repr(resource, client=client)
         self.assertEqual(topic.name, self.TOPIC_NAME)
         self.assertIs(topic._client, client)
@@ -54,7 +54,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=PROJECT1)
         PATH = 'projects/%s/topics/%s' % (PROJECT2, self.TOPIC_NAME)
         resource = {'name': PATH}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         self.assertRaises(ValueError, klass.from_api_repr,
                           resource, client=client)
 
@@ -626,7 +626,7 @@ class TestBatch(unittest.TestCase):
         return Batch
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_ctor_defaults(self):
         topic = _Topic()

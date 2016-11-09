@@ -24,7 +24,7 @@ class TestFace(unittest.TestCase):
     def setUp(self):
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         self.FACE_ANNOTATIONS = FACE_DETECTION_RESPONSE['responses'][0]
-        self.face_class = self._getTargetClass()
+        self.face_class = self._get_target_class()
         self.face = self.face_class.from_api_repr(
             self.FACE_ANNOTATIONS['faceAnnotations'][0])
 

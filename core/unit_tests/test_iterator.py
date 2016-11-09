@@ -34,7 +34,7 @@ class TestPage(unittest.TestCase):
         return Page
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         parent = object()
@@ -98,7 +98,7 @@ class TestIterator(unittest.TestCase):
         return Iterator
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         connection = _Connection()
@@ -241,7 +241,7 @@ class TestHTTPIterator(unittest.TestCase):
         return HTTPIterator
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         from google.cloud.iterator import _do_nothing_page_start
@@ -474,7 +474,7 @@ class TestGAXIterator(unittest.TestCase):
         return GAXIterator
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         client = _Client(None)

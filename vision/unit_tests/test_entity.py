@@ -25,7 +25,7 @@ class TestEntityAnnotation(unittest.TestCase):
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
 
         LOGO = LOGO_DETECTION_RESPONSE['responses'][0]['logoAnnotations'][0]
-        entity_class = self._getTargetClass()
+        entity_class = self._get_target_class()
         logo = entity_class.from_api_repr(LOGO)
 
         self.assertEqual('/m/05b5c', logo.mid)

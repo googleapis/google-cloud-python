@@ -33,7 +33,7 @@ class _Base(object):
     FILTER = 'logName:syslog AND severity>=ERROR'
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')

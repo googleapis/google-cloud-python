@@ -23,11 +23,11 @@ class Test_PropertyMixin(unittest.TestCase):
         return _PropertyMixin
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def _derivedClass(self, path=None):
 
-        class Derived(self._getTargetClass()):
+        class Derived(self._get_target_class()):
 
             client = None
 

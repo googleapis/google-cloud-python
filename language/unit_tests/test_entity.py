@@ -23,7 +23,7 @@ class TestEntity(unittest.TestCase):
         return Entity
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor_defaults(self):
         name = 'Italian'
@@ -44,7 +44,7 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(entity.mentions, mentions)
 
     def test_from_api_repr(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         name = 'Italy'
         entity_type = 'LOCATION'
         salience = 0.223

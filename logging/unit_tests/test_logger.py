@@ -26,7 +26,7 @@ class TestLogger(unittest.TestCase):
         return Logger
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         conn = object()
@@ -428,7 +428,7 @@ class TestBatch(unittest.TestCase):
         return Batch
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_ctor_defaults(self):
         logger = _Logger()

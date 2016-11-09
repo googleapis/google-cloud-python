@@ -32,7 +32,7 @@ class TestClient(unittest.TestCase):
         return Client
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         creds = _Credentials()
@@ -285,7 +285,7 @@ class TestVisionRequest(unittest.TestCase):
         return VisionRequest
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_make_vision_request(self):
         from google.cloud.vision.feature import Feature, FeatureTypes

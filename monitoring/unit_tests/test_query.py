@@ -48,12 +48,12 @@ class TestAligner(unittest.TestCase):
         return Aligner
 
     def test_one(self):
-        self.assertTrue(hasattr(self._getTargetClass(), 'ALIGN_RATE'))
+        self.assertTrue(hasattr(self._get_target_class(), 'ALIGN_RATE'))
 
     def test_names(self):
-        for name in self._getTargetClass().__dict__:
+        for name in self._get_target_class().__dict__:
             if not name.startswith('_'):
-                self.assertEqual(getattr(self._getTargetClass(), name), name)
+                self.assertEqual(getattr(self._get_target_class(), name), name)
 
 
 class TestReducer(unittest.TestCase):
@@ -64,13 +64,13 @@ class TestReducer(unittest.TestCase):
         return Reducer
 
     def test_one(self):
-        self.assertTrue(hasattr(self._getTargetClass(),
+        self.assertTrue(hasattr(self._get_target_class(),
                                 'REDUCE_PERCENTILE_99'))
 
     def test_names(self):
-        for name in self._getTargetClass().__dict__:
+        for name in self._get_target_class().__dict__:
             if not name.startswith('_'):
-                self.assertEqual(getattr(self._getTargetClass(), name), name)
+                self.assertEqual(getattr(self._get_target_class(), name), name)
 
 
 class TestQuery(unittest.TestCase):
@@ -81,7 +81,7 @@ class TestQuery(unittest.TestCase):
         return Query
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     @staticmethod
     def _make_timestamp(value):
@@ -94,7 +94,7 @@ class TestQuery(unittest.TestCase):
 
         self.assertEqual(query._client, client)
         self.assertEqual(query._filter.metric_type,
-                         self._getTargetClass().DEFAULT_METRIC_TYPE)
+                         self._get_target_class().DEFAULT_METRIC_TYPE)
 
         self.assertIsNone(query._start_time)
         self.assertIsNone(query._end_time)
@@ -508,7 +508,7 @@ class Test_Filter(unittest.TestCase):
         return _Filter
 
     def _makeOne(self, metric_type):
-        return self._getTargetClass()(metric_type)
+        return self._get_target_class()(metric_type)
 
     def test_minimal(self):
         obj = self._makeOne(METRIC_TYPE)

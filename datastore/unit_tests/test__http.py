@@ -25,7 +25,7 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         return _DatastoreAPIOverHttp
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test__rpc(self):
         class ReqPB(object):
@@ -201,7 +201,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         else:
             to_monkey = {'make_insecure_stub': mock_make_stub}
         with _Monkey(MUT, **to_monkey):
-            return self._getTargetClass()(connection, secure)
+            return self._get_target_class()(connection, secure)
 
     def test_constructor(self):
         from google.cloud.datastore import _http as MUT
@@ -375,7 +375,7 @@ class TestConnection(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.datastore import _http as MUT
         with _Monkey(MUT, _USE_GRPC=use_grpc):
-            return self._getTargetClass()(credentials=credentials, http=http)
+            return self._get_target_class()(credentials=credentials, http=http)
 
     def _verifyProtobufCall(self, called_with, URI, conn):
         self.assertEqual(called_with['uri'], URI)
@@ -386,7 +386,7 @@ class TestConnection(unittest.TestCase):
                          conn.USER_AGENT)
 
     def test_default_url(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         conn = self._makeOne()
         self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 

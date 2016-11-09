@@ -113,10 +113,10 @@ class TestGroup(unittest.TestCase):
         return Group
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def _makeOneFromJSON(self, info, client=None):
-        return self._getTargetClass()._from_dict(client=client, info=info)
+        return self._get_target_class()._from_dict(client=client, info=info)
 
     def _validateGroup(self, actual_group, expected_group_json):
         expected_group = self._makeOneFromJSON(expected_group_json)
@@ -179,7 +179,7 @@ class TestGroup(unittest.TestCase):
 
     def test_from_dict(self):
         client = _Client(project=self.PROJECT)
-        group = self._getTargetClass()._from_dict(client, self.JSON_GROUP)
+        group = self._get_target_class()._from_dict(client, self.JSON_GROUP)
 
         self.assertIs(group.client, client)
 
@@ -196,7 +196,7 @@ class TestGroup(unittest.TestCase):
             'displayName': self.DISPLAY_NAME,
             'filter': self.FILTER,
         }
-        group = self._getTargetClass()._from_dict(client, info)
+        group = self._get_target_class()._from_dict(client, info)
 
         self.assertIs(group.client, client)
 
@@ -342,7 +342,7 @@ class TestGroup(unittest.TestCase):
         }
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
-        groups = self._getTargetClass()._list(client)
+        groups = self._get_target_class()._list(client)
         self._validateGroupList(client, groups, LIST_OF_GROUPS)
 
         request, = connection._requested
@@ -365,7 +365,7 @@ class TestGroup(unittest.TestCase):
 
         connection = _Connection(RESPONSE1, RESPONSE2)
         client = _Client(project=self.PROJECT, connection=connection)
-        groups = self._getTargetClass()._list(client)
+        groups = self._get_target_class()._list(client)
         self._validateGroupList(client, groups, LIST_OF_GROUPS)
 
         request1, request2 = connection._requested
@@ -377,7 +377,7 @@ class TestGroup(unittest.TestCase):
         self.assertEqual(request2, expected_request2)
 
         with self.assertRaises(NotFound):
-            self._getTargetClass()._list(client)
+            self._get_target_class()._list(client)
 
     def test_list_children(self):
         CHILDREN = [self.JSON_GROUP, self.JSON_SIBLING]

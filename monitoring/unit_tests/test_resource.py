@@ -23,7 +23,7 @@ class TestResourceDescriptor(unittest.TestCase):
         return ResourceDescriptor
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         from google.cloud.monitoring.label import LabelDescriptor
@@ -74,7 +74,7 @@ class TestResourceDescriptor(unittest.TestCase):
             'description': DESCRIPTION,
             'labels': [LABEL1, LABEL2, LABEL3],
         }
-        descriptor = self._getTargetClass()._from_dict(info)
+        descriptor = self._get_target_class()._from_dict(info)
 
         self.assertEqual(descriptor.name, NAME)
         self.assertEqual(descriptor.type, TYPE)
@@ -95,7 +95,7 @@ class TestResourceDescriptor(unittest.TestCase):
             'name': NAME,
             'type': TYPE,
         }
-        descriptor = self._getTargetClass()._from_dict(info)
+        descriptor = self._get_target_class()._from_dict(info)
 
         self.assertEqual(descriptor.name, NAME)
         self.assertEqual(descriptor.type, TYPE)
@@ -127,7 +127,7 @@ class TestResourceDescriptor(unittest.TestCase):
 
         connection = _Connection(RESOURCE_DESCRIPTOR)
         client = _Client(project=PROJECT, connection=connection)
-        descriptor = self._getTargetClass()._fetch(client, TYPE)
+        descriptor = self._get_target_class()._fetch(client, TYPE)
 
         self.assertEqual(descriptor.name, NAME)
         self.assertEqual(descriptor.type, TYPE)
@@ -174,7 +174,7 @@ class TestResourceDescriptor(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        descriptors = self._getTargetClass()._list(client)
+        descriptors = self._get_target_class()._list(client)
 
         self.assertEqual(len(descriptors), 2)
         descriptor1, descriptor2 = descriptors
@@ -228,7 +228,7 @@ class TestResourceDescriptor(unittest.TestCase):
 
         connection = _Connection(RESPONSE1, RESPONSE2)
         client = _Client(project=PROJECT, connection=connection)
-        descriptors = self._getTargetClass()._list(client)
+        descriptors = self._get_target_class()._list(client)
 
         self.assertEqual(len(descriptors), 2)
         descriptor1, descriptor2 = descriptors
@@ -250,7 +250,7 @@ class TestResourceDescriptor(unittest.TestCase):
         self.assertEqual(request2, expected_request2)
 
         with self.assertRaises(NotFound):
-            self._getTargetClass()._list(client)
+            self._get_target_class()._list(client)
 
     def test_list_filtered(self):
         PROJECT = 'my-project'
@@ -265,7 +265,7 @@ class TestResourceDescriptor(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        descriptors = self._getTargetClass()._list(client, FILTER)
+        descriptors = self._get_target_class()._list(client, FILTER)
 
         self.assertEqual(len(descriptors), 0)
 
@@ -283,7 +283,7 @@ class TestResource(unittest.TestCase):
         return Resource
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         TYPE = 'gce_instance'
@@ -307,14 +307,14 @@ class TestResource(unittest.TestCase):
             'type': TYPE,
             'labels': LABELS,
         }
-        resource = self._getTargetClass()._from_dict(info)
+        resource = self._get_target_class()._from_dict(info)
         self.assertEqual(resource.type, TYPE)
         self.assertEqual(resource.labels, LABELS)
 
     def test_from_dict_defaults(self):
         TYPE = 'gce_instance'
         info = {'type': TYPE}
-        resource = self._getTargetClass()._from_dict(info)
+        resource = self._get_target_class()._from_dict(info)
         self.assertEqual(resource.type, TYPE)
         self.assertEqual(resource.labels, {})
 

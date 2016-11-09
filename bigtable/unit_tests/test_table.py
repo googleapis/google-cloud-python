@@ -35,7 +35,7 @@ class TestTable(unittest.TestCase):
         return Table
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         table_id = 'table-id'

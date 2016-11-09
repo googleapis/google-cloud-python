@@ -26,12 +26,12 @@ class TestConnection(unittest.TestCase):
         return Connection
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_default_url(self):
         creds = _Credentials()
         conn = self._makeOne(creds)
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         self.assertEqual(conn.credentials._scopes, klass.SCOPE)
 
 
@@ -49,7 +49,7 @@ class Test_LoggingAPI(unittest.TestCase):
         return _LoggingAPI
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         connection = object()
@@ -299,7 +299,7 @@ class Test_SinksAPI(unittest.TestCase):
         return _SinksAPI
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         connection = object()
@@ -541,7 +541,7 @@ class Test_MetricsAPI(unittest.TestCase):
         return _MetricsAPI
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_list_metrics_no_paging(self):
         import six

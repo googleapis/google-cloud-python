@@ -23,12 +23,12 @@ class TestLabelValueType(unittest.TestCase):
         return LabelValueType
 
     def test_one(self):
-        self.assertTrue(hasattr(self._getTargetClass(), 'STRING'))
+        self.assertTrue(hasattr(self._get_target_class(), 'STRING'))
 
     def test_names(self):
-        for name in self._getTargetClass().__dict__:
+        for name in self._get_target_class().__dict__:
             if not name.startswith('_'):
-                self.assertEqual(getattr(self._getTargetClass(), name), name)
+                self.assertEqual(getattr(self._get_target_class(), name), name)
 
 
 class TestLabelDescriptor(unittest.TestCase):
@@ -39,7 +39,7 @@ class TestLabelDescriptor(unittest.TestCase):
         return LabelDescriptor
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         KEY = 'response_code'
@@ -67,7 +67,7 @@ class TestLabelDescriptor(unittest.TestCase):
             'valueType': VALUE_TYPE,
             'description': DESCRIPTION,
         }
-        descriptor = self._getTargetClass()._from_dict(info)
+        descriptor = self._get_target_class()._from_dict(info)
         self.assertEqual(descriptor.key, KEY)
         self.assertEqual(descriptor.value_type, VALUE_TYPE)
         self.assertEqual(descriptor.description, DESCRIPTION)
@@ -75,7 +75,7 @@ class TestLabelDescriptor(unittest.TestCase):
     def test_from_dict_defaults(self):
         KEY = 'response_code'
         info = {'key': KEY}
-        descriptor = self._getTargetClass()._from_dict(info)
+        descriptor = self._get_target_class()._from_dict(info)
         self.assertEqual(descriptor.key, KEY)
         self.assertEqual(descriptor.value_type, 'STRING')
         self.assertEqual(descriptor.description, '')
