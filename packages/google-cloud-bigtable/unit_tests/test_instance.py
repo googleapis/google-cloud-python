@@ -54,7 +54,7 @@ class TestInstance(unittest.TestCase):
         client = object()
 
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                 display_name=display_name)
+                                  display_name=display_name)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, display_name)
         self.assertIs(instance._client, client)
@@ -64,7 +64,7 @@ class TestInstance(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                 display_name=display_name)
+                                  display_name=display_name)
         new_instance = instance.copy()
 
         # Make sure the client copy succeeded.
@@ -242,7 +242,7 @@ class TestInstance(unittest.TestCase):
         NOW_PB = _datetime_to_pb_timestamp(NOW)
         client = _Client(self.PROJECT)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                 display_name=self.DISPLAY_NAME)
+                                  display_name=self.DISPLAY_NAME)
 
         # Create response_pb
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
@@ -296,7 +296,7 @@ class TestInstance(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                 serve_nodes=SERVE_NODES)
+                                  serve_nodes=SERVE_NODES)
 
         # Create response_pb
         response_pb = operations_pb2.Operation(name=self.OP_NAME)
@@ -332,7 +332,7 @@ class TestInstance(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                 display_name=self.DISPLAY_NAME)
+                                  display_name=self.DISPLAY_NAME)
 
         # Create request_pb
         request_pb = data_v2_pb2.Instance(

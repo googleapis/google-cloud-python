@@ -403,15 +403,15 @@ class TestColumnRangeFilter(unittest.TestCase):
         inclusive_start = object()
         inclusive_end = object()
         row_filter1 = self._make_one(column_family_id,
-                                    start_column=start_column,
-                                    end_column=end_column,
-                                    inclusive_start=inclusive_start,
-                                    inclusive_end=inclusive_end)
+                                     start_column=start_column,
+                                     end_column=end_column,
+                                     inclusive_start=inclusive_start,
+                                     inclusive_end=inclusive_end)
         row_filter2 = self._make_one(column_family_id,
-                                    start_column=start_column,
-                                    end_column=end_column,
-                                    inclusive_start=inclusive_start,
-                                    inclusive_end=inclusive_end)
+                                     start_column=start_column,
+                                     end_column=end_column,
+                                     inclusive_start=inclusive_start,
+                                     inclusive_end=inclusive_end)
         self.assertEqual(row_filter1, row_filter2)
 
     def test___eq__type_differ(self):
@@ -442,7 +442,7 @@ class TestColumnRangeFilter(unittest.TestCase):
         column_family_id = u'column-family-id'
         column = b'column'
         row_filter = self._make_one(column_family_id, start_column=column,
-                                   inclusive_start=False)
+                                    inclusive_start=False)
         col_range_pb = _ColumnRangePB(
             family_name=column_family_id,
             start_qualifier_open=column,
@@ -465,7 +465,7 @@ class TestColumnRangeFilter(unittest.TestCase):
         column_family_id = u'column-family-id'
         column = b'column'
         row_filter = self._make_one(column_family_id, end_column=column,
-                                   inclusive_end=False)
+                                    inclusive_end=False)
         col_range_pb = _ColumnRangePB(
             family_name=column_family_id,
             end_qualifier_open=column,
@@ -515,9 +515,9 @@ class TestValueRangeFilter(unittest.TestCase):
         inclusive_start = object()
         inclusive_end = object()
         row_filter = self._make_one(start_value=start_value,
-                                   end_value=end_value,
-                                   inclusive_start=inclusive_start,
-                                   inclusive_end=inclusive_end)
+                                    end_value=end_value,
+                                    inclusive_start=inclusive_start,
+                                    inclusive_end=inclusive_end)
         self.assertIs(row_filter.start_value, start_value)
         self.assertIs(row_filter.end_value, end_value)
         self.assertIs(row_filter.inclusive_start, inclusive_start)
@@ -535,13 +535,13 @@ class TestValueRangeFilter(unittest.TestCase):
         inclusive_start = object()
         inclusive_end = object()
         row_filter1 = self._make_one(start_value=start_value,
-                                    end_value=end_value,
-                                    inclusive_start=inclusive_start,
-                                    inclusive_end=inclusive_end)
+                                     end_value=end_value,
+                                     inclusive_start=inclusive_start,
+                                     inclusive_end=inclusive_end)
         row_filter2 = self._make_one(start_value=start_value,
-                                    end_value=end_value,
-                                    inclusive_start=inclusive_start,
-                                    inclusive_end=inclusive_end)
+                                     end_value=end_value,
+                                     inclusive_start=inclusive_start,
+                                     inclusive_end=inclusive_end)
         self.assertEqual(row_filter1, row_filter2)
 
     def test___eq__type_differ(self):
@@ -891,8 +891,8 @@ class TestConditionalRowFilter(unittest.TestCase):
         true_filter = object()
         false_filter = object()
         cond_filter = self._make_one(base_filter,
-                                    true_filter=true_filter,
-                                    false_filter=false_filter)
+                                     true_filter=true_filter,
+                                     false_filter=false_filter)
         self.assertIs(cond_filter.base_filter, base_filter)
         self.assertIs(cond_filter.true_filter, true_filter)
         self.assertIs(cond_filter.false_filter, false_filter)
@@ -902,11 +902,11 @@ class TestConditionalRowFilter(unittest.TestCase):
         true_filter = object()
         false_filter = object()
         cond_filter1 = self._make_one(base_filter,
-                                     true_filter=true_filter,
-                                     false_filter=false_filter)
+                                      true_filter=true_filter,
+                                      false_filter=false_filter)
         cond_filter2 = self._make_one(base_filter,
-                                     true_filter=true_filter,
-                                     false_filter=false_filter)
+                                      true_filter=true_filter,
+                                      false_filter=false_filter)
         self.assertEqual(cond_filter1, cond_filter2)
 
     def test___eq__type_differ(self):
@@ -914,8 +914,8 @@ class TestConditionalRowFilter(unittest.TestCase):
         true_filter = object()
         false_filter = object()
         cond_filter1 = self._make_one(base_filter,
-                                     true_filter=true_filter,
-                                     false_filter=false_filter)
+                                      true_filter=true_filter,
+                                      false_filter=false_filter)
         cond_filter2 = object()
         self.assertNotEqual(cond_filter1, cond_filter2)
 
@@ -935,7 +935,7 @@ class TestConditionalRowFilter(unittest.TestCase):
         row_filter3_pb = row_filter3.to_pb()
 
         row_filter4 = self._make_one(row_filter1, true_filter=row_filter2,
-                                    false_filter=row_filter3)
+                                     false_filter=row_filter3)
         filter_pb = row_filter4.to_pb()
 
         expected_pb = _RowFilterPB(
