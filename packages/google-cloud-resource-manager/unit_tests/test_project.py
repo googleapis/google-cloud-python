@@ -23,7 +23,7 @@ class TestProject(unittest.TestCase):
         return Project
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor_defaults(self):
         client = object()
@@ -62,7 +62,7 @@ class TestProject(unittest.TestCase):
                     'projectNumber': PROJECT_NUMBER,
                     'labels': PROJECT_LABELS,
                     'lifecycleState': PROJECT_LIFECYCLE_STATE}
-        project = self._getTargetClass().from_api_repr(resource, client)
+        project = self._get_target_class().from_api_repr(resource, client)
         self.assertEqual(project.project_id, PROJECT_ID)
         self.assertEqual(project._client, client)
         self.assertEqual(project.name, PROJECT_NAME)
