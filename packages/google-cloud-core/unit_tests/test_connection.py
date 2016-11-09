@@ -17,7 +17,8 @@ import unittest
 
 class TestConnection(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.connection import Connection
         return Connection
 
@@ -108,7 +109,8 @@ class TestConnection(unittest.TestCase):
 
 class TestJSONConnection(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.connection import JSONConnection
         return JSONConnection
 

@@ -18,7 +18,8 @@ import unittest
 
 class Test__LocalStack(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud._helpers import _LocalStack
 
         return _LocalStack
@@ -46,7 +47,8 @@ class Test__LocalStack(unittest.TestCase):
 
 class Test__UTC(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud._helpers import _UTC
         return _UTC
 
@@ -905,7 +907,8 @@ class Test__name_from_project_path(unittest.TestCase):
 
 class TestMetadataPlugin(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud._helpers import MetadataPlugin
         return MetadataPlugin
 

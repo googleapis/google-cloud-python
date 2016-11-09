@@ -107,7 +107,8 @@ class TestOperation(unittest.TestCase):
 
     OPERATION_NAME = 'operations/projects/foo/instances/bar/operations/123'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.operation import Operation
         return Operation
 

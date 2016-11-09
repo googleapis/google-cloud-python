@@ -28,7 +28,8 @@ class Test__do_nothing_page_start(unittest.TestCase):
 
 class TestPage(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.iterator import Page
         return Page
 
@@ -91,7 +92,8 @@ class TestPage(unittest.TestCase):
 
 class TestIterator(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.iterator import Iterator
         return Iterator
 
@@ -233,7 +235,8 @@ class TestIterator(unittest.TestCase):
 
 class TestHTTPIterator(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.iterator import HTTPIterator
         return HTTPIterator
 
@@ -465,7 +468,8 @@ class TestHTTPIterator(unittest.TestCase):
 
 class TestGAXIterator(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.iterator import GAXIterator
         return GAXIterator
 

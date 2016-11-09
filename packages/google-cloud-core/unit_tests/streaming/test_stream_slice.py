@@ -17,7 +17,8 @@ import unittest
 
 class Test_StreamSlice(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.streaming.stream_slice import StreamSlice
         return StreamSlice
 
