@@ -23,7 +23,7 @@ class TestAccessGrant(unittest.TestCase):
         return AccessGrant
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         grant = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
@@ -87,7 +87,7 @@ class TestDataset(unittest.TestCase):
         return Dataset
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def _setUpConstants(self):
         import datetime
@@ -271,7 +271,7 @@ class TestDataset(unittest.TestCase):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -285,7 +285,7 @@ class TestDataset(unittest.TestCase):
                 'datasetId': self.DS_NAME,
             }
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
@@ -293,7 +293,7 @@ class TestDataset(unittest.TestCase):
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)

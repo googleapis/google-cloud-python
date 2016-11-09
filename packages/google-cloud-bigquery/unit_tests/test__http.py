@@ -23,7 +23,7 @@ class TestConnection(unittest.TestCase):
         return Connection
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_build_api_url_no_extra_query_params(self):
         conn = self._makeOne()

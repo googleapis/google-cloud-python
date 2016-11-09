@@ -23,7 +23,7 @@ class TestSchemaField(unittest.TestCase):
         return SchemaField
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         field = self._makeOne('test', 'STRING')

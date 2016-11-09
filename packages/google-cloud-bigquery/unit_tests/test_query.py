@@ -29,7 +29,7 @@ class TestQueryResults(unittest.TestCase):
         return QueryResults
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def _makeResource(self, complete=False):
         resource = {
@@ -152,7 +152,7 @@ class TestQueryResults(unittest.TestCase):
         dataset = job.default_dataset = Dataset(DS_NAME, client)
         job.use_query_cache = True
         job.use_legacy_sql = True
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         query = klass.from_query_job(job)
 
@@ -173,7 +173,7 @@ class TestQueryResults(unittest.TestCase):
         job = QueryJob(
             self.JOB_NAME, self.QUERY, client,
             udf_resources=[UDFResource("resourceUri", RESOURCE_URI)])
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         query = klass.from_query_job(job)
 
