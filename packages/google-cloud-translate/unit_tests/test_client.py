@@ -19,7 +19,8 @@ class TestClient(unittest.TestCase):
 
     KEY = 'abc-123-my-key'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.translate.client import Client
         return Client
 
