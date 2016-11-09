@@ -19,7 +19,8 @@ class TestOperation(unittest.TestCase):
 
     OPERATION_NAME = '123456789'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.speech.operation import Operation
         return Operation
 
