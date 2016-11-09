@@ -40,23 +40,23 @@ class TestClient(unittest.TestCase):
     def test_ctor_default(self):
         CREDENTIALS = _Credentials()
         target = self._make_one(project=self.PROJECT,
-                               credentials=CREDENTIALS)
+                                credentials=CREDENTIALS)
         self.assertEquals(target.service, target.DEFAULT_SERVICE)
         self.assertEquals(target.version, None)
 
     def test_ctor_params(self):
         CREDENTIALS = _Credentials()
         target = self._make_one(project=self.PROJECT,
-                               credentials=CREDENTIALS,
-                               service=self.SERVICE,
-                               version=self.VERSION)
+                                credentials=CREDENTIALS,
+                                service=self.SERVICE,
+                                version=self.VERSION)
         self.assertEquals(target.service, self.SERVICE)
         self.assertEquals(target.version, self.VERSION)
 
     def test_report_exception(self):
         CREDENTIALS = _Credentials()
         target = self._make_one(project=self.PROJECT,
-                               credentials=CREDENTIALS)
+                                credentials=CREDENTIALS)
 
         logger = _Logger()
         target.logging_client.logger = lambda _: logger
@@ -78,9 +78,9 @@ class TestClient(unittest.TestCase):
         SERVICE = "notdefault"
         VERSION = "notdefaultversion"
         target = self._make_one(project=self.PROJECT,
-                               credentials=CREDENTIALS,
-                               service=SERVICE,
-                               version=VERSION)
+                                credentials=CREDENTIALS,
+                                service=SERVICE,
+                                version=VERSION)
 
         logger = _Logger()
         target.logging_client.logger = lambda _: logger
@@ -111,7 +111,7 @@ class TestClient(unittest.TestCase):
     def test_report(self):
         CREDENTIALS = _Credentials()
         target = self._make_one(project=self.PROJECT,
-                               credentials=CREDENTIALS)
+                                credentials=CREDENTIALS)
 
         logger = _Logger()
         target.logging_client.logger = lambda _: logger
