@@ -893,9 +893,8 @@ class Test_Bucket(unittest.TestCase):
         self._make_public_w_future_helper(default_object_acl_loaded=False)
 
     def test_make_public_recursive(self):
-        from google.cloud._testing import _Monkey
+        import mock
         from google.cloud.storage.acl import _ACLEntity
-        from google.cloud.storage import bucket as MUT
 
         _saved = []
 
@@ -934,7 +933,8 @@ class Test_Bucket(unittest.TestCase):
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
 
-        with _Monkey(MUT, _item_to_blob=item_to_blob):
+        with mock.patch('google.cloud.storage.bucket._item_to_blob',
+                        new=item_to_blob):
             bucket.make_public(recursive=True)
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
