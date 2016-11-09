@@ -19,7 +19,8 @@ class TestQuery(unittest.TestCase):
 
     _PROJECT = 'PROJECT'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.datastore.query import Query
         return Query
 
@@ -339,7 +340,8 @@ class TestQuery(unittest.TestCase):
 
 class TestIterator(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.datastore.query import Iterator
         return Iterator
 

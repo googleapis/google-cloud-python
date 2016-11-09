@@ -19,7 +19,8 @@ from google.cloud.datastore._http import _HAVE_GRPC
 
 class Test_DatastoreAPIOverHttp(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.datastore._http import _DatastoreAPIOverHttp
         return _DatastoreAPIOverHttp
 
@@ -174,7 +175,8 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
 
 class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.datastore._http import _DatastoreAPIOverGRPC
         return _DatastoreAPIOverGRPC
 
@@ -350,7 +352,8 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 
 class TestConnection(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.datastore._http import Connection
 
         return Connection
