@@ -26,7 +26,8 @@ B64_IMAGE_CONTENT = _bytes_to_unicode(base64.b64encode(IMAGE_CONTENT))
 
 
 class TestClient(unittest.TestCase):
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.vision.client import Client
         return Client
 
@@ -278,7 +279,8 @@ class TestClient(unittest.TestCase):
 
 
 class TestVisionRequest(unittest.TestCase):
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.vision.client import VisionRequest
         return VisionRequest
 

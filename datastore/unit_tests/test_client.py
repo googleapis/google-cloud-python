@@ -128,7 +128,8 @@ class TestClient(unittest.TestCase):
         KLASS = self._getTargetClass()
         KLASS._connection_class = self.original_cnxn_class
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.datastore.client import Client
         return Client
 

@@ -318,7 +318,8 @@ class Test_rows_from_json(unittest.TestCase):
 
 class Test_ConfigurationProperty(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery._helpers import _ConfigurationProperty
         return _ConfigurationProperty
 
@@ -353,7 +354,8 @@ class Test_ConfigurationProperty(unittest.TestCase):
 
 class Test_TypedProperty(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery._helpers import _TypedProperty
         return _TypedProperty
 
@@ -386,7 +388,8 @@ class Test_TypedProperty(unittest.TestCase):
 
 class Test_EnumProperty(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery._helpers import _EnumProperty
         return _EnumProperty
 
@@ -419,7 +422,8 @@ class Test_EnumProperty(unittest.TestCase):
 
 class Test_UDFResourcesProperty(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery._helpers import UDFResourcesProperty
         return UDFResourcesProperty
 

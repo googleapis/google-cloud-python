@@ -17,7 +17,8 @@ import unittest
 
 class TestAccessGrant(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.dataset import AccessGrant
         return AccessGrant
 
@@ -80,7 +81,8 @@ class TestDataset(unittest.TestCase):
     PROJECT = 'project'
     DS_NAME = 'dataset-name'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.dataset import Dataset
         return Dataset
 

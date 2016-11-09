@@ -17,7 +17,8 @@ import unittest
 
 class Test_ClientFactoryMixin(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.client import _ClientFactoryMixin
         return _ClientFactoryMixin
 
@@ -37,7 +38,8 @@ class TestClient(unittest.TestCase):
         KLASS = self._getTargetClass()
         KLASS._connection_class = self.original_cnxn_class
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.client import Client
         return Client
 
@@ -124,7 +126,8 @@ class TestJSONClient(unittest.TestCase):
         KLASS = self._getTargetClass()
         KLASS._connection_class = self.original_cnxn_class
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.client import JSONClient
         return JSONClient
 

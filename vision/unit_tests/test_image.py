@@ -25,7 +25,8 @@ CLIENT_MOCK = {'source': ''}
 
 
 class TestVisionImage(unittest.TestCase):
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.vision.image import Image
         return Image
 

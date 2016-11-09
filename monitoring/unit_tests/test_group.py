@@ -107,7 +107,8 @@ class TestGroup(unittest.TestCase):
         self.RESOURCE2 = Resource._from_dict(info2)
         self.MEMBERS = [info1, info2]
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.group import Group
         return Group
 

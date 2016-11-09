@@ -18,7 +18,8 @@ import unittest
 
 class Test_SetDeleteRow(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.row import _SetDeleteRow
         return _SetDeleteRow
 
@@ -33,7 +34,8 @@ class Test_SetDeleteRow(unittest.TestCase):
 
 class TestDirectRow(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.row import DirectRow
         return DirectRow
 
@@ -376,7 +378,8 @@ class TestDirectRow(unittest.TestCase):
 
 class TestConditionalRow(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.row import ConditionalRow
         return ConditionalRow
 
@@ -517,7 +520,8 @@ class TestConditionalRow(unittest.TestCase):
 
 class TestAppendRow(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.row import AppendRow
         return AppendRow
 

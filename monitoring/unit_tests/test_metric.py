@@ -17,7 +17,8 @@ import unittest
 
 class TestMetricKind(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.metric import MetricKind
         return MetricKind
 
@@ -32,7 +33,8 @@ class TestMetricKind(unittest.TestCase):
 
 class TestValueType(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.metric import ValueType
         return ValueType
 
@@ -47,7 +49,8 @@ class TestValueType(unittest.TestCase):
 
 class TestMetricDescriptor(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.metric import MetricDescriptor
         return MetricDescriptor
 
@@ -493,7 +496,8 @@ class TestMetricDescriptor(unittest.TestCase):
 
 class TestMetric(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.metric import Metric
         return Metric
 

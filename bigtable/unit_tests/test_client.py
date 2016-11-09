@@ -267,7 +267,8 @@ class TestClient(unittest.TestCase):
     DISPLAY_NAME = 'display-name'
     USER_AGENT = 'you-sir-age-int'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.client import Client
         return Client
 

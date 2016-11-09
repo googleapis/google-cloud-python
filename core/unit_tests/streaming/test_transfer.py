@@ -18,7 +18,8 @@ import unittest
 class Test__Transfer(unittest.TestCase):
     URL = 'http://example.com/api'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.streaming.transfer import _Transfer
         return _Transfer
 
@@ -162,7 +163,8 @@ class Test__Transfer(unittest.TestCase):
 class Test_Download(unittest.TestCase):
     URL = "http://example.com/api"
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.streaming.transfer import Download
         return Download
 
@@ -797,7 +799,8 @@ class Test_Upload(unittest.TestCase):
     MIME_TYPE = 'application/octet-stream'
     UPLOAD_URL = 'http://example.com/upload/id=foobar'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.streaming.transfer import Upload
         return Upload
 

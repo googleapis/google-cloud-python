@@ -16,7 +16,8 @@ import unittest
 
 
 class TestEntityAnnotation(unittest.TestCase):
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.vision.entity import EntityAnnotation
         return EntityAnnotation
 

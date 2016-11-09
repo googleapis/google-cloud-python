@@ -17,7 +17,8 @@ import unittest
 
 class TestBatch(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.datastore.batch import Batch
 
         return Batch

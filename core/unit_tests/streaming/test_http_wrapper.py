@@ -17,7 +17,8 @@ import unittest
 
 class Test__httplib2_debug_level(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.streaming.http_wrapper import _httplib2_debug_level
         return _httplib2_debug_level
 
@@ -76,7 +77,8 @@ class Test__httplib2_debug_level(unittest.TestCase):
 
 class Test_Request(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.streaming.http_wrapper import Request
         return Request
 
@@ -116,7 +118,8 @@ class Test_Request(unittest.TestCase):
 
 class Test_Response(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.streaming.http_wrapper import Response
         return Response
 

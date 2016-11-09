@@ -30,7 +30,8 @@ class TestInstance(unittest.TestCase):
     TABLE_ID = 'table_id'
     TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.instance import Instance
         return Instance
 

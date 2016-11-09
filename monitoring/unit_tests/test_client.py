@@ -19,7 +19,8 @@ PROJECT = 'my-project'
 
 class TestClient(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.client import Client
         return Client
 

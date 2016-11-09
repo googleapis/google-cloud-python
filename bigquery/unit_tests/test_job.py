@@ -122,7 +122,8 @@ class _Base(object):
 class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
     JOB_TYPE = 'load'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.job import LoadTableFromStorageJob
         return LoadTableFromStorageJob
 
@@ -642,7 +643,8 @@ class TestCopyJob(unittest.TestCase, _Base):
     SOURCE_TABLE = 'source_table'
     DESTINATION_TABLE = 'destination_table'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.job import CopyJob
         return CopyJob
 
@@ -939,7 +941,8 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
     SOURCE_TABLE = 'source_table'
     DESTINATION_URI = 'gs://bucket_name/object_name'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.job import ExtractTableToStorageJob
         return ExtractTableToStorageJob
 
@@ -1232,7 +1235,8 @@ class TestQueryJob(unittest.TestCase, _Base):
     QUERY = 'select count(*) from persons'
     DESTINATION_TABLE = 'destination_table'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.job import QueryJob
         return QueryJob
 

@@ -20,7 +20,8 @@ class TestTopic(unittest.TestCase):
     TOPIC_NAME = 'topic_name'
     TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub.topic import Topic
         return Topic
 
@@ -619,7 +620,8 @@ class TestTopic(unittest.TestCase):
 class TestBatch(unittest.TestCase):
     PROJECT = 'PROJECT'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub.topic import Batch
         return Batch
 

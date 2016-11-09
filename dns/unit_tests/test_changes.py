@@ -20,7 +20,8 @@ class TestChanges(unittest.TestCase):
     ZONE_NAME = 'example.com'
     CHANGES_NAME = 'changeset_id'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.dns.changes import Changes
         return Changes
 

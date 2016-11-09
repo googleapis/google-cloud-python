@@ -17,7 +17,8 @@ import unittest
 
 class Test_GoogleCloudError(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.exceptions import GoogleCloudError
         return GoogleCloudError
 

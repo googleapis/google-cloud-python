@@ -24,7 +24,8 @@ class TestSubscription(unittest.TestCase):
     DEADLINE = 42
     ENDPOINT = 'https://api.example.com/push'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub.subscription import Subscription
         return Subscription
 
@@ -671,7 +672,8 @@ class _FauxSubscribererAPI(object):
 
 class TestAutoAck(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub.subscription import AutoAck
         return AutoAck
 

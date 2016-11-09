@@ -25,7 +25,8 @@ class TestCluster(unittest.TestCase):
                     '/instances/' + INSTANCE_ID +
                     '/clusters/' + CLUSTER_ID)
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.cluster import Cluster
         return Cluster
 

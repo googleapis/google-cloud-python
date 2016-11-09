@@ -17,7 +17,8 @@ import unittest
 
 class TestMIMEApplicationHTTP(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.batch import MIMEApplicationHTTP
         return MIMEApplicationHTTP
 
@@ -68,7 +69,8 @@ class TestMIMEApplicationHTTP(unittest.TestCase):
 
 class TestBatch(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.batch import Batch
         return Batch
 

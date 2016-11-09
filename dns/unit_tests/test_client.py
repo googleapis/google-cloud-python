@@ -20,7 +20,8 @@ class TestClient(unittest.TestCase):
     PROJECT = 'PROJECT'
     ZONE_NAME = 'zone-name'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.dns.client import Client
         return Client
 
