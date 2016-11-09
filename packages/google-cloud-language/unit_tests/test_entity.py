@@ -17,7 +17,8 @@ import unittest
 
 class TestEntity(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.language.entity import Entity
         return Entity
 
