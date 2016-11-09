@@ -37,7 +37,7 @@ class Project(object):
         >>> project.update()
 
     See:
-    https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects
+    https://cloud.google.com/resource-manager/reference/rest/v1/projects
 
     :type project_id: str
     :param project_id: The globally unique ID of the project.
@@ -117,7 +117,7 @@ class Project(object):
         """API call:  create the project via a ``POST`` request.
 
         See
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/create
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/create
 
         :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
@@ -150,7 +150,7 @@ class Project(object):
             via :meth:`update`.
 
         See
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/get
 
         :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
@@ -168,7 +168,7 @@ class Project(object):
         """API call:  test the existence of a project via a ``GET`` request.
 
         See
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/get
 
         :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
@@ -193,7 +193,7 @@ class Project(object):
         """API call:  update the project via a ``PUT`` request.
 
         See
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/update
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/update
 
         :type client: :class:`google.cloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
@@ -211,7 +211,7 @@ class Project(object):
         """API call:  delete the project via a ``DELETE`` request.
 
         See:
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/delete
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/delete
 
         This actually changes the status (``lifecycleState``) from ``ACTIVE``
         to ``DELETE_REQUESTED``.
@@ -242,7 +242,7 @@ class Project(object):
         """API call:  undelete the project via a ``POST`` request.
 
         See
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/undelete
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/undelete
 
         This actually changes the project status (``lifecycleState``) from
         ``DELETE_REQUESTED`` to ``ACTIVE``.

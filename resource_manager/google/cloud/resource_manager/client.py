@@ -116,7 +116,7 @@ class Client(BaseClient):
             ...     print(project.project_id)
 
         See:
-        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/list
+        https://cloud.google.com/resource-manager/reference/rest/v1/projects/list
 
         Complete filtering example::
 
