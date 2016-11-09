@@ -22,7 +22,7 @@ script:
   - scripts/update_docs.sh
 
 after_success:
-  - scripts/travis_coveralls.sh
+  - scripts/coveralls.sh
 
 cache:
   directories:
