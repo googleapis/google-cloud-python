@@ -18,7 +18,8 @@ import unittest
 class TestGAPICSpeechAPI(unittest.TestCase):
     SAMPLE_RATE = 16000
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.speech._gax import GAPICSpeechAPI
 
         return GAPICSpeechAPI

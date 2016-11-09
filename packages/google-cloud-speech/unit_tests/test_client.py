@@ -66,7 +66,8 @@ class TestClient(unittest.TestCase):
     AUDIO_SOURCE_URI = 'gs://sample-bucket/sample-recording.flac'
     AUDIO_CONTENT = '/9j/4QNURXhpZgAASUkq'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.speech.client import Client
 
         return Client
