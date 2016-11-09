@@ -19,7 +19,8 @@ class TestSample(unittest.TestCase):
     SAMPLE_RATE = 16000
     AUDIO_SOURCE_URI = 'gs://sample-bucket/sample-recording.flac'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.speech.sample import Sample
         return Sample
 
