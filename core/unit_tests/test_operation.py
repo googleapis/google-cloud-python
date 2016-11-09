@@ -113,7 +113,7 @@ class TestOperation(unittest.TestCase):
         return Operation
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         client = _Client()
@@ -146,7 +146,7 @@ class TestOperation(unittest.TestCase):
         from google.longrunning import operations_pb2
         client = _Client()
         operation_pb = operations_pb2.Operation(name=self.OPERATION_NAME)
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         operation = klass.from_pb(operation_pb, client)
 
@@ -169,7 +169,7 @@ class TestOperation(unittest.TestCase):
         metadata_pb = Any(type_url=type_url, value=meta.SerializeToString())
         operation_pb = operations_pb2.Operation(
             name=self.OPERATION_NAME, metadata=metadata_pb)
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         with _Monkey(MUT, _TYPE_URL_MAP={type_url: Struct}):
             operation = klass.from_pb(operation_pb, client)
@@ -195,7 +195,7 @@ class TestOperation(unittest.TestCase):
         metadata_pb = Any(type_url=type_url, value=meta.SerializeToString())
         operation_pb = operations_pb2.Operation(
             name=self.OPERATION_NAME, metadata=metadata_pb)
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         with _Monkey(MUT, _TYPE_URL_MAP=type_url_map):
             operation = klass.from_pb(operation_pb, client, baz='qux')
@@ -220,7 +220,7 @@ class TestOperation(unittest.TestCase):
         }
 
         client = _Client()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         with _Monkey(MUT, _TYPE_URL_MAP={type_url: Struct}):
             operation = klass.from_dict(api_response, client)

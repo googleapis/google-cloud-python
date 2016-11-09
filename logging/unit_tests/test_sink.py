@@ -28,7 +28,7 @@ class TestSink(unittest.TestCase):
         return Sink
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
@@ -63,7 +63,7 @@ class TestSink(unittest.TestCase):
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         sink = klass.from_api_repr(RESOURCE, client=client)
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter_, self.FILTER)
@@ -80,7 +80,7 @@ class TestSink(unittest.TestCase):
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         sink = klass.from_api_repr(RESOURCE, client=client)
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter_, self.FILTER)

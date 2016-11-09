@@ -23,7 +23,7 @@ class _Base(object):
     JOB_NAME = 'job_name'
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def _setUpConstants(self):
         import datetime
@@ -364,7 +364,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -378,7 +378,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
                 'jobId': self.JOB_NAME,
             }
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -402,7 +402,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
                 }
             },
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
@@ -410,7 +410,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
@@ -717,7 +717,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -731,7 +731,7 @@ class TestCopyJob(unittest.TestCase, _Base):
                 'jobId': self.JOB_NAME,
             }
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -759,7 +759,7 @@ class TestCopyJob(unittest.TestCase, _Base):
                 }
             },
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
@@ -767,7 +767,7 @@ class TestCopyJob(unittest.TestCase, _Base):
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
@@ -1019,7 +1019,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -1033,7 +1033,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
                 'jobId': self.JOB_NAME,
             }
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -1057,7 +1057,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
                 }
             },
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
@@ -1065,7 +1065,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
@@ -1360,7 +1360,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -1374,7 +1374,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'jobId': self.JOB_NAME,
             }
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -1391,7 +1391,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'query': {'query': self.QUERY}
             },
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
@@ -1404,7 +1404,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             'datasetId': self.DS_NAME,
             'tableId': self.DESTINATION_TABLE,
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)

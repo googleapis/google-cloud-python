@@ -91,7 +91,7 @@ class TestMaxVersionsGCRule(unittest.TestCase):
         return MaxVersionsGCRule
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test___eq__type_differ(self):
         gc_rule1 = self._makeOne(10)
@@ -125,7 +125,7 @@ class TestMaxAgeGCRule(unittest.TestCase):
         return MaxAgeGCRule
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test___eq__type_differ(self):
         max_age = object()
@@ -165,7 +165,7 @@ class TestGCRuleUnion(unittest.TestCase):
         return GCRuleUnion
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         rules = object()
@@ -252,7 +252,7 @@ class TestGCRuleIntersection(unittest.TestCase):
         return GCRuleIntersection
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         rules = object()
@@ -342,7 +342,7 @@ class TestColumnFamily(unittest.TestCase):
         return ColumnFamily
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         column_family_id = u'column-family-id'

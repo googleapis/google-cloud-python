@@ -23,7 +23,7 @@ class TestSentiment(unittest.TestCase):
         return Sentiment
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         polarity = 1
@@ -33,7 +33,7 @@ class TestSentiment(unittest.TestCase):
         self.assertEqual(sentiment.magnitude, magnitude)
 
     def test_from_api_repr(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         polarity = -1
         magnitude = 5.55
         payload = {

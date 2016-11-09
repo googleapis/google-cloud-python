@@ -23,13 +23,13 @@ class TestConnection(unittest.TestCase):
         return Connection
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         credentials = _Credentials()
         connection = self._makeOne(credentials)
         self.assertEqual(connection.credentials._scopes,
-                         self._getTargetClass().SCOPE)
+                         self._get_target_class().SCOPE)
 
 
 class _Credentials(object):

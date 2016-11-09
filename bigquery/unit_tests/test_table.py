@@ -41,7 +41,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         return Table
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def _setUpConstants(self):
         import datetime
@@ -359,7 +359,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, dataset)
 
@@ -376,7 +376,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             },
             'type': 'TABLE',
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         table = klass.from_api_repr(RESOURCE, dataset)
         self.assertEqual(table.name, self.TABLE_NAME)
         self.assertIs(table._dataset, dataset)
@@ -386,7 +386,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
         RESOURCE = self._makeResource()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         table = klass.from_api_repr(RESOURCE, dataset)
         self.assertIs(table._dataset._client, client)
         self._verifyResourceProperties(table, RESOURCE)

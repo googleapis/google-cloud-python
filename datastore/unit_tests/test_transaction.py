@@ -23,7 +23,7 @@ class TestTransaction(unittest.TestCase):
         return Transaction
 
     def _makeOne(self, client, **kw):
-        return self._getTargetClass()(client, **kw)
+        return self._get_target_class()(client, **kw)
 
     def test_ctor_defaults(self):
         from google.cloud.datastore._generated import datastore_pb2
@@ -35,7 +35,7 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(xact.project, _PROJECT)
         self.assertEqual(xact.connection, connection)
         self.assertIsNone(xact.id)
-        self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
+        self.assertEqual(xact._status, self._get_target_class()._INITIAL)
         self.assertIsInstance(xact._commit_request,
                               datastore_pb2.CommitRequest)
         self.assertIs(xact.mutations, xact._commit_request.mutations)

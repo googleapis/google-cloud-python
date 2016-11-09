@@ -103,7 +103,7 @@ class TestDocument(unittest.TestCase):
         return Document
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor_defaults(self):
         import google.cloud.language.document as MUT
@@ -145,7 +145,7 @@ class TestDocument(unittest.TestCase):
                           gcs_url='gs://some-bucket/some-obj.txt')
 
     def test__to_dict_with_content(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         content = 'Hello World'
         document = self._makeOne(None, content=content)
         info = document._to_dict()
@@ -156,7 +156,7 @@ class TestDocument(unittest.TestCase):
         })
 
     def test__to_dict_with_gcs(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         gcs_url = 'gs://some-bucket/some-obj.html'
         document = self._makeOne(None, gcs_url=gcs_url)
         info = document._to_dict()
@@ -167,7 +167,7 @@ class TestDocument(unittest.TestCase):
         })
 
     def test__to_dict_with_no_content(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         document = self._makeOne(None, content='')
         document.content = None  # Manually unset the content.
         info = document._to_dict()

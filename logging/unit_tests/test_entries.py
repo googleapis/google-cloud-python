@@ -51,7 +51,7 @@ class Test_BaseEntry(unittest.TestCase):
         return _Dummy
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         PAYLOAD = 'PAYLOAD'
@@ -105,7 +105,7 @@ class Test_BaseEntry(unittest.TestCase):
             'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         entry = klass.from_api_repr(API_REPR, client)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertIsNone(entry.insert_id)
@@ -120,7 +120,7 @@ class Test_BaseEntry(unittest.TestCase):
     def test_from_api_repr_w_loggers_no_logger_match(self):
         from datetime import datetime
         from google.cloud._helpers import UTC
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         client = _Client(self.PROJECT)
         PAYLOAD = 'PAYLOAD'
         SEVERITY = 'CRITICAL'
@@ -180,7 +180,7 @@ class Test_BaseEntry(unittest.TestCase):
         }
         LOGGER = object()
         loggers = {LOG_NAME: LOGGER}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         entry = klass.from_api_repr(API_REPR, client, loggers=loggers)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertEqual(entry.insert_id, IID)
@@ -200,7 +200,7 @@ class TestProtobufEntry(unittest.TestCase):
         return ProtobufEntry
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_parse_message(self):
         import json

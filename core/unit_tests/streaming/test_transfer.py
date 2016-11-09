@@ -24,7 +24,7 @@ class Test__Transfer(unittest.TestCase):
         return _Transfer
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         from google.cloud.streaming.transfer import _DEFAULT_CHUNKSIZE
@@ -169,7 +169,7 @@ class Test_Download(unittest.TestCase):
         return Download
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         stream = _Stream()
@@ -196,7 +196,7 @@ class Test_Download(unittest.TestCase):
 
     def test_from_file_w_existing_file_no_override(self):
         import os
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.out')
             with open(filename, 'w') as fileobj:
@@ -206,7 +206,7 @@ class Test_Download(unittest.TestCase):
 
     def test_from_file_w_existing_file_w_override_wo_auto_transfer(self):
         import os
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.out')
             with open(filename, 'w') as fileobj:
@@ -220,7 +220,7 @@ class Test_Download(unittest.TestCase):
 
     def test_from_stream_defaults(self):
         stream = _Stream()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         download = klass.from_stream(stream)
         self.assertIs(download.stream, stream)
         self.assertTrue(download.auto_transfer)
@@ -230,7 +230,7 @@ class Test_Download(unittest.TestCase):
         CHUNK_SIZE = 1 << 18
         SIZE = 123
         stream = _Stream()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         download = klass.from_stream(stream, auto_transfer=False,
                                      total_size=SIZE, chunksize=CHUNK_SIZE)
         self.assertIs(download.stream, stream)
@@ -805,7 +805,7 @@ class Test_Upload(unittest.TestCase):
         return Upload
 
     def _makeOne(self, stream, mime_type=MIME_TYPE, *args, **kw):
-        return self._getTargetClass()(stream, mime_type, *args, **kw)
+        return self._get_target_class()(stream, mime_type, *args, **kw)
 
     def test_ctor_defaults(self):
         from google.cloud.streaming.transfer import _DEFAULT_CHUNKSIZE
@@ -830,14 +830,14 @@ class Test_Upload(unittest.TestCase):
         self.assertEqual(upload.chunksize, CHUNK_SIZE)
 
     def test_from_file_w_nonesuch_file(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         filename = '~nosuchuser/file.txt'
         with self.assertRaises(OSError):
             klass.from_file(filename)
 
     def test_from_file_wo_mimetype_w_unguessable_filename(self):
         import os
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         CONTENT = b'EXISTING FILE W/ UNGUESSABLE MIMETYPE'
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.unguessable')
@@ -848,7 +848,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_from_file_wo_mimetype_w_guessable_filename(self):
         import os
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         CONTENT = b'EXISTING FILE W/ GUESSABLE MIMETYPE'
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.txt')
@@ -862,7 +862,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_from_file_w_mimetype_w_auto_transfer_w_kwds(self):
         import os
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         CONTENT = b'EXISTING FILE W/ GUESSABLE MIMETYPE'
         CHUNK_SIZE = 3
         with _tempdir() as tempdir:
@@ -881,13 +881,13 @@ class Test_Upload(unittest.TestCase):
             upload._stream.close()
 
     def test_from_stream_wo_mimetype(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         stream = _Stream()
         with self.assertRaises(ValueError):
             klass.from_stream(stream, mime_type=None)
 
     def test_from_stream_defaults(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         stream = _Stream()
         upload = klass.from_stream(stream, mime_type=self.MIME_TYPE)
         self.assertEqual(upload.mime_type, self.MIME_TYPE)
@@ -895,7 +895,7 @@ class Test_Upload(unittest.TestCase):
         self.assertIsNone(upload.total_size)
 
     def test_from_stream_explicit(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         stream = _Stream()
         SIZE = 10
         CHUNK_SIZE = 3

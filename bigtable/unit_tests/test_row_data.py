@@ -24,7 +24,7 @@ class TestCell(unittest.TestCase):
         return Cell
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def _from_pb_test_helper(self, labels=None):
         import datetime
@@ -45,7 +45,7 @@ class TestCell(unittest.TestCase):
                 value=value, timestamp_micros=timestamp_micros, labels=labels)
             cell_expected = self._makeOne(value, timestamp, labels=labels)
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         result = klass.from_pb(cell_pb)
         self.assertEqual(result, cell_expected)
 
@@ -100,7 +100,7 @@ class TestPartialRowData(unittest.TestCase):
         return PartialRowData
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         row_key = object()
@@ -192,7 +192,7 @@ class TestPartialRowsData(unittest.TestCase):
         return PartialRowsData
 
     def _getDoNothingClass(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         class FakePartialRowsData(klass):
 
@@ -208,7 +208,7 @@ class TestPartialRowsData(unittest.TestCase):
         return FakePartialRowsData
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         response_iterator = object()
@@ -435,7 +435,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
         return PartialRowsData
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def _load_json_test(self, test_name):
         import os

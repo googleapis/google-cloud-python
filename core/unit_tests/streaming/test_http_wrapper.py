@@ -23,7 +23,7 @@ class Test__httplib2_debug_level(unittest.TestCase):
         return _httplib2_debug_level
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_wo_loggable_body_wo_http(self):
         from google.cloud._testing import _Monkey
@@ -83,7 +83,7 @@ class Test_Request(unittest.TestCase):
         return Request
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         request = self._makeOne()
@@ -124,7 +124,7 @@ class Test_Response(unittest.TestCase):
         return Response
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         CONTENT = 'CONTENT'

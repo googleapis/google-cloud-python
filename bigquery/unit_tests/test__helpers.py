@@ -324,7 +324,7 @@ class Test_ConfigurationProperty(unittest.TestCase):
         return _ConfigurationProperty
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_it(self):
 
@@ -360,7 +360,7 @@ class Test_TypedProperty(unittest.TestCase):
         return _TypedProperty
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_it(self):
 
@@ -395,7 +395,7 @@ class Test_EnumProperty(unittest.TestCase):
 
     def test_it(self):
 
-        class Sub(self._getTargetClass()):
+        class Sub(self._get_target_class()):
             ALLOWED = ('FOO', 'BAR', 'BAZ')
 
         class Configuration(object):
@@ -428,7 +428,7 @@ class Test_UDFResourcesProperty(unittest.TestCase):
         return UDFResourcesProperty
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def _descriptor_and_klass(self):
         descriptor = self._makeOne()

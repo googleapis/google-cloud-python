@@ -26,7 +26,7 @@ class TestChanges(unittest.TestCase):
         return Changes
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def _setUpConstants(self):
         from google.cloud._helpers import UTC
@@ -98,7 +98,7 @@ class TestChanges(unittest.TestCase):
         del RESOURCE['additions']
         del RESOURCE['deletions']
         zone = _Zone()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         changes = klass.from_api_repr(RESOURCE, zone=zone)
 
@@ -108,7 +108,7 @@ class TestChanges(unittest.TestCase):
         self._setUpConstants()
         RESOURCE = self._makeResource()
         zone = _Zone()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         changes = klass.from_api_repr(RESOURCE, zone=zone)
 

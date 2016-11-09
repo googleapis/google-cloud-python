@@ -25,7 +25,7 @@ class TestGAPICSpeechAPI(unittest.TestCase):
         return GAPICSpeechAPI
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_use_bytes_instead_of_file_like_object(self):
         from google.cloud import speech

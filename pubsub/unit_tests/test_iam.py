@@ -23,7 +23,7 @@ class TestPolicy(unittest.TestCase):
         return Policy
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         policy = self._makeOne()
@@ -83,7 +83,7 @@ class TestPolicy(unittest.TestCase):
         RESOURCE = {
             'etag': 'ACAB',
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         policy = klass.from_api_repr(RESOURCE)
         self.assertEqual(policy.etag, 'ACAB')
         self.assertIsNone(policy.version)
@@ -118,7 +118,7 @@ class TestPolicy(unittest.TestCase):
                 {'role': PUBSUB_SUBSCRIBER_ROLE, 'members': [SUBSCRIBER]},
             ],
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         policy = klass.from_api_repr(RESOURCE)
         self.assertEqual(policy.etag, 'DEADBEEF')
         self.assertEqual(policy.version, 17)
@@ -138,7 +138,7 @@ class TestPolicy(unittest.TestCase):
                 {'role': 'nonesuch', 'members': [BOGUS1, BOGUS2]},
             ],
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(ValueError):
             klass.from_api_repr(RESOURCE)
 

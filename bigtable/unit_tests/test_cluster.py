@@ -31,7 +31,7 @@ class TestCluster(unittest.TestCase):
         return Cluster
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor_defaults(self):
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
@@ -108,7 +108,7 @@ class TestCluster(unittest.TestCase):
             serve_nodes=SERVE_NODES,
         )
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         cluster = klass.from_pb(cluster_pb, instance)
         self.assertIsInstance(cluster, klass)
         self.assertIs(cluster._instance, instance)
@@ -121,7 +121,7 @@ class TestCluster(unittest.TestCase):
         instance = _Instance(self.INSTANCE_ID, client)
         cluster_pb = _ClusterPB(name=BAD_CLUSTER_NAME)
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(ValueError):
             klass.from_pb(cluster_pb, instance)
 
@@ -134,7 +134,7 @@ class TestCluster(unittest.TestCase):
 
         cluster_pb = _ClusterPB(name=self.CLUSTER_NAME)
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(ValueError):
             klass.from_pb(cluster_pb, instance)
 
@@ -147,7 +147,7 @@ class TestCluster(unittest.TestCase):
 
         cluster_pb = _ClusterPB(name=self.CLUSTER_NAME)
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(ValueError):
             klass.from_pb(cluster_pb, instance)
 

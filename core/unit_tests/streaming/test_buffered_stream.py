@@ -23,7 +23,7 @@ class Test_BufferedStream(unittest.TestCase):
         return BufferedStream
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_closed_stream(self):
         class _Stream(object):

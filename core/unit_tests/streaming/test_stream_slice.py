@@ -23,7 +23,7 @@ class Test_StreamSlice(unittest.TestCase):
         return StreamSlice
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         from io import BytesIO

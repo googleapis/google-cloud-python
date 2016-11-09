@@ -25,13 +25,13 @@ class TestKey(unittest.TestCase):
         return Key
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_ctor_empty(self):
         self.assertRaises(ValueError, self._makeOne)
 
     def test_ctor_no_project(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         self.assertRaises(ValueError, klass, 'KIND')
 
     def test_ctor_w_explicit_project_empty_path(self):
