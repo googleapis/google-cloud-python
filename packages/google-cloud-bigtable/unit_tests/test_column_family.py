@@ -85,7 +85,8 @@ class Test__duration_pb_to_timedelta(unittest.TestCase):
 
 class TestMaxVersionsGCRule(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.column_family import MaxVersionsGCRule
         return MaxVersionsGCRule
 
@@ -118,7 +119,8 @@ class TestMaxVersionsGCRule(unittest.TestCase):
 
 class TestMaxAgeGCRule(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.column_family import MaxAgeGCRule
         return MaxAgeGCRule
 
@@ -157,7 +159,8 @@ class TestMaxAgeGCRule(unittest.TestCase):
 
 class TestGCRuleUnion(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.column_family import GCRuleUnion
         return GCRuleUnion
 
@@ -243,7 +246,8 @@ class TestGCRuleUnion(unittest.TestCase):
 
 class TestGCRuleIntersection(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.column_family import GCRuleIntersection
         return GCRuleIntersection
 
@@ -332,7 +336,8 @@ class TestGCRuleIntersection(unittest.TestCase):
 
 class TestColumnFamily(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.column_family import ColumnFamily
         return ColumnFamily
 

@@ -29,7 +29,8 @@ class TestTable(unittest.TestCase):
     TIMESTAMP_MICROS = 100
     VALUE = b'value'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.table import Table
         return Table
 

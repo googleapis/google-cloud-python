@@ -18,7 +18,8 @@ import unittest
 
 class TestCell(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.row_data import Cell
         return Cell
 
@@ -93,7 +94,8 @@ class TestCell(unittest.TestCase):
 
 class TestPartialRowData(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.row_data import PartialRowData
         return PartialRowData
 
@@ -184,7 +186,8 @@ class TestPartialRowData(unittest.TestCase):
 
 class TestPartialRowsData(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.row_data import PartialRowsData
         return PartialRowsData
 
@@ -426,7 +429,8 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
 
     _json_tests = None
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.row_data import PartialRowsData
         return PartialRowsData
 
