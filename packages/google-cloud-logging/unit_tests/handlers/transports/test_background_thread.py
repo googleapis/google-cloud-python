@@ -28,7 +28,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         return BackgroundThreadTransport
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -64,7 +64,7 @@ class TestWorker(unittest.TestCase):
         return background_thread._Worker
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         NAME = 'python_logger'

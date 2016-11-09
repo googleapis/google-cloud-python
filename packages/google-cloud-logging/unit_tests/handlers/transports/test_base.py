@@ -25,7 +25,7 @@ class TestBaseHandler(unittest.TestCase):
         return Transport
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_send_is_abstract(self):
         target = self._makeOne()

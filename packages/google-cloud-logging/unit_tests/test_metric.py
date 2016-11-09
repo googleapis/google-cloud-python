@@ -28,7 +28,7 @@ class TestMetric(unittest.TestCase):
         return Metric
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
@@ -62,7 +62,7 @@ class TestMetric(unittest.TestCase):
             'name': self.METRIC_NAME,
             'filter': self.FILTER,
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         metric = klass.from_api_repr(RESOURCE, client=client)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
@@ -80,7 +80,7 @@ class TestMetric(unittest.TestCase):
             'filter': self.FILTER,
             'description': DESCRIPTION,
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         metric = klass.from_api_repr(RESOURCE, client=client)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
