@@ -22,7 +22,8 @@ class TestVariable(unittest.TestCase):
     PATH = 'projects/%s/configs/%s/variables/%s' % (
         PROJECT, CONFIG_NAME, VARIABLE_NAME)
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.runtimeconfig.variable import Variable
         return Variable
 
