@@ -46,11 +46,11 @@ class Test__Transfer(unittest.TestCase):
         CHUNK_SIZE = 1 << 18
         NUM_RETRIES = 8
         xfer = self._make_one(stream,
-                             close_stream=True,
-                             chunksize=CHUNK_SIZE,
-                             auto_transfer=False,
-                             http=HTTP,
-                             num_retries=NUM_RETRIES)
+                              close_stream=True,
+                              chunksize=CHUNK_SIZE,
+                              auto_transfer=False,
+                              http=HTTP,
+                              num_retries=NUM_RETRIES)
         self.assertIs(xfer.stream, stream)
         self.assertTrue(xfer.close_stream)
         self.assertEqual(xfer.chunksize, CHUNK_SIZE)

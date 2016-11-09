@@ -74,7 +74,7 @@ class TestPage(unittest.TestCase):
 
         parent = Parent()
         page = self._make_one(parent, (10, 11, 12),
-                             Parent.item_to_value)
+                              Parent.item_to_value)
         page._remaining = 100
 
         self.assertEqual(parent.calls, 0)
@@ -107,7 +107,7 @@ class TestIterator(unittest.TestCase):
         token = 'ab13nceor03'
         max_results = 1337
         iterator = self._make_one(client, item_to_value, page_token=token,
-                                 max_results=max_results)
+                                  max_results=max_results)
 
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
@@ -313,7 +313,7 @@ class TestHTTPIterator(unittest.TestCase):
             {'items': [{'name': key1}, {'name': key2}]})
         client = _Client(connection)
         iterator = self._make_one(client, path=path,
-                                 item_to_value=item_to_value)
+                                  item_to_value=item_to_value)
         self.assertEqual(iterator.num_results, 0)
 
         items_iter = iter(iterator)
@@ -360,7 +360,7 @@ class TestHTTPIterator(unittest.TestCase):
 
     def test__has_next_page_w_max_results_not_done(self):
         iterator = self._make_one(None, None, None, max_results=3,
-                                 page_token='definitely-not-none')
+                                  page_token='definitely-not-none')
         iterator.page_number = 1
         self.assertLess(iterator.num_results, iterator.max_results)
         self.assertTrue(iterator._has_next_page())
@@ -394,7 +394,7 @@ class TestHTTPIterator(unittest.TestCase):
         path = '/foo'
         max_results = 3
         iterator = self._make_one(client, path, None,
-                                 max_results=max_results)
+                                  max_results=max_results)
         iterator.num_results = 1
         local_max = max_results - iterator.num_results
         self.assertEqual(iterator._get_query_params(),
@@ -406,7 +406,7 @@ class TestHTTPIterator(unittest.TestCase):
         path = '/foo'
         extra_params = {'key': 'val'}
         iterator = self._make_one(client, path, None,
-                                 extra_params=extra_params)
+                                  extra_params=extra_params)
         self.assertEqual(iterator._get_query_params(), extra_params)
 
     def test__get_query_params_w_token_and_extra_params(self):
@@ -416,7 +416,7 @@ class TestHTTPIterator(unittest.TestCase):
         token = 'token'
         extra_params = {'key': 'val'}
         iterator = self._make_one(client, path, None,
-                                 extra_params=extra_params)
+                                  extra_params=extra_params)
         iterator.next_page_token = token
 
         expected_query = extra_params.copy()
@@ -483,7 +483,7 @@ class TestGAXIterator(unittest.TestCase):
         item_to_value = object()
         max_results = 1337
         iterator = self._make_one(client, page_iter, item_to_value,
-                                 max_results=max_results)
+                                  max_results=max_results)
 
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
