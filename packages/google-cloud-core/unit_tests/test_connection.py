@@ -23,7 +23,7 @@ class TestConnection(unittest.TestCase):
         return Connection
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         conn = self._makeOne()
@@ -76,7 +76,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(conn.USER_AGENT, expected_ua)
 
     def test__create_scoped_credentials_with_scoped_credentials(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         scoped_creds = object()
         scope = 'google-specific-scope'
         credentials = _Credentials(scoped=scoped_creds)
@@ -87,7 +87,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(credentials._scopes, [scope])
 
     def test__create_scoped_credentials_without_scope_required(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         credentials = _Credentials()
 
         result = klass._create_scoped_credentials(credentials, None)
@@ -96,13 +96,13 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(credentials._scopes, [])
 
     def test__create_scoped_credentials_non_scoped_credentials(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         credentials = object()
         result = klass._create_scoped_credentials(credentials, None)
         self.assertIs(result, credentials)
 
     def test__create_scoped_credentials_no_credentials(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         result = klass._create_scoped_credentials(None, None)
         self.assertIsNone(result)
 
@@ -115,17 +115,17 @@ class TestJSONConnection(unittest.TestCase):
         return JSONConnection
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def _makeMockOne(self, *args, **kw):
-        class MockConnection(self._getTargetClass()):
+        class MockConnection(self._get_target_class()):
             API_URL_TEMPLATE = '{api_base_url}/mock/{api_version}{path}'
             API_BASE_URL = 'http://mock'
             API_VERSION = 'vMOCK'
         return MockConnection(*args, **kw)
 
     def test_class_defaults(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         self.assertIsNone(klass.API_URL_TEMPLATE)
         self.assertIsNone(klass.API_BASE_URL)
         self.assertIsNone(klass.API_VERSION)

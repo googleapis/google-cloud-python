@@ -23,7 +23,7 @@ class Test_GoogleCloudError(unittest.TestCase):
         return GoogleCloudError
 
     def _makeOne(self, message, errors=()):
-        return self._getTargetClass()(message, errors=errors)
+        return self._get_target_class()(message, errors=errors)
 
     def test_ctor_defaults(self):
         e = self._makeOne('Testing')

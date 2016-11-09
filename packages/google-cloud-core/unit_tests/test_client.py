@@ -23,19 +23,19 @@ class Test_ClientFactoryMixin(unittest.TestCase):
         return _ClientFactoryMixin
 
     def test_virtual(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         self.assertFalse('__init__' in klass.__dict__)
 
 
 class TestClient(unittest.TestCase):
 
     def setUp(self):
-        KLASS = self._getTargetClass()
+        KLASS = self._get_target_class()
         self.original_cnxn_class = KLASS._connection_class
         KLASS._connection_class = _MockConnection
 
     def tearDown(self):
-        KLASS = self._getTargetClass()
+        KLASS = self._get_target_class()
         KLASS._connection_class = self.original_cnxn_class
 
     @staticmethod
@@ -44,7 +44,7 @@ class TestClient(unittest.TestCase):
         return Client
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         from google.cloud._testing import _Monkey
@@ -77,7 +77,7 @@ class TestClient(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud import client
 
-        KLASS = self._getTargetClass()
+        KLASS = self._get_target_class()
         MOCK_FILENAME = 'foo.path'
         mock_creds = _MockServiceAccountCredentials()
         with _Monkey(client, ServiceAccountCredentials=mock_creds):
@@ -87,7 +87,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(mock_creds.json_called, [MOCK_FILENAME])
 
     def test_from_service_account_json_fail(self):
-        KLASS = self._getTargetClass()
+        KLASS = self._get_target_class()
         CREDENTIALS = object()
         self.assertRaises(TypeError, KLASS.from_service_account_json, None,
                           credentials=CREDENTIALS)
@@ -96,7 +96,7 @@ class TestClient(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud import client
 
-        KLASS = self._getTargetClass()
+        KLASS = self._get_target_class()
         CLIENT_EMAIL = 'phred@example.com'
         MOCK_FILENAME = 'foo.path'
         mock_creds = _MockServiceAccountCredentials()
@@ -109,7 +109,7 @@ class TestClient(unittest.TestCase):
                          [(CLIENT_EMAIL, MOCK_FILENAME)])
 
     def test_from_service_account_p12_fail(self):
-        KLASS = self._getTargetClass()
+        KLASS = self._get_target_class()
         CREDENTIALS = object()
         self.assertRaises(TypeError, KLASS.from_service_account_p12, None,
                           None, credentials=CREDENTIALS)
@@ -118,12 +118,12 @@ class TestClient(unittest.TestCase):
 class TestJSONClient(unittest.TestCase):
 
     def setUp(self):
-        KLASS = self._getTargetClass()
+        KLASS = self._get_target_class()
         self.original_cnxn_class = KLASS._connection_class
         KLASS._connection_class = _MockConnection
 
     def tearDown(self):
-        KLASS = self._getTargetClass()
+        KLASS = self._get_target_class()
         KLASS._connection_class = self.original_cnxn_class
 
     @staticmethod
@@ -132,7 +132,7 @@ class TestJSONClient(unittest.TestCase):
         return JSONClient
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         from google.cloud._testing import _Monkey

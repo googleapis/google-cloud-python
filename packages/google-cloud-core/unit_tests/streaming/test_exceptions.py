@@ -23,7 +23,7 @@ class Test_HttpError(unittest.TestCase):
         return HttpError
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         RESPONSE = {'status': '404'}
@@ -49,7 +49,7 @@ class Test_HttpError(unittest.TestCase):
             content = CONTENT
             request_url = URL
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         exception = klass.from_response(_Response())
         self.assertIsInstance(exception, klass)
         self.assertEqual(exception.response, RESPONSE)
@@ -65,7 +65,7 @@ class Test_RetryAfterError(unittest.TestCase):
         return RetryAfterError
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         RESPONSE = {'status': '404'}
@@ -94,7 +94,7 @@ class Test_RetryAfterError(unittest.TestCase):
             request_url = URL
             retry_after = RETRY_AFTER
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         exception = klass.from_response(_Response())
         self.assertIsInstance(exception, klass)
         self.assertEqual(exception.response, RESPONSE)
