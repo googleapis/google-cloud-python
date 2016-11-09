@@ -167,7 +167,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         self.assertEqual(table.schema, [full_name, age])
 
     def test_num_bytes_getter(self):
@@ -410,7 +410,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
 
         table.create()
 
@@ -440,7 +440,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
 
         self.assertIsNone(table.partitioning_type)
         table.partitioning_type = "DAY"
@@ -474,7 +474,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         self.assertIsNone(table.partition_expiration)
         table.partition_expiration = 100
         self.assertEqual(table.partitioning_type, "DAY")
@@ -507,7 +507,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         with self.assertRaises(ValueError):
             table.partitioning_type = 123
 
@@ -520,7 +520,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         with self.assertRaises(ValueError):
             table.partitioning_type = "HASH"
 
@@ -533,7 +533,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         self.assertIsNone(table.partitioning_type)
         table.partitioning_type = 'DAY'
         self.assertEqual(table.partitioning_type, 'DAY')
@@ -547,7 +547,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         table._properties['timePartitioning'] = {'type': 'DAY'}
         table.partitioning_type = None
         self.assertIsNone(table.partitioning_type)
@@ -562,7 +562,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         with self.assertRaises(ValueError):
             table.partition_expiration = "NEVER"
 
@@ -575,7 +575,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         self.assertIsNone(table.partition_expiration)
         table.partition_expiration = 100
         self.assertEqual(table.partitioning_type, "DAY")
@@ -590,7 +590,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         self.assertIsNone(table.partition_expiration)
         table._properties['timePartitioning'] = {
             'type': 'DAY',
@@ -609,7 +609,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         self.assertIsNone(table.partition_expiration)
         table.partition_expiration = None
         self.assertIsNone(table.partitioning_type)
@@ -624,7 +624,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         self.assertEqual(table.list_partitions(), [20160804, 20160805])
 
     def test_create_w_alternate_client(self):
@@ -654,7 +654,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         table.friendly_name = TITLE
         table.description = DESCRIPTION
         table.view_query = QUERY
@@ -693,7 +693,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
 
         table.create()
 
@@ -909,7 +909,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age])
+                               schema=[full_name, age])
         table.description = DESCRIPTION
         table.friendly_name = TITLE
 
@@ -1068,7 +1068,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='NULLABLE')
         joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age, joined])
+                               schema=[full_name, age, joined])
 
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
@@ -1135,7 +1135,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         voter = SchemaField('voter', 'BOOLEAN', mode='NULLABLE')
         score = SchemaField('score', 'FLOAT', mode='NULLABLE')
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age, voter, score])
+                               schema=[full_name, age, voter, score])
 
         iterator = table.fetch_data(
             client=client2, max_results=MAX, page_token=TOKEN)
@@ -1188,7 +1188,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         struct = SchemaField('struct', 'RECORD', mode='REPEATED',
                              fields=[index, score])
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, struct])
+                               schema=[full_name, struct])
 
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
@@ -1244,7 +1244,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
                             fields=[area_code, local_number, rank])
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, phone])
+                               schema=[full_name, phone])
 
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
@@ -1306,7 +1306,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age, joined])
+                               schema=[full_name, age, joined])
         ROWS = [
             ('Phred Phlyntstone', 32, WHEN),
             ('Bharney Rhubble', 33, WHEN + datetime.timedelta(seconds=1)),
@@ -1358,7 +1358,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         voter = SchemaField('voter', 'BOOLEAN', mode='NULLABLE')
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age, voter])
+                               schema=[full_name, age, voter])
         ROWS = [
             ('Phred Phlyntstone', 32, True),
             ('Bharney Rhubble', 33, False),
@@ -1412,7 +1412,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         struct = SchemaField('struct', 'RECORD', mode='REPEATED',
                              fields=[index, score])
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, struct])
+                               schema=[full_name, struct])
         ROWS = [
             (['red', 'green'], [{'index': [1, 2], 'score': [3.1415, 1.414]}]),
         ]
@@ -1448,7 +1448,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
                             fields=[area_code, local_number, rank])
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, phone])
+                               schema=[full_name, phone])
         ROWS = [
             ('Phred Phlyntstone', {'area_code': '800',
                                    'local_number': '555-1212',
@@ -1558,7 +1558,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age, joined])
+                               schema=[full_name, age, joined])
         ROWS = [
             ('Phred Phlyntstone', 32, WHEN),
             ('Bharney Rhubble', 33, WHEN + datetime.timedelta(seconds=1)),
