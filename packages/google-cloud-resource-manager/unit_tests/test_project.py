@@ -42,7 +42,7 @@ class TestProject(unittest.TestCase):
         DISPLAY_NAME = 'name'
         LABELS = {'foo': 'bar'}
         project = self._make_one(PROJECT_ID, client,
-                                name=DISPLAY_NAME, labels=LABELS)
+                                 name=DISPLAY_NAME, labels=LABELS)
         self.assertEqual(project.project_id, PROJECT_ID)
         self.assertEqual(project._client, client)
         self.assertEqual(project.name, DISPLAY_NAME)
