@@ -23,7 +23,7 @@ class TestAlternative(unittest.TestCase):
         return Alternative
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         text = 'hello goodbye upstairs'
@@ -47,7 +47,7 @@ class TestAlternative(unittest.TestCase):
             'transcript': 'testing 1 2 3',
         }
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         alternative = klass.from_api_repr(data)
         self.assertEqual(alternative.transcript, data['transcript'])
         self.assertIsNone(alternative.confidence)
@@ -60,7 +60,7 @@ class TestAlternative(unittest.TestCase):
             transcript=text)
         self.assertEqual(pb_value.confidence, 0.0)
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         alternative = klass.from_pb(pb_value)
         self.assertEqual(alternative.transcript, text)
         self.assertIsNone(alternative.confidence)
