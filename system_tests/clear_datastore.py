@@ -45,9 +45,8 @@ def fetch_keys(kind, client, fetch_max=FETCH_MAX, query=None, cursor=None):
         query.keys_only()
 
     iterator = query.fetch(limit=fetch_max, start_cursor=cursor)
-
-    entities, _, cursor = iterator.next_page()
-    return query, entities, cursor
+    page = six.next(iterator.pages)
+    return query, list(page), iterator.next_page_token
 
 
 def get_ancestors(entities):
