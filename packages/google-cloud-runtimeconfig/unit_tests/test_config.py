@@ -43,7 +43,7 @@ class TestConfig(unittest.TestCase):
     def test_ctor(self):
         client = _Client(project=self.PROJECT)
         config = self._make_one(name=self.CONFIG_NAME,
-                               client=client)
+                                client=client)
         self.assertEqual(config.name, self.CONFIG_NAME)
         self.assertEqual(config.project, self.PROJECT)
         self.assertEqual(config.full_name, self.CONFIG_PATH)
