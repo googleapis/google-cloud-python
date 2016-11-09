@@ -27,7 +27,7 @@ class TestManagedZone(unittest.TestCase):
         return ManagedZone
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def _setUpConstants(self):
         import datetime
@@ -135,7 +135,7 @@ class TestManagedZone(unittest.TestCase):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -146,7 +146,7 @@ class TestManagedZone(unittest.TestCase):
             'name': self.ZONE_NAME,
             'dnsName': self.DNS_NAME,
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         zone = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(zone._client, client)
         self._verifyResourceProperties(zone, RESOURCE)
@@ -155,7 +155,7 @@ class TestManagedZone(unittest.TestCase):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         zone = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(zone._client, client)
         self._verifyResourceProperties(zone, RESOURCE)
