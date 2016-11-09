@@ -77,7 +77,7 @@ class TestClient(unittest.TestCase):
 
         credentials = _Credentials()
         client = self._make_one(project=PROJECT,
-                               credentials=credentials)
+                                credentials=credentials)
         image = client.image(source_uri=IMAGE_SOURCE)
         self.assertIsInstance(image, Image)
 
