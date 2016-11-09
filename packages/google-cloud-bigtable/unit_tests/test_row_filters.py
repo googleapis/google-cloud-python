@@ -24,7 +24,7 @@ class Test_BoolFilter(unittest.TestCase):
         return _BoolFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         flag = object()
@@ -59,7 +59,7 @@ class TestSinkFilter(unittest.TestCase):
         return SinkFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         flag = True
@@ -77,7 +77,7 @@ class TestPassAllFilter(unittest.TestCase):
         return PassAllFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         flag = True
@@ -95,7 +95,7 @@ class TestBlockAllFilter(unittest.TestCase):
         return BlockAllFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         flag = True
@@ -113,7 +113,7 @@ class Test_RegexFilter(unittest.TestCase):
         return _RegexFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         regex = b'abc'
@@ -153,7 +153,7 @@ class TestRowKeyRegexFilter(unittest.TestCase):
         return RowKeyRegexFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         regex = b'row-key-regex'
@@ -171,7 +171,7 @@ class TestRowSampleFilter(unittest.TestCase):
         return RowSampleFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         sample = object()
@@ -206,7 +206,7 @@ class TestFamilyNameRegexFilter(unittest.TestCase):
         return FamilyNameRegexFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         regex = u'family-regex'
@@ -225,7 +225,7 @@ class TestColumnQualifierRegexFilter(unittest.TestCase):
         return ColumnQualifierRegexFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         regex = b'column-regex'
@@ -244,7 +244,7 @@ class TestTimestampRange(unittest.TestCase):
         return TimestampRange
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         start = object()
@@ -319,7 +319,7 @@ class TestTimestampRangeFilter(unittest.TestCase):
         return TimestampRangeFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         range_ = object()
@@ -357,7 +357,7 @@ class TestColumnRangeFilter(unittest.TestCase):
         return ColumnRangeFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor_defaults(self):
         column_family_id = object()
@@ -482,7 +482,7 @@ class TestValueRegexFilter(unittest.TestCase):
         return ValueRegexFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         regex = b'value-regex'
@@ -500,7 +500,7 @@ class TestValueRangeFilter(unittest.TestCase):
         return ValueRangeFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor_defaults(self):
         row_filter = self._makeOne()
@@ -592,7 +592,7 @@ class Test_CellCountFilter(unittest.TestCase):
         return _CellCountFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         num_cells = object()
@@ -627,7 +627,7 @@ class TestCellsRowOffsetFilter(unittest.TestCase):
         return CellsRowOffsetFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         num_cells = 76
@@ -646,7 +646,7 @@ class TestCellsRowLimitFilter(unittest.TestCase):
         return CellsRowLimitFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         num_cells = 189
@@ -665,7 +665,7 @@ class TestCellsColumnLimitFilter(unittest.TestCase):
         return CellsColumnLimitFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         num_cells = 10
@@ -685,7 +685,7 @@ class TestStripValueTransformerFilter(unittest.TestCase):
         return StripValueTransformerFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         flag = True
@@ -703,7 +703,7 @@ class TestApplyLabelFilter(unittest.TestCase):
         return ApplyLabelFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         label = object()
@@ -738,7 +738,7 @@ class Test_FilterCombination(unittest.TestCase):
         return _FilterCombination
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor_defaults(self):
         row_filter = self._makeOne()
@@ -770,7 +770,7 @@ class TestRowFilterChain(unittest.TestCase):
         return RowFilterChain
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         from google.cloud.bigtable.row_filters import RowSampleFilter
@@ -827,7 +827,7 @@ class TestRowFilterUnion(unittest.TestCase):
         return RowFilterUnion
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_to_pb(self):
         from google.cloud.bigtable.row_filters import RowSampleFilter
@@ -884,7 +884,7 @@ class TestConditionalRowFilter(unittest.TestCase):
         return ConditionalRowFilter
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         base_filter = object()

@@ -36,7 +36,7 @@ class TestInstance(unittest.TestCase):
         return Instance
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor_defaults(self):
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
@@ -122,7 +122,7 @@ class TestInstance(unittest.TestCase):
             display_name=self.INSTANCE_ID,
         )
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         instance = klass.from_pb(instance_pb, client)
         self.assertIsInstance(instance, klass)
         self.assertEqual(instance._client, client)
@@ -137,7 +137,7 @@ class TestInstance(unittest.TestCase):
         instance_name = 'INCORRECT_FORMAT'
         instance_pb = data_v2_pb2.Instance(name=instance_name)
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(ValueError):
             klass.from_pb(instance_pb, None)
 
@@ -152,7 +152,7 @@ class TestInstance(unittest.TestCase):
 
         instance_pb = data_v2_pb2.Instance(name=self.INSTANCE_NAME)
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(ValueError):
             klass.from_pb(instance_pb, client)
 

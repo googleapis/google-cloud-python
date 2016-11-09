@@ -24,7 +24,7 @@ class Test_SetDeleteRow(unittest.TestCase):
         return _SetDeleteRow
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test__get_mutations_virtual(self):
         row = self._makeOne(b'row-key', None)
@@ -40,7 +40,7 @@ class TestDirectRow(unittest.TestCase):
         return DirectRow
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         row_key = b'row_key'
@@ -145,7 +145,7 @@ class TestDirectRow(unittest.TestCase):
         self.assertEqual(row._pb_mutations, [expected_pb])
 
     def test_delete_cell(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         class MockRow(klass):
 
@@ -196,7 +196,7 @@ class TestDirectRow(unittest.TestCase):
         table = object()
 
         row = self._makeOne(row_key, table)
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         self.assertEqual(row._pb_mutations, [])
         row.delete_cells(column_family_id, klass.ALL_COLUMNS)
 
@@ -384,7 +384,7 @@ class TestConditionalRow(unittest.TestCase):
         return ConditionalRow
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         row_key = b'row_key'
@@ -526,7 +526,7 @@ class TestAppendRow(unittest.TestCase):
         return AppendRow
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         row_key = b'row_key'
