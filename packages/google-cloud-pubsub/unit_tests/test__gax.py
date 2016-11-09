@@ -44,7 +44,8 @@ class _Base(object):
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
 class Test_PublisherAPI(_Base, unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub._gax import _PublisherAPI
         return _PublisherAPI
 
@@ -401,7 +402,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     PUSH_ENDPOINT = 'https://api.example.com/push'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub._gax import _SubscriberAPI
         return _SubscriberAPI
 

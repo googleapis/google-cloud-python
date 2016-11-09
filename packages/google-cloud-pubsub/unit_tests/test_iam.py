@@ -17,7 +17,8 @@ import unittest
 
 class TestPolicy(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub.iam import Policy
         return Policy
 

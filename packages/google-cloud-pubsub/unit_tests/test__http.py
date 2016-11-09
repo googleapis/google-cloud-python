@@ -31,7 +31,8 @@ class _Base(unittest.TestCase):
 
 class TestConnection(_Base):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub._http import Connection
         return Connection
 
@@ -92,7 +93,8 @@ class TestConnection(_Base):
 
 class Test_PublisherAPI(_Base):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub._http import _PublisherAPI
         return _PublisherAPI
 
@@ -408,7 +410,8 @@ class Test_PublisherAPI(_Base):
 
 class Test_SubscriberAPI(_Base):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub._http import _SubscriberAPI
         return _SubscriberAPI
 
@@ -710,7 +713,8 @@ class Test_SubscriberAPI(_Base):
 
 class Test_IAMPolicyAPI(_Base):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub._http import _IAMPolicyAPI
         return _IAMPolicyAPI
 

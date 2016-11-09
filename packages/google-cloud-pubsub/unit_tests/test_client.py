@@ -22,7 +22,8 @@ class TestClient(unittest.TestCase):
     SUB_NAME = 'subscription_name'
     SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub.client import Client
         return Client
 
