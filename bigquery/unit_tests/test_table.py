@@ -35,7 +35,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
     DS_NAME = 'dataset-name'
     TABLE_NAME = 'table-name'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.table import Table
         return Table
 

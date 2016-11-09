@@ -19,7 +19,8 @@ class TestBaseHandler(unittest.TestCase):
 
     PROJECT = 'PROJECT'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.handlers.transports import Transport
         return Transport
 

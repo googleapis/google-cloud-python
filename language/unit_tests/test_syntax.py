@@ -17,7 +17,8 @@ import unittest
 
 class TestPartOfSpeech(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.language.syntax import PartOfSpeech
         return PartOfSpeech
 
@@ -35,7 +36,8 @@ class TestPartOfSpeech(unittest.TestCase):
 
 class TestToken(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.language.syntax import Token
         return Token
 
@@ -95,7 +97,8 @@ class TestToken(unittest.TestCase):
 
 class TestSentence(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.language.syntax import Sentence
         return Sentence
 

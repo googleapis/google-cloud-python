@@ -17,7 +17,8 @@ import unittest
 
 class Test_BufferedStream(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.streaming.buffered_stream import BufferedStream
         return BufferedStream
 

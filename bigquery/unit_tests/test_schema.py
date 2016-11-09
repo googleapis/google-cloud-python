@@ -17,7 +17,8 @@ import unittest
 
 class TestSchemaField(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.schema import SchemaField
         return SchemaField
 

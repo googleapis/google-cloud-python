@@ -17,7 +17,8 @@ import unittest
 
 class TestSentiment(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.language.sentiment import Sentiment
         return Sentiment
 

@@ -17,7 +17,8 @@ import unittest
 
 class TestResourceDescriptor(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.resource import ResourceDescriptor
         return ResourceDescriptor
 
@@ -276,7 +277,8 @@ class TestResourceDescriptor(unittest.TestCase):
 
 class TestResource(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.resource import Resource
         return Resource
 

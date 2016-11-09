@@ -20,7 +20,8 @@ class TestLogger(unittest.TestCase):
     PROJECT = 'test-project'
     LOGGER_NAME = 'logger-name'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.logger import Logger
         return Logger
 
@@ -421,7 +422,8 @@ class TestBatch(unittest.TestCase):
 
     PROJECT = 'test-project'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.logger import Batch
         return Batch
 

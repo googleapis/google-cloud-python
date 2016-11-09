@@ -22,7 +22,8 @@ class TestSink(unittest.TestCase):
     FILTER = 'logName:syslog AND severity>=INFO'
     DESTINATION_URI = 'faux.googleapis.com/destination'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.sink import Sink
         return Sink
 

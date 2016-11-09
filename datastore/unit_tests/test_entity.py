@@ -21,7 +21,8 @@ _ID = 1234
 
 class TestEntity(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.datastore.entity import Entity
         return Entity
 

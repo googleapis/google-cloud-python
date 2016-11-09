@@ -20,7 +20,8 @@ class TestConfig(unittest.TestCase):
     CONFIG_NAME = 'config_name'
     CONFIG_PATH = 'projects/%s/configs/%s' % (PROJECT, CONFIG_NAME)
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.runtimeconfig.config import Config
         return Config
 

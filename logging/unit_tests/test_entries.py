@@ -41,7 +41,8 @@ class Test_BaseEntry(unittest.TestCase):
     PROJECT = 'PROJECT'
     LOGGER_NAME = 'LOGGER_NAME'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.entries import _BaseEntry
 
         class _Dummy(_BaseEntry):
@@ -193,7 +194,8 @@ class TestProtobufEntry(unittest.TestCase):
     PROJECT = 'PROJECT'
     LOGGER_NAME = 'LOGGER_NAME'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.entries import ProtobufEntry
         return ProtobufEntry
 

@@ -17,7 +17,8 @@ import unittest
 
 class TestConnection(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery._http import Connection
         return Connection
 
