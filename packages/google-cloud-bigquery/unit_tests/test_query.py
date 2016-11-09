@@ -23,7 +23,8 @@ class TestQueryResults(unittest.TestCase):
     QUERY = 'select count(*) from persons'
     TOKEN = 'TOKEN'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.query import QueryResults
         return QueryResults
 

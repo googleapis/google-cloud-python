@@ -17,7 +17,8 @@ import unittest
 
 class TestClient(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.client import Client
         return Client
 
