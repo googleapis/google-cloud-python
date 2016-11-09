@@ -23,7 +23,7 @@ class Test_ACLEntity(unittest.TestCase):
         return _ACLEntity
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_default_identifier(self):
         TYPE = 'type'
@@ -133,7 +133,7 @@ class Test_ACL(unittest.TestCase):
         return ACL
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         acl = self._makeOne()
@@ -718,7 +718,7 @@ class Test_BucketACL(unittest.TestCase):
         return BucketACL
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         NAME = 'name'
@@ -739,7 +739,7 @@ class Test_DefaultObjectACL(unittest.TestCase):
         return DefaultObjectACL
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         NAME = 'name'
@@ -760,7 +760,7 @@ class Test_ObjectACL(unittest.TestCase):
         return ObjectACL
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         NAME = 'name'
