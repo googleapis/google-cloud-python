@@ -23,7 +23,7 @@ class TestPartOfSpeech(unittest.TestCase):
         return PartOfSpeech
 
     def test_reverse(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         for attr in dir(klass):
             if attr.startswith('_'):
                 continue
@@ -42,7 +42,7 @@ class TestToken(unittest.TestCase):
         return Token
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         from google.cloud.language.syntax import PartOfSpeech
@@ -65,7 +65,7 @@ class TestToken(unittest.TestCase):
     def test_from_api_repr(self):
         from google.cloud.language.syntax import PartOfSpeech
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         text_content = 'pretty'
         text_begin = -1
         part_of_speech = PartOfSpeech.ADJECTIVE
@@ -103,7 +103,7 @@ class TestSentence(unittest.TestCase):
         return Sentence
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         content = "All the king's horses."
@@ -113,7 +113,7 @@ class TestSentence(unittest.TestCase):
         self.assertEqual(sentence.begin, begin)
 
     def test_from_api_repr(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         content = 'All the pretty horses.'
         begin = -1
         payload = {
