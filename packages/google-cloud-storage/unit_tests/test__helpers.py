@@ -140,8 +140,7 @@ class Test__base64_md5hash(unittest.TestCase):
         self.assertEqual(SIGNED_CONTENT, b'kBiQqOnIz21aGlQrIp/r/w==')
 
     def test_it_with_stubs(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.storage import _helpers as MUT
+        import mock
 
         class _Buffer(object):
 
@@ -159,7 +158,10 @@ class Test__base64_md5hash(unittest.TestCase):
         BUFFER = _Buffer([b'', BYTES_TO_SIGN])
         MD5 = _MD5(DIGEST_VAL)
 
-        with _Monkey(MUT, base64=BASE64, md5=MD5):
+        patch = mock.patch.multiple(
+            'google.cloud.storage._helpers',
+            base64=BASE64, md5=MD5)
+        with patch:
             SIGNED_CONTENT = self._call_fut(BUFFER)
 
         self.assertEqual(BUFFER._block_sizes, [8192, 8192])
