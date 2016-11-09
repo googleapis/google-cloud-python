@@ -484,7 +484,8 @@ class TestMetricDescriptor(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        descriptors = self._get_target_class()._list(client, type_prefix=PREFIX)
+        descriptors = self._get_target_class()._list(
+            client, type_prefix=PREFIX)
 
         self.assertEqual(len(descriptors), 0)
 

@@ -82,11 +82,11 @@ class Test_BaseEntry(unittest.TestCase):
         }
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
         entry = self._make_one(PAYLOAD, logger,
-                              insert_id=IID,
-                              timestamp=TIMESTAMP,
-                              labels=LABELS,
-                              severity=SEVERITY,
-                              http_request=REQUEST)
+                               insert_id=IID,
+                               timestamp=TIMESTAMP,
+                               labels=LABELS,
+                               severity=SEVERITY,
+                               http_request=REQUEST)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertIs(entry.logger, logger)
         self.assertEqual(entry.insert_id, IID)

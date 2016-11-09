@@ -432,7 +432,7 @@ class TestIterator(unittest.TestCase):
         from google.cloud.datastore._generated import query_pb2
 
         iterator = self._make_one(None, None,
-                                 end_cursor='abcd')
+                                  end_cursor='abcd')
         self.assertIsNotNone(iterator._end_cursor)
 
         entity_pbs = object()
@@ -453,7 +453,7 @@ class TestIterator(unittest.TestCase):
         from google.cloud.datastore._generated import query_pb2
 
         iterator = self._make_one(None, None,
-                                 end_cursor='abcd')
+                                  end_cursor='abcd')
         self.assertIsNotNone(iterator._end_cursor)
 
         entity_pbs = object()

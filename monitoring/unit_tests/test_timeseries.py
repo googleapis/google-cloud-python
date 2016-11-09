@@ -56,10 +56,10 @@ class TestTimeSeries(unittest.TestCase):
         ]
 
         series = self._make_one(metric=METRIC,
-                               resource=RESOURCE,
-                               metric_kind=METRIC_KIND,
-                               value_type=VALUE_TYPE,
-                               points=POINTS)
+                                resource=RESOURCE,
+                                metric_kind=METRIC_KIND,
+                                value_type=VALUE_TYPE,
+                                points=POINTS)
 
         self.assertEqual(series.metric, METRIC)
         self.assertEqual(series.resource, RESOURCE)
@@ -174,8 +174,8 @@ class TestTimeSeries(unittest.TestCase):
         }
 
         series = self._make_one(metric=METRIC, resource=RESOURCE,
-                               metric_kind=None, value_type=None,
-                               points=[POINT])
+                                metric_kind=None, value_type=None,
+                                points=[POINT])
         series_dict = series._to_dict()
         self.assertEqual(info, series_dict)
 
@@ -236,7 +236,7 @@ class TestPoint(unittest.TestCase):
         end_time = datetime.datetime.now()
         end_time_str = _datetime_to_rfc3339(end_time, ignore_zone=False)
         point = self._make_one(end_time=end_time_str, start_time=None,
-                              value=VALUE)
+                               value=VALUE)
         info = {
             'interval': {'endTime': end_time_str},
             'value': {'int64Value': str(VALUE)},
@@ -254,8 +254,8 @@ class TestPoint(unittest.TestCase):
         end_time = datetime.datetime.now()
         end_time_str = _datetime_to_rfc3339(end_time, ignore_zone=False)
 
-        point = self._make_one(end_time=end_time_str, start_time=start_time_str,
-                              value=VALUE)
+        point = self._make_one(end_time=end_time_str,
+                               start_time=start_time_str, value=VALUE)
         info = {
             'interval': {
                 'startTime': start_time_str,

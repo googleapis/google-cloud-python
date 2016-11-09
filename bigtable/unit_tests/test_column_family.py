@@ -369,9 +369,9 @@ class TestColumnFamily(unittest.TestCase):
         table = object()
         gc_rule = object()
         column_family1 = self._make_one(column_family_id, table,
-                                       gc_rule=gc_rule)
+                                        gc_rule=gc_rule)
         column_family2 = self._make_one(column_family_id, table,
-                                       gc_rule=gc_rule)
+                                        gc_rule=gc_rule)
         self.assertEqual(column_family1, column_family2)
 
     def test___eq__type_differ(self):
@@ -384,9 +384,9 @@ class TestColumnFamily(unittest.TestCase):
         table = object()
         gc_rule = object()
         column_family1 = self._make_one(column_family_id, table,
-                                       gc_rule=gc_rule)
+                                        gc_rule=gc_rule)
         column_family2 = self._make_one(column_family_id, table,
-                                       gc_rule=gc_rule)
+                                        gc_rule=gc_rule)
         comparison_val = (column_family1 != column_family2)
         self.assertFalse(comparison_val)
 
@@ -406,7 +406,7 @@ class TestColumnFamily(unittest.TestCase):
 
         gc_rule = MaxVersionsGCRule(1)
         column_family = self._make_one('column_family_id', None,
-                                      gc_rule=gc_rule)
+                                       gc_rule=gc_rule)
         pb_val = column_family.to_pb()
         expected = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
         self.assertEqual(pb_val, expected)

@@ -46,4 +46,4 @@ class TestFeature(unittest.TestCase):
     def test_bad_feature_type(self):
         with self.assertRaises(AttributeError):
             self._make_one('something_not_feature_type',
-                          max_results=5)
+                           max_results=5)

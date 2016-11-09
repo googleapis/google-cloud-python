@@ -35,7 +35,7 @@ class TestEntity(unittest.TestCase):
         salience = 0.19960518
         mentions = ['Italian']
         entity = self._make_one(name, entity_type, metadata,
-                               salience, mentions)
+                                salience, mentions)
         self.assertEqual(entity.name, name)
         self.assertEqual(entity.entity_type, entity_type)
         self.assertEqual(entity.wikipedia_url, wiki_url)

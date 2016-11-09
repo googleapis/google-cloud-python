@@ -35,7 +35,7 @@ class TestSchemaField(unittest.TestCase):
 
     def test_ctor_explicit(self):
         field = self._make_one('test', 'STRING', mode='REQUIRED',
-                              description='Testing')
+                               description='Testing')
         self.assertEqual(field.name, 'test')
         self.assertEqual(field.field_type, 'STRING')
         self.assertEqual(field.mode, 'REQUIRED')
@@ -43,9 +43,10 @@ class TestSchemaField(unittest.TestCase):
         self.assertIsNone(field.fields)
 
     def test_ctor_subfields(self):
-        field = self._make_one('phone_number', 'RECORD',
-                              fields=[self._make_one('area_code', 'STRING'),
-                                      self._make_one('local_number', 'STRING')])
+        field = self._make_one(
+            'phone_number', 'RECORD',
+            fields=[self._make_one('area_code', 'STRING'),
+                    self._make_one('local_number', 'STRING')])
         self.assertEqual(field.name, 'phone_number')
         self.assertEqual(field.field_type, 'RECORD')
         self.assertEqual(field.mode, 'NULLABLE')
@@ -91,16 +92,16 @@ class TestSchemaField(unittest.TestCase):
 
     def test___eq___hit(self):
         field = self._make_one('test', 'STRING', mode='REQUIRED',
-                              description='Testing')
+                               description='Testing')
         other = self._make_one('test', 'STRING', mode='REQUIRED',
-                              description='Testing')
+                               description='Testing')
         self.assertEqual(field, other)
 
     def test___eq___hit_case_diff_on_type(self):
         field = self._make_one('test', 'STRING', mode='REQUIRED',
-                              description='Testing')
+                               description='Testing')
         other = self._make_one('test', 'string', mode='REQUIRED',
-                              description='Testing')
+                               description='Testing')
         self.assertEqual(field, other)
 
     def test___eq___hit_w_fields(self):

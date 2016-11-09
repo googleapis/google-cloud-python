@@ -1038,7 +1038,7 @@ class Test_make_secure_stub(unittest.TestCase):
         host = 'localhost'
         with _Monkey(MUT, make_secure_channel=mock_channel):
             stub = self._call_fut(credentials, user_agent,
-                                 stub_class, host)
+                                  stub_class, host)
 
         self.assertIs(stub, result)
         self.assertEqual(channels, [channel_obj])

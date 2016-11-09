@@ -134,11 +134,11 @@ class TestClient(unittest.TestCase):
         return Client
 
     def _make_one(self, project=PROJECT, namespace=None,
-                 credentials=None, http=None):
+                  credentials=None, http=None):
         return self._get_target_class()(project=project,
-                                      namespace=namespace,
-                                      credentials=credentials,
-                                      http=http)
+                                        namespace=namespace,
+                                        credentials=credentials,
+                                        http=http)
 
     def test_ctor_w_project_no_environ(self):
         from google.cloud._testing import _Monkey
@@ -183,9 +183,9 @@ class TestClient(unittest.TestCase):
         creds = object()
         http = object()
         client = self._make_one(project=OTHER,
-                               namespace=NAMESPACE,
-                               credentials=creds,
-                               http=http)
+                                namespace=NAMESPACE,
+                                credentials=creds,
+                                http=http)
         self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, NAMESPACE)
         self.assertIsInstance(client.connection, _MockConnection)

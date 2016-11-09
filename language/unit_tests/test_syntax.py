@@ -54,7 +54,7 @@ class TestToken(unittest.TestCase):
         edge_label = 'PREDET'
         lemma = text_content
         token = self._make_one(text_content, text_begin, part_of_speech,
-                              edge_index, edge_label, lemma)
+                               edge_index, edge_label, lemma)
         self.assertEqual(token.text_content, text_content)
         self.assertEqual(token.text_begin, text_begin)
         self.assertEqual(token.part_of_speech, part_of_speech)

@@ -46,7 +46,7 @@ class TestLabelDescriptor(unittest.TestCase):
         VALUE_TYPE = 'INT64'
         DESCRIPTION = 'HTTP status code for the request.'
         descriptor = self._make_one(key=KEY, value_type=VALUE_TYPE,
-                                   description=DESCRIPTION)
+                                    description=DESCRIPTION)
         self.assertEqual(descriptor.key, KEY)
         self.assertEqual(descriptor.value_type, VALUE_TYPE)
         self.assertEqual(descriptor.description, DESCRIPTION)
@@ -85,7 +85,7 @@ class TestLabelDescriptor(unittest.TestCase):
         VALUE_TYPE = 'INT64'
         DESCRIPTION = 'HTTP status code for the request.'
         descriptor = self._make_one(key=KEY, value_type=VALUE_TYPE,
-                                   description=DESCRIPTION)
+                                    description=DESCRIPTION)
         expected = {
             'key': KEY,
             'valueType': VALUE_TYPE,
@@ -107,8 +107,8 @@ class TestLabelDescriptor(unittest.TestCase):
         VALUE_TYPE = 'INT64'
         DESCRIPTION = 'HTTP status code for the request.'
         descriptor1 = self._make_one(key=KEY, value_type=VALUE_TYPE,
-                                    description=DESCRIPTION)
+                                     description=DESCRIPTION)
         descriptor2 = self._make_one(key=KEY, value_type=VALUE_TYPE,
-                                    description=DESCRIPTION)
+                                     description=DESCRIPTION)
         self.assertTrue(descriptor1 == descriptor2)
         self.assertFalse(descriptor1 != descriptor2)

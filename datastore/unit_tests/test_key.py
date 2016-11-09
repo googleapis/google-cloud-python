@@ -50,8 +50,8 @@ class TestKey(unittest.TestCase):
             {'kind': _CHILD_KIND, 'id': _CHILD_ID},
         ]
         parent_key = self._make_one(_PARENT_KIND, _PARENT_ID,
-                                   project=_PARENT_PROJECT,
-                                   namespace=_PARENT_NAMESPACE)
+                                    project=_PARENT_PROJECT,
+                                    namespace=_PARENT_NAMESPACE)
         key = self._make_one(_CHILD_KIND, _CHILD_ID, parent=parent_key)
         self.assertEqual(key.project, parent_key.project)
         self.assertEqual(key.namespace, parent_key.namespace)
@@ -67,24 +67,24 @@ class TestKey(unittest.TestCase):
     def test_ctor_parent_bad_type(self):
         with self.assertRaises(AttributeError):
             self._make_one('KIND2', 1234, parent=('KIND1', 1234),
-                          project=self._DEFAULT_PROJECT)
+                           project=self._DEFAULT_PROJECT)
 
     def test_ctor_parent_bad_namespace(self):
         parent_key = self._make_one('KIND', 1234, namespace='FOO',
-                                   project=self._DEFAULT_PROJECT)
+                                    project=self._DEFAULT_PROJECT)
         with self.assertRaises(ValueError):
             self._make_one('KIND2', 1234, namespace='BAR', parent=parent_key,
-                          project=self._DEFAULT_PROJECT)
+                           PROJECT=self._DEFAULT_PROJECT)
 
     def test_ctor_parent_bad_project(self):
         parent_key = self._make_one('KIND', 1234, project='FOO')
         with self.assertRaises(ValueError):
             self._make_one('KIND2', 1234, parent=parent_key,
-                          project='BAR')
+                           project='BAR')
 
     def test_ctor_parent_empty_path(self):
         parent_key = self._make_one('KIND', 1234,
-                                   project=self._DEFAULT_PROJECT)
+                                    project=self._DEFAULT_PROJECT)
         with self.assertRaises(ValueError):
             self._make_one(parent=parent_key)
 
@@ -95,7 +95,7 @@ class TestKey(unittest.TestCase):
         _ID = 1234
         _PATH = [{'kind': _KIND, 'id': _ID}]
         key = self._make_one(_KIND, _ID, namespace=_NAMESPACE,
-                            project=_PROJECT)
+                             project=_PROJECT)
         self.assertEqual(key.project, _PROJECT)
         self.assertEqual(key.namespace, _NAMESPACE)
         self.assertEqual(key.kind, _KIND)
@@ -110,8 +110,8 @@ class TestKey(unittest.TestCase):
                           project=self._DEFAULT_PROJECT)
         self.assertRaises(ValueError, self._make_one, 'KIND', None,
                           project=self._DEFAULT_PROJECT)
-        self.assertRaises(ValueError, self._make_one, 'KIND', 10, 'KIND2', None,
-                          project=self._DEFAULT_PROJECT)
+        self.assertRaises(ValueError, self._make_one, 'KIND', 10, 'KIND2',
+                          None, project=self._DEFAULT_PROJECT)
 
     def test__clone(self):
         _PROJECT = 'PROJECT-ALT'
@@ -120,7 +120,7 @@ class TestKey(unittest.TestCase):
         _ID = 1234
         _PATH = [{'kind': _KIND, 'id': _ID}]
         key = self._make_one(_KIND, _ID, namespace=_NAMESPACE,
-                            project=_PROJECT)
+                             project=_PROJECT)
         clone = key._clone()
         self.assertEqual(clone.project, _PROJECT)
         self.assertEqual(clone.namespace, _NAMESPACE)
@@ -137,7 +137,7 @@ class TestKey(unittest.TestCase):
         _PATH = [{'kind': _KIND1, 'id': _ID1}, {'kind': _KIND2, 'id': _ID2}]
 
         parent = self._make_one(_KIND1, _ID1, namespace=_NAMESPACE,
-                               project=_PROJECT)
+                                project=_PROJECT)
         key = self._make_one(_KIND2, _ID2, parent=parent)
         self.assertIs(key.parent, parent)
         clone = key._clone()
@@ -216,9 +216,9 @@ class TestKey(unittest.TestCase):
         _KIND = 'KIND'
         _ID = 1234
         key1 = self._make_one(_KIND, _ID, project=_PROJECT,
-                             namespace=_NAMESPACE1)
+                              namespace=_NAMESPACE1)
         key2 = self._make_one(_KIND, _ID, project=_PROJECT,
-                             namespace=_NAMESPACE2)
+                              namespace=_NAMESPACE2)
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
 
@@ -258,9 +258,9 @@ class TestKey(unittest.TestCase):
         _KIND = 'KIND'
         _NAME = 'one'
         key1 = self._make_one(_KIND, _NAME, project=_PROJECT,
-                             namespace=_NAMESPACE1)
+                              namespace=_NAMESPACE1)
         key2 = self._make_one(_KIND, _NAME, project=_PROJECT,
-                             namespace=_NAMESPACE2)
+                              namespace=_NAMESPACE2)
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
 
@@ -343,7 +343,7 @@ class TestKey(unittest.TestCase):
     def test_to_protobuf_w_explicit_namespace(self):
         _NAMESPACE = 'NAMESPACE'
         key = self._make_one('KIND', namespace=_NAMESPACE,
-                            project=self._DEFAULT_PROJECT)
+                             project=self._DEFAULT_PROJECT)
         pb = key.to_protobuf()
         self.assertEqual(pb.partition_id.namespace_id, _NAMESPACE)
 
@@ -353,7 +353,7 @@ class TestKey(unittest.TestCase):
         _ID = 1234
         _NAME = 'NAME'
         key = self._make_one(_PARENT, _NAME, _CHILD, _ID,
-                            project=self._DEFAULT_PROJECT)
+                             project=self._DEFAULT_PROJECT)
         pb = key.to_protobuf()
         elems = list(pb.path)
         self.assertEqual(len(elems), 2)
@@ -391,7 +391,7 @@ class TestKey(unittest.TestCase):
 
     def test_id_or_name_no_name_or_id_child(self):
         key = self._make_one('KIND1', 1234, 'KIND2',
-                            project=self._DEFAULT_PROJECT)
+                             project=self._DEFAULT_PROJECT)
         self.assertIsNone(key.id_or_name)
 
     def test_id_or_name_w_id_only(self):
@@ -417,7 +417,7 @@ class TestKey(unittest.TestCase):
         _PARENT_ID = 1234
         _PARENT_PATH = [{'kind': _PARENT_KIND, 'id': _PARENT_ID}]
         key = self._make_one(_PARENT_KIND, _PARENT_ID, 'KIND2',
-                            project=self._DEFAULT_PROJECT)
+                             project=self._DEFAULT_PROJECT)
         self.assertEqual(key.parent.path, _PARENT_PATH)
 
     def test_parent_multiple_calls(self):
@@ -425,7 +425,7 @@ class TestKey(unittest.TestCase):
         _PARENT_ID = 1234
         _PARENT_PATH = [{'kind': _PARENT_KIND, 'id': _PARENT_ID}]
         key = self._make_one(_PARENT_KIND, _PARENT_ID, 'KIND2',
-                            project=self._DEFAULT_PROJECT)
+                             project=self._DEFAULT_PROJECT)
         parent = key.parent
         self.assertEqual(parent.path, _PARENT_PATH)
         new_parent = key.parent

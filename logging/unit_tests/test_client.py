@@ -43,7 +43,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.logging._http import _LoggingAPI
 
         client = self._make_one(self.PROJECT, credentials=_Credentials(),
-                               use_gax=False)
+                                use_gax=False)
         conn = client.connection = object()
         api = client.logging_api
 
@@ -66,7 +66,7 @@ class TestClient(unittest.TestCase):
 
         creds = _Credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                               use_gax=True)
+                                use_gax=True)
 
         with _Monkey(MUT, make_gax_logging_api=make_api):
             api = client.logging_api
@@ -85,7 +85,7 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
         with _Monkey(MUT, _USE_GAX=True):
             client = self._make_one(project=self.PROJECT, credentials=creds,
-                                   use_gax=False)
+                                    use_gax=False)
 
         api = client.logging_api
         self.assertIsInstance(api, _LoggingAPI)
@@ -120,7 +120,7 @@ class TestClient(unittest.TestCase):
 
         creds = _Credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                               use_gax=True)
+                                use_gax=True)
 
         with _Monkey(MUT, make_gax_sinks_api=make_api):
             api = client.sinks_api
@@ -161,7 +161,7 @@ class TestClient(unittest.TestCase):
 
         creds = _Credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                               use_gax=True)
+                                use_gax=True)
 
         with _Monkey(MUT, make_gax_metrics_api=make_api):
             api = client.metrics_api
@@ -200,7 +200,7 @@ class TestClient(unittest.TestCase):
         }]
         creds = _Credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
-                               use_gax=False)
+                                use_gax=False)
         returned = {
             'entries': ENTRIES,
             'nextPageToken': TOKEN,
@@ -264,7 +264,7 @@ class TestClient(unittest.TestCase):
                 self.PROJECT, self.LOGGER_NAME),
         }]
         client = self._make_one(self.PROJECT, credentials=_Credentials(),
-                               use_gax=False)
+                                use_gax=False)
         returned = {'entries': ENTRIES}
         client.connection = _Connection(returned)
 
@@ -350,7 +350,7 @@ class TestClient(unittest.TestCase):
             'destination': self.DESTINATION_URI,
         }]
         client = self._make_one(project=PROJECT, credentials=_Credentials(),
-                               use_gax=False)
+                                use_gax=False)
         returned = {
             'sinks': SINKS,
             'nextPageToken': TOKEN,
@@ -396,7 +396,7 @@ class TestClient(unittest.TestCase):
             'destination': self.DESTINATION_URI,
         }]
         client = self._make_one(project=PROJECT, credentials=_Credentials(),
-                               use_gax=False)
+                                use_gax=False)
         returned = {
             'sinks': SINKS,
         }

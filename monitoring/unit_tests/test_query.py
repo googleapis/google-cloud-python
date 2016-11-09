@@ -113,8 +113,8 @@ class TestQuery(unittest.TestCase):
 
         client = _Client(project=PROJECT, connection=_Connection())
         query = self._make_one(client, METRIC_TYPE,
-                              end_time=T1,
-                              days=DAYS, hours=HOURS, minutes=MINUTES)
+                               end_time=T1,
+                               days=DAYS, hours=HOURS, minutes=MINUTES)
 
         self.assertEqual(query._client, client)
         self.assertEqual(query._filter.metric_type, METRIC_TYPE)

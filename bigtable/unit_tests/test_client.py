@@ -306,8 +306,8 @@ class TestClient(unittest.TestCase):
                      _make_operations_stub=mock_make_operations_stub,
                      _make_table_stub=mock_make_table_stub):
             client = self._make_one(project=self.PROJECT, credentials=creds,
-                                   read_only=read_only, admin=admin,
-                                   user_agent=user_agent)
+                                    read_only=read_only, admin=admin,
+                                    user_agent=user_agent)
 
         # Verify the mocks.
         self.assertEqual(mock_make_data_stub.calls, [client])
@@ -450,14 +450,14 @@ class TestClient(unittest.TestCase):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
-                                        credentials=credentials)
+                                         credentials=credentials)
         self.assertIs(client.credentials, credentials)
 
     def test_project_name_property(self):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
-                                        credentials=credentials)
+                                         credentials=credentials)
         project_name = 'projects/' + project
         self.assertEqual(client.project_name, project_name)
 
@@ -465,14 +465,14 @@ class TestClient(unittest.TestCase):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
-                                        credentials=credentials, admin=True)
+                                         credentials=credentials, admin=True)
         self.assertIs(client._instance_stub, client._instance_stub_internal)
 
     def test_instance_stub_non_admin_failure(self):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
-                                        credentials=credentials, admin=False)
+                                         credentials=credentials, admin=False)
         with self.assertRaises(ValueError):
             getattr(client, '_instance_stub')
 
@@ -480,7 +480,7 @@ class TestClient(unittest.TestCase):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
-                                        credentials=credentials, admin=True)
+                                         credentials=credentials, admin=True)
         self.assertIs(client._operations_stub,
                       client._operations_stub_internal)
 
@@ -488,7 +488,7 @@ class TestClient(unittest.TestCase):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
-                                        credentials=credentials, admin=False)
+                                         credentials=credentials, admin=False)
         with self.assertRaises(ValueError):
             getattr(client, '_operations_stub')
 
@@ -496,14 +496,14 @@ class TestClient(unittest.TestCase):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
-                                        credentials=credentials, admin=True)
+                                         credentials=credentials, admin=True)
         self.assertIs(client._table_stub, client._table_stub_internal)
 
     def test_table_stub_non_admin_failure(self):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
-                                        credentials=credentials, admin=False)
+                                         credentials=credentials, admin=False)
         with self.assertRaises(ValueError):
             getattr(client, '_table_stub')
 
@@ -518,7 +518,7 @@ class TestClient(unittest.TestCase):
         DISPLAY_NAME = 'display-name'
         credentials = _Credentials()
         client = self._make_oneWithMocks(project=PROJECT,
-                                        credentials=credentials)
+                                         credentials=credentials)
 
         instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME)
 
@@ -540,7 +540,7 @@ class TestClient(unittest.TestCase):
         SERVE_NODES = 5
         credentials = _Credentials()
         client = self._make_oneWithMocks(project=PROJECT,
-                                        credentials=credentials)
+                                         credentials=credentials)
 
         instance = client.instance(
             INSTANCE_ID, display_name=DISPLAY_NAME,

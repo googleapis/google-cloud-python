@@ -213,7 +213,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         stub = _GRPCStub()
         mock_args = []
         datastore_api = self._make_one(stub, connection=conn,
-                                      mock_args=mock_args)
+                                       mock_args=mock_args)
         self.assertIs(datastore_api._stub, stub)
 
         self.assertEqual(mock_args, [(
@@ -233,8 +233,8 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         stub = _GRPCStub()
         mock_args = []
         datastore_api = self._make_one(stub, connection=conn,
-                                      secure=False,
-                                      mock_args=mock_args)
+                                       secure=False,
+                                       mock_args=mock_args)
         self.assertIs(datastore_api._stub, stub)
 
         self.assertEqual(mock_args, [(

@@ -269,7 +269,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client,
-                            schema=[full_name, age])
+                             schema=[full_name, age])
         self.assertEqual(job.schema, [full_name, age])
 
     def test_schema_setter_non_list(self):
@@ -499,7 +499,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client1,
-                            schema=[full_name, age])
+                             schema=[full_name, age])
 
         job.allow_jagged_rows = True
         job.allow_quoted_newlines = True
@@ -998,7 +998,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         client = _Client(self.PROJECT)
         source = _Table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
+                             client)
         self.assertEqual(job.source, source)
         self.assertEqual(job.destination_uris, [self.DESTINATION_URI])
         self.assertIs(job._client, client)
@@ -1082,7 +1082,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
         source = _Table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
+                             client)
 
         job.begin()
 
@@ -1131,7 +1131,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         client2 = _Client(project=self.PROJECT, connection=conn2)
         source = _Table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client1)
+                             client1)
 
         job.compression = 'GZIP'
         job.destination_format = 'NEWLINE_DELIMITED_JSON'
@@ -1163,7 +1163,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
         source = _Table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
+                             client)
 
         self.assertFalse(job.exists())
 
@@ -1181,7 +1181,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         client2 = _Client(project=self.PROJECT, connection=conn2)
         source = _Table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client1)
+                             client1)
 
         self.assertTrue(job.exists(client=client2))
 
@@ -1199,7 +1199,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
         source = _Table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
+                             client)
 
         job.reload()
 
@@ -1218,7 +1218,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         client2 = _Client(project=self.PROJECT, connection=conn2)
         source = _Table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client1)
+                             client1)
 
         job.reload(client=client2)
 
@@ -1533,9 +1533,9 @@ class TestQueryJob(unittest.TestCase, _Base):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_NAME, self.QUERY, client,
-                            udf_resources=[
-                                UDFResource("resourceUri", RESOURCE_URI)
-                            ])
+                             udf_resources=[
+                                 UDFResource("resourceUri", RESOURCE_URI)
+                             ])
 
         job.begin()
 

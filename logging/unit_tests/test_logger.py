@@ -111,7 +111,7 @@ class TestLogger(unittest.TestCase):
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client,
-                               labels=DEFAULT_LABELS)
+                                labels=DEFAULT_LABELS)
 
         logger.log_text(TEXT)
 
@@ -148,7 +148,7 @@ class TestLogger(unittest.TestCase):
         client2 = _Client(self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client1,
-                               labels=DEFAULT_LABELS)
+                                labels=DEFAULT_LABELS)
 
         logger.log_text(TEXT, client=client2, labels=LABELS,
                         insert_id=IID, severity=SEVERITY, http_request=REQUEST)
@@ -190,7 +190,7 @@ class TestLogger(unittest.TestCase):
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client,
-                               labels=DEFAULT_LABELS)
+                                labels=DEFAULT_LABELS)
 
         logger.log_struct(STRUCT)
 
@@ -227,7 +227,7 @@ class TestLogger(unittest.TestCase):
         client2 = _Client(self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client1,
-                               labels=DEFAULT_LABELS)
+                                labels=DEFAULT_LABELS)
 
         logger.log_struct(STRUCT, client=client2, labels=LABELS,
                           insert_id=IID, severity=SEVERITY,
@@ -276,7 +276,7 @@ class TestLogger(unittest.TestCase):
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client,
-                               labels=DEFAULT_LABELS)
+                                labels=DEFAULT_LABELS)
 
         logger.log_proto(message)
 
@@ -316,7 +316,7 @@ class TestLogger(unittest.TestCase):
         client2 = _Client(self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
         logger = self._make_one(self.LOGGER_NAME, client=client1,
-                               labels=DEFAULT_LABELS)
+                                labels=DEFAULT_LABELS)
 
         logger.log_proto(message, client=client2, labels=LABELS,
                          insert_id=IID, severity=SEVERITY,
