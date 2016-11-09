@@ -181,8 +181,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         return _DatastoreAPIOverGRPC
 
     def _make_one(self, stub, connection=None, secure=True, mock_args=None):
-        from google.cloud._testing import _Monkey
-        from google.cloud.datastore import _http as MUT
+        import mock
 
         if connection is None:
             connection = _Connection(None)
@@ -197,10 +196,15 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
             return stub
 
         if secure:
-            to_monkey = {'make_secure_stub': mock_make_stub}
+            patch = mock.patch(
+                'google.cloud.datastore._http.make_secure_stub',
+                new=mock_make_stub)
         else:
-            to_monkey = {'make_insecure_stub': mock_make_stub}
-        with _Monkey(MUT, **to_monkey):
+            patch = mock.patch(
+                'google.cloud.datastore._http.make_insecure_stub',
+                new=mock_make_stub)
+
+        with patch:
             return self._get_target_class()(connection, secure)
 
     def test_constructor(self):
@@ -372,9 +376,10 @@ class TestConnection(unittest.TestCase):
         return pb
 
     def _make_one(self, credentials=None, http=None, use_grpc=False):
-        from google.cloud._testing import _Monkey
-        from google.cloud.datastore import _http as MUT
-        with _Monkey(MUT, _USE_GRPC=use_grpc):
+        import mock
+
+        with mock.patch('google.cloud.datastore._http._USE_GRPC',
+                        new=use_grpc):
             return self._get_target_class()(credentials=credentials, http=http)
 
     def _verifyProtobufCall(self, called_with, URI, conn):
@@ -391,15 +396,14 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 
     def test_custom_url_from_env(self):
-        import os
-        from google.cloud._testing import _Monkey
+        import mock
         from google.cloud.connection import API_BASE_URL
         from google.cloud.environment_vars import GCD_HOST
 
         HOST = 'CURR_HOST'
         fake_environ = {GCD_HOST: HOST}
 
-        with _Monkey(os, environ=fake_environ):
+        with mock.patch('os.environ', new=fake_environ):
             conn = self._make_one()
 
         self.assertNotEqual(conn.api_base_url, API_BASE_URL)
@@ -410,8 +414,7 @@ class TestConnection(unittest.TestCase):
         self.assertIsNone(conn.credentials)
 
     def test_ctor_without_grpc(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.datastore import _http as MUT
+        import mock
 
         connections = []
         return_val = object()
@@ -420,7 +423,10 @@ class TestConnection(unittest.TestCase):
             connections.append(connection)
             return return_val
 
-        with _Monkey(MUT, _DatastoreAPIOverHttp=mock_api):
+        patch = mock.patch(
+            'google.cloud.datastore._http._DatastoreAPIOverHttp',
+            new=mock_api)
+        with patch:
             conn = self._make_one(use_grpc=False)
 
         self.assertIsNone(conn.credentials)
@@ -428,8 +434,7 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(connections, [conn])
 
     def test_ctor_with_grpc(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.datastore import _http as MUT
+        import mock
 
         api_args = []
         return_val = object()
@@ -438,7 +443,10 @@ class TestConnection(unittest.TestCase):
             api_args.append((connection, secure))
             return return_val
 
-        with _Monkey(MUT, _DatastoreAPIOverGRPC=mock_api):
+        patch = mock.patch(
+            'google.cloud.datastore._http._DatastoreAPIOverGRPC',
+            new=mock_api)
+        with patch:
             conn = self._make_one(use_grpc=True)
 
         self.assertIsNone(conn.credentials)
@@ -922,9 +930,8 @@ class TestConnection(unittest.TestCase):
         request.ParseFromString(cw['body'])
 
     def test_commit_wo_transaction(self):
-        from google.cloud._testing import _Monkey
+        import mock
         from google.cloud.datastore._generated import datastore_pb2
-        from google.cloud.datastore import _http as MUT
         from google.cloud.datastore.helpers import _new_value_pb
 
         PROJECT = 'PROJECT'
@@ -953,7 +960,10 @@ class TestConnection(unittest.TestCase):
             _parsed.append(response)
             return expected_result
 
-        with _Monkey(MUT, _parse_commit_response=mock_parse):
+        patch = mock.patch(
+            'google.cloud.datastore._http._parse_commit_response',
+            new=mock_parse)
+        with patch:
             result = conn.commit(PROJECT, req_pb, None)
 
         self.assertIs(result, expected_result)
@@ -968,9 +978,8 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(_parsed, [rsp_pb])
 
     def test_commit_w_transaction(self):
-        from google.cloud._testing import _Monkey
+        import mock
         from google.cloud.datastore._generated import datastore_pb2
-        from google.cloud.datastore import _http as MUT
         from google.cloud.datastore.helpers import _new_value_pb
 
         PROJECT = 'PROJECT'
@@ -999,7 +1008,10 @@ class TestConnection(unittest.TestCase):
             _parsed.append(response)
             return expected_result
 
-        with _Monkey(MUT, _parse_commit_response=mock_parse):
+        patch = mock.patch(
+            'google.cloud.datastore._http._parse_commit_response',
+            new=mock_parse)
+        with patch:
             result = conn.commit(PROJECT, req_pb, b'xact')
 
         self.assertIs(result, expected_result)

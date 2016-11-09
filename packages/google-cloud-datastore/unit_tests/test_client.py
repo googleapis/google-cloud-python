@@ -38,22 +38,20 @@ class Test__get_gcd_project(unittest.TestCase):
         return _get_gcd_project()
 
     def test_no_value(self):
-        import os
-        from google.cloud._testing import _Monkey
+        import mock
 
         environ = {}
-        with _Monkey(os, getenv=environ.get):
+        with mock.patch('os.getenv', new=environ.get):
             project = self._call_fut()
             self.assertIsNone(project)
 
     def test_value_set(self):
-        import os
-        from google.cloud._testing import _Monkey
+        import mock
         from google.cloud.datastore.client import GCD_DATASET
 
         MOCK_PROJECT = object()
         environ = {GCD_DATASET: MOCK_PROJECT}
-        with _Monkey(os, getenv=environ.get):
+        with mock.patch('os.getenv', new=environ.get):
             project = self._call_fut()
             self.assertEqual(project, MOCK_PROJECT)
 
@@ -67,8 +65,7 @@ class Test__determine_default_project(unittest.TestCase):
 
     def _determine_default_helper(self, gcd=None, fallback=None,
                                   project_called=None):
-        from google.cloud._testing import _Monkey
-        from google.cloud.datastore import client
+        import mock
 
         _callers = []
 
@@ -80,12 +77,11 @@ class Test__determine_default_project(unittest.TestCase):
             _callers.append(('fallback_mock', project))
             return fallback
 
-        patched_methods = {
-            '_get_gcd_project': gcd_mock,
-            '_base_default_project': fallback_mock,
-        }
-
-        with _Monkey(client, **patched_methods):
+        patch = mock.patch.multiple(
+            'google.cloud.datastore.client',
+            _get_gcd_project=gcd_mock,
+            _base_default_project=fallback_mock)
+        with patch:
             returned_project = self._call_fut(project_called)
 
         return returned_project, _callers
@@ -141,18 +137,18 @@ class TestClient(unittest.TestCase):
                                         http=http)
 
     def test_ctor_w_project_no_environ(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.datastore import client as _MUT
+        import mock
 
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
-        with _Monkey(_MUT, _base_default_project=lambda project: None):
+        patch = mock.patch(
+            'google.cloud.datastore.client._base_default_project',
+            new=lambda project: None)
+        with patch:
             self.assertRaises(EnvironmentError, self._make_one, None)
 
     def test_ctor_w_implicit_inputs(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.datastore import client as _MUT
-        from google.cloud import client as _base_client
+        import mock
 
         OTHER = 'other'
         creds = object()
@@ -163,10 +159,15 @@ class TestClient(unittest.TestCase):
             return project or OTHER
 
         klass = self._get_target_class()
-        with _Monkey(_MUT,
-                     _determine_default_project=fallback_mock):
-            with _Monkey(_base_client,
-                         get_credentials=lambda: creds):
+        patch1 = mock.patch(
+            'google.cloud.datastore.client._determine_default_project',
+            new=fallback_mock)
+        patch2 = mock.patch(
+            'google.cloud.client.get_credentials',
+            new=lambda: creds)
+
+        with patch1:
+            with patch2:
                 client = klass()
         self.assertEqual(client.project, OTHER)
         self.assertIsNone(client.namespace)
@@ -495,8 +496,7 @@ class TestClient(unittest.TestCase):
             client.get_multi([key1, key2])
 
     def test_get_multi_max_loops(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.datastore import client as _MUT
+        import mock
         from google.cloud.datastore.key import Key
 
         KIND = 'Kind'
@@ -513,7 +513,10 @@ class TestClient(unittest.TestCase):
         key = Key(KIND, ID, project=self.PROJECT)
         deferred = []
         missing = []
-        with _Monkey(_MUT, _MAX_LOOPS=-1):
+
+        patch = mock.patch(
+            'google.cloud.datastore.client._MAX_LOOPS', new=-1)
+        with patch:
             result = client.get_multi([key], missing=missing,
                                       deferred=deferred)
 
@@ -702,8 +705,7 @@ class TestClient(unittest.TestCase):
                           client.key, KIND, ID, project=self.PROJECT)
 
     def test_key_wo_project(self):
-        from google.cloud.datastore import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         KIND = 'KIND'
         ID = 1234
@@ -711,7 +713,9 @@ class TestClient(unittest.TestCase):
         creds = object()
         client = self._make_one(credentials=creds)
 
-        with _Monkey(MUT, Key=_Dummy):
+        patch = mock.patch(
+            'google.cloud.datastore.client.Key', new=_Dummy)
+        with patch:
             key = client.key(KIND, ID)
 
         self.assertIsInstance(key, _Dummy)
@@ -723,8 +727,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_key_w_namespace(self):
-        from google.cloud.datastore import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         KIND = 'KIND'
         ID = 1234
@@ -733,7 +736,9 @@ class TestClient(unittest.TestCase):
         creds = object()
         client = self._make_one(namespace=NAMESPACE, credentials=creds)
 
-        with _Monkey(MUT, Key=_Dummy):
+        patch = mock.patch(
+            'google.cloud.datastore.client.Key', new=_Dummy)
+        with patch:
             key = client.key(KIND, ID)
 
         self.assertIsInstance(key, _Dummy)
@@ -744,8 +749,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_key_w_namespace_collision(self):
-        from google.cloud.datastore import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         KIND = 'KIND'
         ID = 1234
@@ -755,7 +759,9 @@ class TestClient(unittest.TestCase):
         creds = object()
         client = self._make_one(namespace=NAMESPACE1, credentials=creds)
 
-        with _Monkey(MUT, Key=_Dummy):
+        patch = mock.patch(
+            'google.cloud.datastore.client.Key', new=_Dummy)
+        with patch:
             key = client.key(KIND, ID, namespace=NAMESPACE2)
 
         self.assertIsInstance(key, _Dummy)
@@ -766,13 +772,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_batch(self):
-        from google.cloud.datastore import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         creds = object()
         client = self._make_one(credentials=creds)
 
-        with _Monkey(MUT, Batch=_Dummy):
+        patch = mock.patch(
+            'google.cloud.datastore.client.Batch', new=_Dummy)
+        with patch:
             batch = client.batch()
 
         self.assertIsInstance(batch, _Dummy)
@@ -780,13 +787,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(batch.kwargs, {})
 
     def test_transaction_defaults(self):
-        from google.cloud.datastore import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         creds = object()
         client = self._make_one(credentials=creds)
 
-        with _Monkey(MUT, Transaction=_Dummy):
+        patch = mock.patch(
+            'google.cloud.datastore.client.Transaction', new=_Dummy)
+        with patch:
             xact = client.transaction()
 
         self.assertIsInstance(xact, _Dummy)
@@ -812,13 +820,14 @@ class TestClient(unittest.TestCase):
                           client.query, kind=KIND, project=self.PROJECT)
 
     def test_query_w_defaults(self):
-        from google.cloud.datastore import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         creds = object()
         client = self._make_one(credentials=creds)
 
-        with _Monkey(MUT, Query=_Dummy):
+        patch = mock.patch(
+            'google.cloud.datastore.client.Query', new=_Dummy)
+        with patch:
             query = client.query()
 
         self.assertIsInstance(query, _Dummy)
@@ -830,8 +839,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query.kwargs, expected_kwargs)
 
     def test_query_explicit(self):
-        from google.cloud.datastore import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         KIND = 'KIND'
         NAMESPACE = 'NAMESPACE'
@@ -844,7 +852,9 @@ class TestClient(unittest.TestCase):
         creds = object()
         client = self._make_one(credentials=creds)
 
-        with _Monkey(MUT, Query=_Dummy):
+        patch = mock.patch(
+            'google.cloud.datastore.client.Query', new=_Dummy)
+        with patch:
             query = client.query(
                 kind=KIND,
                 namespace=NAMESPACE,
@@ -870,8 +880,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query.kwargs, kwargs)
 
     def test_query_w_namespace(self):
-        from google.cloud.datastore import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         KIND = 'KIND'
         NAMESPACE = object()
@@ -879,7 +888,9 @@ class TestClient(unittest.TestCase):
         creds = object()
         client = self._make_one(namespace=NAMESPACE, credentials=creds)
 
-        with _Monkey(MUT, Query=_Dummy):
+        patch = mock.patch(
+            'google.cloud.datastore.client.Query', new=_Dummy)
+        with patch:
             query = client.query(kind=KIND)
 
         self.assertIsInstance(query, _Dummy)
@@ -892,8 +903,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query.kwargs, expected_kwargs)
 
     def test_query_w_namespace_collision(self):
-        from google.cloud.datastore import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         KIND = 'KIND'
         NAMESPACE1 = object()
@@ -902,7 +912,9 @@ class TestClient(unittest.TestCase):
         creds = object()
         client = self._make_one(namespace=NAMESPACE1, credentials=creds)
 
-        with _Monkey(MUT, Query=_Dummy):
+        patch = mock.patch(
+            'google.cloud.datastore.client.Query', new=_Dummy)
+        with patch:
             query = client.query(kind=KIND, namespace=NAMESPACE2)
 
         self.assertIsInstance(query, _Dummy)
