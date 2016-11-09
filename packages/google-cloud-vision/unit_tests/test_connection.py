@@ -23,12 +23,12 @@ class TestConnection(unittest.TestCase):
         return Connection
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_default_url(self):
         creds = _Credentials()
         conn = self._makeOne(creds)
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         self.assertEqual(conn.credentials._scopes, klass.SCOPE)
 
 

@@ -31,7 +31,7 @@ class TestVisionImage(unittest.TestCase):
         return Image
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_image_source_type_content(self):
         image = self._makeOne(CLIENT_MOCK, content=IMAGE_CONTENT)
