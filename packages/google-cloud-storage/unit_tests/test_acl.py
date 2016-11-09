@@ -17,7 +17,8 @@ import unittest
 
 class Test_ACLEntity(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.acl import _ACLEntity
         return _ACLEntity
 
@@ -126,7 +127,8 @@ class Test_ACLEntity(unittest.TestCase):
 
 class Test_ACL(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.acl import ACL
         return ACL
 
@@ -710,7 +712,8 @@ class Test_ACL(unittest.TestCase):
 
 class Test_BucketACL(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.acl import BucketACL
         return BucketACL
 
@@ -730,7 +733,8 @@ class Test_BucketACL(unittest.TestCase):
 
 class Test_DefaultObjectACL(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.acl import DefaultObjectACL
         return DefaultObjectACL
 
@@ -750,7 +754,8 @@ class Test_DefaultObjectACL(unittest.TestCase):
 
 class Test_ObjectACL(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.acl import ObjectACL
         return ObjectACL
 
