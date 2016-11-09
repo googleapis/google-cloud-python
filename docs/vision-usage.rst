@@ -194,9 +194,9 @@ Detecting safe search properties of an image.
     >>> client = vision.Client()
     >>> image = client.image('./image.jpg')
     >>> safe_search = image.detect_safe_search()
-    >>> safe_search.adult
+    >>> safe_search[0].adult
     'VERY_UNLIKELY'
-    >>> safe_search.medical
+    >>> safe_search[0].medical
     'UNLIKELY'
 
 Text Detection
@@ -227,7 +227,8 @@ Detecting image color properties.
     >>> from google.cloud import vision
     >>> client = vision.Client()
     >>> image = client.image('./image.jpg')
-    >>> colors = image.detect_properties()
+    >>> results = image.detect_properties()
+    >>> colors = results[0]
     >>> colors[0].red
     244
     >>> colors[0].blue
