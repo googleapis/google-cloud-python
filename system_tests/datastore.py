@@ -17,6 +17,7 @@ import os
 import unittest
 
 import httplib2
+import six
 
 from google.cloud._helpers import UTC
 from google.cloud import datastore
@@ -260,14 +261,16 @@ class TestDatastoreQuery(TestDatastore):
 
         # Fetch characters.
         iterator = query.fetch(limit=limit)
-        character_entities, _, cursor = iterator.next_page()
+        page = six.next(iterator.pages)
+        character_entities = list(page)
+        cursor = iterator.next_page_token
         self.assertEqual(len(character_entities), limit)
 
         # Check cursor after fetch.
         self.assertIsNotNone(cursor)
 
-        # Fetch remaining of characters.
-        new_character_entities = list(iterator)
+        # Fetch remaining characters.
+        new_character_entities = list(query.fetch(start_cursor=cursor))
         characters_remaining = len(self.CHARACTERS) - limit
         self.assertEqual(len(new_character_entities), characters_remaining)
 
@@ -362,7 +365,9 @@ class TestDatastoreQuery(TestDatastore):
         iterator = page_query.fetch(limit=limit, offset=offset)
 
         # Fetch characters.
-        entities, _, cursor = iterator.next_page()
+        page = six.next(iterator.pages)
+        entities = list(page)
+        cursor = iterator.next_page_token
         self.assertEqual(len(entities), limit)
         self.assertEqual(entities[0]['name'], 'Robb')
         self.assertEqual(entities[1]['name'], 'Bran')
@@ -385,7 +390,9 @@ class TestDatastoreQuery(TestDatastore):
         iterator = page_query.fetch(limit=limit, offset=offset)
 
         # Fetch characters.
-        entities, _, cursor = iterator.next_page()
+        page = six.next(iterator.pages)
+        entities = list(page)
+        cursor = iterator.next_page_token
         self.assertEqual(len(entities), limit)
 
         # Use cursor to create a fresh query.

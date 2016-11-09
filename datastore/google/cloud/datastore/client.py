@@ -456,19 +456,30 @@ class Client(_BaseClient, _ClientProjectMixin):
           >>> query = client.query(kind='MyKind')
           >>> query.add_filter('property', '=', 'val')
 
-        Using the query iterator's
-        :meth:`~google.cloud.datastore.query.Iterator.next_page` method:
+        Using the query iterator
 
         .. code-block:: python
 
           >>> query_iter = query.fetch()
-          >>> entities, more_results, cursor = query_iter.next_page()
-          >>> entities
-          [<list of Entity unmarshalled from protobuf>]
-          >>> more_results
-          <boolean of more results>
-          >>> cursor
-          <string containing cursor where fetch stopped>
+          >>> for entity in query_iter:
+          ...     do_something(entity)
+
+        or manually page through results
+
+        .. code-block:: python
+
+          >>> query_iter = query.fetch(start_cursor='2mdd223i944')
+          >>> pages = query_iter.pages
+          >>>
+          >>> first_page = next(pages)
+          >>> first_page_entities = list(first_page)
+          >>> query_iter.next_page_token
+          'abc-some-cursor'
+          >>>
+          >>> second_page = next(pages)
+          >>> second_page_entities = list(second_page)
+          >>> query_iter.next_page_token is None
+          True
 
         Under the hood this is doing:
 
