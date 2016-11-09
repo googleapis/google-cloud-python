@@ -31,8 +31,8 @@ class TestTopic(unittest.TestCase):
     def test_ctor_w_explicit_timestamp(self):
         client = _Client(project=self.PROJECT)
         topic = self._make_one(self.TOPIC_NAME,
-                              client=client,
-                              timestamp_messages=True)
+                               client=client,
+                               timestamp_messages=True)
         self.assertEqual(topic.name, self.TOPIC_NAME)
         self.assertEqual(topic.project, self.PROJECT)
         self.assertEqual(topic.full_name, self.TOPIC_PATH)
@@ -156,7 +156,7 @@ class TestTopic(unittest.TestCase):
         api._topic_publish_response = [MSGID]
 
         topic = self._make_one(self.TOPIC_NAME, client=client1,
-                              timestamp_messages=True)
+                               timestamp_messages=True)
         with _Monkey(MUT, _NOW=_utcnow):
             msgid = topic.publish(PAYLOAD, client=client2)
 
@@ -173,7 +173,7 @@ class TestTopic(unittest.TestCase):
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID]
         topic = self._make_one(self.TOPIC_NAME, client=client,
-                              timestamp_messages=True)
+                               timestamp_messages=True)
 
         msgid = topic.publish(PAYLOAD, timestamp=OVERRIDE)
 

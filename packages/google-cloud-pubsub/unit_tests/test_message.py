@@ -39,7 +39,7 @@ class TestMessage(unittest.TestCase):
         MESSAGE_ID = b'12345'
         ATTRS = {'a': 'b'}
         message = self._make_one(data=DATA, message_id=MESSAGE_ID,
-                                attributes=ATTRS)
+                                 attributes=ATTRS)
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.attributes, ATTRS)
@@ -60,7 +60,7 @@ class TestMessage(unittest.TestCase):
         MESSAGE_ID = b'12345'
         ATTRS = {'a': 'b'}
         message = self._make_one(data=DATA, message_id=MESSAGE_ID,
-                                attributes=ATTRS)
+                                 attributes=ATTRS)
 
         def _to_fail():
             return message.timestamp
@@ -78,7 +78,7 @@ class TestMessage(unittest.TestCase):
         timestamp = naive.replace(tzinfo=UTC)
         ATTRS = {'timestamp': TIMESTAMP}
         message = self._make_one(data=DATA, message_id=MESSAGE_ID,
-                                attributes=ATTRS)
+                                 attributes=ATTRS)
         self.assertEqual(message.timestamp, timestamp)
 
     def test_from_api_repr_missing_data(self):
