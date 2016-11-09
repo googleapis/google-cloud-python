@@ -25,7 +25,7 @@ class TestClient(unittest.TestCase):
         return Client
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_query(self):
         import datetime

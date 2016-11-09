@@ -39,7 +39,7 @@ class TestTimeSeries(unittest.TestCase):
         return TimeSeries
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         from google.cloud.monitoring.metric import Metric
@@ -87,7 +87,7 @@ class TestTimeSeries(unittest.TestCase):
             ],
         }
 
-        series = self._getTargetClass()._from_dict(info)
+        series = self._get_target_class()._from_dict(info)
 
         self.assertEqual(series.metric.type, METRIC_TYPE)
         self.assertEqual(series.metric.labels, METRIC_LABELS)
@@ -116,7 +116,7 @@ class TestTimeSeries(unittest.TestCase):
             'valueType': VALUE_TYPE,
         }
 
-        series = self._getTargetClass()._from_dict(info)
+        series = self._get_target_class()._from_dict(info)
 
         self.assertEqual(series.metric.type, METRIC_TYPE)
         self.assertEqual(series.metric.labels, METRIC_LABELS)
@@ -136,7 +136,7 @@ class TestTimeSeries(unittest.TestCase):
             'valueType': VALUE_TYPE,
         }
 
-        series = self._getTargetClass()._from_dict(info)
+        series = self._get_target_class()._from_dict(info)
 
         labels = {'resource_type': RESOURCE_TYPE}
         labels.update(RESOURCE_LABELS)
@@ -187,7 +187,7 @@ class TestPoint(unittest.TestCase):
         return Point
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         VALUE = 3.14
@@ -202,7 +202,7 @@ class TestPoint(unittest.TestCase):
             'interval': {'startTime': TS0, 'endTime': TS1},
             'value': {'doubleValue': VALUE},
         }
-        point = self._getTargetClass()._from_dict(info)
+        point = self._get_target_class()._from_dict(info)
         self.assertEqual(point.start_time, TS0)
         self.assertEqual(point.end_time, TS1)
         self.assertEqual(point.value, VALUE)
@@ -213,7 +213,7 @@ class TestPoint(unittest.TestCase):
             'interval': {'endTime': TS1},
             'value': {'doubleValue': VALUE},
         }
-        point = self._getTargetClass()._from_dict(info)
+        point = self._get_target_class()._from_dict(info)
         self.assertIsNone(point.start_time)
         self.assertEqual(point.end_time, TS1)
         self.assertEqual(point.value, VALUE)
@@ -224,7 +224,7 @@ class TestPoint(unittest.TestCase):
             'interval': {'endTime': TS1},
             'value': {'int64Value': str(VALUE)},
         }
-        point = self._getTargetClass()._from_dict(info)
+        point = self._get_target_class()._from_dict(info)
         self.assertIsNone(point.start_time)
         self.assertEqual(point.end_time, TS1)
         self.assertEqual(point.value, VALUE)
