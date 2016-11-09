@@ -27,6 +27,25 @@ from google.cloud.vision.color import ImagePropertiesAnnotation
 from google.cloud.vision.safe import SafeSearchAnnotation
 
 
+_FACE_DETECTION = 'FACE_DETECTION'
+_IMAGE_PROPERTIES = 'IMAGE_PROPERTIES'
+_LABEL_DETECTION = 'LABEL_DETECTION'
+_LANDMARK_DETECTION = 'LANDMARK_DETECTION'
+_LOGO_DETECTION = 'LOGO_DETECTION'
+_SAFE_SEARCH_DETECTION = 'SAFE_SEARCH_DETECTION'
+_TEXT_DETECTION = 'TEXT_DETECTION'
+
+_REVERSE_TYPES = {
+    _FACE_DETECTION: 'faceAnnotations',
+    _IMAGE_PROPERTIES: 'imagePropertiesAnnotation',
+    _LABEL_DETECTION: 'labelAnnotations',
+    _LANDMARK_DETECTION: 'landmarkAnnotations',
+    _LOGO_DETECTION: 'logoAnnotations',
+    _SAFE_SEARCH_DETECTION: 'safeSearchAnnotation',
+    _TEXT_DETECTION: 'textAnnotations',
+}
+
+
 class Image(object):
     """Image representation containing information to be annotate.
 
@@ -85,28 +104,25 @@ class Image(object):
         """
         return self._source
 
-    def _detect_annotation(self, feature):
+    def _detect_annotation(self, features):
         """Generic method for detecting a single annotation.
 
-        :type feature: :class:`~google.cloud.vision.feature.Feature`
-        :param feature: The ``Feature`` indication the type of annotation to
-                        perform.
+        :type features: list
+        :param features: List of :class:`~google.cloud.vision.feature.Feature`
+                         indicating the type of annotations to perform.
 
         :rtype: list
         :returns: List of
-                  :class:`~google.cloud.vision.entity.EntityAnnotation`.
+                  :class:`~google.cloud.vision.entity.EntityAnnotation`,
+                  :class:`~google.cloud.vision.face.Face`,
+                  :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`,
+                  :class:`~google.cloud.vision.sage.SafeSearchAnnotation`,
         """
-        reverse_types = {
-            'LABEL_DETECTION': 'labelAnnotations',
-            'LANDMARK_DETECTION': 'landmarkAnnotations',
-            'LOGO_DETECTION': 'logoAnnotations',
-            'TEXT_DETECTION': 'textAnnotations',
-        }
         detected_objects = []
-        result = self.client.annotate(self, [feature])
-        for response in result[reverse_types[feature.feature_type]]:
-            detected_object = EntityAnnotation.from_api_repr(response)
-            detected_objects.append(detected_object)
+        results = self.client.annotate(self, features)
+        for feature in features:
+            detected_objects.extend(
+                _entity_from_response_type(feature.feature_type, results))
         return detected_objects
 
     def detect_faces(self, limit=10):
@@ -118,14 +134,8 @@ class Image(object):
         :rtype: list
         :returns: List of :class:`~google.cloud.vision.face.Face`.
         """
-        faces = []
-        face_detection_feature = Feature(FeatureTypes.FACE_DETECTION, limit)
-        result = self.client.annotate(self, [face_detection_feature])
-        for face_response in result['faceAnnotations']:
-            face = Face.from_api_repr(face_response)
-            faces.append(face)
-
-        return faces
+        features = [Feature(FeatureTypes.FACE_DETECTION, limit)]
+        return self._detect_annotation(features)
 
     def detect_labels(self, limit=10):
         """Detect labels that describe objects in an image.
@@ -136,8 +146,8 @@ class Image(object):
         :rtype: list
         :returns: List of :class:`~google.cloud.vision.entity.EntityAnnotation`
         """
-        feature = Feature(FeatureTypes.LABEL_DETECTION, limit)
-        return self._detect_annotation(feature)
+        features = [Feature(FeatureTypes.LABEL_DETECTION, limit)]
+        return self._detect_annotation(features)
 
     def detect_landmarks(self, limit=10):
         """Detect landmarks in an image.
@@ -149,8 +159,8 @@ class Image(object):
         :returns: List of
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
-        feature = Feature(FeatureTypes.LANDMARK_DETECTION, limit)
-        return self._detect_annotation(feature)
+        features = [Feature(FeatureTypes.LANDMARK_DETECTION, limit)]
+        return self._detect_annotation(features)
 
     def detect_logos(self, limit=10):
         """Detect logos in an image.
@@ -162,8 +172,8 @@ class Image(object):
         :returns: List of
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
-        feature = Feature(FeatureTypes.LOGO_DETECTION, limit)
-        return self._detect_annotation(feature)
+        features = [Feature(FeatureTypes.LOGO_DETECTION, limit)]
+        return self._detect_annotation(features)
 
     def detect_properties(self, limit=10):
         """Detect the color properties of an image.
@@ -175,10 +185,8 @@ class Image(object):
         :returns: List of
                   :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`.
         """
-        feature = Feature(FeatureTypes.IMAGE_PROPERTIES, limit)
-        result = self.client.annotate(self, [feature])
-        response = result['imagePropertiesAnnotation']
-        return ImagePropertiesAnnotation.from_api_repr(response)
+        features = [Feature(FeatureTypes.IMAGE_PROPERTIES, limit)]
+        return self._detect_annotation(features)
 
     def detect_safe_search(self, limit=10):
         """Retreive safe search properties from an image.
@@ -190,11 +198,8 @@ class Image(object):
         :returns: List of
                   :class:`~google.cloud.vision.sage.SafeSearchAnnotation`.
         """
-        safe_detection_feature = Feature(FeatureTypes.SAFE_SEARCH_DETECTION,
-                                         limit)
-        result = self.client.annotate(self, [safe_detection_feature])
-        safe_search_response = result['safeSearchAnnotation']
-        return SafeSearchAnnotation.from_api_repr(safe_search_response)
+        features = [Feature(FeatureTypes.SAFE_SEARCH_DETECTION, limit)]
+        return self._detect_annotation(features)
 
     def detect_text(self, limit=10):
         """Detect text in an image.
@@ -206,5 +211,26 @@ class Image(object):
         :returns: List of
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
-        feature = Feature(FeatureTypes.TEXT_DETECTION, limit)
-        return self._detect_annotation(feature)
+        features = [Feature(FeatureTypes.TEXT_DETECTION, limit)]
+        return self._detect_annotation(features)
+
+
+def _entity_from_response_type(feature_type, results):
+    """Convert a JSON result to an entity type based on the feature."""
+
+    detected_objects = []
+    feature_key = _REVERSE_TYPES[feature_type]
+
+    if feature_type == _FACE_DETECTION:
+        detected_objects.extend(
+            Face.from_api_repr(face) for face in results[feature_key])
+    elif feature_type == _IMAGE_PROPERTIES:
+        detected_objects.append(
+            ImagePropertiesAnnotation.from_api_repr(results[feature_key]))
+    elif feature_type == _SAFE_SEARCH_DETECTION:
+        result = results[feature_key]
+        detected_objects.append(SafeSearchAnnotation.from_api_repr(result))
+    else:
+        for result in results[feature_key]:
+            detected_objects.append(EntityAnnotation.from_api_repr(result))
+    return detected_objects
