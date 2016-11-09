@@ -29,7 +29,7 @@ class TestResourceRecordSet(unittest.TestCase):
         zone = _Zone()
 
         rrs = self._make_one('test.example.com', 'CNAME', 3600,
-                            ['www.example.com'], zone)
+                             ['www.example.com'], zone)
 
         self.assertEqual(rrs.name, 'test.example.com')
         self.assertEqual(rrs.record_type, 'CNAME')
