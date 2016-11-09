@@ -33,7 +33,8 @@ TS2 = '2016-04-06T22:05:02.042Z'
 
 
 class TestTimeSeries(unittest.TestCase):
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.timeseries import TimeSeries
         return TimeSeries
 
@@ -180,7 +181,8 @@ class TestTimeSeries(unittest.TestCase):
 
 
 class TestPoint(unittest.TestCase):
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.timeseries import Point
         return Point
 

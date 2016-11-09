@@ -42,7 +42,8 @@ TS2 = '2016-04-06T22:05:02.042Z'
 
 class TestAligner(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.query import Aligner
         return Aligner
 
@@ -57,7 +58,8 @@ class TestAligner(unittest.TestCase):
 
 class TestReducer(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.query import Reducer
         return Reducer
 
@@ -73,7 +75,8 @@ class TestReducer(unittest.TestCase):
 
 class TestQuery(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.query import Query
         return Query
 
@@ -499,7 +502,8 @@ class TestQuery(unittest.TestCase):
 
 class Test_Filter(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.query import _Filter
         return _Filter
 
