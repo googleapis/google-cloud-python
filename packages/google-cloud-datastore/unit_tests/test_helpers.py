@@ -880,7 +880,7 @@ class TestGeoPoint(unittest.TestCase):
         return GeoPoint
 
     def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         lat = 81.2

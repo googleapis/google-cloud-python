@@ -120,12 +120,12 @@ class TestClient(unittest.TestCase):
     PROJECT = 'PROJECT'
 
     def setUp(self):
-        KLASS = self._getTargetClass()
+        KLASS = self._get_target_class()
         self.original_cnxn_class = KLASS._connection_class
         KLASS._connection_class = _MockConnection
 
     def tearDown(self):
-        KLASS = self._getTargetClass()
+        KLASS = self._get_target_class()
         KLASS._connection_class = self.original_cnxn_class
 
     @staticmethod
@@ -135,7 +135,7 @@ class TestClient(unittest.TestCase):
 
     def _makeOne(self, project=PROJECT, namespace=None,
                  credentials=None, http=None):
-        return self._getTargetClass()(project=project,
+        return self._get_target_class()(project=project,
                                       namespace=namespace,
                                       credentials=credentials,
                                       http=http)
@@ -162,7 +162,7 @@ class TestClient(unittest.TestCase):
             default_called.append(project)
             return project or OTHER
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with _Monkey(_MUT,
                      _determine_default_project=fallback_mock):
             with _Monkey(_base_client,

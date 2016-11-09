@@ -25,7 +25,7 @@ class TestQuery(unittest.TestCase):
         return Query
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def _makeClient(self, connection=None):
         if connection is None:
@@ -346,7 +346,7 @@ class TestIterator(unittest.TestCase):
         return Iterator
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor_defaults(self):
         query = object()

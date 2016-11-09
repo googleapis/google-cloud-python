@@ -24,7 +24,7 @@ class TestBatch(unittest.TestCase):
         return Batch
 
     def _makeOne(self, client):
-        return self._getTargetClass()(client)
+        return self._get_target_class()(client)
 
     def test_ctor(self):
         from google.cloud.datastore._generated import datastore_pb2
@@ -348,7 +348,7 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(connection._committed, [])
 
     def test_as_context_mgr_enter_fails(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         class FailedBegin(klass):
 
