@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.client &mdash; google-cloud 43631a8 documentation</title>
+  <title>google.cloud.datastore.client &mdash; google-cloud 1abfcbe documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 43631a8 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1abfcbe documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -735,19 +735,30 @@
 <span class="sd">          &gt;&gt;&gt; query = client.query(kind=&#39;MyKind&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; query.add_filter(&#39;property&#39;, &#39;=&#39;, &#39;val&#39;)</span>
 
-<span class="sd">        Using the query iterator&#39;s</span>
-<span class="sd">        :meth:`~google.cloud.datastore.query.Iterator.next_page` method:</span>
+<span class="sd">        Using the query iterator</span>
 
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">          &gt;&gt;&gt; query_iter = query.fetch()</span>
-<span class="sd">          &gt;&gt;&gt; entities, more_results, cursor = query_iter.next_page()</span>
-<span class="sd">          &gt;&gt;&gt; entities</span>
-<span class="sd">          [&lt;list of Entity unmarshalled from protobuf&gt;]</span>
-<span class="sd">          &gt;&gt;&gt; more_results</span>
-<span class="sd">          &lt;boolean of more results&gt;</span>
-<span class="sd">          &gt;&gt;&gt; cursor</span>
-<span class="sd">          &lt;string containing cursor where fetch stopped&gt;</span>
+<span class="sd">          &gt;&gt;&gt; for entity in query_iter:</span>
+<span class="sd">          ...     do_something(entity)</span>
+
+<span class="sd">        or manually page through results</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">          &gt;&gt;&gt; query_iter = query.fetch(start_cursor=&#39;2mdd223i944&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; pages = query_iter.pages</span>
+<span class="sd">          &gt;&gt;&gt;</span>
+<span class="sd">          &gt;&gt;&gt; first_page = next(pages)</span>
+<span class="sd">          &gt;&gt;&gt; first_page_entities = list(first_page)</span>
+<span class="sd">          &gt;&gt;&gt; query_iter.next_page_token</span>
+<span class="sd">          &#39;abc-some-cursor&#39;</span>
+<span class="sd">          &gt;&gt;&gt;</span>
+<span class="sd">          &gt;&gt;&gt; second_page = next(pages)</span>
+<span class="sd">          &gt;&gt;&gt; second_page_entities = list(second_page)</span>
+<span class="sd">          &gt;&gt;&gt; query_iter.next_page_token is None</span>
+<span class="sd">          True</span>
 
 <span class="sd">        Under the hood this is doing:</span>
 
@@ -804,7 +815,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'43631a8',
+            VERSION:'1abfcbe',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

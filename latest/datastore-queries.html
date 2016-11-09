@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Queries &mdash; google-cloud 43631a8 documentation</title>
+  <title>Queries &mdash; google-cloud 1abfcbe documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 43631a8 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 1abfcbe documentation" href="index.html"/>
         <link rel="next" title="Transactions" href="datastore-transactions.html"/>
         <link rel="prev" title="Keys" href="datastore-keys.html"/> 
 
@@ -283,17 +283,17 @@
 <dl class="class">
 <dt id="google.cloud.datastore.query.Iterator">
 <em class="property">class </em><code class="descclassname">google.cloud.datastore.query.</code><code class="descname">Iterator</code><span class="sig-paren">(</span><em>query</em>, <em>client</em>, <em>limit=None</em>, <em>offset=None</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/query.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.query.Iterator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="iterators.html#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iterator.Iterator</span></code></a></p>
 <p>Represent the state of a given execution of a Query.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>query</strong> (<a class="reference internal" href="#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.query.Query</span></code></a>) &#8211; Query object holding permanent configuration (i.e.
+<li><strong>query</strong> (<a class="reference internal" href="#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>) &#8211; Query object holding permanent configuration (i.e.
 things that don&#8217;t change on with each page in
 a results set).</li>
-<li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) &#8211; The client used to make a request.</li>
+<li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client used to make a request.</li>
 <li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Limit the number of results returned.</li>
 <li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Offset used to begin a query.</li>
 <li><strong>start_cursor</strong> (<em>bytes</em>) &#8211; (Optional) Cursor to begin paging through
@@ -305,24 +305,6 @@ query results.</li>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="google.cloud.datastore.query.Iterator.next_page">
-<code class="descname">next_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/query.html#Iterator.next_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.query.Iterator.next_page" title="Permalink to this definition">#</a></dt>
-<dd><p>Fetch a single &#8220;page&#8221; of query results.</p>
-<p>Low-level API for fine control:  the more convenient API is
-to iterate on the current Iterator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple, (entities, more_results, cursor)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The next page of results.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
@@ -361,7 +343,7 @@ default is set.</p>
 </table>
 <dl class="attribute">
 <dt id="google.cloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'&gt;': 3, '&gt;=': 4, '=': 5, '&lt;=': 2, '&lt;': 1}</em><a class="headerlink" href="#google.cloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'=': 5, '&lt;': 1, '&gt;': 3, '&lt;=': 2, '&gt;=': 4}</em><a class="headerlink" href="#google.cloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -647,7 +629,7 @@ Defaults to <code class="docutils literal"><span class="pre">=</span></code>.</l
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'43631a8',
+            VERSION:'1abfcbe',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
