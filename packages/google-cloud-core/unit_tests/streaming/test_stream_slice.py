@@ -22,7 +22,7 @@ class Test_StreamSlice(unittest.TestCase):
         from google.cloud.streaming.stream_slice import StreamSlice
         return StreamSlice
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
@@ -30,7 +30,7 @@ class Test_StreamSlice(unittest.TestCase):
         CONTENT = b'CONTENT GOES HERE'
         MAXSIZE = 4
         stream = BytesIO(CONTENT)
-        stream_slice = self._makeOne(stream, MAXSIZE)
+        stream_slice = self._make_one(stream, MAXSIZE)
         self.assertIs(stream_slice._stream, stream)
         self.assertEqual(stream_slice._remaining_bytes, MAXSIZE)
         self.assertEqual(stream_slice._max_bytes, MAXSIZE)
@@ -42,7 +42,7 @@ class Test_StreamSlice(unittest.TestCase):
         CONTENT = b''
         MAXSIZE = 0
         stream = BytesIO(CONTENT)
-        stream_slice = self._makeOne(stream, MAXSIZE)
+        stream_slice = self._make_one(stream, MAXSIZE)
         self.assertFalse(stream_slice)
 
     def test___nonzero___nonempty(self):
@@ -50,7 +50,7 @@ class Test_StreamSlice(unittest.TestCase):
         CONTENT = b'CONTENT GOES HERE'
         MAXSIZE = 4
         stream = BytesIO(CONTENT)
-        stream_slice = self._makeOne(stream, MAXSIZE)
+        stream_slice = self._make_one(stream, MAXSIZE)
         self.assertTrue(stream_slice)
 
     def test_read_exhausted(self):
@@ -59,7 +59,7 @@ class Test_StreamSlice(unittest.TestCase):
         CONTENT = b''
         MAXSIZE = 4
         stream = BytesIO(CONTENT)
-        stream_slice = self._makeOne(stream, MAXSIZE)
+        stream_slice = self._make_one(stream, MAXSIZE)
         with self.assertRaises(http_client.IncompleteRead):
             stream_slice.read()
 
@@ -68,7 +68,7 @@ class Test_StreamSlice(unittest.TestCase):
         CONTENT = b'CONTENT GOES HERE'
         MAXSIZE = 4
         stream = BytesIO(CONTENT)
-        stream_slice = self._makeOne(stream, MAXSIZE)
+        stream_slice = self._make_one(stream, MAXSIZE)
         self.assertEqual(stream_slice.read(), CONTENT[:MAXSIZE])
         self.assertEqual(stream_slice._remaining_bytes, 0)
 
@@ -78,6 +78,6 @@ class Test_StreamSlice(unittest.TestCase):
         MAXSIZE = 4
         SIZE = 3
         stream = BytesIO(CONTENT)
-        stream_slice = self._makeOne(stream, MAXSIZE)
+        stream_slice = self._make_one(stream, MAXSIZE)
         self.assertEqual(stream_slice.read(SIZE), CONTENT[:SIZE])
         self.assertEqual(stream_slice._remaining_bytes, MAXSIZE - SIZE)

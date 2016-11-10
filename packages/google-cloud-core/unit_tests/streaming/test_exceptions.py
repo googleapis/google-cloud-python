@@ -22,14 +22,14 @@ class Test_HttpError(unittest.TestCase):
         from google.cloud.streaming.exceptions import HttpError
         return HttpError
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         RESPONSE = {'status': '404'}
         CONTENT = b'CONTENT'
         URL = 'http://www.example.com'
-        exception = self._makeOne(RESPONSE, CONTENT, URL)
+        exception = self._make_one(RESPONSE, CONTENT, URL)
         self.assertEqual(exception.response, RESPONSE)
         self.assertEqual(exception.content, CONTENT)
         self.assertEqual(exception.url, URL)
@@ -64,7 +64,7 @@ class Test_RetryAfterError(unittest.TestCase):
         from google.cloud.streaming.exceptions import RetryAfterError
         return RetryAfterError
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
@@ -72,7 +72,7 @@ class Test_RetryAfterError(unittest.TestCase):
         CONTENT = b'CONTENT'
         URL = 'http://www.example.com'
         RETRY_AFTER = 60
-        exception = self._makeOne(RESPONSE, CONTENT, URL, RETRY_AFTER)
+        exception = self._make_one(RESPONSE, CONTENT, URL, RETRY_AFTER)
         self.assertEqual(exception.response, RESPONSE)
         self.assertEqual(exception.content, CONTENT)
         self.assertEqual(exception.url, URL)
