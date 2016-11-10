@@ -25,12 +25,12 @@ class TestTopic(unittest.TestCase):
         from google.cloud.pubsub.topic import Topic
         return Topic
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_w_explicit_timestamp(self):
         client = _Client(project=self.PROJECT)
-        topic = self._makeOne(self.TOPIC_NAME,
+        topic = self._make_one(self.TOPIC_NAME,
                               client=client,
                               timestamp_messages=True)
         self.assertEqual(topic.name, self.TOPIC_NAME)
@@ -62,7 +62,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_create_response = {'name': self.TOPIC_PATH}
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         topic.create()
 
@@ -73,7 +73,7 @@ class TestTopic(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.publisher_api = _FauxPublisherAPI()
         api._topic_create_response = {'name': self.TOPIC_PATH}
-        topic = self._makeOne(self.TOPIC_NAME, client=client1)
+        topic = self._make_one(self.TOPIC_NAME, client=client1)
 
         topic.create(client=client2)
 
@@ -82,7 +82,7 @@ class TestTopic(unittest.TestCase):
     def test_exists_miss_w_bound_client(self):
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         self.assertFalse(topic.exists())
 
@@ -93,7 +93,7 @@ class TestTopic(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.publisher_api = _FauxPublisherAPI()
         api._topic_get_response = {'name': self.TOPIC_PATH}
-        topic = self._makeOne(self.TOPIC_NAME, client=client1)
+        topic = self._make_one(self.TOPIC_NAME, client=client1)
 
         self.assertTrue(topic.exists(client=client2))
 
@@ -103,7 +103,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_delete_response = {}
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         topic.delete()
 
@@ -114,7 +114,7 @@ class TestTopic(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.publisher_api = _FauxPublisherAPI()
         api._topic_delete_response = {}
-        topic = self._makeOne(self.TOPIC_NAME, client=client1)
+        topic = self._make_one(self.TOPIC_NAME, client=client1)
 
         topic.delete(client=client2)
 
@@ -127,7 +127,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID]
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         msgid = topic.publish(PAYLOAD)
 
@@ -155,7 +155,7 @@ class TestTopic(unittest.TestCase):
         api = client2.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID]
 
-        topic = self._makeOne(self.TOPIC_NAME, client=client1,
+        topic = self._make_one(self.TOPIC_NAME, client=client1,
                               timestamp_messages=True)
         with _Monkey(MUT, _NOW=_utcnow):
             msgid = topic.publish(PAYLOAD, client=client2)
@@ -172,7 +172,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID]
-        topic = self._makeOne(self.TOPIC_NAME, client=client,
+        topic = self._make_one(self.TOPIC_NAME, client=client,
                               timestamp_messages=True)
 
         msgid = topic.publish(PAYLOAD, timestamp=OVERRIDE)
@@ -188,7 +188,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID]
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         msgid = topic.publish(PAYLOAD, attr1='value1', attr2='value2')
 
@@ -202,7 +202,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID]
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
         msgid = topic.publish(PAYLOAD)
 
         self.assertEqual(msgid, MSGID)
@@ -215,7 +215,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID]
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
         msgid = topic.publish(PAYLOAD)
 
         self.assertEqual(msgid, MSGID)
@@ -232,7 +232,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID1, MSGID2]
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         with topic.batch() as batch:
             batch.publish(PAYLOAD1)
@@ -247,7 +247,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = []
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         with topic.batch() as batch:
             pass
@@ -269,7 +269,7 @@ class TestTopic(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID1, MSGID2]
-        topic = self._makeOne(self.TOPIC_NAME, client=client1)
+        topic = self._make_one(self.TOPIC_NAME, client=client1)
 
         with topic.batch(client=client2) as batch:
             batch.publish(PAYLOAD1)
@@ -285,7 +285,7 @@ class TestTopic(unittest.TestCase):
         PAYLOAD2 = b'This is the second message text'
         client = _Client(project=self.PROJECT)
         api = client.publisher_api = _FauxPublisherAPI()
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         try:
             with topic.batch() as batch:
@@ -301,7 +301,7 @@ class TestTopic(unittest.TestCase):
     def test_subscription(self):
         from google.cloud.pubsub.subscription import Subscription
         client = _Client(project=self.PROJECT)
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         SUBSCRIPTION_NAME = 'subscription_name'
         subscription = topic.subscription(SUBSCRIPTION_NAME)
@@ -332,7 +332,7 @@ class TestTopic(unittest.TestCase):
         }
         client.connection = _Connection(returned)
 
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         iterator = topic.list_subscriptions()
         page = six.next(iterator.pages)
@@ -382,7 +382,7 @@ class TestTopic(unittest.TestCase):
         }
         client.connection = _Connection(returned)
 
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         iterator = topic.list_subscriptions(
             page_size=PAGE_SIZE, page_token=TOKEN)
@@ -417,7 +417,7 @@ class TestTopic(unittest.TestCase):
         client = Client(project=self.PROJECT, credentials=object(),
                         use_gax=False)
         client.connection = _Connection({})
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         iterator = topic.list_subscriptions()
         subscriptions = list(iterator)
@@ -464,7 +464,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.iam_policy_api = _FauxIAMPolicy()
         api._get_iam_policy_response = POLICY
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         policy = topic.get_iam_policy()
 
@@ -486,7 +486,7 @@ class TestTopic(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.iam_policy_api = _FauxIAMPolicy()
         api._get_iam_policy_response = POLICY
-        topic = self._makeOne(self.TOPIC_NAME, client=client1)
+        topic = self._make_one(self.TOPIC_NAME, client=client1)
 
         policy = topic.get_iam_policy(client=client2)
 
@@ -538,7 +538,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.iam_policy_api = _FauxIAMPolicy()
         api._set_iam_policy_response = RESPONSE
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
         policy = Policy('DEADBEEF', 17)
         policy.owners.add(OWNER1)
         policy.owners.add(OWNER2)
@@ -568,7 +568,7 @@ class TestTopic(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.iam_policy_api = _FauxIAMPolicy()
         api._set_iam_policy_response = RESPONSE
-        topic = self._makeOne(self.TOPIC_NAME, client=client1)
+        topic = self._make_one(self.TOPIC_NAME, client=client1)
 
         policy = Policy()
         new_policy = topic.set_iam_policy(policy, client=client2)
@@ -590,7 +590,7 @@ class TestTopic(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.iam_policy_api = _FauxIAMPolicy()
         api._test_iam_permissions_response = ROLES[:-1]
-        topic = self._makeOne(self.TOPIC_NAME, client=client)
+        topic = self._make_one(self.TOPIC_NAME, client=client)
 
         allowed = topic.check_iam_permissions(ROLES)
 
@@ -608,7 +608,7 @@ class TestTopic(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.iam_policy_api = _FauxIAMPolicy()
         api._test_iam_permissions_response = []
-        topic = self._makeOne(self.TOPIC_NAME, client=client1)
+        topic = self._make_one(self.TOPIC_NAME, client=client1)
 
         allowed = topic.check_iam_permissions(ROLES, client=client2)
 
@@ -625,13 +625,13 @@ class TestBatch(unittest.TestCase):
         from google.cloud.pubsub.topic import Batch
         return Batch
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_ctor_defaults(self):
         topic = _Topic()
         client = _Client(project=self.PROJECT)
-        batch = self._makeOne(topic, client)
+        batch = self._make_one(topic, client)
         self.assertIs(batch.topic, topic)
         self.assertIs(batch.client, client)
         self.assertEqual(len(batch.messages), 0)
@@ -640,13 +640,13 @@ class TestBatch(unittest.TestCase):
     def test___iter___empty(self):
         topic = _Topic()
         client = object()
-        batch = self._makeOne(topic, client)
+        batch = self._make_one(topic, client)
         self.assertEqual(list(batch), [])
 
     def test___iter___non_empty(self):
         topic = _Topic()
         client = object()
-        batch = self._makeOne(topic, client)
+        batch = self._make_one(topic, client)
         batch.message_ids[:] = ['ONE', 'TWO', 'THREE']
         self.assertEqual(list(batch), ['ONE', 'TWO', 'THREE'])
 
@@ -656,7 +656,7 @@ class TestBatch(unittest.TestCase):
                    'attributes': {}}
         client = _Client(project=self.PROJECT)
         topic = _Topic()
-        batch = self._makeOne(topic, client=client)
+        batch = self._make_one(topic, client=client)
         batch.publish(PAYLOAD)
         self.assertEqual(batch.messages, [MESSAGE])
 
@@ -666,7 +666,7 @@ class TestBatch(unittest.TestCase):
                    'attributes': {'timestamp': 'TIMESTAMP'}}
         client = _Client(project=self.PROJECT)
         topic = _Topic(timestamp_messages=True)
-        batch = self._makeOne(topic, client=client)
+        batch = self._make_one(topic, client=client)
         batch.publish(PAYLOAD)
         self.assertEqual(batch.messages, [MESSAGE])
 
@@ -683,7 +683,7 @@ class TestBatch(unittest.TestCase):
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID1, MSGID2]
         topic = _Topic()
-        batch = self._makeOne(topic, client=client)
+        batch = self._make_one(topic, client=client)
 
         batch.publish(PAYLOAD1)
         batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
@@ -707,7 +707,7 @@ class TestBatch(unittest.TestCase):
         api = client2.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID1, MSGID2]
         topic = _Topic()
-        batch = self._makeOne(topic, client=client1)
+        batch = self._make_one(topic, client=client1)
 
         batch.publish(PAYLOAD1)
         batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
@@ -730,7 +730,7 @@ class TestBatch(unittest.TestCase):
         api = client.publisher_api = _FauxPublisherAPI()
         api._topic_publish_response = [MSGID1, MSGID2]
         topic = _Topic()
-        batch = self._makeOne(topic, client=client)
+        batch = self._make_one(topic, client=client)
 
         with batch as other:
             batch.publish(PAYLOAD1)
@@ -751,7 +751,7 @@ class TestBatch(unittest.TestCase):
         client = _Client(project='PROJECT')
         api = client.publisher_api = _FauxPublisherAPI()
         topic = _Topic()
-        batch = self._makeOne(topic, client=client)
+        batch = self._make_one(topic, client=client)
 
         try:
             with batch as other:

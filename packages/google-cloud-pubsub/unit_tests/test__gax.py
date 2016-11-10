@@ -37,7 +37,7 @@ class _Base(object):
     SUB_NAME = 'sub_name'
     SUB_PATH = '%s/subscriptions/%s' % (TOPIC_PATH, SUB_NAME)
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
 
@@ -52,7 +52,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXPublisherAPI()
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
         self.assertIs(api._gax_api, gax_api)
         self.assertIs(api._client, client)
 
@@ -66,7 +66,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
                                     page_token=TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         iterator = api.list_topics(self.PROJECT)
         topics = list(iterator)
@@ -95,7 +95,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
             [_TopicPB(self.TOPIC_PATH)], page_token=NEW_TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         iterator = api.list_topics(
             self.PROJECT, page_size=SIZE, page_token=TOKEN)
@@ -118,7 +118,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         topic_pb = _TopicPB(self.TOPIC_PATH)
         gax_api = _GAXPublisherAPI(_create_topic_response=topic_pb)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         resource = api.topic_create(self.TOPIC_PATH)
 
@@ -131,7 +131,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         from google.cloud.exceptions import Conflict
         gax_api = _GAXPublisherAPI(_create_topic_conflict=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(Conflict):
             api.topic_create(self.TOPIC_PATH)
@@ -144,7 +144,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         from google.gax.errors import GaxError
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.topic_create(self.TOPIC_PATH)
@@ -157,7 +157,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         topic_pb = _TopicPB(self.TOPIC_PATH)
         gax_api = _GAXPublisherAPI(_get_topic_response=topic_pb)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         resource = api.topic_get(self.TOPIC_PATH)
 
@@ -170,7 +170,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXPublisherAPI()
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.topic_get(self.TOPIC_PATH)
@@ -183,7 +183,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         from google.gax.errors import GaxError
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.topic_get(self.TOPIC_PATH)
@@ -195,7 +195,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
     def test_topic_delete_hit(self):
         gax_api = _GAXPublisherAPI(_delete_topic_ok=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         api.topic_delete(self.TOPIC_PATH)
 
@@ -207,7 +207,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXPublisherAPI(_delete_topic_ok=False)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.topic_delete(self.TOPIC_PATH)
@@ -220,7 +220,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         from google.gax.errors import GaxError
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.topic_delete(self.TOPIC_PATH)
@@ -238,7 +238,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         response = _PublishResponsePB([MSGID])
         gax_api = _GAXPublisherAPI(_publish_response=response)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         resource = api.topic_publish(self.TOPIC_PATH, [MESSAGE])
 
@@ -258,7 +258,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         MESSAGE = {'data': B64, 'attributes': {'foo': 'bar'}}
         gax_api = _GAXPublisherAPI()
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.topic_publish(self.TOPIC_PATH, [MESSAGE])
@@ -278,7 +278,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         MESSAGE = {'data': B64, 'attributes': {}}
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.topic_publish(self.TOPIC_PATH, [MESSAGE])
@@ -301,7 +301,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([local_sub_path])
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         topic = Topic(self.TOPIC_NAME, client)
         iterator = api.topic_list_subscriptions(topic)
@@ -336,7 +336,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
             [local_sub_path], page_token=NEW_TOKEN)
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         topic = Topic(self.TOPIC_NAME, client)
         iterator = api.topic_list_subscriptions(
@@ -365,7 +365,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
         gax_api = _GAXPublisherAPI()
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(NotFound):
             topic = Topic(self.TOPIC_NAME, client)
@@ -384,7 +384,7 @@ class Test_PublisherAPI(_Base, unittest.TestCase):
 
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(GaxError):
             topic = Topic(self.TOPIC_NAME, client)
@@ -410,7 +410,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXSubscriberAPI()
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
         self.assertIs(api._gax_api, gax_api)
         self.assertIs(api._client, client)
 
@@ -432,7 +432,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
         creds = _Credentials()
         client = Client(project=self.PROJECT, credentials=creds)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         iterator = api.list_subscriptions(self.PROJECT)
         subscriptions = list(iterator)
@@ -478,7 +478,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         client = _Client(self.PROJECT)
         creds = _Credentials()
         client = Client(project=self.PROJECT, credentials=creds)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         iterator = api.list_subscriptions(
             self.PROJECT, page_size=SIZE, page_token=TOKEN)
@@ -510,7 +510,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH)
         gax_api = _GAXSubscriberAPI(_create_subscription_response=sub_pb)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         resource = api.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
 
@@ -532,7 +532,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         DEADLINE = 600
         gax_api = _GAXSubscriberAPI(_create_subscription_conflict=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(Conflict):
             api.subscription_create(
@@ -550,7 +550,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         from google.gax.errors import GaxError
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
@@ -572,7 +572,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
                               push_config=push_cfg_pb)
         gax_api = _GAXSubscriberAPI(_get_subscription_response=sub_pb)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         resource = api.subscription_get(self.SUB_PATH)
 
@@ -592,7 +592,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXSubscriberAPI()
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.subscription_get(self.SUB_PATH)
@@ -605,7 +605,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         from google.gax.errors import GaxError
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_get(self.SUB_PATH)
@@ -617,7 +617,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_subscription_delete_hit(self):
         gax_api = _GAXSubscriberAPI(_delete_subscription_ok=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         api.subscription_delete(self.TOPIC_PATH)
 
@@ -629,7 +629,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXSubscriberAPI(_delete_subscription_ok=False)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.subscription_delete(self.TOPIC_PATH)
@@ -642,7 +642,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         from google.gax.errors import GaxError
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_delete(self.TOPIC_PATH)
@@ -654,7 +654,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
     def test_subscription_modify_push_config_hit(self):
         gax_api = _GAXSubscriberAPI(_modify_push_config_ok=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         api.subscription_modify_push_config(self.SUB_PATH, self.PUSH_ENDPOINT)
 
@@ -667,7 +667,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXSubscriberAPI()
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.subscription_modify_push_config(
@@ -682,7 +682,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         from google.gax.errors import GaxError
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_modify_push_config(
@@ -718,7 +718,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         response_pb = _PullResponsePB([_ReceivedMessagePB(ACK_ID, message_pb)])
         gax_api = _GAXSubscriberAPI(_pull_response=response_pb)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
         MAX_MESSAGES = 10
 
         received = api.subscription_pull(
@@ -736,7 +736,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXSubscriberAPI()
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.subscription_pull(self.SUB_PATH)
@@ -752,7 +752,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         from google.gax.errors import GaxError
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_pull(self.SUB_PATH)
@@ -769,7 +769,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         ACK_ID2 = 'BEADCAFE'
         gax_api = _GAXSubscriberAPI(_acknowledge_ok=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         api.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
 
@@ -784,7 +784,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         ACK_ID2 = 'BEADCAFE'
         gax_api = _GAXSubscriberAPI()
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
@@ -800,7 +800,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         ACK_ID2 = 'BEADCAFE'
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
@@ -816,7 +816,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         NEW_DEADLINE = 90
         gax_api = _GAXSubscriberAPI(_modify_ack_deadline_ok=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         api.subscription_modify_ack_deadline(
             self.SUB_PATH, [ACK_ID1, ACK_ID2], NEW_DEADLINE)
@@ -835,7 +835,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         NEW_DEADLINE = 90
         gax_api = _GAXSubscriberAPI()
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(NotFound):
             api.subscription_modify_ack_deadline(
@@ -855,7 +855,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         NEW_DEADLINE = 90
         gax_api = _GAXSubscriberAPI(_random_gax_error=True)
         client = _Client(self.PROJECT)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         with self.assertRaises(GaxError):
             api.subscription_modify_ack_deadline(
