@@ -514,7 +514,7 @@ class Test__prepare_create_request(unittest.TestCase):
     INSTANCE_NAME = PARENT + '/instances/' + INSTANCE_ID
     CLUSTER_NAME = INSTANCE_NAME + '/clusters/' + INSTANCE_ID
 
-    def _callFUT(self, instance, **kw):
+    def _call_fut(self, instance, **kw):
         from google.cloud.bigtable.instance import _prepare_create_request
         return _prepare_create_request(instance, **kw)
 
@@ -529,7 +529,7 @@ class Test__prepare_create_request(unittest.TestCase):
         client = _Client(self.PROJECT)
 
         instance = Instance(self.INSTANCE_ID, client, self.LOCATION_ID)
-        request_pb = self._callFUT(instance)
+        request_pb = self._call_fut(instance)
         self.assertIsInstance(request_pb,
                               messages_v2_pb.CreateInstanceRequest)
         self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
@@ -558,7 +558,7 @@ class Test__prepare_create_request(unittest.TestCase):
                             display_name=DISPLAY_NAME,
                             serve_nodes=SERVE_NODES)
 
-        request_pb = self._callFUT(instance)
+        request_pb = self._call_fut(instance)
 
         self.assertIsInstance(request_pb,
                               messages_v2_pb.CreateInstanceRequest)

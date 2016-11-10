@@ -215,62 +215,62 @@ class Test_Response(unittest.TestCase):
 
 class Test__check_response(unittest.TestCase):
 
-    def _callFUT(self, *args, **kw):
+    def _call_fut(self, *args, **kw):
         from google.cloud.streaming.http_wrapper import _check_response
         return _check_response(*args, **kw)
 
     def test_w_none(self):
         from google.cloud.streaming.exceptions import RequestError
         with self.assertRaises(RequestError):
-            self._callFUT(None)
+            self._call_fut(None)
 
     def test_w_TOO_MANY_REQUESTS(self):
         from google.cloud.streaming.exceptions import BadStatusCodeError
         from google.cloud.streaming.http_wrapper import TOO_MANY_REQUESTS
 
         with self.assertRaises(BadStatusCodeError):
-            self._callFUT(_Response(TOO_MANY_REQUESTS))
+            self._call_fut(_Response(TOO_MANY_REQUESTS))
 
     def test_w_50x(self):
         from google.cloud.streaming.exceptions import BadStatusCodeError
 
         with self.assertRaises(BadStatusCodeError):
-            self._callFUT(_Response(500))
+            self._call_fut(_Response(500))
 
         with self.assertRaises(BadStatusCodeError):
-            self._callFUT(_Response(503))
+            self._call_fut(_Response(503))
 
     def test_w_retry_after(self):
         from google.cloud.streaming.exceptions import RetryAfterError
 
         with self.assertRaises(RetryAfterError):
-            self._callFUT(_Response(200, 20))
+            self._call_fut(_Response(200, 20))
 
     def test_pass(self):
-        self._callFUT(_Response(200))
+        self._call_fut(_Response(200))
 
 
 class Test__reset_http_connections(unittest.TestCase):
 
-    def _callFUT(self, *args, **kw):
+    def _call_fut(self, *args, **kw):
         from google.cloud.streaming.http_wrapper import _reset_http_connections
         return _reset_http_connections(*args, **kw)
 
     def test_wo_connections(self):
         http = object()
-        self._callFUT(http)
+        self._call_fut(http)
 
     def test_w_connections(self):
         connections = {'delete:me': object(), 'skip_me': object()}
         http = _Dummy(connections=connections)
-        self._callFUT(http)
+        self._call_fut(http)
         self.assertFalse('delete:me' in connections)
         self.assertTrue('skip_me' in connections)
 
 
 class Test___make_api_request_no_retry(unittest.TestCase):
 
-    def _callFUT(self, *args, **kw):
+    def _call_fut(self, *args, **kw):
         from google.cloud.streaming.http_wrapper import (
             _make_api_request_no_retry)
         return _make_api_request_no_retry(*args, **kw)
@@ -297,7 +297,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
         _checked = []
         with _Monkey(MUT, httplib2=_httplib2,
                      _check_response=_checked.append):
-            response = self._callFUT(_http, _request)
+            response = self._call_fut(_http, _request)
 
         self.assertIsInstance(response, MUT.Response)
         self.assertEqual(response.info, INFO)
@@ -319,7 +319,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
         _checked = []
         with _Monkey(MUT, httplib2=_httplib2,
                      _check_response=_checked.append):
-            response = self._callFUT(_http, _request)
+            response = self._call_fut(_http, _request)
 
         self.assertIsInstance(response, MUT.Response)
         self.assertEqual(response.info, INFO)
@@ -341,7 +341,7 @@ class Test___make_api_request_no_retry(unittest.TestCase):
         _checked = []
         with _Monkey(MUT, httplib2=_httplib2,
                      _check_response=_checked.append):
-            response = self._callFUT(_http, _request)
+            response = self._call_fut(_http, _request)
 
         self.assertIsInstance(response, MUT.Response)
         self.assertEqual(response.info, INFO)
@@ -363,13 +363,13 @@ class Test___make_api_request_no_retry(unittest.TestCase):
         _request = _Request()
         with _Monkey(MUT, httplib2=_httplib2):
             with self.assertRaises(RequestError):
-                self._callFUT(_http, _request)
+                self._call_fut(_http, _request)
         self._verify_requested(_http, _request, connection_type=CONN_TYPE)
 
 
 class Test_make_api_request(unittest.TestCase):
 
-    def _callFUT(self, *args, **kw):
+    def _call_fut(self, *args, **kw):
         from google.cloud.streaming.http_wrapper import make_api_request
         return make_api_request(*args, **kw)
 
@@ -386,7 +386,7 @@ class Test_make_api_request(unittest.TestCase):
 
         with _Monkey(MUT, _make_api_request_no_retry=_wo_exception,
                      _check_response=_checked.append):
-            response = self._callFUT(HTTP, REQUEST)
+            response = self._call_fut(HTTP, REQUEST)
 
         self.assertIs(response, RESPONSE)
         expected_kw = {'redirections': MUT._REDIRECTIONS}
@@ -412,7 +412,7 @@ class Test_make_api_request(unittest.TestCase):
 
         with _Monkey(MUT, _make_api_request_no_retry=_wo_exception,
                      _check_response=_checked.append):
-            response = self._callFUT(HTTP, REQUEST, retries=5)
+            response = self._call_fut(HTTP, REQUEST, retries=5)
 
         self.assertIs(response, RESPONSE)
         self.assertEqual(len(_created), 5)
@@ -436,7 +436,7 @@ class Test_make_api_request(unittest.TestCase):
                      _make_api_request_no_retry=_wo_exception,
                      _check_response=_checked.append):
             with self.assertRaises(ValueError):
-                self._callFUT(HTTP, REQUEST, retries=3)
+                self._call_fut(HTTP, REQUEST, retries=3)
 
         self.assertEqual(len(_created), 3)
         expected_kw = {'redirections': MUT._REDIRECTIONS}

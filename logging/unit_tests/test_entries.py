@@ -17,7 +17,7 @@ import unittest
 
 class Test_logger_name_from_path(unittest.TestCase):
 
-    def _callFUT(self, path):
+    def _call_fut(self, path):
         from google.cloud.logging.entries import logger_name_from_path
         return logger_name_from_path(path)
 
@@ -25,14 +25,14 @@ class Test_logger_name_from_path(unittest.TestCase):
         LOGGER_NAME = 'LOGGER_NAME'
         PROJECT = 'my-project-1234'
         PATH = 'projects/%s/logs/%s' % (PROJECT, LOGGER_NAME)
-        logger_name = self._callFUT(PATH)
+        logger_name = self._call_fut(PATH)
         self.assertEqual(logger_name, LOGGER_NAME)
 
     def test_w_name_w_all_extras(self):
         LOGGER_NAME = 'LOGGER_NAME-part.one~part.two%part-three'
         PROJECT = 'my-project-1234'
         PATH = 'projects/%s/logs/%s' % (PROJECT, LOGGER_NAME)
-        logger_name = self._callFUT(PATH)
+        logger_name = self._call_fut(PATH)
         self.assertEqual(logger_name, LOGGER_NAME)
 
 

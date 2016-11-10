@@ -17,7 +17,7 @@ import unittest
 
 class Test__compute_type_url(unittest.TestCase):
 
-    def _callFUT(self, klass, prefix=None):
+    def _call_fut(self, klass, prefix=None):
         from google.cloud.operation import _compute_type_url
         if prefix is None:
             return _compute_type_url(klass)
@@ -27,7 +27,7 @@ class Test__compute_type_url(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.operation import _GOOGLE_APIS_PREFIX
 
-        type_url = self._callFUT(Struct)
+        type_url = self._call_fut(Struct)
 
         self.assertEqual(
             type_url,
@@ -37,7 +37,7 @@ class Test__compute_type_url(unittest.TestCase):
         from google.protobuf.struct_pb2 import Struct
         PREFIX = 'test.google-cloud-python.com'
 
-        type_url = self._callFUT(Struct, PREFIX)
+        type_url = self._call_fut(Struct, PREFIX)
 
         self.assertEqual(
             type_url,
@@ -46,7 +46,7 @@ class Test__compute_type_url(unittest.TestCase):
 
 class Test_register_type(unittest.TestCase):
 
-    def _callFUT(self, klass, type_url=None):
+    def _call_fut(self, klass, type_url=None):
         from google.cloud.operation import register_type
         register_type(klass, type_url=type_url)
 
@@ -59,7 +59,7 @@ class Test_register_type(unittest.TestCase):
         type_url_map = {}
 
         with _Monkey(MUT, _TYPE_URL_MAP=type_url_map):
-            self._callFUT(klass, type_url)
+            self._call_fut(klass, type_url)
 
         self.assertEqual(type_url_map, {type_url: klass})
 
@@ -70,7 +70,7 @@ class Test_register_type(unittest.TestCase):
 
         type_url_map = {}
         with _Monkey(MUT, _TYPE_URL_MAP=type_url_map):
-            self._callFUT(Struct)
+            self._call_fut(Struct)
 
         type_url = MUT._compute_type_url(Struct)
         self.assertEqual(type_url_map, {type_url: Struct})
@@ -84,7 +84,7 @@ class Test_register_type(unittest.TestCase):
         type_url_map = {type_url: klass}
 
         with _Monkey(MUT, _TYPE_URL_MAP=type_url_map):
-            self._callFUT(klass, type_url)
+            self._call_fut(klass, type_url)
 
         self.assertEqual(type_url_map, {type_url: klass})
 
@@ -98,7 +98,7 @@ class Test_register_type(unittest.TestCase):
 
         with _Monkey(MUT, _TYPE_URL_MAP=type_url_map):
             with self.assertRaises(ValueError):
-                self._callFUT(klass, type_url)
+                self._call_fut(klass, type_url)
 
         self.assertEqual(type_url_map, {type_url: other})
 
