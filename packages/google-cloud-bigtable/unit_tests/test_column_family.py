@@ -18,7 +18,7 @@ import unittest
 
 class Test__timedelta_to_duration_pb(unittest.TestCase):
 
-    def _callFUT(self, *args, **kwargs):
+    def _call_fut(self, *args, **kwargs):
         from google.cloud.bigtable.column_family import (
             _timedelta_to_duration_pb)
         return _timedelta_to_duration_pb(*args, **kwargs)
@@ -30,7 +30,7 @@ class Test__timedelta_to_duration_pb(unittest.TestCase):
         seconds = microseconds = 1
         timedelta_val = datetime.timedelta(seconds=seconds,
                                            microseconds=microseconds)
-        result = self._callFUT(timedelta_val)
+        result = self._call_fut(timedelta_val)
         self.assertIsInstance(result, duration_pb2.Duration)
         self.assertEqual(result.seconds, seconds)
         self.assertEqual(result.nanos, 1000 * microseconds)
@@ -43,7 +43,7 @@ class Test__timedelta_to_duration_pb(unittest.TestCase):
         microseconds = -5
         timedelta_val = datetime.timedelta(seconds=seconds,
                                            microseconds=microseconds)
-        result = self._callFUT(timedelta_val)
+        result = self._call_fut(timedelta_val)
         self.assertIsInstance(result, duration_pb2.Duration)
         self.assertEqual(result.seconds, seconds - 1)
         self.assertEqual(result.nanos, 10**9 + 1000 * microseconds)
@@ -56,7 +56,7 @@ class Test__timedelta_to_duration_pb(unittest.TestCase):
         microseconds = 5
         timedelta_val = datetime.timedelta(seconds=seconds,
                                            microseconds=microseconds)
-        result = self._callFUT(timedelta_val)
+        result = self._call_fut(timedelta_val)
         self.assertIsInstance(result, duration_pb2.Duration)
         self.assertEqual(result.seconds, seconds + 1)
         self.assertEqual(result.nanos, -(10**9 - 1000 * microseconds))
@@ -64,7 +64,7 @@ class Test__timedelta_to_duration_pb(unittest.TestCase):
 
 class Test__duration_pb_to_timedelta(unittest.TestCase):
 
-    def _callFUT(self, *args, **kwargs):
+    def _call_fut(self, *args, **kwargs):
         from google.cloud.bigtable.column_family import (
             _duration_pb_to_timedelta)
         return _duration_pb_to_timedelta(*args, **kwargs)
@@ -78,7 +78,7 @@ class Test__duration_pb_to_timedelta(unittest.TestCase):
                                             nanos=1000 * microseconds)
         timedelta_val = datetime.timedelta(seconds=seconds,
                                            microseconds=microseconds)
-        result = self._callFUT(duration_pb)
+        result = self._call_fut(duration_pb)
         self.assertIsInstance(result, datetime.timedelta)
         self.assertEqual(result, timedelta_val)
 
@@ -575,21 +575,21 @@ class TestColumnFamily(unittest.TestCase):
 
 class Test__gc_rule_from_pb(unittest.TestCase):
 
-    def _callFUT(self, *args, **kwargs):
+    def _call_fut(self, *args, **kwargs):
         from google.cloud.bigtable.column_family import _gc_rule_from_pb
         return _gc_rule_from_pb(*args, **kwargs)
 
     def test_empty(self):
 
         gc_rule_pb = _GcRulePB()
-        self.assertIsNone(self._callFUT(gc_rule_pb))
+        self.assertIsNone(self._call_fut(gc_rule_pb))
 
     def test_max_num_versions(self):
         from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
         orig_rule = MaxVersionsGCRule(1)
         gc_rule_pb = orig_rule.to_pb()
-        result = self._callFUT(gc_rule_pb)
+        result = self._call_fut(gc_rule_pb)
         self.assertIsInstance(result, MaxVersionsGCRule)
         self.assertEqual(result, orig_rule)
 
@@ -599,7 +599,7 @@ class Test__gc_rule_from_pb(unittest.TestCase):
 
         orig_rule = MaxAgeGCRule(datetime.timedelta(seconds=1))
         gc_rule_pb = orig_rule.to_pb()
-        result = self._callFUT(gc_rule_pb)
+        result = self._call_fut(gc_rule_pb)
         self.assertIsInstance(result, MaxAgeGCRule)
         self.assertEqual(result, orig_rule)
 
@@ -613,7 +613,7 @@ class Test__gc_rule_from_pb(unittest.TestCase):
         rule2 = MaxAgeGCRule(datetime.timedelta(seconds=1))
         orig_rule = GCRuleUnion([rule1, rule2])
         gc_rule_pb = orig_rule.to_pb()
-        result = self._callFUT(gc_rule_pb)
+        result = self._call_fut(gc_rule_pb)
         self.assertIsInstance(result, GCRuleUnion)
         self.assertEqual(result, orig_rule)
 
@@ -627,7 +627,7 @@ class Test__gc_rule_from_pb(unittest.TestCase):
         rule2 = MaxAgeGCRule(datetime.timedelta(seconds=1))
         orig_rule = GCRuleIntersection([rule1, rule2])
         gc_rule_pb = orig_rule.to_pb()
-        result = self._callFUT(gc_rule_pb)
+        result = self._call_fut(gc_rule_pb)
         self.assertIsInstance(result, GCRuleIntersection)
         self.assertEqual(result, orig_rule)
 
@@ -642,7 +642,7 @@ class Test__gc_rule_from_pb(unittest.TestCase):
                 return 'unknown'
 
         self.assertEqual(MockProto.names, [])
-        self.assertRaises(ValueError, self._callFUT, MockProto)
+        self.assertRaises(ValueError, self._call_fut, MockProto)
         self.assertEqual(MockProto.names, ['rule'])
 
 

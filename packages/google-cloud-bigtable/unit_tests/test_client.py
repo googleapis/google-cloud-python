@@ -18,7 +18,7 @@ import unittest
 
 class Test__make_data_stub(unittest.TestCase):
 
-    def _callFUT(self, client):
+    def _call_fut(self, client):
         from google.cloud.bigtable.client import _make_data_stub
         return _make_data_stub(client)
 
@@ -38,7 +38,7 @@ class Test__make_data_stub(unittest.TestCase):
             return fake_stub
 
         with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
-            result = self._callFUT(client)
+            result = self._call_fut(client)
 
         self.assertIs(result, fake_stub)
         self.assertEqual(make_secure_stub_args, [
@@ -65,7 +65,7 @@ class Test__make_data_stub(unittest.TestCase):
             return fake_stub
 
         with _Monkey(MUT, make_insecure_stub=mock_make_insecure_stub):
-            result = self._callFUT(client)
+            result = self._call_fut(client)
 
         self.assertIs(result, fake_stub)
         self.assertEqual(make_insecure_stub_args, [
@@ -78,7 +78,7 @@ class Test__make_data_stub(unittest.TestCase):
 
 class Test__make_instance_stub(unittest.TestCase):
 
-    def _callFUT(self, client):
+    def _call_fut(self, client):
         from google.cloud.bigtable.client import _make_instance_stub
         return _make_instance_stub(client)
 
@@ -98,7 +98,7 @@ class Test__make_instance_stub(unittest.TestCase):
             return fake_stub
 
         with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
-            result = self._callFUT(client)
+            result = self._call_fut(client)
 
         self.assertIs(result, fake_stub)
         self.assertEqual(make_secure_stub_args, [
@@ -125,7 +125,7 @@ class Test__make_instance_stub(unittest.TestCase):
             return fake_stub
 
         with _Monkey(MUT, make_insecure_stub=mock_make_insecure_stub):
-            result = self._callFUT(client)
+            result = self._call_fut(client)
 
         self.assertIs(result, fake_stub)
         self.assertEqual(make_insecure_stub_args, [
@@ -138,7 +138,7 @@ class Test__make_instance_stub(unittest.TestCase):
 
 class Test__make_operations_stub(unittest.TestCase):
 
-    def _callFUT(self, client):
+    def _call_fut(self, client):
         from google.cloud.bigtable.client import _make_operations_stub
         return _make_operations_stub(client)
 
@@ -160,7 +160,7 @@ class Test__make_operations_stub(unittest.TestCase):
             return fake_stub
 
         with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
-            result = self._callFUT(client)
+            result = self._call_fut(client)
 
         self.assertIs(result, fake_stub)
         self.assertEqual(make_secure_stub_args, [
@@ -189,7 +189,7 @@ class Test__make_operations_stub(unittest.TestCase):
             return fake_stub
 
         with _Monkey(MUT, make_insecure_stub=mock_make_insecure_stub):
-            result = self._callFUT(client)
+            result = self._call_fut(client)
 
         self.assertIs(result, fake_stub)
         self.assertEqual(make_insecure_stub_args, [
@@ -202,7 +202,7 @@ class Test__make_operations_stub(unittest.TestCase):
 
 class Test__make_table_stub(unittest.TestCase):
 
-    def _callFUT(self, client):
+    def _call_fut(self, client):
         from google.cloud.bigtable.client import _make_table_stub
         return _make_table_stub(client)
 
@@ -222,7 +222,7 @@ class Test__make_table_stub(unittest.TestCase):
             return fake_stub
 
         with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
-            result = self._callFUT(client)
+            result = self._call_fut(client)
 
         self.assertIs(result, fake_stub)
         self.assertEqual(make_secure_stub_args, [
@@ -249,7 +249,7 @@ class Test__make_table_stub(unittest.TestCase):
             return fake_stub
 
         with _Monkey(MUT, make_insecure_stub=mock_make_insecure_stub):
-            result = self._callFUT(client)
+            result = self._call_fut(client)
 
         self.assertIs(result, fake_stub)
         self.assertEqual(make_insecure_stub_args, [
