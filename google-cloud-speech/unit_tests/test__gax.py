@@ -131,8 +131,6 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
         from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
-            SpeechContext)
-        from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
             StreamingRecognitionConfig)
         from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import (
             StreamingRecognizeRequest)
@@ -143,7 +141,7 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
         language_code = 'US-en'
         max_alternatives = 2
         profanity_filter = True
-        speech_context = SpeechContext(phrases=self.HINTS)
+        speech_context = self.HINTS
         single_utterance = True
         interim_results = False
         streaming_requests = self._callFUT(sample, language_code,
