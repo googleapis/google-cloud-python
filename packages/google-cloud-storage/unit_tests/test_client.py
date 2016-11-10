@@ -22,7 +22,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage.client import Client
         return Client
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_connection_type(self):
@@ -31,7 +31,7 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
 
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client.connection, Connection)
         self.assertIs(client.connection.credentials, CREDENTIALS)
@@ -44,7 +44,7 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
 
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         batch1 = Batch(client)
         batch2 = Batch(client)
         client._push_batch(batch1)
@@ -62,7 +62,7 @@ class TestClient(unittest.TestCase):
     def test_connection_setter(self):
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         client._connection = None  # Unset the value from the constructor
         client.connection = connection = object()
         self.assertIs(client._connection, connection)
@@ -70,13 +70,13 @@ class TestClient(unittest.TestCase):
     def test_connection_setter_when_set(self):
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         self.assertRaises(ValueError, setattr, client, 'connection', None)
 
     def test_connection_getter_no_batch(self):
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         self.assertIs(client.connection, client._connection)
         self.assertIsNone(client.current_batch)
 
@@ -84,7 +84,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage.batch import Batch
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         batch = Batch(client)
         client._push_batch(batch)
         self.assertIsNot(client.connection, client._connection)
@@ -98,7 +98,7 @@ class TestClient(unittest.TestCase):
         CREDENTIALS = _Credentials()
         BUCKET_NAME = 'BUCKET_NAME'
 
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         bucket = client.bucket(BUCKET_NAME)
         self.assertIsInstance(bucket, Bucket)
         self.assertIs(bucket.client, client)
@@ -110,7 +110,7 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
 
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         batch = client.batch()
         self.assertIsInstance(batch, Batch)
         self.assertIs(batch._client, client)
@@ -120,7 +120,7 @@ class TestClient(unittest.TestCase):
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         NONESUCH = 'nonesuch'
         URI = '/'.join([
@@ -143,7 +143,7 @@ class TestClient(unittest.TestCase):
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BLOB_NAME = 'blob-name'
         URI = '/'.join([
@@ -167,7 +167,7 @@ class TestClient(unittest.TestCase):
     def test_lookup_bucket_miss(self):
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         NONESUCH = 'nonesuch'
         URI = '/'.join([
@@ -191,7 +191,7 @@ class TestClient(unittest.TestCase):
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BLOB_NAME = 'blob-name'
         URI = '/'.join([
@@ -217,7 +217,7 @@ class TestClient(unittest.TestCase):
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BLOB_NAME = 'blob-name'
         URI = '/'.join([
@@ -240,7 +240,7 @@ class TestClient(unittest.TestCase):
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BLOB_NAME = 'blob-name'
         URI = '/'.join([
@@ -266,7 +266,7 @@ class TestClient(unittest.TestCase):
 
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         EXPECTED_QUERY = {
             'project': [PROJECT],
@@ -298,7 +298,7 @@ class TestClient(unittest.TestCase):
         from six.moves.urllib.parse import urlparse
         PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BUCKET_NAME = 'bucket-name'
         query_params = urlencode({'project': PROJECT, 'projection': 'noAcl'})
@@ -327,7 +327,7 @@ class TestClient(unittest.TestCase):
 
         PROJECT = 'foo-bar'
         CREDENTIALS = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         MAX_RESULTS = 10
         PAGE_TOKEN = 'ABCD'
@@ -375,7 +375,7 @@ class TestClient(unittest.TestCase):
 
         project = 'PROJECT'
         credentials = _Credentials()
-        client = self._makeOne(project=project, credentials=credentials)
+        client = self._make_one(project=project, credentials=credentials)
         iterator = client.list_buckets()
         page = Page(iterator, (), None)
         iterator._page = page
@@ -387,7 +387,7 @@ class TestClient(unittest.TestCase):
 
         project = 'PROJECT'
         credentials = _Credentials()
-        client = self._makeOne(project=project, credentials=credentials)
+        client = self._make_one(project=project, credentials=credentials)
 
         blob_name = 'blob-name'
         response = {'items': [{'name': blob_name}]}
