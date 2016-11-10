@@ -24,12 +24,12 @@ class TestOperation(unittest.TestCase):
         from google.cloud.speech.operation import Operation
         return Operation
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         client = object()
-        operation = self._makeOne(
+        operation = self._make_one(
             self.OPERATION_NAME, client)
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertIs(operation.client, client)
@@ -75,7 +75,7 @@ class TestOperation(unittest.TestCase):
 
     def test__update_state_no_response(self):
         client = object()
-        operation = self._makeOne(
+        operation = self._make_one(
             self.OPERATION_NAME, client)
 
         operation_pb = self._make_operation_pb()
@@ -87,7 +87,7 @@ class TestOperation(unittest.TestCase):
         from google.cloud.speech.alternative import Alternative
 
         client = object()
-        operation = self._makeOne(
+        operation = self._make_one(
             self.OPERATION_NAME, client)
 
         text = 'hi mom'
@@ -105,7 +105,7 @@ class TestOperation(unittest.TestCase):
 
     def test__update_state_bad_response(self):
         client = object()
-        operation = self._makeOne(
+        operation = self._make_one(
             self.OPERATION_NAME, client)
 
         result1 = self._make_result('is this ok?', 0.625)
