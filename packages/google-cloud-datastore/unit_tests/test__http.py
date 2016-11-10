@@ -110,7 +110,7 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
 @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
 class Test__grpc_catch_rendezvous(unittest.TestCase):
 
-    def _callFUT(self):
+    def _call_fut(self):
         from google.cloud.datastore._http import _grpc_catch_rendezvous
         return _grpc_catch_rendezvous()
 
@@ -123,7 +123,7 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
 
     def test_success(self):
         expected = object()
-        with self._callFUT():
+        with self._call_fut():
             result = self._fake_method(None, expected)
         self.assertIs(result, expected)
 
@@ -137,7 +137,7 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
         exc_state = _RPCState((), None, None, StatusCode.ABORTED, details)
         exc = GrpcRendezvous(exc_state, None, None, None)
         with self.assertRaises(Conflict):
-            with self._callFUT():
+            with self._call_fut():
                 self._fake_method(exc)
 
     def test_failure_invalid_argument(self):
@@ -152,7 +152,7 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
                               StatusCode.INVALID_ARGUMENT, details)
         exc = GrpcRendezvous(exc_state, None, None, None)
         with self.assertRaises(BadRequest):
-            with self._callFUT():
+            with self._call_fut():
                 self._fake_method(exc)
 
     def test_failure_cancelled(self):
@@ -163,13 +163,13 @@ class Test__grpc_catch_rendezvous(unittest.TestCase):
         exc_state = _RPCState((), None, None, StatusCode.CANCELLED, None)
         exc = GrpcRendezvous(exc_state, None, None, None)
         with self.assertRaises(GrpcRendezvous):
-            with self._callFUT():
+            with self._call_fut():
                 self._fake_method(exc)
 
     def test_commit_failure_non_grpc_err(self):
         exc = RuntimeError('Not a gRPC error')
         with self.assertRaises(RuntimeError):
-            with self._callFUT():
+            with self._call_fut():
                 self._fake_method(exc)
 
 
@@ -1093,7 +1093,7 @@ class TestConnection(unittest.TestCase):
 
 class Test__parse_commit_response(unittest.TestCase):
 
-    def _callFUT(self, commit_response_pb):
+    def _call_fut(self, commit_response_pb):
         from google.cloud.datastore._http import _parse_commit_response
         return _parse_commit_response(commit_response_pb)
 
@@ -1126,7 +1126,7 @@ class Test__parse_commit_response(unittest.TestCase):
             ],
             index_updates=index_updates,
         )
-        result = self._callFUT(response)
+        result = self._call_fut(response)
         self.assertEqual(result, (index_updates, keys))
 
 

@@ -17,7 +17,7 @@ import unittest
 
 class Test__new_value_pb(unittest.TestCase):
 
-    def _callFUT(self, entity_pb, name):
+    def _call_fut(self, entity_pb, name):
         from google.cloud.datastore.helpers import _new_value_pb
         return _new_value_pb(entity_pb, name)
 
@@ -26,7 +26,7 @@ class Test__new_value_pb(unittest.TestCase):
 
         entity_pb = entity_pb2.Entity()
         name = 'foo'
-        result = self._callFUT(entity_pb, name)
+        result = self._call_fut(entity_pb, name)
 
         self.assertIsInstance(result, entity_pb2.Value)
         self.assertEqual(len(entity_pb.properties), 1)
@@ -35,7 +35,7 @@ class Test__new_value_pb(unittest.TestCase):
 
 class Test__property_tuples(unittest.TestCase):
 
-    def _callFUT(self, entity_pb):
+    def _call_fut(self, entity_pb):
         from google.cloud.datastore.helpers import _property_tuples
         return _property_tuples(entity_pb)
 
@@ -50,7 +50,7 @@ class Test__property_tuples(unittest.TestCase):
         val_pb1 = _new_value_pb(entity_pb, name1)
         val_pb2 = _new_value_pb(entity_pb, name2)
 
-        result = self._callFUT(entity_pb)
+        result = self._call_fut(entity_pb)
         self.assertIsInstance(result, types.GeneratorType)
         self.assertEqual(sorted(result),
                          sorted([(name1, val_pb1), (name2, val_pb2)]))
@@ -58,7 +58,7 @@ class Test__property_tuples(unittest.TestCase):
 
 class Test_entity_from_protobuf(unittest.TestCase):
 
-    def _callFUT(self, val):
+    def _call_fut(self, val):
         from google.cloud.datastore.helpers import entity_from_protobuf
         return entity_from_protobuf(val)
 
@@ -93,7 +93,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
         indexed_array_val_pb = array_pb2.add()
         indexed_array_val_pb.integer_value = 12
 
-        entity = self._callFUT(entity_pb)
+        entity = self._call_fut(entity_pb)
         self.assertEqual(entity.kind, _KIND)
         self.assertEqual(entity.exclude_from_indexes,
                          frozenset(['bar', 'baz']))
@@ -130,13 +130,13 @@ class Test_entity_from_protobuf(unittest.TestCase):
         unindexed_value_pb2.integer_value = 11
 
         with self.assertRaises(ValueError):
-            self._callFUT(entity_pb)
+            self._call_fut(entity_pb)
 
     def test_entity_no_key(self):
         from google.cloud.datastore._generated import entity_pb2
 
         entity_pb = entity_pb2.Entity()
-        entity = self._callFUT(entity_pb)
+        entity = self._call_fut(entity_pb)
 
         self.assertIsNone(entity.key)
         self.assertEqual(dict(entity), {})
@@ -151,7 +151,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
         value_pb.meaning = meaning = 9
         value_pb.string_value = val = u'something'
 
-        entity = self._callFUT(entity_pb)
+        entity = self._call_fut(entity_pb)
         self.assertIsNone(entity.key)
         self.assertEqual(dict(entity), {name: val})
         self.assertEqual(entity._meanings, {name: (meaning, val)})
@@ -178,7 +178,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
         outside_val_pb = _new_value_pb(entity_pb, OUTSIDE_NAME)
         outside_val_pb.entity_value.CopyFrom(entity_inside)
 
-        entity = self._callFUT(entity_pb)
+        entity = self._call_fut(entity_pb)
         self.assertEqual(entity.key.project, PROJECT)
         self.assertEqual(entity.key.flat_path, (KIND,))
         self.assertEqual(len(entity), 1)
@@ -191,7 +191,7 @@ class Test_entity_from_protobuf(unittest.TestCase):
 
 class Test_entity_to_protobuf(unittest.TestCase):
 
-    def _callFUT(self, entity):
+    def _call_fut(self, entity):
         from google.cloud.datastore.helpers import entity_to_protobuf
         return entity_to_protobuf(entity)
 
@@ -218,7 +218,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
         from google.cloud.datastore.entity import Entity
 
         entity = Entity()
-        entity_pb = self._callFUT(entity)
+        entity_pb = self._call_fut(entity)
         self._compareEntityProto(entity_pb, entity_pb2.Entity())
 
     def test_key_only(self):
@@ -230,7 +230,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
         project = 'PROJECT'
         key = Key(kind, name, project=project)
         entity = Entity(key=key)
-        entity_pb = self._callFUT(entity)
+        entity_pb = self._call_fut(entity)
 
         expected_pb = entity_pb2.Entity()
         expected_pb.key.partition_id.project_id = project
@@ -250,7 +250,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
         entity[name1] = value1 = 42
         name2 = 'bar'
         entity[name2] = value2 = u'some-string'
-        entity_pb = self._callFUT(entity)
+        entity_pb = self._call_fut(entity)
 
         expected_pb = entity_pb2.Entity()
         val_pb1 = _new_value_pb(expected_pb, name1)
@@ -266,7 +266,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
 
         entity = Entity()
         entity['foo'] = []
-        entity_pb = self._callFUT(entity)
+        entity_pb = self._call_fut(entity)
 
         self._compareEntityProto(entity_pb, entity_pb2.Entity())
 
@@ -317,7 +317,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
         # Convert to the user-space Entity.
         entity = entity_from_protobuf(original_pb)
         # Convert the user-space Entity back to a protobuf.
-        new_pb = self._callFUT(entity)
+        new_pb = self._call_fut(entity)
 
         # NOTE: entity_to_protobuf() strips the project so we "cheat".
         new_pb.key.partition_id.project_id = project
@@ -332,7 +332,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
         name = 'foo'
         entity[name] = value = 42
         entity._meanings[name] = (9, 1337)
-        entity_pb = self._callFUT(entity)
+        entity_pb = self._call_fut(entity)
 
         expected_pb = entity_pb2.Entity()
         value_pb = _new_value_pb(expected_pb, name)
@@ -351,7 +351,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
         entity[name] = values = [1, 20, 300]
         meaning = 9
         entity._meanings[name] = ([None, meaning, None], values)
-        entity_pb = self._callFUT(entity)
+        entity_pb = self._call_fut(entity)
 
         # Construct the expected protobuf.
         expected_pb = entity_pb2.Entity()
@@ -370,7 +370,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
 
 class Test_key_from_protobuf(unittest.TestCase):
 
-    def _callFUT(self, val):
+    def _call_fut(self, val):
         from google.cloud.datastore.helpers import key_from_protobuf
 
         return key_from_protobuf(val)
@@ -394,7 +394,7 @@ class Test_key_from_protobuf(unittest.TestCase):
     def test_wo_namespace_in_pb(self):
         _PROJECT = 'PROJECT'
         pb = self._makePB(path=[{'kind': 'KIND'}], project=_PROJECT)
-        key = self._callFUT(pb)
+        key = self._call_fut(pb)
         self.assertEqual(key.project, _PROJECT)
         self.assertIsNone(key.namespace)
 
@@ -403,7 +403,7 @@ class Test_key_from_protobuf(unittest.TestCase):
         _NAMESPACE = 'NAMESPACE'
         pb = self._makePB(path=[{'kind': 'KIND'}], namespace=_NAMESPACE,
                           project=_PROJECT)
-        key = self._callFUT(pb)
+        key = self._call_fut(pb)
         self.assertEqual(key.project, _PROJECT)
         self.assertEqual(key.namespace, _NAMESPACE)
 
@@ -414,17 +414,17 @@ class Test_key_from_protobuf(unittest.TestCase):
             {'kind': 'GRANDCHILD', 'id': 5678},
         ]
         pb = self._makePB(path=_PATH, project='PROJECT')
-        key = self._callFUT(pb)
+        key = self._call_fut(pb)
         self.assertEqual(key.path, _PATH)
 
     def test_w_nothing_in_pb(self):
         pb = self._makePB()
-        self.assertRaises(ValueError, self._callFUT, pb)
+        self.assertRaises(ValueError, self._call_fut, pb)
 
 
 class Test__pb_attr_value(unittest.TestCase):
 
-    def _callFUT(self, val):
+    def _call_fut(self, val):
         from google.cloud.datastore.helpers import _pb_attr_value
 
         return _pb_attr_value(val)
@@ -437,7 +437,7 @@ class Test__pb_attr_value(unittest.TestCase):
         micros = 4375
         naive = datetime.datetime(2014, 9, 16, 10, 19, 32, micros)  # No zone.
         utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
-        name, value = self._callFUT(naive)
+        name, value = self._call_fut(naive)
         self.assertEqual(name, 'timestamp_value')
         self.assertEqual(value.seconds, calendar.timegm(utc.timetuple()))
         self.assertEqual(value.nanos, 1000 * micros)
@@ -449,7 +449,7 @@ class Test__pb_attr_value(unittest.TestCase):
 
         micros = 4375
         utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
-        name, value = self._callFUT(utc)
+        name, value = self._call_fut(utc)
         self.assertEqual(name, 'timestamp_value')
         self.assertEqual(value.seconds, calendar.timegm(utc.timetuple()))
         self.assertEqual(value.nanos, 1000 * micros)
@@ -458,34 +458,34 @@ class Test__pb_attr_value(unittest.TestCase):
         from google.cloud.datastore.key import Key
 
         key = Key('PATH', 1234, project='PROJECT')
-        name, value = self._callFUT(key)
+        name, value = self._call_fut(key)
         self.assertEqual(name, 'key_value')
         self.assertEqual(value, key.to_protobuf())
 
     def test_bool(self):
-        name, value = self._callFUT(False)
+        name, value = self._call_fut(False)
         self.assertEqual(name, 'boolean_value')
         self.assertEqual(value, False)
 
     def test_float(self):
-        name, value = self._callFUT(3.1415926)
+        name, value = self._call_fut(3.1415926)
         self.assertEqual(name, 'double_value')
         self.assertEqual(value, 3.1415926)
 
     def test_int(self):
-        name, value = self._callFUT(42)
+        name, value = self._call_fut(42)
         self.assertEqual(name, 'integer_value')
         self.assertEqual(value, 42)
 
     def test_long(self):
         must_be_long = (1 << 63) - 1
-        name, value = self._callFUT(must_be_long)
+        name, value = self._call_fut(must_be_long)
         self.assertEqual(name, 'integer_value')
         self.assertEqual(value, must_be_long)
 
     def test_native_str(self):
         import six
-        name, value = self._callFUT('str')
+        name, value = self._call_fut('str')
         if six.PY2:
             self.assertEqual(name, 'blob_value')
         else:  # pragma: NO COVER Python 3
@@ -493,25 +493,25 @@ class Test__pb_attr_value(unittest.TestCase):
         self.assertEqual(value, 'str')
 
     def test_bytes(self):
-        name, value = self._callFUT(b'bytes')
+        name, value = self._call_fut(b'bytes')
         self.assertEqual(name, 'blob_value')
         self.assertEqual(value, b'bytes')
 
     def test_unicode(self):
-        name, value = self._callFUT(u'str')
+        name, value = self._call_fut(u'str')
         self.assertEqual(name, 'string_value')
         self.assertEqual(value, u'str')
 
     def test_entity(self):
         from google.cloud.datastore.entity import Entity
         entity = Entity()
-        name, value = self._callFUT(entity)
+        name, value = self._call_fut(entity)
         self.assertEqual(name, 'entity_value')
         self.assertIs(value, entity)
 
     def test_array(self):
         values = ['a', 0, 3.14]
-        name, value = self._callFUT(values)
+        name, value = self._call_fut(values)
         self.assertEqual(name, 'array_value')
         self.assertIs(value, values)
 
@@ -523,24 +523,24 @@ class Test__pb_attr_value(unittest.TestCase):
         lng = 99.0007
         geo_pt = GeoPoint(latitude=lat, longitude=lng)
         geo_pt_pb = latlng_pb2.LatLng(latitude=lat, longitude=lng)
-        name, value = self._callFUT(geo_pt)
+        name, value = self._call_fut(geo_pt)
         self.assertEqual(name, 'geo_point_value')
         self.assertEqual(value, geo_pt_pb)
 
     def test_null(self):
         from google.protobuf import struct_pb2
 
-        name, value = self._callFUT(None)
+        name, value = self._call_fut(None)
         self.assertEqual(name, 'null_value')
         self.assertEqual(value, struct_pb2.NULL_VALUE)
 
     def test_object(self):
-        self.assertRaises(ValueError, self._callFUT, object())
+        self.assertRaises(ValueError, self._call_fut, object())
 
 
 class Test__get_value_from_value_pb(unittest.TestCase):
 
-    def _callFUT(self, pb):
+    def _call_fut(self, pb):
         from google.cloud.datastore.helpers import _get_value_from_value_pb
 
         return _get_value_from_value_pb(pb)
@@ -563,7 +563,7 @@ class Test__get_value_from_value_pb(unittest.TestCase):
         pb = entity_pb2.Value()
         pb.timestamp_value.seconds = calendar.timegm(utc.timetuple())
         pb.timestamp_value.nanos = 1000 * micros
-        self.assertEqual(self._callFUT(pb), utc)
+        self.assertEqual(self._call_fut(pb), utc)
 
     def test_key(self):
         from google.cloud.datastore._generated import entity_pb2
@@ -572,28 +572,28 @@ class Test__get_value_from_value_pb(unittest.TestCase):
         pb = entity_pb2.Value()
         expected = Key('KIND', 1234, project='PROJECT').to_protobuf()
         pb.key_value.CopyFrom(expected)
-        found = self._callFUT(pb)
+        found = self._call_fut(pb)
         self.assertEqual(found.to_protobuf(), expected)
 
     def test_bool(self):
         pb = self._makePB('boolean_value', False)
-        self.assertEqual(self._callFUT(pb), False)
+        self.assertEqual(self._call_fut(pb), False)
 
     def test_float(self):
         pb = self._makePB('double_value', 3.1415926)
-        self.assertEqual(self._callFUT(pb), 3.1415926)
+        self.assertEqual(self._call_fut(pb), 3.1415926)
 
     def test_int(self):
         pb = self._makePB('integer_value', 42)
-        self.assertEqual(self._callFUT(pb), 42)
+        self.assertEqual(self._call_fut(pb), 42)
 
     def test_bytes(self):
         pb = self._makePB('blob_value', b'str')
-        self.assertEqual(self._callFUT(pb), b'str')
+        self.assertEqual(self._call_fut(pb), b'str')
 
     def test_unicode(self):
         pb = self._makePB('string_value', u'str')
-        self.assertEqual(self._callFUT(pb), u'str')
+        self.assertEqual(self._call_fut(pb), u'str')
 
     def test_entity(self):
         from google.cloud.datastore._generated import entity_pb2
@@ -607,7 +607,7 @@ class Test__get_value_from_value_pb(unittest.TestCase):
 
         value_pb = _new_value_pb(entity_pb, 'foo')
         value_pb.string_value = 'Foo'
-        entity = self._callFUT(pb)
+        entity = self._call_fut(pb)
         self.assertIsInstance(entity, Entity)
         self.assertEqual(entity['foo'], 'Foo')
 
@@ -620,7 +620,7 @@ class Test__get_value_from_value_pb(unittest.TestCase):
         item_pb.string_value = 'Foo'
         item_pb = array_pb.add()
         item_pb.string_value = 'Bar'
-        items = self._callFUT(pb)
+        items = self._call_fut(pb)
         self.assertEqual(items, ['Foo', 'Bar'])
 
     def test_geo_point(self):
@@ -632,7 +632,7 @@ class Test__get_value_from_value_pb(unittest.TestCase):
         lng = 13.37
         geo_pt_pb = latlng_pb2.LatLng(latitude=lat, longitude=lng)
         pb = entity_pb2.Value(geo_point_value=geo_pt_pb)
-        result = self._callFUT(pb)
+        result = self._call_fut(pb)
         self.assertIsInstance(result, GeoPoint)
         self.assertEqual(result.latitude, lat)
         self.assertEqual(result.longitude, lng)
@@ -642,7 +642,7 @@ class Test__get_value_from_value_pb(unittest.TestCase):
         from google.cloud.datastore._generated import entity_pb2
 
         pb = entity_pb2.Value(null_value=struct_pb2.NULL_VALUE)
-        result = self._callFUT(pb)
+        result = self._call_fut(pb)
         self.assertIsNone(result)
 
     def test_unknown(self):
@@ -650,12 +650,12 @@ class Test__get_value_from_value_pb(unittest.TestCase):
 
         pb = entity_pb2.Value()
         with self.assertRaises(ValueError):
-            self._callFUT(pb)
+            self._call_fut(pb)
 
 
 class Test_set_protobuf_value(unittest.TestCase):
 
-    def _callFUT(self, value_pb, val):
+    def _call_fut(self, value_pb, val):
         from google.cloud.datastore.helpers import _set_protobuf_value
 
         return _set_protobuf_value(value_pb, val)
@@ -672,7 +672,7 @@ class Test_set_protobuf_value(unittest.TestCase):
         pb = self._makePB()
         micros = 4375
         utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
-        self._callFUT(pb, utc)
+        self._call_fut(pb, utc)
         value = pb.timestamp_value
         self.assertEqual(value.seconds, calendar.timegm(utc.timetuple()))
         self.assertEqual(value.nanos, 1000 * micros)
@@ -682,44 +682,44 @@ class Test_set_protobuf_value(unittest.TestCase):
 
         pb = self._makePB()
         key = Key('KIND', 1234, project='PROJECT')
-        self._callFUT(pb, key)
+        self._call_fut(pb, key)
         value = pb.key_value
         self.assertEqual(value, key.to_protobuf())
 
     def test_none(self):
         pb = self._makePB()
-        self._callFUT(pb, None)
+        self._call_fut(pb, None)
         self.assertEqual(pb.WhichOneof('value_type'), 'null_value')
 
     def test_bool(self):
         pb = self._makePB()
-        self._callFUT(pb, False)
+        self._call_fut(pb, False)
         value = pb.boolean_value
         self.assertEqual(value, False)
 
     def test_float(self):
         pb = self._makePB()
-        self._callFUT(pb, 3.1415926)
+        self._call_fut(pb, 3.1415926)
         value = pb.double_value
         self.assertEqual(value, 3.1415926)
 
     def test_int(self):
         pb = self._makePB()
-        self._callFUT(pb, 42)
+        self._call_fut(pb, 42)
         value = pb.integer_value
         self.assertEqual(value, 42)
 
     def test_long(self):
         pb = self._makePB()
         must_be_long = (1 << 63) - 1
-        self._callFUT(pb, must_be_long)
+        self._call_fut(pb, must_be_long)
         value = pb.integer_value
         self.assertEqual(value, must_be_long)
 
     def test_native_str(self):
         import six
         pb = self._makePB()
-        self._callFUT(pb, 'str')
+        self._call_fut(pb, 'str')
         if six.PY2:
             value = pb.blob_value
         else:  # pragma: NO COVER Python 3
@@ -728,13 +728,13 @@ class Test_set_protobuf_value(unittest.TestCase):
 
     def test_bytes(self):
         pb = self._makePB()
-        self._callFUT(pb, b'str')
+        self._call_fut(pb, b'str')
         value = pb.blob_value
         self.assertEqual(value, b'str')
 
     def test_unicode(self):
         pb = self._makePB()
-        self._callFUT(pb, u'str')
+        self._call_fut(pb, u'str')
         value = pb.string_value
         self.assertEqual(value, u'str')
 
@@ -744,7 +744,7 @@ class Test_set_protobuf_value(unittest.TestCase):
 
         pb = self._makePB()
         entity = Entity()
-        self._callFUT(pb, entity)
+        self._call_fut(pb, entity)
         value = pb.entity_value
         self.assertEqual(value.key.SerializeToString(), b'')
         self.assertEqual(len(list(_property_tuples(value))), 0)
@@ -760,7 +760,7 @@ class Test_set_protobuf_value(unittest.TestCase):
         key = Key('KIND', 123, project='PROJECT')
         entity = Entity(key=key)
         entity[name] = value
-        self._callFUT(pb, entity)
+        self._call_fut(pb, entity)
         entity_pb = pb.entity_value
         self.assertEqual(entity_pb.key, key.to_protobuf())
 
@@ -772,7 +772,7 @@ class Test_set_protobuf_value(unittest.TestCase):
     def test_array(self):
         pb = self._makePB()
         values = [u'a', 0, 3.14]
-        self._callFUT(pb, values)
+        self._call_fut(pb, values)
         marshalled = pb.array_value.values
         self.assertEqual(len(marshalled), len(values))
         self.assertEqual(marshalled[0].string_value, values[0])
@@ -788,13 +788,13 @@ class Test_set_protobuf_value(unittest.TestCase):
         lng = 3.337
         geo_pt = GeoPoint(latitude=lat, longitude=lng)
         geo_pt_pb = latlng_pb2.LatLng(latitude=lat, longitude=lng)
-        self._callFUT(pb, geo_pt)
+        self._call_fut(pb, geo_pt)
         self.assertEqual(pb.geo_point_value, geo_pt_pb)
 
 
 class Test__get_meaning(unittest.TestCase):
 
-    def _callFUT(self, *args, **kwargs):
+    def _call_fut(self, *args, **kwargs):
         from google.cloud.datastore.helpers import _get_meaning
         return _get_meaning(*args, **kwargs)
 
@@ -802,7 +802,7 @@ class Test__get_meaning(unittest.TestCase):
         from google.cloud.datastore._generated import entity_pb2
 
         value_pb = entity_pb2.Value()
-        result = self._callFUT(value_pb)
+        result = self._call_fut(value_pb)
         self.assertIsNone(result)
 
     def test_single(self):
@@ -811,7 +811,7 @@ class Test__get_meaning(unittest.TestCase):
         value_pb = entity_pb2.Value()
         value_pb.meaning = meaning = 22
         value_pb.string_value = u'hi'
-        result = self._callFUT(value_pb)
+        result = self._call_fut(value_pb)
         self.assertEqual(meaning, result)
 
     def test_empty_array_value(self):
@@ -821,7 +821,7 @@ class Test__get_meaning(unittest.TestCase):
         value_pb.array_value.values.add()
         value_pb.array_value.values.pop()
 
-        result = self._callFUT(value_pb, is_list=True)
+        result = self._call_fut(value_pb, is_list=True)
         self.assertEqual(None, result)
 
     def test_array_value(self):
@@ -836,7 +836,7 @@ class Test__get_meaning(unittest.TestCase):
         sub_value_pb1.string_value = u'hi'
         sub_value_pb2.string_value = u'bye'
 
-        result = self._callFUT(value_pb, is_list=True)
+        result = self._call_fut(value_pb, is_list=True)
         self.assertEqual(meaning, result)
 
     def test_array_value_multiple_meanings(self):
@@ -853,7 +853,7 @@ class Test__get_meaning(unittest.TestCase):
         sub_value_pb1.string_value = u'hi'
         sub_value_pb2.string_value = u'bye'
 
-        result = self._callFUT(value_pb, is_list=True)
+        result = self._call_fut(value_pb, is_list=True)
         self.assertEqual(result, [meaning1, meaning2])
 
     def test_array_value_meaning_partially_unset(self):
@@ -868,7 +868,7 @@ class Test__get_meaning(unittest.TestCase):
         sub_value_pb1.string_value = u'hi'
         sub_value_pb2.string_value = u'bye'
 
-        result = self._callFUT(value_pb, is_list=True)
+        result = self._call_fut(value_pb, is_list=True)
         self.assertEqual(result, [meaning1, None])
 
 
