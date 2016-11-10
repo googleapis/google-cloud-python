@@ -22,30 +22,30 @@ class TestAccessGrant(unittest.TestCase):
         from google.cloud.bigquery.dataset import AccessGrant
         return AccessGrant
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        grant = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
+        grant = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
         self.assertEqual(grant.role, 'OWNER')
         self.assertEqual(grant.entity_type, 'userByEmail')
         self.assertEqual(grant.entity_id, 'phred@example.com')
 
     def test_ctor_bad_entity_type(self):
         with self.assertRaises(ValueError):
-            self._makeOne(None, 'unknown', None)
+            self._make_one(None, 'unknown', None)
 
     def test_ctor_view_with_role(self):
         role = 'READER'
         entity_type = 'view'
         with self.assertRaises(ValueError):
-            self._makeOne(role, entity_type, None)
+            self._make_one(role, entity_type, None)
 
     def test_ctor_view_success(self):
         role = None
         entity_type = 'view'
         entity_id = object()
-        grant = self._makeOne(role, entity_type, entity_id)
+        grant = self._make_one(role, entity_type, entity_id)
         self.assertEqual(grant.role, role)
         self.assertEqual(grant.entity_type, entity_type)
         self.assertEqual(grant.entity_id, entity_id)
@@ -54,26 +54,26 @@ class TestAccessGrant(unittest.TestCase):
         role = None
         entity_type = 'userByEmail'
         with self.assertRaises(ValueError):
-            self._makeOne(role, entity_type, None)
+            self._make_one(role, entity_type, None)
 
     def test___eq___role_mismatch(self):
-        grant = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
-        other = self._makeOne('WRITER', 'userByEmail', 'phred@example.com')
+        grant = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
+        other = self._make_one('WRITER', 'userByEmail', 'phred@example.com')
         self.assertNotEqual(grant, other)
 
     def test___eq___entity_type_mismatch(self):
-        grant = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
-        other = self._makeOne('OWNER', 'groupByEmail', 'phred@example.com')
+        grant = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
+        other = self._make_one('OWNER', 'groupByEmail', 'phred@example.com')
         self.assertNotEqual(grant, other)
 
     def test___eq___entity_id_mismatch(self):
-        grant = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
-        other = self._makeOne('OWNER', 'userByEmail', 'bharney@example.com')
+        grant = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
+        other = self._make_one('OWNER', 'userByEmail', 'bharney@example.com')
         self.assertNotEqual(grant, other)
 
     def test___eq___hit(self):
-        grant = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
-        other = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
+        grant = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
+        other = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
         self.assertEqual(grant, other)
 
 
@@ -86,7 +86,7 @@ class TestDataset(unittest.TestCase):
         from google.cloud.bigquery.dataset import Dataset
         return Dataset
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def _setUpConstants(self):
@@ -176,7 +176,7 @@ class TestDataset(unittest.TestCase):
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_NAME, client)
         self.assertEqual(dataset.name, self.DS_NAME)
         self.assertIs(dataset._client, client)
         self.assertEqual(dataset.project, client.project)
@@ -198,14 +198,14 @@ class TestDataset(unittest.TestCase):
 
     def test_access_roles_setter_non_list(self):
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_NAME, client)
         with self.assertRaises(TypeError):
             dataset.access_grants = object()
 
     def test_access_roles_setter_invalid_field(self):
         from google.cloud.bigquery.dataset import AccessGrant
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_NAME, client)
         phred = AccessGrant('OWNER', 'userByEmail', 'phred@example.com')
         with self.assertRaises(ValueError):
             dataset.access_grants = [phred, object()]
@@ -213,7 +213,7 @@ class TestDataset(unittest.TestCase):
     def test_access_roles_setter(self):
         from google.cloud.bigquery.dataset import AccessGrant
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_NAME, client)
         phred = AccessGrant('OWNER', 'userByEmail', 'phred@example.com')
         bharney = AccessGrant('OWNER', 'userByEmail', 'bharney@example.com')
         dataset.access_grants = [phred, bharney]
@@ -221,49 +221,49 @@ class TestDataset(unittest.TestCase):
 
     def test_default_table_expiration_ms_setter_bad_value(self):
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_NAME, client)
         with self.assertRaises(ValueError):
             dataset.default_table_expiration_ms = 'bogus'
 
     def test_default_table_expiration_ms_setter(self):
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_NAME, client)
         dataset.default_table_expiration_ms = 12345
         self.assertEqual(dataset.default_table_expiration_ms, 12345)
 
     def test_description_setter_bad_value(self):
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_NAME, client)
         with self.assertRaises(ValueError):
             dataset.description = 12345
 
     def test_description_setter(self):
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_NAME, client)
         dataset.description = 'DESCRIPTION'
         self.assertEqual(dataset.description, 'DESCRIPTION')
 
     def test_friendly_name_setter_bad_value(self):
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_NAME, client)
         with self.assertRaises(ValueError):
             dataset.friendly_name = 12345
 
     def test_friendly_name_setter(self):
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_NAME, client)
         dataset.friendly_name = 'FRIENDLY'
         self.assertEqual(dataset.friendly_name, 'FRIENDLY')
 
     def test_location_setter_bad_value(self):
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_NAME, client)
         with self.assertRaises(ValueError):
             dataset.location = 12345
 
     def test_location_setter(self):
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_NAME, client)
         dataset.location = 'LOCATION'
         self.assertEqual(dataset.location, 'LOCATION')
 
@@ -303,7 +303,7 @@ class TestDataset(unittest.TestCase):
             {'role': 'READER', 'unknown': 'UNKNOWN'},
         ]
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
         with self.assertRaises(ValueError):
             dataset._parse_access_grants(ACCESS)
 
@@ -317,7 +317,7 @@ class TestDataset(unittest.TestCase):
             },
         ]
         client = _Client(self.PROJECT)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
         with self.assertRaises(ValueError):
             dataset._parse_access_grants(ACCESS)
 
@@ -326,7 +326,7 @@ class TestDataset(unittest.TestCase):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
 
         dataset.create()
 
@@ -355,7 +355,7 @@ class TestDataset(unittest.TestCase):
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT1)
+        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
         dataset.friendly_name = TITLE
         dataset.description = DESCRIPTION
         VIEW = {
@@ -408,7 +408,7 @@ class TestDataset(unittest.TestCase):
         self.WHEN = None
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
 
         dataset.create()
 
@@ -427,7 +427,7 @@ class TestDataset(unittest.TestCase):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
 
         self.assertFalse(dataset.exists())
 
@@ -443,7 +443,7 @@ class TestDataset(unittest.TestCase):
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT1)
+        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
 
         self.assertTrue(dataset.exists(client=CLIENT2))
 
@@ -459,7 +459,7 @@ class TestDataset(unittest.TestCase):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
 
         dataset.reload()
 
@@ -476,7 +476,7 @@ class TestDataset(unittest.TestCase):
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT1)
+        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
 
         dataset.reload(client=CLIENT2)
 
@@ -491,7 +491,7 @@ class TestDataset(unittest.TestCase):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
 
         with self.assertRaises(ValueError):
             dataset.patch(default_table_expiration_ms='BOGUS')
@@ -505,7 +505,7 @@ class TestDataset(unittest.TestCase):
         RESOURCE['friendlyName'] = TITLE
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
 
         dataset.patch(description=DESCRIPTION, friendly_name=TITLE)
 
@@ -531,7 +531,7 @@ class TestDataset(unittest.TestCase):
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT1)
+        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
 
         dataset.patch(client=CLIENT2,
                       default_table_expiration_ms=DEF_TABLE_EXP,
@@ -558,7 +558,7 @@ class TestDataset(unittest.TestCase):
         RESOURCE['friendlyName'] = TITLE
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
         dataset.description = DESCRIPTION
         dataset.friendly_name = TITLE
 
@@ -588,7 +588,7 @@ class TestDataset(unittest.TestCase):
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT1)
+        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
         dataset.default_table_expiration_ms = DEF_TABLE_EXP
         dataset.location = LOCATION
 
@@ -612,7 +612,7 @@ class TestDataset(unittest.TestCase):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
 
         dataset.delete()
 
@@ -627,7 +627,7 @@ class TestDataset(unittest.TestCase):
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT1)
+        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
 
         dataset.delete(client=CLIENT2)
 
@@ -642,7 +642,7 @@ class TestDataset(unittest.TestCase):
 
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
 
         iterator = dataset.list_tables()
         self.assertIs(iterator.dataset, dataset)
@@ -686,7 +686,7 @@ class TestDataset(unittest.TestCase):
 
         conn = _Connection(DATA)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
 
         iterator = dataset.list_tables()
         self.assertIs(iterator.dataset, dataset)
@@ -733,7 +733,7 @@ class TestDataset(unittest.TestCase):
 
         conn = _Connection(DATA)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
 
         iterator = dataset.list_tables(max_results=3, page_token=TOKEN)
         self.assertIs(iterator.dataset, dataset)
@@ -759,7 +759,7 @@ class TestDataset(unittest.TestCase):
         from google.cloud.bigquery.table import Table
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
         table = dataset.table('table_name')
         self.assertIsInstance(table, Table)
         self.assertEqual(table.name, 'table_name')
@@ -771,7 +771,7 @@ class TestDataset(unittest.TestCase):
         from google.cloud.bigquery.table import Table
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_NAME, client=client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = dataset.table('table_name', schema=[full_name, age])
