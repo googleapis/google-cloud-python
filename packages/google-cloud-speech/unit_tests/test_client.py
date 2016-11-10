@@ -28,7 +28,7 @@ def _make_result(alternatives=()):
     )
 
 
-def _make_streaming_result(alternatives=(), is_final=True):
+def _make_streaming_result(alternatives=(), is_final=True, stability=1.0):
     from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
 
     return cloud_speech_pb2.StreamingRecognitionResult(
@@ -39,6 +39,7 @@ def _make_streaming_result(alternatives=(), is_final=True):
             ) for alternative in alternatives
         ],
         is_final=is_final,
+        stability=stability,
     )
 
 
@@ -476,6 +477,7 @@ class TestClient(unittest.TestCase):
 
         from google.cloud.speech import _gax
         from google.cloud.speech.encoding import Encoding
+        from google.cloud.speech.client import StreamingSpeechResult
 
         stream = BytesIO(b'Some audio data...')
         credentials = _Credentials()
@@ -491,11 +493,13 @@ class TestClient(unittest.TestCase):
             'confidence': 0.0123456,
         }]
         first_response = _make_streaming_response(
-            _make_streaming_result([], is_final=False))
+            _make_streaming_result([], is_final=False, stability=0.122435))
         second_response = _make_streaming_response(
-            _make_streaming_result(alternatives, is_final=False))
+            _make_streaming_result(alternatives, is_final=False,
+                                   stability=0.1432343))
         last_response = _make_streaming_response(
-            _make_streaming_result(alternatives, is_final=True))
+            _make_streaming_result(alternatives, is_final=True,
+                                   stability=0.9834534))
         responses = [first_response, second_response, last_response]
 
         channel_args = []
@@ -521,15 +525,28 @@ class TestClient(unittest.TestCase):
 
         results = list(client.streaming_recognize(sample,
                                                   interim_results=True))
-        self.assertEqual(results[0], [])
-        self.assertEqual(results[1][0].transcript,
+
+        self.assertEqual(len(results), 3)
+        self.assertIsInstance(results[0], StreamingSpeechResult)
+        self.assertEqual(results[0].alternatives, [])
+        self.assertFalse(results[0].is_final)
+        self.assertEqual(results[0].stability, 0.122435)
+        self.assertEqual(results[1].stability, 0.1432343)
+        self.assertFalse(results[1].is_final)
+        self.assertEqual(results[1].alternatives[0].transcript,
                          alternatives[0]['transcript'])
-        self.assertEqual(results[1][0].confidence,
+        self.assertEqual(results[1].alternatives[0].confidence,
                          alternatives[0]['confidence'])
-        self.assertEqual(results[1][1].transcript,
+        self.assertEqual(results[1].alternatives[1].transcript,
                          alternatives[1]['transcript'])
-        self.assertEqual(results[1][1].confidence,
+        self.assertEqual(results[1].alternatives[1].confidence,
                          alternatives[1]['confidence'])
+        self.assertTrue(results[2].is_final)
+        self.assertEqual(results[2].stability, 0.9834534)
+        self.assertEqual(results[2].alternatives[0].transcript,
+                         alternatives[0]['transcript'])
+        self.assertEqual(results[2].alternatives[0].confidence,
+                         alternatives[0]['confidence'])
 
     def test_stream_recognize(self):
         from io import BytesIO
@@ -582,9 +599,9 @@ class TestClient(unittest.TestCase):
 
         results = list(client.streaming_recognize(sample))
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0][0].transcript,
+        self.assertEqual(results[0].alternatives[0].transcript,
                          alternatives[0]['transcript'])
-        self.assertEqual(results[0][0].confidence,
+        self.assertEqual(results[0].alternatives[0].confidence,
                          alternatives[0]['confidence'])
 
     def test_stream_recognize_no_results(self):
