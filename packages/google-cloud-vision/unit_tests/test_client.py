@@ -31,12 +31,12 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.client import Client
         return Client
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         creds = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=creds)
+        client = self._make_one(project=PROJECT, credentials=creds)
         self.assertEqual(client.project, PROJECT)
 
     def test_face_annotation(self):
@@ -60,7 +60,7 @@ class TestClient(unittest.TestCase):
             ]
         }
         credentials = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
         features = [Feature(feature_type=FeatureTypes.FACE_DETECTION,
@@ -76,7 +76,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.image import Image
 
         credentials = _Credentials()
-        client = self._makeOne(project=PROJECT,
+        client = self._make_one(project=PROJECT,
                                credentials=credentials)
         image = client.image(source_uri=IMAGE_SOURCE)
         self.assertIsInstance(image, Image)
@@ -86,7 +86,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
         credentials = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -103,7 +103,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
         credentials = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -122,7 +122,7 @@ class TestClient(unittest.TestCase):
             LABEL_DETECTION_RESPONSE as RETURNED)
 
         credentials = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -144,7 +144,7 @@ class TestClient(unittest.TestCase):
             LANDMARK_DETECTION_RESPONSE as RETURNED)
 
         credentials = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -166,7 +166,7 @@ class TestClient(unittest.TestCase):
             LANDMARK_DETECTION_RESPONSE as RETURNED)
 
         credentials = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -183,7 +183,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
         RETURNED = LOGO_DETECTION_RESPONSE
         credentials = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -200,7 +200,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
         RETURNED = LOGO_DETECTION_RESPONSE
         credentials = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -218,7 +218,7 @@ class TestClient(unittest.TestCase):
             TEXT_DETECTION_RESPONSE as RETURNED)
 
         credentials = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -240,7 +240,7 @@ class TestClient(unittest.TestCase):
 
         RETURNED = SAFE_SEARCH_DETECTION_RESPONSE
         credentials = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -260,7 +260,7 @@ class TestClient(unittest.TestCase):
 
         RETURNED = IMAGE_PROPERTIES_RESPONSE
         credentials = _Credentials()
-        client = self._makeOne(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials)
         client.connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -284,7 +284,7 @@ class TestVisionRequest(unittest.TestCase):
         from google.cloud.vision.client import VisionRequest
         return VisionRequest
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_make_vision_request(self):
@@ -292,14 +292,14 @@ class TestVisionRequest(unittest.TestCase):
 
         feature = Feature(feature_type=FeatureTypes.FACE_DETECTION,
                           max_results=3)
-        vision_request = self._makeOne(IMAGE_CONTENT, feature)
+        vision_request = self._make_one(IMAGE_CONTENT, feature)
         self.assertEqual(IMAGE_CONTENT, vision_request.image)
         self.assertEqual(FeatureTypes.FACE_DETECTION,
                          vision_request.features[0].feature_type)
 
     def test_make_vision_request_with_bad_feature(self):
         with self.assertRaises(TypeError):
-            self._makeOne(IMAGE_CONTENT, 'nonsensefeature')
+            self._make_one(IMAGE_CONTENT, 'nonsensefeature')
 
 
 class _Credentials(object):
