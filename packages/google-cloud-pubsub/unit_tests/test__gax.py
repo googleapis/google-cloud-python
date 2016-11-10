@@ -872,7 +872,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
 class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 
-    def _callFUT(self, connection):
+    def _call_fut(self, connection):
         from google.cloud.pubsub._gax import make_gax_publisher_api
         return make_gax_publisher_api(connection)
 
@@ -901,7 +901,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
                                  credentials=creds)
         with _Monkey(MUT, PublisherApi=mock_publisher_api,
                      make_secure_channel=make_channel):
-            result = self._callFUT(connection)
+            result = self._call_fut(connection)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [channel_obj])
@@ -929,7 +929,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         connection = _Connection(in_emulator=True, host=host)
         with _Monkey(MUT, PublisherApi=mock_publisher_api,
                      insecure_channel=mock_insecure_channel):
-            result = self._callFUT(connection)
+            result = self._call_fut(connection)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [mock_channel])
@@ -939,7 +939,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
 class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
 
-    def _callFUT(self, connection):
+    def _call_fut(self, connection):
         from google.cloud.pubsub._gax import make_gax_subscriber_api
         return make_gax_subscriber_api(connection)
 
@@ -968,7 +968,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
                                  credentials=creds)
         with _Monkey(MUT, SubscriberApi=mock_subscriber_api,
                      make_secure_channel=make_channel):
-            result = self._callFUT(connection)
+            result = self._call_fut(connection)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [channel_obj])
@@ -996,7 +996,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
         connection = _Connection(in_emulator=True, host=host)
         with _Monkey(MUT, SubscriberApi=mock_subscriber_api,
                      insecure_channel=mock_insecure_channel):
-            result = self._callFUT(connection)
+            result = self._call_fut(connection)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [mock_channel])
