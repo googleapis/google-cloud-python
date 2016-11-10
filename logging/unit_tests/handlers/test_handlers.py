@@ -25,17 +25,17 @@ class TestCloudLoggingHandler(unittest.TestCase):
         from google.cloud.logging.handlers.handlers import CloudLoggingHandler
         return CloudLoggingHandler
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        handler = self._makeOne(client, transport=_Transport)
+        handler = self._make_one(client, transport=_Transport)
         self.assertEqual(handler.client, client)
 
     def test_emit(self):
         client = _Client(self.PROJECT)
-        handler = self._makeOne(client, transport=_Transport)
+        handler = self._make_one(client, transport=_Transport)
         LOGNAME = 'loggername'
         MESSAGE = 'hello world'
         record = _Record(LOGNAME, logging.INFO, MESSAGE)

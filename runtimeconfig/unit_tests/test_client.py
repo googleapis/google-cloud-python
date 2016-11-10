@@ -22,7 +22,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.runtimeconfig.client import Client
         return Client
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_config(self):
@@ -30,7 +30,7 @@ class TestClient(unittest.TestCase):
         CONFIG_NAME = 'config_name'
         creds = _Credentials()
 
-        client_obj = self._makeOne(project=PROJECT, credentials=creds)
+        client_obj = self._make_one(project=PROJECT, credentials=creds)
         new_config = client_obj.config(CONFIG_NAME)
         self.assertEqual(new_config.name, CONFIG_NAME)
         self.assertIs(new_config._client, client_obj)

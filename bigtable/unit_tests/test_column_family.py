@@ -90,28 +90,28 @@ class TestMaxVersionsGCRule(unittest.TestCase):
         from google.cloud.bigtable.column_family import MaxVersionsGCRule
         return MaxVersionsGCRule
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test___eq__type_differ(self):
-        gc_rule1 = self._makeOne(10)
+        gc_rule1 = self._make_one(10)
         gc_rule2 = object()
         self.assertNotEqual(gc_rule1, gc_rule2)
 
     def test___eq__same_value(self):
-        gc_rule1 = self._makeOne(2)
-        gc_rule2 = self._makeOne(2)
+        gc_rule1 = self._make_one(2)
+        gc_rule2 = self._make_one(2)
         self.assertEqual(gc_rule1, gc_rule2)
 
     def test___ne__same_value(self):
-        gc_rule1 = self._makeOne(99)
-        gc_rule2 = self._makeOne(99)
+        gc_rule1 = self._make_one(99)
+        gc_rule2 = self._make_one(99)
         comparison_val = (gc_rule1 != gc_rule2)
         self.assertFalse(comparison_val)
 
     def test_to_pb(self):
         max_num_versions = 1337
-        gc_rule = self._makeOne(max_num_versions=max_num_versions)
+        gc_rule = self._make_one(max_num_versions=max_num_versions)
         pb_val = gc_rule.to_pb()
         expected = _GcRulePB(max_num_versions=max_num_versions)
         self.assertEqual(pb_val, expected)
@@ -124,25 +124,25 @@ class TestMaxAgeGCRule(unittest.TestCase):
         from google.cloud.bigtable.column_family import MaxAgeGCRule
         return MaxAgeGCRule
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test___eq__type_differ(self):
         max_age = object()
-        gc_rule1 = self._makeOne(max_age=max_age)
+        gc_rule1 = self._make_one(max_age=max_age)
         gc_rule2 = object()
         self.assertNotEqual(gc_rule1, gc_rule2)
 
     def test___eq__same_value(self):
         max_age = object()
-        gc_rule1 = self._makeOne(max_age=max_age)
-        gc_rule2 = self._makeOne(max_age=max_age)
+        gc_rule1 = self._make_one(max_age=max_age)
+        gc_rule2 = self._make_one(max_age=max_age)
         self.assertEqual(gc_rule1, gc_rule2)
 
     def test___ne__same_value(self):
         max_age = object()
-        gc_rule1 = self._makeOne(max_age=max_age)
-        gc_rule2 = self._makeOne(max_age=max_age)
+        gc_rule1 = self._make_one(max_age=max_age)
+        gc_rule2 = self._make_one(max_age=max_age)
         comparison_val = (gc_rule1 != gc_rule2)
         self.assertFalse(comparison_val)
 
@@ -152,7 +152,7 @@ class TestMaxAgeGCRule(unittest.TestCase):
 
         max_age = datetime.timedelta(seconds=1)
         duration = duration_pb2.Duration(seconds=1)
-        gc_rule = self._makeOne(max_age=max_age)
+        gc_rule = self._make_one(max_age=max_age)
         pb_val = gc_rule.to_pb()
         self.assertEqual(pb_val, _GcRulePB(max_age=duration))
 
@@ -164,30 +164,30 @@ class TestGCRuleUnion(unittest.TestCase):
         from google.cloud.bigtable.column_family import GCRuleUnion
         return GCRuleUnion
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         rules = object()
-        rule_union = self._makeOne(rules)
+        rule_union = self._make_one(rules)
         self.assertIs(rule_union.rules, rules)
 
     def test___eq__(self):
         rules = object()
-        gc_rule1 = self._makeOne(rules)
-        gc_rule2 = self._makeOne(rules)
+        gc_rule1 = self._make_one(rules)
+        gc_rule2 = self._make_one(rules)
         self.assertEqual(gc_rule1, gc_rule2)
 
     def test___eq__type_differ(self):
         rules = object()
-        gc_rule1 = self._makeOne(rules)
+        gc_rule1 = self._make_one(rules)
         gc_rule2 = object()
         self.assertNotEqual(gc_rule1, gc_rule2)
 
     def test___ne__same_value(self):
         rules = object()
-        gc_rule1 = self._makeOne(rules)
-        gc_rule2 = self._makeOne(rules)
+        gc_rule1 = self._make_one(rules)
+        gc_rule2 = self._make_one(rules)
         comparison_val = (gc_rule1 != gc_rule2)
         self.assertFalse(comparison_val)
 
@@ -206,7 +206,7 @@ class TestGCRuleUnion(unittest.TestCase):
         pb_rule2 = _GcRulePB(
             max_age=duration_pb2.Duration(seconds=1))
 
-        rule3 = self._makeOne(rules=[rule1, rule2])
+        rule3 = self._make_one(rules=[rule1, rule2])
         pb_rule3 = _GcRulePB(
             union=_GcRuleUnionPB(rules=[pb_rule1, pb_rule2]))
 
@@ -228,7 +228,7 @@ class TestGCRuleUnion(unittest.TestCase):
         pb_rule2 = _GcRulePB(
             max_age=duration_pb2.Duration(seconds=1))
 
-        rule3 = self._makeOne(rules=[rule1, rule2])
+        rule3 = self._make_one(rules=[rule1, rule2])
         pb_rule3 = _GcRulePB(
             union=_GcRuleUnionPB(rules=[pb_rule1, pb_rule2]))
 
@@ -236,7 +236,7 @@ class TestGCRuleUnion(unittest.TestCase):
         rule4 = MaxVersionsGCRule(max_num_versions2)
         pb_rule4 = _GcRulePB(max_num_versions=max_num_versions2)
 
-        rule5 = self._makeOne(rules=[rule3, rule4])
+        rule5 = self._make_one(rules=[rule3, rule4])
         pb_rule5 = _GcRulePB(
             union=_GcRuleUnionPB(rules=[pb_rule3, pb_rule4]))
 
@@ -251,30 +251,30 @@ class TestGCRuleIntersection(unittest.TestCase):
         from google.cloud.bigtable.column_family import GCRuleIntersection
         return GCRuleIntersection
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         rules = object()
-        rule_intersection = self._makeOne(rules)
+        rule_intersection = self._make_one(rules)
         self.assertIs(rule_intersection.rules, rules)
 
     def test___eq__(self):
         rules = object()
-        gc_rule1 = self._makeOne(rules)
-        gc_rule2 = self._makeOne(rules)
+        gc_rule1 = self._make_one(rules)
+        gc_rule2 = self._make_one(rules)
         self.assertEqual(gc_rule1, gc_rule2)
 
     def test___eq__type_differ(self):
         rules = object()
-        gc_rule1 = self._makeOne(rules)
+        gc_rule1 = self._make_one(rules)
         gc_rule2 = object()
         self.assertNotEqual(gc_rule1, gc_rule2)
 
     def test___ne__same_value(self):
         rules = object()
-        gc_rule1 = self._makeOne(rules)
-        gc_rule2 = self._makeOne(rules)
+        gc_rule1 = self._make_one(rules)
+        gc_rule2 = self._make_one(rules)
         comparison_val = (gc_rule1 != gc_rule2)
         self.assertFalse(comparison_val)
 
@@ -293,7 +293,7 @@ class TestGCRuleIntersection(unittest.TestCase):
         pb_rule2 = _GcRulePB(
             max_age=duration_pb2.Duration(seconds=1))
 
-        rule3 = self._makeOne(rules=[rule1, rule2])
+        rule3 = self._make_one(rules=[rule1, rule2])
         pb_rule3 = _GcRulePB(
             intersection=_GcRuleIntersectionPB(
                 rules=[pb_rule1, pb_rule2]))
@@ -316,7 +316,7 @@ class TestGCRuleIntersection(unittest.TestCase):
         pb_rule2 = _GcRulePB(
             max_age=duration_pb2.Duration(seconds=1))
 
-        rule3 = self._makeOne(rules=[rule1, rule2])
+        rule3 = self._make_one(rules=[rule1, rule2])
         pb_rule3 = _GcRulePB(
             intersection=_GcRuleIntersectionPB(
                 rules=[pb_rule1, pb_rule2]))
@@ -325,7 +325,7 @@ class TestGCRuleIntersection(unittest.TestCase):
         rule4 = MaxVersionsGCRule(max_num_versions2)
         pb_rule4 = _GcRulePB(max_num_versions=max_num_versions2)
 
-        rule5 = self._makeOne(rules=[rule3, rule4])
+        rule5 = self._make_one(rules=[rule3, rule4])
         pb_rule5 = _GcRulePB(
             intersection=_GcRuleIntersectionPB(
                 rules=[pb_rule3, pb_rule4]))
@@ -341,14 +341,14 @@ class TestColumnFamily(unittest.TestCase):
         from google.cloud.bigtable.column_family import ColumnFamily
         return ColumnFamily
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         column_family_id = u'column-family-id'
         table = object()
         gc_rule = object()
-        column_family = self._makeOne(
+        column_family = self._make_one(
             column_family_id, table, gc_rule=gc_rule)
 
         self.assertEqual(column_family.column_family_id, column_family_id)
@@ -359,7 +359,7 @@ class TestColumnFamily(unittest.TestCase):
         column_family_id = u'column-family-id'
         table_name = 'table_name'
         table = _Table(table_name)
-        column_family = self._makeOne(column_family_id, table)
+        column_family = self._make_one(column_family_id, table)
 
         expected_name = table_name + '/columnFamilies/' + column_family_id
         self.assertEqual(column_family.name, expected_name)
@@ -368,14 +368,14 @@ class TestColumnFamily(unittest.TestCase):
         column_family_id = 'column_family_id'
         table = object()
         gc_rule = object()
-        column_family1 = self._makeOne(column_family_id, table,
+        column_family1 = self._make_one(column_family_id, table,
                                        gc_rule=gc_rule)
-        column_family2 = self._makeOne(column_family_id, table,
+        column_family2 = self._make_one(column_family_id, table,
                                        gc_rule=gc_rule)
         self.assertEqual(column_family1, column_family2)
 
     def test___eq__type_differ(self):
-        column_family1 = self._makeOne('column_family_id', None)
+        column_family1 = self._make_one('column_family_id', None)
         column_family2 = object()
         self.assertNotEqual(column_family1, column_family2)
 
@@ -383,20 +383,20 @@ class TestColumnFamily(unittest.TestCase):
         column_family_id = 'column_family_id'
         table = object()
         gc_rule = object()
-        column_family1 = self._makeOne(column_family_id, table,
+        column_family1 = self._make_one(column_family_id, table,
                                        gc_rule=gc_rule)
-        column_family2 = self._makeOne(column_family_id, table,
+        column_family2 = self._make_one(column_family_id, table,
                                        gc_rule=gc_rule)
         comparison_val = (column_family1 != column_family2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        column_family1 = self._makeOne('column_family_id1', None)
-        column_family2 = self._makeOne('column_family_id2', None)
+        column_family1 = self._make_one('column_family_id1', None)
+        column_family2 = self._make_one('column_family_id2', None)
         self.assertNotEqual(column_family1, column_family2)
 
     def test_to_pb_no_rules(self):
-        column_family = self._makeOne('column_family_id', None)
+        column_family = self._make_one('column_family_id', None)
         pb_val = column_family.to_pb()
         expected = _ColumnFamilyPB()
         self.assertEqual(pb_val, expected)
@@ -405,7 +405,7 @@ class TestColumnFamily(unittest.TestCase):
         from google.cloud.bigtable.column_family import MaxVersionsGCRule
 
         gc_rule = MaxVersionsGCRule(1)
-        column_family = self._makeOne('column_family_id', None,
+        column_family = self._make_one('column_family_id', None,
                                       gc_rule=gc_rule)
         pb_val = column_family.to_pb()
         expected = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
@@ -426,7 +426,7 @@ class TestColumnFamily(unittest.TestCase):
 
         client = _Client()
         table = _Table(table_name, client=client)
-        column_family = self._makeOne(
+        column_family = self._make_one(
             column_family_id, table, gc_rule=gc_rule)
 
         # Create request_pb
@@ -484,7 +484,7 @@ class TestColumnFamily(unittest.TestCase):
 
         client = _Client()
         table = _Table(table_name, client=client)
-        column_family = self._makeOne(
+        column_family = self._make_one(
             column_family_id, table, gc_rule=gc_rule)
 
         # Create request_pb
@@ -543,7 +543,7 @@ class TestColumnFamily(unittest.TestCase):
 
         client = _Client()
         table = _Table(table_name, client=client)
-        column_family = self._makeOne(column_family_id, table)
+        column_family = self._make_one(column_family_id, table)
 
         # Create request_pb
         request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(

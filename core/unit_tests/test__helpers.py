@@ -24,12 +24,12 @@ class Test__LocalStack(unittest.TestCase):
 
         return _LocalStack
 
-    def _makeOne(self):
+    def _make_one(self):
         return self._get_target_class()()
 
     def test_it(self):
         batch1, batch2 = object(), object()
-        batches = self._makeOne()
+        batches = self._make_one()
         self.assertEqual(list(batches), [])
         self.assertIsNone(batches.top)
         batches.push(batch1)
@@ -52,7 +52,7 @@ class Test__UTC(unittest.TestCase):
         from google.cloud._helpers import _UTC
         return _UTC
 
-    def _makeOne(self):
+    def _make_one(self):
         return self._get_target_class()()
 
     def test_module_property(self):
@@ -68,7 +68,7 @@ class Test__UTC(unittest.TestCase):
     def test_dst(self):
         import datetime
 
-        tz = self._makeOne()
+        tz = self._make_one()
         self.assertEqual(tz.dst(None), datetime.timedelta(0))
 
     def test_fromutc(self):
@@ -76,26 +76,26 @@ class Test__UTC(unittest.TestCase):
 
         naive_epoch = datetime.datetime.utcfromtimestamp(0)
         self.assertIsNone(naive_epoch.tzinfo)
-        tz = self._makeOne()
+        tz = self._make_one()
         epoch = tz.fromutc(naive_epoch)
         self.assertEqual(epoch.tzinfo, tz)
 
     def test_tzname(self):
-        tz = self._makeOne()
+        tz = self._make_one()
         self.assertEqual(tz.tzname(None), 'UTC')
 
     def test_utcoffset(self):
         import datetime
 
-        tz = self._makeOne()
+        tz = self._make_one()
         self.assertEqual(tz.utcoffset(None), datetime.timedelta(0))
 
     def test___repr__(self):
-        tz = self._makeOne()
+        tz = self._make_one()
         self.assertEqual(repr(tz), '<UTC>')
 
     def test___str__(self):
-        tz = self._makeOne()
+        tz = self._make_one()
         self.assertEqual(str(tz), 'UTC')
 
 
@@ -912,12 +912,12 @@ class TestMetadataPlugin(unittest.TestCase):
         from google.cloud._helpers import MetadataPlugin
         return MetadataPlugin
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         credentials = object()
-        plugin = self._makeOne(credentials)
+        plugin = self._make_one(credentials)
         self.assertIs(plugin._credentials, credentials)
 
     def test___call__(self):
@@ -928,7 +928,7 @@ class TestMetadataPlugin(unittest.TestCase):
         def callback(*args):
             callback_args.append(args)
 
-        transformer = self._makeOne(credentials)
+        transformer = self._make_one(credentials)
         result = transformer(None, callback)
         cb_headers = [
             ('authorization', 'Bearer ' + access_token_expected),

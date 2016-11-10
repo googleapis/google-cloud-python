@@ -22,11 +22,11 @@ class TestSchemaField(unittest.TestCase):
         from google.cloud.bigquery.schema import SchemaField
         return SchemaField
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        field = self._makeOne('test', 'STRING')
+        field = self._make_one('test', 'STRING')
         self.assertEqual(field.name, 'test')
         self.assertEqual(field.field_type, 'STRING')
         self.assertEqual(field.mode, 'NULLABLE')
@@ -34,7 +34,7 @@ class TestSchemaField(unittest.TestCase):
         self.assertIsNone(field.fields)
 
     def test_ctor_explicit(self):
-        field = self._makeOne('test', 'STRING', mode='REQUIRED',
+        field = self._make_one('test', 'STRING', mode='REQUIRED',
                               description='Testing')
         self.assertEqual(field.name, 'test')
         self.assertEqual(field.field_type, 'STRING')
@@ -43,9 +43,9 @@ class TestSchemaField(unittest.TestCase):
         self.assertIsNone(field.fields)
 
     def test_ctor_subfields(self):
-        field = self._makeOne('phone_number', 'RECORD',
-                              fields=[self._makeOne('area_code', 'STRING'),
-                                      self._makeOne('local_number', 'STRING')])
+        field = self._make_one('phone_number', 'RECORD',
+                              fields=[self._make_one('area_code', 'STRING'),
+                                      self._make_one('local_number', 'STRING')])
         self.assertEqual(field.name, 'phone_number')
         self.assertEqual(field.field_type, 'RECORD')
         self.assertEqual(field.mode, 'NULLABLE')
@@ -63,49 +63,49 @@ class TestSchemaField(unittest.TestCase):
         self.assertIsNone(field.fields[1].fields)
 
     def test___eq___name_mismatch(self):
-        field = self._makeOne('test', 'STRING')
-        other = self._makeOne('other', 'STRING')
+        field = self._make_one('test', 'STRING')
+        other = self._make_one('other', 'STRING')
         self.assertNotEqual(field, other)
 
     def test___eq___field_type_mismatch(self):
-        field = self._makeOne('test', 'STRING')
-        other = self._makeOne('test', 'INTEGER')
+        field = self._make_one('test', 'STRING')
+        other = self._make_one('test', 'INTEGER')
         self.assertNotEqual(field, other)
 
     def test___eq___mode_mismatch(self):
-        field = self._makeOne('test', 'STRING', mode='REQUIRED')
-        other = self._makeOne('test', 'STRING', mode='NULLABLE')
+        field = self._make_one('test', 'STRING', mode='REQUIRED')
+        other = self._make_one('test', 'STRING', mode='NULLABLE')
         self.assertNotEqual(field, other)
 
     def test___eq___description_mismatch(self):
-        field = self._makeOne('test', 'STRING', description='Testing')
-        other = self._makeOne('test', 'STRING', description='Other')
+        field = self._make_one('test', 'STRING', description='Testing')
+        other = self._make_one('test', 'STRING', description='Other')
         self.assertNotEqual(field, other)
 
     def test___eq___fields_mismatch(self):
-        sub1 = self._makeOne('sub1', 'STRING')
-        sub2 = self._makeOne('sub2', 'STRING')
-        field = self._makeOne('test', 'RECORD', fields=[sub1])
-        other = self._makeOne('test', 'RECORD', fields=[sub2])
+        sub1 = self._make_one('sub1', 'STRING')
+        sub2 = self._make_one('sub2', 'STRING')
+        field = self._make_one('test', 'RECORD', fields=[sub1])
+        other = self._make_one('test', 'RECORD', fields=[sub2])
         self.assertNotEqual(field, other)
 
     def test___eq___hit(self):
-        field = self._makeOne('test', 'STRING', mode='REQUIRED',
+        field = self._make_one('test', 'STRING', mode='REQUIRED',
                               description='Testing')
-        other = self._makeOne('test', 'STRING', mode='REQUIRED',
+        other = self._make_one('test', 'STRING', mode='REQUIRED',
                               description='Testing')
         self.assertEqual(field, other)
 
     def test___eq___hit_case_diff_on_type(self):
-        field = self._makeOne('test', 'STRING', mode='REQUIRED',
+        field = self._make_one('test', 'STRING', mode='REQUIRED',
                               description='Testing')
-        other = self._makeOne('test', 'string', mode='REQUIRED',
+        other = self._make_one('test', 'string', mode='REQUIRED',
                               description='Testing')
         self.assertEqual(field, other)
 
     def test___eq___hit_w_fields(self):
-        sub1 = self._makeOne('sub1', 'STRING')
-        sub2 = self._makeOne('sub2', 'STRING')
-        field = self._makeOne('test', 'RECORD', fields=[sub1, sub2])
-        other = self._makeOne('test', 'RECORD', fields=[sub1, sub2])
+        sub1 = self._make_one('sub1', 'STRING')
+        sub2 = self._make_one('sub2', 'STRING')
+        field = self._make_one('test', 'RECORD', fields=[sub1, sub2])
+        other = self._make_one('test', 'RECORD', fields=[sub1, sub2])
         self.assertEqual(field, other)

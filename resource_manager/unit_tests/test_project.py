@@ -22,13 +22,13 @@ class TestProject(unittest.TestCase):
         from google.cloud.resource_manager.project import Project
         return Project
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor_defaults(self):
         client = object()
         PROJECT_ID = 'project-id'
-        project = self._makeOne(PROJECT_ID, client)
+        project = self._make_one(PROJECT_ID, client)
         self.assertEqual(project.project_id, PROJECT_ID)
         self.assertEqual(project._client, client)
         self.assertIsNone(project.name)
@@ -41,7 +41,7 @@ class TestProject(unittest.TestCase):
         PROJECT_ID = 'project-id'
         DISPLAY_NAME = 'name'
         LABELS = {'foo': 'bar'}
-        project = self._makeOne(PROJECT_ID, client,
+        project = self._make_one(PROJECT_ID, client,
                                 name=DISPLAY_NAME, labels=LABELS)
         self.assertEqual(project.project_id, PROJECT_ID)
         self.assertEqual(project._client, client)
@@ -72,17 +72,17 @@ class TestProject(unittest.TestCase):
 
     def test_full_name(self):
         PROJECT_ID = 'project-id'
-        project = self._makeOne(PROJECT_ID, None)
+        project = self._make_one(PROJECT_ID, None)
         self.assertEqual('projects/%s' % PROJECT_ID, project.full_name)
 
     def test_full_name_missing_id(self):
-        project = self._makeOne(None, None)
+        project = self._make_one(None, None)
         with self.assertRaises(ValueError):
             self.assertIsNone(project.full_name)
 
     def test_path(self):
         PROJECT_ID = 'project-id'
-        project = self._makeOne(PROJECT_ID, None)
+        project = self._make_one(PROJECT_ID, None)
         self.assertEqual('/projects/%s' % PROJECT_ID, project.path)
 
     def test_create(self):
@@ -97,7 +97,7 @@ class TestProject(unittest.TestCase):
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
-        project = self._makeOne(PROJECT_ID, client)
+        project = self._make_one(PROJECT_ID, client)
         self.assertIsNone(project.number)
         project.create()
         self.assertEqual(project.number, PROJECT_NUMBER)
@@ -126,7 +126,7 @@ class TestProject(unittest.TestCase):
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
-        project = self._makeOne(PROJECT_ID, client)
+        project = self._make_one(PROJECT_ID, client)
         self.assertIsNone(project.number)
         self.assertIsNone(project.name)
         self.assertEqual(project.labels, {})
@@ -149,19 +149,19 @@ class TestProject(unittest.TestCase):
         PROJECT_ID = 'project-id'
         connection = _Connection({'projectId': PROJECT_ID})
         client = _Client(connection=connection)
-        project = self._makeOne(PROJECT_ID, client)
+        project = self._make_one(PROJECT_ID, client)
         self.assertTrue(project.exists())
 
     def test_exists_with_explicitly_passed_client(self):
         PROJECT_ID = 'project-id'
         connection = _Connection({'projectId': PROJECT_ID})
         client = _Client(connection=connection)
-        project = self._makeOne(PROJECT_ID, None)
+        project = self._make_one(PROJECT_ID, None)
         self.assertTrue(project.exists(client=client))
 
     def test_exists_with_missing_client(self):
         PROJECT_ID = 'project-id'
-        project = self._makeOne(PROJECT_ID, None)
+        project = self._make_one(PROJECT_ID, None)
         with self.assertRaises(AttributeError):
             project.exists()
 
@@ -169,7 +169,7 @@ class TestProject(unittest.TestCase):
         PROJECT_ID = 'project-id'
         connection = _Connection()
         client = _Client(connection=connection)
-        project = self._makeOne(PROJECT_ID, client)
+        project = self._make_one(PROJECT_ID, client)
         self.assertFalse(project.exists())
 
     def test_update(self):
@@ -186,7 +186,7 @@ class TestProject(unittest.TestCase):
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
-        project = self._makeOne(PROJECT_ID, client)
+        project = self._make_one(PROJECT_ID, client)
         project.name = PROJECT_NAME
         project.labels = LABELS
         project.update()
@@ -214,7 +214,7 @@ class TestProject(unittest.TestCase):
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
-        project = self._makeOne(PROJECT_ID, client)
+        project = self._make_one(PROJECT_ID, client)
         project.delete(reload_data=False)
 
         request, = connection._requested
@@ -240,7 +240,7 @@ class TestProject(unittest.TestCase):
 
         connection = _Connection(PROJECT_RESOURCE, DELETING_PROJECT)
         client = _Client(connection=connection)
-        project = self._makeOne(PROJECT_ID, client)
+        project = self._make_one(PROJECT_ID, client)
         project.delete(reload_data=True)
         self.assertEqual(project.status, NEW_STATE)
 
@@ -271,7 +271,7 @@ class TestProject(unittest.TestCase):
         }
         connection = _Connection(PROJECT_RESOURCE)
         client = _Client(connection=connection)
-        project = self._makeOne(PROJECT_ID, client)
+        project = self._make_one(PROJECT_ID, client)
         project.undelete(reload_data=False)
 
         request, = connection._requested
@@ -297,7 +297,7 @@ class TestProject(unittest.TestCase):
 
         connection = _Connection(PROJECT_RESOURCE, UNDELETED_PROJECT)
         client = _Client(connection=connection)
-        project = self._makeOne(PROJECT_ID, client)
+        project = self._make_one(PROJECT_ID, client)
         project.undelete(reload_data=True)
         self.assertEqual(project.status, NEW_STATE)
 

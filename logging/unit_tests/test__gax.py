@@ -32,7 +32,7 @@ class _Base(object):
     PROJECT_PATH = 'projects/%s' % (PROJECT,)
     FILTER = 'logName:syslog AND severity>=ERROR'
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
 
@@ -49,7 +49,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXLoggingAPI()
         client = object()
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
         self.assertIs(api._gax_api, gax_api)
         self.assertIs(api._client, client)
 
@@ -81,7 +81,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         client = Client(project=self.PROJECT, credentials=object(),
                         use_gax=True)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         iterator = api.list_entries(
             [self.PROJECT], self.FILTER, DESCENDING)
@@ -137,7 +137,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         client = Client(project=self.PROJECT, credentials=object(),
                         use_gax=True)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         iterator = api.list_entries(
             [self.PROJECT], page_size=SIZE, page_token=TOKEN)
@@ -276,7 +276,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         client = Client(project=self.PROJECT, credentials=object(),
                         use_gax=True)
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         iterator = api.list_entries(
             [self.PROJECT], page_size=SIZE, page_token=TOKEN)
@@ -328,7 +328,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
             'textPayload': TEXT,
         }
         gax_api = _GAXLoggingAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         api.write_entries([ENTRY])
 
@@ -401,7 +401,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
             'operation': OPERATION,
         }
         gax_api = _GAXLoggingAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         api.write_entries([ENTRY])
 
@@ -476,7 +476,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
             'foo': 'bar',
         }
         gax_api = _GAXLoggingAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         api.write_entries(ENTRIES, self.LOG_PATH, RESOURCE, LABELS)
 
@@ -560,7 +560,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
     def test_logger_delete(self):
         gax_api = _GAXLoggingAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         api.logger_delete(self.PROJECT, self.LOG_NAME)
 
@@ -572,7 +572,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from google.cloud.exceptions import NotFound
 
         gax_api = _GAXLoggingAPI(_delete_not_found=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(NotFound):
             api.logger_delete(self.PROJECT, self.LOG_NAME)
@@ -585,7 +585,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         from google.gax.errors import GaxError
 
         gax_api = _GAXLoggingAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(GaxError):
             api.logger_delete(self.PROJECT, self.LOG_NAME)
@@ -609,7 +609,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_ctor(self):
         gax_api = _GAXSinksAPI()
         client = object()
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
         self.assertIs(api._gax_api, gax_api)
         self.assertIs(api._client, client)
 
@@ -627,7 +627,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([sink_pb], page_token=TOKEN)
         gax_api = _GAXSinksAPI(_list_sinks_response=response)
         client = object()
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         iterator = api.list_sinks(self.PROJECT)
         page = six.next(iterator.pages)
@@ -663,7 +663,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([sink_pb])
         gax_api = _GAXSinksAPI(_list_sinks_response=response)
         client = object()
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         iterator = api.list_sinks(
             self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
@@ -689,7 +689,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_sink_create_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXSinksAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(GaxError):
             api.sink_create(
@@ -699,7 +699,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_sink_create_conflict(self):
         from google.cloud.exceptions import Conflict
         gax_api = _GAXSinksAPI(_create_sink_conflict=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(Conflict):
             api.sink_create(
@@ -709,7 +709,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_sink_create_ok(self):
         from google.logging.v2.logging_config_pb2 import LogSink
         gax_api = _GAXSinksAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         api.sink_create(
             self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
@@ -726,7 +726,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_sink_get_error(self):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXSinksAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(NotFound):
             api.sink_get(self.PROJECT, self.SINK_NAME)
@@ -734,7 +734,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_sink_get_miss(self):
         from google.gax.errors import GaxError
         gax_api = _GAXSinksAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(GaxError):
             api.sink_get(self.PROJECT, self.SINK_NAME)
@@ -751,7 +751,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
                           destination=self.DESTINATION_URI,
                           filter=self.FILTER)
         gax_api = _GAXSinksAPI(_get_sink_response=sink_pb)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         response = api.sink_get(self.PROJECT, self.SINK_NAME)
 
@@ -764,7 +764,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_sink_update_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXSinksAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(GaxError):
             api.sink_update(
@@ -774,7 +774,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_sink_update_miss(self):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXSinksAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(NotFound):
             api.sink_update(
@@ -788,7 +788,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
                            destination=self.DESTINATION_URI,
                            filter=self.FILTER)
         gax_api = _GAXSinksAPI(_update_sink_response=response)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         api.sink_update(
             self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
@@ -805,7 +805,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_sink_delete_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXSinksAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(GaxError):
             api.sink_delete(self.PROJECT, self.SINK_NAME)
@@ -813,14 +813,14 @@ class Test_SinksAPI(_Base, unittest.TestCase):
     def test_sink_delete_miss(self):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXSinksAPI(_sink_not_found=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(NotFound):
             api.sink_delete(self.PROJECT, self.SINK_NAME)
 
     def test_sink_delete_hit(self):
         gax_api = _GAXSinksAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         api.sink_delete(self.PROJECT, self.SINK_NAME)
 
@@ -842,7 +842,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
 
     def test_ctor(self):
         gax_api = _GAXMetricsAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
         self.assertIs(api._gax_api, gax_api)
 
     def test_list_metrics_no_paging(self):
@@ -859,7 +859,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([metric_pb], page_token=TOKEN)
         gax_api = _GAXMetricsAPI(_list_log_metrics_response=response)
         client = object()
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         iterator = api.list_metrics(self.PROJECT)
         page = six.next(iterator.pages)
@@ -895,7 +895,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([metric_pb])
         gax_api = _GAXMetricsAPI(_list_log_metrics_response=response)
         client = object()
-        api = self._makeOne(gax_api, client)
+        api = self._make_one(gax_api, client)
 
         iterator = api.list_metrics(
             self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
@@ -921,7 +921,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_metric_create_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(GaxError):
             api.metric_create(
@@ -931,7 +931,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_metric_create_conflict(self):
         from google.cloud.exceptions import Conflict
         gax_api = _GAXMetricsAPI(_create_log_metric_conflict=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(Conflict):
             api.metric_create(
@@ -941,7 +941,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_metric_create_ok(self):
         from google.logging.v2.logging_metrics_pb2 import LogMetric
         gax_api = _GAXMetricsAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         api.metric_create(
             self.PROJECT, self.METRIC_NAME, self.FILTER, self.DESCRIPTION)
@@ -958,7 +958,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_metric_get_error(self):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXMetricsAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(NotFound):
             api.metric_get(self.PROJECT, self.METRIC_NAME)
@@ -966,7 +966,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_metric_get_miss(self):
         from google.gax.errors import GaxError
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(GaxError):
             api.metric_get(self.PROJECT, self.METRIC_NAME)
@@ -983,7 +983,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
                               description=self.DESCRIPTION,
                               filter=self.FILTER)
         gax_api = _GAXMetricsAPI(_get_log_metric_response=metric_pb)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         response = api.metric_get(self.PROJECT, self.METRIC_NAME)
 
@@ -996,7 +996,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_metric_update_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(GaxError):
             api.metric_update(
@@ -1006,7 +1006,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_metric_update_miss(self):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXMetricsAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(NotFound):
             api.metric_update(
@@ -1020,7 +1020,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
                              description=self.DESCRIPTION,
                              filter=self.FILTER)
         gax_api = _GAXMetricsAPI(_update_log_metric_response=response)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         api.metric_update(
             self.PROJECT, self.METRIC_NAME, self.FILTER, self.DESCRIPTION)
@@ -1037,7 +1037,7 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_metric_delete_error(self):
         from google.gax.errors import GaxError
         gax_api = _GAXMetricsAPI(_random_gax_error=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(GaxError):
             api.metric_delete(self.PROJECT, self.METRIC_NAME)
@@ -1045,14 +1045,14 @@ class Test_MetricsAPI(_Base, unittest.TestCase):
     def test_metric_delete_miss(self):
         from google.cloud.exceptions import NotFound
         gax_api = _GAXMetricsAPI(_log_metric_not_found=True)
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         with self.assertRaises(NotFound):
             api.metric_delete(self.PROJECT, self.METRIC_NAME)
 
     def test_metric_delete_hit(self):
         gax_api = _GAXMetricsAPI()
-        api = self._makeOne(gax_api, None)
+        api = self._make_one(gax_api, None)
 
         api.metric_delete(self.PROJECT, self.METRIC_NAME)
 

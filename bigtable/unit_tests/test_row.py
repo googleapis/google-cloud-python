@@ -23,11 +23,11 @@ class Test_SetDeleteRow(unittest.TestCase):
         from google.cloud.bigtable.row import _SetDeleteRow
         return _SetDeleteRow
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test__get_mutations_virtual(self):
-        row = self._makeOne(b'row-key', None)
+        row = self._make_one(b'row-key', None)
         with self.assertRaises(NotImplementedError):
             row._get_mutations(None)
 
@@ -39,14 +39,14 @@ class TestDirectRow(unittest.TestCase):
         from google.cloud.bigtable.row import DirectRow
         return DirectRow
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         row_key = b'row_key'
         table = object()
 
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         self.assertEqual(row._row_key, row_key)
         self.assertIs(row._table, table)
         self.assertEqual(row._pb_mutations, [])
@@ -56,18 +56,18 @@ class TestDirectRow(unittest.TestCase):
         row_key_bytes = b'row_key'
         table = object()
 
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         self.assertEqual(row._row_key, row_key_bytes)
         self.assertIs(row._table, table)
 
     def test_constructor_with_non_bytes(self):
         row_key = object()
         with self.assertRaises(TypeError):
-            self._makeOne(row_key, None)
+            self._make_one(row_key, None)
 
     def test__get_mutations(self):
         row_key = b'row_key'
-        row = self._makeOne(row_key, None)
+        row = self._make_one(row_key, None)
 
         row._pb_mutations = mutations = object()
         self.assertIs(mutations, row._get_mutations(None))
@@ -82,7 +82,7 @@ class TestDirectRow(unittest.TestCase):
         if column is None:
             column = b'column'
         table = object()
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         self.assertEqual(row._pb_mutations, [])
         row.set_cell(column_family_id, column,
                      value, timestamp=timestamp)
@@ -118,7 +118,7 @@ class TestDirectRow(unittest.TestCase):
         column_family_id = u'column_family_id'
         table = object()
 
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         value = object()  # Not bytes
         with self.assertRaises(TypeError):
             row.set_cell(column_family_id, column, value)
@@ -135,7 +135,7 @@ class TestDirectRow(unittest.TestCase):
 
     def test_delete(self):
         row_key = b'row_key'
-        row = self._makeOne(row_key, object())
+        row = self._make_one(row_key, object())
         self.assertEqual(row._pb_mutations, [])
         row.delete()
 
@@ -185,7 +185,7 @@ class TestDirectRow(unittest.TestCase):
         column_family_id = u'column_family_id'
         table = object()
 
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         columns = object()  # Not iterable
         with self.assertRaises(TypeError):
             row.delete_cells(column_family_id, columns)
@@ -195,7 +195,7 @@ class TestDirectRow(unittest.TestCase):
         column_family_id = u'column_family_id'
         table = object()
 
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         klass = self._get_target_class()
         self.assertEqual(row._pb_mutations, [])
         row.delete_cells(column_family_id, klass.ALL_COLUMNS)
@@ -212,7 +212,7 @@ class TestDirectRow(unittest.TestCase):
         column_family_id = u'column_family_id'
         table = object()
 
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         columns = []
         self.assertEqual(row._pb_mutations, [])
         row.delete_cells(column_family_id, columns)
@@ -224,7 +224,7 @@ class TestDirectRow(unittest.TestCase):
         column_family_id = u'column_family_id'
         table = object()
 
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         columns = [column]
         self.assertEqual(row._pb_mutations, [])
         row.delete_cells(column_family_id, columns, time_range=time_range)
@@ -261,7 +261,7 @@ class TestDirectRow(unittest.TestCase):
         column_family_id = u'column_family_id'
         table = object()
 
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         columns = [column, object()]
         self.assertEqual(row._pb_mutations, [])
         with self.assertRaises(TypeError):
@@ -277,7 +277,7 @@ class TestDirectRow(unittest.TestCase):
         column2_bytes = b'column2'
         table = object()
 
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         columns = [column1, column2]
         self.assertEqual(row._pb_mutations, [])
         row.delete_cells(column_family_id, columns)
@@ -306,7 +306,7 @@ class TestDirectRow(unittest.TestCase):
         column = b'column'
         client = _Client()
         table = _Table(table_name, client=client)
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
 
         # Create request_pb
         value = b'bytes-value'
@@ -350,7 +350,7 @@ class TestDirectRow(unittest.TestCase):
 
         row_key = b'row_key'
         table = object()
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         row._pb_mutations = [1, 2, 3]
         num_mutations = len(row._pb_mutations)
         with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):
@@ -363,7 +363,7 @@ class TestDirectRow(unittest.TestCase):
         row_key = b'row_key'
         client = _Client()
         table = _Table(None, client=client)
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         self.assertEqual(row._pb_mutations, [])
 
         # Patch the stub used by the API method.
@@ -383,7 +383,7 @@ class TestConditionalRow(unittest.TestCase):
         from google.cloud.bigtable.row import ConditionalRow
         return ConditionalRow
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
@@ -391,7 +391,7 @@ class TestConditionalRow(unittest.TestCase):
         table = object()
         filter_ = object()
 
-        row = self._makeOne(row_key, table, filter_=filter_)
+        row = self._make_one(row_key, table, filter_=filter_)
         self.assertEqual(row._row_key, row_key)
         self.assertIs(row._table, table)
         self.assertIs(row._filter, filter_)
@@ -401,7 +401,7 @@ class TestConditionalRow(unittest.TestCase):
     def test__get_mutations(self):
         row_key = b'row_key'
         filter_ = object()
-        row = self._makeOne(row_key, None, filter_=filter_)
+        row = self._make_one(row_key, None, filter_=filter_)
 
         row._true_pb_mutations = true_mutations = object()
         row._false_pb_mutations = false_mutations = object()
@@ -423,7 +423,7 @@ class TestConditionalRow(unittest.TestCase):
         client = _Client()
         table = _Table(table_name, client=client)
         row_filter = RowSampleFilter(0.33)
-        row = self._makeOne(row_key, table, filter_=row_filter)
+        row = self._make_one(row_key, table, filter_=row_filter)
 
         # Create request_pb
         value1 = b'bytes-value'
@@ -490,7 +490,7 @@ class TestConditionalRow(unittest.TestCase):
         row_key = b'row_key'
         table = object()
         filter_ = object()
-        row = self._makeOne(row_key, table, filter_=filter_)
+        row = self._make_one(row_key, table, filter_=filter_)
         row._true_pb_mutations = [1, 2, 3]
         num_mutations = len(row._true_pb_mutations)
         with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):
@@ -504,7 +504,7 @@ class TestConditionalRow(unittest.TestCase):
         client = _Client()
         table = _Table(None, client=client)
         filter_ = object()
-        row = self._makeOne(row_key, table, filter_=filter_)
+        row = self._make_one(row_key, table, filter_=filter_)
         self.assertEqual(row._true_pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
 
@@ -525,14 +525,14 @@ class TestAppendRow(unittest.TestCase):
         from google.cloud.bigtable.row import AppendRow
         return AppendRow
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         row_key = b'row_key'
         table = object()
 
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         self.assertEqual(row._row_key, row_key)
         self.assertIs(row._table, table)
         self.assertEqual(row._rule_pb_list, [])
@@ -540,7 +540,7 @@ class TestAppendRow(unittest.TestCase):
     def test_clear(self):
         row_key = b'row_key'
         table = object()
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         row._rule_pb_list = [1, 2, 3]
         row.clear()
         self.assertEqual(row._rule_pb_list, [])
@@ -548,7 +548,7 @@ class TestAppendRow(unittest.TestCase):
     def test_append_cell_value(self):
         table = object()
         row_key = b'row_key'
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         self.assertEqual(row._rule_pb_list, [])
 
         column = b'column'
@@ -563,7 +563,7 @@ class TestAppendRow(unittest.TestCase):
     def test_increment_cell_value(self):
         table = object()
         row_key = b'row_key'
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         self.assertEqual(row._rule_pb_list, [])
 
         column = b'column'
@@ -586,7 +586,7 @@ class TestAppendRow(unittest.TestCase):
         column = b'column'
         client = _Client()
         table = _Table(table_name, client=client)
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
 
         # Create request_pb
         value = b'bytes-value'
@@ -637,7 +637,7 @@ class TestAppendRow(unittest.TestCase):
         row_key = b'row_key'
         client = _Client()
         table = _Table(None, client=client)
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         self.assertEqual(row._rule_pb_list, [])
 
         # Patch the stub used by the API method.
@@ -655,7 +655,7 @@ class TestAppendRow(unittest.TestCase):
 
         row_key = b'row_key'
         table = object()
-        row = self._makeOne(row_key, table)
+        row = self._make_one(row_key, table)
         row._rule_pb_list = [1, 2, 3]
         num_mutations = len(row._rule_pb_list)
         with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):

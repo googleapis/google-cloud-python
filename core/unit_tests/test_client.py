@@ -43,7 +43,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.client import Client
         return Client
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
@@ -58,7 +58,7 @@ class TestClient(unittest.TestCase):
             return CREDENTIALS
 
         with _Monkey(client, get_credentials=mock_get_credentials):
-            client_obj = self._makeOne()
+            client_obj = self._make_one()
 
         self.assertIsInstance(client_obj.connection, _MockConnection)
         self.assertIs(client_obj.connection.credentials, CREDENTIALS)
@@ -67,7 +67,7 @@ class TestClient(unittest.TestCase):
     def test_ctor_explicit(self):
         CREDENTIALS = object()
         HTTP = object()
-        client_obj = self._makeOne(credentials=CREDENTIALS, http=HTTP)
+        client_obj = self._make_one(credentials=CREDENTIALS, http=HTTP)
 
         self.assertIsInstance(client_obj.connection, _MockConnection)
         self.assertIs(client_obj.connection.credentials, CREDENTIALS)
@@ -131,7 +131,7 @@ class TestJSONClient(unittest.TestCase):
         from google.cloud.client import JSONClient
         return JSONClient
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
@@ -152,7 +152,7 @@ class TestJSONClient(unittest.TestCase):
 
         with _Monkey(client, get_credentials=mock_get_credentials,
                      _determine_default_project=mock_determine_proj):
-            client_obj = self._makeOne()
+            client_obj = self._make_one()
 
         self.assertEqual(client_obj.project, PROJECT)
         self.assertIsInstance(client_obj.connection, _MockConnection)
@@ -172,7 +172,7 @@ class TestJSONClient(unittest.TestCase):
             return None
 
         with _Monkey(client, _determine_default_project=mock_determine_proj):
-            self.assertRaises(EnvironmentError, self._makeOne)
+            self.assertRaises(EnvironmentError, self._make_one)
 
         self.assertEqual(FUNC_CALLS, [(None, '_determine_default_project')])
 
@@ -180,7 +180,7 @@ class TestJSONClient(unittest.TestCase):
         CREDENTIALS = object()
         HTTP = object()
         with self.assertRaises(ValueError):
-            self._makeOne(project=object(), credentials=CREDENTIALS, http=HTTP)
+            self._make_one(project=object(), credentials=CREDENTIALS, http=HTTP)
 
     def _explicit_ctor_helper(self, project):
         import six
@@ -188,7 +188,7 @@ class TestJSONClient(unittest.TestCase):
         CREDENTIALS = object()
         HTTP = object()
 
-        client_obj = self._makeOne(project=project, credentials=CREDENTIALS,
+        client_obj = self._make_one(project=project, credentials=CREDENTIALS,
                                    http=HTTP)
 
         if isinstance(project, six.binary_type):

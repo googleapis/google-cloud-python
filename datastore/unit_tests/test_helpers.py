@@ -879,13 +879,13 @@ class TestGeoPoint(unittest.TestCase):
         from google.cloud.datastore.helpers import GeoPoint
         return GeoPoint
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         lat = 81.2
         lng = 359.9999
-        geo_pt = self._makeOne(lat, lng)
+        geo_pt = self._make_one(lat, lng)
         self.assertEqual(geo_pt.latitude, lat)
         self.assertEqual(geo_pt.longitude, lng)
 
@@ -894,7 +894,7 @@ class TestGeoPoint(unittest.TestCase):
 
         lat = 0.0001
         lng = 20.03
-        geo_pt = self._makeOne(lat, lng)
+        geo_pt = self._make_one(lat, lng)
         result = geo_pt.to_protobuf()
         geo_pt_pb = latlng_pb2.LatLng(latitude=lat, longitude=lng)
         self.assertEqual(result, geo_pt_pb)
@@ -902,26 +902,26 @@ class TestGeoPoint(unittest.TestCase):
     def test___eq__(self):
         lat = 0.0001
         lng = 20.03
-        geo_pt1 = self._makeOne(lat, lng)
-        geo_pt2 = self._makeOne(lat, lng)
+        geo_pt1 = self._make_one(lat, lng)
+        geo_pt2 = self._make_one(lat, lng)
         self.assertEqual(geo_pt1, geo_pt2)
 
     def test___eq__type_differ(self):
         lat = 0.0001
         lng = 20.03
-        geo_pt1 = self._makeOne(lat, lng)
+        geo_pt1 = self._make_one(lat, lng)
         geo_pt2 = object()
         self.assertNotEqual(geo_pt1, geo_pt2)
 
     def test___ne__same_value(self):
         lat = 0.0001
         lng = 20.03
-        geo_pt1 = self._makeOne(lat, lng)
-        geo_pt2 = self._makeOne(lat, lng)
+        geo_pt1 = self._make_one(lat, lng)
+        geo_pt2 = self._make_one(lat, lng)
         comparison_val = (geo_pt1 != geo_pt2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        geo_pt1 = self._makeOne(0.0, 1.0)
-        geo_pt2 = self._makeOne(2.0, 3.0)
+        geo_pt1 = self._make_one(0.0, 1.0)
+        geo_pt2 = self._make_one(2.0, 3.0)
         self.assertNotEqual(geo_pt1, geo_pt2)

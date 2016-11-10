@@ -33,32 +33,32 @@ class TestPage(unittest.TestCase):
         from google.cloud.iterator import Page
         return Page
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         parent = object()
         item_to_value = object()
-        page = self._makeOne(parent, (1, 2, 3), item_to_value)
+        page = self._make_one(parent, (1, 2, 3), item_to_value)
         self.assertIs(page._parent, parent)
         self.assertEqual(page._num_items, 3)
         self.assertEqual(page._remaining, 3)
         self.assertIs(page._item_to_value, item_to_value)
 
     def test_num_items_property(self):
-        page = self._makeOne(None, (), None)
+        page = self._make_one(None, (), None)
         num_items = 42
         page._num_items = num_items
         self.assertEqual(page.num_items, num_items)
 
     def test_remaining_property(self):
-        page = self._makeOne(None, (), None)
+        page = self._make_one(None, (), None)
         remaining = 1337
         page._remaining = remaining
         self.assertEqual(page.remaining, remaining)
 
     def test___iter__(self):
-        page = self._makeOne(None, (), None)
+        page = self._make_one(None, (), None)
         self.assertIs(iter(page), page)
 
     def test_iterator_calls__item_to_value(self):
@@ -73,7 +73,7 @@ class TestPage(unittest.TestCase):
                 return item
 
         parent = Parent()
-        page = self._makeOne(parent, (10, 11, 12),
+        page = self._make_one(parent, (10, 11, 12),
                              Parent.item_to_value)
         page._remaining = 100
 
@@ -97,7 +97,7 @@ class TestIterator(unittest.TestCase):
         from google.cloud.iterator import Iterator
         return Iterator
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
@@ -106,7 +106,7 @@ class TestIterator(unittest.TestCase):
         item_to_value = object()
         token = 'ab13nceor03'
         max_results = 1337
-        iterator = self._makeOne(client, item_to_value, page_token=token,
+        iterator = self._make_one(client, item_to_value, page_token=token,
                                  max_results=max_results)
 
         self.assertFalse(iterator._started)
@@ -119,7 +119,7 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(iterator.num_results, 0)
 
     def test_pages_property(self):
-        iterator = self._makeOne(None, None)
+        iterator = self._make_one(None, None)
         self.assertFalse(iterator._started)
         mock_iter = object()
         incremented = []
@@ -137,7 +137,7 @@ class TestIterator(unittest.TestCase):
     def test_pages_property_started(self):
         import types
 
-        iterator = self._makeOne(None, None)
+        iterator = self._make_one(None, None)
         self.assertIsInstance(iterator.pages, types.GeneratorType)
         # Make sure we cannot restart.
         with self.assertRaises(ValueError):
@@ -146,7 +146,7 @@ class TestIterator(unittest.TestCase):
     def test_pages_property_items_started(self):
         import types
 
-        iterator = self._makeOne(None, None)
+        iterator = self._make_one(None, None)
         self.assertIsInstance(iter(iterator), types.GeneratorType)
         with self.assertRaises(ValueError):
             getattr(iterator, 'pages')
@@ -170,7 +170,7 @@ class TestIterator(unittest.TestCase):
         page1 = Page(parent, (item1, item2), self._do_nothing)
         page2 = Page(parent, (item3,), self._do_nothing)
 
-        iterator = self._makeOne(None, None)
+        iterator = self._make_one(None, None)
         # Fake the page iterator on the object.
         incremented = []
 
@@ -198,7 +198,7 @@ class TestIterator(unittest.TestCase):
         self.assertEqual(incremented, [False])
 
     def test___iter__(self):
-        iterator = self._makeOne(None, None)
+        iterator = self._make_one(None, None)
         self.assertFalse(iterator._started)
         incremented = []
 
@@ -214,7 +214,7 @@ class TestIterator(unittest.TestCase):
     def test___iter___started(self):
         import types
 
-        iterator = self._makeOne(None, None)
+        iterator = self._make_one(None, None)
         self.assertIsInstance(iter(iterator), types.GeneratorType)
         with self.assertRaises(ValueError):
             iter(iterator)
@@ -222,13 +222,13 @@ class TestIterator(unittest.TestCase):
     def test___iter___pages_started(self):
         import types
 
-        iterator = self._makeOne(None, None)
+        iterator = self._make_one(None, None)
         self.assertIsInstance(iterator.pages, types.GeneratorType)
         with self.assertRaises(ValueError):
             iter(iterator)
 
     def test__next_page_virtual(self):
-        iterator = self._makeOne(None, None)
+        iterator = self._make_one(None, None)
         with self.assertRaises(NotImplementedError):
             iterator._next_page()
 
@@ -240,7 +240,7 @@ class TestHTTPIterator(unittest.TestCase):
         from google.cloud.iterator import HTTPIterator
         return HTTPIterator
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
@@ -249,7 +249,7 @@ class TestHTTPIterator(unittest.TestCase):
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
-        iterator = self._makeOne(client, path, None)
+        iterator = self._make_one(client, path, None)
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
         self.assertEqual(iterator.path, path)
@@ -269,7 +269,7 @@ class TestHTTPIterator(unittest.TestCase):
         path = '/foo'
         extra_params = {'pageToken': 'val'}
         with self.assertRaises(ValueError):
-            self._makeOne(client, path, None, extra_params=extra_params)
+            self._make_one(client, path, None, extra_params=extra_params)
 
     def test_pages_iter_empty_then_another(self):
         import six
@@ -277,7 +277,7 @@ class TestHTTPIterator(unittest.TestCase):
         from google.cloud import iterator as MUT
 
         items_key = 'its-key'
-        iterator = self._makeOne(None, None, None, items_key=items_key)
+        iterator = self._make_one(None, None, None, items_key=items_key)
         # Fake the next page class.
         fake_page = MUT.Page(None, (), None)
         page_args = []
@@ -312,7 +312,7 @@ class TestHTTPIterator(unittest.TestCase):
         connection = _Connection(
             {'items': [{'name': key1}, {'name': key2}]})
         client = _Client(connection)
-        iterator = self._makeOne(client, path=path,
+        iterator = self._make_one(client, path=path,
                                  item_to_value=item_to_value)
         self.assertEqual(iterator.num_results, 0)
 
@@ -337,14 +337,14 @@ class TestHTTPIterator(unittest.TestCase):
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
-        iterator = self._makeOne(client, path, None)
+        iterator = self._make_one(client, path, None)
         self.assertTrue(iterator._has_next_page())
 
     def test__has_next_page_w_number_no_token(self):
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
-        iterator = self._makeOne(client, path, None)
+        iterator = self._make_one(client, path, None)
         iterator.page_number = 1
         self.assertFalse(iterator._has_next_page())
 
@@ -353,20 +353,20 @@ class TestHTTPIterator(unittest.TestCase):
         client = _Client(connection)
         path = '/foo'
         token = 'token'
-        iterator = self._makeOne(client, path, None)
+        iterator = self._make_one(client, path, None)
         iterator.page_number = 1
         iterator.next_page_token = token
         self.assertTrue(iterator._has_next_page())
 
     def test__has_next_page_w_max_results_not_done(self):
-        iterator = self._makeOne(None, None, None, max_results=3,
+        iterator = self._make_one(None, None, None, max_results=3,
                                  page_token='definitely-not-none')
         iterator.page_number = 1
         self.assertLess(iterator.num_results, iterator.max_results)
         self.assertTrue(iterator._has_next_page())
 
     def test__has_next_page_w_max_results_done(self):
-        iterator = self._makeOne(None, None, None, max_results=3)
+        iterator = self._make_one(None, None, None, max_results=3)
         iterator.page_number = 1
         iterator.num_results = iterator.max_results
         self.assertFalse(iterator._has_next_page())
@@ -375,7 +375,7 @@ class TestHTTPIterator(unittest.TestCase):
         connection = _Connection()
         client = _Client(connection)
         path = '/foo'
-        iterator = self._makeOne(client, path, None)
+        iterator = self._make_one(client, path, None)
         self.assertEqual(iterator._get_query_params(), {})
 
     def test__get_query_params_w_token(self):
@@ -383,7 +383,7 @@ class TestHTTPIterator(unittest.TestCase):
         client = _Client(connection)
         path = '/foo'
         token = 'token'
-        iterator = self._makeOne(client, path, None)
+        iterator = self._make_one(client, path, None)
         iterator.next_page_token = token
         self.assertEqual(iterator._get_query_params(),
                          {'pageToken': token})
@@ -393,7 +393,7 @@ class TestHTTPIterator(unittest.TestCase):
         client = _Client(connection)
         path = '/foo'
         max_results = 3
-        iterator = self._makeOne(client, path, None,
+        iterator = self._make_one(client, path, None,
                                  max_results=max_results)
         iterator.num_results = 1
         local_max = max_results - iterator.num_results
@@ -405,7 +405,7 @@ class TestHTTPIterator(unittest.TestCase):
         client = _Client(connection)
         path = '/foo'
         extra_params = {'key': 'val'}
-        iterator = self._makeOne(client, path, None,
+        iterator = self._make_one(client, path, None,
                                  extra_params=extra_params)
         self.assertEqual(iterator._get_query_params(), extra_params)
 
@@ -415,7 +415,7 @@ class TestHTTPIterator(unittest.TestCase):
         path = '/foo'
         token = 'token'
         extra_params = {'key': 'val'}
-        iterator = self._makeOne(client, path, None,
+        iterator = self._make_one(client, path, None,
                                  extra_params=extra_params)
         iterator.next_page_token = token
 
@@ -431,7 +431,7 @@ class TestHTTPIterator(unittest.TestCase):
         connection = _Connection({'items': [{'name': key1}, {'name': key2}],
                                   'nextPageToken': token})
         client = _Client(connection)
-        iterator = self._makeOne(client, path, None)
+        iterator = self._make_one(client, path, None)
         response = iterator._get_next_page_response()
         self.assertEqual(response['items'], [{'name': key1}, {'name': key2}])
         kw, = connection._requested
@@ -444,7 +444,7 @@ class TestHTTPIterator(unittest.TestCase):
         returned = {'green': 'eggs', 'ham': 55}
         connection = _Connection(returned)
         client = _Client(connection)
-        iterator = self._makeOne(client, path, None)
+        iterator = self._make_one(client, path, None)
         iterator._HTTP_METHOD = 'POST'
         response = iterator._get_next_page_response()
         self.assertEqual(response, returned)
@@ -460,7 +460,7 @@ class TestHTTPIterator(unittest.TestCase):
     def test__get_next_page_bad_http_method(self):
         path = '/foo'
         client = _Client(None)
-        iterator = self._makeOne(client, path, None)
+        iterator = self._make_one(client, path, None)
         iterator._HTTP_METHOD = 'NOT-A-VERB'
         with self.assertRaises(ValueError):
             iterator._get_next_page_response()
@@ -473,7 +473,7 @@ class TestGAXIterator(unittest.TestCase):
         from google.cloud.iterator import GAXIterator
         return GAXIterator
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
@@ -482,7 +482,7 @@ class TestGAXIterator(unittest.TestCase):
         page_iter = SimpleIter(token)
         item_to_value = object()
         max_results = 1337
-        iterator = self._makeOne(client, page_iter, item_to_value,
+        iterator = self._make_one(client, page_iter, item_to_value,
                                  max_results=max_results)
 
         self.assertFalse(iterator._started)
@@ -508,7 +508,7 @@ class TestGAXIterator(unittest.TestCase):
         page_token = '2sde98ds2s0hh'
         page_iter = _GAXPageIterator(page_items, page_token=page_token)
         # Wrap the GAX iterator.
-        iterator = self._makeOne(None, page_iter, self._do_nothing)
+        iterator = self._make_one(None, page_iter, self._do_nothing)
 
         page = iterator._next_page()
         # First check the page token.
@@ -525,7 +525,7 @@ class TestGAXIterator(unittest.TestCase):
         # Make a mock ``google.gax.PageIterator``
         page_iter = _GAXPageIterator()
         # Wrap the GAX iterator.
-        iterator = self._makeOne(None, page_iter, self._do_nothing)
+        iterator = self._make_one(None, page_iter, self._do_nothing)
 
         page = iterator._next_page()
         self.assertIsNone(page)
@@ -545,7 +545,7 @@ class TestGAXIterator(unittest.TestCase):
         page1 = (item1,)
         page2 = (item2, item3)
         page_iter = _GAXPageIterator(page1, page2, page_token=token1)
-        iterator = self._makeOne(None, page_iter, self._do_nothing)
+        iterator = self._make_one(None, page_iter, self._do_nothing)
 
         self.assertEqual(iterator.num_results, 0)
 

@@ -22,7 +22,7 @@ class TestResourceDescriptor(unittest.TestCase):
         from google.cloud.monitoring.resource import ResourceDescriptor
         return ResourceDescriptor
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
@@ -41,7 +41,7 @@ class TestResourceDescriptor(unittest.TestCase):
                             description='The GCE zone...'),
         ]
 
-        descriptor = self._makeOne(
+        descriptor = self._make_one(
             name=NAME,
             type_=TYPE,
             display_name=DISPLAY_NAME,
@@ -282,7 +282,7 @@ class TestResource(unittest.TestCase):
         from google.cloud.monitoring.resource import Resource
         return Resource
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
@@ -292,7 +292,7 @@ class TestResource(unittest.TestCase):
             'instance_id': '1234567890123456789',
             'zone': 'us-central1-a',
         }
-        resource = self._makeOne(type=TYPE, labels=LABELS)
+        resource = self._make_one(type=TYPE, labels=LABELS)
         self.assertEqual(resource.type, TYPE)
         self.assertEqual(resource.labels, LABELS)
 
@@ -324,7 +324,7 @@ class TestResource(unittest.TestCase):
             'instance_id': '1234567890123456789',
             'zone': 'us-central1-a',
         }
-        resource = self._makeOne(TYPE, LABELS)
+        resource = self._make_one(TYPE, LABELS)
         expected_dict = {
             'type': TYPE,
             'labels': LABELS,

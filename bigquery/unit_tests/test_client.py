@@ -22,7 +22,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.client import Client
         return Client
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
@@ -30,7 +30,7 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         self.assertIsInstance(client.connection, Connection)
         self.assertIs(client.connection.credentials, creds)
         self.assertIs(client.connection.http, http)
@@ -58,7 +58,7 @@ class TestClient(unittest.TestCase):
             ]
         }
         creds = _Credentials()
-        client = self._makeOne(PROJECT_1, creds)
+        client = self._make_one(PROJECT_1, creds)
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_projects()
@@ -87,7 +87,7 @@ class TestClient(unittest.TestCase):
         TOKEN = 'TOKEN'
         DATA = {}
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
+        client = self._make_one(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_projects(max_results=3, page_token=TOKEN)
@@ -129,7 +129,7 @@ class TestClient(unittest.TestCase):
             ]
         }
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
+        client = self._make_one(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_datasets()
@@ -157,7 +157,7 @@ class TestClient(unittest.TestCase):
         TOKEN = 'TOKEN'
         DATA = {}
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
+        client = self._make_one(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_datasets(
@@ -182,7 +182,7 @@ class TestClient(unittest.TestCase):
         DATASET = 'dataset_name'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
         self.assertIsInstance(dataset, Dataset)
         self.assertEqual(dataset.name, DATASET)
@@ -191,7 +191,7 @@ class TestClient(unittest.TestCase):
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
+        client = self._make_one(PROJECT, creds)
         with self.assertRaises(ValueError):
             client.job_from_resource({'configuration': {'nonesuch': {}}})
 
@@ -305,7 +305,7 @@ class TestClient(unittest.TestCase):
             ]
         }
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
+        client = self._make_one(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_jobs()
@@ -361,7 +361,7 @@ class TestClient(unittest.TestCase):
             ]
         }
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
+        client = self._make_one(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_jobs()
@@ -389,7 +389,7 @@ class TestClient(unittest.TestCase):
         DATA = {}
         TOKEN = 'TOKEN'
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
+        client = self._make_one(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_jobs(max_results=1000, page_token=TOKEN,
@@ -421,7 +421,7 @@ class TestClient(unittest.TestCase):
         SOURCE_URI = 'http://example.com/source.csv'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
         destination = dataset.table(DESTINATION)
         job = client.load_table_from_storage(JOB, destination, SOURCE_URI)
@@ -440,7 +440,7 @@ class TestClient(unittest.TestCase):
         DESTINATION = 'destination_table'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
         source = dataset.table(SOURCE)
         destination = dataset.table(DESTINATION)
@@ -460,7 +460,7 @@ class TestClient(unittest.TestCase):
         DESTINATION = 'gs://bucket_name/object_name'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
         source = dataset.table(SOURCE)
         job = client.extract_table_to_storage(JOB, source, DESTINATION)
@@ -477,7 +477,7 @@ class TestClient(unittest.TestCase):
         QUERY = 'select count(*) from persons'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         job = client.run_async_query(JOB, QUERY)
         self.assertIsInstance(job, QueryJob)
         self.assertIs(job._client, client)
@@ -490,7 +490,7 @@ class TestClient(unittest.TestCase):
         QUERY = 'select count(*) from persons'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         job = client.run_sync_query(QUERY)
         self.assertIsInstance(job, QueryResults)
         self.assertIs(job._client, client)

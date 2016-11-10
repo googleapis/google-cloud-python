@@ -24,10 +24,10 @@ class TestBaseHandler(unittest.TestCase):
         from google.cloud.logging.handlers.transports import Transport
         return Transport
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_send_is_abstract(self):
-        target = self._makeOne()
+        target = self._make_one()
         with self.assertRaises(NotImplementedError):
             target.send(None, None)
