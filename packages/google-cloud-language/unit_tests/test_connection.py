@@ -22,11 +22,11 @@ class TestConnection(unittest.TestCase):
         from google.cloud.language.connection import Connection
         return Connection
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_build_api_url(self):
-        conn = self._makeOne()
+        conn = self._make_one()
         uri = '/'.join([
             conn.API_BASE_URL,
             conn.API_VERSION,

@@ -22,7 +22,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.language.client import Client
         return Client
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
@@ -30,7 +30,7 @@ class TestClient(unittest.TestCase):
 
         creds = _Credentials()
         http = object()
-        client = self._makeOne(credentials=creds, http=http)
+        client = self._make_one(credentials=creds, http=http)
         self.assertIsInstance(client.connection, Connection)
         self.assertIs(client.connection.credentials, creds)
         self.assertIs(client.connection.http, http)
@@ -39,7 +39,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.language.document import Document
 
         creds = _Credentials()
-        client = self._makeOne(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, http=object())
 
         content = 'abc'
         language = 'es'
@@ -54,7 +54,7 @@ class TestClient(unittest.TestCase):
 
     def test_document_from_text_factory_failure(self):
         creds = _Credentials()
-        client = self._makeOne(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, http=object())
 
         with self.assertRaises(TypeError):
             client.document_from_text('abc', doc_type='foo')
@@ -63,7 +63,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.language.document import Document
 
         creds = _Credentials()
-        client = self._makeOne(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, http=object())
 
         content = '<html>abc</html>'
         language = 'ja'
@@ -78,7 +78,7 @@ class TestClient(unittest.TestCase):
 
     def test_document_from_html_factory_failure(self):
         creds = _Credentials()
-        client = self._makeOne(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, http=object())
 
         with self.assertRaises(TypeError):
             client.document_from_html('abc', doc_type='foo')
@@ -87,7 +87,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.language.document import Document
 
         creds = _Credentials()
-        client = self._makeOne(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, http=object())
 
         gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
         document = client.document_from_url(gcs_url)
@@ -102,7 +102,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.language.document import Encoding
 
         creds = _Credentials()
-        client = self._makeOne(credentials=creds, http=object())
+        client = self._make_one(credentials=creds, http=object())
 
         encoding = Encoding.UTF32
         gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
