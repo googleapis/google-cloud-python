@@ -25,7 +25,7 @@ class TestChanges(unittest.TestCase):
         from google.cloud.dns.changes import Changes
         return Changes
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def _setUpConstants(self):
@@ -83,7 +83,7 @@ class TestChanges(unittest.TestCase):
     def test_ctor(self):
         zone = _Zone()
 
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
 
         self.assertIs(changes.zone, zone)
         self.assertIsNone(changes.name)
@@ -116,19 +116,19 @@ class TestChanges(unittest.TestCase):
 
     def test_name_setter_bad_value(self):
         zone = _Zone()
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
         with self.assertRaises(ValueError):
             changes.name = 12345
 
     def test_name_setter(self):
         zone = _Zone()
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
         changes.name = 'NAME'
         self.assertEqual(changes.name, 'NAME')
 
     def test_add_record_set_invalid_value(self):
         zone = _Zone()
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
 
         with self.assertRaises(ValueError):
             changes.add_record_set(object())
@@ -136,7 +136,7 @@ class TestChanges(unittest.TestCase):
     def test_add_record_set(self):
         from google.cloud.dns.resource_record_set import ResourceRecordSet
         zone = _Zone()
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
         rrs = ResourceRecordSet('test.example.com', 'CNAME', 3600,
                                 ['www.example.com'], zone)
         changes.add_record_set(rrs)
@@ -144,7 +144,7 @@ class TestChanges(unittest.TestCase):
 
     def test_delete_record_set_invalid_value(self):
         zone = _Zone()
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
 
         with self.assertRaises(ValueError):
             changes.delete_record_set(object())
@@ -152,7 +152,7 @@ class TestChanges(unittest.TestCase):
     def test_delete_record_set(self):
         from google.cloud.dns.resource_record_set import ResourceRecordSet
         zone = _Zone()
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
         rrs = ResourceRecordSet('test.example.com', 'CNAME', 3600,
                                 ['www.example.com'], zone)
         changes.delete_record_set(rrs)
@@ -164,7 +164,7 @@ class TestChanges(unittest.TestCase):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         zone = _Zone(client)
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
 
         with self.assertRaises(ValueError):
             changes.create()
@@ -180,7 +180,7 @@ class TestChanges(unittest.TestCase):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         zone = _Zone(client)
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
         changes.add_record_set(ResourceRecordSet(
             'test.example.com', 'CNAME', 3600, ['www.example.com'], zone))
         changes.delete_record_set(ResourceRecordSet(
@@ -210,7 +210,7 @@ class TestChanges(unittest.TestCase):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         zone = _Zone(client1)
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
         changes.add_record_set(ResourceRecordSet(
             'test.example.com', 'CNAME', 3600, ['www.example.com'], zone))
         changes.delete_record_set(ResourceRecordSet(
@@ -237,7 +237,7 @@ class TestChanges(unittest.TestCase):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         zone = _Zone(client)
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
         changes.name = self.CHANGES_NAME
 
         self.assertFalse(changes.exists())
@@ -256,7 +256,7 @@ class TestChanges(unittest.TestCase):
         conn2 = _Connection({})
         client2 = _Client(project=self.PROJECT, connection=conn2)
         zone = _Zone(client1)
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
         changes.name = self.CHANGES_NAME
 
         self.assertTrue(changes.exists(client=client2))
@@ -276,7 +276,7 @@ class TestChanges(unittest.TestCase):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         zone = _Zone(client)
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
         changes.name = self.CHANGES_NAME
 
         changes.reload()
@@ -297,7 +297,7 @@ class TestChanges(unittest.TestCase):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         zone = _Zone(client1)
-        changes = self._makeOne(zone)
+        changes = self._make_one(zone)
         changes.name = self.CHANGES_NAME
 
         changes.reload(client=client2)

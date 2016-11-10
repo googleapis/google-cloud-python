@@ -22,13 +22,13 @@ class TestResourceRecordSet(unittest.TestCase):
         from google.cloud.dns.resource_record_set import ResourceRecordSet
         return ResourceRecordSet
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         zone = _Zone()
 
-        rrs = self._makeOne('test.example.com', 'CNAME', 3600,
+        rrs = self._make_one('test.example.com', 'CNAME', 3600,
                             ['www.example.com'], zone)
 
         self.assertEqual(rrs.name, 'test.example.com')
