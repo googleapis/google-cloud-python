@@ -125,7 +125,8 @@ class TestSpeechClient(unittest.TestCase):
                                sample_rate=16000)
         return client.streaming_recognize(sample,
                                           single_utterance=single_utterance,
-                                          interim_results=interim_results)
+                                          interim_results=interim_results,
+                                          speech_context=['hello', 'google'])
 
     def _check_results(self, results, num_results=1):
         self.assertEqual(len(results), num_results)
