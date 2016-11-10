@@ -225,7 +225,7 @@ this is to use google-auth to create the gRPC channel::
     http_request = google.auth.transport.requests.Request()
 
     channel = google.auth.transport.grpc.secure_authorized_channel(
-        credentials, 'pubsub.googleapis.com:443', http_request)
+        credentials, http_request, 'pubsub.googleapis.com:443')
 
 .. note:: Even though gRPC is its own transport, you still need to use one of
     the other HTTP transports with gRPC. The reason is that most credential

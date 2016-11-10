@@ -82,7 +82,7 @@ def test_secure_authorized_channel(
     target = 'example.com:80'
 
     channel = google.auth.transport.grpc.secure_authorized_channel(
-        credentials, target, request)
+        credentials, request, target)
 
     # Check the auth plugin construction.
     auth_plugin = metadata_call_credentials.call_args[0][0]
@@ -118,7 +118,7 @@ def test_secure_authorized_channel_explicit_ssl(
     ssl_credentials = mock.Mock()
 
     google.auth.transport.grpc.secure_authorized_channel(
-        credentials, target, request, ssl_credentials=ssl_credentials)
+        credentials, request, target, ssl_credentials=ssl_credentials)
 
     # Check the ssl channel call.
     assert not ssl_channel_credentials.called

@@ -28,7 +28,7 @@ def test_grpc_request(http_request):
         publisher_api.PublisherApi.DEFAULT_SERVICE_PORT)
 
     channel = google.auth.transport.grpc.secure_authorized_channel(
-        credentials, target, http_request)
+        credentials, http_request, target)
 
     # Create a pub/sub client.
     client = publisher_api.PublisherApi(channel=channel)
