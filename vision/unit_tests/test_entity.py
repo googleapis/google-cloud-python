@@ -16,7 +16,8 @@ import unittest
 
 
 class TestEntityAnnotation(unittest.TestCase):
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.vision.entity import EntityAnnotation
         return EntityAnnotation
 
@@ -24,7 +25,7 @@ class TestEntityAnnotation(unittest.TestCase):
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
 
         LOGO = LOGO_DETECTION_RESPONSE['responses'][0]['logoAnnotations'][0]
-        entity_class = self._getTargetClass()
+        entity_class = self._get_target_class()
         logo = entity_class.from_api_repr(LOGO)
 
         self.assertEqual('/m/05b5c', logo.mid)

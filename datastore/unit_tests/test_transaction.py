@@ -17,12 +17,13 @@ import unittest
 
 class TestTransaction(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.datastore.transaction import Transaction
         return Transaction
 
-    def _makeOne(self, client, **kw):
-        return self._getTargetClass()(client, **kw)
+    def _make_one(self, client, **kw):
+        return self._get_target_class()(client, **kw)
 
     def test_ctor_defaults(self):
         from google.cloud.datastore._generated import datastore_pb2
@@ -30,11 +31,11 @@ class TestTransaction(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        xact = self._makeOne(client)
+        xact = self._make_one(client)
         self.assertEqual(xact.project, _PROJECT)
         self.assertEqual(xact.connection, connection)
         self.assertIsNone(xact.id)
-        self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
+        self.assertEqual(xact._status, self._get_target_class()._INITIAL)
         self.assertIsInstance(xact._commit_request,
                               datastore_pb2.CommitRequest)
         self.assertIs(xact.mutations, xact._commit_request.mutations)
@@ -44,8 +45,8 @@ class TestTransaction(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        xact1 = self._makeOne(client)
-        xact2 = self._makeOne(client)
+        xact1 = self._make_one(client)
+        xact2 = self._make_one(client)
         self.assertIsNone(xact1.current())
         self.assertIsNone(xact2.current())
         with xact1:
@@ -69,7 +70,7 @@ class TestTransaction(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection(234)
         client = _Client(_PROJECT, connection)
-        xact = self._makeOne(client)
+        xact = self._make_one(client)
         xact.begin()
         self.assertEqual(xact.id, 234)
         self.assertEqual(connection._begun, _PROJECT)
@@ -78,7 +79,7 @@ class TestTransaction(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection(234)
         client = _Client(_PROJECT, connection)
-        xact = self._makeOne(client)
+        xact = self._make_one(client)
         xact.begin()
         self.assertEqual(xact.id, 234)
         self.assertEqual(connection._begun, _PROJECT)
@@ -92,7 +93,7 @@ class TestTransaction(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection(234)
         client = _Client(_PROJECT, connection)
-        xact = self._makeOne(client)
+        xact = self._make_one(client)
 
         connection._side_effect = RuntimeError
         with self.assertRaises(RuntimeError):
@@ -105,7 +106,7 @@ class TestTransaction(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection(234)
         client = _Client(_PROJECT, connection)
-        xact = self._makeOne(client)
+        xact = self._make_one(client)
         xact.begin()
         xact.rollback()
         self.assertIsNone(xact.id)
@@ -115,7 +116,7 @@ class TestTransaction(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection(234)
         client = _Client(_PROJECT, connection)
-        xact = self._makeOne(client)
+        xact = self._make_one(client)
         xact._commit_request = commit_request = object()
         xact.begin()
         xact.commit()
@@ -130,7 +131,7 @@ class TestTransaction(unittest.TestCase):
         connection = _Connection(234)
         connection._completed_keys = [_make_key(_KIND, _ID, _PROJECT)]
         client = _Client(_PROJECT, connection)
-        xact = self._makeOne(client)
+        xact = self._make_one(client)
         xact.begin()
         entity = _Entity()
         xact.put(entity)
@@ -145,7 +146,7 @@ class TestTransaction(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection(234)
         client = _Client(_PROJECT, connection)
-        xact = self._makeOne(client)
+        xact = self._make_one(client)
         xact._commit_request = commit_request = object()
         with xact:
             self.assertEqual(xact.id, 234)
@@ -162,7 +163,7 @@ class TestTransaction(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection(234)
         client = _Client(_PROJECT, connection)
-        xact = self._makeOne(client)
+        xact = self._make_one(client)
         xact._mutation = object()
         try:
             with xact:

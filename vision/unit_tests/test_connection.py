@@ -17,17 +17,18 @@ import unittest
 
 class TestConnection(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.vision.connection import Connection
         return Connection
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_default_url(self):
         creds = _Credentials()
-        conn = self._makeOne(creds)
-        klass = self._getTargetClass()
+        conn = self._make_one(creds)
+        klass = self._get_target_class()
         self.assertEqual(conn.credentials._scopes, klass.SCOPE)
 
 

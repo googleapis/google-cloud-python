@@ -17,16 +17,17 @@ import unittest
 
 class Test_ACLEntity(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.acl import _ACLEntity
         return _ACLEntity
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_default_identifier(self):
         TYPE = 'type'
-        entity = self._makeOne(TYPE)
+        entity = self._make_one(TYPE)
         self.assertEqual(entity.type, TYPE)
         self.assertIsNone(entity.identifier)
         self.assertEqual(entity.get_roles(), set())
@@ -34,26 +35,26 @@ class Test_ACLEntity(unittest.TestCase):
     def test_ctor_w_identifier(self):
         TYPE = 'type'
         ID = 'id'
-        entity = self._makeOne(TYPE, ID)
+        entity = self._make_one(TYPE, ID)
         self.assertEqual(entity.type, TYPE)
         self.assertEqual(entity.identifier, ID)
         self.assertEqual(entity.get_roles(), set())
 
     def test___str__no_identifier(self):
         TYPE = 'type'
-        entity = self._makeOne(TYPE)
+        entity = self._make_one(TYPE)
         self.assertEqual(str(entity), TYPE)
 
     def test___str__w_identifier(self):
         TYPE = 'type'
         ID = 'id'
-        entity = self._makeOne(TYPE, ID)
+        entity = self._make_one(TYPE, ID)
         self.assertEqual(str(entity), '%s-%s' % (TYPE, ID))
 
     def test_grant_simple(self):
         TYPE = 'type'
         ROLE = 'role'
-        entity = self._makeOne(TYPE)
+        entity = self._make_one(TYPE)
         entity.grant(ROLE)
         self.assertEqual(entity.get_roles(), set([ROLE]))
 
@@ -61,7 +62,7 @@ class Test_ACLEntity(unittest.TestCase):
         TYPE = 'type'
         ROLE1 = 'role1'
         ROLE2 = 'role2'
-        entity = self._makeOne(TYPE)
+        entity = self._make_one(TYPE)
         entity.grant(ROLE1)
         entity.grant(ROLE2)
         entity.grant(ROLE1)
@@ -70,7 +71,7 @@ class Test_ACLEntity(unittest.TestCase):
     def test_revoke_miss(self):
         TYPE = 'type'
         ROLE = 'nonesuch'
-        entity = self._makeOne(TYPE)
+        entity = self._make_one(TYPE)
         entity.revoke(ROLE)
         self.assertEqual(entity.get_roles(), set())
 
@@ -78,7 +79,7 @@ class Test_ACLEntity(unittest.TestCase):
         TYPE = 'type'
         ROLE1 = 'role1'
         ROLE2 = 'role2'
-        entity = self._makeOne(TYPE)
+        entity = self._make_one(TYPE)
         entity.grant(ROLE1)
         entity.grant(ROLE2)
         entity.revoke(ROLE1)
@@ -86,39 +87,39 @@ class Test_ACLEntity(unittest.TestCase):
 
     def test_grant_read(self):
         TYPE = 'type'
-        entity = self._makeOne(TYPE)
+        entity = self._make_one(TYPE)
         entity.grant_read()
         self.assertEqual(entity.get_roles(), set([entity.READER_ROLE]))
 
     def test_grant_write(self):
         TYPE = 'type'
-        entity = self._makeOne(TYPE)
+        entity = self._make_one(TYPE)
         entity.grant_write()
         self.assertEqual(entity.get_roles(), set([entity.WRITER_ROLE]))
 
     def test_grant_owner(self):
         TYPE = 'type'
-        entity = self._makeOne(TYPE)
+        entity = self._make_one(TYPE)
         entity.grant_owner()
         self.assertEqual(entity.get_roles(), set([entity.OWNER_ROLE]))
 
     def test_revoke_read(self):
         TYPE = 'type'
-        entity = self._makeOne(TYPE)
+        entity = self._make_one(TYPE)
         entity.grant(entity.READER_ROLE)
         entity.revoke_read()
         self.assertEqual(entity.get_roles(), set())
 
     def test_revoke_write(self):
         TYPE = 'type'
-        entity = self._makeOne(TYPE)
+        entity = self._make_one(TYPE)
         entity.grant(entity.WRITER_ROLE)
         entity.revoke_write()
         self.assertEqual(entity.get_roles(), set())
 
     def test_revoke_owner(self):
         TYPE = 'type'
-        entity = self._makeOne(TYPE)
+        entity = self._make_one(TYPE)
         entity.grant(entity.OWNER_ROLE)
         entity.revoke_owner()
         self.assertEqual(entity.get_roles(), set())
@@ -126,20 +127,21 @@ class Test_ACLEntity(unittest.TestCase):
 
 class Test_ACL(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.acl import ACL
         return ACL
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        acl = self._makeOne()
+        acl = self._make_one()
         self.assertEqual(acl.entities, {})
         self.assertFalse(acl.loaded)
 
     def test__ensure_loaded(self):
-        acl = self._makeOne()
+        acl = self._make_one()
 
         def _reload():
             acl._really_loaded = True
@@ -149,13 +151,13 @@ class Test_ACL(unittest.TestCase):
         self.assertTrue(acl._really_loaded)
 
     def test_client_is_abstract(self):
-        acl = self._makeOne()
+        acl = self._make_one()
         self.assertRaises(NotImplementedError, lambda: acl.client)
 
     def test_reset(self):
         TYPE = 'type'
         ID = 'id'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         acl.entity(TYPE, ID)
         acl.reset()
@@ -163,12 +165,12 @@ class Test_ACL(unittest.TestCase):
         self.assertFalse(acl.loaded)
 
     def test___iter___empty_eager(self):
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         self.assertEqual(list(acl), [])
 
     def test___iter___empty_lazy(self):
-        acl = self._makeOne()
+        acl = self._make_one()
 
         def _reload():
             acl.loaded = True
@@ -180,7 +182,7 @@ class Test_ACL(unittest.TestCase):
     def test___iter___non_empty_no_roles(self):
         TYPE = 'type'
         ID = 'id'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         acl.entity(TYPE, ID)
         self.assertEqual(list(acl), [])
@@ -189,7 +191,7 @@ class Test_ACL(unittest.TestCase):
         TYPE = 'type'
         ID = 'id'
         ROLE = 'role'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.entity(TYPE, ID)
         entity.grant(ROLE)
@@ -199,7 +201,7 @@ class Test_ACL(unittest.TestCase):
     def test___iter___non_empty_w_empty_role(self):
         TYPE = 'type'
         ID = 'id'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.entity(TYPE, ID)
         entity.grant('')
@@ -207,7 +209,7 @@ class Test_ACL(unittest.TestCase):
 
     def test_entity_from_dict_allUsers_eager(self):
         ROLE = 'role'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.entity_from_dict({'entity': 'allUsers', 'role': ROLE})
         self.assertEqual(entity.type, 'allUsers')
@@ -219,7 +221,7 @@ class Test_ACL(unittest.TestCase):
 
     def test_entity_from_dict_allAuthenticatedUsers(self):
         ROLE = 'role'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.entity_from_dict({'entity': 'allAuthenticatedUsers',
                                        'role': ROLE})
@@ -232,7 +234,7 @@ class Test_ACL(unittest.TestCase):
 
     def test_entity_from_dict_string_w_hyphen(self):
         ROLE = 'role'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.entity_from_dict({'entity': 'type-id', 'role': ROLE})
         self.assertEqual(entity.type, 'type')
@@ -244,7 +246,7 @@ class Test_ACL(unittest.TestCase):
 
     def test_entity_from_dict_string_wo_hyphen(self):
         ROLE = 'role'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         self.assertRaises(ValueError,
                           acl.entity_from_dict,
@@ -252,12 +254,12 @@ class Test_ACL(unittest.TestCase):
         self.assertEqual(list(acl.get_entities()), [])
 
     def test_has_entity_miss_str_eager(self):
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         self.assertFalse(acl.has_entity('nonesuch'))
 
     def test_has_entity_miss_str_lazy(self):
-        acl = self._makeOne()
+        acl = self._make_one()
 
         def _reload():
             acl.loaded = True
@@ -271,14 +273,14 @@ class Test_ACL(unittest.TestCase):
         TYPE = 'type'
         ID = 'id'
         entity = _ACLEntity(TYPE, ID)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         self.assertFalse(acl.has_entity(entity))
 
     def test_has_entity_hit_str(self):
         TYPE = 'type'
         ID = 'id'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         acl.entity(TYPE, ID)
         self.assertTrue(acl.has_entity('%s-%s' % (TYPE, ID)))
@@ -286,18 +288,18 @@ class Test_ACL(unittest.TestCase):
     def test_has_entity_hit_entity(self):
         TYPE = 'type'
         ID = 'id'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.entity(TYPE, ID)
         self.assertTrue(acl.has_entity(entity))
 
     def test_get_entity_miss_str_no_default_eager(self):
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         self.assertIsNone(acl.get_entity('nonesuch'))
 
     def test_get_entity_miss_str_no_default_lazy(self):
-        acl = self._makeOne()
+        acl = self._make_one()
 
         def _reload():
             acl.loaded = True
@@ -311,13 +313,13 @@ class Test_ACL(unittest.TestCase):
         TYPE = 'type'
         ID = 'id'
         entity = _ACLEntity(TYPE, ID)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         self.assertIsNone(acl.get_entity(entity))
 
     def test_get_entity_miss_str_w_default(self):
         DEFAULT = object()
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         self.assertIs(acl.get_entity('nonesuch', DEFAULT), DEFAULT)
 
@@ -327,14 +329,14 @@ class Test_ACL(unittest.TestCase):
         TYPE = 'type'
         ID = 'id'
         entity = _ACLEntity(TYPE, ID)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         self.assertIs(acl.get_entity(entity, DEFAULT), DEFAULT)
 
     def test_get_entity_hit_str(self):
         TYPE = 'type'
         ID = 'id'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         acl.entity(TYPE, ID)
         self.assertTrue(acl.has_entity('%s-%s' % (TYPE, ID)))
@@ -342,7 +344,7 @@ class Test_ACL(unittest.TestCase):
     def test_get_entity_hit_entity(self):
         TYPE = 'type'
         ID = 'id'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.entity(TYPE, ID)
         self.assertTrue(acl.has_entity(entity))
@@ -354,7 +356,7 @@ class Test_ACL(unittest.TestCase):
         ROLE = 'role'
         entity = _ACLEntity(TYPE, ID)
         entity.grant(ROLE)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         acl.add_entity(entity)
         self.assertTrue(acl.loaded)
@@ -369,7 +371,7 @@ class Test_ACL(unittest.TestCase):
         ROLE = 'role'
         entity = _ACLEntity(TYPE, ID)
         entity.grant(ROLE)
-        acl = self._makeOne()
+        acl = self._make_one()
 
         def _reload():
             acl.loaded = True
@@ -390,7 +392,7 @@ class Test_ACL(unittest.TestCase):
         ROLE = 'role'
         entity = _ACLEntity(TYPE, ID)
         entity.grant(ROLE)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         before = acl.entity(TYPE, ID)
         acl.add_entity(entity)
@@ -405,7 +407,7 @@ class Test_ACL(unittest.TestCase):
         TYPE = 'type'
         ID = 'id'
         ROLE = 'role'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.entity(TYPE, ID)
         self.assertTrue(acl.loaded)
@@ -418,7 +420,7 @@ class Test_ACL(unittest.TestCase):
         TYPE = 'type'
         ID = 'id'
         ROLE = 'role'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         before = acl.entity(TYPE, ID)
         before.grant(ROLE)
@@ -431,7 +433,7 @@ class Test_ACL(unittest.TestCase):
     def test_user(self):
         ID = 'id'
         ROLE = 'role'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.user(ID)
         entity.grant(ROLE)
@@ -443,7 +445,7 @@ class Test_ACL(unittest.TestCase):
     def test_group(self):
         ID = 'id'
         ROLE = 'role'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.group(ID)
         entity.grant(ROLE)
@@ -455,7 +457,7 @@ class Test_ACL(unittest.TestCase):
     def test_domain(self):
         ID = 'id'
         ROLE = 'role'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.domain(ID)
         entity.grant(ROLE)
@@ -466,7 +468,7 @@ class Test_ACL(unittest.TestCase):
 
     def test_all(self):
         ROLE = 'role'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.all()
         entity.grant(ROLE)
@@ -477,7 +479,7 @@ class Test_ACL(unittest.TestCase):
 
     def test_all_authenticated(self):
         ROLE = 'role'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.all_authenticated()
         entity.grant(ROLE)
@@ -487,12 +489,12 @@ class Test_ACL(unittest.TestCase):
                          [{'entity': 'allAuthenticatedUsers', 'role': ROLE}])
 
     def test_get_entities_empty_eager(self):
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         self.assertEqual(acl.get_entities(), [])
 
     def test_get_entities_empty_lazy(self):
-        acl = self._makeOne()
+        acl = self._make_one()
 
         def _reload():
             acl.loaded = True
@@ -504,7 +506,7 @@ class Test_ACL(unittest.TestCase):
     def test_get_entities_nonempty(self):
         TYPE = 'type'
         ID = 'id'
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.loaded = True
         entity = acl.entity(TYPE, ID)
         self.assertEqual(acl.get_entities(), [entity])
@@ -514,7 +516,7 @@ class Test_ACL(unittest.TestCase):
         ROLE = 'role'
         connection = _Connection({})
         client = _Client(connection)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.reload_path = '/testing/acl'
         acl.loaded = True
         acl.entity('allUsers', ROLE)
@@ -529,7 +531,7 @@ class Test_ACL(unittest.TestCase):
         ROLE = 'role'
         connection = _Connection({'items': []})
         client = _Client(connection)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.reload_path = '/testing/acl'
         acl.loaded = True
         acl.entity('allUsers', ROLE)
@@ -546,7 +548,7 @@ class Test_ACL(unittest.TestCase):
         connection = _Connection(
             {'items': [{'entity': 'allUsers', 'role': ROLE}]})
         client = _Client(connection)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.reload_path = '/testing/acl'
         acl.loaded = True
         acl.reload(client=client)
@@ -560,7 +562,7 @@ class Test_ACL(unittest.TestCase):
     def test_save_none_set_none_passed(self):
         connection = _Connection()
         client = _Client(connection)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.save_path = '/testing'
         acl.save(client=client)
         kw = connection._requested
@@ -569,7 +571,7 @@ class Test_ACL(unittest.TestCase):
     def test_save_existing_missing_none_passed(self):
         connection = _Connection({})
         client = _Client(connection)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.save_path = '/testing'
         acl.loaded = True
         acl.save(client=client)
@@ -586,7 +588,7 @@ class Test_ACL(unittest.TestCase):
         AFTER = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'acl': AFTER})
         client = _Client(connection)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.save_path = '/testing'
         acl.loaded = True
         acl.entity('allUsers').grant(ROLE)
@@ -606,7 +608,7 @@ class Test_ACL(unittest.TestCase):
         new_acl = [{'entity': 'allUsers', 'role': ROLE1}]
         connection = _Connection({'acl': [STICKY] + new_acl})
         client = _Client(connection)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.save_path = '/testing'
         acl.loaded = True
         acl.save(new_acl, client=client)
@@ -624,7 +626,7 @@ class Test_ACL(unittest.TestCase):
     def test_save_prefefined_invalid(self):
         connection = _Connection()
         client = _Client(connection)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.save_path = '/testing'
         acl.loaded = True
         with self.assertRaises(ValueError):
@@ -634,7 +636,7 @@ class Test_ACL(unittest.TestCase):
         PREDEFINED = 'private'
         connection = _Connection({'acl': []})
         client = _Client(connection)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.save_path = '/testing'
         acl.loaded = True
         acl.save_predefined(PREDEFINED, client=client)
@@ -653,7 +655,7 @@ class Test_ACL(unittest.TestCase):
         PREDEFINED_JSON = 'projectPrivate'
         connection = _Connection({'acl': []})
         client = _Client(connection)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.save_path = '/testing'
         acl.loaded = True
         acl.save_predefined(PREDEFINED_XML, client=client)
@@ -673,7 +675,7 @@ class Test_ACL(unittest.TestCase):
         PREDEFINED = 'publicRead'
         connection = _Connection({'acl': []})
         client = _Client(connection)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.save_path = '/testing'
         acl.loaded = True
         acl._PREDEFINED_QUERY_PARAM = 'alternate'
@@ -694,7 +696,7 @@ class Test_ACL(unittest.TestCase):
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
         connection = _Connection({'acl': [STICKY]})
         client = _Client(connection)
-        acl = self._makeOne()
+        acl = self._make_one()
         acl.save_path = '/testing'
         acl.loaded = True
         acl.entity('allUsers', ROLE1)
@@ -710,17 +712,18 @@ class Test_ACL(unittest.TestCase):
 
 class Test_BucketACL(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.acl import BucketACL
         return BucketACL
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         NAME = 'name'
         bucket = _Bucket(NAME)
-        acl = self._makeOne(bucket)
+        acl = self._make_one(bucket)
         self.assertEqual(acl.entities, {})
         self.assertFalse(acl.loaded)
         self.assertIs(acl.bucket, bucket)
@@ -730,17 +733,18 @@ class Test_BucketACL(unittest.TestCase):
 
 class Test_DefaultObjectACL(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.acl import DefaultObjectACL
         return DefaultObjectACL
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         NAME = 'name'
         bucket = _Bucket(NAME)
-        acl = self._makeOne(bucket)
+        acl = self._make_one(bucket)
         self.assertEqual(acl.entities, {})
         self.assertFalse(acl.loaded)
         self.assertIs(acl.bucket, bucket)
@@ -750,19 +754,20 @@ class Test_DefaultObjectACL(unittest.TestCase):
 
 class Test_ObjectACL(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.acl import ObjectACL
         return ObjectACL
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         bucket = _Bucket(NAME)
         blob = _Blob(bucket, BLOB_NAME)
-        acl = self._makeOne(blob)
+        acl = self._make_one(blob)
         self.assertEqual(acl.entities, {})
         self.assertFalse(acl.loaded)
         self.assertIs(acl.blob, blob)

@@ -20,19 +20,20 @@ class TestClient(unittest.TestCase):
     PROJECT = 'PROJECT'
     ZONE_NAME = 'zone-name'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.dns.client import Client
         return Client
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         from google.cloud.dns.connection import Connection
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=self.PROJECT, credentials=creds,
-                               http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                http=http)
         self.assertIsInstance(client.connection, Connection)
         self.assertIs(client.connection.credentials, creds)
         self.assertIs(client.connection.http, http)
@@ -58,7 +59,7 @@ class TestClient(unittest.TestCase):
         CONVERTED = {key: int(value)
                      for key, value in DATA['quota'].items()}
         creds = _Credentials()
-        client = self._makeOne(self.PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
         quotas = client.quotas()
@@ -93,7 +94,7 @@ class TestClient(unittest.TestCase):
         WITH_KIND = {'quota': DATA['quota'].copy()}
         WITH_KIND['quota']['kind'] = 'dns#quota'
         creds = _Credentials()
-        client = self._makeOne(self.PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client.connection = _Connection(WITH_KIND)
 
         quotas = client.quotas()
@@ -130,7 +131,7 @@ class TestClient(unittest.TestCase):
             ]
         }
         creds = _Credentials()
-        client = self._makeOne(self.PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_zones()
@@ -175,7 +176,7 @@ class TestClient(unittest.TestCase):
             ]
         }
         creds = _Credentials()
-        client = self._makeOne(self.PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
         iterator = client.list_zones(max_results=3, page_token=TOKEN)
@@ -203,7 +204,7 @@ class TestClient(unittest.TestCase):
         DESCRIPTION = 'DESCRIPTION'
         DNS_NAME = 'test.example.com'
         creds = _Credentials()
-        client = self._makeOne(self.PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME, DNS_NAME, DESCRIPTION)
         self.assertIsInstance(zone, ManagedZone)
         self.assertEqual(zone.name, self.ZONE_NAME)
@@ -215,7 +216,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.dns.zone import ManagedZone
         DNS_NAME = 'test.example.com'
         creds = _Credentials()
-        client = self._makeOne(self.PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME, DNS_NAME)
         self.assertIsInstance(zone, ManagedZone)
         self.assertEqual(zone.name, self.ZONE_NAME)
@@ -226,7 +227,7 @@ class TestClient(unittest.TestCase):
     def test_zone_wo_dns_name(self):
         from google.cloud.dns.zone import ManagedZone
         creds = _Credentials()
-        client = self._makeOne(self.PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME)
         self.assertIsInstance(zone, ManagedZone)
         self.assertEqual(zone.name, self.ZONE_NAME)

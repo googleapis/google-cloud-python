@@ -25,19 +25,20 @@ class TestCluster(unittest.TestCase):
                     '/instances/' + INSTANCE_ID +
                     '/clusters/' + CLUSTER_ID)
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.cluster import Cluster
         return Cluster
 
-    def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor_defaults(self):
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
 
-        cluster = self._makeOne(self.CLUSTER_ID, instance)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
@@ -47,8 +48,8 @@ class TestCluster(unittest.TestCase):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
 
-        cluster = self._makeOne(self.CLUSTER_ID, instance,
-                                serve_nodes=SERVE_NODES)
+        cluster = self._make_one(self.CLUSTER_ID, instance,
+                                 serve_nodes=SERVE_NODES)
         self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
         self.assertIs(cluster._instance, instance)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
@@ -58,8 +59,8 @@ class TestCluster(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster = self._makeOne(self.CLUSTER_ID, instance,
-                                serve_nodes=SERVE_NODES)
+        cluster = self._make_one(self.CLUSTER_ID, instance,
+                                 serve_nodes=SERVE_NODES)
         new_cluster = cluster.copy()
 
         # Make sure the client copy succeeded.
@@ -79,7 +80,7 @@ class TestCluster(unittest.TestCase):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
 
-        cluster = self._makeOne(self.CLUSTER_ID, instance)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
         self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
         cluster._update_from_pb(cluster_pb)
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
@@ -91,7 +92,7 @@ class TestCluster(unittest.TestCase):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
 
-        cluster = self._makeOne(self.CLUSTER_ID, instance)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
         self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
         with self.assertRaises(ValueError):
             cluster._update_from_pb(cluster_pb)
@@ -107,7 +108,7 @@ class TestCluster(unittest.TestCase):
             serve_nodes=SERVE_NODES,
         )
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         cluster = klass.from_pb(cluster_pb, instance)
         self.assertIsInstance(cluster, klass)
         self.assertIs(cluster._instance, instance)
@@ -120,7 +121,7 @@ class TestCluster(unittest.TestCase):
         instance = _Instance(self.INSTANCE_ID, client)
         cluster_pb = _ClusterPB(name=BAD_CLUSTER_NAME)
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(ValueError):
             klass.from_pb(cluster_pb, instance)
 
@@ -133,7 +134,7 @@ class TestCluster(unittest.TestCase):
 
         cluster_pb = _ClusterPB(name=self.CLUSTER_NAME)
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(ValueError):
             klass.from_pb(cluster_pb, instance)
 
@@ -146,7 +147,7 @@ class TestCluster(unittest.TestCase):
 
         cluster_pb = _ClusterPB(name=self.CLUSTER_NAME)
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(ValueError):
             klass.from_pb(cluster_pb, instance)
 
@@ -154,36 +155,36 @@ class TestCluster(unittest.TestCase):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
 
-        cluster = self._makeOne(self.CLUSTER_ID, instance)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
         self.assertEqual(cluster.name, self.CLUSTER_NAME)
 
     def test___eq__(self):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster1 = self._makeOne(self.CLUSTER_ID, instance)
-        cluster2 = self._makeOne(self.CLUSTER_ID, instance)
+        cluster1 = self._make_one(self.CLUSTER_ID, instance)
+        cluster2 = self._make_one(self.CLUSTER_ID, instance)
         self.assertEqual(cluster1, cluster2)
 
     def test___eq__type_differ(self):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster1 = self._makeOne(self.CLUSTER_ID, instance)
+        cluster1 = self._make_one(self.CLUSTER_ID, instance)
         cluster2 = object()
         self.assertNotEqual(cluster1, cluster2)
 
     def test___ne__same_value(self):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster1 = self._makeOne(self.CLUSTER_ID, instance)
-        cluster2 = self._makeOne(self.CLUSTER_ID, instance)
+        cluster1 = self._make_one(self.CLUSTER_ID, instance)
+        cluster2 = self._make_one(self.CLUSTER_ID, instance)
         comparison_val = (cluster1 != cluster2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster1 = self._makeOne('cluster_id1', instance)
-        cluster2 = self._makeOne('cluster_id2', instance)
+        cluster1 = self._make_one('cluster_id1', instance)
+        cluster2 = self._make_one('cluster_id2', instance)
         self.assertNotEqual(cluster1, cluster2)
 
     def test_reload(self):
@@ -194,7 +195,7 @@ class TestCluster(unittest.TestCase):
         LOCATION = 'LOCATION'
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster = self._makeOne(self.CLUSTER_ID, instance)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
 
         # Create request_pb
         request_pb = _GetClusterRequestPB(name=self.CLUSTER_NAME)
@@ -237,7 +238,7 @@ class TestCluster(unittest.TestCase):
         SERVE_NODES = 4
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster = self._makeOne(
+        cluster = self._make_one(
             self.CLUSTER_ID, instance, serve_nodes=SERVE_NODES)
 
         # Create response_pb
@@ -291,8 +292,8 @@ class TestCluster(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster = self._makeOne(self.CLUSTER_ID, instance,
-                                serve_nodes=SERVE_NODES)
+        cluster = self._make_one(self.CLUSTER_ID, instance,
+                                 serve_nodes=SERVE_NODES)
 
         # Create request_pb
         request_pb = _ClusterPB(
@@ -346,7 +347,7 @@ class TestCluster(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         instance = _Instance(self.INSTANCE_ID, client)
-        cluster = self._makeOne(self.CLUSTER_ID, instance)
+        cluster = self._make_one(self.CLUSTER_ID, instance)
 
         # Create request_pb
         request_pb = _DeleteClusterRequestPB(name=self.CLUSTER_NAME)
@@ -373,7 +374,7 @@ class TestCluster(unittest.TestCase):
 
 class Test__prepare_create_request(unittest.TestCase):
 
-    def _callFUT(self, cluster):
+    def _call_fut(self, cluster):
         from google.cloud.bigtable.cluster import _prepare_create_request
         return _prepare_create_request(cluster)
 
@@ -390,7 +391,7 @@ class Test__prepare_create_request(unittest.TestCase):
         cluster = Cluster(CLUSTER_ID, instance,
                           serve_nodes=SERVE_NODES)
 
-        request_pb = self._callFUT(cluster)
+        request_pb = self._call_fut(cluster)
 
         self.assertEqual(request_pb.cluster_id, CLUSTER_ID)
         self.assertEqual(request_pb.parent, instance.name)

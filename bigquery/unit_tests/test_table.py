@@ -35,12 +35,13 @@ class TestTable(unittest.TestCase, _SchemaBase):
     DS_NAME = 'dataset-name'
     TABLE_NAME = 'table-name'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.table import Table
         return Table
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def _setUpConstants(self):
         import datetime
@@ -133,7 +134,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_ctor(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         self.assertEqual(table.name, self.TABLE_NAME)
         self.assertIs(table._dataset, dataset)
         self.assertEqual(table.project, self.PROJECT)
@@ -165,14 +166,14 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
         self.assertEqual(table.schema, [full_name, age])
 
     def test_num_bytes_getter(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
 
         # Check with no value set.
         self.assertIsNone(table.num_bytes)
@@ -194,7 +195,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_num_rows_getter(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
 
         # Check with no value set.
         self.assertIsNone(table.num_rows)
@@ -216,7 +217,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_schema_setter_non_list(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         with self.assertRaises(TypeError):
             table.schema = object()
 
@@ -224,7 +225,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         with self.assertRaises(ValueError):
             table.schema = [full_name, object()]
@@ -233,7 +234,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table.schema = [full_name, age]
@@ -252,7 +253,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         table._properties['creationTime'] = _millis(CREATED)
         table._properties['etag'] = 'ETAG'
         table._properties['lastModifiedTime'] = _millis(MODIFIED)
@@ -274,21 +275,21 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_description_setter_bad_value(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         with self.assertRaises(ValueError):
             table.description = 12345
 
     def test_description_setter(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         table.description = 'DESCRIPTION'
         self.assertEqual(table.description, 'DESCRIPTION')
 
     def test_expires_setter_bad_value(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         with self.assertRaises(ValueError):
             table.expires = object()
 
@@ -299,56 +300,56 @@ class TestTable(unittest.TestCase, _SchemaBase):
         WHEN = datetime.datetime(2015, 7, 28, 16, 39, tzinfo=UTC)
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         table.expires = WHEN
         self.assertEqual(table.expires, WHEN)
 
     def test_friendly_name_setter_bad_value(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         with self.assertRaises(ValueError):
             table.friendly_name = 12345
 
     def test_friendly_name_setter(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         table.friendly_name = 'FRIENDLY'
         self.assertEqual(table.friendly_name, 'FRIENDLY')
 
     def test_location_setter_bad_value(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         with self.assertRaises(ValueError):
             table.location = 12345
 
     def test_location_setter(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         table.location = 'LOCATION'
         self.assertEqual(table.location, 'LOCATION')
 
     def test_view_query_setter_bad_value(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         with self.assertRaises(ValueError):
             table.view_query = 12345
 
     def test_view_query_setter(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         table.view_query = 'select * from foo'
         self.assertEqual(table.view_query, 'select * from foo')
 
     def test_view_query_deleter(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
         table.view_query = 'select * from foo'
         del table.view_query
         self.assertIsNone(table.view_query)
@@ -358,7 +359,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, dataset)
 
@@ -375,7 +376,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             },
             'type': 'TABLE',
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         table = klass.from_api_repr(RESOURCE, dataset)
         self.assertEqual(table.name, self.TABLE_NAME)
         self.assertIs(table._dataset, dataset)
@@ -385,7 +386,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
         RESOURCE = self._makeResource()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         table = klass.from_api_repr(RESOURCE, dataset)
         self.assertIs(table._dataset._client, client)
         self._verifyResourceProperties(table, RESOURCE)
@@ -394,7 +395,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset)
+        table = self._make_one(self.TABLE_NAME, dataset)
 
         with self.assertRaises(ValueError):
             table.create()
@@ -408,8 +409,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
 
         table.create()
 
@@ -438,8 +439,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
 
         self.assertIsNone(table.partitioning_type)
         table.partitioning_type = "DAY"
@@ -472,8 +473,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
         self.assertIsNone(table.partition_expiration)
         table.partition_expiration = 100
         self.assertEqual(table.partitioning_type, "DAY")
@@ -505,8 +506,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
         with self.assertRaises(ValueError):
             table.partitioning_type = 123
 
@@ -518,8 +519,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
         with self.assertRaises(ValueError):
             table.partitioning_type = "HASH"
 
@@ -531,8 +532,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
         self.assertIsNone(table.partitioning_type)
         table.partitioning_type = 'DAY'
         self.assertEqual(table.partitioning_type, 'DAY')
@@ -545,8 +546,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
         table._properties['timePartitioning'] = {'type': 'DAY'}
         table.partitioning_type = None
         self.assertIsNone(table.partitioning_type)
@@ -560,8 +561,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
         with self.assertRaises(ValueError):
             table.partition_expiration = "NEVER"
 
@@ -573,8 +574,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
         self.assertIsNone(table.partition_expiration)
         table.partition_expiration = 100
         self.assertEqual(table.partitioning_type, "DAY")
@@ -588,8 +589,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
         self.assertIsNone(table.partition_expiration)
         table._properties['timePartitioning'] = {
             'type': 'DAY',
@@ -607,8 +608,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
         self.assertIsNone(table.partition_expiration)
         table.partition_expiration = None
         self.assertIsNone(table.partitioning_type)
@@ -622,8 +623,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
         self.assertEqual(table.list_partitions(), [20160804, 20160805])
 
     def test_create_w_alternate_client(self):
@@ -652,8 +653,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client=client1)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, age])
         table.friendly_name = TITLE
         table.description = DESCRIPTION
         table.view_query = QUERY
@@ -691,8 +692,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset,
+                               schema=[full_name, age])
 
         table.create()
 
@@ -718,7 +719,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
 
         self.assertFalse(table.exists())
 
@@ -736,7 +737,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn2 = _Connection({})
         client2 = _Client(project=self.PROJECT, connection=conn2)
         dataset = _Dataset(client1)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
 
         self.assertTrue(table.exists(client=client2))
 
@@ -754,7 +755,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
 
         table.reload()
 
@@ -773,7 +774,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         dataset = _Dataset(client1)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
 
         table.reload(client=client2)
 
@@ -789,7 +790,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
 
         with self.assertRaises(ValueError):
             table.patch(expires='BOGUS')
@@ -805,7 +806,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
 
         table.patch(description=DESCRIPTION,
                     friendly_name=TITLE,
@@ -845,7 +846,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         dataset = _Dataset(client1)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='NULLABLE')
 
@@ -881,7 +882,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
 
         table.patch(schema=None)
 
@@ -907,8 +908,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, age])
         table.description = DESCRIPTION
         table.friendly_name = TITLE
 
@@ -955,7 +956,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         dataset = _Dataset(client1)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
         table.default_table_expiration_ms = DEF_TABLE_EXP
         table.location = LOCATION
         table.expires = self.EXP_TIME
@@ -986,7 +987,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
 
         table.delete()
 
@@ -1003,7 +1004,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         conn2 = _Connection({})
         client2 = _Client(project=self.PROJECT, connection=conn2)
         dataset = _Dataset(client1)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
 
         table.delete(client=client2)
 
@@ -1066,8 +1067,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='NULLABLE')
         joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age, joined])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, age, joined])
 
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
@@ -1133,8 +1134,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         voter = SchemaField('voter', 'BOOLEAN', mode='NULLABLE')
         score = SchemaField('score', 'FLOAT', mode='NULLABLE')
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age, voter, score])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, age, voter, score])
 
         iterator = table.fetch_data(
             client=client2, max_results=MAX, page_token=TOKEN)
@@ -1186,8 +1187,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         score = SchemaField('score', 'FLOAT', 'REPEATED')
         struct = SchemaField('struct', 'RECORD', mode='REPEATED',
                              fields=[index, score])
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, struct])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, struct])
 
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
@@ -1242,8 +1243,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
         phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
                             fields=[area_code, local_number, rank])
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, phone])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, phone])
 
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
@@ -1274,7 +1275,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
         client = _Client(project=self.PROJECT)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
         ROWS = [
             ('Phred Phlyntstone', 32),
             ('Bharney Rhubble', 33),
@@ -1304,8 +1305,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age, joined])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, age, joined])
         ROWS = [
             ('Phred Phlyntstone', 32, WHEN),
             ('Bharney Rhubble', 33, WHEN + datetime.timedelta(seconds=1)),
@@ -1356,8 +1357,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         voter = SchemaField('voter', 'BOOLEAN', mode='NULLABLE')
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age, voter])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, age, voter])
         ROWS = [
             ('Phred Phlyntstone', 32, True),
             ('Bharney Rhubble', 33, False),
@@ -1410,8 +1411,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         score = SchemaField('score', 'FLOAT', 'REPEATED')
         struct = SchemaField('struct', 'RECORD', mode='REPEATED',
                              fields=[index, score])
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, struct])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, struct])
         ROWS = [
             (['red', 'green'], [{'index': [1, 2], 'score': [3.1415, 1.414]}]),
         ]
@@ -1446,8 +1447,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
         phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
                             fields=[area_code, local_number, rank])
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, phone])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, phone])
         ROWS = [
             ('Phred Phlyntstone', {'area_code': '800',
                                    'local_number': '555-1212',
@@ -1484,7 +1485,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
         file_obj = TextModeFile()
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
         with self.assertRaises(ValueError):
             table.upload_from_file(file_obj, 'CSV', size=1234)
 
@@ -1496,7 +1497,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
         file_obj = object()
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
         with self.assertRaises(ValueError):
             table.upload_from_file(file_obj, 'CSV', size=None)
 
@@ -1516,7 +1517,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         )
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
 
         with _NamedTemporaryFile() as temp:
             with open(temp.name, 'w') as file_obj:
@@ -1556,8 +1557,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age, joined])
+        table = self._make_one(self.TABLE_NAME, dataset=dataset,
+                               schema=[full_name, age, joined])
         ROWS = [
             ('Phred Phlyntstone', 32, WHEN),
             ('Bharney Rhubble', 33, WHEN + datetime.timedelta(seconds=1)),
@@ -1662,7 +1663,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             simple_multipart = True
             simple_path = u''  # force resumable
         dataset = _Dataset(client)
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        table = self._make_one(self.TABLE_NAME, dataset=dataset)
 
         with _Monkey(MUT, _UploadConfig=_UploadConfig):
             with _NamedTemporaryFile() as temp:
@@ -1767,7 +1768,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
 class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
 
-    def _callFUT(self, resource):
+    def _call_fut(self, resource):
         from google.cloud.bigquery.table import _parse_schema_resource
         return _parse_schema_resource(resource)
 
@@ -1781,7 +1782,7 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
 
     def test__parse_schema_resource_defaults(self):
         RESOURCE = self._makeResource()
-        schema = self._callFUT(RESOURCE['schema'])
+        schema = self._call_fut(RESOURCE['schema'])
         self._verifySchema(schema, RESOURCE)
 
     def test__parse_schema_resource_subfields(self):
@@ -1796,7 +1797,7 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
                         {'name': 'number',
                          'type': 'STRING',
                          'mode': 'REQUIRED'}]})
-        schema = self._callFUT(RESOURCE['schema'])
+        schema = self._call_fut(RESOURCE['schema'])
         self._verifySchema(schema, RESOURCE)
 
     def test__parse_schema_resource_fields_without_mode(self):
@@ -1805,13 +1806,13 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
             {'name': 'phone',
              'type': 'STRING'})
 
-        schema = self._callFUT(RESOURCE['schema'])
+        schema = self._call_fut(RESOURCE['schema'])
         self._verifySchema(schema, RESOURCE)
 
 
 class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
 
-    def _callFUT(self, resource):
+    def _call_fut(self, resource):
         from google.cloud.bigquery.table import _build_schema_resource
         return _build_schema_resource(resource)
 
@@ -1819,7 +1820,7 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        resource = self._callFUT([full_name, age])
+        resource = self._call_fut([full_name, age])
         self.assertEqual(len(resource), 2)
         self.assertEqual(resource[0],
                          {'name': 'full_name',
@@ -1836,7 +1837,7 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED',
                                 description=DESCRIPTION)
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        resource = self._callFUT([full_name, age])
+        resource = self._call_fut([full_name, age])
         self.assertEqual(len(resource), 2)
         self.assertEqual(resource[0],
                          {'name': 'full_name',
@@ -1855,7 +1856,7 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         ph_num = SchemaField('number', 'STRING', 'REQUIRED')
         phone = SchemaField('phone', 'RECORD', mode='REPEATABLE',
                             fields=[ph_type, ph_num])
-        resource = self._callFUT([full_name, phone])
+        resource = self._call_fut([full_name, phone])
         self.assertEqual(len(resource), 2)
         self.assertEqual(resource[0],
                          {'name': 'full_name',

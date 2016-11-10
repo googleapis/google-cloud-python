@@ -21,12 +21,13 @@ class TestManagedZone(unittest.TestCase):
     DESCRIPTION = 'ZONE DESCRIPTION'
     DNS_NAME = 'test.example.com'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.dns.zone import ManagedZone
         return ManagedZone
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def _setUpConstants(self):
         import datetime
@@ -85,7 +86,7 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(zone.name_server_set, resource.get('nameServerSet'))
 
     def test_ctor_defaults(self):
-        zone = self._makeOne(self.ZONE_NAME)
+        zone = self._make_one(self.ZONE_NAME)
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertIsNone(zone.dns_name)
         self.assertIsNone(zone._client)
@@ -102,7 +103,7 @@ class TestManagedZone(unittest.TestCase):
 
     def test_ctor_wo_description(self):
         client = _Client(self.PROJECT)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, self.DNS_NAME)
         self.assertIs(zone._client, client)
@@ -117,7 +118,7 @@ class TestManagedZone(unittest.TestCase):
     def test_ctor_explicit(self):
         DESCRIPTION = 'DESCRIPTION'
         client = _Client(self.PROJECT)
-        zone = self._makeOne(
+        zone = self._make_one(
             self.ZONE_NAME, self.DNS_NAME, client, DESCRIPTION)
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, self.DNS_NAME)
@@ -134,7 +135,7 @@ class TestManagedZone(unittest.TestCase):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -145,7 +146,7 @@ class TestManagedZone(unittest.TestCase):
             'name': self.ZONE_NAME,
             'dnsName': self.DNS_NAME,
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         zone = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(zone._client, client)
         self._verifyResourceProperties(zone, RESOURCE)
@@ -154,32 +155,32 @@ class TestManagedZone(unittest.TestCase):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         zone = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(zone._client, client)
         self._verifyResourceProperties(zone, RESOURCE)
 
     def test_description_setter_bad_value(self):
         client = _Client(self.PROJECT)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
         with self.assertRaises(ValueError):
             zone.description = 12345
 
     def test_description_setter(self):
         client = _Client(self.PROJECT)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
         zone.description = 'DESCRIPTION'
         self.assertEqual(zone.description, 'DESCRIPTION')
 
     def test_name_server_set_setter_bad_value(self):
         client = _Client(self.PROJECT)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
         with self.assertRaises(ValueError):
             zone.name_server_set = 12345
 
     def test_name_server_set_setter(self):
         client = _Client(self.PROJECT)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
         zone.name_server_set = 'NAME_SERVER_SET'
         self.assertEqual(zone.name_server_set, 'NAME_SERVER_SET')
 
@@ -190,7 +191,7 @@ class TestManagedZone(unittest.TestCase):
         TTL = 3600
         RRDATAS = ['www.example.com']
         client = _Client(self.PROJECT)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
         rrs = zone.resource_record_set(RRS_NAME, RRS_TYPE, TTL, RRDATAS)
         self.assertIsInstance(rrs, ResourceRecordSet)
         self.assertEqual(rrs.name, RRS_NAME)
@@ -202,7 +203,7 @@ class TestManagedZone(unittest.TestCase):
     def test_changes(self):
         from google.cloud.dns.changes import Changes
         client = _Client(self.PROJECT)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
         changes = zone.changes()
         self.assertIsInstance(changes, Changes)
         self.assertIs(changes.zone, zone)
@@ -212,7 +213,7 @@ class TestManagedZone(unittest.TestCase):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
 
         zone.create()
 
@@ -239,7 +240,7 @@ class TestManagedZone(unittest.TestCase):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client1)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client1)
         zone.name_server_set = NAME_SERVER_SET
         zone.description = DESCRIPTION
 
@@ -272,7 +273,7 @@ class TestManagedZone(unittest.TestCase):
         conn = _Connection()
         conn.api_request = _api_request
         client = _Client(project=self.PROJECT, connection=conn)
-        zone = self._makeOne(self.ZONE_NAME, client=client)
+        zone = self._make_one(self.ZONE_NAME, client=client)
 
         with self.assertRaises(BadRequest):
             zone.create()
@@ -297,7 +298,7 @@ class TestManagedZone(unittest.TestCase):
         self.WHEN = None
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
 
         zone.create()
 
@@ -317,7 +318,7 @@ class TestManagedZone(unittest.TestCase):
         PATH = 'projects/%s/managedZones/%s' % (self.PROJECT, self.ZONE_NAME)
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
 
         self.assertFalse(zone.exists())
 
@@ -333,7 +334,7 @@ class TestManagedZone(unittest.TestCase):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client1)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client1)
 
         self.assertTrue(zone.exists(client=client2))
 
@@ -349,7 +350,7 @@ class TestManagedZone(unittest.TestCase):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        zone = self._makeOne(self.ZONE_NAME, client=client)
+        zone = self._make_one(self.ZONE_NAME, client=client)
 
         zone.reload()
 
@@ -368,7 +369,7 @@ class TestManagedZone(unittest.TestCase):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client1)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client1)
 
         zone.reload(client=client2)
 
@@ -383,7 +384,7 @@ class TestManagedZone(unittest.TestCase):
         PATH = 'projects/%s/managedZones/%s' % (self.PROJECT, self.ZONE_NAME)
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
 
         zone.delete()
 
@@ -398,7 +399,7 @@ class TestManagedZone(unittest.TestCase):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client1)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client1)
 
         zone.delete(client=client2)
 
@@ -439,7 +440,7 @@ class TestManagedZone(unittest.TestCase):
         }
         conn = _Connection(DATA)
         client = _Client(project=self.PROJECT, connection=conn)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
 
         iterator = zone.list_resource_record_sets()
         self.assertIs(zone, iterator.zone)
@@ -493,7 +494,7 @@ class TestManagedZone(unittest.TestCase):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(DATA)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client1)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client1)
 
         iterator = zone.list_resource_record_sets(
             max_results=3, page_token=TOKEN, client=client2)
@@ -568,7 +569,7 @@ class TestManagedZone(unittest.TestCase):
 
         conn = _Connection(data)
         client = _Client(project=self.PROJECT, connection=conn)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
 
         iterator = zone.list_changes()
         self.assertIs(zone, iterator.zone)
@@ -622,7 +623,7 @@ class TestManagedZone(unittest.TestCase):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(data)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client1)
+        zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client1)
 
         page_token = 'TOKEN'
         iterator = zone.list_changes(

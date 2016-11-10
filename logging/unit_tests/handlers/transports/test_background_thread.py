@@ -21,24 +21,25 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
     PROJECT = 'PROJECT'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.handlers.transports import (
             BackgroundThreadTransport)
         return BackgroundThreadTransport
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
         NAME = 'python_logger'
-        transport = self._makeOne(client, NAME)
+        transport = self._make_one(client, NAME)
         self.assertEquals(transport.worker.logger.name, NAME)
 
     def test_send(self):
         client = _Client(self.PROJECT)
         NAME = 'python_logger'
-        transport = self._makeOne(client, NAME)
+        transport = self._make_one(client, NAME)
         transport.worker.batch = client.logger(NAME).batch()
 
         PYTHON_LOGGER_NAME = 'mylogger'
@@ -57,23 +58,24 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
 class TestWorker(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.handlers.transports import background_thread
         return background_thread._Worker
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         NAME = 'python_logger'
         logger = _Logger(NAME)
-        worker = self._makeOne(logger)
+        worker = self._make_one(logger)
         self.assertEquals(worker.batch, logger._batch)
 
     def test_run(self):
         NAME = 'python_logger'
         logger = _Logger(NAME)
-        worker = self._makeOne(logger)
+        worker = self._make_one(logger)
 
         PYTHON_LOGGER_NAME = 'mylogger'
         MESSAGE = 'hello world'
@@ -99,7 +101,7 @@ class TestWorker(unittest.TestCase):
         # No-op
         NAME = 'python_logger'
         logger = _Logger(NAME)
-        worker = self._makeOne(logger)
+        worker = self._make_one(logger)
 
         PYTHON_LOGGER_NAME = 'mylogger'
         MESSAGE = 'hello world'
@@ -118,7 +120,7 @@ class TestWorker(unittest.TestCase):
         # No-op
         NAME = 'python_logger'
         logger = _Logger(NAME)
-        worker = self._makeOne(logger)
+        worker = self._make_one(logger)
 
         PYTHON_LOGGER_NAME = 'mylogger'
         MESSAGE = 'hello world'

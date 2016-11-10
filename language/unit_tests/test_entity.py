@@ -17,12 +17,13 @@ import unittest
 
 class TestEntity(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.language.entity import Entity
         return Entity
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor_defaults(self):
         name = 'Italian'
@@ -33,8 +34,8 @@ class TestEntity(unittest.TestCase):
         metadata.update(base_metadata)
         salience = 0.19960518
         mentions = ['Italian']
-        entity = self._makeOne(name, entity_type, metadata,
-                               salience, mentions)
+        entity = self._make_one(name, entity_type, metadata,
+                                salience, mentions)
         self.assertEqual(entity.name, name)
         self.assertEqual(entity.entity_type, entity_type)
         self.assertEqual(entity.wikipedia_url, wiki_url)
@@ -43,7 +44,7 @@ class TestEntity(unittest.TestCase):
         self.assertEqual(entity.mentions, mentions)
 
     def test_from_api_repr(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         name = 'Italy'
         entity_type = 'LOCATION'
         salience = 0.223
