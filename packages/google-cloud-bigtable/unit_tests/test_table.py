@@ -34,14 +34,14 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable.table import Table
         return Table
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         table_id = 'table-id'
         instance = object()
 
-        table = self._makeOne(table_id, instance)
+        table = self._make_one(table_id, instance)
         self.assertEqual(table.table_id, table_id)
         self.assertIs(table._instance, instance)
 
@@ -50,7 +50,7 @@ class TestTable(unittest.TestCase):
         instance_name = 'instance_name'
 
         instance = _Instance(instance_name)
-        table = self._makeOne(table_id, instance)
+        table = self._make_one(table_id, instance)
         expected_name = instance_name + '/tables/' + table_id
         self.assertEqual(table.name, expected_name)
 
@@ -59,7 +59,7 @@ class TestTable(unittest.TestCase):
 
         table_id = 'table-id'
         gc_rule = object()
-        table = self._makeOne(table_id, None)
+        table = self._make_one(table_id, None)
         column_family_id = 'column_family_id'
         column_family = table.column_family(column_family_id, gc_rule=gc_rule)
 
@@ -72,7 +72,7 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable.row import DirectRow
 
         table_id = 'table-id'
-        table = self._makeOne(table_id, None)
+        table = self._make_one(table_id, None)
         row_key = b'row_key'
         row = table.row(row_key)
 
@@ -84,7 +84,7 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable.row import ConditionalRow
 
         table_id = 'table-id'
-        table = self._makeOne(table_id, None)
+        table = self._make_one(table_id, None)
         row_key = b'row_key'
         filter_ = object()
         row = table.row(row_key, filter_=filter_)
@@ -97,7 +97,7 @@ class TestTable(unittest.TestCase):
         from google.cloud.bigtable.row import AppendRow
 
         table_id = 'table-id'
-        table = self._makeOne(table_id, None)
+        table = self._make_one(table_id, None)
         row_key = b'row_key'
         row = table.row(row_key, append=True)
 
@@ -106,31 +106,31 @@ class TestTable(unittest.TestCase):
         self.assertEqual(row._table, table)
 
     def test_row_factory_failure(self):
-        table = self._makeOne(self.TABLE_ID, None)
+        table = self._make_one(self.TABLE_ID, None)
         with self.assertRaises(ValueError):
             table.row(b'row_key', filter_=object(), append=True)
 
     def test___eq__(self):
         instance = object()
-        table1 = self._makeOne(self.TABLE_ID, instance)
-        table2 = self._makeOne(self.TABLE_ID, instance)
+        table1 = self._make_one(self.TABLE_ID, instance)
+        table2 = self._make_one(self.TABLE_ID, instance)
         self.assertEqual(table1, table2)
 
     def test___eq__type_differ(self):
-        table1 = self._makeOne(self.TABLE_ID, None)
+        table1 = self._make_one(self.TABLE_ID, None)
         table2 = object()
         self.assertNotEqual(table1, table2)
 
     def test___ne__same_value(self):
         instance = object()
-        table1 = self._makeOne(self.TABLE_ID, instance)
-        table2 = self._makeOne(self.TABLE_ID, instance)
+        table1 = self._make_one(self.TABLE_ID, instance)
+        table2 = self._make_one(self.TABLE_ID, instance)
         comparison_val = (table1 != table2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        table1 = self._makeOne('table_id1', 'instance1')
-        table2 = self._makeOne('table_id2', 'instance2')
+        table1 = self._make_one('table_id1', 'instance1')
+        table2 = self._make_one('table_id2', 'instance2')
         self.assertNotEqual(table1, table2)
 
     def _create_test_helper(self, initial_split_keys, column_families=()):
@@ -139,7 +139,7 @@ class TestTable(unittest.TestCase):
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
-        table = self._makeOne(self.TABLE_ID, instance)
+        table = self._make_one(self.TABLE_ID, instance)
 
         # Create request_pb
         splits_pb = [
@@ -206,7 +206,7 @@ class TestTable(unittest.TestCase):
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
-        table = self._makeOne(self.TABLE_ID, instance)
+        table = self._make_one(self.TABLE_ID, instance)
 
         # Create request_pb
         request_pb = _GetTableRequestPB(name=self.TABLE_NAME)
@@ -244,7 +244,7 @@ class TestTable(unittest.TestCase):
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
-        table = self._makeOne(self.TABLE_ID, instance)
+        table = self._make_one(self.TABLE_ID, instance)
 
         # Create request_pb
         request_pb = _DeleteTableRequestPB(name=self.TABLE_NAME)
@@ -274,7 +274,7 @@ class TestTable(unittest.TestCase):
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
-        table = self._makeOne(self.TABLE_ID, instance)
+        table = self._make_one(self.TABLE_ID, instance)
 
         # Create request_pb
         request_pb = object()  # Returned by our mock.
@@ -355,7 +355,7 @@ class TestTable(unittest.TestCase):
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
-        table = self._makeOne(self.TABLE_ID, instance)
+        table = self._make_one(self.TABLE_ID, instance)
 
         # Create request_pb
         request_pb = object()  # Returned by our mock.
@@ -403,7 +403,7 @@ class TestTable(unittest.TestCase):
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
-        table = self._makeOne(self.TABLE_ID, instance)
+        table = self._make_one(self.TABLE_ID, instance)
 
         # Create request_pb
         request_pb = _SampleRowKeysRequestPB(table_name=self.TABLE_NAME)
