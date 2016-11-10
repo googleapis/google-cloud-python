@@ -17,12 +17,12 @@ import unittest
 
 class Test__do_nothing_page_start(unittest.TestCase):
 
-    def _callFUT(self, iterator, page, response):
+    def _call_fut(self, iterator, page, response):
         from google.cloud.iterator import _do_nothing_page_start
         return _do_nothing_page_start(iterator, page, response)
 
     def test_do_nothing(self):
-        result = self._callFUT(None, None, None)
+        result = self._call_fut(None, None, None)
         self.assertIsNone(result)
 
 
