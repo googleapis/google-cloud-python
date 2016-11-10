@@ -17,7 +17,7 @@ import unittest
 
 class Test_config_name_from_full_name(unittest.TestCase):
 
-    def _callFUT(self, full_name):
+    def _call_fut(self, full_name):
         from google.cloud.runtimeconfig._helpers import (
             config_name_from_full_name)
         return config_name_from_full_name(full_name)
@@ -26,25 +26,25 @@ class Test_config_name_from_full_name(unittest.TestCase):
         CONFIG_NAME = 'CONFIG_NAME'
         PROJECT = 'my-project-1234'
         PATH = 'projects/%s/configs/%s' % (PROJECT, CONFIG_NAME)
-        config_name = self._callFUT(PATH)
+        config_name = self._call_fut(PATH)
         self.assertEqual(config_name, CONFIG_NAME)
 
     def test_w_name_w_all_extras(self):
         CONFIG_NAME = 'CONFIG_NAME-part.one~part.two%part-three'
         PROJECT = 'my-project-1234'
         PATH = 'projects/%s/configs/%s' % (PROJECT, CONFIG_NAME)
-        config_name = self._callFUT(PATH)
+        config_name = self._call_fut(PATH)
         self.assertEqual(config_name, CONFIG_NAME)
 
     def test_w_bad_format(self):
         PATH = 'definitley/not/a/resource-name'
         with self.assertRaises(ValueError):
-            self._callFUT(PATH)
+            self._call_fut(PATH)
 
 
 class Test_variable_name_from_full_name(unittest.TestCase):
 
-    def _callFUT(self, full_name):
+    def _call_fut(self, full_name):
         from google.cloud.runtimeconfig._helpers import (
             variable_name_from_full_name)
         return variable_name_from_full_name(full_name)
@@ -55,7 +55,7 @@ class Test_variable_name_from_full_name(unittest.TestCase):
         PROJECT = 'my-project-1234'
         PATH = 'projects/%s/configs/%s/variables/%s' % (
             PROJECT, CONFIG_NAME, VARIABLE_NAME)
-        variable_name = self._callFUT(PATH)
+        variable_name = self._call_fut(PATH)
         self.assertEqual(variable_name, VARIABLE_NAME)
 
     def test_w_name_w_all_extras(self):
@@ -64,10 +64,10 @@ class Test_variable_name_from_full_name(unittest.TestCase):
         PROJECT = 'my-project-1234'
         PATH = 'projects/%s/configs/%s/variables/%s' % (
             PROJECT, CONFIG_NAME, VARIABLE_NAME)
-        variable_name = self._callFUT(PATH)
+        variable_name = self._call_fut(PATH)
         self.assertEqual(variable_name, VARIABLE_NAME)
 
     def test_w_bad_format(self):
         PATH = 'definitley/not/a/resource/name/for/a/variable'
         with self.assertRaises(ValueError):
-            self._callFUT(PATH)
+            self._call_fut(PATH)
