@@ -5,6 +5,8 @@ Python Client for Google Cloud Speech
 
 .. _Google Cloud Speech: https://cloud.google.com/speech/
 
+|pypi| |versions|
+
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech-usage.html
@@ -40,3 +42,7 @@ See the ``google-cloud-python`` API `speech documentation`_ to learn how to
 connect to the Google Cloud Speech API using this Client Library.
 
 .. _speech documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech-usage.html
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-speech.svg
+   :target: https://pypi.python.org/pypi/google-cloud-speech
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bspeech.svg
+   :target: https://pypi.python.org/pypi/google-cloud-speech
