@@ -329,7 +329,8 @@ def _stream_requests(sample, language_code=None, max_alternatives=None,
     """
     config_request = _make_streaming_request(
         sample, language_code=language_code, max_alternatives=max_alternatives,
-        profanity_filter=profanity_filter, speech_context=speech_context,
+        profanity_filter=profanity_filter,
+        speech_context=SpeechContext(phrases=speech_context),
         single_utterance=single_utterance, interim_results=interim_results)
 
     # The config request MUST go first and not contain any audio data.
