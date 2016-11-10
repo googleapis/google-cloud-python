@@ -27,6 +27,7 @@ from google.cloud.speech.alternative import Alternative
 from google.cloud.speech.connection import Connection
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.operation import Operation
+from google.cloud.speech.result import StreamingSpeechResult
 from google.cloud.speech.sample import Sample
 
 
@@ -170,7 +171,8 @@ class Client(BaseClient):
             Streaming recognition requests are limited to 1 minute of audio.
             See: https://cloud.google.com/speech/limits#content
 
-        Yields: list of :class:`~google.cloud.speech.alternative.Alternatives`
+        Yields: Instance of
+                :class:`~google.cloud.speech.result.StreamingSpeechResult`
                 containing results and metadata from the streaming request.
 
         :type sample: :class:`~google.cloud.speech.sample.Sample`
@@ -242,8 +244,7 @@ class Client(BaseClient):
         for response in responses:
             for result in response.results:
                 if result.is_final or interim_results:
-                    yield [Alternative.from_pb(alternative)
-                           for alternative in result.alternatives]
+                    yield StreamingSpeechResult.from_pb(result)
 
     def sync_recognize(self, sample, language_code=None,
                        max_alternatives=None, profanity_filter=None,
