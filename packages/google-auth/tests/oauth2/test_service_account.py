@@ -159,7 +159,7 @@ class TestCredentials(object):
         payload = jwt.decode(token, PUBLIC_CERT_BYTES)
         assert payload['sub'] == subject
 
-    @mock.patch('google.oauth2._client.jwt_grant')
+    @mock.patch('google.oauth2._client.jwt_grant', autospec=True)
     def test_refresh_success(self, jwt_grant_mock):
         token = 'token'
         jwt_grant_mock.return_value = (
@@ -185,7 +185,7 @@ class TestCredentials(object):
         # expired)
         assert self.credentials.valid
 
-    @mock.patch('google.oauth2._client.jwt_grant')
+    @mock.patch('google.oauth2._client.jwt_grant', autospec=True)
     def test_before_request_refreshes(self, jwt_grant_mock):
         token = 'token'
         jwt_grant_mock.return_value = (

@@ -38,7 +38,8 @@ with open(SERVICE_ACCOUNT_FILE) as fh:
 with open(os.path.join(DATA_DIR, 'cloud_sdk.cfg')) as fh:
     CLOUD_SDK_CONFIG_DATA = fh.read()
 
-CONFIG_PATH_PATCH = mock.patch('google.auth._cloud_sdk.get_config_path')
+CONFIG_PATH_PATCH = mock.patch(
+    'google.auth._cloud_sdk.get_config_path', autospec=True)
 
 
 @pytest.fixture

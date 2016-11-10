@@ -43,7 +43,7 @@ with open(os.path.join(DATA_DIR, 'cloud_sdk.cfg')) as fh:
 
 LOAD_FILE_PATCH = mock.patch(
     'google.auth._default._load_credentials_from_file', return_value=(
-        mock.sentinel.credentials, mock.sentinel.project_id))
+        mock.sentinel.credentials, mock.sentinel.project_id), autospec=True)
 
 
 def test__load_credentials_from_file_invalid_json(tmpdir):
@@ -131,7 +131,9 @@ def test__get_explicit_environ_credentials_no_project_id(
 
 
 @LOAD_FILE_PATCH
-@mock.patch('google.auth._cloud_sdk.get_application_default_credentials_path')
+@mock.patch(
+    'google.auth._cloud_sdk.get_application_default_credentials_path',
+    autospec=True)
 def test__get_gcloud_sdk_credentials(
         mock_get_adc_path, mock_load):
     mock_get_adc_path.return_value = SERVICE_ACCOUNT_FILE
@@ -143,7 +145,9 @@ def test__get_gcloud_sdk_credentials(
     mock_load.assert_called_with(SERVICE_ACCOUNT_FILE)
 
 
-@mock.patch('google.auth._cloud_sdk.get_application_default_credentials_path')
+@mock.patch(
+    'google.auth._cloud_sdk.get_application_default_credentials_path',
+    autospec=True)
 def test__get_gcloud_sdk_credentials_non_existent(mock_get_adc_path, tmpdir):
     non_existent = tmpdir.join('non-existent')
     mock_get_adc_path.return_value = str(non_existent)
@@ -156,7 +160,7 @@ def test__get_gcloud_sdk_credentials_non_existent(mock_get_adc_path, tmpdir):
 
 @mock.patch(
     'google.auth._cloud_sdk.get_project_id',
-    return_value=mock.sentinel.project_id)
+    return_value=mock.sentinel.project_id, autospec=True)
 @mock.patch('os.path.isfile', return_value=True)
 @LOAD_FILE_PATCH
 def test__get_gcloud_sdk_credentials_project_id(
@@ -174,7 +178,7 @@ def test__get_gcloud_sdk_credentials_project_id(
 
 @mock.patch(
     'google.auth._cloud_sdk.get_project_id',
-    return_value=None)
+    return_value=None, autospec=True)
 @mock.patch('os.path.isfile', return_value=True)
 @LOAD_FILE_PATCH
 def test__get_gcloud_sdk_credentials_no_project_id(
@@ -212,10 +216,11 @@ def test__get_gae_credentials_no_apis():
 
 
 @mock.patch(
-    'google.auth.compute_engine._metadata.ping', return_value=True)
+    'google.auth.compute_engine._metadata.ping', return_value=True,
+    autospec=True)
 @mock.patch(
     'google.auth.compute_engine._metadata.get_project_id',
-    return_value='example-project')
+    return_value='example-project', autospec=True)
 def test__get_gce_credentials(get_mock, ping_mock):
     credentials, project_id = _default._get_gce_credentials()
 
@@ -223,7 +228,9 @@ def test__get_gce_credentials(get_mock, ping_mock):
     assert project_id == 'example-project'
 
 
-@mock.patch('google.auth.compute_engine._metadata.ping', return_value=False)
+@mock.patch(
+    'google.auth.compute_engine._metadata.ping', return_value=False,
+    autospec=True)
 def test__get_gce_credentials_no_ping(ping_mock):
     credentials, project_id = _default._get_gce_credentials()
 
@@ -232,10 +239,11 @@ def test__get_gce_credentials_no_ping(ping_mock):
 
 
 @mock.patch(
-    'google.auth.compute_engine._metadata.ping', return_value=True)
+    'google.auth.compute_engine._metadata.ping', return_value=True,
+    autospec=True)
 @mock.patch(
     'google.auth.compute_engine._metadata.get_project_id',
-    side_effect=exceptions.TransportError())
+    side_effect=exceptions.TransportError(), autospec=True)
 def test__get_gce_credentials_no_project_id(get_mock, ping_mock):
     credentials, project_id = _default._get_gce_credentials()
 
@@ -243,7 +251,9 @@ def test__get_gce_credentials_no_project_id(get_mock, ping_mock):
     assert project_id is None
 
 
-@mock.patch('google.auth.compute_engine._metadata.ping', return_value=False)
+@mock.patch(
+    'google.auth.compute_engine._metadata.ping', return_value=False,
+    autospec=True)
 def test__get_gce_credentials_explicit_request(ping_mock):
     _default._get_gce_credentials(mock.sentinel.request)
     ping_mock.assert_called_with(request=mock.sentinel.request)
@@ -251,7 +261,8 @@ def test__get_gce_credentials_explicit_request(ping_mock):
 
 @mock.patch(
     'google.auth._default._get_explicit_environ_credentials',
-    return_value=(mock.sentinel.credentials, mock.sentinel.project_id))
+    return_value=(mock.sentinel.credentials, mock.sentinel.project_id),
+    autospec=True)
 def test_default_early_out(get_mock):
     assert _default.default() == (
         mock.sentinel.credentials, mock.sentinel.project_id)
@@ -259,7 +270,8 @@ def test_default_early_out(get_mock):
 
 @mock.patch(
     'google.auth._default._get_explicit_environ_credentials',
-    return_value=(mock.sentinel.credentials, mock.sentinel.project_id))
+    return_value=(mock.sentinel.credentials, mock.sentinel.project_id),
+    autospec=True)
 def test_default_explict_project_id(get_mock, monkeypatch):
     monkeypatch.setenv(environment_vars.PROJECT, 'explicit-env')
     assert _default.default() == (
@@ -268,7 +280,8 @@ def test_default_explict_project_id(get_mock, monkeypatch):
 
 @mock.patch(
     'google.auth._default._get_explicit_environ_credentials',
-    return_value=(mock.sentinel.credentials, mock.sentinel.project_id))
+    return_value=(mock.sentinel.credentials, mock.sentinel.project_id),
+    autospec=True)
 def test_default_explict_legacy_project_id(get_mock, monkeypatch):
     monkeypatch.setenv(environment_vars.LEGACY_PROJECT, 'explicit-env')
     assert _default.default() == (
@@ -277,16 +290,16 @@ def test_default_explict_legacy_project_id(get_mock, monkeypatch):
 
 @mock.patch(
     'google.auth._default._get_explicit_environ_credentials',
-    return_value=(None, None))
+    return_value=(None, None), autospec=True)
 @mock.patch(
     'google.auth._default._get_gcloud_sdk_credentials',
-    return_value=(None, None))
+    return_value=(None, None), autospec=True)
 @mock.patch(
     'google.auth._default._get_gae_credentials',
-    return_value=(None, None))
+    return_value=(None, None), autospec=True)
 @mock.patch(
     'google.auth._default._get_gce_credentials',
-    return_value=(None, None))
+    return_value=(None, None), autospec=True)
 def test_default_fail(unused_gce, unused_gae, unused_sdk, unused_explicit):
     with pytest.raises(exceptions.DefaultCredentialsError):
         assert _default.default()
@@ -294,9 +307,10 @@ def test_default_fail(unused_gce, unused_gae, unused_sdk, unused_explicit):
 
 @mock.patch(
     'google.auth._default._get_explicit_environ_credentials',
-    return_value=(mock.sentinel.credentials, mock.sentinel.project_id))
+    return_value=(mock.sentinel.credentials, mock.sentinel.project_id),
+    autospec=True)
 @mock.patch(
-    'google.auth.credentials.with_scopes_if_required')
+    'google.auth.credentials.with_scopes_if_required', autospec=True)
 def test_default_scoped(with_scopes_mock, get_mock):
     scopes = ['one', 'two']
 

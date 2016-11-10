@@ -131,8 +131,11 @@ class TestVerifier(object):
     def test_from_string_pub_cert_failure(self):
         cert_bytes = PUBLIC_CERT_BYTES
         true_der = rsa.pem.load_pem(cert_bytes, 'CERTIFICATE')
-        with mock.patch('rsa.pem.load_pem',
-                        return_value=true_der + b'extra') as load_pem:
+        load_pem_patch = mock.patch(
+            'rsa.pem.load_pem', return_value=true_der + b'extra',
+            autospec=True)
+
+        with load_pem_patch as load_pem:
             with pytest.raises(ValueError):
                 crypt.Verifier.from_string(cert_bytes)
             load_pem.assert_called_once_with(cert_bytes, 'CERTIFICATE')
@@ -161,13 +164,17 @@ class TestSigner(object):
             six.StringIO(_helpers.from_bytes(key_bytes)),
             crypt._PKCS8_MARKER)
 
-        with mock.patch('pyasn1.codec.der.decoder.decode') as mock_decode:
-            key_info, remaining = None, 'extra'
-            mock_decode.return_value = (key_info, remaining)
+        key_info, remaining = None, 'extra'
+        decode_patch = mock.patch(
+            'pyasn1.codec.der.decoder.decode',
+            return_value=(key_info, remaining),
+            autospec=True)
+
+        with decode_patch as decode:
             with pytest.raises(ValueError):
                 crypt.Signer.from_string(key_bytes)
             # Verify mock was called.
-            mock_decode.assert_called_once_with(
+            decode.assert_called_once_with(
                 pem_bytes, asn1Spec=crypt._PKCS8_SPEC)
 
     def test_from_string_pkcs8_unicode(self):

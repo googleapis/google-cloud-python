@@ -46,7 +46,7 @@ class TestCredentials(object):
         with pytest.raises(NotImplementedError):
             self.credentials.with_scopes(['email'])
 
-    @mock.patch('google.oauth2._client.refresh_grant')
+    @mock.patch('google.oauth2._client.refresh_grant', autospec=True)
     @mock.patch(
         'google.auth._helpers.utcnow', return_value=datetime.datetime.min)
     def test_refresh_success(self, now_mock, refresh_grant_mock):

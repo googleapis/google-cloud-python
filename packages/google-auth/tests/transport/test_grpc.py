@@ -70,10 +70,10 @@ class TestAuthMetadataPlugin(object):
             [('authorization', 'Bearer {}'.format(credentials.token))], None)
 
 
-@mock.patch('grpc.composite_channel_credentials')
-@mock.patch('grpc.metadata_call_credentials')
-@mock.patch('grpc.ssl_channel_credentials')
-@mock.patch('grpc.secure_channel')
+@mock.patch('grpc.composite_channel_credentials', autospec=True)
+@mock.patch('grpc.metadata_call_credentials', autospec=True)
+@mock.patch('grpc.ssl_channel_credentials', autospec=True)
+@mock.patch('grpc.secure_channel', autospec=True)
 def test_secure_authorized_channel(
         secure_channel, ssl_channel_credentials, metadata_call_credentials,
         composite_channel_credentials):
@@ -105,10 +105,10 @@ def test_secure_authorized_channel(
     assert channel == secure_channel.return_value
 
 
-@mock.patch('grpc.composite_channel_credentials')
-@mock.patch('grpc.metadata_call_credentials')
-@mock.patch('grpc.ssl_channel_credentials')
-@mock.patch('grpc.secure_channel')
+@mock.patch('grpc.composite_channel_credentials', autospec=True)
+@mock.patch('grpc.metadata_call_credentials', autospec=True)
+@mock.patch('grpc.ssl_channel_credentials', autospec=True)
+@mock.patch('grpc.secure_channel', autospec=True)
 def test_secure_authorized_channel_explicit_ssl(
         secure_channel, ssl_channel_credentials, metadata_call_credentials,
         composite_channel_credentials):

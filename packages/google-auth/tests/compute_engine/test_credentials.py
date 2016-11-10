@@ -68,7 +68,7 @@ class TestCredentials(object):
         # expired)
         assert self.credentials.valid
 
-    @mock.patch('google.auth.compute_engine._metadata.get')
+    @mock.patch('google.auth.compute_engine._metadata.get', autospec=True)
     def test_refresh_error(self, get_mock):
         get_mock.side_effect = exceptions.TransportError('http error')
 
@@ -77,7 +77,7 @@ class TestCredentials(object):
 
         assert excinfo.match(r'http error')
 
-    @mock.patch('google.auth.compute_engine._metadata.get')
+    @mock.patch('google.auth.compute_engine._metadata.get', autospec=True)
     def test_before_request_refreshes(self, get_mock):
         get_mock.side_effect = [{
             # First request is for sevice account info.
