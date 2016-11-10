@@ -537,18 +537,18 @@ class Test_Filter(unittest.TestCase):
 
 class Test__build_label_filter(unittest.TestCase):
 
-    def _callFUT(self, *args, **kwargs):
+    def _call_fut(self, *args, **kwargs):
         from google.cloud.monitoring.query import _build_label_filter
         return _build_label_filter(*args, **kwargs)
 
     def test_no_labels(self):
-        self.assertEqual(self._callFUT('resource'), '')
+        self.assertEqual(self._call_fut('resource'), '')
 
     def test_label_is_none(self):
-        self.assertEqual(self._callFUT('resource', foo=None), '')
+        self.assertEqual(self._call_fut('resource', foo=None), '')
 
     def test_metric_labels(self):
-        actual = self._callFUT(
+        actual = self._call_fut(
             'metric',
             alpha_prefix='a-',
             beta_gamma_suffix='-b',
@@ -562,7 +562,7 @@ class Test__build_label_filter(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_metric_label_response_code_greater_less(self):
-        actual = self._callFUT(
+        actual = self._call_fut(
             'metric',
             response_code_greater=500,
             response_code_less=600)
@@ -573,7 +573,7 @@ class Test__build_label_filter(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_metric_label_response_code_greater_less_equal(self):
-        actual = self._callFUT(
+        actual = self._call_fut(
             'metric',
             response_code_greaterequal=500,
             response_code_lessequal=600)
@@ -584,7 +584,7 @@ class Test__build_label_filter(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_resource_labels(self):
-        actual = self._callFUT(
+        actual = self._call_fut(
             'resource',
             alpha_prefix='a-',
             beta_gamma_suffix='-b',
@@ -598,7 +598,7 @@ class Test__build_label_filter(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_raw_label_filters(self):
-        actual = self._callFUT(
+        actual = self._call_fut(
             'resource',
             'resource.label.alpha = starts_with("a-")',
             'resource.label.beta_gamma = ends_with("-b")',
@@ -612,17 +612,17 @@ class Test__build_label_filter(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_resource_type(self):
-        actual = self._callFUT('resource', resource_type='foo')
+        actual = self._call_fut('resource', resource_type='foo')
         expected = 'resource.type = "foo"'
         self.assertEqual(actual, expected)
 
     def test_resource_type_prefix(self):
-        actual = self._callFUT('resource', resource_type_prefix='foo-')
+        actual = self._call_fut('resource', resource_type_prefix='foo-')
         expected = 'resource.type = starts_with("foo-")'
         self.assertEqual(actual, expected)
 
     def test_resource_type_suffix(self):
-        actual = self._callFUT('resource', resource_type_suffix='-foo')
+        actual = self._call_fut('resource', resource_type_suffix='-foo')
         expected = 'resource.type = ends_with("-foo")'
         self.assertEqual(actual, expected)
 

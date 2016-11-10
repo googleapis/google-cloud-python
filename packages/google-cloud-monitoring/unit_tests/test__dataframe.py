@@ -86,21 +86,21 @@ def generate_query_results():  # pragma: NO COVER
 @unittest.skipUnless(HAVE_PANDAS, 'No pandas')
 class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
 
-    def _callFUT(self, *args, **kwargs):
+    def _call_fut(self, *args, **kwargs):
         from google.cloud.monitoring._dataframe import _build_dataframe
         return _build_dataframe(*args, **kwargs)
 
     def test_both_label_and_labels_illegal(self):
         with self.assertRaises(ValueError):
-            self._callFUT([], label='instance_name', labels=['zone'])
+            self._call_fut([], label='instance_name', labels=['zone'])
 
     def test_empty_labels_illegal(self):
         with self.assertRaises(ValueError):
-            self._callFUT([], labels=[])
+            self._call_fut([], labels=[])
 
     def test_simple_label(self):
         iterable = generate_query_results()
-        dataframe = self._callFUT(iterable, label='instance_name')
+        dataframe = self._call_fut(iterable, label='instance_name')
 
         self.assertEqual(dataframe.shape, DIMENSIONS)
         self.assertEqual(dataframe.values.tolist(), ARRAY)
@@ -115,7 +115,7 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
         NAMES = ['resource_type', 'instance_id']
 
         iterable = generate_query_results()
-        dataframe = self._callFUT(iterable, labels=NAMES)
+        dataframe = self._call_fut(iterable, labels=NAMES)
 
         self.assertEqual(dataframe.shape, DIMENSIONS)
         self.assertEqual(dataframe.values.tolist(), ARRAY)
@@ -134,7 +134,7 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
         NAMES = [NAME]
 
         iterable = generate_query_results()
-        dataframe = self._callFUT(iterable, labels=NAMES)
+        dataframe = self._call_fut(iterable, labels=NAMES)
 
         self.assertEqual(dataframe.shape, DIMENSIONS)
         self.assertEqual(dataframe.values.tolist(), ARRAY)
@@ -152,7 +152,7 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
                  'instance_name']
 
         iterable = generate_query_results()
-        dataframe = self._callFUT(iterable)
+        dataframe = self._call_fut(iterable)
 
         self.assertEqual(dataframe.shape, DIMENSIONS)
         self.assertEqual(dataframe.values.tolist(), ARRAY)
@@ -169,7 +169,7 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
         self.assertIsNone(dataframe.index.name)
 
     def test_empty_table_simple_label(self):
-        dataframe = self._callFUT([], label='instance_name')
+        dataframe = self._call_fut([], label='instance_name')
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertIsNone(dataframe.columns.name)
         self.assertIsNone(dataframe.index.name)
@@ -177,7 +177,7 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
 
     def test_empty_table_multiple_labels(self):
         NAMES = ['resource_type', 'instance_id']
-        dataframe = self._callFUT([], labels=NAMES)
+        dataframe = self._call_fut([], labels=NAMES)
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertEqual(dataframe.columns.names, NAMES)
         self.assertIsNone(dataframe.columns.name)
@@ -187,7 +187,7 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
     def test_empty_table_multiple_labels_with_just_one(self):
         NAME = 'instance_id'
         NAMES = [NAME]
-        dataframe = self._callFUT([], labels=NAMES)
+        dataframe = self._call_fut([], labels=NAMES)
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertEqual(dataframe.columns.names, NAMES)
         self.assertEqual(dataframe.columns.name, NAME)
@@ -197,7 +197,7 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
     def test_empty_table_smart_labels(self):
         NAME = 'resource_type'
         NAMES = [NAME]
-        dataframe = self._callFUT([])
+        dataframe = self._call_fut([])
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertEqual(dataframe.columns.names, NAMES)
         self.assertEqual(dataframe.columns.name, NAME)
@@ -207,20 +207,20 @@ class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
 
 class Test__sorted_resource_labels(unittest.TestCase):
 
-    def _callFUT(self, labels):
+    def _call_fut(self, labels):
         from google.cloud.monitoring._dataframe import _sorted_resource_labels
         return _sorted_resource_labels(labels)
 
     def test_empty(self):
-        self.assertEqual(self._callFUT([]), [])
+        self.assertEqual(self._call_fut([]), [])
 
     def test_sorted(self):
         from google.cloud.monitoring._dataframe import TOP_RESOURCE_LABELS
         EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
-        self.assertSequenceEqual(self._callFUT(EXPECTED), EXPECTED)
+        self.assertSequenceEqual(self._call_fut(EXPECTED), EXPECTED)
 
     def test_reversed(self):
         from google.cloud.monitoring._dataframe import TOP_RESOURCE_LABELS
         EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
         INPUT = list(reversed(EXPECTED))
-        self.assertSequenceEqual(self._callFUT(INPUT), EXPECTED)
+        self.assertSequenceEqual(self._call_fut(INPUT), EXPECTED)

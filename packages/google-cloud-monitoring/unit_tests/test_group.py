@@ -17,7 +17,7 @@ import unittest
 
 class Test_group_id_from_name(unittest.TestCase):
 
-    def _callFUT(self, path, project):
+    def _call_fut(self, path, project):
         from google.cloud.monitoring.group import _group_id_from_name
         return _group_id_from_name(path, project)
 
@@ -25,20 +25,20 @@ class Test_group_id_from_name(unittest.TestCase):
         PROJECT = 'my-project-1234'
         PATH = ''
         with self.assertRaises(ValueError):
-            self._callFUT(PATH, PROJECT)
+            self._call_fut(PATH, PROJECT)
 
     def test_w_simple_name(self):
         GROUP_ID = 'GROUP_ID'
         PROJECT = 'my-project-1234'
         PATH = 'projects/%s/groups/%s' % (PROJECT, GROUP_ID)
-        group_id = self._callFUT(PATH, PROJECT)
+        group_id = self._call_fut(PATH, PROJECT)
         self.assertEqual(group_id, GROUP_ID)
 
     def test_w_name_w_all_extras(self):
         GROUP_ID = 'GROUP_ID-part.one~part.two%part-three'
         PROJECT = 'my-project-1234'
         PATH = 'projects/%s/groups/%s' % (PROJECT, GROUP_ID)
-        group_id = self._callFUT(PATH, PROJECT)
+        group_id = self._call_fut(PATH, PROJECT)
         self.assertEqual(group_id, GROUP_ID)
 
 
