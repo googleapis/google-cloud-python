@@ -17,41 +17,43 @@ import unittest
 
 class TestLabelValueType(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.label import LabelValueType
         return LabelValueType
 
     def test_one(self):
-        self.assertTrue(hasattr(self._getTargetClass(), 'STRING'))
+        self.assertTrue(hasattr(self._get_target_class(), 'STRING'))
 
     def test_names(self):
-        for name in self._getTargetClass().__dict__:
+        for name in self._get_target_class().__dict__:
             if not name.startswith('_'):
-                self.assertEqual(getattr(self._getTargetClass(), name), name)
+                self.assertEqual(getattr(self._get_target_class(), name), name)
 
 
 class TestLabelDescriptor(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.label import LabelDescriptor
         return LabelDescriptor
 
-    def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         KEY = 'response_code'
         VALUE_TYPE = 'INT64'
         DESCRIPTION = 'HTTP status code for the request.'
-        descriptor = self._makeOne(key=KEY, value_type=VALUE_TYPE,
-                                   description=DESCRIPTION)
+        descriptor = self._make_one(key=KEY, value_type=VALUE_TYPE,
+                                    description=DESCRIPTION)
         self.assertEqual(descriptor.key, KEY)
         self.assertEqual(descriptor.value_type, VALUE_TYPE)
         self.assertEqual(descriptor.description, DESCRIPTION)
 
     def test_constructor_defaults(self):
         KEY = 'response_code'
-        descriptor = self._makeOne(key=KEY)
+        descriptor = self._make_one(key=KEY)
         self.assertEqual(descriptor.key, KEY)
         self.assertEqual(descriptor.value_type, 'STRING')
         self.assertEqual(descriptor.description, '')
@@ -65,7 +67,7 @@ class TestLabelDescriptor(unittest.TestCase):
             'valueType': VALUE_TYPE,
             'description': DESCRIPTION,
         }
-        descriptor = self._getTargetClass()._from_dict(info)
+        descriptor = self._get_target_class()._from_dict(info)
         self.assertEqual(descriptor.key, KEY)
         self.assertEqual(descriptor.value_type, VALUE_TYPE)
         self.assertEqual(descriptor.description, DESCRIPTION)
@@ -73,7 +75,7 @@ class TestLabelDescriptor(unittest.TestCase):
     def test_from_dict_defaults(self):
         KEY = 'response_code'
         info = {'key': KEY}
-        descriptor = self._getTargetClass()._from_dict(info)
+        descriptor = self._get_target_class()._from_dict(info)
         self.assertEqual(descriptor.key, KEY)
         self.assertEqual(descriptor.value_type, 'STRING')
         self.assertEqual(descriptor.description, '')
@@ -82,8 +84,8 @@ class TestLabelDescriptor(unittest.TestCase):
         KEY = 'response_code'
         VALUE_TYPE = 'INT64'
         DESCRIPTION = 'HTTP status code for the request.'
-        descriptor = self._makeOne(key=KEY, value_type=VALUE_TYPE,
-                                   description=DESCRIPTION)
+        descriptor = self._make_one(key=KEY, value_type=VALUE_TYPE,
+                                    description=DESCRIPTION)
         expected = {
             'key': KEY,
             'valueType': VALUE_TYPE,
@@ -93,7 +95,7 @@ class TestLabelDescriptor(unittest.TestCase):
 
     def test_to_dict_defaults(self):
         KEY = 'response_code'
-        descriptor = self._makeOne(key=KEY)
+        descriptor = self._make_one(key=KEY)
         expected = {
             'key': KEY,
             'valueType': 'STRING',
@@ -104,9 +106,9 @@ class TestLabelDescriptor(unittest.TestCase):
         KEY = 'response_code'
         VALUE_TYPE = 'INT64'
         DESCRIPTION = 'HTTP status code for the request.'
-        descriptor1 = self._makeOne(key=KEY, value_type=VALUE_TYPE,
-                                    description=DESCRIPTION)
-        descriptor2 = self._makeOne(key=KEY, value_type=VALUE_TYPE,
-                                    description=DESCRIPTION)
+        descriptor1 = self._make_one(key=KEY, value_type=VALUE_TYPE,
+                                     description=DESCRIPTION)
+        descriptor2 = self._make_one(key=KEY, value_type=VALUE_TYPE,
+                                     description=DESCRIPTION)
         self.assertTrue(descriptor1 == descriptor2)
         self.assertFalse(descriptor1 != descriptor2)

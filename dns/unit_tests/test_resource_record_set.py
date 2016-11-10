@@ -17,18 +17,19 @@ import unittest
 
 class TestResourceRecordSet(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.dns.resource_record_set import ResourceRecordSet
         return ResourceRecordSet
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         zone = _Zone()
 
-        rrs = self._makeOne('test.example.com', 'CNAME', 3600,
-                            ['www.example.com'], zone)
+        rrs = self._make_one('test.example.com', 'CNAME', 3600,
+                             ['www.example.com'], zone)
 
         self.assertEqual(rrs.name, 'test.example.com')
         self.assertEqual(rrs.record_type, 'CNAME')
@@ -38,7 +39,7 @@ class TestResourceRecordSet(unittest.TestCase):
 
     def test_from_api_repr_missing_rrdatas(self):
         zone = _Zone()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         with self.assertRaises(KeyError):
             klass.from_api_repr({'name': 'test.example.com',
@@ -47,7 +48,7 @@ class TestResourceRecordSet(unittest.TestCase):
 
     def test_from_api_repr_missing_ttl(self):
         zone = _Zone()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         with self.assertRaises(KeyError):
             klass.from_api_repr({'name': 'test.example.com',
@@ -56,7 +57,7 @@ class TestResourceRecordSet(unittest.TestCase):
 
     def test_from_api_repr_missing_type(self):
         zone = _Zone()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         with self.assertRaises(KeyError):
             klass.from_api_repr({'name': 'test.example.com',
@@ -65,7 +66,7 @@ class TestResourceRecordSet(unittest.TestCase):
 
     def test_from_api_repr_missing_name(self):
         zone = _Zone()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         with self.assertRaises(KeyError):
             klass.from_api_repr({'type': 'CNAME',
@@ -81,7 +82,7 @@ class TestResourceRecordSet(unittest.TestCase):
             'ttl': '3600',
             'rrdatas': ['www.example.com'],
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         rrs = klass.from_api_repr(RESOURCE, zone=zone)
         self.assertEqual(rrs.name, 'test.example.com')
         self.assertEqual(rrs.record_type, 'CNAME')

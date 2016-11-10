@@ -17,15 +17,16 @@ import unittest
 
 class Test_GoogleCloudError(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.exceptions import GoogleCloudError
         return GoogleCloudError
 
-    def _makeOne(self, message, errors=()):
-        return self._getTargetClass()(message, errors=errors)
+    def _make_one(self, message, errors=()):
+        return self._get_target_class()(message, errors=errors)
 
     def test_ctor_defaults(self):
-        e = self._makeOne('Testing')
+        e = self._make_one('Testing')
         e.code = 600
         self.assertEqual(str(e), '600 Testing')
         self.assertEqual(e.message, 'Testing')
@@ -39,7 +40,7 @@ class Test_GoogleCloudError(unittest.TestCase):
             'message': 'Testing',
             'reason': 'test',
             }
-        e = self._makeOne('Testing', [ERROR])
+        e = self._make_one('Testing', [ERROR])
         e.code = 600
         self.assertEqual(str(e), '600 Testing')
         self.assertEqual(e.message, 'Testing')
@@ -48,7 +49,7 @@ class Test_GoogleCloudError(unittest.TestCase):
 
 class Test_make_exception(unittest.TestCase):
 
-    def _callFUT(self, response, content, error_info=None, use_json=True):
+    def _call_fut(self, response, content, error_info=None, use_json=True):
         from google.cloud.exceptions import make_exception
         return make_exception(response, content, error_info=error_info,
                               use_json=use_json)
@@ -57,7 +58,7 @@ class Test_make_exception(unittest.TestCase):
         from google.cloud.exceptions import NotFound
         response = _Response(404)
         content = b'{"error": {"message": "Not Found"}}'
-        exception = self._callFUT(response, content)
+        exception = self._call_fut(response, content)
         self.assertIsInstance(exception, NotFound)
         self.assertEqual(exception.message, 'Not Found')
         self.assertEqual(list(exception.errors), [])
@@ -72,7 +73,7 @@ class Test_make_exception(unittest.TestCase):
         response = _Response(404)
         content = u'{"error": {"message": "%s" }}' % (error_message,)
 
-        exception = self._callFUT(response, content)
+        exception = self._call_fut(response, content)
         if six.PY2:
             self.assertEqual(str(exception),
                              _to_bytes(expected, encoding='utf-8'))
@@ -93,7 +94,7 @@ class Test_make_exception(unittest.TestCase):
         with _Monkey(six, PY2=False):
             response = _Response(404)
             content = u'{"error": {"message": "%s" }}' % (error_message,)
-            exception = self._callFUT(response, content)
+            exception = self._call_fut(response, content)
 
             self.assertIsInstance(exception, NotFound)
             self.assertEqual(exception.message, error_message)
@@ -111,7 +112,7 @@ class Test_make_exception(unittest.TestCase):
             }
         response = _Response(600)
         content = {"error": {"message": "Unknown Error", "errors": [ERROR]}}
-        exception = self._callFUT(response, content)
+        exception = self._call_fut(response, content)
         self.assertIsInstance(exception, GoogleCloudError)
         self.assertEqual(exception.message, 'Unknown Error')
         self.assertEqual(list(exception.errors), [ERROR])
@@ -120,7 +121,7 @@ class Test_make_exception(unittest.TestCase):
         from google.cloud.exceptions import NotFound
         response = _Response(NotFound.code)
         content = '<html><body>404 Not Found</body></html>'
-        exception = self._callFUT(response, content, use_json=True)
+        exception = self._call_fut(response, content, use_json=True)
         self.assertIsInstance(exception, NotFound)
         self.assertEqual(exception.message, content)
         self.assertEqual(list(exception.errors), [])
@@ -130,7 +131,7 @@ class Test_make_exception(unittest.TestCase):
 
         content = u'error-content'
         response = _Response(TooManyRequests.code)
-        exception = self._callFUT(response, content, use_json=False)
+        exception = self._call_fut(response, content, use_json=False)
 
         self.assertIsInstance(exception, TooManyRequests)
         self.assertEqual(exception.message, content)

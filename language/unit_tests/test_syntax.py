@@ -17,12 +17,13 @@ import unittest
 
 class TestPartOfSpeech(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.language.syntax import PartOfSpeech
         return PartOfSpeech
 
     def test_reverse(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         for attr in dir(klass):
             if attr.startswith('_'):
                 continue
@@ -35,12 +36,13 @@ class TestPartOfSpeech(unittest.TestCase):
 
 class TestToken(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.language.syntax import Token
         return Token
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         from google.cloud.language.syntax import PartOfSpeech
@@ -51,8 +53,8 @@ class TestToken(unittest.TestCase):
         edge_index = 3
         edge_label = 'PREDET'
         lemma = text_content
-        token = self._makeOne(text_content, text_begin, part_of_speech,
-                              edge_index, edge_label, lemma)
+        token = self._make_one(text_content, text_begin, part_of_speech,
+                               edge_index, edge_label, lemma)
         self.assertEqual(token.text_content, text_content)
         self.assertEqual(token.text_begin, text_begin)
         self.assertEqual(token.part_of_speech, part_of_speech)
@@ -63,7 +65,7 @@ class TestToken(unittest.TestCase):
     def test_from_api_repr(self):
         from google.cloud.language.syntax import PartOfSpeech
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         text_content = 'pretty'
         text_begin = -1
         part_of_speech = PartOfSpeech.ADJECTIVE
@@ -95,22 +97,23 @@ class TestToken(unittest.TestCase):
 
 class TestSentence(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.language.syntax import Sentence
         return Sentence
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         content = "All the king's horses."
         begin = 11
-        sentence = self._makeOne(content, begin)
+        sentence = self._make_one(content, begin)
         self.assertEqual(sentence.content, content)
         self.assertEqual(sentence.begin, begin)
 
     def test_from_api_repr(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         content = 'All the pretty horses.'
         begin = -1
         payload = {

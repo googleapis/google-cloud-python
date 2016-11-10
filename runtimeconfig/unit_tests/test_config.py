@@ -20,12 +20,13 @@ class TestConfig(unittest.TestCase):
     CONFIG_NAME = 'config_name'
     CONFIG_PATH = 'projects/%s/configs/%s' % (PROJECT, CONFIG_NAME)
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.runtimeconfig.config import Config
         return Config
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def _verifyResourceProperties(self, config, resource):
         from google.cloud.runtimeconfig._helpers import (
@@ -41,22 +42,22 @@ class TestConfig(unittest.TestCase):
 
     def test_ctor(self):
         client = _Client(project=self.PROJECT)
-        config = self._makeOne(name=self.CONFIG_NAME,
-                               client=client)
+        config = self._make_one(name=self.CONFIG_NAME,
+                                client=client)
         self.assertEqual(config.name, self.CONFIG_NAME)
         self.assertEqual(config.project, self.PROJECT)
         self.assertEqual(config.full_name, self.CONFIG_PATH)
 
     def test_ctor_w_no_name(self):
         client = _Client(project=self.PROJECT)
-        config = self._makeOne(name=None, client=client)
+        config = self._make_one(name=None, client=client)
         with self.assertRaises(ValueError):
             getattr(config, 'full_name')
 
     def test_exists_miss_w_bound_client(self):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        config = self._makeOne(client=client, name=self.CONFIG_NAME)
+        config = self._make_one(client=client, name=self.CONFIG_NAME)
 
         self.assertFalse(config.exists())
 
@@ -71,7 +72,7 @@ class TestConfig(unittest.TestCase):
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        config = self._makeOne(client=CLIENT1, name=self.CONFIG_NAME)
+        config = self._make_one(client=CLIENT1, name=self.CONFIG_NAME)
 
         self.assertTrue(config.exists(client=CLIENT2))
 
@@ -86,7 +87,7 @@ class TestConfig(unittest.TestCase):
         RESOURCE = {}
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        config = self._makeOne(name=self.CONFIG_NAME, client=client)
+        config = self._make_one(name=self.CONFIG_NAME, client=client)
 
         config.reload()
 
@@ -102,7 +103,7 @@ class TestConfig(unittest.TestCase):
         RESOURCE = {'name': self.CONFIG_PATH, 'description': 'hello'}
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        config = self._makeOne(name=self.CONFIG_NAME, client=client)
+        config = self._make_one(name=self.CONFIG_NAME, client=client)
 
         config.reload()
 
@@ -118,7 +119,7 @@ class TestConfig(unittest.TestCase):
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        config = self._makeOne(name=self.CONFIG_NAME, client=CLIENT1)
+        config = self._make_one(name=self.CONFIG_NAME, client=CLIENT1)
 
         config.reload(client=CLIENT2)
 
@@ -134,7 +135,7 @@ class TestConfig(unittest.TestCase):
         VARIABLE_PATH = '%s/variables/%s' % (self.CONFIG_PATH, VARIABLE_NAME)
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        config = self._makeOne(name=self.CONFIG_NAME, client=client)
+        config = self._make_one(name=self.CONFIG_NAME, client=client)
 
         variable = config.variable(VARIABLE_NAME)
 
@@ -155,7 +156,7 @@ class TestConfig(unittest.TestCase):
         }
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        config = self._makeOne(name=self.CONFIG_NAME, client=client)
+        config = self._make_one(name=self.CONFIG_NAME, client=client)
 
         variable = config.get_variable(VARIABLE_NAME)
 
@@ -175,7 +176,7 @@ class TestConfig(unittest.TestCase):
         VARIABLE_NAME = 'my-variable/abcd'
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        config = self._makeOne(name=self.CONFIG_NAME, client=client)
+        config = self._make_one(name=self.CONFIG_NAME, client=client)
         variable = config.get_variable(VARIABLE_NAME)
         self.assertIsNone(variable)
 
@@ -194,7 +195,7 @@ class TestConfig(unittest.TestCase):
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        config = self._makeOne(client=CLIENT1, name=self.CONFIG_NAME)
+        config = self._make_one(client=CLIENT1, name=self.CONFIG_NAME)
 
         variable = config.get_variable(VARIABLE_NAME, client=CLIENT2)
 
@@ -216,7 +217,7 @@ class TestConfig(unittest.TestCase):
 
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
-        config = self._makeOne(name=self.CONFIG_NAME, client=client)
+        config = self._make_one(name=self.CONFIG_NAME, client=client)
 
         iterator = config.list_variables()
         page = six.next(iterator.pages)
@@ -254,7 +255,7 @@ class TestConfig(unittest.TestCase):
 
         conn = _Connection(DATA)
         client = _Client(project=self.PROJECT, connection=conn)
-        config = self._makeOne(name=self.CONFIG_NAME, client=client)
+        config = self._make_one(name=self.CONFIG_NAME, client=client)
 
         iterator = config.list_variables()
         page = six.next(iterator.pages)
@@ -297,7 +298,7 @@ class TestConfig(unittest.TestCase):
 
         conn = _Connection(DATA)
         client = _Client(project=self.PROJECT, connection=conn)
-        config = self._makeOne(name=self.CONFIG_NAME, client=client)
+        config = self._make_one(name=self.CONFIG_NAME, client=client)
 
         iterator = config.list_variables(
             page_size=3,

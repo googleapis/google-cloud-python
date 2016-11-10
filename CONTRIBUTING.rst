@@ -174,7 +174,7 @@ Coding Style
 
 Exceptions to PEP8:
 
-- Many unit tests use a helper method, ``_callFUT`` ("FUT" is short for
+- Many unit tests use a helper method, ``_call_fut`` ("FUT" is short for
   "Function-Under-Test"), which is PEP8-incompliant, but more readable.
   Some also use a local variable, ``MUT`` (short for "Module-Under-Test").
 

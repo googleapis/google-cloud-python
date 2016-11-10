@@ -17,22 +17,23 @@ import unittest
 
 class TestSentiment(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.language.sentiment import Sentiment
         return Sentiment
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         polarity = 1
         magnitude = 2.3
-        sentiment = self._makeOne(polarity, magnitude)
+        sentiment = self._make_one(polarity, magnitude)
         self.assertEqual(sentiment.polarity, polarity)
         self.assertEqual(sentiment.magnitude, magnitude)
 
     def test_from_api_repr(self):
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         polarity = -1
         magnitude = 5.55
         payload = {

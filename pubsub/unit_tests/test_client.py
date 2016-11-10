@@ -22,12 +22,13 @@ class TestClient(unittest.TestCase):
     SUB_NAME = 'subscription_name'
     SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub.client import Client
         return Client
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_publisher_api_wo_gax(self):
         from google.cloud.pubsub._http import _PublisherAPI
@@ -36,7 +37,7 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
 
         with _Monkey(MUT, _USE_GAX=False):
-            client = self._makeOne(project=self.PROJECT, credentials=creds)
+            client = self._make_one(project=self.PROJECT, credentials=creds)
 
         conn = client.connection = object()
         api = client.publisher_api
@@ -54,8 +55,8 @@ class TestClient(unittest.TestCase):
 
         creds = _Credentials()
         with _Monkey(MUT, _USE_GAX=True):
-            client = self._makeOne(project=self.PROJECT, credentials=creds,
-                                   use_gax=False)
+            client = self._make_one(project=self.PROJECT, credentials=creds,
+                                    use_gax=False)
 
         self.assertFalse(client._use_gax)
         api = client.publisher_api
@@ -83,7 +84,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=True,
                      make_gax_publisher_api=_generated_api,
                      GAXPublisherAPI=_GaxPublisherAPI):
-            client = self._makeOne(project=self.PROJECT, credentials=creds)
+            client = self._make_one(project=self.PROJECT, credentials=creds)
             api = client.publisher_api
 
         self.assertIsInstance(api, _GaxPublisherAPI)
@@ -102,7 +103,7 @@ class TestClient(unittest.TestCase):
         creds = _Credentials()
 
         with _Monkey(MUT, _USE_GAX=False):
-            client = self._makeOne(project=self.PROJECT, credentials=creds)
+            client = self._make_one(project=self.PROJECT, credentials=creds)
 
         conn = client.connection = object()
         api = client.subscriber_api
@@ -135,7 +136,7 @@ class TestClient(unittest.TestCase):
         with _Monkey(MUT, _USE_GAX=True,
                      make_gax_subscriber_api=_generated_api,
                      GAXSubscriberAPI=_GaxSubscriberAPI):
-            client = self._makeOne(project=self.PROJECT, credentials=creds)
+            client = self._make_one(project=self.PROJECT, credentials=creds)
             api = client.subscriber_api
 
         self.assertIsInstance(api, _GaxSubscriberAPI)
@@ -150,7 +151,7 @@ class TestClient(unittest.TestCase):
     def test_iam_policy_api(self):
         from google.cloud.pubsub._http import _IAMPolicyAPI
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client.connection = object()
         api = client.iam_policy_api
         self.assertIsInstance(api, _IAMPolicyAPI)
@@ -163,7 +164,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.pubsub.topic import Topic
 
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         client.connection = object()
         api = _FauxPublisherAPI(items=[Topic(self.TOPIC_NAME, client)])
         client._publisher_api = api
@@ -186,7 +187,7 @@ class TestClient(unittest.TestCase):
         TOKEN2 = 'TOKEN2'
         SIZE = 1
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         client.connection = object()
         api = _FauxPublisherAPI([Topic(self.TOPIC_NAME, client)], TOKEN2)
         client._publisher_api = api
@@ -204,7 +205,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_topics_missing_key(self):
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         client.connection = object()
         api = _FauxPublisherAPI()
         client._publisher_api = api
@@ -224,8 +225,8 @@ class TestClient(unittest.TestCase):
 
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds,
-                               use_gax=False)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                use_gax=False)
         returned = {'subscriptions': [SUB_INFO]}
         client.connection = _Connection(returned)
 
@@ -262,8 +263,8 @@ class TestClient(unittest.TestCase):
 
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds,
-                               use_gax=False)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                use_gax=False)
 
         # Set up the mock response.
         ACK_DEADLINE = 42
@@ -316,7 +317,7 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         creds = _Credentials()
 
-        client = self._makeOne(project=PROJECT, credentials=creds)
+        client = self._make_one(project=PROJECT, credentials=creds)
         client.connection = object()
         api = client._subscriber_api = _FauxSubscriberAPI()
         api._list_subscriptions_response = (), None
@@ -334,7 +335,7 @@ class TestClient(unittest.TestCase):
         TOPIC_NAME = 'TOPIC_NAME'
         creds = _Credentials()
 
-        client_obj = self._makeOne(project=PROJECT, credentials=creds)
+        client_obj = self._make_one(project=PROJECT, credentials=creds)
         new_topic = client_obj.topic(TOPIC_NAME)
         self.assertEqual(new_topic.name, TOPIC_NAME)
         self.assertIs(new_topic._client, client_obj)

@@ -66,20 +66,21 @@ class TestClient(unittest.TestCase):
     AUDIO_SOURCE_URI = 'gs://sample-bucket/sample-recording.flac'
     AUDIO_CONTENT = '/9j/4QNURXhpZgAASUkq'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.speech.client import Client
 
         return Client
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         from google.cloud.speech.connection import Connection
 
         creds = _Credentials()
         http = object()
-        client = self._makeOne(credentials=creds, http=http)
+        client = self._make_one(credentials=creds, http=http)
         self.assertIsInstance(client.connection, Connection)
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
@@ -87,7 +88,7 @@ class TestClient(unittest.TestCase):
     def test_ctor_use_gax_preset(self):
         creds = _Credentials()
         http = object()
-        client = self._makeOne(credentials=creds, http=http, use_gax=True)
+        client = self._make_one(credentials=creds, http=http, use_gax=True)
         self.assertTrue(client._use_gax)
 
     def test_create_sample_from_client(self):
@@ -95,7 +96,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech.sample import Sample
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
 
         sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
                                encoding=speech.Encoding.FLAC,
@@ -144,7 +145,7 @@ class TestClient(unittest.TestCase):
             }
         }
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials, use_gax=False)
+        client = self._make_one(credentials=credentials, use_gax=False)
         client.connection = _Connection(RETURNED)
 
         encoding = speech.Encoding.FLAC
@@ -189,7 +190,7 @@ class TestClient(unittest.TestCase):
             }
         }
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials, use_gax=False)
+        client = self._make_one(credentials=credentials, use_gax=False)
         client.connection = _Connection(RETURNED)
 
         encoding = speech.Encoding.FLAC
@@ -219,7 +220,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import SYNC_RECOGNIZE_EMPTY_RESPONSE
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials, use_gax=False)
+        client = self._make_one(credentials=credentials, use_gax=False)
         client.connection = _Connection(SYNC_RECOGNIZE_EMPTY_RESPONSE)
 
         sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
@@ -237,7 +238,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech.sample import Sample
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials, use_gax=True)
+        client = self._make_one(credentials=credentials, use_gax=True)
         client.connection = _Connection()
         client.connection.credentials = credentials
 
@@ -280,7 +281,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech import _gax
 
         creds = _Credentials()
-        client = self._makeOne(credentials=creds, use_gax=True)
+        client = self._make_one(credentials=creds, use_gax=True)
         client.connection = _Connection()
         client.connection.credentials = creds
         client._speech_api = None
@@ -341,7 +342,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech.sample import Sample
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         client.connection = _Connection({})
 
         sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
@@ -359,7 +360,7 @@ class TestClient(unittest.TestCase):
         RETURNED = ASYNC_RECOGNIZE_RESPONSE
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials, use_gax=False)
+        client = self._make_one(credentials=credentials, use_gax=False)
         client.connection = _Connection(RETURNED)
 
         sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
@@ -381,8 +382,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech.operation import Operation
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials,
-                               use_gax=True)
+        client = self._make_one(credentials=credentials,
+                                use_gax=True)
         client.connection = _Connection()
         client.connection.credentials = credentials
 
@@ -423,7 +424,7 @@ class TestClient(unittest.TestCase):
         from google.cloud._testing import _Monkey
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials, use_gax=False)
+        client = self._make_one(credentials=credentials, use_gax=False)
         client.connection = _Connection()
 
         with self.assertRaises(EnvironmentError):
@@ -439,7 +440,7 @@ class TestClient(unittest.TestCase):
 
         stream = BytesIO(b'Some audio data...')
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         client.connection = _Connection()
         client.connection.credentials = credentials
 
@@ -479,7 +480,7 @@ class TestClient(unittest.TestCase):
 
         stream = BytesIO(b'Some audio data...')
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         client.connection = _Connection()
         client.connection.credentials = credentials
 
@@ -541,7 +542,7 @@ class TestClient(unittest.TestCase):
 
         stream = BytesIO(b'Some audio data...')
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         client.connection = _Connection()
         client.connection.credentials = credentials
 
@@ -597,7 +598,7 @@ class TestClient(unittest.TestCase):
 
         stream = BytesIO(b'Some audio data...')
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         client.connection = _Connection()
         client.connection.credentials = credentials
 
@@ -633,7 +634,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech import _gax
 
         creds = _Credentials()
-        client = self._makeOne(credentials=creds, use_gax=True)
+        client = self._make_one(credentials=creds, use_gax=True)
         client.connection = _Connection()
         client.connection.credentials = creds
 
@@ -666,14 +667,14 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech.client import _JSONSpeechAPI
 
         creds = _Credentials()
-        client = self._makeOne(credentials=creds, use_gax=False)
+        client = self._make_one(credentials=creds, use_gax=False)
         self.assertIsNone(client._speech_api)
         self.assertIsInstance(client.speech_api, _JSONSpeechAPI)
         self.assertIsInstance(client.speech_api.connection, Connection)
 
     def test_speech_api_preset(self):
         creds = _Credentials()
-        client = self._makeOne(credentials=creds)
+        client = self._make_one(credentials=creds)
         fake_api = object()
         client._speech_api = fake_api
 

@@ -17,7 +17,7 @@ import unittest
 
 class Test_get_credentials(unittest.TestCase):
 
-    def _callFUT(self):
+    def _call_fut(self):
         from google.cloud import credentials
         return credentials.get_credentials()
 
@@ -27,7 +27,7 @@ class Test_get_credentials(unittest.TestCase):
 
         client = _Client()
         with _Monkey(MUT, client=client):
-            found = self._callFUT()
+            found = self._call_fut()
         self.assertIsInstance(found, _Credentials)
         self.assertIs(found, client._signed)
         self.assertTrue(client._get_app_default_called)
@@ -35,7 +35,7 @@ class Test_get_credentials(unittest.TestCase):
 
 class Test_generate_signed_url(unittest.TestCase):
 
-    def _callFUT(self, *args, **kwargs):
+    def _call_fut(self, *args, **kwargs):
         from google.cloud.credentials import generate_signed_url
         return generate_signed_url(*args, **kwargs)
 
@@ -61,11 +61,11 @@ class Test_generate_signed_url(unittest.TestCase):
             }
 
         with _Monkey(MUT, _get_signed_query_params=_get_signed_query_params):
-            url = self._callFUT(CREDENTIALS, RESOURCE, 1000,
-                                api_access_endpoint=ENDPOINT,
-                                response_type=response_type,
-                                response_disposition=response_disposition,
-                                generation=generation)
+            url = self._call_fut(CREDENTIALS, RESOURCE, 1000,
+                                 api_access_endpoint=ENDPOINT,
+                                 response_type=response_type,
+                                 response_disposition=response_disposition,
+                                 generation=generation)
 
         scheme, netloc, path, qs, frag = urlsplit(url)
         self.assertEqual(scheme, 'http')
@@ -115,7 +115,7 @@ class Test_generate_signed_url_exception(unittest.TestCase):
 
 class Test__get_signed_query_params(unittest.TestCase):
 
-    def _callFUT(self, credentials, expiration, string_to_sign):
+    def _call_fut(self, credentials, expiration, string_to_sign):
         from google.cloud.credentials import _get_signed_query_params
         return _get_signed_query_params(credentials, expiration,
                                         string_to_sign)
@@ -129,8 +129,8 @@ class Test__get_signed_query_params(unittest.TestCase):
                                    service_account_email=ACCOUNT_NAME)
         EXPIRATION = 100
         STRING_TO_SIGN = 'dummy_signature'
-        result = self._callFUT(CREDENTIALS, EXPIRATION,
-                               STRING_TO_SIGN)
+        result = self._call_fut(CREDENTIALS, EXPIRATION,
+                                STRING_TO_SIGN)
 
         self.assertEqual(result, {
             'GoogleAccessId': ACCOUNT_NAME,
@@ -142,7 +142,7 @@ class Test__get_signed_query_params(unittest.TestCase):
 
 class Test__get_expiration_seconds(unittest.TestCase):
 
-    def _callFUT(self, expiration):
+    def _call_fut(self, expiration):
         from google.cloud.credentials import _get_expiration_seconds
         return _get_expiration_seconds(expiration)
 
@@ -151,11 +151,11 @@ class Test__get_expiration_seconds(unittest.TestCase):
         return int(calendar.timegm(when.timetuple()))
 
     def test_w_invalid(self):
-        self.assertRaises(TypeError, self._callFUT, object())
-        self.assertRaises(TypeError, self._callFUT, None)
+        self.assertRaises(TypeError, self._call_fut, object())
+        self.assertRaises(TypeError, self._call_fut, None)
 
     def test_w_int(self):
-        self.assertEqual(self._callFUT(123), 123)
+        self.assertEqual(self._call_fut(123), 123)
 
     def test_w_long(self):
         try:
@@ -163,14 +163,14 @@ class Test__get_expiration_seconds(unittest.TestCase):
         except NameError:  # pragma: NO COVER Py3K
             pass
         else:
-            self.assertEqual(self._callFUT(long(123)), 123)
+            self.assertEqual(self._call_fut(long(123)), 123)
 
     def test_w_naive_datetime(self):
         import datetime
 
         expiration_no_tz = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
         utc_seconds = self._utc_seconds(expiration_no_tz)
-        self.assertEqual(self._callFUT(expiration_no_tz), utc_seconds)
+        self.assertEqual(self._call_fut(expiration_no_tz), utc_seconds)
 
     def test_w_utc_datetime(self):
         import datetime
@@ -178,7 +178,7 @@ class Test__get_expiration_seconds(unittest.TestCase):
 
         expiration_utc = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, UTC)
         utc_seconds = self._utc_seconds(expiration_utc)
-        self.assertEqual(self._callFUT(expiration_utc), utc_seconds)
+        self.assertEqual(self._call_fut(expiration_utc), utc_seconds)
 
     def test_w_other_zone_datetime(self):
         import datetime
@@ -192,7 +192,7 @@ class Test__get_expiration_seconds(unittest.TestCase):
         expiration_other = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, zone)
         utc_seconds = self._utc_seconds(expiration_other)
         cet_seconds = utc_seconds - (60 * 60)  # CET one hour earlier than UTC
-        self.assertEqual(self._callFUT(expiration_other), cet_seconds)
+        self.assertEqual(self._call_fut(expiration_other), cet_seconds)
 
     def test_w_timedelta_seconds(self):
         import datetime
@@ -204,7 +204,7 @@ class Test__get_expiration_seconds(unittest.TestCase):
         expiration_as_delta = datetime.timedelta(seconds=10)
 
         with _Monkey(MUT, _NOW=lambda: dummy_utcnow):
-            result = self._callFUT(expiration_as_delta)
+            result = self._call_fut(expiration_as_delta)
 
         self.assertEqual(result, utc_seconds + 10)
 
@@ -218,7 +218,7 @@ class Test__get_expiration_seconds(unittest.TestCase):
         expiration_as_delta = datetime.timedelta(days=1)
 
         with _Monkey(MUT, _NOW=lambda: dummy_utcnow):
-            result = self._callFUT(expiration_as_delta)
+            result = self._call_fut(expiration_as_delta)
 
         self.assertEqual(result, utc_seconds + 86400)
 

@@ -17,18 +17,19 @@ import unittest
 
 class Test_HttpError(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.streaming.exceptions import HttpError
         return HttpError
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         RESPONSE = {'status': '404'}
         CONTENT = b'CONTENT'
         URL = 'http://www.example.com'
-        exception = self._makeOne(RESPONSE, CONTENT, URL)
+        exception = self._make_one(RESPONSE, CONTENT, URL)
         self.assertEqual(exception.response, RESPONSE)
         self.assertEqual(exception.content, CONTENT)
         self.assertEqual(exception.url, URL)
@@ -48,7 +49,7 @@ class Test_HttpError(unittest.TestCase):
             content = CONTENT
             request_url = URL
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         exception = klass.from_response(_Response())
         self.assertIsInstance(exception, klass)
         self.assertEqual(exception.response, RESPONSE)
@@ -58,19 +59,20 @@ class Test_HttpError(unittest.TestCase):
 
 class Test_RetryAfterError(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.streaming.exceptions import RetryAfterError
         return RetryAfterError
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         RESPONSE = {'status': '404'}
         CONTENT = b'CONTENT'
         URL = 'http://www.example.com'
         RETRY_AFTER = 60
-        exception = self._makeOne(RESPONSE, CONTENT, URL, RETRY_AFTER)
+        exception = self._make_one(RESPONSE, CONTENT, URL, RETRY_AFTER)
         self.assertEqual(exception.response, RESPONSE)
         self.assertEqual(exception.content, CONTENT)
         self.assertEqual(exception.url, URL)
@@ -92,7 +94,7 @@ class Test_RetryAfterError(unittest.TestCase):
             request_url = URL
             retry_after = RETRY_AFTER
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         exception = klass.from_response(_Response())
         self.assertIsInstance(exception, klass)
         self.assertEqual(exception.response, RESPONSE)

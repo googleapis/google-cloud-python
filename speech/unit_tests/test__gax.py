@@ -18,13 +18,14 @@ import unittest
 class TestGAPICSpeechAPI(unittest.TestCase):
     SAMPLE_RATE = 16000
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.speech._gax import GAPICSpeechAPI
 
         return GAPICSpeechAPI
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_use_bytes_instead_of_file_like_object(self):
         from google.cloud import speech
@@ -38,7 +39,7 @@ class TestGAPICSpeechAPI(unittest.TestCase):
         sample = Sample(content=b'', encoding=speech.Encoding.FLAC,
                         sample_rate=self.SAMPLE_RATE)
 
-        api = self._makeOne(client)
+        api = self._make_one(client)
         with self.assertRaises(ValueError):
             api.streaming_recognize(sample)
         self.assertEqual(client.connection._requested, [])
@@ -49,9 +50,9 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
     HINTS = ['hi']
     AUDIO_CONTENT = b'/9j/4QNURXhpZgAASUkq'
 
-    def _callFUT(self, sample, language_code, max_alternatives,
-                 profanity_filter, speech_context, single_utterance,
-                 interim_results):
+    def _call_fut(self, sample, language_code, max_alternatives,
+                  profanity_filter, speech_context, single_utterance,
+                  interim_results):
         from google.cloud.speech._gax import _make_streaming_request
         return _make_streaming_request(sample=sample,
                                        language_code=language_code,
@@ -83,10 +84,10 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
         single_utterance = True
         interim_results = False
 
-        streaming_request = self._callFUT(sample, language_code,
-                                          max_alternatives, profanity_filter,
-                                          speech_context, single_utterance,
-                                          interim_results)
+        streaming_request = self._call_fut(sample, language_code,
+                                           max_alternatives, profanity_filter,
+                                           speech_context, single_utterance,
+                                           interim_results)
         self.assertIsInstance(streaming_request, StreamingRecognizeRequest)
 
         # This isn't set by _make_streaming_request().
@@ -114,9 +115,9 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
     HINTS = ['hi']
     AUDIO_CONTENT = b'/9j/4QNURXhpZgAASUkq'
 
-    def _callFUT(self, sample, language_code, max_alternatives,
-                 profanity_filter, speech_context, single_utterance,
-                 interim_results):
+    def _call_fut(self, sample, language_code, max_alternatives,
+                  profanity_filter, speech_context, single_utterance,
+                  interim_results):
         from google.cloud.speech._gax import _stream_requests
         return _stream_requests(sample=sample,
                                 language_code=language_code,
@@ -144,10 +145,10 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
         speech_context = self.HINTS
         single_utterance = True
         interim_results = False
-        streaming_requests = self._callFUT(sample, language_code,
-                                           max_alternatives, profanity_filter,
-                                           speech_context, single_utterance,
-                                           interim_results)
+        streaming_requests = self._call_fut(sample, language_code,
+                                            max_alternatives, profanity_filter,
+                                            speech_context, single_utterance,
+                                            interim_results)
         all_requests = []
         for streaming_request in streaming_requests:
             self.assertIsInstance(streaming_request, StreamingRecognizeRequest)

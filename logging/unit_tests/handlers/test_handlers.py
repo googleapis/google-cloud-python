@@ -20,21 +20,22 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
     PROJECT = 'PROJECT'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.handlers.handlers import CloudLoggingHandler
         return CloudLoggingHandler
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        handler = self._makeOne(client, transport=_Transport)
+        handler = self._make_one(client, transport=_Transport)
         self.assertEqual(handler.client, client)
 
     def test_emit(self):
         client = _Client(self.PROJECT)
-        handler = self._makeOne(client, transport=_Transport)
+        handler = self._make_one(client, transport=_Transport)
         LOGNAME = 'loggername'
         MESSAGE = 'hello world'
         record = _Record(LOGNAME, logging.INFO, MESSAGE)
@@ -45,7 +46,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
 class TestSetupLogging(unittest.TestCase):
 
-    def _callFUT(self, handler, excludes=None):
+    def _call_fut(self, handler, excludes=None):
         from google.cloud.logging.handlers.handlers import setup_logging
         if excludes:
             return setup_logging(handler, excluded_loggers=excludes)
@@ -54,7 +55,7 @@ class TestSetupLogging(unittest.TestCase):
 
     def test_setup_logging(self):
         handler = _Handler(logging.INFO)
-        self._callFUT(handler)
+        self._call_fut(handler)
 
         root_handlers = logging.getLogger().handlers
         self.assertIn(handler, root_handlers)
@@ -64,7 +65,7 @@ class TestSetupLogging(unittest.TestCase):
         EXCLUDED_LOGGER_NAME = 'excludeme'
 
         handler = _Handler(logging.INFO)
-        self._callFUT(handler, (EXCLUDED_LOGGER_NAME,))
+        self._call_fut(handler, (EXCLUDED_LOGGER_NAME,))
 
         included_logger = logging.getLogger(INCLUDED_LOGGER_NAME)
         self.assertTrue(included_logger.propagate)

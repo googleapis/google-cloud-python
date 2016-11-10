@@ -18,7 +18,8 @@ import unittest
 
 class TestClient(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.error_reporting.client import Client
         return Client
 
@@ -26,8 +27,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.error_reporting.client import HTTPContext
         return HTTPContext
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def _makeHTTP(self, *args, **kw):
         return self._getHttpContext()(*args, **kw)
@@ -38,24 +39,24 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_default(self):
         CREDENTIALS = _Credentials()
-        target = self._makeOne(project=self.PROJECT,
-                               credentials=CREDENTIALS)
+        target = self._make_one(project=self.PROJECT,
+                                credentials=CREDENTIALS)
         self.assertEquals(target.service, target.DEFAULT_SERVICE)
         self.assertEquals(target.version, None)
 
     def test_ctor_params(self):
         CREDENTIALS = _Credentials()
-        target = self._makeOne(project=self.PROJECT,
-                               credentials=CREDENTIALS,
-                               service=self.SERVICE,
-                               version=self.VERSION)
+        target = self._make_one(project=self.PROJECT,
+                                credentials=CREDENTIALS,
+                                service=self.SERVICE,
+                                version=self.VERSION)
         self.assertEquals(target.service, self.SERVICE)
         self.assertEquals(target.version, self.VERSION)
 
     def test_report_exception(self):
         CREDENTIALS = _Credentials()
-        target = self._makeOne(project=self.PROJECT,
-                               credentials=CREDENTIALS)
+        target = self._make_one(project=self.PROJECT,
+                                credentials=CREDENTIALS)
 
         logger = _Logger()
         target.logging_client.logger = lambda _: logger
@@ -76,10 +77,10 @@ class TestClient(unittest.TestCase):
         CREDENTIALS = _Credentials()
         SERVICE = "notdefault"
         VERSION = "notdefaultversion"
-        target = self._makeOne(project=self.PROJECT,
-                               credentials=CREDENTIALS,
-                               service=SERVICE,
-                               version=VERSION)
+        target = self._make_one(project=self.PROJECT,
+                                credentials=CREDENTIALS,
+                                service=SERVICE,
+                                version=VERSION)
 
         logger = _Logger()
         target.logging_client.logger = lambda _: logger
@@ -109,8 +110,8 @@ class TestClient(unittest.TestCase):
 
     def test_report(self):
         CREDENTIALS = _Credentials()
-        target = self._makeOne(project=self.PROJECT,
-                               credentials=CREDENTIALS)
+        target = self._make_one(project=self.PROJECT,
+                                credentials=CREDENTIALS)
 
         logger = _Logger()
         target.logging_client.logger = lambda _: logger
