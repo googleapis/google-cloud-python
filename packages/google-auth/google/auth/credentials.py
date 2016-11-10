@@ -197,12 +197,14 @@ def with_scopes_if_required(credentials, scopes):
     as-is.
 
     Args:
-        credentials (Credentials): The credentials to scope if necessary.
+        credentials (~google.auth.credentials.Credentials): The credentials to
+            scope if necessary.
         scopes (Sequence[str]): The list of scopes to use.
 
     Returns:
-        Credentials: Either a new set of scoped credentials, or the passed in
-            credentials instance if no scoping was required.
+        ~google.auth.credentials.Credentials: Either a new set of scoped
+            credentials, or the passed in credentials instance if no scoping
+            was required.
     """
     if isinstance(credentials, Scoped) and credentials.requires_scopes:
         return credentials.with_scopes(scopes)
