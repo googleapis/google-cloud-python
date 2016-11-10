@@ -1768,7 +1768,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
 class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
 
-    def _callFUT(self, resource):
+    def _call_fut(self, resource):
         from google.cloud.bigquery.table import _parse_schema_resource
         return _parse_schema_resource(resource)
 
@@ -1782,7 +1782,7 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
 
     def test__parse_schema_resource_defaults(self):
         RESOURCE = self._makeResource()
-        schema = self._callFUT(RESOURCE['schema'])
+        schema = self._call_fut(RESOURCE['schema'])
         self._verifySchema(schema, RESOURCE)
 
     def test__parse_schema_resource_subfields(self):
@@ -1797,7 +1797,7 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
                         {'name': 'number',
                          'type': 'STRING',
                          'mode': 'REQUIRED'}]})
-        schema = self._callFUT(RESOURCE['schema'])
+        schema = self._call_fut(RESOURCE['schema'])
         self._verifySchema(schema, RESOURCE)
 
     def test__parse_schema_resource_fields_without_mode(self):
@@ -1806,13 +1806,13 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
             {'name': 'phone',
              'type': 'STRING'})
 
-        schema = self._callFUT(RESOURCE['schema'])
+        schema = self._call_fut(RESOURCE['schema'])
         self._verifySchema(schema, RESOURCE)
 
 
 class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
 
-    def _callFUT(self, resource):
+    def _call_fut(self, resource):
         from google.cloud.bigquery.table import _build_schema_resource
         return _build_schema_resource(resource)
 
@@ -1820,7 +1820,7 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        resource = self._callFUT([full_name, age])
+        resource = self._call_fut([full_name, age])
         self.assertEqual(len(resource), 2)
         self.assertEqual(resource[0],
                          {'name': 'full_name',
@@ -1837,7 +1837,7 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED',
                                 description=DESCRIPTION)
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        resource = self._callFUT([full_name, age])
+        resource = self._call_fut([full_name, age])
         self.assertEqual(len(resource), 2)
         self.assertEqual(resource[0],
                          {'name': 'full_name',
@@ -1856,7 +1856,7 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         ph_num = SchemaField('number', 'STRING', 'REQUIRED')
         phone = SchemaField('phone', 'RECORD', mode='REPEATABLE',
                             fields=[ph_type, ph_num])
-        resource = self._callFUT([full_name, phone])
+        resource = self._call_fut([full_name, phone])
         self.assertEqual(len(resource), 2)
         self.assertEqual(resource[0],
                          {'name': 'full_name',
