@@ -33,7 +33,7 @@ def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
 
 class Test__get_gcd_project(unittest.TestCase):
 
-    def _callFUT(self):
+    def _call_fut(self):
         from google.cloud.datastore.client import _get_gcd_project
         return _get_gcd_project()
 
@@ -43,7 +43,7 @@ class Test__get_gcd_project(unittest.TestCase):
 
         environ = {}
         with _Monkey(os, getenv=environ.get):
-            project = self._callFUT()
+            project = self._call_fut()
             self.assertIsNone(project)
 
     def test_value_set(self):
@@ -54,13 +54,13 @@ class Test__get_gcd_project(unittest.TestCase):
         MOCK_PROJECT = object()
         environ = {GCD_DATASET: MOCK_PROJECT}
         with _Monkey(os, getenv=environ.get):
-            project = self._callFUT()
+            project = self._call_fut()
             self.assertEqual(project, MOCK_PROJECT)
 
 
 class Test__determine_default_project(unittest.TestCase):
 
-    def _callFUT(self, project=None):
+    def _call_fut(self, project=None):
         from google.cloud.datastore.client import (
             _determine_default_project)
         return _determine_default_project(project=project)
@@ -86,7 +86,7 @@ class Test__determine_default_project(unittest.TestCase):
         }
 
         with _Monkey(client, **patched_methods):
-            returned_project = self._callFUT(project_called)
+            returned_project = self._call_fut(project_called)
 
         return returned_project, _callers
 

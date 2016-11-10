@@ -374,7 +374,7 @@ class TestCluster(unittest.TestCase):
 
 class Test__prepare_create_request(unittest.TestCase):
 
-    def _callFUT(self, cluster):
+    def _call_fut(self, cluster):
         from google.cloud.bigtable.cluster import _prepare_create_request
         return _prepare_create_request(cluster)
 
@@ -391,7 +391,7 @@ class Test__prepare_create_request(unittest.TestCase):
         cluster = Cluster(CLUSTER_ID, instance,
                           serve_nodes=SERVE_NODES)
 
-        request_pb = self._callFUT(cluster)
+        request_pb = self._call_fut(cluster)
 
         self.assertEqual(request_pb.cluster_id, CLUSTER_ID)
         self.assertEqual(request_pb.parent, instance.name)

@@ -665,7 +665,7 @@ class TestAppendRow(unittest.TestCase):
 
 class Test__parse_rmw_row_response(unittest.TestCase):
 
-    def _callFUT(self, row_response):
+    def _call_fut(self, row_response):
         from google.cloud.bigtable.row import _parse_rmw_row_response
         return _parse_rmw_row_response(row_response)
 
@@ -745,12 +745,12 @@ class Test__parse_rmw_row_response(unittest.TestCase):
             ],
         )
         sample_input = _ReadModifyWriteRowResponsePB(row=response_row)
-        self.assertEqual(expected_output, self._callFUT(sample_input))
+        self.assertEqual(expected_output, self._call_fut(sample_input))
 
 
 class Test__parse_family_pb(unittest.TestCase):
 
-    def _callFUT(self, family_pb):
+    def _call_fut(self, family_pb):
         from google.cloud.bigtable.row import _parse_family_pb
         return _parse_family_pb(family_pb)
 
@@ -802,7 +802,7 @@ class Test__parse_family_pb(unittest.TestCase):
                 ),
             ],
         )
-        self.assertEqual(expected_output, self._callFUT(sample_input))
+        self.assertEqual(expected_output, self._call_fut(sample_input))
 
 
 def _CheckAndMutateRowRequestPB(*args, **kw):

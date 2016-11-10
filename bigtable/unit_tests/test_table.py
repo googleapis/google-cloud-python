@@ -429,7 +429,7 @@ class TestTable(unittest.TestCase):
 
 class Test__create_row_request(unittest.TestCase):
 
-    def _callFUT(self, table_name, row_key=None, start_key=None, end_key=None,
+    def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
                  filter_=None, limit=None):
         from google.cloud.bigtable.table import _create_row_request
         return _create_row_request(
@@ -438,19 +438,19 @@ class Test__create_row_request(unittest.TestCase):
 
     def test_table_name_only(self):
         table_name = 'table_name'
-        result = self._callFUT(table_name)
+        result = self._call_fut(table_name)
         expected_result = _ReadRowsRequestPB(
             table_name=table_name)
         self.assertEqual(result, expected_result)
 
     def test_row_key_row_range_conflict(self):
         with self.assertRaises(ValueError):
-            self._callFUT(None, row_key=object(), end_key=object())
+            self._call_fut(None, row_key=object(), end_key=object())
 
     def test_row_key(self):
         table_name = 'table_name'
         row_key = b'row_key'
-        result = self._callFUT(table_name, row_key=row_key)
+        result = self._call_fut(table_name, row_key=row_key)
         expected_result = _ReadRowsRequestPB(
             table_name=table_name,
         )
@@ -460,7 +460,7 @@ class Test__create_row_request(unittest.TestCase):
     def test_row_range_start_key(self):
         table_name = 'table_name'
         start_key = b'start_key'
-        result = self._callFUT(table_name, start_key=start_key)
+        result = self._call_fut(table_name, start_key=start_key)
         expected_result = _ReadRowsRequestPB(table_name=table_name)
         expected_result.rows.row_ranges.add(start_key_closed=start_key)
         self.assertEqual(result, expected_result)
@@ -468,7 +468,7 @@ class Test__create_row_request(unittest.TestCase):
     def test_row_range_end_key(self):
         table_name = 'table_name'
         end_key = b'end_key'
-        result = self._callFUT(table_name, end_key=end_key)
+        result = self._call_fut(table_name, end_key=end_key)
         expected_result = _ReadRowsRequestPB(table_name=table_name)
         expected_result.rows.row_ranges.add(end_key_open=end_key)
         self.assertEqual(result, expected_result)
@@ -477,7 +477,7 @@ class Test__create_row_request(unittest.TestCase):
         table_name = 'table_name'
         start_key = b'start_key'
         end_key = b'end_key'
-        result = self._callFUT(table_name, start_key=start_key,
+        result = self._call_fut(table_name, start_key=start_key,
                                end_key=end_key)
         expected_result = _ReadRowsRequestPB(table_name=table_name)
         expected_result.rows.row_ranges.add(
@@ -488,7 +488,7 @@ class Test__create_row_request(unittest.TestCase):
         from google.cloud.bigtable.row_filters import RowSampleFilter
         table_name = 'table_name'
         row_filter = RowSampleFilter(0.33)
-        result = self._callFUT(table_name, filter_=row_filter)
+        result = self._call_fut(table_name, filter_=row_filter)
         expected_result = _ReadRowsRequestPB(
             table_name=table_name,
             filter=row_filter.to_pb(),
@@ -498,7 +498,7 @@ class Test__create_row_request(unittest.TestCase):
     def test_with_limit(self):
         table_name = 'table_name'
         limit = 1337
-        result = self._callFUT(table_name, limit=limit)
+        result = self._call_fut(table_name, limit=limit)
         expected_result = _ReadRowsRequestPB(
             table_name=table_name,
             rows_limit=limit,

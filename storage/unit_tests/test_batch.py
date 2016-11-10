@@ -448,13 +448,13 @@ class TestBatch(unittest.TestCase):
 
 class Test__unpack_batch_response(unittest.TestCase):
 
-    def _callFUT(self, response, content):
+    def _call_fut(self, response, content):
         from google.cloud.storage.batch import _unpack_batch_response
         return _unpack_batch_response(response, content)
 
     def _unpack_helper(self, response, content):
         import httplib2
-        result = list(self._callFUT(response, content))
+        result = list(self._call_fut(response, content))
         self.assertEqual(len(result), 3)
         response0 = httplib2.Response({
             'content-length': '20',

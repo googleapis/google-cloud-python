@@ -517,7 +517,7 @@ class TestIterator(unittest.TestCase):
 
 class Test__item_to_entity(unittest.TestCase):
 
-    def _callFUT(self, iterator, entity_pb):
+    def _call_fut(self, iterator, entity_pb):
         from google.cloud.datastore.query import _item_to_entity
         return _item_to_entity(iterator, entity_pb)
 
@@ -534,21 +534,21 @@ class Test__item_to_entity(unittest.TestCase):
 
         entity_pb = object()
         with _Monkey(helpers, entity_from_protobuf=mocked):
-            self.assertIs(result, self._callFUT(None, entity_pb))
+            self.assertIs(result, self._call_fut(None, entity_pb))
 
         self.assertEqual(entities, [entity_pb])
 
 
 class Test__pb_from_query(unittest.TestCase):
 
-    def _callFUT(self, query):
+    def _call_fut(self, query):
         from google.cloud.datastore.query import _pb_from_query
         return _pb_from_query(query)
 
     def test_empty(self):
         from google.cloud.datastore._generated import query_pb2
 
-        pb = self._callFUT(_Query())
+        pb = self._call_fut(_Query())
         self.assertEqual(list(pb.projection), [])
         self.assertEqual(list(pb.kind), [])
         self.assertEqual(list(pb.order), [])
@@ -564,12 +564,12 @@ class Test__pb_from_query(unittest.TestCase):
         self.assertEqual(pb.offset, 0)
 
     def test_projection(self):
-        pb = self._callFUT(_Query(projection=['a', 'b', 'c']))
+        pb = self._call_fut(_Query(projection=['a', 'b', 'c']))
         self.assertEqual([item.property.name for item in pb.projection],
                          ['a', 'b', 'c'])
 
     def test_kind(self):
-        pb = self._callFUT(_Query(kind='KIND'))
+        pb = self._call_fut(_Query(kind='KIND'))
         self.assertEqual([item.name for item in pb.kind], ['KIND'])
 
     def test_ancestor(self):
@@ -577,7 +577,7 @@ class Test__pb_from_query(unittest.TestCase):
         from google.cloud.datastore._generated import query_pb2
 
         ancestor = Key('Ancestor', 123, project='PROJECT')
-        pb = self._callFUT(_Query(ancestor=ancestor))
+        pb = self._call_fut(_Query(ancestor=ancestor))
         cfilter = pb.filter.composite_filter
         self.assertEqual(cfilter.op, query_pb2.CompositeFilter.AND)
         self.assertEqual(len(cfilter.filters), 1)
@@ -593,7 +593,7 @@ class Test__pb_from_query(unittest.TestCase):
         query.OPERATORS = {
             '=': query_pb2.PropertyFilter.EQUAL,
         }
-        pb = self._callFUT(query)
+        pb = self._call_fut(query)
         cfilter = pb.filter.composite_filter
         self.assertEqual(cfilter.op, query_pb2.CompositeFilter.AND)
         self.assertEqual(len(cfilter.filters), 1)
@@ -610,7 +610,7 @@ class Test__pb_from_query(unittest.TestCase):
         query.OPERATORS = {
             '=': query_pb2.PropertyFilter.EQUAL,
         }
-        pb = self._callFUT(query)
+        pb = self._call_fut(query)
         cfilter = pb.filter.composite_filter
         self.assertEqual(cfilter.op, query_pb2.CompositeFilter.AND)
         self.assertEqual(len(cfilter.filters), 1)
@@ -622,7 +622,7 @@ class Test__pb_from_query(unittest.TestCase):
     def test_order(self):
         from google.cloud.datastore._generated import query_pb2
 
-        pb = self._callFUT(_Query(order=['a', '-b', 'c']))
+        pb = self._call_fut(_Query(order=['a', '-b', 'c']))
         self.assertEqual([item.property.name for item in pb.order],
                          ['a', 'b', 'c'])
         self.assertEqual([item.direction for item in pb.order],
@@ -631,7 +631,7 @@ class Test__pb_from_query(unittest.TestCase):
                           query_pb2.PropertyOrder.ASCENDING])
 
     def test_distinct_on(self):
-        pb = self._callFUT(_Query(distinct_on=['a', 'b', 'c']))
+        pb = self._call_fut(_Query(distinct_on=['a', 'b', 'c']))
         self.assertEqual([item.name for item in pb.distinct_on],
                          ['a', 'b', 'c'])
 
