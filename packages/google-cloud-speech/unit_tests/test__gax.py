@@ -50,7 +50,7 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
     HINTS = ['hi']
     AUDIO_CONTENT = b'/9j/4QNURXhpZgAASUkq'
 
-    def _callFUT(self, sample, language_code, max_alternatives,
+    def _call_fut(self, sample, language_code, max_alternatives,
                  profanity_filter, speech_context, single_utterance,
                  interim_results):
         from google.cloud.speech._gax import _make_streaming_request
@@ -84,7 +84,7 @@ class TestSpeechGAXMakeRequests(unittest.TestCase):
         single_utterance = True
         interim_results = False
 
-        streaming_request = self._callFUT(sample, language_code,
+        streaming_request = self._call_fut(sample, language_code,
                                           max_alternatives, profanity_filter,
                                           speech_context, single_utterance,
                                           interim_results)
@@ -115,7 +115,7 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
     HINTS = ['hi']
     AUDIO_CONTENT = b'/9j/4QNURXhpZgAASUkq'
 
-    def _callFUT(self, sample, language_code, max_alternatives,
+    def _call_fut(self, sample, language_code, max_alternatives,
                  profanity_filter, speech_context, single_utterance,
                  interim_results):
         from google.cloud.speech._gax import _stream_requests
@@ -147,7 +147,7 @@ class TestSpeechGAXMakeRequestsStream(unittest.TestCase):
         speech_context = SpeechContext(phrases=self.HINTS)
         single_utterance = True
         interim_results = False
-        streaming_requests = self._callFUT(sample, language_code,
+        streaming_requests = self._call_fut(sample, language_code,
                                            max_alternatives, profanity_filter,
                                            speech_context, single_utterance,
                                            interim_results)
