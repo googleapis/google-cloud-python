@@ -23,7 +23,7 @@ class TestBatch(unittest.TestCase):
 
         return Batch
 
-    def _makeOne(self, client):
+    def _make_one(self, client):
         return self._get_target_class()(client)
 
     def test_ctor(self):
@@ -32,7 +32,7 @@ class TestBatch(unittest.TestCase):
         _NAMESPACE = 'NAMESPACE'
         connection = _Connection()
         client = _Client(_PROJECT, connection, _NAMESPACE)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
 
         self.assertEqual(batch.project, _PROJECT)
         self.assertEqual(batch.connection, connection)
@@ -48,8 +48,8 @@ class TestBatch(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        batch1 = self._makeOne(client)
-        batch2 = self._makeOne(client)
+        batch1 = self._make_one(client)
+        batch2 = self._make_one(client)
         self.assertIsNone(batch1.current())
         self.assertIsNone(batch2.current())
         with batch1:
@@ -67,7 +67,7 @@ class TestBatch(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
 
         batch.begin()
         self.assertRaises(ValueError, batch.put, _Entity())
@@ -76,7 +76,7 @@ class TestBatch(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         entity = _Entity()
         entity.key = _Key('OTHER')
 
@@ -87,7 +87,7 @@ class TestBatch(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         entity = _Entity()
         entity.key = _Key('OTHER')
 
@@ -99,7 +99,7 @@ class TestBatch(unittest.TestCase):
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         entity = _Entity(_PROPERTIES)
         key = entity.key = _Key(_PROJECT)
         key._id = None
@@ -123,7 +123,7 @@ class TestBatch(unittest.TestCase):
             }
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         entity = _Entity(_PROPERTIES)
         entity.exclude_from_indexes = ('baz', 'spam')
         key = entity.key = _Key(_PROJECT)
@@ -149,7 +149,7 @@ class TestBatch(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         key = _Key(_PROJECT)
         key._id = None
 
@@ -160,7 +160,7 @@ class TestBatch(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         key = _Key(_PROJECT)
         key._id = None
 
@@ -171,7 +171,7 @@ class TestBatch(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         key = _Key('OTHER')
 
         batch.begin()
@@ -181,7 +181,7 @@ class TestBatch(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         key = _Key(_PROJECT)
 
         batch.begin()
@@ -193,7 +193,7 @@ class TestBatch(unittest.TestCase):
     def test_begin(self):
         _PROJECT = 'PROJECT'
         client = _Client(_PROJECT, None)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         self.assertEqual(batch._status, batch._INITIAL)
         batch.begin()
         self.assertEqual(batch._status, batch._IN_PROGRESS)
@@ -201,7 +201,7 @@ class TestBatch(unittest.TestCase):
     def test_begin_fail(self):
         _PROJECT = 'PROJECT'
         client = _Client(_PROJECT, None)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         batch._status = batch._IN_PROGRESS
         with self.assertRaises(ValueError):
             batch.begin()
@@ -209,7 +209,7 @@ class TestBatch(unittest.TestCase):
     def test_rollback(self):
         _PROJECT = 'PROJECT'
         client = _Client(_PROJECT, None)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         batch.begin()
         self.assertEqual(batch._status, batch._IN_PROGRESS)
         batch.rollback()
@@ -218,7 +218,7 @@ class TestBatch(unittest.TestCase):
     def test_rollback_wrong_status(self):
         _PROJECT = 'PROJECT'
         client = _Client(_PROJECT, None)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
 
         self.assertEqual(batch._status, batch._INITIAL)
         self.assertRaises(ValueError, batch.rollback)
@@ -227,7 +227,7 @@ class TestBatch(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
 
         self.assertEqual(batch._status, batch._INITIAL)
         batch.begin()
@@ -242,7 +242,7 @@ class TestBatch(unittest.TestCase):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
 
         self.assertEqual(batch._status, batch._INITIAL)
         self.assertRaises(ValueError, batch.commit)
@@ -252,7 +252,7 @@ class TestBatch(unittest.TestCase):
         _NEW_ID = 1234
         connection = _Connection(_NEW_ID)
         client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         entity = _Entity({})
         key = entity.key = _Key(_PROJECT)
         key._id = None
@@ -279,7 +279,7 @@ class TestBatch(unittest.TestCase):
         client = _Client(_PROJECT, connection)
         self.assertEqual(list(client._batches), [])
 
-        with self._makeOne(client) as batch:
+        with self._make_one(client) as batch:
             self.assertEqual(list(client._batches), [batch])
             batch.put(entity)
 
@@ -302,10 +302,10 @@ class TestBatch(unittest.TestCase):
         client = _Client(_PROJECT, connection)
         self.assertEqual(list(client._batches), [])
 
-        with self._makeOne(client) as batch1:
+        with self._make_one(client) as batch1:
             self.assertEqual(list(client._batches), [batch1])
             batch1.put(entity1)
-            with self._makeOne(client) as batch2:
+            with self._make_one(client) as batch2:
                 self.assertEqual(list(client._batches), [batch2, batch1])
                 batch2.put(entity2)
 
@@ -334,7 +334,7 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(list(client._batches), [])
 
         try:
-            with self._makeOne(client) as batch:
+            with self._make_one(client) as batch:
                 self.assertEqual(list(client._batches), [batch])
                 batch.put(entity)
                 raise ValueError("testing")
