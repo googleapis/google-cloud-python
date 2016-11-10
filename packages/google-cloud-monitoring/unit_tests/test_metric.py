@@ -54,7 +54,7 @@ class TestMetricDescriptor(unittest.TestCase):
         from google.cloud.monitoring.metric import MetricDescriptor
         return MetricDescriptor
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
@@ -77,7 +77,7 @@ class TestMetricDescriptor(unittest.TestCase):
         DISPLAY_NAME = 'Response count'
 
         client = object()
-        descriptor = self._makeOne(
+        descriptor = self._make_one(
             client=client,
             name=NAME,
             type_=TYPE,
@@ -106,7 +106,7 @@ class TestMetricDescriptor(unittest.TestCase):
         TYPE = 'appengine.googleapis.com/http/server/response_count'
 
         client = object()
-        descriptor = self._makeOne(client=client, type_=TYPE)
+        descriptor = self._make_one(client=client, type_=TYPE)
 
         self.assertIs(descriptor.client, client)
 
@@ -262,7 +262,7 @@ class TestMetricDescriptor(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        descriptor = self._makeOne(
+        descriptor = self._make_one(
             client=client,
             type_=TYPE,
             metric_kind=METRIC_KIND,
@@ -295,7 +295,7 @@ class TestMetricDescriptor(unittest.TestCase):
 
         connection = _Connection({})
         client = _Client(project=PROJECT, connection=connection)
-        descriptor = self._makeOne(
+        descriptor = self._make_one(
             client=client,
             type_=TYPE,
             metric_kind='NOTUSED',
@@ -501,7 +501,7 @@ class TestMetric(unittest.TestCase):
         from google.cloud.monitoring.metric import Metric
         return Metric
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
@@ -510,7 +510,7 @@ class TestMetric(unittest.TestCase):
             'response_code': 200,
             'loading': False,
         }
-        metric = self._makeOne(type=TYPE, labels=LABELS)
+        metric = self._make_one(type=TYPE, labels=LABELS)
         self.assertEqual(metric.type, TYPE)
         self.assertEqual(metric.labels, LABELS)
 
@@ -538,7 +538,7 @@ class TestMetric(unittest.TestCase):
     def test_to_dict(self):
         TYPE = 'custom.googleapis.com/my_metric'
         LABELS = {}
-        metric = self._makeOne(TYPE, LABELS)
+        metric = self._make_one(TYPE, LABELS)
         expected_dict = {
             'type': TYPE,
             'labels': LABELS,
