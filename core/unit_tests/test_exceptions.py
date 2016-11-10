@@ -22,11 +22,11 @@ class Test_GoogleCloudError(unittest.TestCase):
         from google.cloud.exceptions import GoogleCloudError
         return GoogleCloudError
 
-    def _makeOne(self, message, errors=()):
+    def _make_one(self, message, errors=()):
         return self._get_target_class()(message, errors=errors)
 
     def test_ctor_defaults(self):
-        e = self._makeOne('Testing')
+        e = self._make_one('Testing')
         e.code = 600
         self.assertEqual(str(e), '600 Testing')
         self.assertEqual(e.message, 'Testing')
@@ -40,7 +40,7 @@ class Test_GoogleCloudError(unittest.TestCase):
             'message': 'Testing',
             'reason': 'test',
             }
-        e = self._makeOne('Testing', [ERROR])
+        e = self._make_one('Testing', [ERROR])
         e.code = 600
         self.assertEqual(str(e), '600 Testing')
         self.assertEqual(e.message, 'Testing')

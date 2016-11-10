@@ -22,13 +22,13 @@ class TestSentiment(unittest.TestCase):
         from google.cloud.language.sentiment import Sentiment
         return Sentiment
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         polarity = 1
         magnitude = 2.3
-        sentiment = self._makeOne(polarity, magnitude)
+        sentiment = self._make_one(polarity, magnitude)
         self.assertEqual(sentiment.polarity, polarity)
         self.assertEqual(sentiment.magnitude, magnitude)
 

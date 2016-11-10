@@ -24,7 +24,7 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         from google.cloud.datastore._http import _DatastoreAPIOverHttp
         return _DatastoreAPIOverHttp
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test__rpc(self):
@@ -47,7 +47,7 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         METHOD = 'METHOD'
         URI = 'http://api-url'
         conn = _Connection(URI)
-        datastore_api = self._makeOne(conn)
+        datastore_api = self._make_one(conn)
         http = conn.http = Http({'status': '200'}, 'CONTENT')
         response = datastore_api._rpc(PROJECT, METHOD, ReqPB(), RspPB)
         self.assertIsInstance(response, RspPB)
@@ -69,7 +69,7 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         DATA = b'DATA'
         URI = 'http://api-url'
         conn = _Connection(URI)
-        datastore_api = self._makeOne(conn)
+        datastore_api = self._make_one(conn)
         http = conn.http = Http({'status': '200'}, 'CONTENT')
         self.assertEqual(datastore_api._request(PROJECT, METHOD, DATA),
                          'CONTENT')
@@ -97,7 +97,7 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         DATA = 'DATA'
         URI = 'http://api-url'
         conn = _Connection(URI)
-        datastore_api = self._makeOne(conn)
+        datastore_api = self._make_one(conn)
         conn.http = Http({'status': '400'}, error.SerializeToString())
         with self.assertRaises(BadRequest) as exc:
             datastore_api._request(PROJECT, METHOD, DATA)
@@ -180,7 +180,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
         from google.cloud.datastore._http import _DatastoreAPIOverGRPC
         return _DatastoreAPIOverGRPC
 
-    def _makeOne(self, stub, connection=None, secure=True, mock_args=None):
+    def _make_one(self, stub, connection=None, secure=True, mock_args=None):
         from google.cloud._testing import _Monkey
         from google.cloud.datastore import _http as MUT
 
@@ -212,7 +212,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 
         stub = _GRPCStub()
         mock_args = []
-        datastore_api = self._makeOne(stub, connection=conn,
+        datastore_api = self._make_one(stub, connection=conn,
                                       mock_args=mock_args)
         self.assertIs(datastore_api._stub, stub)
 
@@ -232,7 +232,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 
         stub = _GRPCStub()
         mock_args = []
-        datastore_api = self._makeOne(stub, connection=conn,
+        datastore_api = self._make_one(stub, connection=conn,
                                       secure=False,
                                       mock_args=mock_args)
         self.assertIs(datastore_api._stub, stub)
@@ -245,7 +245,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     def test_lookup(self):
         return_val = object()
         stub = _GRPCStub(return_val)
-        datastore_api = self._makeOne(stub=stub)
+        datastore_api = self._make_one(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
@@ -258,7 +258,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     def test_run_query(self):
         return_val = object()
         stub = _GRPCStub(return_val)
-        datastore_api = self._makeOne(stub=stub)
+        datastore_api = self._make_one(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
@@ -270,7 +270,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
 
     def _run_query_failure_helper(self, exc, err_class):
         stub = _GRPCStub(side_effect=exc)
-        datastore_api = self._makeOne(stub=stub)
+        datastore_api = self._make_one(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
@@ -298,7 +298,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     def test_begin_transaction(self):
         return_val = object()
         stub = _GRPCStub(return_val)
-        datastore_api = self._makeOne(stub=stub)
+        datastore_api = self._make_one(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
@@ -312,7 +312,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     def test_commit_success(self):
         return_val = object()
         stub = _GRPCStub(return_val)
-        datastore_api = self._makeOne(stub=stub)
+        datastore_api = self._make_one(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
@@ -325,7 +325,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     def test_rollback(self):
         return_val = object()
         stub = _GRPCStub(return_val)
-        datastore_api = self._makeOne(stub=stub)
+        datastore_api = self._make_one(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
@@ -338,7 +338,7 @@ class Test_DatastoreAPIOverGRPC(unittest.TestCase):
     def test_allocate_ids(self):
         return_val = object()
         stub = _GRPCStub(return_val)
-        datastore_api = self._makeOne(stub=stub)
+        datastore_api = self._make_one(stub=stub)
 
         request_pb = _RequestPB()
         project = 'PROJECT'
@@ -371,7 +371,7 @@ class TestConnection(unittest.TestCase):
         pb.kind.add().name = kind
         return pb
 
-    def _makeOne(self, credentials=None, http=None, use_grpc=False):
+    def _make_one(self, credentials=None, http=None, use_grpc=False):
         from google.cloud._testing import _Monkey
         from google.cloud.datastore import _http as MUT
         with _Monkey(MUT, _USE_GRPC=use_grpc):
@@ -387,7 +387,7 @@ class TestConnection(unittest.TestCase):
 
     def test_default_url(self):
         klass = self._get_target_class()
-        conn = self._makeOne()
+        conn = self._make_one()
         self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 
     def test_custom_url_from_env(self):
@@ -400,13 +400,13 @@ class TestConnection(unittest.TestCase):
         fake_environ = {GCD_HOST: HOST}
 
         with _Monkey(os, environ=fake_environ):
-            conn = self._makeOne()
+            conn = self._make_one()
 
         self.assertNotEqual(conn.api_base_url, API_BASE_URL)
         self.assertEqual(conn.api_base_url, 'http://' + HOST)
 
     def test_ctor_defaults(self):
-        conn = self._makeOne()
+        conn = self._make_one()
         self.assertIsNone(conn.credentials)
 
     def test_ctor_without_grpc(self):
@@ -421,7 +421,7 @@ class TestConnection(unittest.TestCase):
             return return_val
 
         with _Monkey(MUT, _DatastoreAPIOverHttp=mock_api):
-            conn = self._makeOne(use_grpc=False)
+            conn = self._make_one(use_grpc=False)
 
         self.assertIsNone(conn.credentials)
         self.assertIs(conn._datastore_api, return_val)
@@ -439,7 +439,7 @@ class TestConnection(unittest.TestCase):
             return return_val
 
         with _Monkey(MUT, _DatastoreAPIOverGRPC=mock_api):
-            conn = self._makeOne(use_grpc=True)
+            conn = self._make_one(use_grpc=True)
 
         self.assertIsNone(conn.credentials)
         self.assertIs(conn._datastore_api, return_val)
@@ -452,18 +452,18 @@ class TestConnection(unittest.TestCase):
                 return False
 
         creds = Creds()
-        conn = self._makeOne(creds)
+        conn = self._make_one(creds)
         self.assertIs(conn.credentials, creds)
 
     def test_http_w_existing(self):
-        conn = self._makeOne()
+        conn = self._make_one()
         conn._http = http = object()
         self.assertIs(conn.http, http)
 
     def test_http_wo_creds(self):
         import httplib2
 
-        conn = self._makeOne()
+        conn = self._make_one()
         self.assertIsInstance(conn.http, httplib2.Http)
 
     def test_http_w_creds(self):
@@ -481,14 +481,14 @@ class TestConnection(unittest.TestCase):
                 return False
 
         creds = Creds()
-        conn = self._makeOne(creds)
+        conn = self._make_one(creds)
         self.assertIs(conn.http, authorized)
         self.assertIsInstance(creds._called_with, httplib2.Http)
 
     def test_build_api_url_w_default_base_version(self):
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -502,7 +502,7 @@ class TestConnection(unittest.TestCase):
         VER = '3.1415926'
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             BASE,
             VER,
@@ -518,7 +518,7 @@ class TestConnection(unittest.TestCase):
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.LookupResponse()
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -545,7 +545,7 @@ class TestConnection(unittest.TestCase):
         PROJECT = 'PROJECT'
         key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.LookupResponse()
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -574,7 +574,7 @@ class TestConnection(unittest.TestCase):
         PROJECT = 'PROJECT'
         TRANSACTION = b'TRANSACTION'
         key_pb = self._make_key_pb(PROJECT)
-        conn = self._makeOne()
+        conn = self._make_one()
         self.assertRaises(ValueError, conn.lookup, PROJECT, key_pb,
                           eventual=True, transaction_id=TRANSACTION)
 
@@ -585,7 +585,7 @@ class TestConnection(unittest.TestCase):
         TRANSACTION = b'TRANSACTION'
         key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.LookupResponse()
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -618,7 +618,7 @@ class TestConnection(unittest.TestCase):
         entity = entity_pb2.Entity()
         entity.key.CopyFrom(key_pb)
         rsp_pb.found.add(entity=entity)
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -647,7 +647,7 @@ class TestConnection(unittest.TestCase):
         key_pb1 = self._make_key_pb(PROJECT)
         key_pb2 = self._make_key_pb(PROJECT, id_=2345)
         rsp_pb = datastore_pb2.LookupResponse()
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -680,7 +680,7 @@ class TestConnection(unittest.TestCase):
         er_1.entity.key.CopyFrom(key_pb1)
         er_2 = rsp_pb.missing.add()
         er_2.entity.key.CopyFrom(key_pb2)
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -712,7 +712,7 @@ class TestConnection(unittest.TestCase):
         rsp_pb = datastore_pb2.LookupResponse()
         rsp_pb.deferred.add().CopyFrom(key_pb1)
         rsp_pb.deferred.add().CopyFrom(key_pb2)
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -752,7 +752,7 @@ class TestConnection(unittest.TestCase):
         no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -791,7 +791,7 @@ class TestConnection(unittest.TestCase):
         no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -831,7 +831,7 @@ class TestConnection(unittest.TestCase):
         no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-        conn = self._makeOne()
+        conn = self._make_one()
         self.assertRaises(ValueError, conn.run_query, PROJECT, q_pb,
                           eventual=True, transaction_id=TRANSACTION)
 
@@ -848,7 +848,7 @@ class TestConnection(unittest.TestCase):
         no_more = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -881,7 +881,7 @@ class TestConnection(unittest.TestCase):
         rsp_pb.batch.entity_results.add(entity=entity)
         rsp_pb.batch.entity_result_type = 1  # FULL
         rsp_pb.batch.more_results = 3  # NO_MORE_RESULTS
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -906,7 +906,7 @@ class TestConnection(unittest.TestCase):
         TRANSACTION = b'TRANSACTION'
         rsp_pb = datastore_pb2.BeginTransactionResponse()
         rsp_pb.transaction = TRANSACTION
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -936,7 +936,7 @@ class TestConnection(unittest.TestCase):
         insert.key.CopyFrom(key_pb)
         value_pb = _new_value_pb(insert, 'foo')
         value_pb.string_value = u'Foo'
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -982,7 +982,7 @@ class TestConnection(unittest.TestCase):
         insert.key.CopyFrom(key_pb)
         value_pb = _new_value_pb(insert, 'foo')
         value_pb.string_value = u'Foo'
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -1019,7 +1019,7 @@ class TestConnection(unittest.TestCase):
         TRANSACTION = b'xact'
 
         rsp_pb = datastore_pb2.RollbackResponse()
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -1040,7 +1040,7 @@ class TestConnection(unittest.TestCase):
 
         PROJECT = 'PROJECT'
         rsp_pb = datastore_pb2.AllocateIdsResponse()
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,
@@ -1071,7 +1071,7 @@ class TestConnection(unittest.TestCase):
         rsp_pb = datastore_pb2.AllocateIdsResponse()
         rsp_pb.keys.add().CopyFrom(after_key_pbs[0])
         rsp_pb.keys.add().CopyFrom(after_key_pbs[1])
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.api_base_url,
             conn.API_VERSION,

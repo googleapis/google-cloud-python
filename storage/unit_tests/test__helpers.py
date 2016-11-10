@@ -22,7 +22,7 @@ class Test_PropertyMixin(unittest.TestCase):
         from google.cloud.storage._helpers import _PropertyMixin
         return _PropertyMixin
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def _derivedClass(self, path=None):
@@ -38,11 +38,11 @@ class Test_PropertyMixin(unittest.TestCase):
         return Derived
 
     def test_path_is_abstract(self):
-        mixin = self._makeOne()
+        mixin = self._make_one()
         self.assertRaises(NotImplementedError, lambda: mixin.path)
 
     def test_client_is_abstract(self):
-        mixin = self._makeOne()
+        mixin = self._make_one()
         self.assertRaises(NotImplementedError, lambda: mixin.client)
 
     def test_reload(self):
@@ -62,7 +62,7 @@ class Test_PropertyMixin(unittest.TestCase):
         self.assertEqual(derived._changes, set())
 
     def test__set_properties(self):
-        mixin = self._makeOne()
+        mixin = self._make_one()
         self.assertEqual(mixin._properties, {})
         VALUE = object()
         mixin._set_properties(VALUE)

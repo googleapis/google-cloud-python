@@ -26,7 +26,7 @@ class TestEntity(unittest.TestCase):
         from google.cloud.datastore.entity import Entity
         return Entity
 
-    def _makeOne(self, key=None, exclude_from_indexes=()):
+    def _make_one(self, key=None, exclude_from_indexes=()):
         klass = self._get_target_class()
         return klass(key=key, exclude_from_indexes=exclude_from_indexes)
 
@@ -40,7 +40,7 @@ class TestEntity(unittest.TestCase):
     def test_ctor_explicit(self):
         _EXCLUDE_FROM_INDEXES = ['foo', 'bar']
         key = _Key()
-        entity = self._makeOne(
+        entity = self._make_one(
             key=key, exclude_from_indexes=_EXCLUDE_FROM_INDEXES)
         self.assertEqual(sorted(entity.exclude_from_indexes),
                          sorted(_EXCLUDE_FROM_INDEXES))
@@ -48,13 +48,13 @@ class TestEntity(unittest.TestCase):
     def test_ctor_bad_exclude_from_indexes(self):
         BAD_EXCLUDE_FROM_INDEXES = object()
         key = _Key()
-        self.assertRaises(TypeError, self._makeOne, key=key,
+        self.assertRaises(TypeError, self._make_one, key=key,
                           exclude_from_indexes=BAD_EXCLUDE_FROM_INDEXES)
 
     def test___eq_____ne___w_non_entity(self):
         from google.cloud.datastore.key import Key
         key = Key(_KIND, _ID, project=_PROJECT)
-        entity = self._makeOne(key=key)
+        entity = self._make_one(key=key)
         self.assertFalse(entity == object())
         self.assertTrue(entity != object())
 
@@ -63,9 +63,9 @@ class TestEntity(unittest.TestCase):
         _ID1 = 1234
         _ID2 = 2345
         key1 = Key(_KIND, _ID1, project=_PROJECT)
-        entity1 = self._makeOne(key=key1)
+        entity1 = self._make_one(key=key1)
         key2 = Key(_KIND, _ID2, project=_PROJECT)
-        entity2 = self._makeOne(key=key2)
+        entity2 = self._make_one(key=key2)
         self.assertFalse(entity1 == entity2)
         self.assertTrue(entity1 != entity2)
 
@@ -77,12 +77,12 @@ class TestEntity(unittest.TestCase):
         meaning = 9
 
         key1 = Key(_KIND, _ID, project=_PROJECT)
-        entity1 = self._makeOne(key=key1, exclude_from_indexes=(name,))
+        entity1 = self._make_one(key=key1, exclude_from_indexes=(name,))
         entity1[name] = value
         entity1._meanings[name] = (meaning, value)
 
         key2 = Key(_KIND, _ID, project=_PROJECT)
-        entity2 = self._makeOne(key=key2, exclude_from_indexes=(name,))
+        entity2 = self._make_one(key=key2, exclude_from_indexes=(name,))
         entity2[name] = value
         entity2._meanings[name] = (meaning, value)
 
@@ -92,10 +92,10 @@ class TestEntity(unittest.TestCase):
     def test___eq_____ne___w_same_keys_different_props(self):
         from google.cloud.datastore.key import Key
         key1 = Key(_KIND, _ID, project=_PROJECT)
-        entity1 = self._makeOne(key=key1)
+        entity1 = self._make_one(key=key1)
         entity1['foo'] = 'Foo'
         key2 = Key(_KIND, _ID, project=_PROJECT)
-        entity2 = self._makeOne(key=key2)
+        entity2 = self._make_one(key=key2)
         entity1['bar'] = 'Bar'
         self.assertFalse(entity1 == entity2)
         self.assertTrue(entity1 != entity2)
@@ -104,9 +104,9 @@ class TestEntity(unittest.TestCase):
         from google.cloud.datastore.key import Key
         key1 = Key(_KIND, _ID, project=_PROJECT)
         key2 = Key(_KIND, _ID, project=_PROJECT)
-        entity1 = self._makeOne(key=key1)
+        entity1 = self._make_one(key=key1)
         entity1['some_key'] = key1
-        entity2 = self._makeOne(key=key1)
+        entity2 = self._make_one(key=key1)
         entity2['some_key'] = key2
         self.assertTrue(entity1 == entity2)
         self.assertFalse(entity1 != entity2)
@@ -117,9 +117,9 @@ class TestEntity(unittest.TestCase):
         _ID2 = 2345
         key1 = Key(_KIND, _ID1, project=_PROJECT)
         key2 = Key(_KIND, _ID2, project=_PROJECT)
-        entity1 = self._makeOne(key=key1)
+        entity1 = self._make_one(key=key1)
         entity1['some_key'] = key1
-        entity2 = self._makeOne(key=key1)
+        entity2 = self._make_one(key=key1)
         entity2['some_key'] = key2
         self.assertFalse(entity1 == entity2)
         self.assertTrue(entity1 != entity2)
@@ -127,12 +127,12 @@ class TestEntity(unittest.TestCase):
     def test___eq_____ne___w_same_keys_props_w_equiv_entities_as_value(self):
         from google.cloud.datastore.key import Key
         key = Key(_KIND, _ID, project=_PROJECT)
-        entity1 = self._makeOne(key=key)
-        sub1 = self._makeOne()
+        entity1 = self._make_one(key=key)
+        sub1 = self._make_one()
         sub1.update({'foo': 'Foo'})
         entity1['some_entity'] = sub1
-        entity2 = self._makeOne(key=key)
-        sub2 = self._makeOne()
+        entity2 = self._make_one(key=key)
+        sub2 = self._make_one()
         sub2.update({'foo': 'Foo'})
         entity2['some_entity'] = sub2
         self.assertTrue(entity1 == entity2)
@@ -141,12 +141,12 @@ class TestEntity(unittest.TestCase):
     def test___eq_____ne___w_same_keys_props_w_diff_entities_as_value(self):
         from google.cloud.datastore.key import Key
         key = Key(_KIND, _ID, project=_PROJECT)
-        entity1 = self._makeOne(key=key)
-        sub1 = self._makeOne()
+        entity1 = self._make_one(key=key)
+        sub1 = self._make_one()
         sub1.update({'foo': 'Foo'})
         entity1['some_entity'] = sub1
-        entity2 = self._makeOne(key=key)
-        sub2 = self._makeOne()
+        entity2 = self._make_one(key=key)
+        sub2 = self._make_one()
         sub2.update({'foo': 'Bar'})
         entity2['some_entity'] = sub2
         self.assertFalse(entity1 == entity2)
@@ -159,10 +159,10 @@ class TestEntity(unittest.TestCase):
         value = 42
         key = Key(_KIND, _ID, project=_PROJECT)
 
-        entity1 = self._makeOne(key=key, exclude_from_indexes=(name,))
+        entity1 = self._make_one(key=key, exclude_from_indexes=(name,))
         entity1[name] = value
 
-        entity2 = self._makeOne(key=key, exclude_from_indexes=())
+        entity2 = self._make_one(key=key, exclude_from_indexes=())
         entity2[name] = value
 
         self.assertFalse(entity1 == entity2)
@@ -175,23 +175,23 @@ class TestEntity(unittest.TestCase):
         meaning = 9
         key = Key(_KIND, _ID, project=_PROJECT)
 
-        entity1 = self._makeOne(key=key, exclude_from_indexes=(name,))
+        entity1 = self._make_one(key=key, exclude_from_indexes=(name,))
         entity1[name] = value
 
-        entity2 = self._makeOne(key=key, exclude_from_indexes=(name,))
+        entity2 = self._make_one(key=key, exclude_from_indexes=(name,))
         entity2[name] = value
         entity2._meanings[name] = (meaning, value)
 
         self.assertFalse(entity1 == entity2)
 
     def test___repr___no_key_empty(self):
-        entity = self._makeOne()
+        entity = self._make_one()
         self.assertEqual(repr(entity), '<Entity {}>')
 
     def test___repr___w_key_non_empty(self):
         key = _Key()
         key._path = '/bar/baz'
-        entity = self._makeOne(key=key)
+        entity = self._make_one(key=key)
         entity['foo'] = 'Foo'
         self.assertEqual(repr(entity), "<Entity/bar/baz {'foo': 'Foo'}>")
 

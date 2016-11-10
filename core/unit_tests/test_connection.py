@@ -22,41 +22,41 @@ class TestConnection(unittest.TestCase):
         from google.cloud.connection import Connection
         return Connection
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        conn = self._makeOne()
+        conn = self._make_one()
         self.assertIsNone(conn.credentials)
 
     def test_ctor_explicit(self):
         credentials = _Credentials()
         self.assertEqual(credentials._create_scoped_calls, 0)
-        conn = self._makeOne(credentials)
+        conn = self._make_one(credentials)
         self.assertEqual(credentials._create_scoped_calls, 1)
         self.assertIs(conn.credentials, credentials)
         self.assertIsNone(conn._http)
 
     def test_ctor_explicit_http(self):
         http = object()
-        conn = self._makeOne(http=http)
+        conn = self._make_one(http=http)
         self.assertIsNone(conn.credentials)
         self.assertIs(conn.http, http)
 
     def test_ctor_credentials_wo_create_scoped(self):
         credentials = object()
-        conn = self._makeOne(credentials)
+        conn = self._make_one(credentials)
         self.assertIs(conn.credentials, credentials)
         self.assertIsNone(conn._http)
 
     def test_http_w_existing(self):
-        conn = self._makeOne()
+        conn = self._make_one()
         conn._http = http = object()
         self.assertIs(conn.http, http)
 
     def test_http_wo_creds(self):
         import httplib2
-        conn = self._makeOne()
+        conn = self._make_one()
         self.assertIsInstance(conn.http, httplib2.Http)
 
     def test_http_w_creds(self):
@@ -64,7 +64,7 @@ class TestConnection(unittest.TestCase):
 
         authorized = object()
         credentials = _Credentials(authorized)
-        conn = self._makeOne(credentials)
+        conn = self._make_one(credentials)
         self.assertIs(conn.http, authorized)
         self.assertIsInstance(credentials._called_with, httplib2.Http)
 
@@ -72,7 +72,7 @@ class TestConnection(unittest.TestCase):
         from pkg_resources import get_distribution
         expected_ua = 'gcloud-python/{0}'.format(
             get_distribution('google-cloud-core').version)
-        conn = self._makeOne()
+        conn = self._make_one()
         self.assertEqual(conn.USER_AGENT, expected_ua)
 
     def test__create_scoped_credentials_with_scoped_credentials(self):
@@ -114,7 +114,7 @@ class TestJSONConnection(unittest.TestCase):
         from google.cloud.connection import JSONConnection
         return JSONConnection
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def _makeMockOne(self, *args, **kw):
@@ -131,22 +131,22 @@ class TestJSONConnection(unittest.TestCase):
         self.assertIsNone(klass.API_VERSION)
 
     def test_ctor_defaults(self):
-        conn = self._makeOne()
+        conn = self._make_one()
         self.assertIsNone(conn.credentials)
 
     def test_ctor_explicit(self):
         credentials = _Credentials()
-        conn = self._makeOne(credentials)
+        conn = self._make_one(credentials)
         self.assertIs(conn.credentials, credentials)
 
     def test_http_w_existing(self):
-        conn = self._makeOne()
+        conn = self._make_one()
         conn._http = http = object()
         self.assertIs(conn.http, http)
 
     def test_http_wo_creds(self):
         import httplib2
-        conn = self._makeOne()
+        conn = self._make_one()
         self.assertIsInstance(conn.http, httplib2.Http)
 
     def test_http_w_creds(self):
@@ -154,7 +154,7 @@ class TestJSONConnection(unittest.TestCase):
 
         authorized = object()
         credentials = _Credentials(authorized)
-        conn = self._makeOne(credentials)
+        conn = self._make_one(credentials)
         self.assertIs(conn.http, authorized)
         self.assertIsInstance(credentials._called_with, httplib2.Http)
 
@@ -189,7 +189,7 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(parms['bar'], 'baz')
 
     def test__make_request_no_data_no_content_type_no_headers(self):
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = 'http://example.com/test'
         http = conn._http = _Http(
             {'status': '200', 'content-type': 'text/plain'},
@@ -210,7 +210,7 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test__make_request_w_data_no_extra_headers(self):
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = 'http://example.com/test'
         http = conn._http = _Http(
             {'status': '200', 'content-type': 'text/plain'},
@@ -229,7 +229,7 @@ class TestJSONConnection(unittest.TestCase):
         self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test__make_request_w_extra_headers(self):
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = 'http://example.com/test'
         http = conn._http = _Http(
             {'status': '200', 'content-type': 'text/plain'},

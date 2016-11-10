@@ -21,22 +21,22 @@ class TestFeature(unittest.TestCase):
         from google.cloud.vision.feature import Feature
         return Feature
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_construct_feature(self):
         from google.cloud.vision.feature import FeatureTypes
-        feature = self._makeOne(FeatureTypes.LABEL_DETECTION)
+        feature = self._make_one(FeatureTypes.LABEL_DETECTION)
         self.assertEqual(1, feature.max_results)
         self.assertEqual('LABEL_DETECTION', feature.feature_type)
 
-        feature = self._makeOne(FeatureTypes.FACE_DETECTION, 3)
+        feature = self._make_one(FeatureTypes.FACE_DETECTION, 3)
         self.assertEqual(3, feature.max_results)
         self.assertEqual('FACE_DETECTION', feature.feature_type)
 
     def test_feature_as_dict(self):
         from google.cloud.vision.feature import FeatureTypes
-        feature = self._makeOne(FeatureTypes.FACE_DETECTION, max_results=5)
+        feature = self._make_one(FeatureTypes.FACE_DETECTION, max_results=5)
         EXPECTED = {
             'type': 'FACE_DETECTION',
             'maxResults': 5
@@ -45,5 +45,5 @@ class TestFeature(unittest.TestCase):
 
     def test_bad_feature_type(self):
         with self.assertRaises(AttributeError):
-            self._makeOne('something_not_feature_type',
+            self._make_one('something_not_feature_type',
                           max_results=5)

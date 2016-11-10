@@ -22,24 +22,24 @@ class TestAlternative(unittest.TestCase):
         from google.cloud.speech.alternative import Alternative
         return Alternative
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         text = 'hello goodbye upstairs'
         confidence = 0.5546875
-        alternative = self._makeOne(text, confidence)
+        alternative = self._make_one(text, confidence)
         self.assertEqual(alternative._transcript, text)
         self.assertEqual(alternative._confidence, confidence)
 
     def test_transcript_property(self):
         text = 'is this thing on?'
-        alternative = self._makeOne(text, None)
+        alternative = self._make_one(text, None)
         self.assertEqual(alternative.transcript, text)
 
     def test_confidence_property(self):
         confidence = 0.412109375
-        alternative = self._makeOne(None, confidence)
+        alternative = self._make_one(None, confidence)
         self.assertEqual(alternative.confidence, confidence)
 
     def test_from_api_repr_with_no_confidence(self):

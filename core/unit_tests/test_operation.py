@@ -112,12 +112,12 @@ class TestOperation(unittest.TestCase):
         from google.cloud.operation import Operation
         return Operation
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         client = _Client()
-        operation = self._makeOne(
+        operation = self._make_one(
             self.OPERATION_NAME, client)
         self.assertEqual(operation.name, self.OPERATION_NAME)
         self.assertIs(operation.client, client)
@@ -130,7 +130,7 @@ class TestOperation(unittest.TestCase):
 
     def test_ctor_explicit(self):
         client = _Client()
-        operation = self._makeOne(
+        operation = self._make_one(
             self.OPERATION_NAME, client, foo='bar')
 
         self.assertEqual(operation.name, self.OPERATION_NAME)
@@ -239,7 +239,7 @@ class TestOperation(unittest.TestCase):
 
     def test_complete_property(self):
         client = _Client()
-        operation = self._makeOne(self.OPERATION_NAME, client)
+        operation = self._make_one(self.OPERATION_NAME, client)
         self.assertFalse(operation.complete)
         operation._complete = True
         self.assertTrue(operation.complete)
@@ -248,7 +248,7 @@ class TestOperation(unittest.TestCase):
 
     def test_poll_already_complete(self):
         client = _Client()
-        operation = self._makeOne(self.OPERATION_NAME, client)
+        operation = self._make_one(self.OPERATION_NAME, client)
         operation._complete = True
 
         with self.assertRaises(ValueError):
@@ -261,7 +261,7 @@ class TestOperation(unittest.TestCase):
         client = _Client()
         stub = client._operations_stub
         stub._get_operation_response = response_pb
-        operation = self._makeOne(self.OPERATION_NAME, client)
+        operation = self._make_one(self.OPERATION_NAME, client)
 
         self.assertFalse(operation.poll())
 
@@ -276,7 +276,7 @@ class TestOperation(unittest.TestCase):
         client = _Client()
         stub = client._operations_stub
         stub._get_operation_response = response_pb
-        operation = self._makeOne(self.OPERATION_NAME, client)
+        operation = self._make_one(self.OPERATION_NAME, client)
 
         self.assertTrue(operation.poll())
 
@@ -301,7 +301,7 @@ class TestOperation(unittest.TestCase):
         }
         connection = _Connection(api_response)
         client = _Client(connection)
-        operation = self._makeOne(name, client)
+        operation = self._make_one(name, client)
         operation._from_grpc = False
 
         with _Monkey(MUT, _TYPE_URL_MAP={type_url: Struct}):
@@ -316,7 +316,7 @@ class TestOperation(unittest.TestCase):
     def test__update_state_done(self):
         from google.longrunning import operations_pb2
 
-        operation = self._makeOne(None, None)
+        operation = self._make_one(None, None)
         self.assertFalse(operation.complete)
         operation_pb = operations_pb2.Operation(done=True)
         operation._update_state(operation_pb)
@@ -329,7 +329,7 @@ class TestOperation(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud import operation as MUT
 
-        operation = self._makeOne(None, None)
+        operation = self._make_one(None, None)
         self.assertIsNone(operation.metadata)
 
         val_pb = Value(number_value=1337)
@@ -347,7 +347,7 @@ class TestOperation(unittest.TestCase):
         from google.rpc.status_pb2 import Status
         from google.cloud._testing import _Monkey
 
-        operation = self._makeOne(None, None)
+        operation = self._make_one(None, None)
         self.assertIsNone(operation.error)
         self.assertIsNone(operation.response)
 
@@ -365,7 +365,7 @@ class TestOperation(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud import operation as MUT
 
-        operation = self._makeOne(None, None)
+        operation = self._make_one(None, None)
         self.assertIsNone(operation.error)
         self.assertIsNone(operation.response)
 
@@ -384,7 +384,7 @@ class TestOperation(unittest.TestCase):
     def test__update_state_no_result(self):
         from google.longrunning import operations_pb2
 
-        operation = self._makeOne(None, None)
+        operation = self._make_one(None, None)
         self.assertIsNone(operation.error)
         self.assertIsNone(operation.response)
 

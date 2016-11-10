@@ -102,7 +102,7 @@ class TestDocument(unittest.TestCase):
         from google.cloud.language.document import Document
         return Document
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor_defaults(self):
@@ -110,7 +110,7 @@ class TestDocument(unittest.TestCase):
 
         client = object()
         content = 'abc'
-        document = self._makeOne(client, content)
+        document = self._make_one(client, content)
         self.assertIs(document.client, client)
         self.assertEqual(document.content, content)
         self.assertIsNone(document.gcs_url)
@@ -124,7 +124,7 @@ class TestDocument(unittest.TestCase):
         client = object()
         gcs_url = 'gs://some-bucket/some-obj.html'
         language = 'ja'
-        document = self._makeOne(client, gcs_url=gcs_url,
+        document = self._make_one(client, gcs_url=gcs_url,
                                  doc_type=MUT.Document.HTML,
                                  language=language,
                                  encoding=MUT.Encoding.UTF32)
@@ -137,17 +137,17 @@ class TestDocument(unittest.TestCase):
 
     def test_constructor_no_text(self):
         with self.assertRaises(ValueError):
-            self._makeOne(None, content=None, gcs_url=None)
+            self._make_one(None, content=None, gcs_url=None)
 
     def test_constructor_text_and_gcs(self):
         with self.assertRaises(ValueError):
-            self._makeOne(None, content='abc',
+            self._make_one(None, content='abc',
                           gcs_url='gs://some-bucket/some-obj.txt')
 
     def test__to_dict_with_content(self):
         klass = self._get_target_class()
         content = 'Hello World'
-        document = self._makeOne(None, content=content)
+        document = self._make_one(None, content=content)
         info = document._to_dict()
         self.assertEqual(info, {
             'content': content,
@@ -158,7 +158,7 @@ class TestDocument(unittest.TestCase):
     def test__to_dict_with_gcs(self):
         klass = self._get_target_class()
         gcs_url = 'gs://some-bucket/some-obj.html'
-        document = self._makeOne(None, gcs_url=gcs_url)
+        document = self._make_one(None, gcs_url=gcs_url)
         info = document._to_dict()
         self.assertEqual(info, {
             'gcsContentUri': gcs_url,
@@ -168,7 +168,7 @@ class TestDocument(unittest.TestCase):
 
     def test__to_dict_with_no_content(self):
         klass = self._get_target_class()
-        document = self._makeOne(None, content='')
+        document = self._make_one(None, content='')
         document.content = None  # Manually unset the content.
         info = document._to_dict()
         self.assertEqual(info, {
@@ -231,7 +231,7 @@ class TestDocument(unittest.TestCase):
         }
         connection = _Connection(response)
         client = _Client(connection=connection)
-        document = self._makeOne(client, content)
+        document = self._make_one(client, content)
 
         entities = document.analyze_entities()
         self.assertEqual(len(entities), 2)
@@ -268,7 +268,7 @@ class TestDocument(unittest.TestCase):
         }
         connection = _Connection(response)
         client = _Client(connection=connection)
-        document = self._makeOne(client, content)
+        document = self._make_one(client, content)
 
         sentiment = document.analyze_sentiment()
         self._verify_sentiment(sentiment, polarity, magnitude)
@@ -326,7 +326,7 @@ class TestDocument(unittest.TestCase):
 
         connection = _Connection(response)
         client = _Client(connection=connection)
-        document = self._makeOne(client, ANNOTATE_CONTENT)
+        document = self._make_one(client, ANNOTATE_CONTENT)
 
         annotations = document.annotate_text(
             include_syntax=include_syntax, include_entities=include_entities,

@@ -22,7 +22,7 @@ class Test_BufferedStream(unittest.TestCase):
         from google.cloud.streaming.buffered_stream import BufferedStream
         return BufferedStream
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_closed_stream(self):
@@ -31,7 +31,7 @@ class Test_BufferedStream(unittest.TestCase):
 
         start = 0
         bufsize = 4
-        bufstream = self._makeOne(_Stream, start, bufsize)
+        bufstream = self._make_one(_Stream, start, bufsize)
         self.assertIs(bufstream._stream, _Stream)
         self.assertEqual(bufstream._start_pos, start)
         self.assertEqual(bufstream._buffer_pos, 0)
@@ -45,7 +45,7 @@ class Test_BufferedStream(unittest.TestCase):
         START = 0
         BUFSIZE = 4
         stream = BytesIO(CONTENT)
-        bufstream = self._makeOne(stream, START, BUFSIZE)
+        bufstream = self._make_one(stream, START, BUFSIZE)
         self.assertIs(bufstream._stream, stream)
         self.assertEqual(bufstream._start_pos, START)
         self.assertEqual(bufstream._buffer_pos, 0)
@@ -61,7 +61,7 @@ class Test_BufferedStream(unittest.TestCase):
         BUFSIZE = 10
         stream = BytesIO(CONTENT)
         stream.read(START)  # already consumed
-        bufstream = self._makeOne(stream, START, BUFSIZE)
+        bufstream = self._make_one(stream, START, BUFSIZE)
         self.assertIs(bufstream._stream, stream)
         self.assertEqual(bufstream._start_pos, START)
         self.assertEqual(bufstream._buffer_pos, 0)
@@ -76,7 +76,7 @@ class Test_BufferedStream(unittest.TestCase):
         START = 0
         BUFSIZE = 4
         stream = BytesIO(CONTENT)
-        bufstream = self._makeOne(stream, START, BUFSIZE)
+        bufstream = self._make_one(stream, START, BUFSIZE)
         self.assertEqual(bufstream._bytes_remaining, BUFSIZE)
 
     def test__bytes_remaining_start_zero_shorter_than_buffer(self):
@@ -86,7 +86,7 @@ class Test_BufferedStream(unittest.TestCase):
         BUFSIZE = 10
         stream = BytesIO(CONTENT)
         stream.read(START)  # already consumed
-        bufstream = self._makeOne(stream, START, BUFSIZE)
+        bufstream = self._make_one(stream, START, BUFSIZE)
         self.assertEqual(bufstream._bytes_remaining, len(CONTENT) - START)
 
     def test_read_w_none(self):
@@ -95,7 +95,7 @@ class Test_BufferedStream(unittest.TestCase):
         START = 0
         BUFSIZE = 4
         stream = BytesIO(CONTENT)
-        bufstream = self._makeOne(stream, START, BUFSIZE)
+        bufstream = self._make_one(stream, START, BUFSIZE)
         with self.assertRaises(ValueError):
             bufstream.read(None)
 
@@ -105,7 +105,7 @@ class Test_BufferedStream(unittest.TestCase):
         START = 0
         BUFSIZE = 4
         stream = BytesIO(CONTENT)
-        bufstream = self._makeOne(stream, START, BUFSIZE)
+        bufstream = self._make_one(stream, START, BUFSIZE)
         with self.assertRaises(ValueError):
             bufstream.read(-2)
 
@@ -115,7 +115,7 @@ class Test_BufferedStream(unittest.TestCase):
         START = 0
         BUFSIZE = 4
         stream = BytesIO(CONTENT)
-        bufstream = self._makeOne(stream, START, BUFSIZE)
+        bufstream = self._make_one(stream, START, BUFSIZE)
         self.assertEqual(bufstream.read(4), CONTENT[:4])
 
     def test_read_exhausted(self):
@@ -125,7 +125,7 @@ class Test_BufferedStream(unittest.TestCase):
         BUFSIZE = 10
         stream = BytesIO(CONTENT)
         stream.read(START)  # already consumed
-        bufstream = self._makeOne(stream, START, BUFSIZE)
+        bufstream = self._make_one(stream, START, BUFSIZE)
         self.assertTrue(bufstream.stream_exhausted)
         self.assertEqual(bufstream.stream_end_position, len(CONTENT))
         self.assertEqual(bufstream._bytes_remaining, 0)

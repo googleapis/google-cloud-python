@@ -23,7 +23,7 @@ class TestCell(unittest.TestCase):
         from google.cloud.bigtable.row_data import Cell
         return Cell
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def _from_pb_test_helper(self, labels=None):
@@ -39,11 +39,11 @@ class TestCell(unittest.TestCase):
         if labels is None:
             cell_pb = data_v2_pb2.Cell(
                 value=value, timestamp_micros=timestamp_micros)
-            cell_expected = self._makeOne(value, timestamp)
+            cell_expected = self._make_one(value, timestamp)
         else:
             cell_pb = data_v2_pb2.Cell(
                 value=value, timestamp_micros=timestamp_micros, labels=labels)
-            cell_expected = self._makeOne(value, timestamp, labels=labels)
+            cell_expected = self._make_one(value, timestamp, labels=labels)
 
         klass = self._get_target_class()
         result = klass.from_pb(cell_pb)
@@ -59,27 +59,27 @@ class TestCell(unittest.TestCase):
     def test_constructor(self):
         value = object()
         timestamp = object()
-        cell = self._makeOne(value, timestamp)
+        cell = self._make_one(value, timestamp)
         self.assertEqual(cell.value, value)
         self.assertEqual(cell.timestamp, timestamp)
 
     def test___eq__(self):
         value = object()
         timestamp = object()
-        cell1 = self._makeOne(value, timestamp)
-        cell2 = self._makeOne(value, timestamp)
+        cell1 = self._make_one(value, timestamp)
+        cell2 = self._make_one(value, timestamp)
         self.assertEqual(cell1, cell2)
 
     def test___eq__type_differ(self):
-        cell1 = self._makeOne(None, None)
+        cell1 = self._make_one(None, None)
         cell2 = object()
         self.assertNotEqual(cell1, cell2)
 
     def test___ne__same_value(self):
         value = object()
         timestamp = object()
-        cell1 = self._makeOne(value, timestamp)
-        cell2 = self._makeOne(value, timestamp)
+        cell1 = self._make_one(value, timestamp)
+        cell2 = self._make_one(value, timestamp)
         comparison_val = (cell1 != cell2)
         self.assertFalse(comparison_val)
 
@@ -87,8 +87,8 @@ class TestCell(unittest.TestCase):
         value1 = 'value1'
         value2 = 'value2'
         timestamp = object()
-        cell1 = self._makeOne(value1, timestamp)
-        cell2 = self._makeOne(value2, timestamp)
+        cell1 = self._make_one(value1, timestamp)
+        cell2 = self._make_one(value2, timestamp)
         self.assertNotEqual(cell1, cell2)
 
 
@@ -99,45 +99,45 @@ class TestPartialRowData(unittest.TestCase):
         from google.cloud.bigtable.row_data import PartialRowData
         return PartialRowData
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         row_key = object()
-        partial_row_data = self._makeOne(row_key)
+        partial_row_data = self._make_one(row_key)
         self.assertIs(partial_row_data._row_key, row_key)
         self.assertEqual(partial_row_data._cells, {})
 
     def test___eq__(self):
         row_key = object()
-        partial_row_data1 = self._makeOne(row_key)
-        partial_row_data2 = self._makeOne(row_key)
+        partial_row_data1 = self._make_one(row_key)
+        partial_row_data2 = self._make_one(row_key)
         self.assertEqual(partial_row_data1, partial_row_data2)
 
     def test___eq__type_differ(self):
-        partial_row_data1 = self._makeOne(None)
+        partial_row_data1 = self._make_one(None)
         partial_row_data2 = object()
         self.assertNotEqual(partial_row_data1, partial_row_data2)
 
     def test___ne__same_value(self):
         row_key = object()
-        partial_row_data1 = self._makeOne(row_key)
-        partial_row_data2 = self._makeOne(row_key)
+        partial_row_data1 = self._make_one(row_key)
+        partial_row_data2 = self._make_one(row_key)
         comparison_val = (partial_row_data1 != partial_row_data2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
         row_key1 = object()
-        partial_row_data1 = self._makeOne(row_key1)
+        partial_row_data1 = self._make_one(row_key1)
         row_key2 = object()
-        partial_row_data2 = self._makeOne(row_key2)
+        partial_row_data2 = self._make_one(row_key2)
         self.assertNotEqual(partial_row_data1, partial_row_data2)
 
     def test___ne__cells(self):
         row_key = object()
-        partial_row_data1 = self._makeOne(row_key)
+        partial_row_data1 = self._make_one(row_key)
         partial_row_data1._cells = object()
-        partial_row_data2 = self._makeOne(row_key)
+        partial_row_data2 = self._make_one(row_key)
         self.assertNotEqual(partial_row_data1, partial_row_data2)
 
     def test_to_dict(self):
@@ -151,7 +151,7 @@ class TestPartialRowData(unittest.TestCase):
         qual2 = b'col2'
         qual3 = b'col3'
 
-        partial_row_data = self._makeOne(None)
+        partial_row_data = self._make_one(None)
         partial_row_data._cells = {
             family_name1: {
                 qual1: cell1,
@@ -171,7 +171,7 @@ class TestPartialRowData(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_cells_property(self):
-        partial_row_data = self._makeOne(None)
+        partial_row_data = self._make_one(None)
         cells = {1: 2}
         partial_row_data._cells = cells
         # Make sure we get a copy, not the original.
@@ -180,7 +180,7 @@ class TestPartialRowData(unittest.TestCase):
 
     def test_row_key_getter(self):
         row_key = object()
-        partial_row_data = self._makeOne(row_key)
+        partial_row_data = self._make_one(row_key)
         self.assertIs(partial_row_data.row_key, row_key)
 
 
@@ -207,59 +207,59 @@ class TestPartialRowsData(unittest.TestCase):
 
         return FakePartialRowsData
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         response_iterator = object()
-        partial_rows_data = self._makeOne(response_iterator)
+        partial_rows_data = self._make_one(response_iterator)
         self.assertIs(partial_rows_data._response_iterator,
                       response_iterator)
         self.assertEqual(partial_rows_data._rows, {})
 
     def test___eq__(self):
         response_iterator = object()
-        partial_rows_data1 = self._makeOne(response_iterator)
-        partial_rows_data2 = self._makeOne(response_iterator)
+        partial_rows_data1 = self._make_one(response_iterator)
+        partial_rows_data2 = self._make_one(response_iterator)
         self.assertEqual(partial_rows_data1, partial_rows_data2)
 
     def test___eq__type_differ(self):
-        partial_rows_data1 = self._makeOne(None)
+        partial_rows_data1 = self._make_one(None)
         partial_rows_data2 = object()
         self.assertNotEqual(partial_rows_data1, partial_rows_data2)
 
     def test___ne__same_value(self):
         response_iterator = object()
-        partial_rows_data1 = self._makeOne(response_iterator)
-        partial_rows_data2 = self._makeOne(response_iterator)
+        partial_rows_data1 = self._make_one(response_iterator)
+        partial_rows_data2 = self._make_one(response_iterator)
         comparison_val = (partial_rows_data1 != partial_rows_data2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
         response_iterator1 = object()
-        partial_rows_data1 = self._makeOne(response_iterator1)
+        partial_rows_data1 = self._make_one(response_iterator1)
         response_iterator2 = object()
-        partial_rows_data2 = self._makeOne(response_iterator2)
+        partial_rows_data2 = self._make_one(response_iterator2)
         self.assertNotEqual(partial_rows_data1, partial_rows_data2)
 
     def test_state_start(self):
-        prd = self._makeOne([])
+        prd = self._make_one([])
         self.assertEqual(prd.state, prd.START)
 
     def test_state_new_row_w_row(self):
-        prd = self._makeOne([])
+        prd = self._make_one([])
         prd._last_scanned_row_key = ''
         prd._row = object()
         self.assertEqual(prd.state, prd.NEW_ROW)
 
     def test_rows_getter(self):
-        partial_rows_data = self._makeOne(None)
+        partial_rows_data = self._make_one(None)
         partial_rows_data._rows = value = object()
         self.assertIs(partial_rows_data.rows, value)
 
     def test_cancel(self):
         response_iterator = _MockCancellableIterator()
-        partial_rows_data = self._makeOne(response_iterator)
+        partial_rows_data = self._make_one(response_iterator)
         self.assertEqual(response_iterator.cancel_calls, 0)
         partial_rows_data.cancel()
         self.assertEqual(response_iterator.cancel_calls, 1)
@@ -291,7 +291,7 @@ class TestPartialRowsData(unittest.TestCase):
             list(response_iterator.iter_values), [value2, value3])
 
     def test__copy_from_current_unset(self):
-        prd = self._makeOne([])
+        prd = self._make_one([])
         chunks = _generate_cell_chunks([''])
         chunk = chunks[0]
         prd._copy_from_current(chunk)
@@ -307,7 +307,7 @@ class TestPartialRowsData(unittest.TestCase):
         QUALIFIER = b'C'
         TIMESTAMP_MICROS = 100
         LABELS = ['L1', 'L2']
-        prd = self._makeOne([])
+        prd = self._make_one([])
         prd._cell = _PartialCellData()
         chunks = _generate_cell_chunks([''])
         chunk = chunks[0]
@@ -324,7 +324,7 @@ class TestPartialRowsData(unittest.TestCase):
         self.assertEqual(chunk.labels, LABELS)
 
     def test__copy_from_previous_unset(self):
-        prd = self._makeOne([])
+        prd = self._make_one([])
         cell = _PartialCellData()
         prd._copy_from_previous(cell)
         self.assertEqual(cell.row_key, '')
@@ -339,7 +339,7 @@ class TestPartialRowsData(unittest.TestCase):
         QUALIFIER = b'C'
         TIMESTAMP_MICROS = 100
         LABELS = ['L1', 'L2']
-        prd = self._makeOne([])
+        prd = self._make_one([])
         cell = _PartialCellData(
             row_key=ROW_KEY,
             family_name=FAMILY_NAME,
@@ -361,7 +361,7 @@ class TestPartialRowsData(unittest.TestCase):
         QUALIFIER = b'C'
         TIMESTAMP_MICROS = 100
         LABELS = ['L1', 'L2']
-        prd = self._makeOne([])
+        prd = self._make_one([])
         prd._previous_cell = _PartialCellData(
             row_key=ROW_KEY,
             family_name=FAMILY_NAME,
@@ -379,7 +379,7 @@ class TestPartialRowsData(unittest.TestCase):
 
     def test__save_row_no_cell(self):
         ROW_KEY = 'RK'
-        prd = self._makeOne([])
+        prd = self._make_one([])
         row = prd._row = _Dummy(row_key=ROW_KEY)
         prd._cell = None
         prd._save_current_row()
@@ -389,7 +389,7 @@ class TestPartialRowsData(unittest.TestCase):
         from google.cloud.bigtable.row_data import InvalidReadRowsResponse
         response = _ReadRowsResponseV2(chunks=(), last_scanned_row_key='ABC')
         iterator = _MockCancellableIterator(response)
-        prd = self._makeOne(iterator)
+        prd = self._make_one(iterator)
         with self.assertRaises(InvalidReadRowsResponse):
             prd.consume_next()
 
@@ -397,7 +397,7 @@ class TestPartialRowsData(unittest.TestCase):
         response = _ReadRowsResponseV2(
             chunks=(), last_scanned_row_key='AFTER')
         iterator = _MockCancellableIterator(response)
-        prd = self._makeOne(iterator)
+        prd = self._make_one(iterator)
         prd._last_scanned_row_key = 'BEFORE'
         prd.consume_next()
         self.assertEqual(prd._last_scanned_row_key, 'AFTER')
@@ -407,7 +407,7 @@ class TestPartialRowsData(unittest.TestCase):
         chunks = _generate_cell_chunks([''])
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
-        prd = self._makeOne(iterator)
+        prd = self._make_one(iterator)
         with self.assertRaises(InvalidChunk):
             prd.consume_next()
 
@@ -420,7 +420,7 @@ class TestPartialRowsData(unittest.TestCase):
         first.qualifier.value = b'C'
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
-        prd = self._makeOne(iterator)
+        prd = self._make_one(iterator)
         with self.assertRaises(InvalidChunk):
             prd.consume_next()
 
@@ -434,7 +434,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
         from google.cloud.bigtable.row_data import PartialRowsData
         return PartialRowsData
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def _load_json_test(self, test_name):
@@ -455,7 +455,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
         chunks, results = self._load_json_test(testcase_name)
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
-        prd = self._makeOne(iterator)
+        prd = self._make_one(iterator)
         with self.assertRaises(InvalidChunk):
             prd.consume_next()
         expected_result = self._sort_flattend_cells(
@@ -511,7 +511,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
         chunks, results = self._load_json_test(testcase_name)
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
-        prd = self._makeOne(iterator)
+        prd = self._make_one(iterator)
         prd.consume_next()
         self.assertEqual(prd.state, prd.ROW_IN_PROGRESS)
         expected_result = self._sort_flattend_cells(
@@ -533,7 +533,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
         chunks, results = self._load_json_test(testcase_name)
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
-        prd = self._makeOne(iterator)
+        prd = self._make_one(iterator)
         prd.consume_next()
         flattened = self._sort_flattend_cells(_flatten_cells(prd))
         if expected_result is self._marker:

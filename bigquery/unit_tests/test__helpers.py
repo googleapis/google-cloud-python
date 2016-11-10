@@ -323,7 +323,7 @@ class Test_ConfigurationProperty(unittest.TestCase):
         from google.cloud.bigquery._helpers import _ConfigurationProperty
         return _ConfigurationProperty
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_it(self):
@@ -332,7 +332,7 @@ class Test_ConfigurationProperty(unittest.TestCase):
             _attr = None
 
         class Wrapper(object):
-            attr = self._makeOne('attr')
+            attr = self._make_one('attr')
 
             def __init__(self):
                 self._configuration = Configuration()
@@ -359,7 +359,7 @@ class Test_TypedProperty(unittest.TestCase):
         from google.cloud.bigquery._helpers import _TypedProperty
         return _TypedProperty
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_it(self):
@@ -368,7 +368,7 @@ class Test_TypedProperty(unittest.TestCase):
             _attr = None
 
         class Wrapper(object):
-            attr = self._makeOne('attr', int)
+            attr = self._make_one('attr', int)
 
             def __init__(self):
                 self._configuration = Configuration()
@@ -427,11 +427,11 @@ class Test_UDFResourcesProperty(unittest.TestCase):
         from google.cloud.bigquery._helpers import UDFResourcesProperty
         return UDFResourcesProperty
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def _descriptor_and_klass(self):
-        descriptor = self._makeOne()
+        descriptor = self._make_one()
 
         class _Test(object):
             _udf_resources = ()

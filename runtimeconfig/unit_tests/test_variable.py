@@ -27,7 +27,7 @@ class TestVariable(unittest.TestCase):
         from google.cloud.runtimeconfig.variable import Variable
         return Variable
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def _verifyResourceProperties(self, variable, resource):
@@ -58,7 +58,7 @@ class TestVariable(unittest.TestCase):
 
         client = _Client(project=self.PROJECT)
         config = Config(name=self.CONFIG_NAME, client=client)
-        variable = self._makeOne(name=self.VARIABLE_NAME, config=config)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=config)
         self.assertEqual(variable.name, self.VARIABLE_NAME)
         self.assertEqual(variable.full_name, self.PATH)
         self.assertEqual(variable.path, '/%s' % (self.PATH,))
@@ -69,7 +69,7 @@ class TestVariable(unittest.TestCase):
 
         client = _Client(project=self.PROJECT)
         config = Config(name=self.CONFIG_NAME, client=client)
-        variable = self._makeOne(name=None, config=config)
+        variable = self._make_one(name=None, config=config)
         with self.assertRaises(ValueError):
             getattr(variable, 'full_name')
 
@@ -79,7 +79,7 @@ class TestVariable(unittest.TestCase):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         config = Config(name=self.CONFIG_NAME, client=client)
-        variable = self._makeOne(name=self.VARIABLE_NAME, config=config)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=config)
 
         self.assertFalse(variable.exists())
 
@@ -97,7 +97,7 @@ class TestVariable(unittest.TestCase):
         CONFIG1 = Config(name=self.CONFIG_NAME, client=CLIENT1)
         conn2 = _Connection({})
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        variable = self._makeOne(name=self.VARIABLE_NAME, config=CONFIG1)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=CONFIG1)
 
         self.assertTrue(variable.exists(client=CLIENT2))
 
@@ -120,7 +120,7 @@ class TestVariable(unittest.TestCase):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         config = Config(name=self.CONFIG_NAME, client=client)
-        variable = self._makeOne(name=self.VARIABLE_NAME, config=config)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=config)
 
         variable.reload()
 
@@ -137,7 +137,7 @@ class TestVariable(unittest.TestCase):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         config = Config(name=self.CONFIG_NAME, client=client)
-        variable = self._makeOne(name=self.VARIABLE_NAME, config=config)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=config)
 
         variable.reload()
 
@@ -164,7 +164,7 @@ class TestVariable(unittest.TestCase):
         CONFIG1 = Config(name=self.CONFIG_NAME, client=CLIENT1)
         conn2 = _Connection(RESOURCE)
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        variable = self._makeOne(name=self.VARIABLE_NAME, config=CONFIG1)
+        variable = self._make_one(name=self.VARIABLE_NAME, config=CONFIG1)
 
         variable.reload(client=CLIENT2)
 

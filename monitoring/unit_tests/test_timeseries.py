@@ -38,7 +38,7 @@ class TestTimeSeries(unittest.TestCase):
         from google.cloud.monitoring.timeseries import TimeSeries
         return TimeSeries
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
@@ -55,7 +55,7 @@ class TestTimeSeries(unittest.TestCase):
             Point(start_time=TS1, end_time=TS2, value=VALUE),
         ]
 
-        series = self._makeOne(metric=METRIC,
+        series = self._make_one(metric=METRIC,
                                resource=RESOURCE,
                                metric_kind=METRIC_KIND,
                                value_type=VALUE_TYPE,
@@ -173,7 +173,7 @@ class TestTimeSeries(unittest.TestCase):
             }]
         }
 
-        series = self._makeOne(metric=METRIC, resource=RESOURCE,
+        series = self._make_one(metric=METRIC, resource=RESOURCE,
                                metric_kind=None, value_type=None,
                                points=[POINT])
         series_dict = series._to_dict()
@@ -186,12 +186,12 @@ class TestPoint(unittest.TestCase):
         from google.cloud.monitoring.timeseries import Point
         return Point
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         VALUE = 3.14
-        point = self._makeOne(start_time=TS0, end_time=TS1, value=VALUE)
+        point = self._make_one(start_time=TS0, end_time=TS1, value=VALUE)
         self.assertEqual(point.start_time, TS0)
         self.assertEqual(point.end_time, TS1)
         self.assertEqual(point.value, VALUE)
@@ -235,7 +235,7 @@ class TestPoint(unittest.TestCase):
         VALUE = 42
         end_time = datetime.datetime.now()
         end_time_str = _datetime_to_rfc3339(end_time, ignore_zone=False)
-        point = self._makeOne(end_time=end_time_str, start_time=None,
+        point = self._make_one(end_time=end_time_str, start_time=None,
                               value=VALUE)
         info = {
             'interval': {'endTime': end_time_str},
@@ -254,7 +254,7 @@ class TestPoint(unittest.TestCase):
         end_time = datetime.datetime.now()
         end_time_str = _datetime_to_rfc3339(end_time, ignore_zone=False)
 
-        point = self._makeOne(end_time=end_time_str, start_time=start_time_str,
+        point = self._make_one(end_time=end_time_str, start_time=start_time_str,
                               value=VALUE)
         info = {
             'interval': {

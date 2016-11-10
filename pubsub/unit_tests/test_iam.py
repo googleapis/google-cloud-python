@@ -22,11 +22,11 @@ class TestPolicy(unittest.TestCase):
         from google.cloud.pubsub.iam import Policy
         return Policy
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        policy = self._makeOne()
+        policy = self._make_one()
         self.assertIsNone(policy.etag)
         self.assertIsNone(policy.version)
         self.assertEqual(list(policy.owners), [])
@@ -38,7 +38,7 @@ class TestPolicy(unittest.TestCase):
     def test_ctor_explicit(self):
         VERSION = 17
         ETAG = 'ETAG'
-        policy = self._makeOne(ETAG, VERSION)
+        policy = self._make_one(ETAG, VERSION)
         self.assertEqual(policy.etag, ETAG)
         self.assertEqual(policy.version, VERSION)
         self.assertEqual(list(policy.owners), [])
@@ -50,33 +50,33 @@ class TestPolicy(unittest.TestCase):
     def test_user(self):
         EMAIL = 'phred@example.com'
         MEMBER = 'user:%s' % (EMAIL,)
-        policy = self._makeOne()
+        policy = self._make_one()
         self.assertEqual(policy.user(EMAIL), MEMBER)
 
     def test_service_account(self):
         EMAIL = 'phred@example.com'
         MEMBER = 'serviceAccount:%s' % (EMAIL,)
-        policy = self._makeOne()
+        policy = self._make_one()
         self.assertEqual(policy.service_account(EMAIL), MEMBER)
 
     def test_group(self):
         EMAIL = 'phred@example.com'
         MEMBER = 'group:%s' % (EMAIL,)
-        policy = self._makeOne()
+        policy = self._make_one()
         self.assertEqual(policy.group(EMAIL), MEMBER)
 
     def test_domain(self):
         DOMAIN = 'example.com'
         MEMBER = 'domain:%s' % (DOMAIN,)
-        policy = self._makeOne()
+        policy = self._make_one()
         self.assertEqual(policy.domain(DOMAIN), MEMBER)
 
     def test_all_users(self):
-        policy = self._makeOne()
+        policy = self._make_one()
         self.assertEqual(policy.all_users(), 'allUsers')
 
     def test_authenticated_users(self):
-        policy = self._makeOne()
+        policy = self._make_one()
         self.assertEqual(policy.authenticated_users(), 'allAuthenticatedUsers')
 
     def test_from_api_repr_only_etag(self):
@@ -143,11 +143,11 @@ class TestPolicy(unittest.TestCase):
             klass.from_api_repr(RESOURCE)
 
     def test_to_api_repr_defaults(self):
-        policy = self._makeOne()
+        policy = self._make_one()
         self.assertEqual(policy.to_api_repr(), {})
 
     def test_to_api_repr_only_etag(self):
-        policy = self._makeOne('DEADBEEF')
+        policy = self._make_one('DEADBEEF')
         self.assertEqual(policy.to_api_repr(), {'etag': 'DEADBEEF'})
 
     def test_to_api_repr_full(self):
@@ -177,7 +177,7 @@ class TestPolicy(unittest.TestCase):
                 {'role': PUBSUB_SUBSCRIBER_ROLE, 'members': [SUBSCRIBER]},
             ],
         }
-        policy = self._makeOne('DEADBEEF', 17)
+        policy = self._make_one('DEADBEEF', 17)
         policy.owners.add(OWNER1)
         policy.owners.add(OWNER2)
         policy.editors.add(EDITOR1)

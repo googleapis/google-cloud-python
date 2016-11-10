@@ -22,7 +22,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.resource_manager.client import Client
         return Client
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
@@ -30,7 +30,7 @@ class TestClient(unittest.TestCase):
 
         http = object()
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials, http=http)
+        client = self._make_one(credentials=credentials, http=http)
         self.assertIsInstance(client.connection, Connection)
         self.assertEqual(client.connection._credentials, credentials)
         self.assertEqual(client.connection._http, http)
@@ -39,7 +39,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.resource_manager.project import Project
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         project_id = 'project_id'
         name = object()
         labels = object()
@@ -67,7 +67,7 @@ class TestClient(unittest.TestCase):
         }
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         # Patch the connection with one we can easily control.
         client.connection = _Connection(project_resource)
 
@@ -82,7 +82,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.iterator import HTTPIterator
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         # Patch the connection with one we can easily control.
         client.connection = _Connection({})
 
@@ -91,7 +91,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_projects_no_paging(self):
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
 
         PROJECT_ID = 'project-id'
         PROJECT_NUMBER = 1
@@ -119,7 +119,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_projects_with_paging(self):
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
 
         PROJECT_ID1 = 'project-id'
         PROJECT_NUMBER1 = 1
@@ -182,7 +182,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_projects_with_filter(self):
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
 
         PROJECT_ID = 'project-id'
         PROJECT_NUMBER = 1
@@ -221,7 +221,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.iterator import Page
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         iterator = client.list_projects()
         page = Page(iterator, (), None)
         iterator._page = page
@@ -247,7 +247,7 @@ class TestClient(unittest.TestCase):
         }
         response = {'projects': [api_resource]}
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
 
         def dummy_response():
             return response

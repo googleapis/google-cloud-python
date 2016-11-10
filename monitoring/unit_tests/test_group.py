@@ -112,14 +112,14 @@ class TestGroup(unittest.TestCase):
         from google.cloud.monitoring.group import Group
         return Group
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
-    def _makeOneFromJSON(self, info, client=None):
+    def _make_oneFromJSON(self, info, client=None):
         return self._get_target_class()._from_dict(client=client, info=info)
 
     def _validateGroup(self, actual_group, expected_group_json):
-        expected_group = self._makeOneFromJSON(expected_group_json)
+        expected_group = self._make_oneFromJSON(expected_group_json)
         self.assertEqual(actual_group.id, expected_group.id)
         self.assertEqual(actual_group.display_name,
                          expected_group.display_name)
@@ -135,7 +135,7 @@ class TestGroup(unittest.TestCase):
 
     def test_constructor(self):
         client = _Client(project=self.PROJECT)
-        group = self._makeOne(
+        group = self._make_one(
             client=client,
             group_id=self.GROUP_ID,
             display_name=self.DISPLAY_NAME,
@@ -156,7 +156,7 @@ class TestGroup(unittest.TestCase):
 
     def test_constructor_defaults(self):
         client = _Client(project=self.PROJECT)
-        group = self._makeOne(client=client)
+        group = self._make_one(client=client)
 
         self.assertIs(group.client, client)
 
@@ -169,12 +169,12 @@ class TestGroup(unittest.TestCase):
         self.assertFalse(group.is_cluster)
 
     def test_path_no_id(self):
-        group = self._makeOne(client=None)
+        group = self._make_one(client=None)
         self.assertRaises(ValueError, getattr, group, 'path')
 
     def test_path_w_id(self):
         client = _Client(project=self.PROJECT)
-        group = self._makeOne(client=client, group_id=self.GROUP_ID)
+        group = self._make_one(client=client, group_id=self.GROUP_ID)
         self.assertEqual(group.path, '/%s' % self.GROUP_NAME)
 
     def test_from_dict(self):
@@ -208,12 +208,12 @@ class TestGroup(unittest.TestCase):
 
     def test_to_dict(self):
         client = _Client(project=self.PROJECT)
-        group = self._makeOneFromJSON(self.JSON_GROUP, client)
+        group = self._make_oneFromJSON(self.JSON_GROUP, client)
         self.assertEqual(group._to_dict(), self.JSON_GROUP)
 
     def test_to_dict_defaults(self):
         client = _Client(project=self.PROJECT)
-        group = self._makeOne(
+        group = self._make_one(
             client=client, group_id=self.GROUP_ID,
             display_name=self.DISPLAY_NAME,
             filter_string=self.FILTER)
@@ -233,7 +233,7 @@ class TestGroup(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
-        group = self._makeOne(
+        group = self._make_one(
             client=client,
             display_name=self.DISPLAY_NAME,
             parent_id=self.PARENT_ID,
@@ -252,7 +252,7 @@ class TestGroup(unittest.TestCase):
     def test_exists_hit(self):
         connection = _Connection(self.JSON_GROUP)
         client = _Client(project=self.PROJECT, connection=connection)
-        group = self._makeOne(client=client, group_id=self.GROUP_ID)
+        group = self._make_one(client=client, group_id=self.GROUP_ID)
 
         self.assertTrue(group.exists())
 
@@ -264,7 +264,7 @@ class TestGroup(unittest.TestCase):
     def test_exists_miss(self):
         connection = _Connection()
         client = _Client(project=self.PROJECT, connection=connection)
-        group = self._makeOne(client=client, group_id=self.GROUP_ID)
+        group = self._make_one(client=client, group_id=self.GROUP_ID)
 
         self.assertFalse(group.exists())
 
@@ -276,7 +276,7 @@ class TestGroup(unittest.TestCase):
     def test_reload(self):
         connection = _Connection(self.JSON_GROUP)
         client = _Client(project=self.PROJECT, connection=connection)
-        group = self._makeOne(client, group_id=self.GROUP_ID)
+        group = self._make_one(client, group_id=self.GROUP_ID)
         group.reload()
 
         self.assertIs(group.client, client)
@@ -292,7 +292,7 @@ class TestGroup(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
-        group = self._makeOneFromJSON(REQUEST, client)
+        group = self._make_oneFromJSON(REQUEST, client)
         group.update()
 
         self._validateGroup(group, RESPONSE)
@@ -305,7 +305,7 @@ class TestGroup(unittest.TestCase):
     def test_delete(self):
         connection = _Connection(self.JSON_GROUP)
         client = _Client(project=self.PROJECT, connection=connection)
-        group = self._makeOneFromJSON(self.JSON_GROUP, client)
+        group = self._make_oneFromJSON(self.JSON_GROUP, client)
         group.delete()
 
         request, = connection._requested
@@ -315,7 +315,7 @@ class TestGroup(unittest.TestCase):
     def test_fetch_parent(self):
         connection = _Connection(self.JSON_PARENT)
         client = _Client(project=self.PROJECT, connection=connection)
-        group = self._makeOneFromJSON(self.JSON_GROUP, client)
+        group = self._make_oneFromJSON(self.JSON_GROUP, client)
 
         actual_parent = group.fetch_parent()
 
@@ -329,7 +329,7 @@ class TestGroup(unittest.TestCase):
     def test_fetch_parent_empty(self):
         connection = _Connection()
         client = _Client(project=self.PROJECT, connection=connection)
-        group = self._makeOne(client=client)
+        group = self._make_one(client=client)
         actual_parent = group.fetch_parent()
 
         self.assertIsNone(actual_parent)
@@ -386,7 +386,7 @@ class TestGroup(unittest.TestCase):
         }
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
-        parent_group = self._makeOneFromJSON(self.JSON_PARENT, client)
+        parent_group = self._make_oneFromJSON(self.JSON_PARENT, client)
         groups = parent_group.list_children()
         self._validateGroupList(client, groups, CHILDREN)
 
@@ -404,7 +404,7 @@ class TestGroup(unittest.TestCase):
         }
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
-        child_group = self._makeOneFromJSON(self.JSON_CHILD, client)
+        child_group = self._make_oneFromJSON(self.JSON_CHILD, client)
         groups = child_group.list_ancestors()
         self._validateGroupList(client, groups, ANCESTORS)
 
@@ -422,7 +422,7 @@ class TestGroup(unittest.TestCase):
         }
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
-        parent_group = self._makeOneFromJSON(self.JSON_PARENT, client)
+        parent_group = self._make_oneFromJSON(self.JSON_PARENT, client)
         groups = parent_group.list_descendants()
         self._validateGroupList(client, groups, DESCENDANTS)
 
@@ -440,7 +440,7 @@ class TestGroup(unittest.TestCase):
         }
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
-        group = self._makeOneFromJSON(self.JSON_GROUP, client)
+        group = self._make_oneFromJSON(self.JSON_GROUP, client)
         members = group.list_members()
 
         self.assertEqual(members, [self.RESOURCE1, self.RESOURCE2])
@@ -465,7 +465,7 @@ class TestGroup(unittest.TestCase):
 
         connection = _Connection(RESPONSE1, RESPONSE2)
         client = _Client(project=self.PROJECT, connection=connection)
-        group = self._makeOneFromJSON(self.JSON_GROUP, client)
+        group = self._make_oneFromJSON(self.JSON_GROUP, client)
         members = group.list_members()
 
         self.assertEqual(members, [self.RESOURCE1, self.RESOURCE2])
@@ -497,7 +497,7 @@ class TestGroup(unittest.TestCase):
         }
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
-        group = self._makeOneFromJSON(self.JSON_GROUP, client)
+        group = self._make_oneFromJSON(self.JSON_GROUP, client)
         members = group.list_members(
             start_time=T0, end_time=T1, filter_string=MEMBER_FILTER)
 
@@ -521,7 +521,7 @@ class TestGroup(unittest.TestCase):
 
         connection = _Connection()
         client = _Client(project=self.PROJECT, connection=connection)
-        group = self._makeOneFromJSON(self.JSON_GROUP, client)
+        group = self._make_oneFromJSON(self.JSON_GROUP, client)
         with self.assertRaises(ValueError):
             group.list_members(start_time=T0)
 

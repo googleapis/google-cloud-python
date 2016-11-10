@@ -27,7 +27,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.error_reporting.client import HTTPContext
         return HTTPContext
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def _makeHTTP(self, *args, **kw):
@@ -39,14 +39,14 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_default(self):
         CREDENTIALS = _Credentials()
-        target = self._makeOne(project=self.PROJECT,
+        target = self._make_one(project=self.PROJECT,
                                credentials=CREDENTIALS)
         self.assertEquals(target.service, target.DEFAULT_SERVICE)
         self.assertEquals(target.version, None)
 
     def test_ctor_params(self):
         CREDENTIALS = _Credentials()
-        target = self._makeOne(project=self.PROJECT,
+        target = self._make_one(project=self.PROJECT,
                                credentials=CREDENTIALS,
                                service=self.SERVICE,
                                version=self.VERSION)
@@ -55,7 +55,7 @@ class TestClient(unittest.TestCase):
 
     def test_report_exception(self):
         CREDENTIALS = _Credentials()
-        target = self._makeOne(project=self.PROJECT,
+        target = self._make_one(project=self.PROJECT,
                                credentials=CREDENTIALS)
 
         logger = _Logger()
@@ -77,7 +77,7 @@ class TestClient(unittest.TestCase):
         CREDENTIALS = _Credentials()
         SERVICE = "notdefault"
         VERSION = "notdefaultversion"
-        target = self._makeOne(project=self.PROJECT,
+        target = self._make_one(project=self.PROJECT,
                                credentials=CREDENTIALS,
                                service=SERVICE,
                                version=VERSION)
@@ -110,7 +110,7 @@ class TestClient(unittest.TestCase):
 
     def test_report(self):
         CREDENTIALS = _Credentials()
-        target = self._makeOne(project=self.PROJECT,
+        target = self._make_one(project=self.PROJECT,
                                credentials=CREDENTIALS)
 
         logger = _Logger()

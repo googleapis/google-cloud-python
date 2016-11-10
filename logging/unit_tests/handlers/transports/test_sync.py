@@ -25,20 +25,20 @@ class TestSyncHandler(unittest.TestCase):
         from google.cloud.logging.handlers.transports import SyncTransport
         return SyncTransport
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
         NAME = 'python_logger'
-        transport = self._makeOne(client, NAME)
+        transport = self._make_one(client, NAME)
         self.assertEqual(transport.logger.name, 'python_logger')
 
     def test_send(self):
         client = _Client(self.PROJECT)
         STACKDRIVER_LOGGER_NAME = 'python'
         PYTHON_LOGGER_NAME = 'mylogger'
-        transport = self._makeOne(client, STACKDRIVER_LOGGER_NAME)
+        transport = self._make_one(client, STACKDRIVER_LOGGER_NAME)
         MESSAGE = 'hello world'
         record = _Record(PYTHON_LOGGER_NAME, logging.INFO, MESSAGE)
 

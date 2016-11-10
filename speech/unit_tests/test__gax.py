@@ -24,7 +24,7 @@ class TestGAPICSpeechAPI(unittest.TestCase):
 
         return GAPICSpeechAPI
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_use_bytes_instead_of_file_like_object(self):
@@ -39,7 +39,7 @@ class TestGAPICSpeechAPI(unittest.TestCase):
         sample = Sample(content=b'', encoding=speech.Encoding.FLAC,
                         sample_rate=self.SAMPLE_RATE)
 
-        api = self._makeOne(client)
+        api = self._make_one(client)
         with self.assertRaises(ValueError):
             api.streaming_recognize(sample)
         self.assertEqual(client.connection._requested, [])

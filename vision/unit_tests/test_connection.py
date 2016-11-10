@@ -22,12 +22,12 @@ class TestConnection(unittest.TestCase):
         from google.cloud.vision.connection import Connection
         return Connection
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_default_url(self):
         creds = _Credentials()
-        conn = self._makeOne(creds)
+        conn = self._make_one(creds)
         klass = self._get_target_class()
         self.assertEqual(conn.credentials._scopes, klass.SCOPE)
 

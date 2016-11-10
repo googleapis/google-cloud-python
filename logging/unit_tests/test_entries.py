@@ -50,13 +50,13 @@ class Test_BaseEntry(unittest.TestCase):
 
         return _Dummy
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         PAYLOAD = 'PAYLOAD'
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
-        entry = self._makeOne(PAYLOAD, logger)
+        entry = self._make_one(PAYLOAD, logger)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertIs(entry.logger, logger)
         self.assertIsNone(entry.insert_id)
@@ -81,7 +81,7 @@ class Test_BaseEntry(unittest.TestCase):
             'status': STATUS,
         }
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
-        entry = self._makeOne(PAYLOAD, logger,
+        entry = self._make_one(PAYLOAD, logger,
                               insert_id=IID,
                               timestamp=TIMESTAMP,
                               labels=LABELS,
@@ -199,7 +199,7 @@ class TestProtobufEntry(unittest.TestCase):
         from google.cloud.logging.entries import ProtobufEntry
         return ProtobufEntry
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_parse_message(self):
@@ -210,7 +210,7 @@ class TestProtobufEntry(unittest.TestCase):
         message = Struct(fields={'foo': Value(bool_value=False)})
         with_true = Struct(fields={'foo': Value(bool_value=True)})
         PAYLOAD = json.loads(MessageToJson(with_true))
-        entry = self._makeOne(PAYLOAD, LOGGER)
+        entry = self._make_one(PAYLOAD, LOGGER)
         entry.parse_message(message)
         self.assertTrue(message.fields['foo'])
 

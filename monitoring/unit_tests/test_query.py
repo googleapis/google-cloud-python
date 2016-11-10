@@ -80,7 +80,7 @@ class TestQuery(unittest.TestCase):
         from google.cloud.monitoring.query import Query
         return Query
 
-    def _makeOne(self, *args, **kwargs):
+    def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
     @staticmethod
@@ -90,7 +90,7 @@ class TestQuery(unittest.TestCase):
 
     def test_constructor_minimal(self):
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client)
+        query = self._make_one(client)
 
         self.assertEqual(query._client, client)
         self.assertEqual(query._filter.metric_type,
@@ -112,7 +112,7 @@ class TestQuery(unittest.TestCase):
         T0 = T1 - datetime.timedelta(days=DAYS, hours=HOURS, minutes=MINUTES)
 
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE,
+        query = self._make_one(client, METRIC_TYPE,
                               end_time=T1,
                               days=DAYS, hours=HOURS, minutes=MINUTES)
 
@@ -141,7 +141,7 @@ class TestQuery(unittest.TestCase):
 
         client = _Client(project=PROJECT, connection=_Connection())
         with _Monkey(MUT, _UTCNOW=lambda: NOW):
-            query = self._makeOne(client, METRIC_TYPE, minutes=MINUTES)
+            query = self._make_one(client, METRIC_TYPE, minutes=MINUTES)
 
         self.assertEqual(query._start_time, T0)
         self.assertEqual(query._end_time, T1)
@@ -151,29 +151,29 @@ class TestQuery(unittest.TestCase):
         T1 = datetime.datetime(2016, 4, 7, 2, 30, 30)
         client = _Client(project=PROJECT, connection=_Connection())
         with self.assertRaises(ValueError):
-            self._makeOne(client, METRIC_TYPE, end_time=T1)
+            self._make_one(client, METRIC_TYPE, end_time=T1)
 
     def test_execution_without_interval_illegal(self):
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         with self.assertRaises(ValueError):
             list(query)
 
     def test_metric_type(self):
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         self.assertEqual(query.metric_type, METRIC_TYPE)
 
     def test_filter(self):
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         expected = 'metric.type = "{type}"'.format(type=METRIC_TYPE)
         self.assertEqual(query.filter, expected)
 
     def test_filter_by_group(self):
         GROUP = '1234567'
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_group(GROUP)
         expected = (
             'metric.type = "{type}"'
@@ -184,7 +184,7 @@ class TestQuery(unittest.TestCase):
     def test_filter_by_projects(self):
         PROJECT1, PROJECT2 = 'project-1', 'project-2'
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_projects(PROJECT1, PROJECT2)
         expected = (
             'metric.type = "{type}"'
@@ -195,7 +195,7 @@ class TestQuery(unittest.TestCase):
     def test_filter_by_resources(self):
         ZONE_PREFIX = 'europe-'
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_resources(zone_prefix=ZONE_PREFIX)
         expected = (
             'metric.type = "{type}"'
@@ -206,7 +206,7 @@ class TestQuery(unittest.TestCase):
     def test_filter_by_metrics(self):
         INSTANCE = 'my-instance'
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_metrics(instance_name=INSTANCE)
         expected = (
             'metric.type = "{type}"'
@@ -220,7 +220,7 @@ class TestQuery(unittest.TestCase):
         T1 = datetime.datetime(2016, 4, 7, 2, 30, 0)
 
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_interval(end_time=T1)
         actual = list(query._build_query_params())
         expected = [
@@ -245,7 +245,7 @@ class TestQuery(unittest.TestCase):
         PAGE_TOKEN = 'second-page-please'
 
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         query = query.align(ALIGNER, minutes=MINUTES, seconds=SECONDS)
         query = query.reduce(REDUCER, FIELD1, FIELD2)
@@ -304,7 +304,7 @@ class TestQuery(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         response = list(query)
 
@@ -384,7 +384,7 @@ class TestQuery(unittest.TestCase):
 
         connection = _Connection(RESPONSE1, RESPONSE2)
         client = _Client(project=PROJECT, connection=connection)
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         response = list(query)
 
@@ -429,7 +429,7 @@ class TestQuery(unittest.TestCase):
 
         connection = _Connection({})
         client = _Client(project=PROJECT, connection=connection)
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         response = list(query)
 
@@ -470,7 +470,7 @@ class TestQuery(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         response = list(query.iter(headers_only=True))
 
@@ -507,16 +507,16 @@ class Test_Filter(unittest.TestCase):
         from google.cloud.monitoring.query import _Filter
         return _Filter
 
-    def _makeOne(self, metric_type):
+    def _make_one(self, metric_type):
         return self._get_target_class()(metric_type)
 
     def test_minimal(self):
-        obj = self._makeOne(METRIC_TYPE)
+        obj = self._make_one(METRIC_TYPE)
         expected = 'metric.type = "{type}"'.format(type=METRIC_TYPE)
         self.assertEqual(str(obj), expected)
 
     def test_maximal(self):
-        obj = self._makeOne(METRIC_TYPE)
+        obj = self._make_one(METRIC_TYPE)
         obj.group_id = '1234567'
         obj.projects = 'project-1', 'project-2'
         obj.select_resources(resource_type='some-resource',

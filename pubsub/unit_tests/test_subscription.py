@@ -29,13 +29,13 @@ class TestSubscription(unittest.TestCase):
         from google.cloud.pubsub.subscription import Subscription
         return Subscription
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         client = _Client(project=self.PROJECT)
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
         self.assertEqual(subscription.name, self.SUB_NAME)
         self.assertIs(subscription.topic, topic)
         self.assertIsNone(subscription.ack_deadline)
@@ -44,7 +44,7 @@ class TestSubscription(unittest.TestCase):
     def test_ctor_explicit(self):
         client = _Client(project=self.PROJECT)
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic,
+        subscription = self._make_one(self.SUB_NAME, topic,
                                      self.DEADLINE, self.ENDPOINT)
         self.assertEqual(subscription.name, self.SUB_NAME)
         self.assertIs(subscription.topic, topic)
@@ -53,7 +53,7 @@ class TestSubscription(unittest.TestCase):
 
     def test_ctor_w_client_wo_topic(self):
         client = _Client(project=self.PROJECT)
-        subscription = self._makeOne(self.SUB_NAME, client=client)
+        subscription = self._make_one(self.SUB_NAME, client=client)
         self.assertEqual(subscription.name, self.SUB_NAME)
         self.assertIsNone(subscription.topic)
 
@@ -62,11 +62,11 @@ class TestSubscription(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         topic = _Topic(self.TOPIC_NAME, client=client1)
         with self.assertRaises(TypeError):
-            self._makeOne(self.SUB_NAME, topic, client=client2)
+            self._make_one(self.SUB_NAME, topic, client=client2)
 
     def test_ctor_w_neither_topic_nor_client(self):
         with self.assertRaises(TypeError):
-            self._makeOne(self.SUB_NAME)
+            self._make_one(self.SUB_NAME)
 
     def test_from_api_repr_no_topics(self):
         from google.cloud.pubsub.topic import Topic
@@ -140,7 +140,7 @@ class TestSubscription(unittest.TestCase):
         TOPIC_NAME = 'topic_name'
         CLIENT = _Client(project=PROJECT)
         topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
         self.assertEqual(subscription.full_name, SUB_FULL)
         self.assertEqual(subscription.path, SUB_PATH)
 
@@ -148,7 +148,7 @@ class TestSubscription(unittest.TestCase):
         from google.cloud.pubsub.subscription import AutoAck
         client = _Client(project=self.PROJECT)
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
         auto_ack = subscription.auto_ack()
         self.assertIsInstance(auto_ack, AutoAck)
         self.assertIs(auto_ack._subscription, subscription)
@@ -161,7 +161,7 @@ class TestSubscription(unittest.TestCase):
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
         auto_ack = subscription.auto_ack(True, 10, client2)
         self.assertIsInstance(auto_ack, AutoAck)
         self.assertIs(auto_ack._subscription, subscription)
@@ -178,7 +178,7 @@ class TestSubscription(unittest.TestCase):
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_create_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         subscription.create()
 
@@ -197,7 +197,7 @@ class TestSubscription(unittest.TestCase):
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_create_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic,
+        subscription = self._make_one(self.SUB_NAME, topic,
                                      self.DEADLINE, self.ENDPOINT)
 
         subscription.create(client=client2)
@@ -210,7 +210,7 @@ class TestSubscription(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.subscriber_api = _FauxSubscribererAPI()
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         self.assertFalse(subscription.exists())
 
@@ -223,7 +223,7 @@ class TestSubscription(unittest.TestCase):
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_get_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         self.assertTrue(subscription.exists(client=client2))
 
@@ -240,7 +240,7 @@ class TestSubscription(unittest.TestCase):
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_get_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         subscription.reload()
 
@@ -258,7 +258,7 @@ class TestSubscription(unittest.TestCase):
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_get_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic,
+        subscription = self._make_one(self.SUB_NAME, topic,
                                      self.DEADLINE, self.ENDPOINT)
 
         subscription.reload(client=client2)
@@ -273,7 +273,7 @@ class TestSubscription(unittest.TestCase):
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_delete_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         subscription.delete()
 
@@ -286,7 +286,7 @@ class TestSubscription(unittest.TestCase):
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_delete_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic,
+        subscription = self._make_one(self.SUB_NAME, topic,
                                      self.DEADLINE, self.ENDPOINT)
 
         subscription.delete(client=client2)
@@ -298,7 +298,7 @@ class TestSubscription(unittest.TestCase):
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_modify_push_config_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         subscription.modify_push_configuration(push_endpoint=self.ENDPOINT)
 
@@ -312,7 +312,7 @@ class TestSubscription(unittest.TestCase):
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_modify_push_config_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic,
+        subscription = self._make_one(self.SUB_NAME, topic,
                                      push_endpoint=self.ENDPOINT)
 
         subscription.modify_push_configuration(push_endpoint=None,
@@ -333,7 +333,7 @@ class TestSubscription(unittest.TestCase):
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_pull_response = [REC_MESSAGE]
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         pulled = subscription.pull()
 
@@ -360,7 +360,7 @@ class TestSubscription(unittest.TestCase):
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_pull_response = [REC_MESSAGE]
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         pulled = subscription.pull(return_immediately=True, max_messages=3,
                                    client=client2)
@@ -380,7 +380,7 @@ class TestSubscription(unittest.TestCase):
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_pull_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         pulled = subscription.pull(return_immediately=False)
 
@@ -395,7 +395,7 @@ class TestSubscription(unittest.TestCase):
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_acknowlege_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         subscription.acknowledge([ACK_ID1, ACK_ID2])
 
@@ -410,7 +410,7 @@ class TestSubscription(unittest.TestCase):
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_acknowlege_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         subscription.acknowledge([ACK_ID1, ACK_ID2], client=client2)
 
@@ -424,7 +424,7 @@ class TestSubscription(unittest.TestCase):
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_modify_ack_deadline_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         subscription.modify_ack_deadline([ACK_ID1, ACK_ID2], self.DEADLINE)
 
@@ -439,7 +439,7 @@ class TestSubscription(unittest.TestCase):
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_modify_ack_deadline_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         subscription.modify_ack_deadline(
             [ACK_ID1, ACK_ID2], self.DEADLINE, client=client2)
@@ -478,7 +478,7 @@ class TestSubscription(unittest.TestCase):
         api = client.iam_policy_api = _FauxIAMPolicy()
         api._get_iam_policy_response = POLICY
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         policy = subscription.get_iam_policy()
 
@@ -500,7 +500,7 @@ class TestSubscription(unittest.TestCase):
         api = client2.iam_policy_api = _FauxIAMPolicy()
         api._get_iam_policy_response = POLICY
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         policy = subscription.get_iam_policy(client=client2)
 
@@ -547,7 +547,7 @@ class TestSubscription(unittest.TestCase):
         api = client.iam_policy_api = _FauxIAMPolicy()
         api._set_iam_policy_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
         policy = Policy('DEADBEEF', 17)
         policy.owners.add(OWNER1)
         policy.owners.add(OWNER2)
@@ -577,7 +577,7 @@ class TestSubscription(unittest.TestCase):
         api = client2.iam_policy_api = _FauxIAMPolicy()
         api._set_iam_policy_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         policy = Policy()
         new_policy = subscription.set_iam_policy(policy, client=client2)
@@ -599,7 +599,7 @@ class TestSubscription(unittest.TestCase):
         api = client.iam_policy_api = _FauxIAMPolicy()
         api._test_iam_permissions_response = ROLES[:-1]
         topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         allowed = subscription.check_iam_permissions(ROLES)
 
@@ -618,7 +618,7 @@ class TestSubscription(unittest.TestCase):
         api = client2.iam_policy_api = _FauxIAMPolicy()
         api._test_iam_permissions_response = []
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._make_one(self.SUB_NAME, topic)
 
         allowed = subscription.check_iam_permissions(ROLES, client=client2)
 
@@ -677,12 +677,12 @@ class TestAutoAck(unittest.TestCase):
         from google.cloud.pubsub.subscription import AutoAck
         return AutoAck
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         subscription = _FauxSubscription(())
-        auto_ack = self._makeOne(subscription)
+        auto_ack = self._make_one(subscription)
         self.assertEqual(auto_ack._return_immediately, False)
         self.assertEqual(auto_ack._max_messages, 1)
         self.assertIsNone(auto_ack._client)
@@ -690,7 +690,7 @@ class TestAutoAck(unittest.TestCase):
     def test_ctor_explicit(self):
         CLIENT = object()
         subscription = _FauxSubscription(())
-        auto_ack = self._makeOne(
+        auto_ack = self._make_one(
             subscription, return_immediately=True, max_messages=10,
             client=CLIENT)
         self.assertIs(auto_ack._subscription, subscription)
@@ -700,7 +700,7 @@ class TestAutoAck(unittest.TestCase):
 
     def test___enter___w_defaults(self):
         subscription = _FauxSubscription(())
-        auto_ack = self._makeOne(subscription)
+        auto_ack = self._make_one(subscription)
 
         with auto_ack as returned:
             pass
@@ -713,7 +713,7 @@ class TestAutoAck(unittest.TestCase):
     def test___enter___w_explicit(self):
         CLIENT = object()
         subscription = _FauxSubscription(())
-        auto_ack = self._makeOne(
+        auto_ack = self._make_one(
             subscription, return_immediately=True, max_messages=10,
             client=CLIENT)
 
@@ -736,7 +736,7 @@ class TestAutoAck(unittest.TestCase):
             (ACK_ID3, MESSAGE3),
         ]
         subscription = _FauxSubscription(ITEMS)
-        auto_ack = self._makeOne(subscription, client=CLIENT)
+        auto_ack = self._make_one(subscription, client=CLIENT)
         with auto_ack:
             for ack_id, message in list(auto_ack.items()):
                 if message.fail:
