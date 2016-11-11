@@ -126,8 +126,7 @@ class Test_Blob(unittest.TestCase):
             'https://storage.googleapis.com/name/parent%2Fchild')
 
     def _basic_generate_signed_url_helper(self, credentials=None):
-        from google.cloud._testing import _Monkey
-        from google.cloud.storage import blob as MUT
+        import mock
 
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
@@ -139,7 +138,8 @@ class Test_Blob(unittest.TestCase):
                '&Expiration=2014-10-16T20:34:37.000Z')
 
         SIGNER = _Signer()
-        with _Monkey(MUT, generate_signed_url=SIGNER):
+        with mock.patch('google.cloud.storage.blob.generate_signed_url',
+                        new=SIGNER):
             signed_uri = blob.generate_signed_url(EXPIRATION,
                                                   credentials=credentials)
             self.assertEqual(signed_uri, URI)
@@ -165,8 +165,7 @@ class Test_Blob(unittest.TestCase):
         self._basic_generate_signed_url_helper()
 
     def test_generate_signed_url_w_content_type(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.storage import blob as MUT
+        import mock
 
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
@@ -179,7 +178,8 @@ class Test_Blob(unittest.TestCase):
 
         SIGNER = _Signer()
         CONTENT_TYPE = "text/html"
-        with _Monkey(MUT, generate_signed_url=SIGNER):
+        with mock.patch('google.cloud.storage.blob.generate_signed_url',
+                        new=SIGNER):
             signed_url = blob.generate_signed_url(EXPIRATION,
                                                   content_type=CONTENT_TYPE)
             self.assertEqual(signed_url, URI)
@@ -203,8 +203,7 @@ class Test_Blob(unittest.TestCase):
         self._basic_generate_signed_url_helper(credentials=credentials)
 
     def test_generate_signed_url_w_slash_in_name(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.storage import blob as MUT
+        import mock
 
         BLOB_NAME = 'parent/child'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
@@ -216,7 +215,8 @@ class Test_Blob(unittest.TestCase):
                '&Expiration=2014-10-16T20:34:37.000Z')
 
         SIGNER = _Signer()
-        with _Monkey(MUT, generate_signed_url=SIGNER):
+        with mock.patch('google.cloud.storage.blob.generate_signed_url',
+                        new=SIGNER):
             signed_url = blob.generate_signed_url(EXPIRATION)
             self.assertEqual(signed_url, URI)
 
@@ -234,8 +234,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
     def test_generate_signed_url_w_method_arg(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.storage import blob as MUT
+        import mock
 
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
@@ -247,7 +246,8 @@ class Test_Blob(unittest.TestCase):
                '&Expiration=2014-10-16T20:34:37.000Z')
 
         SIGNER = _Signer()
-        with _Monkey(MUT, generate_signed_url=SIGNER):
+        with mock.patch('google.cloud.storage.blob.generate_signed_url',
+                        new=SIGNER):
             signed_uri = blob.generate_signed_url(EXPIRATION, method='POST')
             self.assertEqual(signed_uri, URI)
 
@@ -647,13 +647,12 @@ class Test_Blob(unittest.TestCase):
             expected_content_type=EXPECTED_CONTENT_TYPE)
 
     def test_upload_from_file_resumable(self):
+        import mock
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from google.cloud._testing import _Monkey
         from google.cloud._testing import _NamedTemporaryFile
         from google.cloud.streaming import http_wrapper
-        from google.cloud.streaming import transfer
 
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
@@ -674,8 +673,12 @@ class Test_Blob(unittest.TestCase):
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
 
-        # Set the threshhold low enough that we force a resumable uploada.
-        with _Monkey(transfer, RESUMABLE_UPLOAD_THRESHOLD=5):
+        # Set the threshhold low enough that we force a resumable upload.
+        patch = mock.patch(
+            'google.cloud.streaming.transfer.RESUMABLE_UPLOAD_THRESHOLD',
+            new=5)
+
+        with patch:
             with _NamedTemporaryFile() as temp:
                 with open(temp.name, 'wb') as file_obj:
                     file_obj.write(DATA)
@@ -731,12 +734,11 @@ class Test_Blob(unittest.TestCase):
         })
 
     def test_upload_from_file_resumable_w_error(self):
+        import mock
         from six.moves.http_client import NOT_FOUND
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from google.cloud._testing import _Monkey
         from google.cloud._testing import _NamedTemporaryFile
-        from google.cloud.streaming import transfer
         from google.cloud.streaming.exceptions import HttpError
 
         BLOB_NAME = 'blob-name'
@@ -751,8 +753,12 @@ class Test_Blob(unittest.TestCase):
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
 
-        # Set the threshhold low enough that we force a resumable uploada.
-        with _Monkey(transfer, RESUMABLE_UPLOAD_THRESHOLD=5):
+        # Set the threshhold low enough that we force a resumable upload.
+        patch = mock.patch(
+            'google.cloud.streaming.transfer.RESUMABLE_UPLOAD_THRESHOLD',
+            new=5)
+
+        with patch:
             with _NamedTemporaryFile() as temp:
                 with open(temp.name, 'wb') as file_obj:
                     file_obj.write(DATA)
