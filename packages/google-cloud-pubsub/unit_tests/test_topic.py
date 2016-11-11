@@ -330,7 +330,7 @@ class TestTopic(unittest.TestCase):
             'subscriptions': SUBS_LIST,
             'nextPageToken': TOKEN,
         }
-        client.connection = _Connection(returned)
+        client._connection = _Connection(returned)
 
         topic = self._make_one(self.TOPIC_NAME, client=client)
 
@@ -353,7 +353,7 @@ class TestTopic(unittest.TestCase):
 
         self.assertEqual(next_page_token, TOKEN)
         # Verify the mock.
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         self.assertEqual(len(called_with), 3)
         self.assertEqual(called_with['method'], 'GET')
         path = '/%s/subscriptions' % (self.TOPIC_PATH,)
@@ -380,7 +380,7 @@ class TestTopic(unittest.TestCase):
         returned = {
             'subscriptions': SUBS_LIST,
         }
-        client.connection = _Connection(returned)
+        client._connection = _Connection(returned)
 
         topic = self._make_one(self.TOPIC_NAME, client=client)
 
@@ -403,7 +403,7 @@ class TestTopic(unittest.TestCase):
 
         self.assertIsNone(next_page_token)
         # Verify the mock.
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         self.assertEqual(len(called_with), 3)
         self.assertEqual(called_with['method'], 'GET')
         path = '/%s/subscriptions' % (self.TOPIC_PATH,)
@@ -416,7 +416,7 @@ class TestTopic(unittest.TestCase):
 
         client = Client(project=self.PROJECT, credentials=object(),
                         use_gax=False)
-        client.connection = _Connection({})
+        client._connection = _Connection({})
         topic = self._make_one(self.TOPIC_NAME, client=client)
 
         iterator = topic.list_subscriptions()
@@ -426,7 +426,7 @@ class TestTopic(unittest.TestCase):
         self.assertEqual(len(subscriptions), 0)
         self.assertIsNone(next_page_token)
         # Verify the mock.
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         self.assertEqual(len(called_with), 3)
         self.assertEqual(called_with['method'], 'GET')
         path = '/%s/subscriptions' % (self.TOPIC_PATH,)
