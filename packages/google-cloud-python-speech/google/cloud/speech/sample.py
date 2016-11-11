@@ -15,6 +15,7 @@
 """Sample class to handle content for Google Cloud Speech API."""
 
 from google.cloud.speech.encoding import Encoding
+from google.cloud.speech.result import StreamingSpeechResult
 
 
 class Sample(object):
@@ -43,12 +44,16 @@ class Sample(object):
                         to 16000 Hz. If that's not possible, use the
                         native sample rate of the audio source (instead of
                         re-sampling).
+
+    :type client: :class:`~google.cloud.speech.client.Client`
+    :param client: (Optional) The client that owns this instance of sample.
     """
     default_encoding = Encoding.FLAC
     default_sample_rate = 16000
 
     def __init__(self, content=None, source_uri=None,
-                 encoding=None, sample_rate=None):
+                 encoding=None, sample_rate=None, client=None):
+        self._client = client
 
         no_source = content is None and source_uri is None
         both_source = content is not None and source_uri is not None
@@ -112,3 +117,180 @@ class Sample(object):
         :returns: String value of Encoding type.
         """
         return self._encoding
+
+    def async_recognize(self, language_code=None, max_alternatives=None,
+                        profanity_filter=None, speech_context=None):
+        """Asychronous Recognize request to Google Speech API.
+
+        .. _async_recognize: https://cloud.google.com/speech/reference/\
+                             rest/v1beta1/speech/asyncrecognize
+
+        See `async_recognize`_.
+
+        :type language_code: str
+        :param language_code: (Optional) The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-GB'``.
+                              If omitted, defaults to ``'en-US'``.
+
+        :type max_alternatives: int
+        :param max_alternatives: (Optional) Maximum number of recognition
+                                 hypotheses to be returned. The server may
+                                 return fewer than maxAlternatives.
+                                 Valid values are 0-30. A value of 0 or 1
+                                 will return a maximum of 1. Defaults to 1
+
+        :type profanity_filter: bool
+        :param profanity_filter: If True, the server will attempt to filter
+                                 out profanities, replacing all but the
+                                 initial character in each filtered word with
+                                 asterisks, e.g. ``'f***'``. If False or
+                                 omitted, profanities won't be filtered out.
+
+        :type speech_context: list
+        :param speech_context: A list of strings (max 50) containing words and
+                               phrases "hints" so that the speech recognition
+                               is more likely to recognize them. This can be
+                               used to improve the accuracy for specific words
+                               and phrases. This can also be used to add new
+                               words to the vocabulary of the recognizer.
+
+        :rtype: :class:`~google.cloud.speech.operation.Operation`
+        :returns: Operation for asynchronous request to Google Speech API.
+        """
+        if self.encoding is not Encoding.LINEAR16:
+            raise ValueError('Only LINEAR16 encoding is supported by '
+                             'asynchronous speech requests.')
+        api = self._client.speech_api
+        return api.async_recognize(self, language_code, max_alternatives,
+                                   profanity_filter, speech_context)
+
+    def streaming_recognize(self, language_code=None,
+                            max_alternatives=None, profanity_filter=None,
+                            speech_context=None, single_utterance=False,
+                            interim_results=False):
+        """Streaming speech recognition.
+
+        .. note::
+
+            Streaming recognition requests are limited to 1 minute of audio.
+            See: https://cloud.google.com/speech/limits#content
+
+        Yields: Instance of
+                :class:`~google.cloud.speech.result.StreamingSpeechResult`
+                containing results and metadata from the streaming request.
+
+        :type language_code: str
+        :param language_code: (Optional) The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-GB'``.
+                              If omitted, defaults to ``'en-US'``.
+
+        :type max_alternatives: int
+        :param max_alternatives: (Optional) Maximum number of recognition
+                                 hypotheses to be returned. The server may
+                                 return fewer than maxAlternatives.
+                                 Valid values are 0-30. A value of 0 or 1
+                                 will return a maximum of 1. Defaults to 1
+
+        :type profanity_filter: bool
+        :param profanity_filter: If True, the server will attempt to filter
+                                 out profanities, replacing all but the
+                                 initial character in each filtered word with
+                                 asterisks, e.g. ``'f***'``. If False or
+                                 omitted, profanities won't be filtered out.
+
+        :type speech_context: list
+        :param speech_context: A list of strings (max 50) containing words and
+                               phrases "hints" so that the speech recognition
+                               is more likely to recognize them. This can be
+                               used to improve the accuracy for specific words
+                               and phrases. This can also be used to add new
+                               words to the vocabulary of the recognizer.
+
+        :type single_utterance: bool
+        :param single_utterance: (Optional) If false or omitted, the recognizer
+                                 will perform continuous recognition
+                                 (continuing to process audio even if the user
+                                 pauses speaking) until the client closes the
+                                 output stream (gRPC API) or when the maximum
+                                 time limit has been reached. Multiple
+                                 SpeechRecognitionResults with the is_final
+                                 flag set to true may be returned.
+                                 If true, the recognizer will detect a single
+                                 spoken utterance. When it detects that the
+                                 user has paused or stopped speaking, it will
+                                 return an END_OF_UTTERANCE event and cease
+                                 recognition. It will return no more than one
+                                 SpeechRecognitionResult with the is_final flag
+                                 set to true.
+
+        :type interim_results: bool
+        :param interim_results: (Optional) If true, interim results (tentative
+                                hypotheses) may be returned as they become
+                                available (these interim results are indicated
+                                with the ``is_final=False`` flag). If false or
+                                omitted, only is_final=true result(s) are
+                                returned.
+
+        :raises: EnvironmentError if gRPC is not available.
+        """
+        if not self._client._use_gax:
+            raise EnvironmentError('gRPC is required to use this API.')
+
+        api = self._client.speech_api
+        responses = api.streaming_recognize(self, language_code,
+                                            max_alternatives, profanity_filter,
+                                            speech_context, single_utterance,
+                                            interim_results)
+        for response in responses:
+            for result in response.results:
+                if result.is_final or interim_results:
+                    yield StreamingSpeechResult.from_pb(result)
+
+    def sync_recognize(self, language_code=None, max_alternatives=None,
+                       profanity_filter=None, speech_context=None):
+        """Synchronous Speech Recognition.
+
+        .. _sync_recognize: https://cloud.google.com/speech/reference/\
+                            rest/v1beta1/speech/syncrecognize
+
+        See `sync_recognize`_.
+
+        :type language_code: str
+        :param language_code: (Optional) The language of the supplied audio as
+                              BCP-47 language tag. Example: ``'en-GB'``.
+                              If omitted, defaults to ``'en-US'``.
+
+        :type max_alternatives: int
+        :param max_alternatives: (Optional) Maximum number of recognition
+                                 hypotheses to be returned. The server may
+                                 return fewer than maxAlternatives.
+                                 Valid values are 0-30. A value of 0 or 1
+                                 will return a maximum of 1. Defaults to 1
+
+        :type profanity_filter: bool
+        :param profanity_filter: If True, the server will attempt to filter
+                                 out profanities, replacing all but the
+                                 initial character in each filtered word with
+                                 asterisks, e.g. ``'f***'``. If False or
+                                 omitted, profanities won't be filtered out.
+
+        :type speech_context: list
+        :param speech_context: A list of strings (max 50) containing words and
+                               phrases "hints" so that the speech recognition
+                               is more likely to recognize them. This can be
+                               used to improve the accuracy for specific words
+                               and phrases. This can also be used to add new
+                               words to the vocabulary of the recognizer.
+
+        :rtype: list
+        :returns: A list of dictionaries. One dict for each alternative. Each
+                  dictionary typically contains two keys (though not
+                  all will be present in all cases)
+
+                  * ``transcript``: The detected text from the audio recording.
+                  * ``confidence``: The confidence in language detection, float
+                    between 0 and 1.
+        """
+        api = self._client.speech_api
+        return api.sync_recognize(self, language_code, max_alternatives,
+                                  profanity_filter, speech_context)
