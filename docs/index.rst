@@ -178,6 +178,7 @@
   Client <speech-client>
   speech-encoding
   speech-operation
+  speech-result
   speech-sample
   speech-alternative
 
