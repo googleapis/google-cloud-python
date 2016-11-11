@@ -357,7 +357,7 @@ class TestLogger(unittest.TestCase):
         returned = {
             'nextPageToken': TOKEN,
         }
-        client.connection = _Connection(returned)
+        client._connection = _Connection(returned)
 
         logger = self._make_one(self.LOGGER_NAME, client=client)
 
@@ -368,7 +368,7 @@ class TestLogger(unittest.TestCase):
 
         self.assertEqual(len(entries), 0)
         self.assertEqual(token, TOKEN)
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         FILTER = 'logName=projects/%s/logs/%s' % (
             self.PROJECT, self.LOGGER_NAME)
         self.assertEqual(called_with, {
@@ -391,7 +391,7 @@ class TestLogger(unittest.TestCase):
         PAGE_SIZE = 42
         client = Client(project=self.PROJECT, credentials=object(),
                         use_gax=False)
-        client.connection = _Connection({})
+        client._connection = _Connection({})
         logger = self._make_one(self.LOGGER_NAME, client=client)
         iterator = logger.list_entries(
             projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
@@ -402,7 +402,7 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(len(entries), 0)
         self.assertIsNone(token)
         # self.assertEqual(client._listed, LISTED)
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         combined_filter = '%s AND logName=projects/%s/logs/%s' % (
             FILTER, self.PROJECT, self.LOGGER_NAME)
         self.assertEqual(called_with, {
@@ -721,7 +721,7 @@ class _Client(object):
 
     def __init__(self, project, connection=None):
         self.project = project
-        self.connection = connection
+        self._connection = connection
 
 
 class _Bugout(Exception):
