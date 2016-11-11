@@ -13,14 +13,9 @@
 # limitations under the License.
 
 
-import os
-
 import unittest
 
 from google.cloud import translate
-
-
-ENV_VAR = 'GOOGLE_CLOUD_TESTS_API_KEY'
 
 
 class Config(object):
@@ -33,8 +28,7 @@ class Config(object):
 
 
 def setUpModule():
-    api_key = os.getenv(ENV_VAR)
-    Config.CLIENT = translate.Client(api_key=api_key)
+    Config.CLIENT = translate.Client()
 
 
 class TestTranslate(unittest.TestCase):
