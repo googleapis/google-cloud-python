@@ -157,7 +157,8 @@ class Client(BaseClient):
             return detections
 
     def translate(self, values, target_language=None, format_=None,
-                  source_language=None, customization_ids=()):
+                  source_language=None, customization_ids=(),
+                  model=None):
         """Translate a string or list of strings.
 
         See: https://cloud.google.com/translate/v2/\
@@ -184,7 +185,11 @@ class Client(BaseClient):
                                   for translation. Sets the ``cid`` parameter
                                   in the query.
 
-        :rtype: str or list list
+        :type model: str
+        :param model: (Optional) The model used to translate the text. The
+                      only accepted values are ``base`` and ``nmt``.
+
+        :rtype: str or list
         :returns: A list of dictionaries for each queried value. Each
                   dictionary typically contains three keys (though not
                   all will be present in all cases)
@@ -194,10 +199,11 @@ class Client(BaseClient):
                   * ``translatedText``: The translation of the text into the
                     target language.
                   * ``input``: The corresponding input value.
+                  * ``model``: The model used to translate the text.
 
                   If only a single value is passed, then only a single
                   dictionary will be returned.
-        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
+        :raises: :class:`~exceptions.ValueError` if the number of
                  values and translations differ.
         """
         single_value = False
@@ -220,6 +226,8 @@ class Client(BaseClient):
             query_params.append(('format', format_))
         if source_language is not None:
             query_params.append(('source', source_language))
+        if model is not None:
+            query_params.append(('model', model))
 
         response = self._connection.api_request(
             method='GET', path='', query_params=query_params)

@@ -349,9 +349,11 @@ class TestClient(unittest.TestCase):
 
         cid = '123'
         format_ = 'text'
+        model = 'nmt'
         result = client.translate(value, target_language=target_language,
                                   source_language=source_language,
-                                  format_=format_, customization_ids=cid)
+                                  format_=format_, customization_ids=cid,
+                                  model=model)
         self.assertEqual(result, translation)
 
         # Verify requested.
@@ -366,6 +368,7 @@ class TestClient(unittest.TestCase):
             ('cid', cid),
             ('format', format_),
             ('source', source_language),
+            ('model', model),
         ]
         self.assertEqual(req['query_params'], query_params)
 
