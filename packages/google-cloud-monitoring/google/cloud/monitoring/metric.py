@@ -149,8 +149,8 @@ class MetricDescriptor(object):
         """
         path = '/projects/{project}/metricDescriptors/'.format(
             project=self.client.project)
-        response = self.client.connection.api_request(method='POST', path=path,
-                                                      data=self._to_dict())
+        response = self.client._connection.api_request(
+            method='POST', path=path, data=self._to_dict())
         self._init_from_dict(response)
 
     def delete(self):
@@ -167,7 +167,7 @@ class MetricDescriptor(object):
         path = '/projects/{project}/metricDescriptors/{type}'.format(
             project=self.client.project,
             type=self.type)
-        self.client.connection.api_request(method='DELETE', path=path)
+        self.client._connection.api_request(method='DELETE', path=path)
 
     @classmethod
     def _fetch(cls, client, metric_type):
@@ -188,7 +188,7 @@ class MetricDescriptor(object):
         path = '/projects/{project}/metricDescriptors/{type}'.format(
             project=client.project,
             type=metric_type)
-        info = client.connection.api_request(method='GET', path=path)
+        info = client._connection.api_request(method='GET', path=path)
         return cls._from_dict(client, info)
 
     @classmethod
@@ -236,7 +236,7 @@ class MetricDescriptor(object):
             if page_token is not None:
                 params['pageToken'] = page_token
 
-            response = client.connection.api_request(
+            response = client._connection.api_request(
                 method='GET', path=path, query_params=params)
             for info in response.get('metricDescriptors', ()):
                 descriptors.append(cls._from_dict(client, info))
