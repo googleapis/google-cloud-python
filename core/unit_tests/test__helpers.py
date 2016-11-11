@@ -604,39 +604,6 @@ class Test__name_from_project_path(unittest.TestCase):
         self.assertEqual(name, self.THING_NAME)
 
 
-class TestMetadataPlugin(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud._helpers import MetadataPlugin
-        return MetadataPlugin
-
-    def _make_one(self, *args, **kwargs):
-        return self._get_target_class()(*args, **kwargs)
-
-    def test_constructor(self):
-        credentials = object()
-        plugin = self._make_one(credentials)
-        self.assertIs(plugin._credentials, credentials)
-
-    def test___call__(self):
-        access_token_expected = 'FOOBARBAZ'
-        credentials = _Credentials(access_token=access_token_expected)
-        callback_args = []
-
-        def callback(*args):
-            callback_args.append(args)
-
-        transformer = self._make_one(credentials)
-        result = transformer(None, callback)
-        cb_headers = [
-            ('authorization', 'Bearer ' + access_token_expected),
-        ]
-        self.assertIsNone(result)
-        self.assertEqual(callback_args, [(cb_headers, None)])
-        self.assertEqual(len(credentials._tokens), 1)
-
-
 class Test_make_secure_channel(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
@@ -645,7 +612,6 @@ class Test_make_secure_channel(unittest.TestCase):
 
     def test_it(self):
         from six.moves import http_client
-        from google.cloud._testing import _Monkey
         from google.cloud import _helpers as MUT
 
         SSL_CREDS = object()
@@ -678,25 +644,23 @@ class Test_make_secure_channel(unittest.TestCase):
                 return CHANNEL
 
         grpc_mod = _GRPCModule()
-        metadata_plugin = object()
-        plugin_args = []
-
-        def mock_plugin(*args):
-            plugin_args.append(args)
-            return metadata_plugin
 
         host = 'HOST'
         credentials = object()
         user_agent = 'USER_AGENT'
-        with _Monkey(MUT, grpc=grpc_mod,
-                     MetadataPlugin=mock_plugin):
+
+        grpc_patch = mock.patch.object(MUT, 'grpc', new=grpc_mod)
+        request_patch = mock.patch('google_auth_httplib2.Request')
+        plugin_patch = mock.patch.object(
+            MUT, 'AuthMetadataPlugin', create=True)
+        with grpc_patch, request_patch as request_mock, plugin_patch as plugin:
             result = self._call_fut(credentials, user_agent, host)
 
         self.assertIs(result, CHANNEL)
-        self.assertEqual(plugin_args, [(credentials,)])
+        plugin.assert_called_once_with(credentials, request_mock.return_value)
         self.assertEqual(grpc_mod.ssl_channel_credentials_args, ())
         self.assertEqual(grpc_mod.metadata_call_credentials_args,
-                         ((metadata_plugin,), {'name': 'google_creds'}))
+                         ((plugin.return_value,), {'name': 'google_creds'}))
         self.assertEqual(
             grpc_mod.composite_channel_credentials_args,
             (SSL_CREDS, METADATA_CREDS))
@@ -787,17 +751,3 @@ class Test_make_insecure_stub(unittest.TestCase):
     def test_without_port_argument(self):
         host = 'HOST:1114'
         self._helper(host, host)
-
-
-class _Credentials(object):
-
-    def __init__(self, access_token=None):
-        self._access_token = access_token
-        self._tokens = []
-
-    def get_access_token(self):
-        from oauth2client.client import AccessTokenInfo
-        token = AccessTokenInfo(access_token=self._access_token,
-                                expires_in=None)
-        self._tokens.append(token)
-        return token

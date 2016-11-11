@@ -28,10 +28,16 @@ from threading import local as Local
 
 import google.auth
 from google.protobuf import timestamp_pb2
-try:
+import google_auth_httplib2
+
+try:  # pragma: NO COVER
     import grpc
-except ImportError:  # pragma: NO COVER
+    from google.auth.transport.grpc import AuthMetadataPlugin
+except ImportError:
     grpc = None
+    AuthMetadataPlugin = None
+
+import httplib2
 import six
 from six.moves import http_client
 
@@ -454,34 +460,6 @@ def _name_from_project_path(path, project, template):
     return match.group('name')
 
 
-class MetadataPlugin(object):
-    """Callable class to transform metadata for gRPC requests.
-
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
-    :param credentials: The OAuth2 Credentials to use for creating
-                        access tokens.
-    """
-
-    def __init__(self, credentials):
-        self._credentials = credentials
-
-    def __call__(self, unused_context, callback):
-        """Adds authorization header to request metadata.
-
-        :type unused_context: object
-        :param unused_context: A gRPC context which is not needed
-                               to modify headers.
-
-        :type callback: callable
-        :param callback: A callback which will use the headers.
-        """
-        access_token = self._credentials.get_access_token().access_token
-        headers = [
-            ('authorization', 'Bearer ' + access_token),
-        ]
-        callback(headers, None)
-
-
 def make_secure_channel(credentials, user_agent, host):
     """Makes a secure channel for an RPC service.
 
@@ -503,7 +481,9 @@ def make_secure_channel(credentials, user_agent, host):
     # ssl_channel_credentials() loads root certificates from
     # `grpc/_adapter/credentials/roots.pem`.
     transport_creds = grpc.ssl_channel_credentials()
-    custom_metadata_plugin = MetadataPlugin(credentials)
+    http = httplib2.Http()
+    custom_metadata_plugin = AuthMetadataPlugin(
+        credentials, google_auth_httplib2.Request(http=http))
     auth_creds = grpc.metadata_call_credentials(
         custom_metadata_plugin, name='google_creds')
     channel_creds = grpc.composite_channel_credentials(
