@@ -136,9 +136,9 @@ class TestTopic(unittest.TestCase):
 
     def test_publish_single_bytes_wo_attrs_w_add_timestamp_alt_client(self):
         import datetime
-        from google.cloud.pubsub import topic as MUT
+        import mock
         from google.cloud._helpers import _RFC3339_MICROS
-        from google.cloud._testing import _Monkey
+
         NOW = datetime.datetime.utcnow()
 
         def _utcnow():
@@ -157,7 +157,7 @@ class TestTopic(unittest.TestCase):
 
         topic = self._make_one(self.TOPIC_NAME, client=client1,
                                timestamp_messages=True)
-        with _Monkey(MUT, _NOW=_utcnow):
+        with mock.patch('google.cloud.pubsub.topic._NOW', new=_utcnow):
             msgid = topic.publish(PAYLOAD, client=client2)
 
         self.assertEqual(msgid, MSGID)
