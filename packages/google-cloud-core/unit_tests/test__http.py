@@ -19,7 +19,8 @@ class TestConnection(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.connection import Connection
+        from google.cloud._http import Connection
+
         return Connection
 
     def _make_one(self, *args, **kw):
@@ -111,7 +112,8 @@ class TestJSONConnection(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.connection import JSONConnection
+        from google.cloud._http import JSONConnection
+
         return JSONConnection
 
     def _make_one(self, *args, **kw):
