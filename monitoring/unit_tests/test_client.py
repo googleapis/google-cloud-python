@@ -185,8 +185,7 @@ class TestClient(unittest.TestCase):
 
     def test_timeseries_factory_gauge(self):
         import datetime
-        from google.cloud._testing import _Monkey
-        import google.cloud.monitoring.client
+        import mock
         from google.cloud._helpers import _datetime_to_rfc3339
         METRIC_TYPE = 'custom.googleapis.com/my_metric'
         METRIC_LABELS = {
@@ -222,7 +221,8 @@ class TestClient(unittest.TestCase):
         TIME2_STR = _datetime_to_rfc3339(TIME2, ignore_zone=False)
         # Construct a time series assuming a gauge metric using the current
         # time
-        with _Monkey(google.cloud.monitoring.client, _UTCNOW=lambda: TIME2):
+        with mock.patch('google.cloud.monitoring.client._UTCNOW',
+                        new=lambda: TIME2):
             timeseries_no_end = client.time_series(metric, resource, VALUE)
 
         self.assertEqual(timeseries_no_end.points[0].end_time, TIME2_STR)
