@@ -20,7 +20,7 @@ from google.cloud import _http
 class Connection(_http.JSONConnection):
     """A connection to Google Cloud Translate via the JSON REST API."""
 
-    API_BASE_URL = 'https://www.googleapis.com'
+    API_BASE_URL = 'https://translation.googleapis.com'
     """The base of the API call URL."""
 
     API_VERSION = 'v2'
