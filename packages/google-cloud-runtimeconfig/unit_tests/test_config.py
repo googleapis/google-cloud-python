@@ -331,11 +331,11 @@ class TestConfig(unittest.TestCase):
 
 class _Client(object):
 
-    connection = None
+    _connection = None
 
     def __init__(self, project, connection=None):
         self.project = project
-        self.connection = connection
+        self._connection = connection
 
 
 class _Connection(object):
