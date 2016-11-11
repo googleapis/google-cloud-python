@@ -1640,11 +1640,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_upload_from_file_resumable_with_400(self):
         import csv
         import datetime
+        import mock
         from six.moves.http_client import BAD_REQUEST
-        from google.cloud.bigquery import table as MUT
         from google.cloud.exceptions import BadRequest
         from google.cloud._helpers import UTC
-        from google.cloud._testing import _Monkey
         from google.cloud._testing import _NamedTemporaryFile
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
@@ -1665,7 +1664,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = _Dataset(client)
         table = self._make_one(self.TABLE_NAME, dataset=dataset)
 
-        with _Monkey(MUT, _UploadConfig=_UploadConfig):
+        with mock.patch('google.cloud.bigquery.table._UploadConfig',
+                        new=_UploadConfig):
             with _NamedTemporaryFile() as temp:
                 with open(temp.name, 'w') as file_obj:
                     writer = csv.writer(file_obj)
@@ -1680,11 +1680,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
     # pylint: disable=too-many-statements
     def test_upload_from_file_w_explicit_client_resumable(self):
         import json
+        import mock
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from google.cloud._testing import _Monkey
-        from google.cloud.bigquery import table as MUT
 
         UPLOAD_PATH = 'https://example.com/upload/test'
         initial_response = {'status': OK, 'location': UPLOAD_PATH}
@@ -1703,7 +1702,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
             simple_multipart = True
             simple_path = u''  # force resumable
 
-        with _Monkey(MUT, _UploadConfig=_UploadConfig):
+        with mock.patch('google.cloud.bigquery.table._UploadConfig',
+                        new=_UploadConfig):
             orig_requested, PATH, BODY = self._upload_from_file_helper(
                 allow_jagged_rows=False,
                 allow_quoted_newlines=False,
