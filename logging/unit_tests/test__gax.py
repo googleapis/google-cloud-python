@@ -1069,8 +1069,9 @@ class Test_make_gax_logging_api(unittest.TestCase):
         return make_gax_logging_api(client)
 
     def test_it(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.logging import _gax as MUT
+        import mock
+        from google.cloud.logging._gax import _LoggingAPI
+        from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
         creds = object()
         client = _Client(creds)
@@ -1090,15 +1091,18 @@ class Test_make_gax_logging_api(unittest.TestCase):
         host = 'foo.apis.invalid'
         generated_api.SERVICE_ADDRESS = host
 
-        with _Monkey(MUT, LoggingServiceV2Api=generated_api,
-                     make_secure_channel=make_channel):
+        patch = mock.patch.multiple(
+            'google.cloud.logging._gax',
+            LoggingServiceV2Api=generated_api,
+            make_secure_channel=make_channel)
+        with patch:
             logging_api = self._call_fut(client)
 
         self.assertEqual(channels, [channel_obj])
         self.assertEqual(channel_args,
-                         [(creds, MUT.DEFAULT_USER_AGENT, host)])
+                         [(creds, DEFAULT_USER_AGENT, host)])
 
-        self.assertIsInstance(logging_api, MUT._LoggingAPI)
+        self.assertIsInstance(logging_api, _LoggingAPI)
         self.assertIs(logging_api._gax_api, generated)
         self.assertIs(logging_api._client, client)
 
@@ -1111,8 +1115,9 @@ class Test_make_gax_metrics_api(unittest.TestCase):
         return make_gax_metrics_api(client)
 
     def test_it(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.logging import _gax as MUT
+        import mock
+        from google.cloud.logging._gax import _MetricsAPI
+        from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
         creds = object()
         client = _Client(creds)
@@ -1132,15 +1137,18 @@ class Test_make_gax_metrics_api(unittest.TestCase):
         host = 'foo.apis.invalid'
         generated_api.SERVICE_ADDRESS = host
 
-        with _Monkey(MUT, MetricsServiceV2Api=generated_api,
-                     make_secure_channel=make_channel):
+        patch = mock.patch.multiple(
+            'google.cloud.logging._gax',
+            MetricsServiceV2Api=generated_api,
+            make_secure_channel=make_channel)
+        with patch:
             metrics_api = self._call_fut(client)
 
         self.assertEqual(channels, [channel_obj])
         self.assertEqual(channel_args,
-                         [(creds, MUT.DEFAULT_USER_AGENT, host)])
+                         [(creds, DEFAULT_USER_AGENT, host)])
 
-        self.assertIsInstance(metrics_api, MUT._MetricsAPI)
+        self.assertIsInstance(metrics_api, _MetricsAPI)
         self.assertIs(metrics_api._gax_api, generated)
         self.assertIs(metrics_api._client, client)
 
@@ -1153,8 +1161,9 @@ class Test_make_gax_sinks_api(unittest.TestCase):
         return make_gax_sinks_api(client)
 
     def test_it(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.logging import _gax as MUT
+        import mock
+        from google.cloud.logging._gax import _SinksAPI
+        from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
         creds = object()
         client = _Client(creds)
@@ -1174,15 +1183,18 @@ class Test_make_gax_sinks_api(unittest.TestCase):
         host = 'foo.apis.invalid'
         generated_api.SERVICE_ADDRESS = host
 
-        with _Monkey(MUT, ConfigServiceV2Api=generated_api,
-                     make_secure_channel=make_channel):
+        patch = mock.patch.multiple(
+            'google.cloud.logging._gax',
+            ConfigServiceV2Api=generated_api,
+            make_secure_channel=make_channel)
+        with patch:
             sinks_api = self._call_fut(client)
 
         self.assertEqual(channels, [channel_obj])
         self.assertEqual(channel_args,
-                         [(creds, MUT.DEFAULT_USER_AGENT, host)])
+                         [(creds, DEFAULT_USER_AGENT, host)])
 
-        self.assertIsInstance(sinks_api, MUT._SinksAPI)
+        self.assertIsInstance(sinks_api, _SinksAPI)
         self.assertIs(sinks_api._gax_api, generated)
         self.assertIs(sinks_api._client, client)
 

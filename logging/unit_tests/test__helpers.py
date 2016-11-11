@@ -28,14 +28,15 @@ class Test_entry_from_resource(unittest.TestCase):
             self._call_fut({}, None, {})
 
     def _payload_helper(self, key, class_name):
-        from google.cloud._testing import _Monkey
-        import google.cloud.logging._helpers as MUT
+        import mock
 
         resource = {key: 'yup'}
         client = object()
         loggers = {}
         mock_class = EntryMock()
-        with _Monkey(MUT, **{class_name: mock_class}):
+
+        name = 'google.cloud.logging._helpers.' + class_name
+        with mock.patch(name, new=mock_class):
             result = self._call_fut(resource, client, loggers)
 
         self.assertIs(result, mock_class.sentinel)
