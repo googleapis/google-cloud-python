@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the Vision API &mdash; google-cloud dece9c4 documentation</title>
+  <title>Using the Vision API &mdash; google-cloud 0291dd4 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud dece9c4 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 0291dd4 documentation" href="index.html"/>
         <link rel="next" title="Vision Client" href="vision-client.html"/>
         <link rel="prev" title="Translate Client" href="translate-client.html"/> 
 
@@ -464,9 +464,9 @@ locations if available.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_safe_search</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="o">.</span><span class="n">adult</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">adult</span>
 <span class="go">&#39;VERY_UNLIKELY&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="o">.</span><span class="n">medical</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">medical</span>
 <span class="go">&#39;UNLIKELY&#39;</span>
 </pre></div>
 </div>
@@ -493,7 +493,8 @@ locations if available.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_properties</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_properties</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">red</span>
 <span class="go">244</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">blue</span>
@@ -549,7 +550,7 @@ locations if available.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'dece9c4',
+            VERSION:'0291dd4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
