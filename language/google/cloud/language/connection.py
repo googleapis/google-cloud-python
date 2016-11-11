@@ -14,10 +14,10 @@
 
 """Basic connection for Google Cloud Natural Language API."""
 
-from google.cloud import connection as base_connection
+from google.cloud import _http
 
 
-class Connection(base_connection.JSONConnection):
+class Connection(_http.JSONConnection):
     """A connection to Google Cloud Natural Language JSON REST API."""
 
     API_BASE_URL = 'https://language.googleapis.com'

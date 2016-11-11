@@ -14,10 +14,10 @@
 
 """Create / interact with Google Cloud Storage connections."""
 
-from google.cloud import connection as base_connection
+from google.cloud import _http
 
 
-class Connection(base_connection.JSONConnection):
+class Connection(_http.JSONConnection):
     """A connection to Google Cloud Storage via the JSON REST API.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
@@ -28,7 +28,7 @@ class Connection(base_connection.JSONConnection):
     :param http: (Optional) HTTP object to make requests.
     """
 
-    API_BASE_URL = base_connection.API_BASE_URL
+    API_BASE_URL = _http.API_BASE_URL
     """The base of the API call URL."""
 
     API_VERSION = 'v1'

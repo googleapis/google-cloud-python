@@ -785,7 +785,7 @@ class _Client(object):
 
     def __init__(self, project='project', connection=None):
         self.project = project
-        self.connection = connection
+        self._connection = connection
 
 
 class _Connection(object):

@@ -33,7 +33,7 @@ class TestTransaction(unittest.TestCase):
         client = _Client(_PROJECT, connection)
         xact = self._make_one(client)
         self.assertEqual(xact.project, _PROJECT)
-        self.assertEqual(xact.connection, connection)
+        self.assertIs(xact._client, client)
         self.assertIsNone(xact.id)
         self.assertEqual(xact._status, self._get_target_class()._INITIAL)
         self.assertIsInstance(xact._commit_request,
@@ -227,7 +227,7 @@ class _Client(object):
 
     def __init__(self, project, connection, namespace=None):
         self.project = project
-        self.connection = connection
+        self._connection = connection
         self.namespace = namespace
         self._batches = []
 

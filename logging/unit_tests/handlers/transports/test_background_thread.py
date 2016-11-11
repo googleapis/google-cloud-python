@@ -188,7 +188,7 @@ class _Client(object):
 
     def __init__(self, project):
         self.project = project
-        self.connection = _Connection()
+        self._connection = _Connection()
 
     def logger(self, name):  # pylint: disable=unused-argument
         self._logger = _Logger(name)

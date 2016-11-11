@@ -529,8 +529,8 @@ class Client(JSONClient):
             project=self.project)
         timeseries_dict = [timeseries._to_dict()
                            for timeseries in timeseries_list]
-        self.connection.api_request(method='POST', path=path,
-                                    data={'timeSeries': timeseries_dict})
+        self._connection.api_request(method='POST', path=path,
+                                     data={'timeSeries': timeseries_dict})
 
     def write_point(self, metric, resource, value,
                     end_time=None,

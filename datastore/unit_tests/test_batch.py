@@ -35,7 +35,7 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(client)
 
         self.assertEqual(batch.project, _PROJECT)
-        self.assertEqual(batch.connection, connection)
+        self.assertIs(batch._client, client)
         self.assertEqual(batch.namespace, _NAMESPACE)
         self.assertIsNone(batch._id)
         self.assertEqual(batch._status, batch._INITIAL)
@@ -439,7 +439,7 @@ class _Client(object):
 
     def __init__(self, project, connection, namespace=None):
         self.project = project
-        self.connection = connection
+        self._connection = connection
         self.namespace = namespace
         self._batches = []
 

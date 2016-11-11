@@ -94,7 +94,7 @@ class Test_LoggingAPI(unittest.TestCase):
         }
         client = Client(project=self.PROJECT, credentials=object(),
                         use_gax=False)
-        client.connection = _Connection(RETURNED)
+        client._connection = _Connection(RETURNED)
         api = self._make_one(client)
 
         iterator = api.list_entries([self.PROJECT])
@@ -117,7 +117,7 @@ class Test_LoggingAPI(unittest.TestCase):
         self.assertIsNone(entry.severity)
         self.assertIsNone(entry.http_request)
 
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         expected_path = '/%s' % (self.LIST_ENTRIES_PATH,)
         self.assertEqual(called_with, {
             'method': 'POST',
@@ -172,7 +172,7 @@ class Test_LoggingAPI(unittest.TestCase):
         }
         client = Client(project=self.PROJECT, credentials=object(),
                         use_gax=False)
-        client.connection = _Connection(RETURNED)
+        client._connection = _Connection(RETURNED)
         api = self._make_one(client)
 
         iterator = api.list_entries(
@@ -207,7 +207,7 @@ class Test_LoggingAPI(unittest.TestCase):
         self.assertIsNone(entry2.severity)
         self.assertIsNone(entry2.http_request)
 
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         expected_path = '/%s' % (self.LIST_ENTRIES_PATH,)
         self.assertEqual(called_with, {
             'method': 'POST',
@@ -802,4 +802,4 @@ def _datetime_to_rfc3339_w_nanos(value):
 class _Client(object):
 
     def __init__(self, connection):
-        self.connection = connection
+        self._connection = connection

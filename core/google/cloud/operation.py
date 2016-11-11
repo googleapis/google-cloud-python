@@ -104,7 +104,7 @@ class Operation(object):
     :type client: :class:`~google.cloud.client.Client`
     :param client: The client used to poll for the status of the operation.
                    If the operation was created via JSON/HTTP, the client
-                   must own a :class:`~google.cloud.connection.Connection`
+                   must own a :class:`~google.cloud._http.Connection`
                    to send polling requests. If created via protobuf, the
                    client must have a gRPC stub in the ``_operations_stub``
                    attribute.
@@ -218,7 +218,7 @@ class Operation(object):
         :returns: The latest status of the current operation.
         """
         path = 'operations/%s' % (self.name,)
-        api_response = self.client.connection.api_request(
+        api_response = self.client._connection.api_request(
             method='GET', path=path)
         return json_format.ParseDict(
             api_response, operations_pb2.Operation())

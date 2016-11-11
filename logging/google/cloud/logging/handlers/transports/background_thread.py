@@ -150,10 +150,10 @@ class BackgroundThreadTransport(Transport):
     """
 
     def __init__(self, client, name):
-        http = copy.deepcopy(client.connection.http)
-        http = client.connection.credentials.authorize(http)
+        http = copy.deepcopy(client._connection.http)
+        http = client._connection.credentials.authorize(http)
         self.client = Client(client.project,
-                             client.connection.credentials,
+                             client._connection.credentials,
                              http)
         logger = self.client.logger(name)
         self.worker = _Worker(logger)

@@ -351,4 +351,4 @@ class _Client(object):
 
     def __init__(self, project, connection):
         self.project = project
-        self.connection = connection
+        self._connection = connection

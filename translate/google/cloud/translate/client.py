@@ -47,7 +47,7 @@ class Client(object):
         self.api_key = api_key
         if http is None:
             http = httplib2.Http()
-        self.connection = Connection(http=http)
+        self._connection = Connection(http=http)
         self.target_language = target_language
 
     def get_languages(self, target_language=None):
@@ -75,7 +75,7 @@ class Client(object):
             target_language = self.target_language
         if target_language is not None:
             query_params['target'] = target_language
-        response = self.connection.api_request(
+        response = self._connection.api_request(
             method='GET', path='/languages', query_params=query_params)
         return response.get('data', {}).get('languages', ())
 
@@ -117,7 +117,7 @@ class Client(object):
         query_params = [('key', self.api_key)]
         query_params.extend(('q', _to_bytes(value, 'utf-8'))
                             for value in values)
-        response = self.connection.api_request(
+        response = self._connection.api_request(
             method='GET', path='/detect', query_params=query_params)
         detections = response.get('data', {}).get('detections', ())
 
@@ -208,7 +208,7 @@ class Client(object):
         if source_language is not None:
             query_params.append(('source', source_language))
 
-        response = self.connection.api_request(
+        response = self._connection.api_request(
             method='GET', path='', query_params=query_params)
 
         translations = response.get('data', {}).get('translations', ())

@@ -16,13 +16,6 @@ Credentials Helpers
   :members:
   :show-inheritance:
 
-Base Connections
-~~~~~~~~~~~~~~~~
-
-.. automodule:: google.cloud.connection
-  :members:
-  :show-inheritance:
-
 Exceptions
 ~~~~~~~~~~
 

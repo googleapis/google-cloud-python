@@ -397,7 +397,7 @@ class TestConnection(unittest.TestCase):
 
     def test_custom_url_from_env(self):
         import mock
-        from google.cloud.connection import API_BASE_URL
+        from google.cloud._http import API_BASE_URL
         from google.cloud.environment_vars import GCD_HOST
 
         HOST = 'CURR_HOST'
