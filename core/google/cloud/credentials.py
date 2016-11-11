@@ -43,7 +43,7 @@ def get_credentials():
 def _get_signed_query_params(credentials, expiration, string_to_sign):
     """Gets query parameters for creating a signed URL.
 
-    :type credentials: :class:`oauth2client.client.AssertionCredentials`
+    :type credentials: :class:`google.auth.credentials.Credentials`
     :param credentials: The credentials used to create a private key
                         for signing text.
 
@@ -113,10 +113,8 @@ def generate_signed_url(credentials, resource, expiration,
 
     .. note::
 
-        Assumes ``credentials`` implements a ``sign_blob()`` method that takes
-        bytes to sign and returns a pair of the key ID (unused here) and the
-        signed bytes (this is abstract in the base class
-        :class:`oauth2client.client.AssertionCredentials`). Also assumes
+        Assumes ``credentials`` implements the
+        :class:`google.auth.credentials.Signing` interface. Also assumes
         ``credentials`` has a ``service_account_email`` property which
         identifies the credentials.
 
@@ -133,7 +131,7 @@ def generate_signed_url(credentials, resource, expiration,
                    google-cloud-python/issues/922
     .. _reference: https://cloud.google.com/storage/docs/reference-headers
 
-    :type credentials: :class:`oauth2client.appengine.AppAssertionCredentials`
+    :type credentials: :class:`google.auth.credentials.Signing`
     :param credentials: Credentials object with an associated private key to
                         sign text.
 

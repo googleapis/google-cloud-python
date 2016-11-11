@@ -465,7 +465,7 @@ def make_secure_channel(credentials, user_agent, host):
 
     Uses / depends on gRPC.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
+    :type credentials: :class:`google.auth.credentials.Credentials`
     :param credentials: The OAuth2 Credentials to use for creating
                         access tokens.
 
@@ -501,7 +501,7 @@ def make_secure_stub(credentials, user_agent, stub_class, host):
 
     Uses / depends on gRPC.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
+    :type credentials: :class:`google.auth.credentials.Credentials`
     :param credentials: The OAuth2 Credentials to use for creating
                         access tokens.
 

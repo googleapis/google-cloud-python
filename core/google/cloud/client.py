@@ -67,7 +67,7 @@ class Client(_ClientFactoryMixin):
     Assumes that the associated ``_connection_class`` only accepts
     ``http`` and ``credentials`` in its constructor.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+    :type credentials: :class:`google.auth.credentials.Credentials` or
                        :class:`NoneType`
     :param credentials: The OAuth2 Credentials to use for the connection
                         owned by this client. If not passed (and if no ``http``
@@ -130,7 +130,7 @@ class JSONClient(Client, _ClientProjectMixin):
                     passed falls back to the default inferred from the
                     environment.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+    :type credentials: :class:`google.auth.credentials.Credentials` or
                        :class:`NoneType`
     :param credentials: The OAuth2 Credentials to use for the connection
                         owned by this client. If not passed (and if no ``http``

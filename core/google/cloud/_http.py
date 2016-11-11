@@ -61,9 +61,9 @@ class Connection(object):
     object will also need to be able to add a bearer token to API
     requests and handle token refresh on 401 errors.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+    :type credentials: :class:`google.auth.credentials.Credentials` or
                        :class:`NoneType`
-    :param credentials: The OAuth2 Credentials to use for this connection.
+    :param credentials: The credentials to use for this connection.
 
     :type http: :class:`httplib2.Http` or class that defines ``request()``.
     :param http: An optional HTTP object to make requests.
@@ -86,7 +86,7 @@ class Connection(object):
     def credentials(self):
         """Getter for current credentials.
 
-        :rtype: :class:`oauth2client.client.OAuth2Credentials` or
+        :rtype: :class:`google.auth.credentials.Credentials` or
                 :class:`NoneType`
         :returns: The credentials object associated with this connection.
         """
