@@ -45,7 +45,7 @@ def clone_client(client):
     cloned_client = datastore.Client(project=client.project,
                                      namespace=client.namespace,
                                      http=object())
-    cloned_client.connection = client.connection
+    cloned_client._connection = client._connection
     return cloned_client
 
 

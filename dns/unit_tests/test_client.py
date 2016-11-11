@@ -34,9 +34,9 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 http=http)
-        self.assertIsInstance(client.connection, Connection)
-        self.assertIs(client.connection.credentials, creds)
-        self.assertIs(client.connection.http, http)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, creds)
+        self.assertIs(client._connection.http, http)
 
     def test_quotas_defaults(self):
         PATH = 'projects/%s' % (self.PROJECT,)
@@ -60,7 +60,7 @@ class TestClient(unittest.TestCase):
                      for key, value in DATA['quota'].items()}
         creds = _Credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        conn = client._connection = _Connection(DATA)
 
         quotas = client.quotas()
 
@@ -95,7 +95,7 @@ class TestClient(unittest.TestCase):
         WITH_KIND['quota']['kind'] = 'dns#quota'
         creds = _Credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client.connection = _Connection(WITH_KIND)
+        conn = client._connection = _Connection(WITH_KIND)
 
         quotas = client.quotas()
 
@@ -132,7 +132,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _Credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_zones()
         page = six.next(iterator.pages)
@@ -177,7 +177,7 @@ class TestClient(unittest.TestCase):
         }
         creds = _Credentials()
         client = self._make_one(self.PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_zones(max_results=3, page_token=TOKEN)
         page = six.next(iterator.pages)

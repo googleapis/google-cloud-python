@@ -422,7 +422,7 @@ class Dataset(object):
         """
         client = self._require_client(client)
         path = '/projects/%s/datasets' % (self.project,)
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)
 
@@ -443,8 +443,8 @@ class Dataset(object):
         client = self._require_client(client)
 
         try:
-            client.connection.api_request(method='GET', path=self.path,
-                                          query_params={'fields': 'id'})
+            client._connection.api_request(method='GET', path=self.path,
+                                           query_params={'fields': 'id'})
         except NotFound:
             return False
         else:
@@ -463,7 +463,7 @@ class Dataset(object):
         """
         client = self._require_client(client)
 
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='GET', path=self.path)
         self._set_properties(api_response)
 
@@ -502,7 +502,7 @@ class Dataset(object):
         if 'location' in kw:
             partial['location'] = kw['location']
 
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='PATCH', path=self.path, data=partial)
         self._set_properties(api_response)
 
@@ -518,7 +518,7 @@ class Dataset(object):
                        ``client`` stored on the current dataset.
         """
         client = self._require_client(client)
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='PUT', path=self.path, data=self._build_resource())
         self._set_properties(api_response)
 
@@ -534,7 +534,7 @@ class Dataset(object):
                        ``client`` stored on the current dataset.
         """
         client = self._require_client(client)
-        client.connection.api_request(method='DELETE', path=self.path)
+        client._connection.api_request(method='DELETE', path=self.path)
 
     def list_tables(self, max_results=None, page_token=None):
         """List tables for the project associated with this client.

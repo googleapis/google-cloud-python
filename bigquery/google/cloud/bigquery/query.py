@@ -334,7 +334,7 @@ class QueryResults(object):
 
         client = self._require_client(client)
         path = '/projects/%s/queries' % (self.project,)
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)
 
@@ -392,9 +392,9 @@ class QueryResults(object):
             params['timeoutMs'] = timeout_ms
 
         path = '/projects/%s/queries/%s' % (self.project, self.name)
-        response = client.connection.api_request(method='GET',
-                                                 path=path,
-                                                 query_params=params)
+        response = client._connection.api_request(method='GET',
+                                                  path=path,
+                                                  query_params=params)
         self._set_properties(response)
 
         total_rows = response.get('totalRows')

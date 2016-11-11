@@ -487,7 +487,7 @@ class Query(object):
                 page_size=page_size,
                 page_token=page_token,
             ))
-            response = self._client.connection.api_request(
+            response = self._client._connection.api_request(
                 method='GET',
                 path=path,
                 query_params=params,

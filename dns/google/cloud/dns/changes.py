@@ -218,7 +218,7 @@ class Changes(object):
         client = self._require_client(client)
         path = '/projects/%s/managedZones/%s/changes' % (
             self.zone.project, self.zone.name)
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)
 
@@ -238,8 +238,8 @@ class Changes(object):
         """
         client = self._require_client(client)
         try:
-            client.connection.api_request(method='GET', path=self.path,
-                                          query_params={'fields': 'id'})
+            client._connection.api_request(method='GET', path=self.path,
+                                           query_params={'fields': 'id'})
         except NotFound:
             return False
         else:
@@ -258,6 +258,6 @@ class Changes(object):
         """
         client = self._require_client(client)
 
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='GET', path=self.path)
         self._set_properties(api_response)

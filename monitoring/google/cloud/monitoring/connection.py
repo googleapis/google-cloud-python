@@ -14,10 +14,10 @@
 
 """Create / interact with Stackdriver Monitoring connections."""
 
-from google.cloud import connection as base_connection
+from google.cloud import _http
 
 
-class Connection(base_connection.JSONConnection):
+class Connection(_http.JSONConnection):
     """A connection to Google Stackdriver Monitoring via the JSON REST API.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`

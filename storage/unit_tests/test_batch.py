@@ -380,7 +380,7 @@ class TestBatch(unittest.TestCase):
         project = 'PROJECT'
         credentials = _Credentials()
         client = Client(project=project, credentials=credentials)
-        client._connection._http = http
+        client._base_connection._http = http
 
         self.assertEqual(list(client._batch_stack), [])
 
@@ -416,7 +416,7 @@ class TestBatch(unittest.TestCase):
         project = 'PROJECT'
         credentials = _Credentials()
         client = Client(project=project, credentials=credentials)
-        client._connection = connection
+        client._base_connection = connection
 
         self.assertEqual(list(client._batch_stack), [])
 
@@ -598,7 +598,7 @@ class _MockObject(object):
 class _Client(object):
 
     def __init__(self, connection):
-        self._connection = connection
+        self._base_connection = connection
 
 
 class _Credentials(object):

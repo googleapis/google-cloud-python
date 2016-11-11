@@ -18,7 +18,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import six
 
 from google.cloud._helpers import _determine_default_project
-from google.cloud.connection import Connection
+from google.cloud._http import Connection
 from google.cloud.credentials import get_credentials
 
 
@@ -120,7 +120,7 @@ class Client(_ClientFactoryMixin):
     def __init__(self, credentials=None, http=None):
         if credentials is None and http is None:
             credentials = get_credentials()
-        self.connection = self._connection_class(
+        self._connection = self._connection_class(
             credentials=credentials, http=http)
 
 

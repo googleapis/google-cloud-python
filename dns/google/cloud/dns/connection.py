@@ -14,10 +14,10 @@
 
 """Create / interact with Google Cloud DNS connections."""
 
-from google.cloud import connection as base_connection
+from google.cloud import _http
 
 
-class Connection(base_connection.JSONConnection):
+class Connection(_http.JSONConnection):
     """A connection to Google Cloud DNS via the JSON REST API."""
 
     API_BASE_URL = 'https://www.googleapis.com'

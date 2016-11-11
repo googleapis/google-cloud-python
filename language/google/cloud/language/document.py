@@ -167,7 +167,7 @@ class Document(object):
             'document': self._to_dict(),
             'encodingType': self.encoding,
         }
-        api_response = self.client.connection.api_request(
+        api_response = self.client._connection.api_request(
             method='POST', path='analyzeEntities', data=data)
         return [Entity.from_api_repr(entity)
                 for entity in api_response['entities']]
@@ -184,7 +184,7 @@ class Document(object):
         :returns: The sentiment of the current document.
         """
         data = {'document': self._to_dict()}
-        api_response = self.client.connection.api_request(
+        api_response = self.client._connection.api_request(
             method='POST', path='analyzeSentiment', data=data)
         return Sentiment.from_api_repr(api_response['documentSentiment'])
 
@@ -238,7 +238,7 @@ class Document(object):
             'features': features,
             'encodingType': self.encoding,
         }
-        api_response = self.client.connection.api_request(
+        api_response = self.client._connection.api_request(
             method='POST', path='annotateText', data=data)
 
         sentences = [Sentence.from_api_repr(sentence)

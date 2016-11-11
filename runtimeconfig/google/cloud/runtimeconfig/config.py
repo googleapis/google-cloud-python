@@ -153,7 +153,7 @@ class Config(object):
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
             query_params = {'fields': 'name'}
-            client.connection.api_request(
+            client._connection.api_request(
                 method='GET', path=self.path, query_params=query_params)
             return True
         except NotFound:
@@ -176,7 +176,7 @@ class Config(object):
 
         # We assume the config exists. If it doesn't it will raise a NotFound
         # exception.
-        resp = client.connection.api_request(method='GET', path=self.path)
+        resp = client._connection.api_request(method='GET', path=self.path)
         self._set_properties(api_response=resp)
 
     def get_variable(self, variable_name, client=None):

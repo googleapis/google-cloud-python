@@ -235,7 +235,7 @@ class Blob(_PropertyMixin):
 
         if credentials is None:
             client = self._require_client(client)
-            credentials = client._connection.credentials
+            credentials = client._base_connection.credentials
 
         return generate_signed_url(
             credentials, resource=resource,
@@ -264,9 +264,9 @@ class Blob(_PropertyMixin):
             query_params = {'fields': 'name'}
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
-            client.connection.api_request(method='GET', path=self.path,
-                                          query_params=query_params,
-                                          _target_object=None)
+            client._connection.api_request(
+                method='GET', path=self.path,
+                query_params=query_params, _target_object=None)
             # NOTE: This will not fail immediately in a batch. However, when
             #       Batch.finish() is called, the resulting `NotFound` will be
             #       raised.
@@ -344,13 +344,13 @@ class Blob(_PropertyMixin):
 
         request = Request(download_url, 'GET', headers)
 
-        # Use the private ``_connection`` rather than the public
-        # ``.connection``, since the public connection may be a batch. A
-        # batch wraps a client's connection, but does not store the `http`
-        # object. The rest (API_BASE_URL and build_api_url) are also defined
-        # on the Batch class, but we just use the wrapped connection since
-        # it has all three (http, API_BASE_URL and build_api_url).
-        download.initialize_download(request, client._connection.http)
+        # Use ``_base_connection`` rather ``_connection`` since the current
+        # connection may be a batch. A batch wraps a client's connection,
+        # but does not store the ``http`` object. The rest (API_BASE_URL and
+        # build_api_url) are also defined on the Batch class, but we just
+        # use the wrapped connection since it has all three (http,
+        # API_BASE_URL and build_api_url).
+        download.initialize_download(request, client._base_connection.http)
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
@@ -466,13 +466,13 @@ class Blob(_PropertyMixin):
                  if the upload response returns an error status.
         """
         client = self._require_client(client)
-        # Use the private ``_connection`` rather than the public
-        # ``.connection``, since the public connection may be a batch. A
-        # batch wraps a client's connection, but does not store the `http`
-        # object. The rest (API_BASE_URL and build_api_url) are also defined
-        # on the Batch class, but we just use the wrapped connection since
-        # it has all three (http, API_BASE_URL and build_api_url).
-        connection = client._connection
+        # Use ``_base_connection`` rather ``_connection`` since the current
+        # connection may be a batch. A batch wraps a client's connection,
+        # but does not store the ``http`` object. The rest (API_BASE_URL and
+        # build_api_url) are also defined on the Batch class, but we just
+        # use the wrapped connection since it has all three (http,
+        # API_BASE_URL and build_api_url).
+        connection = client._base_connection
         content_type = (content_type or self._properties.get('contentType') or
                         'application/octet-stream')
 
@@ -650,7 +650,7 @@ class Blob(_PropertyMixin):
             'sourceObjects': [{'name': source.name} for source in sources],
             'destination': self._properties.copy(),
         }
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='POST', path=self.path + '/compose', data=request,
             _target_object=self)
         self._set_properties(api_response)
@@ -688,7 +688,7 @@ class Blob(_PropertyMixin):
         else:
             query_params = {}
 
-        api_response = client.connection.api_request(
+        api_response = client._connection.api_request(
             method='POST', path=source.path + '/rewriteTo' + self.path,
             query_params=query_params, data=self._properties, headers=headers,
             _target_object=self)
