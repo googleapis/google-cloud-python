@@ -32,10 +32,11 @@ class TestClient(unittest.TestCase):
         from google.cloud.translate.client import ENGLISH_ISO_639
 
         http = object()
-        client = self._make_one(self.KEY, http=http)
+        client = self._make_one(http=http)
         self.assertIsInstance(client._connection, Connection)
         self.assertIsNone(client._connection.credentials)
         self.assertIs(client._connection.http, http)
+        self.assertIsNone(client.api_key)
         self.assertEqual(client.target_language, ENGLISH_ISO_639)
 
     def test_ctor_non_default(self):
@@ -43,16 +44,18 @@ class TestClient(unittest.TestCase):
 
         http = object()
         target = 'es'
-        client = self._make_one(self.KEY, http=http, target_language=target)
+        client = self._make_one(
+            target_language=target, api_key=self.KEY, http=http)
         self.assertIsInstance(client._connection, Connection)
         self.assertIsNone(client._connection.credentials)
         self.assertIs(client._connection.http, http)
+        self.assertEqual(self.KEY, client.api_key)
         self.assertEqual(client.target_language, target)
 
     def test_get_languages(self):
         from google.cloud.translate.client import ENGLISH_ISO_639
 
-        client = self._make_one(self.KEY)
+        client = self._make_one(api_key=self.KEY, http=object())
         supported = [
             {'language': 'en', 'name': 'English'},
             {'language': 'af', 'name': 'Afrikaans'},
@@ -77,7 +80,8 @@ class TestClient(unittest.TestCase):
                          {'key': self.KEY, 'target': ENGLISH_ISO_639})
 
     def test_get_languages_no_target(self):
-        client = self._make_one(self.KEY, target_language=None)
+        client = self._make_one(
+            target_language=None, http=object())
         supported = [
             {'language': 'en'},
             {'language': 'af'},
@@ -96,12 +100,13 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
+        self.assertEqual(len(req), 3)
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/languages')
-        self.assertEqual(req['query_params'], {'key': self.KEY})
+        self.assertEqual(req['query_params'], {})
 
     def test_get_languages_explicit_target(self):
-        client = self._make_one(self.KEY)
+        client = self._make_one(api_key=self.KEY, http=object())
         target_language = 'en'
         supported = [
             {'language': 'en', 'name': 'Spanish'},
@@ -127,7 +132,7 @@ class TestClient(unittest.TestCase):
                          {'key': self.KEY, 'target': target_language})
 
     def test_detect_language_bad_result(self):
-        client = self._make_one(self.KEY)
+        client = self._make_one(api_key=self.KEY, http=object())
         value = 'takoy'
         conn = client._connection = _Connection({})
 
@@ -146,7 +151,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], query_params)
 
     def test_detect_language_single_value(self):
-        client = self._make_one(self.KEY)
+        client = self._make_one(api_key=self.KEY, http=object())
         value = 'takoy'
         detection = {
             'confidence': 1.0,
@@ -176,7 +181,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], query_params)
 
     def test_detect_language_multiple_values(self):
-        client = self._make_one(self.KEY)
+        client = self._make_one(http=object())
         value1 = u'fa\xe7ade'  # facade (with a cedilla)
         detection1 = {
             'confidence': 0.6166008,
@@ -210,14 +215,13 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/detect')
         query_params = [
-            ('key', self.KEY),
             ('q', value1.encode('utf-8')),
             ('q', value2.encode('utf-8')),
         ]
         self.assertEqual(req['query_params'], query_params)
 
     def test_detect_language_multiple_results(self):
-        client = self._make_one(self.KEY)
+        client = self._make_one(api_key=self.KEY, http=object())
         value = 'soy'
         detection1 = {
             'confidence': 0.81496066,
@@ -242,7 +246,7 @@ class TestClient(unittest.TestCase):
             client.detect_language(value)
 
     def test_translate_bad_result(self):
-        client = self._make_one(self.KEY)
+        client = self._make_one(api_key=self.KEY, http=object())
         value = 'hvala ti'
         conn = client._connection = _Connection({})
 
@@ -255,14 +259,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '')
         query_params = [
-            ('key', self.KEY),
             ('target', 'en'),
+            ('key', self.KEY),
             ('q', value.encode('utf-8')),
         ]
         self.assertEqual(req['query_params'], query_params)
 
     def test_translate_defaults(self):
-        client = self._make_one(self.KEY)
+        client = self._make_one(http=object())
         value = 'hvala ti'
         translation = {
             'detectedSourceLanguage': 'hr',
@@ -285,14 +289,13 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '')
         query_params = [
-            ('key', self.KEY),
             ('target', 'en'),
             ('q', value.encode('utf-8')),
         ]
         self.assertEqual(req['query_params'], query_params)
 
     def test_translate_multiple(self):
-        client = self._make_one(self.KEY)
+        client = self._make_one(api_key=self.KEY, http=object())
         value1 = 'hvala ti'
         translation1 = {
             'detectedSourceLanguage': 'hr',
@@ -321,15 +324,15 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '')
         query_params = [
-            ('key', self.KEY),
             ('target', 'en'),
+            ('key', self.KEY),
             ('q', value1.encode('utf-8')),
             ('q', value2.encode('utf-8')),
         ]
         self.assertEqual(req['query_params'], query_params)
 
     def test_translate_explicit(self):
-        client = self._make_one(self.KEY)
+        client = self._make_one(api_key=self.KEY, http=object())
         value = 'thank you'
         target_language = 'eo'
         source_language = 'en'
@@ -357,8 +360,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '')
         query_params = [
-            ('key', self.KEY),
             ('target', target_language),
+            ('key', self.KEY),
             ('q', value.encode('utf-8')),
             ('cid', cid),
             ('format', format_),
