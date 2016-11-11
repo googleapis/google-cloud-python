@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v0.3.0
+------
+
+- Added Google ID token verification helpers. (#82)
+- Swapped the ``target`` and ``request`` argument order for ``grpc.secure_authorized_channel``. (#81)
+- Added a user's guide. (#79)
+- Made ``service_account_email`` a public property on several credential classes. (#76)
+- Added a ``scope`` argument to ``google.auth.default``. (#75)
+- Added support for the ``GCLOUD_PROJECT`` environment variable. (#73)
+
 v0.2.0
 ------
 
