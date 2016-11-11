@@ -244,7 +244,7 @@ class TestClient(unittest.TestCase):
         client.connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
-        safe_search = image.detect_safe_search()
+        safe_search = image.detect_safe_search()[0]
         self.assertIsInstance(safe_search, SafeSearchAnnotation)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
@@ -264,7 +264,7 @@ class TestClient(unittest.TestCase):
         client.connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
-        image_properties = image.detect_properties()
+        image_properties = image.detect_properties()[0]
         self.assertIsInstance(image_properties, ImagePropertiesAnnotation)
         image_request = client.connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
