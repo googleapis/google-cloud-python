@@ -65,6 +65,7 @@ REQUIREMENTS = [
     'google-cloud-storage >= 0.20.0',
     'google-cloud-translate >= 0.20.0',
     'google-cloud-vision >= 0.20.0',
+    'google-cloud-runtimeconfig >= 0.20.0',
 ]
 
 setup(

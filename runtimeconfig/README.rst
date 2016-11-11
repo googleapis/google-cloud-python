@@ -5,7 +5,7 @@ Python Client for Google Cloud RuntimeConfig
 
 .. _Google Cloud RuntimeConfig: https://cloud.google.com/deployment-manager/runtime-configurator/
 
-|alpha|
+|alpha| |pypi| |versions|
 
 -  `Documentation`_
 
@@ -47,4 +47,9 @@ for changes to your data and return based on certain conditions.
 See the ``google-cloud-python`` API `runtimeconfig documentation`_ to learn
 how to interact with Cloud RuntimeConfig using this Client Library.
 
-.. _RuntimeConfig documentation: https://google-cloud-python.readthedocs.io/en/stable/runtimeconfig-usage.html
+.. _RuntimeConfig documentation: https://google-cloud-python.readthedocs.io/en/latest/runtimeconfig-usage.html
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-runtimeconfig.svg
+   :target: https://pypi.python.org/pypi/google-cloud-runtimeconfig
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-runtimeconfig.svg
+   :target: https://pypi.python.org/pypi/google-cloud-runtimeconfig
