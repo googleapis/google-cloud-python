@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.client &mdash; google-cloud 901bd7d documentation</title>
+  <title>google.cloud.speech.client &mdash; google-cloud f364416 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 901bd7d documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud f364416 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -216,6 +216,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-encoding.html">Speech Encoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-operation.html">Speech Operation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech-result.html">Speech Result</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-sample.html">Speech Sample</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../speech-alternative.html">Speech Alternative</a></li>
 </ul>
@@ -306,6 +307,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.speech.connection</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.encoding</span> <span class="k">import</span> <span class="n">Encoding</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.operation</span> <span class="k">import</span> <span class="n">Operation</span>
+<span class="kn">from</span> <span class="nn">google.cloud.speech.result</span> <span class="k">import</span> <span class="n">StreamingSpeechResult</span>
 <span class="kn">from</span> <span class="nn">google.cloud.speech.sample</span> <span class="k">import</span> <span class="n">Sample</span>
 
 
@@ -449,7 +451,8 @@
 <span class="sd">            Streaming recognition requests are limited to 1 minute of audio.</span>
 <span class="sd">            See: https://cloud.google.com/speech/limits#content</span>
 
-<span class="sd">        Yields: list of :class:`~google.cloud.speech.alternative.Alternatives`</span>
+<span class="sd">        Yields: Instance of</span>
+<span class="sd">                :class:`~google.cloud.speech.result.StreamingSpeechResult`</span>
 <span class="sd">                containing results and metadata from the streaming request.</span>
 
 <span class="sd">        :type sample: :class:`~google.cloud.speech.sample.Sample`</span>
@@ -521,8 +524,7 @@
         <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">is_final</span> <span class="ow">or</span> <span class="n">interim_results</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="p">[</span><span class="n">Alternative</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">alternative</span><span class="p">)</span>
-                           <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">]</span></div>
+                    <span class="k">yield</span> <span class="n">StreamingSpeechResult</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.sync_recognize"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client.sync_recognize">[docs]</a>    <span class="k">def</span> <span class="nf">sync_recognize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">language_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="n">max_alternatives</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">profanity_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -806,7 +808,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'901bd7d',
+            VERSION:'f364416',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

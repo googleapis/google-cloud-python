@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Metrics &mdash; google-cloud f364416 documentation</title>
+  <title>Speech Result &mdash; google-cloud f364416 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="google-cloud f364416 documentation" href="index.html"/>
-        <link rel="next" title="Sinks" href="logging-sink.html"/>
-        <link rel="prev" title="Entries" href="logging-entries.html"/> 
+        <link rel="next" title="Speech Sample" href="speech-sample.html"/>
+        <link rel="prev" title="Speech Operation" href="speech-operation.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -159,12 +159,12 @@
 <li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="logging-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-logger.html">Logger</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-entries.html">Entries</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-metric.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-sink.html">Sinks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-stdlib-usage.html">Integration with Python logging module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-handlers.html">Python Logging Module Handler</a></li>
@@ -212,12 +212,12 @@
 <li class="toctree-l1"><a class="reference internal" href="language-responses.html">Natural Language Response Classes</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Speech</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="speech-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-encoding.html">Speech Encoding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-operation.html">Speech Operation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="speech-result.html">Speech Result</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Speech Result</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-sample.html">Speech Sample</a></li>
 <li class="toctree-l1"><a class="reference internal" href="speech-alternative.html">Speech Alternative</a></li>
 </ul>
@@ -264,11 +264,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Metrics</li>
+    <li>Speech Result</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/logging-metric.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/speech-result.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -278,171 +278,41 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-google.cloud.logging.metric">
-<span id="metrics"></span><h1>Metrics<a class="headerlink" href="#module-google.cloud.logging.metric" title="Permalink to this headline">#</a></h1>
-<p>Define Stackdriver Logging API Metrics.</p>
+  <div class="section" id="module-google.cloud.speech.result">
+<span id="speech-result"></span><h1>Speech Result<a class="headerlink" href="#module-google.cloud.speech.result" title="Permalink to this headline">#</a></h1>
+<p>Speech result representations.</p>
 <dl class="class">
-<dt id="google.cloud.logging.metric.Metric">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.metric.</code><code class="descname">Metric</code><span class="sig-paren">(</span><em>name</em>, <em>filter_=None</em>, <em>client=None</em>, <em>description=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/metric.html#Metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.metric.Metric" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.speech.result.StreamingSpeechResult">
+<em class="property">class </em><code class="descclassname">google.cloud.speech.result.</code><code class="descname">StreamingSpeechResult</code><span class="sig-paren">(</span><em>alternatives</em>, <em>is_final=False</em>, <em>stability=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/result.html#StreamingSpeechResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.result.StreamingSpeechResult" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Metrics represent named filters for log entries.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics">https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics</a></p>
+<p>Streaming speech result representation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the metric</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the advanced logs filter expression defining the entries
-tracked by the metric.  If not passed, the instance should
-already exist, to be refreshed via <a class="reference internal" href="#google.cloud.logging.metric.Metric.reload" title="google.cloud.logging.metric.Metric.reload"><code class="xref py py-meth docutils literal"><span class="pre">reload()</span></code></a>.</li>
-<li><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
-for the metric (which requires a project).</li>
-<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; an optional description of the metric.</li>
+<li><strong>alternatives</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of
+<a class="reference internal" href="speech-alternative.html#google.cloud.speech.alternative.Alternative" title="google.cloud.speech.alternative.Alternative"><code class="xref py py-class docutils literal"><span class="pre">Alternative</span></code></a>.</li>
+<li><strong>is_final</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Boolean indicator of results finality.</li>
+<li><strong>stability</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; 0.0-1.0 stability score for the results returned.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="google.cloud.logging.metric.Metric.client">
-<code class="descname">client</code><a class="headerlink" href="#google.cloud.logging.metric.Metric.client" title="Permalink to this definition">#</a></dt>
-<dd><p>Clent bound to the logger.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.logging.metric.Metric.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/metric.html#Metric.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.metric.Metric.create" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  create the metric via a PUT request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/create">https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/create</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current metric.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.logging.metric.Metric.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/metric.html#Metric.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.metric.Metric.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  delete a metric via a DELETE request</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/delete">https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/delete</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current metric.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.logging.metric.Metric.exists">
-<code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/metric.html#Metric.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.metric.Metric.exists" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  test for the existence of the metric via a GET request</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/get">https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/get</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current metric.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean indicating existence of the metric.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="classmethod">
-<dt id="google.cloud.logging.metric.Metric.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/metric.html#Metric.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.metric.Metric.from_api_repr" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory:  construct a metric given its API representation</p>
+<dt id="google.cloud.speech.result.StreamingSpeechResult.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/result.html#StreamingSpeechResult.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.result.StreamingSpeechResult.from_pb" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct instance of <code class="docutils literal"><span class="pre">StreamingSpeechResult</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; metric resource representation returned from the API</li>
-<li><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.client.Client</span></code></a>) &#8211; Client which holds credentials and project
-configuration for the metric.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<code class="xref py py-class docutils literal"><span class="pre">StreamingRecognizeResult</span></code>) &#8211; Instance of <code class="docutils literal"><span class="pre">StreamingRecognizeResult</span></code> protobuf.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.logging.metric.Metric" title="google.cloud.logging.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.metric.Metric</span></code></a></p>
-</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.speech.result.StreamingSpeechResult" title="google.cloud.speech.result.StreamingSpeechResult"><code class="xref py py-class docutils literal"><span class="pre">StreamingSpeechResult</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Metric parsed from <code class="docutils literal"><span class="pre">resource</span></code>.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.logging.metric.Metric.full_name">
-<code class="descname">full_name</code><a class="headerlink" href="#google.cloud.logging.metric.Metric.full_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Fully-qualified name used in metric APIs</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.logging.metric.Metric.path">
-<code class="descname">path</code><a class="headerlink" href="#google.cloud.logging.metric.Metric.path" title="Permalink to this definition">#</a></dt>
-<dd><p>URL path for the metric&#8217;s APIs</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.logging.metric.Metric.project">
-<code class="descname">project</code><a class="headerlink" href="#google.cloud.logging.metric.Metric.project" title="Permalink to this definition">#</a></dt>
-<dd><p>Project bound to the logger.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.logging.metric.Metric.reload">
-<code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/metric.html#Metric.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.metric.Metric.reload" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  sync local metric configuration via a GET request</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/get">https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/get</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current metric.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.logging.metric.Metric.update">
-<code class="descname">update</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/metric.html#Metric.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.metric.Metric.update" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  update metric configuration via a PUT request</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/update">https://cloud.google.com/logging/docs/api/reference/rest/v2/projects.metrics/update</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="logging-client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current metric.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Instance of <code class="docutils literal"><span class="pre">StreamingSpeechResult</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -459,10 +329,10 @@ configuration for the metric.</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="logging-sink.html" class="btn btn-neutral float-right" title="Sinks" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="speech-sample.html" class="btn btn-neutral float-right" title="Speech Sample" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="logging-entries.html" class="btn btn-neutral" title="Entries" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="speech-operation.html" class="btn btn-neutral" title="Speech Operation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
