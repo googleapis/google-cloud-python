@@ -171,10 +171,10 @@ speech data to possible text alternatives on the fly.
     ...     sample = client.sample(content=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    ...     alternatives = list(client.streaming_recognize(sample))
-    >>> print(alternatives[0].transcript)
+    ...     results = list(client.streaming_recognize(sample))
+    >>> print(results[0].alternatives[0].transcript)
     'hello'
-    >>> print(alternatives[0].confidence)
+    >>> print(results[0].alternatives[0].confidence)
     0.973458576
 
 
@@ -196,10 +196,10 @@ See: `Single Utterance`_
     ...                            sample_rate=16000)
     ...     responses = client.streaming_recognize(sample,
     ...                                            single_utterance=True)
-    ...     alternatives = list(responses)
-    >>> print(alternatives[0].transcript)
+    ...     results = list(responses)
+    >>> print(results[0].alternatives[0].transcript)
     hello
-    >>> print(alternatives[0].confidence)
+    >>> print(results[0].alternatives[0].confidence)
     0.96523453546
 
 
@@ -214,20 +214,28 @@ If ``interim_results`` is set to :data:`True`, interim results
     ...     sample = client.sample(content=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    ...     for alternatives in client.streaming_recognize(sample,
-    ...                                                    interim_results=True):
+    ...     for results in client.streaming_recognize(sample,
+    ...                                                interim_results=True):
     ...         print('=' * 20)
-    ...         print(alternatives[0].transcript)
-    ...         print(alternatives[0].confidence)
+    ...         print(results[0].alternatives[0].transcript)
+    ...         print(results[0].alternatives[0].confidence)
+    ...         print(results[0].is_final)
+    ...         print(results[0].stability)
     ====================
     'he'
     None
+    False
+    0.113245
     ====================
     'hell'
     None
+    False
+    0.132454
     ====================
     'hello'
     0.973458576
+    True
+    0.982345
 
 
 .. _Single Utterance: https://cloud.google.com/speech/reference/rpc/google.cloud.speech.v1beta1#streamingrecognitionconfig
