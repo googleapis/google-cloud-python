@@ -235,8 +235,6 @@ Running System Tests
     `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
     for more details. In order for Logging system tests to work, the Service Account
     will also have to be made a project Owner. This can be changed under "IAM & Admin".
-  - ``GOOGLE_CLOUD_TESTS_API_KEY``: The API key for your project with
-    the Google Translate API (and others) enabled.
 
 - Examples of these can be found in ``system_tests/local_test_setup.sample``. We
   recommend copying this to ``system_tests/local_test_setup``, editing the

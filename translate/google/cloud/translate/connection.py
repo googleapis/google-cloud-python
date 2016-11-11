@@ -28,3 +28,6 @@ class Connection(_http.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/language/translate/{api_version}{path}'
     """A template for the URL of a particular API call."""
+
+    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
+    """The scopes required for authenticating."""
