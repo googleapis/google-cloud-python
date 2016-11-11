@@ -407,7 +407,7 @@ class ACL(object):
 
         self.entities.clear()
 
-        found = client.connection.api_request(method='GET', path=path)
+        found = client._connection.api_request(method='GET', path=path)
         self.loaded = True
         for entry in found.get('items', ()):
             self.add_entity(self.entity_from_dict(entry))
@@ -436,7 +436,7 @@ class ACL(object):
 
         path = self.save_path
         client = self._require_client(client)
-        result = client.connection.api_request(
+        result = client._connection.api_request(
             method='PATCH',
             path=path,
             data={self._URL_PATH_ELEM: list(acl)},

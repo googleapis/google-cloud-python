@@ -241,10 +241,10 @@ class Batch(Connection):
 
         url = '%s/batch' % self.API_BASE_URL
 
-        # Use the private ``_connection`` rather than the public
-        # ``.connection``, since the public connection may be this
+        # Use the private ``_base_connection`` rather than the property
+        # ``_connection``, since the property may be this
         # current batch.
-        response, content = self._client._connection._make_request(
+        response, content = self._client._base_connection._make_request(
             'POST', url, data=body, headers=headers)
         responses = list(_unpack_batch_response(response, content))
         self._finish_futures(responses)
