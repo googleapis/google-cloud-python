@@ -133,7 +133,7 @@ class Test__determine_default_project(unittest.TestCase):
         from google.cloud._helpers import _determine_default_project
         return _determine_default_project(project=project)
 
-    def test(self):
+    def test_it(self):
         with mock.patch('google.auth.default', autospec=True) as default:
             default.return_value = (
                 mock.sentinel.credentials, mock.sentinel.project)

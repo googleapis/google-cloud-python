@@ -30,58 +30,9 @@ from google.cloud._helpers import _microseconds_from_datetime
 def get_credentials():
     """Gets credentials implicitly from the current environment.
 
-    .. note::
+    Uses :func:`google.auth.default()`.
 
-        You should not need to use this function directly. Instead, use a
-        helper method which uses this method under the hood.
-
-    Checks environment in order of precedence:
-
-    * Google App Engine (production and testing)
-    * Environment variable :envvar:`GOOGLE_APPLICATION_CREDENTIALS` pointing to
-      a file with stored credentials information.
-    * Stored "well known" file associated with ``gcloud`` command line tool.
-    * Google Compute Engine production environment.
-
-    The file referred to in :envvar:`GOOGLE_APPLICATION_CREDENTIALS` is
-    expected to contain information about credentials that are ready to use.
-    This means either service account information or user account information
-    with a ready-to-use refresh token:
-
-    .. code:: json
-
-      {
-          'type': 'authorized_user',
-          'client_id': '...',
-          'client_secret': '...',
-          'refresh_token': '...'
-      }
-
-    or
-
-    .. code:: json
-
-      {
-          'type': 'service_account',
-          'project_id': '...',
-          'private_key_id': '...',
-          'private_key': '...',
-          'client_email': '...',
-          'client_id': '...',
-          'auth_uri': '...',
-          'token_uri': '...',
-          'auth_provider_x509_cert_url': '...',
-          'client_x509_cert_url': '...'
-      }
-
-    The second of these is simply a JSON key downloaded from the Google APIs
-    console. The first is a close cousin of the "client secrets" JSON file
-    used by :mod:`oauth2client.clientsecrets` but differs in formatting.
-
-    :rtype: :class:`oauth2client.client.GoogleCredentials`,
-            :class:`oauth2client.contrib.appengine.AppAssertionCredentials`,
-            :class:`oauth2client.contrib.gce.AppAssertionCredentials`,
-            :class:`oauth2client.service_account.ServiceAccountCredentials`
+    :rtype: :class:`google.auth.credentials.Credentials`,
     :returns: A new credentials instance corresponding to the implicit
               environment.
     """

@@ -113,8 +113,7 @@ class TestJSONConnection(unittest.TestCase):
         self.assertIsNone(conn.credentials)
 
     def test_ctor_explicit(self):
-        credentials = mock.sentinel.credentials
-        conn = self._make_one(credentials)
+        conn = self._make_one(mock.sentinel.credentials)
         self.assertIs(conn.credentials, mock.sentinel.credentials)
 
     def test_http_w_existing(self):
