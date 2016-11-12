@@ -50,7 +50,7 @@ import os
 import subprocess
 import sys
 
-from google.cloud.environment_vars import CREDENTIALS
+from google.auth.environment_vars import CREDENTIALS
 
 from run_system_test import FailedSystemTestModule
 from run_system_test import run_module_tests

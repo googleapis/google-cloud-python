@@ -17,7 +17,7 @@ import os
 import sys
 import time
 
-from google.cloud.environment_vars import CREDENTIALS as TEST_CREDENTIALS
+from google.auth.environment_vars import CREDENTIALS as TEST_CREDENTIALS
 
 
 # From shell environ. May be None.
