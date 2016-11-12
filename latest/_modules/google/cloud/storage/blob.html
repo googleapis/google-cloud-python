@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud 0291dd4 documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud 1157488 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 0291dd4 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1157488 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -515,7 +515,7 @@
 
         <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-            <span class="n">credentials</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">credentials</span>
+            <span class="n">credentials</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_base_connection</span><span class="o">.</span><span class="n">credentials</span>
 
         <span class="k">return</span> <span class="n">generate_signed_url</span><span class="p">(</span>
             <span class="n">credentials</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
@@ -544,9 +544,9 @@
             <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="s1">&#39;name&#39;</span><span class="p">}</span>
             <span class="c1"># We intentionally pass `_target_object=None` since fields=name</span>
             <span class="c1"># would limit the local properties.</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                          <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-                                          <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
             <span class="c1"># NOTE: This will not fail immediately in a batch. However, when</span>
             <span class="c1">#       Batch.finish() is called, the resulting `NotFound` will be</span>
             <span class="c1">#       raised.</span>
@@ -624,13 +624,13 @@
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
 
-        <span class="c1"># Use the private ``_connection`` rather than the public</span>
-        <span class="c1"># ``.connection``, since the public connection may be a batch. A</span>
-        <span class="c1"># batch wraps a client&#39;s connection, but does not store the `http`</span>
-        <span class="c1"># object. The rest (API_BASE_URL and build_api_url) are also defined</span>
-        <span class="c1"># on the Batch class, but we just use the wrapped connection since</span>
-        <span class="c1"># it has all three (http, API_BASE_URL and build_api_url).</span>
-        <span class="n">download</span><span class="o">.</span><span class="n">initialize_download</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span></div>
+        <span class="c1"># Use ``_base_connection`` rather ``_connection`` since the current</span>
+        <span class="c1"># connection may be a batch. A batch wraps a client&#39;s connection,</span>
+        <span class="c1"># but does not store the ``http`` object. The rest (API_BASE_URL and</span>
+        <span class="c1"># build_api_url) are also defined on the Batch class, but we just</span>
+        <span class="c1"># use the wrapped connection since it has all three (http,</span>
+        <span class="c1"># API_BASE_URL and build_api_url).</span>
+        <span class="n">download</span><span class="o">.</span><span class="n">initialize_download</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">_base_connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage-blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
@@ -746,13 +746,13 @@
 <span class="sd">                 if the upload response returns an error status.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="c1"># Use the private ``_connection`` rather than the public</span>
-        <span class="c1"># ``.connection``, since the public connection may be a batch. A</span>
-        <span class="c1"># batch wraps a client&#39;s connection, but does not store the `http`</span>
-        <span class="c1"># object. The rest (API_BASE_URL and build_api_url) are also defined</span>
-        <span class="c1"># on the Batch class, but we just use the wrapped connection since</span>
-        <span class="c1"># it has all three (http, API_BASE_URL and build_api_url).</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span>
+        <span class="c1"># Use ``_base_connection`` rather ``_connection`` since the current</span>
+        <span class="c1"># connection may be a batch. A batch wraps a client&#39;s connection,</span>
+        <span class="c1"># but does not store the ``http`` object. The rest (API_BASE_URL and</span>
+        <span class="c1"># build_api_url) are also defined on the Batch class, but we just</span>
+        <span class="c1"># use the wrapped connection since it has all three (http,</span>
+        <span class="c1"># API_BASE_URL and build_api_url).</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_base_connection</span>
         <span class="n">content_type</span> <span class="o">=</span> <span class="p">(</span><span class="n">content_type</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;contentType&#39;</span><span class="p">)</span> <span class="ow">or</span>
                         <span class="s1">&#39;application/octet-stream&#39;</span><span class="p">)</span>
 
@@ -930,7 +930,7 @@
             <span class="s1">&#39;sourceObjects&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">}</span> <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">],</span>
             <span class="s1">&#39;destination&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
         <span class="p">}</span>
-        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/compose&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
             <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
@@ -968,7 +968,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/rewriteTo&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
             <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
@@ -1327,7 +1327,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0291dd4',
+            VERSION:'1157488',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
