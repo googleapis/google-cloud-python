@@ -20,17 +20,18 @@ class TestLogger(unittest.TestCase):
     PROJECT = 'test-project'
     LOGGER_NAME = 'logger-name'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.logger import Logger
         return Logger
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         conn = object()
         client = _Client(self.PROJECT, conn)
-        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        logger = self._make_one(self.LOGGER_NAME, client=client)
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertIs(logger.client, client)
         self.assertEqual(logger.project, self.PROJECT)
@@ -44,7 +45,7 @@ class TestLogger(unittest.TestCase):
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         conn = object()
         client = _Client(self.PROJECT, conn)
-        logger = self._makeOne(self.LOGGER_NAME, client=client, labels=LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client, labels=LABELS)
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertIs(logger.client, client)
         self.assertEqual(logger.project, self.PROJECT)
@@ -58,7 +59,7 @@ class TestLogger(unittest.TestCase):
         from google.cloud.logging.logger import Batch
         conn = object()
         client = _Client(self.PROJECT, conn)
-        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        logger = self._make_one(self.LOGGER_NAME, client=client)
         batch = logger.batch()
         self.assertIsInstance(batch, Batch)
         self.assertIs(batch.logger, logger)
@@ -70,7 +71,7 @@ class TestLogger(unittest.TestCase):
         conn2 = object()
         client1 = _Client(self.PROJECT, conn1)
         client2 = _Client(self.PROJECT, conn2)
-        logger = self._makeOne(self.LOGGER_NAME, client=client1)
+        logger = self._make_one(self.LOGGER_NAME, client=client1)
         batch = logger.batch(client2)
         self.assertIsInstance(batch, Batch)
         self.assertIs(batch.logger, logger)
@@ -88,7 +89,7 @@ class TestLogger(unittest.TestCase):
         }]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
-        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        logger = self._make_one(self.LOGGER_NAME, client=client)
 
         logger.log_text(TEXT)
 
@@ -109,8 +110,8 @@ class TestLogger(unittest.TestCase):
         }]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
-        logger = self._makeOne(self.LOGGER_NAME, client=client,
-                               labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client,
+                                labels=DEFAULT_LABELS)
 
         logger.log_text(TEXT)
 
@@ -146,8 +147,8 @@ class TestLogger(unittest.TestCase):
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
-        logger = self._makeOne(self.LOGGER_NAME, client=client1,
-                               labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client1,
+                                labels=DEFAULT_LABELS)
 
         logger.log_text(TEXT, client=client2, labels=LABELS,
                         insert_id=IID, severity=SEVERITY, http_request=REQUEST)
@@ -167,7 +168,7 @@ class TestLogger(unittest.TestCase):
         }]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
-        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        logger = self._make_one(self.LOGGER_NAME, client=client)
 
         logger.log_struct(STRUCT)
 
@@ -188,8 +189,8 @@ class TestLogger(unittest.TestCase):
         }]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
-        logger = self._makeOne(self.LOGGER_NAME, client=client,
-                               labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client,
+                                labels=DEFAULT_LABELS)
 
         logger.log_struct(STRUCT)
 
@@ -225,8 +226,8 @@ class TestLogger(unittest.TestCase):
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
-        logger = self._makeOne(self.LOGGER_NAME, client=client1,
-                               labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client1,
+                                labels=DEFAULT_LABELS)
 
         logger.log_struct(STRUCT, client=client2, labels=LABELS,
                           insert_id=IID, severity=SEVERITY,
@@ -250,7 +251,7 @@ class TestLogger(unittest.TestCase):
         }]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
-        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        logger = self._make_one(self.LOGGER_NAME, client=client)
 
         logger.log_proto(message)
 
@@ -274,8 +275,8 @@ class TestLogger(unittest.TestCase):
         }]
         client = _Client(self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
-        logger = self._makeOne(self.LOGGER_NAME, client=client,
-                               labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client,
+                                labels=DEFAULT_LABELS)
 
         logger.log_proto(message)
 
@@ -314,8 +315,8 @@ class TestLogger(unittest.TestCase):
         client1 = _Client(self.PROJECT)
         client2 = _Client(self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
-        logger = self._makeOne(self.LOGGER_NAME, client=client1,
-                               labels=DEFAULT_LABELS)
+        logger = self._make_one(self.LOGGER_NAME, client=client1,
+                                labels=DEFAULT_LABELS)
 
         logger.log_proto(message, client=client2, labels=LABELS,
                          insert_id=IID, severity=SEVERITY,
@@ -327,7 +328,7 @@ class TestLogger(unittest.TestCase):
     def test_delete_w_bound_client(self):
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
-        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        logger = self._make_one(self.LOGGER_NAME, client=client)
 
         logger.delete()
 
@@ -338,7 +339,7 @@ class TestLogger(unittest.TestCase):
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
         api = client2.logging_api = _DummyLoggingAPI()
-        logger = self._makeOne(self.LOGGER_NAME, client=client1)
+        logger = self._make_one(self.LOGGER_NAME, client=client1)
 
         logger.delete(client=client2)
 
@@ -356,9 +357,9 @@ class TestLogger(unittest.TestCase):
         returned = {
             'nextPageToken': TOKEN,
         }
-        client.connection = _Connection(returned)
+        client._connection = _Connection(returned)
 
-        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        logger = self._make_one(self.LOGGER_NAME, client=client)
 
         iterator = logger.list_entries()
         page = six.next(iterator.pages)
@@ -367,7 +368,7 @@ class TestLogger(unittest.TestCase):
 
         self.assertEqual(len(entries), 0)
         self.assertEqual(token, TOKEN)
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         FILTER = 'logName=projects/%s/logs/%s' % (
             self.PROJECT, self.LOGGER_NAME)
         self.assertEqual(called_with, {
@@ -390,8 +391,8 @@ class TestLogger(unittest.TestCase):
         PAGE_SIZE = 42
         client = Client(project=self.PROJECT, credentials=object(),
                         use_gax=False)
-        client.connection = _Connection({})
-        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        client._connection = _Connection({})
+        logger = self._make_one(self.LOGGER_NAME, client=client)
         iterator = logger.list_entries(
             projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
             page_size=PAGE_SIZE, page_token=TOKEN)
@@ -401,7 +402,7 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(len(entries), 0)
         self.assertIsNone(token)
         # self.assertEqual(client._listed, LISTED)
-        called_with = client.connection._called_with
+        called_with = client._connection._called_with
         combined_filter = '%s AND logName=projects/%s/logs/%s' % (
             FILTER, self.PROJECT, self.LOGGER_NAME)
         self.assertEqual(called_with, {
@@ -421,17 +422,18 @@ class TestBatch(unittest.TestCase):
 
     PROJECT = 'test-project'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.logger import Batch
         return Batch
 
-    def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
 
     def test_ctor_defaults(self):
         logger = _Logger()
         client = _Client(project=self.PROJECT)
-        batch = self._makeOne(logger, client)
+        batch = self._make_one(logger, client)
         self.assertIs(batch.logger, logger)
         self.assertIs(batch.client, client)
         self.assertEqual(len(batch.entries), 0)
@@ -440,7 +442,7 @@ class TestBatch(unittest.TestCase):
         TEXT = 'This is the entry text'
         client = _Client(project=self.PROJECT, connection=object())
         logger = _Logger()
-        batch = self._makeOne(logger, client=client)
+        batch = self._make_one(logger, client=client)
         batch.log_text(TEXT)
         self.assertEqual(batch.entries,
                          [('text', TEXT, None, None, None, None)])
@@ -460,7 +462,7 @@ class TestBatch(unittest.TestCase):
         }
         client = _Client(project=self.PROJECT, connection=object())
         logger = _Logger()
-        batch = self._makeOne(logger, client=client)
+        batch = self._make_one(logger, client=client)
         batch.log_text(TEXT, labels=LABELS, insert_id=IID, severity=SEVERITY,
                        http_request=REQUEST)
         self.assertEqual(batch.entries,
@@ -470,7 +472,7 @@ class TestBatch(unittest.TestCase):
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
         client = _Client(project=self.PROJECT, connection=object())
         logger = _Logger()
-        batch = self._makeOne(logger, client=client)
+        batch = self._make_one(logger, client=client)
         batch.log_struct(STRUCT)
         self.assertEqual(batch.entries,
                          [('struct', STRUCT, None, None, None, None)])
@@ -490,7 +492,7 @@ class TestBatch(unittest.TestCase):
         }
         client = _Client(project=self.PROJECT, connection=object())
         logger = _Logger()
-        batch = self._makeOne(logger, client=client)
+        batch = self._make_one(logger, client=client)
         batch.log_struct(STRUCT, labels=LABELS, insert_id=IID,
                          severity=SEVERITY, http_request=REQUEST)
         self.assertEqual(batch.entries,
@@ -501,7 +503,7 @@ class TestBatch(unittest.TestCase):
         message = Struct(fields={'foo': Value(bool_value=True)})
         client = _Client(project=self.PROJECT, connection=object())
         logger = _Logger()
-        batch = self._makeOne(logger, client=client)
+        batch = self._make_one(logger, client=client)
         batch.log_proto(message)
         self.assertEqual(batch.entries,
                          [('proto', message, None, None, None, None)])
@@ -522,7 +524,7 @@ class TestBatch(unittest.TestCase):
         }
         client = _Client(project=self.PROJECT, connection=object())
         logger = _Logger()
-        batch = self._makeOne(logger, client=client)
+        batch = self._make_one(logger, client=client)
         batch.log_proto(message, labels=LABELS, insert_id=IID,
                         severity=SEVERITY, http_request=REQUEST)
         self.assertEqual(batch.entries,
@@ -531,7 +533,7 @@ class TestBatch(unittest.TestCase):
     def test_commit_w_invalid_entry_type(self):
         logger = _Logger()
         client = _Client(project=self.PROJECT, connection=object())
-        batch = self._makeOne(logger, client)
+        batch = self._make_one(logger, client)
         batch.entries.append(('bogus', 'BOGUS', None, None, None, None))
         with self.assertRaises(ValueError):
             batch.commit()
@@ -558,7 +560,7 @@ class TestBatch(unittest.TestCase):
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = _Logger()
-        batch = self._makeOne(logger, client=client)
+        batch = self._make_one(logger, client=client)
 
         batch.log_text(TEXT, insert_id=IID1)
         batch.log_struct(STRUCT, insert_id=IID2)
@@ -602,7 +604,7 @@ class TestBatch(unittest.TestCase):
             {'protoPayload': json.loads(MessageToJson(message)),
              'httpRequest': REQUEST},
         ]
-        batch = self._makeOne(logger, client=client1)
+        batch = self._make_one(logger, client=client1)
 
         batch.log_text(TEXT, labels=LABELS)
         batch.log_struct(STRUCT, severity=SEVERITY)
@@ -644,7 +646,7 @@ class TestBatch(unittest.TestCase):
             {'protoPayload': json.loads(MessageToJson(message)),
              'severity': SEVERITY},
         ]
-        batch = self._makeOne(logger, client=client)
+        batch = self._make_one(logger, client=client)
 
         with batch as other:
             other.log_text(TEXT, http_request=REQUEST)
@@ -679,7 +681,7 @@ class TestBatch(unittest.TestCase):
             ('struct', STRUCT, None, None, SEVERITY, None),
             ('proto', message, LABELS, None, None, REQUEST),
         ]
-        batch = self._makeOne(logger, client=client)
+        batch = self._make_one(logger, client=client)
 
         try:
             with batch as other:
@@ -719,7 +721,7 @@ class _Client(object):
 
     def __init__(self, project, connection=None):
         self.project = project
-        self.connection = connection
+        self._connection = connection
 
 
 class _Bugout(Exception):

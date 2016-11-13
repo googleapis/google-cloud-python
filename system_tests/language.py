@@ -88,7 +88,8 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(entity2.metadata, {})
         # Verify entity 3.
         self.assertEqual(entity3.name, self.NAME3)
-        self.assertEqual(entity3.entity_type, EntityType.WORK_OF_ART)
+        choices = (EntityType.EVENT, EntityType.WORK_OF_ART)
+        self.assertIn(entity3.entity_type, choices)
         self.assertGreater(entity3.salience, 0.0)
         self.assertEqual(entity3.mentions, [entity3.name])
         wiki_url = ('http://en.wikipedia.org/wiki/'
@@ -120,4 +121,4 @@ class TestLanguage(unittest.TestCase):
         document = Config.CLIENT.document_from_text(positive_msg)
         sentiment = document.analyze_sentiment()
         self.assertEqual(sentiment.polarity, 1)
-        self.assertTrue(0.5 < sentiment.magnitude < 1.5)
+        self.assertTrue(0.0 < sentiment.magnitude < 1.5)

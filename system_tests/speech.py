@@ -125,17 +125,18 @@ class TestSpeechClient(unittest.TestCase):
                                sample_rate=16000)
         return client.streaming_recognize(sample,
                                           single_utterance=single_utterance,
-                                          interim_results=interim_results)
+                                          interim_results=interim_results,
+                                          speech_context=['hello', 'google'])
 
-    def _check_results(self, results, num_results=1):
-        self.assertEqual(len(results), num_results)
-        top_result = results[0]
+    def _check_results(self, alternatives, num_results=1):
+        self.assertEqual(len(alternatives), num_results)
+        top_result = alternatives[0]
         self.assertIsInstance(top_result, Alternative)
         self.assertEqual(top_result.transcript,
                          'hello ' + self.ASSERT_TEXT)
         self.assertGreater(top_result.confidence, 0.90)
         if num_results == 2:
-            second_alternative = results[1]
+            second_alternative = alternatives[1]
             self.assertIsInstance(second_alternative, Alternative)
             self.assertEqual(second_alternative.transcript, self.ASSERT_TEXT)
             self.assertIsNone(second_alternative.confidence)
@@ -192,7 +193,7 @@ class TestSpeechClient(unittest.TestCase):
 
         with open(AUDIO_FILE, 'rb') as file_obj:
             for results in self._make_streaming_request(file_obj):
-                self._check_results(results)
+                self._check_results(results.alternatives)
 
     def test_stream_recognize_interim_results(self):
         if not Config.USE_GAX:
@@ -207,12 +208,12 @@ class TestSpeechClient(unittest.TestCase):
                                                      interim_results=True)
             responses = list(recognize)
             for response in responses:
-                if response[0].transcript:
-                    self.assertIn(response[0].transcript,
+                if response.alternatives[0].transcript:
+                    self.assertIn(response.alternatives[0].transcript,
                                   extras + self.ASSERT_TEXT)
 
             self.assertGreater(len(responses), 5)
-            self._check_results(responses[-1])
+            self._check_results(responses[-1].alternatives)
 
     def test_stream_recognize_single_utterance(self):
         if not Config.USE_GAX:
@@ -221,4 +222,4 @@ class TestSpeechClient(unittest.TestCase):
         with open(AUDIO_FILE, 'rb') as file_obj:
             for results in self._make_streaming_request(
                     file_obj, single_utterance=False):
-                self._check_results(results)
+                self._check_results(results.alternatives)

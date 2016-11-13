@@ -27,7 +27,7 @@ from google.longrunning import operations_grpc
 
 from google.cloud._helpers import make_secure_channel
 from google.cloud._helpers import make_secure_stub
-from google.cloud.connection import DEFAULT_USER_AGENT
+from google.cloud._http import DEFAULT_USER_AGENT
 
 from google.cloud.speech.alternative import Alternative
 from google.cloud.speech.operation import Operation
@@ -39,7 +39,7 @@ class GAPICSpeechAPI(object):
     """Manage calls through GAPIC wrappers to the Speech API."""
     def __init__(self, client=None):
         self._client = client
-        credentials = self._client.connection.credentials
+        credentials = self._client._connection.credentials
         channel = make_secure_channel(
             credentials, DEFAULT_USER_AGENT,
             SpeechApi.SERVICE_ADDRESS)
@@ -329,7 +329,8 @@ def _stream_requests(sample, language_code=None, max_alternatives=None,
     """
     config_request = _make_streaming_request(
         sample, language_code=language_code, max_alternatives=max_alternatives,
-        profanity_filter=profanity_filter, speech_context=speech_context,
+        profanity_filter=profanity_filter,
+        speech_context=SpeechContext(phrases=speech_context),
         single_utterance=single_utterance, interim_results=interim_results)
 
     # The config request MUST go first and not contain any audio data.

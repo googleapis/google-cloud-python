@@ -22,8 +22,8 @@ class _Base(object):
     TABLE_NAME = 'table_name'
     JOB_NAME = 'job_name'
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def _setUpConstants(self):
         import datetime
@@ -122,7 +122,8 @@ class _Base(object):
 class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
     JOB_TYPE = 'load'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.job import LoadTableFromStorageJob
         return LoadTableFromStorageJob
 
@@ -230,7 +231,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
     def test_ctor(self):
         client = _Client(self.PROJECT)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
         self.assertIs(job.destination, table)
         self.assertEqual(list(job.source_uris), [self.SOURCE1])
         self.assertIs(job._client, client)
@@ -267,14 +268,14 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         table = _Table()
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client,
-                            schema=[full_name, age])
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client,
+                             schema=[full_name, age])
         self.assertEqual(job.schema, [full_name, age])
 
     def test_schema_setter_non_list(self):
         client = _Client(self.PROJECT)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
         with self.assertRaises(TypeError):
             job.schema = object()
 
@@ -282,7 +283,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         from google.cloud.bigquery.schema import SchemaField
         client = _Client(self.PROJECT)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         with self.assertRaises(ValueError):
             job.schema = [full_name, object()]
@@ -291,7 +292,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         from google.cloud.bigquery.schema import SchemaField
         client = _Client(self.PROJECT)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         job.schema = [full_name, age]
@@ -316,7 +317,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
 
         client = _Client(self.PROJECT)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
         job._properties['etag'] = 'ETAG'
         job._properties['id'] = JOB_ID
         job._properties['selfLink'] = URL
@@ -363,7 +364,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -377,7 +378,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
                 'jobId': self.JOB_NAME,
             }
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -401,7 +402,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
                 }
             },
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
@@ -409,7 +410,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
@@ -418,7 +419,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
         job._properties['status'] = {'state': 'RUNNING'}
 
         with self.assertRaises(ValueError):
@@ -435,7 +436,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
 
         job.begin()
 
@@ -497,8 +498,8 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         table = _Table()
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client1,
-                            schema=[full_name, age])
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client1,
+                             schema=[full_name, age])
 
         job.allow_jagged_rows = True
         job.allow_quoted_newlines = True
@@ -536,7 +537,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
 
         self.assertFalse(job.exists())
 
@@ -553,7 +554,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         conn2 = _Connection({})
         client2 = _Client(project=self.PROJECT, connection=conn2)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client1)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client1)
 
         self.assertTrue(job.exists(client=client2))
 
@@ -570,7 +571,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
 
         job.reload()
 
@@ -588,7 +589,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client1)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client1)
 
         job.reload(client=client2)
 
@@ -606,7 +607,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         conn = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=conn)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
 
         job.cancel()
 
@@ -625,7 +626,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         conn2 = _Connection(RESPONSE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client1)
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client1)
 
         job.cancel(client=client2)
 
@@ -642,7 +643,8 @@ class TestCopyJob(unittest.TestCase, _Base):
     SOURCE_TABLE = 'source_table'
     DESTINATION_TABLE = 'destination_table'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.job import CopyJob
         return CopyJob
 
@@ -696,7 +698,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         client = _Client(self.PROJECT)
         source = _Table(self.SOURCE_TABLE)
         destination = _Table(self.DESTINATION_TABLE)
-        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        job = self._make_one(self.JOB_NAME, destination, [source], client)
         self.assertIs(job.destination, destination)
         self.assertEqual(job.sources, [source])
         self.assertIs(job._client, client)
@@ -715,7 +717,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -729,7 +731,7 @@ class TestCopyJob(unittest.TestCase, _Base):
                 'jobId': self.JOB_NAME,
             }
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -757,7 +759,7 @@ class TestCopyJob(unittest.TestCase, _Base):
                 }
             },
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
@@ -765,7 +767,7 @@ class TestCopyJob(unittest.TestCase, _Base):
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
@@ -782,7 +784,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
         source = _Table(self.SOURCE_TABLE)
         destination = _Table(self.DESTINATION_TABLE)
-        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        job = self._make_one(self.JOB_NAME, destination, [source], client)
 
         job.begin()
 
@@ -837,7 +839,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         client2 = _Client(project=self.PROJECT, connection=conn2)
         source = _Table(self.SOURCE_TABLE)
         destination = _Table(self.DESTINATION_TABLE)
-        job = self._makeOne(self.JOB_NAME, destination, [source], client1)
+        job = self._make_one(self.JOB_NAME, destination, [source], client1)
 
         job.create_disposition = 'CREATE_NEVER'
         job.write_disposition = 'WRITE_TRUNCATE'
@@ -867,7 +869,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
         source = _Table(self.SOURCE_TABLE)
         destination = _Table(self.DESTINATION_TABLE)
-        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        job = self._make_one(self.JOB_NAME, destination, [source], client)
 
         self.assertFalse(job.exists())
 
@@ -885,7 +887,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         client2 = _Client(project=self.PROJECT, connection=conn2)
         source = _Table(self.SOURCE_TABLE)
         destination = _Table(self.DESTINATION_TABLE)
-        job = self._makeOne(self.JOB_NAME, destination, [source], client1)
+        job = self._make_one(self.JOB_NAME, destination, [source], client1)
 
         self.assertTrue(job.exists(client=client2))
 
@@ -903,7 +905,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
         source = _Table(self.SOURCE_TABLE)
         destination = _Table(self.DESTINATION_TABLE)
-        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        job = self._make_one(self.JOB_NAME, destination, [source], client)
 
         job.reload()
 
@@ -922,7 +924,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         client2 = _Client(project=self.PROJECT, connection=conn2)
         source = _Table(self.SOURCE_TABLE)
         destination = _Table(self.DESTINATION_TABLE)
-        job = self._makeOne(self.JOB_NAME, destination, [source], client1)
+        job = self._make_one(self.JOB_NAME, destination, [source], client1)
 
         job.reload(client=client2)
 
@@ -939,7 +941,8 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
     SOURCE_TABLE = 'source_table'
     DESTINATION_URI = 'gs://bucket_name/object_name'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.job import ExtractTableToStorageJob
         return ExtractTableToStorageJob
 
@@ -994,8 +997,8 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
     def test_ctor(self):
         client = _Client(self.PROJECT)
         source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
+        job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
+                             client)
         self.assertEqual(job.source, source)
         self.assertEqual(job.destination_uris, [self.DESTINATION_URI])
         self.assertIs(job._client, client)
@@ -1016,7 +1019,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -1030,7 +1033,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
                 'jobId': self.JOB_NAME,
             }
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -1054,7 +1057,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
                 }
             },
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
@@ -1062,7 +1065,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
@@ -1078,8 +1081,8 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
+        job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
+                             client)
 
         job.begin()
 
@@ -1127,8 +1130,8 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client1)
+        job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
+                             client1)
 
         job.compression = 'GZIP'
         job.destination_format = 'NEWLINE_DELIMITED_JSON'
@@ -1159,8 +1162,8 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
+        job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
+                             client)
 
         self.assertFalse(job.exists())
 
@@ -1177,8 +1180,8 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         conn2 = _Connection({})
         client2 = _Client(project=self.PROJECT, connection=conn2)
         source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client1)
+        job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
+                             client1)
 
         self.assertTrue(job.exists(client=client2))
 
@@ -1195,8 +1198,8 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
+        job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
+                             client)
 
         job.reload()
 
@@ -1214,8 +1217,8 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client1)
+        job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
+                             client1)
 
         job.reload(client=client2)
 
@@ -1232,7 +1235,8 @@ class TestQueryJob(unittest.TestCase, _Base):
     QUERY = 'select count(*) from persons'
     DESTINATION_TABLE = 'destination_table'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.job import QueryJob
         return QueryJob
 
@@ -1328,7 +1332,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
         self.assertEqual(job.query, self.QUERY)
         self.assertIs(job._client, client)
         self.assertEqual(job.job_type, self.JOB_TYPE)
@@ -1356,7 +1360,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -1370,7 +1374,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'jobId': self.JOB_NAME,
             }
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(KeyError):
             klass.from_api_repr(RESOURCE, client=client)
 
@@ -1387,7 +1391,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'query': {'query': self.QUERY}
             },
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
@@ -1400,7 +1404,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             'datasetId': self.DS_NAME,
             'tableId': self.DESTINATION_TABLE,
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
@@ -1408,7 +1412,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_results(self):
         from google.cloud.bigquery.query import QueryResults
         client = _Client(self.PROJECT)
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
         results = job.results()
         self.assertIsInstance(results, QueryResults)
         self.assertIs(results._job, job)
@@ -1423,7 +1427,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         del RESOURCE['user_email']
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
 
         job.begin()
         self.assertEqual(job.udf_resources, [])
@@ -1479,7 +1483,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client1)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client1)
 
         dataset = Dataset(DS_NAME, client1)
         table = Table(TABLE, dataset)
@@ -1528,10 +1532,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         del RESOURCE['user_email']
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client,
-                            udf_resources=[
-                                UDFResource("resourceUri", RESOURCE_URI)
-                            ])
+        job = self._make_one(self.JOB_NAME, self.QUERY, client,
+                             udf_resources=[
+                                 UDFResource("resourceUri", RESOURCE_URI)
+                             ])
 
         job.begin()
 
@@ -1561,7 +1565,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
 
         self.assertFalse(job.exists())
 
@@ -1577,7 +1581,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client1)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client1)
 
         self.assertTrue(job.exists(client=client2))
 
@@ -1597,7 +1601,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        job = self._makeOne(self.JOB_NAME, None, client)
+        job = self._make_one(self.JOB_NAME, None, client)
 
         dataset = Dataset(DS_NAME, client)
         table = Table(DEST_TABLE, dataset)
@@ -1628,7 +1632,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client1)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client1)
 
         job.reload(client=client2)
 
@@ -1644,7 +1648,7 @@ class _Client(object):
 
     def __init__(self, project='project', connection=None):
         self.project = project
-        self.connection = connection
+        self._connection = connection
 
     def dataset(self, name):
         from google.cloud.bigquery.dataset import Dataset

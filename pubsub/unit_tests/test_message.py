@@ -17,17 +17,18 @@ import unittest
 
 class TestMessage(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub.message import Message
         return Message
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_no_attributes(self):
         DATA = b'DEADBEEF'
         MESSAGE_ID = b'12345'
-        message = self._makeOne(data=DATA, message_id=MESSAGE_ID)
+        message = self._make_one(data=DATA, message_id=MESSAGE_ID)
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.attributes, {})
@@ -37,8 +38,8 @@ class TestMessage(unittest.TestCase):
         DATA = b'DEADBEEF'
         MESSAGE_ID = b'12345'
         ATTRS = {'a': 'b'}
-        message = self._makeOne(data=DATA, message_id=MESSAGE_ID,
-                                attributes=ATTRS)
+        message = self._make_one(data=DATA, message_id=MESSAGE_ID,
+                                 attributes=ATTRS)
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.attributes, ATTRS)
@@ -47,7 +48,7 @@ class TestMessage(unittest.TestCase):
     def test_timestamp_no_attributes(self):
         DATA = b'DEADBEEF'
         MESSAGE_ID = b'12345'
-        message = self._makeOne(data=DATA, message_id=MESSAGE_ID)
+        message = self._make_one(data=DATA, message_id=MESSAGE_ID)
 
         def _to_fail():
             return message.timestamp
@@ -58,8 +59,8 @@ class TestMessage(unittest.TestCase):
         DATA = b'DEADBEEF'
         MESSAGE_ID = b'12345'
         ATTRS = {'a': 'b'}
-        message = self._makeOne(data=DATA, message_id=MESSAGE_ID,
-                                attributes=ATTRS)
+        message = self._make_one(data=DATA, message_id=MESSAGE_ID,
+                                 attributes=ATTRS)
 
         def _to_fail():
             return message.timestamp
@@ -76,14 +77,14 @@ class TestMessage(unittest.TestCase):
         naive = datetime.strptime(TIMESTAMP, _RFC3339_MICROS)
         timestamp = naive.replace(tzinfo=UTC)
         ATTRS = {'timestamp': TIMESTAMP}
-        message = self._makeOne(data=DATA, message_id=MESSAGE_ID,
-                                attributes=ATTRS)
+        message = self._make_one(data=DATA, message_id=MESSAGE_ID,
+                                 attributes=ATTRS)
         self.assertEqual(message.timestamp, timestamp)
 
     def test_from_api_repr_missing_data(self):
         MESSAGE_ID = '12345'
         api_repr = {'messageId': MESSAGE_ID}
-        message = self._getTargetClass().from_api_repr(api_repr)
+        message = self._get_target_class().from_api_repr(api_repr)
         self.assertEqual(message.data, b'')
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.attributes, {})
@@ -98,7 +99,7 @@ class TestMessage(unittest.TestCase):
             'messageId': MESSAGE_ID,
             'publishTime': TIMESTAMP,
         }
-        message = self._getTargetClass().from_api_repr(api_repr)
+        message = self._get_target_class().from_api_repr(api_repr)
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.attributes, {})
@@ -115,7 +116,7 @@ class TestMessage(unittest.TestCase):
             'publishTime': TIMESTAMP,
             'attributes': ATTRS,
         }
-        message = self._getTargetClass().from_api_repr(api_repr)
+        message = self._get_target_class().from_api_repr(api_repr)
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.service_timestamp, TIMESTAMP)

@@ -25,19 +25,20 @@ class _Base(unittest.TestCase):
     SUB_NAME = 'subscription_name'
     SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
 
 class TestConnection(_Base):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub._http import Connection
         return Connection
 
     def test_default_url(self):
-        conn = self._makeOne()
-        klass = self._getTargetClass()
+        conn = self._make_one()
+        klass = self._get_target_class()
         self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 
     def test_custom_url_from_env(self):
@@ -49,14 +50,14 @@ class TestConnection(_Base):
         fake_environ = {PUBSUB_EMULATOR: HOST}
 
         with _Monkey(os, getenv=fake_environ.get):
-            conn = self._makeOne()
+            conn = self._make_one()
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         self.assertNotEqual(conn.api_base_url, klass.API_BASE_URL)
         self.assertEqual(conn.api_base_url, 'http://' + HOST)
 
     def test_build_api_url_no_extra_query_params(self):
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.API_BASE_URL,
             conn.API_VERSION,
@@ -67,7 +68,7 @@ class TestConnection(_Base):
     def test_build_api_url_w_extra_query_params(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        conn = self._makeOne()
+        conn = self._make_one()
         uri = conn.build_api_url('/foo', {'bar': 'baz'})
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
@@ -79,7 +80,7 @@ class TestConnection(_Base):
     def test_build_api_url_w_base_url_override(self):
         base_url1 = 'api-base-url1'
         base_url2 = 'api-base-url2'
-        conn = self._makeOne()
+        conn = self._make_one()
         conn.api_base_url = base_url1
         URI = '/'.join([
             base_url2,
@@ -92,17 +93,18 @@ class TestConnection(_Base):
 
 class Test_PublisherAPI(_Base):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub._http import _PublisherAPI
         return _PublisherAPI
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         connection = _Connection()
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
         self.assertIs(api._client, client)
         self.assertIs(api._connection, connection)
 
@@ -112,7 +114,7 @@ class Test_PublisherAPI(_Base):
         returned = {'topics': [{'name': self.TOPIC_PATH}]}
         connection = _Connection(returned)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         iterator = api.list_topics(self.PROJECT)
         topics = list(iterator)
@@ -143,7 +145,7 @@ class Test_PublisherAPI(_Base):
         }
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         iterator = api.list_topics(
             self.PROJECT, page_token=TOKEN1, page_size=SIZE)
@@ -168,7 +170,7 @@ class Test_PublisherAPI(_Base):
         returned = {}
         connection = _Connection(returned)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         iterator = api.list_topics(self.PROJECT)
         topics = list(iterator)
@@ -186,7 +188,7 @@ class Test_PublisherAPI(_Base):
         RETURNED = {'name': self.TOPIC_PATH}
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         resource = api.topic_create(self.TOPIC_PATH)
 
@@ -200,7 +202,7 @@ class Test_PublisherAPI(_Base):
         connection = _Connection()
         connection._no_response_error = Conflict
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         with self.assertRaises(Conflict):
             api.topic_create(self.TOPIC_PATH)
@@ -213,7 +215,7 @@ class Test_PublisherAPI(_Base):
         RETURNED = {'name': self.TOPIC_PATH}
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         resource = api.topic_get(self.TOPIC_PATH)
 
@@ -226,7 +228,7 @@ class Test_PublisherAPI(_Base):
         from google.cloud.exceptions import NotFound
         connection = _Connection()
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         with self.assertRaises(NotFound):
             api.topic_get(self.TOPIC_PATH)
@@ -239,7 +241,7 @@ class Test_PublisherAPI(_Base):
         RETURNED = {}
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         api.topic_delete(self.TOPIC_PATH)
 
@@ -251,7 +253,7 @@ class Test_PublisherAPI(_Base):
         from google.cloud.exceptions import NotFound
         connection = _Connection()
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         with self.assertRaises(NotFound):
             api.topic_delete(self.TOPIC_PATH)
@@ -270,7 +272,7 @@ class Test_PublisherAPI(_Base):
         RETURNED = {'messageIds': [MSGID]}
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         resource = api.topic_publish(self.TOPIC_PATH, [MESSAGE])
 
@@ -289,7 +291,7 @@ class Test_PublisherAPI(_Base):
         MESSAGE = {'data': PAYLOAD, 'attributes': {}}
         connection = _Connection()
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         with self.assertRaises(NotFound):
             api.topic_publish(self.TOPIC_PATH, [MESSAGE])
@@ -309,7 +311,7 @@ class Test_PublisherAPI(_Base):
         RETURNED = {'subscriptions': [local_sub_path]}
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         topic = Topic(self.TOPIC_NAME, client)
         iterator = api.topic_list_subscriptions(topic)
@@ -345,7 +347,7 @@ class Test_PublisherAPI(_Base):
         }
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         topic = Topic(self.TOPIC_NAME, client)
         iterator = api.topic_list_subscriptions(
@@ -373,7 +375,7 @@ class Test_PublisherAPI(_Base):
 
         connection = _Connection({})
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         topic = Topic(self.TOPIC_NAME, client)
         iterator = api.topic_list_subscriptions(topic)
@@ -394,7 +396,7 @@ class Test_PublisherAPI(_Base):
 
         connection = _Connection()
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         with self.assertRaises(NotFound):
             topic = Topic(self.TOPIC_NAME, client)
@@ -408,17 +410,18 @@ class Test_PublisherAPI(_Base):
 
 class Test_SubscriberAPI(_Base):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub._http import _SubscriberAPI
         return _SubscriberAPI
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         connection = _Connection()
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
         self.assertIs(api._connection, connection)
         self.assertIs(api._client, client)
 
@@ -432,8 +435,8 @@ class Test_SubscriberAPI(_Base):
         connection = _Connection(RETURNED)
         creds = _Credentials()
         client = Client(project=self.PROJECT, credentials=creds)
-        client.connection = connection
-        api = self._makeOne(client)
+        client._connection = connection
+        api = self._make_one(client)
 
         iterator = api.list_subscriptions(self.PROJECT)
         subscriptions = list(iterator)
@@ -475,8 +478,8 @@ class Test_SubscriberAPI(_Base):
         connection = _Connection(RETURNED)
         creds = _Credentials()
         client = Client(project=self.PROJECT, credentials=creds)
-        client.connection = connection
-        api = self._makeOne(client)
+        client._connection = connection
+        api = self._make_one(client)
 
         iterator = api.list_subscriptions(
             self.PROJECT, page_token=TOKEN1, page_size=SIZE)
@@ -508,7 +511,7 @@ class Test_SubscriberAPI(_Base):
         RETURNED = {}
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         iterator = api.list_subscriptions(self.PROJECT)
         subscriptions = list(iterator)
@@ -528,7 +531,7 @@ class Test_SubscriberAPI(_Base):
         RETURNED['name'] = self.SUB_PATH
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         resource = api.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
 
@@ -552,7 +555,7 @@ class Test_SubscriberAPI(_Base):
         RETURNED['name'] = self.SUB_PATH
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         resource = api.subscription_create(
             self.SUB_PATH, self.TOPIC_PATH,
@@ -575,7 +578,7 @@ class Test_SubscriberAPI(_Base):
         }
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         resource = api.subscription_get(self.SUB_PATH)
 
@@ -588,7 +591,7 @@ class Test_SubscriberAPI(_Base):
         RETURNED = {}
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         api.subscription_delete(self.SUB_PATH)
 
@@ -604,7 +607,7 @@ class Test_SubscriberAPI(_Base):
         RETURNED = {}
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         api.subscription_modify_push_config(self.SUB_PATH, PUSH_ENDPOINT)
 
@@ -625,7 +628,7 @@ class Test_SubscriberAPI(_Base):
         }
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
         BODY = {
             'returnImmediately': False,
             'maxMessages': 1,
@@ -652,7 +655,7 @@ class Test_SubscriberAPI(_Base):
         }
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
         MAX_MESSAGES = 10
         BODY = {
             'returnImmediately': True,
@@ -677,7 +680,7 @@ class Test_SubscriberAPI(_Base):
         RETURNED = {}
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         api.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
 
@@ -697,7 +700,7 @@ class Test_SubscriberAPI(_Base):
         RETURNED = {}
         connection = _Connection(RETURNED)
         client = _Client(connection, self.PROJECT)
-        api = self._makeOne(client)
+        api = self._make_one(client)
 
         api.subscription_modify_ack_deadline(
             self.SUB_PATH, [ACK_ID1, ACK_ID2], NEW_DEADLINE)
@@ -710,13 +713,14 @@ class Test_SubscriberAPI(_Base):
 
 class Test_IAMPolicyAPI(_Base):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.pubsub._http import _IAMPolicyAPI
         return _IAMPolicyAPI
 
     def test_ctor(self):
         connection = _Connection()
-        api = self._makeOne(connection)
+        api = self._make_one(connection)
         self.assertIs(api._connection, connection)
 
     def test_get_iam_policy(self):
@@ -740,7 +744,7 @@ class Test_IAMPolicyAPI(_Base):
             ],
         }
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        api = self._make_one(connection)
 
         policy = api.get_iam_policy(self.TOPIC_PATH)
 
@@ -771,7 +775,7 @@ class Test_IAMPolicyAPI(_Base):
         }
         RETURNED = POLICY.copy()
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        api = self._make_one(connection)
 
         policy = api.set_iam_policy(self.TOPIC_PATH, POLICY)
 
@@ -791,7 +795,7 @@ class Test_IAMPolicyAPI(_Base):
         ALLOWED = ALL_ROLES[1:]
         RETURNED = {'permissions': ALLOWED}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        api = self._make_one(connection)
 
         allowed = api.test_iam_permissions(self.TOPIC_PATH, ALL_ROLES)
 
@@ -810,7 +814,7 @@ class Test_IAMPolicyAPI(_Base):
         ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._makeOne(connection)
+        api = self._make_one(connection)
 
         allowed = api.test_iam_permissions(self.TOPIC_PATH, ALL_ROLES)
 
@@ -823,33 +827,33 @@ class Test_IAMPolicyAPI(_Base):
 
 
 class Test__transform_messages_base64_empty(unittest.TestCase):
-    def _callFUT(self, messages, transform, key=None):
+    def _call_fut(self, messages, transform, key=None):
         from google.cloud.pubsub._http import _transform_messages_base64
         return _transform_messages_base64(messages, transform, key)
 
     def test__transform_messages_base64_empty_message(self):
         from base64 import b64decode
         DATA = [{'message': {}}]
-        self._callFUT(DATA, b64decode, 'message')
+        self._call_fut(DATA, b64decode, 'message')
         self.assertEqual(DATA, [{'message': {}}])
 
     def test__transform_messages_base64_empty_data(self):
         from base64 import b64decode
         DATA = [{'message': {'data': b''}}]
-        self._callFUT(DATA, b64decode, 'message')
+        self._call_fut(DATA, b64decode, 'message')
         self.assertEqual(DATA, [{'message': {'data': b''}}])
 
     def test__transform_messages_base64_pull(self):
         from base64 import b64encode
         DATA = [{'message': {'data': b'testing 1 2 3'}}]
-        self._callFUT(DATA, b64encode, 'message')
+        self._call_fut(DATA, b64encode, 'message')
         self.assertEqual(DATA[0]['message']['data'],
                          b64encode(b'testing 1 2 3'))
 
     def test__transform_messages_base64_publish(self):
         from base64 import b64encode
         DATA = [{'data': b'testing 1 2 3'}]
-        self._callFUT(DATA, b64encode)
+        self._call_fut(DATA, b64encode)
         self.assertEqual(DATA[0]['data'], b64encode(b'testing 1 2 3'))
 
 
@@ -875,7 +879,7 @@ class _Connection(object):
 class _Client(object):
 
     def __init__(self, connection, project):
-        self.connection = connection
+        self._connection = connection
         self.project = project
 
 

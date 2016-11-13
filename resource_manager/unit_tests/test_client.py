@@ -17,28 +17,29 @@ import unittest
 
 class TestClient(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.resource_manager.client import Client
         return Client
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_constructor(self):
         from google.cloud.resource_manager.connection import Connection
 
         http = object()
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials, http=http)
-        self.assertIsInstance(client.connection, Connection)
-        self.assertEqual(client.connection._credentials, credentials)
-        self.assertEqual(client.connection._http, http)
+        client = self._make_one(credentials=credentials, http=http)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertEqual(client._connection._credentials, credentials)
+        self.assertEqual(client._connection._http, http)
 
     def test_new_project_factory(self):
         from google.cloud.resource_manager.project import Project
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         project_id = 'project_id'
         name = object()
         labels = object()
@@ -66,9 +67,9 @@ class TestClient(unittest.TestCase):
         }
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         # Patch the connection with one we can easily control.
-        client.connection = _Connection(project_resource)
+        client._connection = _Connection(project_resource)
 
         project = client.fetch_project(project_id)
         self.assertIsInstance(project, Project)
@@ -81,16 +82,16 @@ class TestClient(unittest.TestCase):
         from google.cloud.iterator import HTTPIterator
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         # Patch the connection with one we can easily control.
-        client.connection = _Connection({})
+        client._connection = _Connection({})
 
         results = client.list_projects()
         self.assertIsInstance(results, HTTPIterator)
 
     def test_list_projects_no_paging(self):
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
 
         PROJECT_ID = 'project-id'
         PROJECT_NUMBER = 1
@@ -105,7 +106,7 @@ class TestClient(unittest.TestCase):
             ],
         }
         # Patch the connection with one we can easily control.
-        client.connection = _Connection(PROJECTS_RESOURCE)
+        client._connection = _Connection(PROJECTS_RESOURCE)
         # Make sure there will be no paging.
         self.assertFalse('nextPageToken' in PROJECTS_RESOURCE)
 
@@ -118,7 +119,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_projects_with_paging(self):
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
 
         PROJECT_ID1 = 'project-id'
         PROJECT_NUMBER1 = 1
@@ -146,8 +147,8 @@ class TestClient(unittest.TestCase):
             ],
         }
         # Patch the connection with one we can easily control.
-        client.connection = _Connection(FIRST_PROJECTS_RESOURCE,
-                                        SECOND_PROJECTS_RESOURCE)
+        client._connection = _Connection(FIRST_PROJECTS_RESOURCE,
+                                         SECOND_PROJECTS_RESOURCE)
 
         # Page size = 1 with two response means we'll have two requests.
         results = list(client.list_projects(page_size=1))
@@ -162,7 +163,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project2.status, STATUS)
 
         # Check that two requests were required since page_size=1.
-        request1, request2 = client.connection._requested
+        request1, request2 = client._connection._requested
         self.assertEqual(request1, {
             'path': '/projects',
             'method': 'GET',
@@ -181,7 +182,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_projects_with_filter(self):
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
 
         PROJECT_ID = 'project-id'
         PROJECT_NUMBER = 1
@@ -196,7 +197,7 @@ class TestClient(unittest.TestCase):
             ],
         }
         # Patch the connection with one we can easily control.
-        client.connection = _Connection(PROJECTS_RESOURCE)
+        client._connection = _Connection(PROJECTS_RESOURCE)
 
         FILTER_PARAMS = {'id': 'project-id'}
         results = list(client.list_projects(filter_params=FILTER_PARAMS))
@@ -207,7 +208,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project.status, STATUS)
 
         # Check that the filter made it in the request.
-        request, = client.connection._requested
+        request, = client._connection._requested
         self.assertEqual(request, {
             'path': '/projects',
             'method': 'GET',
@@ -220,7 +221,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.iterator import Page
 
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
         iterator = client.list_projects()
         page = Page(iterator, (), None)
         iterator._page = page
@@ -246,7 +247,7 @@ class TestClient(unittest.TestCase):
         }
         response = {'projects': [api_resource]}
         credentials = _Credentials()
-        client = self._makeOne(credentials=credentials)
+        client = self._make_one(credentials=credentials)
 
         def dummy_response():
             return response

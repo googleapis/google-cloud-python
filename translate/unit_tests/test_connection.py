@@ -17,15 +17,16 @@ import unittest
 
 class TestConnection(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.translate.connection import Connection
         return Connection
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_build_api_url_no_extra_query_params(self):
-        conn = self._makeOne()
+        conn = self._make_one()
         URI = '/'.join([
             conn.API_BASE_URL,
             'language',
@@ -38,7 +39,7 @@ class TestConnection(unittest.TestCase):
     def test_build_api_url_w_extra_query_params(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        conn = self._makeOne()
+        conn = self._make_one()
         query_params = [('q', 'val1'), ('q', 'val2')]
         uri = conn.build_api_url('/foo', query_params=query_params)
         scheme, netloc, path, qs, _ = urlsplit(uri)

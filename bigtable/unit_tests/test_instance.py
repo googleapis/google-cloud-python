@@ -30,18 +30,19 @@ class TestInstance(unittest.TestCase):
     TABLE_ID = 'table_id'
     TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigtable.instance import Instance
         return Instance
 
-    def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor_defaults(self):
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         client = object()
-        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
         self.assertIs(instance._client, client)
@@ -52,8 +53,8 @@ class TestInstance(unittest.TestCase):
         display_name = 'display_name'
         client = object()
 
-        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                 display_name=display_name)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
+                                  display_name=display_name)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, display_name)
         self.assertIs(instance._client, client)
@@ -62,8 +63,8 @@ class TestInstance(unittest.TestCase):
         display_name = 'display_name'
 
         client = _Client(self.PROJECT)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                 display_name=display_name)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
+                                  display_name=display_name)
         new_instance = instance.copy()
 
         # Make sure the client copy succeeded.
@@ -76,7 +77,7 @@ class TestInstance(unittest.TestCase):
     def test_table_factory(self):
         from google.cloud.bigtable.table import Table
 
-        instance = self._makeOne(self.INSTANCE_ID, None, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, None, self.LOCATION_ID)
 
         table = instance.table(self.TABLE_ID)
         self.assertIsInstance(table, Table)
@@ -92,7 +93,7 @@ class TestInstance(unittest.TestCase):
             display_name=display_name,
         )
 
-        instance = self._makeOne(None, None, None, None)
+        instance = self._make_one(None, None, None, None)
         self.assertIsNone(instance.display_name)
         instance._update_from_pb(instance_pb)
         self.assertEqual(instance.display_name, display_name)
@@ -102,7 +103,7 @@ class TestInstance(unittest.TestCase):
             instance_pb2 as data_v2_pb2)
 
         instance_pb = data_v2_pb2.Instance()
-        instance = self._makeOne(None, None, None, None)
+        instance = self._make_one(None, None, None, None)
         self.assertIsNone(instance.display_name)
         with self.assertRaises(ValueError):
             instance._update_from_pb(instance_pb)
@@ -121,7 +122,7 @@ class TestInstance(unittest.TestCase):
             display_name=self.INSTANCE_ID,
         )
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         instance = klass.from_pb(instance_pb, client)
         self.assertIsInstance(instance, klass)
         self.assertEqual(instance._client, client)
@@ -136,7 +137,7 @@ class TestInstance(unittest.TestCase):
         instance_name = 'INCORRECT_FORMAT'
         instance_pb = data_v2_pb2.Instance(name=instance_name)
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(ValueError):
             klass.from_pb(instance_pb, None)
 
@@ -151,38 +152,38 @@ class TestInstance(unittest.TestCase):
 
         instance_pb = data_v2_pb2.Instance(name=self.INSTANCE_NAME)
 
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         with self.assertRaises(ValueError):
             klass.from_pb(instance_pb, client)
 
     def test_name_property(self):
         client = _Client(project=self.PROJECT)
 
-        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
         self.assertEqual(instance.name, self.INSTANCE_NAME)
 
     def test___eq__(self):
         client = object()
-        instance1 = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
-        instance2 = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance1 = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance2 = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
         self.assertEqual(instance1, instance2)
 
     def test___eq__type_differ(self):
         client = object()
-        instance1 = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance1 = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
         instance2 = object()
         self.assertNotEqual(instance1, instance2)
 
     def test___ne__same_value(self):
         client = object()
-        instance1 = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
-        instance2 = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance1 = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance2 = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
         comparison_val = (instance1 != instance2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        instance1 = self._makeOne('instance_id1', 'client1', self.LOCATION_ID)
-        instance2 = self._makeOne('instance_id2', 'client2', self.LOCATION_ID)
+        instance1 = self._make_one('instance_id1', 'client1', self.LOCATION_ID)
+        instance2 = self._make_one('instance_id2', 'client2', self.LOCATION_ID)
         self.assertNotEqual(instance1, instance2)
 
     def test_reload(self):
@@ -193,7 +194,7 @@ class TestInstance(unittest.TestCase):
         from unit_tests._testing import _FakeStub
 
         client = _Client(self.PROJECT)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create request_pb
         request_pb = messages_v2_pb.GetInstanceRequest(
@@ -240,8 +241,8 @@ class TestInstance(unittest.TestCase):
         NOW = datetime.datetime.utcnow()
         NOW_PB = _datetime_to_pb_timestamp(NOW)
         client = _Client(self.PROJECT)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                 display_name=self.DISPLAY_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
+                                  display_name=self.DISPLAY_NAME)
 
         # Create response_pb
         metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
@@ -294,8 +295,8 @@ class TestInstance(unittest.TestCase):
         SERVE_NODES = 5
 
         client = _Client(self.PROJECT)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                 serve_nodes=SERVE_NODES)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
+                                  serve_nodes=SERVE_NODES)
 
         # Create response_pb
         response_pb = operations_pb2.Operation(name=self.OP_NAME)
@@ -330,8 +331,8 @@ class TestInstance(unittest.TestCase):
         from unit_tests._testing import _FakeStub
 
         client = _Client(self.PROJECT)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
-                                 display_name=self.DISPLAY_NAME)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID,
+                                  display_name=self.DISPLAY_NAME)
 
         # Create request_pb
         request_pb = data_v2_pb2.Instance(
@@ -365,7 +366,7 @@ class TestInstance(unittest.TestCase):
         from unit_tests._testing import _FakeStub
 
         client = _Client(self.PROJECT)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create request_pb
         request_pb = messages_v2_pb.DeleteInstanceRequest(
@@ -404,7 +405,7 @@ class TestInstance(unittest.TestCase):
         SERVE_NODES = 4
 
         client = _Client(self.PROJECT)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         CLUSTER_NAME1 = (instance.name + '/clusters/' + CLUSTER_ID1)
         CLUSTER_NAME2 = (instance.name + '/clusters/' + CLUSTER_ID2)
@@ -455,7 +456,7 @@ class TestInstance(unittest.TestCase):
         from unit_tests._testing import _FakeStub
 
         client = _Client(self.PROJECT)
-        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance = self._make_one(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create request_
         request_pb = table_messages_v1_pb2.ListTablesRequest(
@@ -513,7 +514,7 @@ class Test__prepare_create_request(unittest.TestCase):
     INSTANCE_NAME = PARENT + '/instances/' + INSTANCE_ID
     CLUSTER_NAME = INSTANCE_NAME + '/clusters/' + INSTANCE_ID
 
-    def _callFUT(self, instance, **kw):
+    def _call_fut(self, instance, **kw):
         from google.cloud.bigtable.instance import _prepare_create_request
         return _prepare_create_request(instance, **kw)
 
@@ -528,7 +529,7 @@ class Test__prepare_create_request(unittest.TestCase):
         client = _Client(self.PROJECT)
 
         instance = Instance(self.INSTANCE_ID, client, self.LOCATION_ID)
-        request_pb = self._callFUT(instance)
+        request_pb = self._call_fut(instance)
         self.assertIsInstance(request_pb,
                               messages_v2_pb.CreateInstanceRequest)
         self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
@@ -557,7 +558,7 @@ class Test__prepare_create_request(unittest.TestCase):
                             display_name=DISPLAY_NAME,
                             serve_nodes=SERVE_NODES)
 
-        request_pb = self._callFUT(instance)
+        request_pb = self._call_fut(instance)
 
         self.assertIsInstance(request_pb,
                               messages_v2_pb.CreateInstanceRequest)

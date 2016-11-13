@@ -17,22 +17,23 @@ import unittest
 
 class TestClient(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.client import Client
         return Client
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         from google.cloud.bigquery._http import Connection
         PROJECT = 'PROJECT'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
-        self.assertIsInstance(client.connection, Connection)
-        self.assertIs(client.connection.credentials, creds)
-        self.assertIs(client.connection.http, http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, creds)
+        self.assertIs(client._connection.http, http)
 
     def test_list_projects_defaults(self):
         import six
@@ -57,8 +58,8 @@ class TestClient(unittest.TestCase):
             ]
         }
         creds = _Credentials()
-        client = self._makeOne(PROJECT_1, creds)
-        conn = client.connection = _Connection(DATA)
+        client = self._make_one(PROJECT_1, creds)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_projects()
         page = six.next(iterator.pages)
@@ -86,8 +87,8 @@ class TestClient(unittest.TestCase):
         TOKEN = 'TOKEN'
         DATA = {}
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        client = self._make_one(PROJECT, creds)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_projects(max_results=3, page_token=TOKEN)
         page = six.next(iterator.pages)
@@ -128,8 +129,8 @@ class TestClient(unittest.TestCase):
             ]
         }
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        client = self._make_one(PROJECT, creds)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_datasets()
         page = six.next(iterator.pages)
@@ -156,8 +157,8 @@ class TestClient(unittest.TestCase):
         TOKEN = 'TOKEN'
         DATA = {}
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        client = self._make_one(PROJECT, creds)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_datasets(
             include_all=True, max_results=3, page_token=TOKEN)
@@ -181,7 +182,7 @@ class TestClient(unittest.TestCase):
         DATASET = 'dataset_name'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
         self.assertIsInstance(dataset, Dataset)
         self.assertEqual(dataset.name, DATASET)
@@ -190,7 +191,7 @@ class TestClient(unittest.TestCase):
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
+        client = self._make_one(PROJECT, creds)
         with self.assertRaises(ValueError):
             client.job_from_resource({'configuration': {'nonesuch': {}}})
 
@@ -304,8 +305,8 @@ class TestClient(unittest.TestCase):
             ]
         }
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        client = self._make_one(PROJECT, creds)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_jobs()
         page = six.next(iterator.pages)
@@ -360,8 +361,8 @@ class TestClient(unittest.TestCase):
             ]
         }
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        client = self._make_one(PROJECT, creds)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_jobs()
         page = six.next(iterator.pages)
@@ -388,8 +389,8 @@ class TestClient(unittest.TestCase):
         DATA = {}
         TOKEN = 'TOKEN'
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
-        conn = client.connection = _Connection(DATA)
+        client = self._make_one(PROJECT, creds)
+        conn = client._connection = _Connection(DATA)
 
         iterator = client.list_jobs(max_results=1000, page_token=TOKEN,
                                     all_users=True, state_filter='done')
@@ -420,7 +421,7 @@ class TestClient(unittest.TestCase):
         SOURCE_URI = 'http://example.com/source.csv'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
         destination = dataset.table(DESTINATION)
         job = client.load_table_from_storage(JOB, destination, SOURCE_URI)
@@ -439,7 +440,7 @@ class TestClient(unittest.TestCase):
         DESTINATION = 'destination_table'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
         source = dataset.table(SOURCE)
         destination = dataset.table(DESTINATION)
@@ -459,7 +460,7 @@ class TestClient(unittest.TestCase):
         DESTINATION = 'gs://bucket_name/object_name'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
         source = dataset.table(SOURCE)
         job = client.extract_table_to_storage(JOB, source, DESTINATION)
@@ -476,7 +477,7 @@ class TestClient(unittest.TestCase):
         QUERY = 'select count(*) from persons'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         job = client.run_async_query(JOB, QUERY)
         self.assertIsInstance(job, QueryJob)
         self.assertIs(job._client, client)
@@ -489,7 +490,7 @@ class TestClient(unittest.TestCase):
         QUERY = 'select count(*) from persons'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
         job = client.run_sync_query(QUERY)
         self.assertIsInstance(job, QueryResults)
         self.assertIs(job._client, client)

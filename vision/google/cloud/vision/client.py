@@ -101,9 +101,8 @@ class Client(JSONClient):
         request = VisionRequest(image, features)
 
         data = {'requests': [request.as_dict()]}
-        response = self.connection.api_request(method='POST',
-                                               path='/images:annotate',
-                                               data=data)
+        response = self._connection.api_request(
+            method='POST', path='/images:annotate', data=data)
 
         return response['responses'][0]
 

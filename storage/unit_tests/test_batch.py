@@ -17,12 +17,13 @@ import unittest
 
 class TestMIMEApplicationHTTP(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.batch import MIMEApplicationHTTP
         return MIMEApplicationHTTP
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_body_None(self):
         METHOD = 'DELETE'
@@ -31,7 +32,7 @@ class TestMIMEApplicationHTTP(unittest.TestCase):
             "DELETE /path/to/api HTTP/1.1",
             "",
             ]
-        mah = self._makeOne(METHOD, PATH, {}, None)
+        mah = self._make_one(METHOD, PATH, {}, None)
         self.assertEqual(mah.get_content_type(), 'application/http')
         self.assertEqual(mah.get_payload().splitlines(), LINES)
 
@@ -47,7 +48,7 @@ class TestMIMEApplicationHTTP(unittest.TestCase):
             "",
             "ABC",
             ]
-        mah = self._makeOne(METHOD, PATH, HEADERS, BODY)
+        mah = self._make_one(METHOD, PATH, HEADERS, BODY)
         self.assertEqual(mah.get_payload().splitlines(), LINES)
 
     def test_ctor_body_dict(self):
@@ -62,24 +63,25 @@ class TestMIMEApplicationHTTP(unittest.TestCase):
             '',
             '{"foo": "bar"}',
             ]
-        mah = self._makeOne(METHOD, PATH, HEADERS, BODY)
+        mah = self._make_one(METHOD, PATH, HEADERS, BODY)
         self.assertEqual(mah.get_payload().splitlines(), LINES)
 
 
 class TestBatch(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage.batch import Batch
         return Batch
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         http = _HTTP()
         connection = _Connection(http=http)
         client = _Client(connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         self.assertIs(batch._client, client)
         self.assertEqual(len(batch._requests), 0)
         self.assertEqual(len(batch._target_objects), 0)
@@ -89,13 +91,13 @@ class TestBatch(unittest.TestCase):
         project = 'PROJECT'
         credentials = _Credentials()
         client = Client(project=project, credentials=credentials)
-        batch1 = self._makeOne(client)
+        batch1 = self._make_one(client)
         self.assertIsNone(batch1.current())
 
         client._push_batch(batch1)
         self.assertIs(batch1.current(), batch1)
 
-        batch2 = self._makeOne(client)
+        batch2 = self._make_one(client)
         client._push_batch(batch2)
         self.assertIs(batch1.current(), batch2)
 
@@ -105,7 +107,7 @@ class TestBatch(unittest.TestCase):
         expected = _Response()
         http = _HTTP((expected, ''))
         connection = _Connection(http=http)
-        batch = self._makeOne(connection)
+        batch = self._make_one(connection)
         target = _MockObject()
         response, content = batch._make_request('GET', URL,
                                                 target_object=target)
@@ -130,7 +132,7 @@ class TestBatch(unittest.TestCase):
         URL = 'http://example.com/api'
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
-        batch = self._makeOne(connection)
+        batch = self._make_one(connection)
         target = _MockObject()
         response, content = batch._make_request('POST', URL, data={'foo': 1},
                                                 target_object=target)
@@ -155,7 +157,7 @@ class TestBatch(unittest.TestCase):
         URL = 'http://example.com/api'
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
-        batch = self._makeOne(connection)
+        batch = self._make_one(connection)
         target = _MockObject()
         response, content = batch._make_request('PATCH', URL, data={'foo': 1},
                                                 target_object=target)
@@ -180,7 +182,7 @@ class TestBatch(unittest.TestCase):
         URL = 'http://example.com/api'
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
-        batch = self._makeOne(connection)
+        batch = self._make_one(connection)
         target = _MockObject()
         response, content = batch._make_request('DELETE', URL,
                                                 target_object=target)
@@ -204,7 +206,7 @@ class TestBatch(unittest.TestCase):
         URL = 'http://example.com/api'
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
-        batch = self._makeOne(connection)
+        batch = self._make_one(connection)
         batch._MAX_BATCH_SIZE = 1
         batch._requests.append(('POST', URL, {}, {'bar': 2}))
         self.assertRaises(ValueError,
@@ -214,7 +216,7 @@ class TestBatch(unittest.TestCase):
     def test_finish_empty(self):
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
-        batch = self._makeOne(connection)
+        batch = self._make_one(connection)
         self.assertRaises(ValueError, batch.finish)
         self.assertIs(connection.http, http)
 
@@ -259,7 +261,7 @@ class TestBatch(unittest.TestCase):
         http = _HTTP((expected, _THREE_PART_MIME_RESPONSE))
         connection = _Connection(http=http)
         client = _Client(connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         batch.API_BASE_URL = 'http://api.example.com'
         batch._do_request('POST', URL, {}, {'foo': 1, 'bar': 2}, None)
         batch._do_request('PATCH', URL, {}, {'bar': 3}, None)
@@ -309,7 +311,7 @@ class TestBatch(unittest.TestCase):
         http = _HTTP((expected, _TWO_PART_MIME_RESPONSE_WITH_FAIL))
         connection = _Connection(http=http)
         client = _Client(connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         batch.API_BASE_URL = 'http://api.example.com'
         batch._requests.append(('GET', URL, {}, None))
         self.assertRaises(ValueError, batch.finish)
@@ -322,7 +324,7 @@ class TestBatch(unittest.TestCase):
         http = _HTTP((expected, _TWO_PART_MIME_RESPONSE_WITH_FAIL))
         connection = _Connection(http=http)
         client = _Client(connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         batch.API_BASE_URL = 'http://api.example.com'
         target1 = _MockObject()
         target2 = _MockObject()
@@ -363,7 +365,7 @@ class TestBatch(unittest.TestCase):
         http = _HTTP((expected, 'NOT A MIME_RESPONSE'))
         connection = _Connection(http=http)
         client = _Client(connection)
-        batch = self._makeOne(client)
+        batch = self._make_one(client)
         batch._requests.append(('POST', URL, {}, {'foo': 1, 'bar': 2}))
         batch._requests.append(('PATCH', URL, {}, {'bar': 3}))
         batch._requests.append(('DELETE', URL, {}, None))
@@ -378,14 +380,14 @@ class TestBatch(unittest.TestCase):
         project = 'PROJECT'
         credentials = _Credentials()
         client = Client(project=project, credentials=credentials)
-        client._connection._http = http
+        client._base_connection._http = http
 
         self.assertEqual(list(client._batch_stack), [])
 
         target1 = _MockObject()
         target2 = _MockObject()
         target3 = _MockObject()
-        with self._makeOne(client) as batch:
+        with self._make_one(client) as batch:
             self.assertEqual(list(client._batch_stack), [batch])
             batch._make_request('POST', URL, {'foo': 1, 'bar': 2},
                                 target_object=target1)
@@ -414,7 +416,7 @@ class TestBatch(unittest.TestCase):
         project = 'PROJECT'
         credentials = _Credentials()
         client = Client(project=project, credentials=credentials)
-        client._connection = connection
+        client._base_connection = connection
 
         self.assertEqual(list(client._batch_stack), [])
 
@@ -422,7 +424,7 @@ class TestBatch(unittest.TestCase):
         target2 = _MockObject()
         target3 = _MockObject()
         try:
-            with self._makeOne(client) as batch:
+            with self._make_one(client) as batch:
                 self.assertEqual(list(client._batch_stack), [batch])
                 batch._make_request('POST', URL, {'foo': 1, 'bar': 2},
                                     target_object=target1)
@@ -446,13 +448,13 @@ class TestBatch(unittest.TestCase):
 
 class Test__unpack_batch_response(unittest.TestCase):
 
-    def _callFUT(self, response, content):
+    def _call_fut(self, response, content):
         from google.cloud.storage.batch import _unpack_batch_response
         return _unpack_batch_response(response, content)
 
     def _unpack_helper(self, response, content):
         import httplib2
-        result = list(self._callFUT(response, content))
+        result = list(self._call_fut(response, content))
         self.assertEqual(len(result), 3)
         response0 = httplib2.Response({
             'content-length': '20',
@@ -537,23 +539,23 @@ Content-Length: 0
 
 class Test__FutureDict(unittest.TestCase):
 
-    def _makeOne(self, *args, **kw):
+    def _make_one(self, *args, **kw):
         from google.cloud.storage.batch import _FutureDict
         return _FutureDict(*args, **kw)
 
     def test_get(self):
-        future = self._makeOne()
+        future = self._make_one()
         self.assertRaises(KeyError, future.get, None)
 
     def test___getitem__(self):
-        future = self._makeOne()
+        future = self._make_one()
         value = orig_value = object()
         with self.assertRaises(KeyError):
             value = future[None]
         self.assertIs(value, orig_value)
 
     def test___setitem__(self):
-        future = self._makeOne()
+        future = self._make_one()
         with self.assertRaises(KeyError):
             future[None] = None
 
@@ -596,7 +598,7 @@ class _MockObject(object):
 class _Client(object):
 
     def __init__(self, connection):
-        self._connection = connection
+        self._base_connection = connection
 
 
 class _Credentials(object):

@@ -17,42 +17,45 @@ import unittest
 
 class TestMetricKind(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.metric import MetricKind
         return MetricKind
 
     def test_one(self):
-        self.assertTrue(hasattr(self._getTargetClass(), 'GAUGE'))
+        self.assertTrue(hasattr(self._get_target_class(), 'GAUGE'))
 
     def test_names(self):
-        for name in self._getTargetClass().__dict__:
+        for name in self._get_target_class().__dict__:
             if not name.startswith('_'):
-                self.assertEqual(getattr(self._getTargetClass(), name), name)
+                self.assertEqual(getattr(self._get_target_class(), name), name)
 
 
 class TestValueType(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.metric import ValueType
         return ValueType
 
     def test_one(self):
-        self.assertTrue(hasattr(self._getTargetClass(), 'DISTRIBUTION'))
+        self.assertTrue(hasattr(self._get_target_class(), 'DISTRIBUTION'))
 
     def test_names(self):
-        for name in self._getTargetClass().__dict__:
+        for name in self._get_target_class().__dict__:
             if not name.startswith('_'):
-                self.assertEqual(getattr(self._getTargetClass(), name), name)
+                self.assertEqual(getattr(self._get_target_class(), name), name)
 
 
 class TestMetricDescriptor(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.metric import MetricDescriptor
         return MetricDescriptor
 
-    def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         from google.cloud.monitoring.label import LabelDescriptor
@@ -74,7 +77,7 @@ class TestMetricDescriptor(unittest.TestCase):
         DISPLAY_NAME = 'Response count'
 
         client = object()
-        descriptor = self._makeOne(
+        descriptor = self._make_one(
             client=client,
             name=NAME,
             type_=TYPE,
@@ -103,7 +106,7 @@ class TestMetricDescriptor(unittest.TestCase):
         TYPE = 'appengine.googleapis.com/http/server/response_count'
 
         client = object()
-        descriptor = self._makeOne(client=client, type_=TYPE)
+        descriptor = self._make_one(client=client, type_=TYPE)
 
         self.assertIs(descriptor.client, client)
 
@@ -144,7 +147,7 @@ class TestMetricDescriptor(unittest.TestCase):
             'displayName': DISPLAY_NAME,
         }
         client = object()
-        descriptor = self._getTargetClass()._from_dict(client, info)
+        descriptor = self._get_target_class()._from_dict(client, info)
 
         self.assertIs(descriptor.client, client)
 
@@ -176,7 +179,7 @@ class TestMetricDescriptor(unittest.TestCase):
             'valueType': VALUE_TYPE,
         }
         client = object()
-        descriptor = self._getTargetClass()._from_dict(client, info)
+        descriptor = self._get_target_class()._from_dict(client, info)
 
         self.assertIs(descriptor.client, client)
 
@@ -215,7 +218,7 @@ class TestMetricDescriptor(unittest.TestCase):
             'displayName': DISPLAY_NAME,
         }
         client = object()
-        descriptor = self._getTargetClass()._from_dict(client, info)
+        descriptor = self._get_target_class()._from_dict(client, info)
 
         del info['name']
         self.assertEqual(descriptor._to_dict(), info)
@@ -233,7 +236,7 @@ class TestMetricDescriptor(unittest.TestCase):
             'valueType': VALUE_TYPE,
         }
         client = object()
-        descriptor = self._getTargetClass()._from_dict(client, info)
+        descriptor = self._get_target_class()._from_dict(client, info)
 
         del info['name']
         self.assertEqual(descriptor._to_dict(), info)
@@ -259,7 +262,7 @@ class TestMetricDescriptor(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        descriptor = self._makeOne(
+        descriptor = self._make_one(
             client=client,
             type_=TYPE,
             metric_kind=METRIC_KIND,
@@ -292,7 +295,7 @@ class TestMetricDescriptor(unittest.TestCase):
 
         connection = _Connection({})
         client = _Client(project=PROJECT, connection=connection)
-        descriptor = self._makeOne(
+        descriptor = self._make_one(
             client=client,
             type_=TYPE,
             metric_kind='NOTUSED',
@@ -321,7 +324,7 @@ class TestMetricDescriptor(unittest.TestCase):
 
         connection = _Connection(METRIC_DESCRIPTOR)
         client = _Client(project=PROJECT, connection=connection)
-        descriptor = self._getTargetClass()._fetch(client, TYPE)
+        descriptor = self._get_target_class()._fetch(client, TYPE)
 
         self.assertIs(descriptor.client, client)
         self.assertEqual(descriptor.name, NAME)
@@ -364,7 +367,7 @@ class TestMetricDescriptor(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        descriptors = self._getTargetClass()._list(client)
+        descriptors = self._get_target_class()._list(client)
 
         self.assertEqual(len(descriptors), 2)
         descriptor1, descriptor2 = descriptors
@@ -423,7 +426,7 @@ class TestMetricDescriptor(unittest.TestCase):
 
         connection = _Connection(RESPONSE1, RESPONSE2)
         client = _Client(project=PROJECT, connection=connection)
-        descriptors = self._getTargetClass()._list(client)
+        descriptors = self._get_target_class()._list(client)
 
         self.assertEqual(len(descriptors), 2)
         descriptor1, descriptor2 = descriptors
@@ -445,7 +448,7 @@ class TestMetricDescriptor(unittest.TestCase):
         self.assertEqual(request2, expected_request2)
 
         with self.assertRaises(NotFound):
-            self._getTargetClass()._list(client)
+            self._get_target_class()._list(client)
 
     def test_list_filtered(self):
         PROJECT = 'my-project'
@@ -459,7 +462,7 @@ class TestMetricDescriptor(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        descriptors = self._getTargetClass()._list(client, FILTER)
+        descriptors = self._get_target_class()._list(client, FILTER)
 
         self.assertEqual(len(descriptors), 0)
 
@@ -481,7 +484,8 @@ class TestMetricDescriptor(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        descriptors = self._getTargetClass()._list(client, type_prefix=PREFIX)
+        descriptors = self._get_target_class()._list(
+            client, type_prefix=PREFIX)
 
         self.assertEqual(len(descriptors), 0)
 
@@ -493,12 +497,13 @@ class TestMetricDescriptor(unittest.TestCase):
 
 class TestMetric(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.metric import Metric
         return Metric
 
-    def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
         TYPE = 'appengine.googleapis.com/http/server/response_count'
@@ -506,7 +511,7 @@ class TestMetric(unittest.TestCase):
             'response_code': 200,
             'loading': False,
         }
-        metric = self._makeOne(type=TYPE, labels=LABELS)
+        metric = self._make_one(type=TYPE, labels=LABELS)
         self.assertEqual(metric.type, TYPE)
         self.assertEqual(metric.labels, LABELS)
 
@@ -520,21 +525,21 @@ class TestMetric(unittest.TestCase):
             'type': TYPE,
             'labels': LABELS,
         }
-        metric = self._getTargetClass()._from_dict(info)
+        metric = self._get_target_class()._from_dict(info)
         self.assertEqual(metric.type, TYPE)
         self.assertEqual(metric.labels, LABELS)
 
     def test_from_dict_defaults(self):
         TYPE = 'appengine.googleapis.com/http/server/response_count'
         info = {'type': TYPE}
-        metric = self._getTargetClass()._from_dict(info)
+        metric = self._get_target_class()._from_dict(info)
         self.assertEqual(metric.type, TYPE)
         self.assertEqual(metric.labels, {})
 
     def test_to_dict(self):
         TYPE = 'custom.googleapis.com/my_metric'
         LABELS = {}
-        metric = self._makeOne(TYPE, LABELS)
+        metric = self._make_one(TYPE, LABELS)
         expected_dict = {
             'type': TYPE,
             'labels': LABELS,
@@ -561,4 +566,4 @@ class _Client(object):
 
     def __init__(self, project, connection):
         self.project = project
-        self.connection = connection
+        self._connection = connection

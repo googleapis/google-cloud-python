@@ -23,12 +23,13 @@ class TestQueryResults(unittest.TestCase):
     QUERY = 'select count(*) from persons'
     TOKEN = 'TOKEN'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.bigquery.query import QueryResults
         return QueryResults
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def _makeResource(self, complete=False):
         resource = {
@@ -118,7 +119,7 @@ class TestQueryResults(unittest.TestCase):
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        query = self._makeOne(self.QUERY, client)
+        query = self._make_one(self.QUERY, client)
         self.assertEqual(query.query, self.QUERY)
         self.assertIs(query._client, client)
 
@@ -151,7 +152,7 @@ class TestQueryResults(unittest.TestCase):
         dataset = job.default_dataset = Dataset(DS_NAME, client)
         job.use_query_cache = True
         job.use_legacy_sql = True
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         query = klass.from_query_job(job)
 
@@ -172,7 +173,7 @@ class TestQueryResults(unittest.TestCase):
         job = QueryJob(
             self.JOB_NAME, self.QUERY, client,
             udf_resources=[UDFResource("resourceUri", RESOURCE_URI)])
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
 
         query = klass.from_query_job(job)
 
@@ -186,14 +187,14 @@ class TestQueryResults(unittest.TestCase):
 
     def test_job_wo_jobid(self):
         client = _Client(self.PROJECT)
-        query = self._makeOne(self.QUERY, client)
+        query = self._make_one(self.QUERY, client)
         self.assertIsNone(query.job)
 
     def test_job_w_jobid(self):
         from google.cloud.bigquery.job import QueryJob
         SERVER_GENERATED = 'SERVER_GENERATED'
         client = _Client(self.PROJECT)
-        query = self._makeOne(self.QUERY, client)
+        query = self._make_one(self.QUERY, client)
         query._properties['jobReference'] = {
             'projectId': self.PROJECT,
             'jobId': SERVER_GENERATED,
@@ -208,7 +209,7 @@ class TestQueryResults(unittest.TestCase):
 
     def test_schema(self):
         client = _Client(self.PROJECT)
-        query = self._makeOne(self.QUERY, client)
+        query = self._make_one(self.QUERY, client)
         self._verifyResourceProperties(query, {})
         resource = {
             'schema': {
@@ -224,7 +225,7 @@ class TestQueryResults(unittest.TestCase):
     def test_run_w_already_has_job(self):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        query = self._makeOne(self.QUERY, client)
+        query = self._make_one(self.QUERY, client)
         query._job = object()  # simulate already running
         with self.assertRaises(ValueError):
             query.run()
@@ -234,7 +235,7 @@ class TestQueryResults(unittest.TestCase):
         RESOURCE = self._makeResource(complete=False)
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        query = self._makeOne(self.QUERY, client)
+        query = self._make_one(self.QUERY, client)
         self.assertEqual(query.udf_resources, [])
         query.run()
 
@@ -254,7 +255,7 @@ class TestQueryResults(unittest.TestCase):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        query = self._makeOne(self.QUERY, client1)
+        query = self._make_one(self.QUERY, client1)
 
         query.default_dataset = client2.dataset(DATASET)
         query.max_results = 100
@@ -294,7 +295,7 @@ class TestQueryResults(unittest.TestCase):
         RESOURCE = self._makeResource(complete=False)
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        query = self._makeOne(self.QUERY, client)
+        query = self._make_one(self.QUERY, client)
         query.udf_resources = [UDFResource("inlineCode", INLINE_UDF_CODE)]
 
         query.run()
@@ -316,7 +317,7 @@ class TestQueryResults(unittest.TestCase):
         RESOURCE = self._makeResource(complete=False)
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        query = self._makeOne(self.QUERY, client)
+        query = self._make_one(self.QUERY, client)
         query.udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
 
         query.run()
@@ -339,7 +340,7 @@ class TestQueryResults(unittest.TestCase):
         RESOURCE = self._makeResource(complete=False)
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        query = self._makeOne(self.QUERY, client)
+        query = self._make_one(self.QUERY, client)
         query.udf_resources = [UDFResource("resourceUri", RESOURCE_URI),
                                UDFResource("inlineCode", INLINE_UDF_CODE)]
 
@@ -362,7 +363,7 @@ class TestQueryResults(unittest.TestCase):
     def test_fetch_data_query_not_yet_run(self):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        query = self._makeOne(self.QUERY, client)
+        query = self._make_one(self.QUERY, client)
         self.assertRaises(ValueError, query.fetch_data)
 
     def test_fetch_data_w_bound_client(self):
@@ -373,7 +374,7 @@ class TestQueryResults(unittest.TestCase):
 
         conn = _Connection(AFTER)
         client = _Client(project=self.PROJECT, connection=conn)
-        query = self._makeOne(self.QUERY, client)
+        query = self._make_one(self.QUERY, client)
         query._set_properties(BEFORE)
         self.assertFalse(query.complete)
 
@@ -406,7 +407,7 @@ class TestQueryResults(unittest.TestCase):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(AFTER)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        query = self._makeOne(self.QUERY, client1)
+        query = self._make_one(self.QUERY, client1)
         query._set_properties(BEFORE)
         self.assertFalse(query.complete)
 
@@ -439,7 +440,7 @@ class _Client(object):
 
     def __init__(self, project='project', connection=None):
         self.project = project
-        self.connection = connection
+        self._connection = connection
 
     def dataset(self, name):
         from google.cloud.bigquery.dataset import Dataset

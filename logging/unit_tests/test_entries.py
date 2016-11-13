@@ -17,7 +17,7 @@ import unittest
 
 class Test_logger_name_from_path(unittest.TestCase):
 
-    def _callFUT(self, path):
+    def _call_fut(self, path):
         from google.cloud.logging.entries import logger_name_from_path
         return logger_name_from_path(path)
 
@@ -25,14 +25,14 @@ class Test_logger_name_from_path(unittest.TestCase):
         LOGGER_NAME = 'LOGGER_NAME'
         PROJECT = 'my-project-1234'
         PATH = 'projects/%s/logs/%s' % (PROJECT, LOGGER_NAME)
-        logger_name = self._callFUT(PATH)
+        logger_name = self._call_fut(PATH)
         self.assertEqual(logger_name, LOGGER_NAME)
 
     def test_w_name_w_all_extras(self):
         LOGGER_NAME = 'LOGGER_NAME-part.one~part.two%part-three'
         PROJECT = 'my-project-1234'
         PATH = 'projects/%s/logs/%s' % (PROJECT, LOGGER_NAME)
-        logger_name = self._callFUT(PATH)
+        logger_name = self._call_fut(PATH)
         self.assertEqual(logger_name, LOGGER_NAME)
 
 
@@ -41,7 +41,8 @@ class Test_BaseEntry(unittest.TestCase):
     PROJECT = 'PROJECT'
     LOGGER_NAME = 'LOGGER_NAME'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.entries import _BaseEntry
 
         class _Dummy(_BaseEntry):
@@ -49,13 +50,13 @@ class Test_BaseEntry(unittest.TestCase):
 
         return _Dummy
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
         PAYLOAD = 'PAYLOAD'
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
-        entry = self._makeOne(PAYLOAD, logger)
+        entry = self._make_one(PAYLOAD, logger)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertIs(entry.logger, logger)
         self.assertIsNone(entry.insert_id)
@@ -80,12 +81,12 @@ class Test_BaseEntry(unittest.TestCase):
             'status': STATUS,
         }
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
-        entry = self._makeOne(PAYLOAD, logger,
-                              insert_id=IID,
-                              timestamp=TIMESTAMP,
-                              labels=LABELS,
-                              severity=SEVERITY,
-                              http_request=REQUEST)
+        entry = self._make_one(PAYLOAD, logger,
+                               insert_id=IID,
+                               timestamp=TIMESTAMP,
+                               labels=LABELS,
+                               severity=SEVERITY,
+                               http_request=REQUEST)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertIs(entry.logger, logger)
         self.assertEqual(entry.insert_id, IID)
@@ -104,7 +105,7 @@ class Test_BaseEntry(unittest.TestCase):
             'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
         }
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         entry = klass.from_api_repr(API_REPR, client)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertIsNone(entry.insert_id)
@@ -119,7 +120,7 @@ class Test_BaseEntry(unittest.TestCase):
     def test_from_api_repr_w_loggers_no_logger_match(self):
         from datetime import datetime
         from google.cloud._helpers import UTC
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         client = _Client(self.PROJECT)
         PAYLOAD = 'PAYLOAD'
         SEVERITY = 'CRITICAL'
@@ -179,7 +180,7 @@ class Test_BaseEntry(unittest.TestCase):
         }
         LOGGER = object()
         loggers = {LOG_NAME: LOGGER}
-        klass = self._getTargetClass()
+        klass = self._get_target_class()
         entry = klass.from_api_repr(API_REPR, client, loggers=loggers)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertEqual(entry.insert_id, IID)
@@ -193,12 +194,13 @@ class TestProtobufEntry(unittest.TestCase):
     PROJECT = 'PROJECT'
     LOGGER_NAME = 'LOGGER_NAME'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.logging.entries import ProtobufEntry
         return ProtobufEntry
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_parse_message(self):
         import json
@@ -208,7 +210,7 @@ class TestProtobufEntry(unittest.TestCase):
         message = Struct(fields={'foo': Value(bool_value=False)})
         with_true = Struct(fields={'foo': Value(bool_value=True)})
         PAYLOAD = json.loads(MessageToJson(with_true))
-        entry = self._makeOne(PAYLOAD, LOGGER)
+        entry = self._make_one(PAYLOAD, LOGGER)
         entry.parse_message(message)
         self.assertTrue(message.fields['foo'])
 

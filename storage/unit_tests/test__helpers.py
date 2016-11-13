@@ -17,16 +17,17 @@ import unittest
 
 class Test_PropertyMixin(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.storage._helpers import _PropertyMixin
         return _PropertyMixin
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def _derivedClass(self, path=None):
 
-        class Derived(self._getTargetClass()):
+        class Derived(self._get_target_class()):
 
             client = None
 
@@ -37,11 +38,11 @@ class Test_PropertyMixin(unittest.TestCase):
         return Derived
 
     def test_path_is_abstract(self):
-        mixin = self._makeOne()
+        mixin = self._make_one()
         self.assertRaises(NotImplementedError, lambda: mixin.path)
 
     def test_client_is_abstract(self):
-        mixin = self._makeOne()
+        mixin = self._make_one()
         self.assertRaises(NotImplementedError, lambda: mixin.client)
 
     def test_reload(self):
@@ -61,7 +62,7 @@ class Test_PropertyMixin(unittest.TestCase):
         self.assertEqual(derived._changes, set())
 
     def test__set_properties(self):
-        mixin = self._makeOne()
+        mixin = self._make_one()
         self.assertEqual(mixin._properties, {})
         VALUE = object()
         mixin._set_properties(VALUE)
@@ -96,7 +97,7 @@ class Test_PropertyMixin(unittest.TestCase):
 
 class Test__scalar_property(unittest.TestCase):
 
-    def _callFUT(self, fieldName):
+    def _call_fut(self, fieldName):
         from google.cloud.storage._helpers import _scalar_property
         return _scalar_property(fieldName)
 
@@ -105,7 +106,7 @@ class Test__scalar_property(unittest.TestCase):
         class Test(object):
             def __init__(self, **kw):
                 self._properties = kw.copy()
-            do_re_mi = self._callFUT('solfege')
+            do_re_mi = self._call_fut('solfege')
 
         test = Test(solfege='Latido')
         self.assertEqual(test.do_re_mi, 'Latido')
@@ -115,7 +116,7 @@ class Test__scalar_property(unittest.TestCase):
         class Test(object):
             def _patch_property(self, name, value):
                 self._patched = (name, value)
-            do_re_mi = self._callFUT('solfege')
+            do_re_mi = self._call_fut('solfege')
 
         test = Test()
         test.do_re_mi = 'Latido'
@@ -124,7 +125,7 @@ class Test__scalar_property(unittest.TestCase):
 
 class Test__base64_md5hash(unittest.TestCase):
 
-    def _callFUT(self, bytes_to_sign):
+    def _call_fut(self, bytes_to_sign):
         from google.cloud.storage._helpers import _base64_md5hash
         return _base64_md5hash(bytes_to_sign)
 
@@ -135,12 +136,11 @@ class Test__base64_md5hash(unittest.TestCase):
         BUFFER.write(BYTES_TO_SIGN)
         BUFFER.seek(0)
 
-        SIGNED_CONTENT = self._callFUT(BUFFER)
+        SIGNED_CONTENT = self._call_fut(BUFFER)
         self.assertEqual(SIGNED_CONTENT, b'kBiQqOnIz21aGlQrIp/r/w==')
 
     def test_it_with_stubs(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.storage import _helpers as MUT
+        import mock
 
         class _Buffer(object):
 
@@ -158,8 +158,11 @@ class Test__base64_md5hash(unittest.TestCase):
         BUFFER = _Buffer([b'', BYTES_TO_SIGN])
         MD5 = _MD5(DIGEST_VAL)
 
-        with _Monkey(MUT, base64=BASE64, md5=MD5):
-            SIGNED_CONTENT = self._callFUT(BUFFER)
+        patch = mock.patch.multiple(
+            'google.cloud.storage._helpers',
+            base64=BASE64, md5=MD5)
+        with patch:
+            SIGNED_CONTENT = self._call_fut(BUFFER)
 
         self.assertEqual(BUFFER._block_sizes, [8192, 8192])
         self.assertIs(SIGNED_CONTENT, DIGEST_VAL)
@@ -220,4 +223,4 @@ class _Base64(object):
 class _Client(object):
 
     def __init__(self, connection):
-        self.connection = connection
+        self._connection = connection

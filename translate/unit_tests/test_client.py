@@ -19,22 +19,23 @@ class TestClient(unittest.TestCase):
 
     KEY = 'abc-123-my-key'
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.translate.client import Client
         return Client
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
         from google.cloud.translate.connection import Connection
         from google.cloud.translate.client import ENGLISH_ISO_639
 
         http = object()
-        client = self._makeOne(self.KEY, http=http)
-        self.assertIsInstance(client.connection, Connection)
-        self.assertIsNone(client.connection.credentials)
-        self.assertIs(client.connection.http, http)
+        client = self._make_one(self.KEY, http=http)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIsNone(client._connection.credentials)
+        self.assertIs(client._connection.http, http)
         self.assertEqual(client.target_language, ENGLISH_ISO_639)
 
     def test_ctor_non_default(self):
@@ -42,16 +43,16 @@ class TestClient(unittest.TestCase):
 
         http = object()
         target = 'es'
-        client = self._makeOne(self.KEY, http=http, target_language=target)
-        self.assertIsInstance(client.connection, Connection)
-        self.assertIsNone(client.connection.credentials)
-        self.assertIs(client.connection.http, http)
+        client = self._make_one(self.KEY, http=http, target_language=target)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIsNone(client._connection.credentials)
+        self.assertIs(client._connection.http, http)
         self.assertEqual(client.target_language, target)
 
     def test_get_languages(self):
         from google.cloud.translate.client import ENGLISH_ISO_639
 
-        client = self._makeOne(self.KEY)
+        client = self._make_one(self.KEY)
         supported = [
             {'language': 'en', 'name': 'English'},
             {'language': 'af', 'name': 'Afrikaans'},
@@ -62,7 +63,7 @@ class TestClient(unittest.TestCase):
                 'languages': supported,
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.get_languages()
         self.assertEqual(result, supported)
@@ -76,7 +77,7 @@ class TestClient(unittest.TestCase):
                          {'key': self.KEY, 'target': ENGLISH_ISO_639})
 
     def test_get_languages_no_target(self):
-        client = self._makeOne(self.KEY, target_language=None)
+        client = self._make_one(self.KEY, target_language=None)
         supported = [
             {'language': 'en'},
             {'language': 'af'},
@@ -87,7 +88,7 @@ class TestClient(unittest.TestCase):
                 'languages': supported,
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.get_languages()
         self.assertEqual(result, supported)
@@ -100,7 +101,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], {'key': self.KEY})
 
     def test_get_languages_explicit_target(self):
-        client = self._makeOne(self.KEY)
+        client = self._make_one(self.KEY)
         target_language = 'en'
         supported = [
             {'language': 'en', 'name': 'Spanish'},
@@ -112,7 +113,7 @@ class TestClient(unittest.TestCase):
                 'languages': supported,
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.get_languages(target_language)
         self.assertEqual(result, supported)
@@ -126,9 +127,9 @@ class TestClient(unittest.TestCase):
                          {'key': self.KEY, 'target': target_language})
 
     def test_detect_language_bad_result(self):
-        client = self._makeOne(self.KEY)
+        client = self._make_one(self.KEY)
         value = 'takoy'
-        conn = client.connection = _Connection({})
+        conn = client._connection = _Connection({})
 
         with self.assertRaises(ValueError):
             client.detect_language(value)
@@ -145,7 +146,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], query_params)
 
     def test_detect_language_single_value(self):
-        client = self._makeOne(self.KEY)
+        client = self._make_one(self.KEY)
         value = 'takoy'
         detection = {
             'confidence': 1.0,
@@ -158,7 +159,7 @@ class TestClient(unittest.TestCase):
                 'detections': [[detection]],
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.detect_language(value)
         self.assertEqual(result, detection)
@@ -175,7 +176,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], query_params)
 
     def test_detect_language_multiple_values(self):
-        client = self._makeOne(self.KEY)
+        client = self._make_one(self.KEY)
         value1 = u'fa\xe7ade'  # facade (with a cedilla)
         detection1 = {
             'confidence': 0.6166008,
@@ -198,7 +199,7 @@ class TestClient(unittest.TestCase):
                 ],
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.detect_language([value1, value2])
         self.assertEqual(result, [detection1, detection2])
@@ -216,7 +217,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], query_params)
 
     def test_detect_language_multiple_results(self):
-        client = self._makeOne(self.KEY)
+        client = self._make_one(self.KEY)
         value = 'soy'
         detection1 = {
             'confidence': 0.81496066,
@@ -235,15 +236,15 @@ class TestClient(unittest.TestCase):
                 'detections': [[detection1, detection2]],
             },
         }
-        client.connection = _Connection(data)
+        client._connection = _Connection(data)
 
         with self.assertRaises(ValueError):
             client.detect_language(value)
 
     def test_translate_bad_result(self):
-        client = self._makeOne(self.KEY)
+        client = self._make_one(self.KEY)
         value = 'hvala ti'
-        conn = client.connection = _Connection({})
+        conn = client._connection = _Connection({})
 
         with self.assertRaises(ValueError):
             client.translate(value)
@@ -261,7 +262,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], query_params)
 
     def test_translate_defaults(self):
-        client = self._makeOne(self.KEY)
+        client = self._make_one(self.KEY)
         value = 'hvala ti'
         translation = {
             'detectedSourceLanguage': 'hr',
@@ -273,7 +274,7 @@ class TestClient(unittest.TestCase):
                 'translations': [translation],
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.translate(value)
         self.assertEqual(result, translation)
@@ -291,7 +292,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], query_params)
 
     def test_translate_multiple(self):
-        client = self._makeOne(self.KEY)
+        client = self._make_one(self.KEY)
         value1 = 'hvala ti'
         translation1 = {
             'detectedSourceLanguage': 'hr',
@@ -309,7 +310,7 @@ class TestClient(unittest.TestCase):
                 'translations': [translation1, translation2],
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         result = client.translate([value1, value2])
         self.assertEqual(result, [translation1, translation2])
@@ -328,7 +329,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], query_params)
 
     def test_translate_explicit(self):
-        client = self._makeOne(self.KEY)
+        client = self._make_one(self.KEY)
         value = 'thank you'
         target_language = 'eo'
         source_language = 'en'
@@ -341,7 +342,7 @@ class TestClient(unittest.TestCase):
                 'translations': [translation],
             },
         }
-        conn = client.connection = _Connection(data)
+        conn = client._connection = _Connection(data)
 
         cid = '123'
         format_ = 'text'

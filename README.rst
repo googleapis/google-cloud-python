@@ -31,6 +31,7 @@ This client supports the following Google Cloud Platform services:
 -  `Google Translate`_ (`Translate README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
+-  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 
 .. _Google Cloud Datastore: https://pypi.python.org/pypi/google-cloud-datastore
 .. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
@@ -60,6 +61,8 @@ This client supports the following Google Cloud Platform services:
 .. _Vision README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/vision
 .. _Google Cloud Bigtable - HappyBase: https://pypi.python.org/pypi/google-cloud-happybase/
 .. _HappyBase README: https://github.com/GoogleCloudPlatform/google-cloud-python-happybase
+.. _Google Cloud Runtime Configuration: https://cloud.google.com/deployment-manager/runtime-configurator/
+.. _Runtime Config README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/runtimeconfig
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.

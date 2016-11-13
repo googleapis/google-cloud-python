@@ -14,6 +14,7 @@
 
 import unittest
 
+
 PROJECT = 'my-project'
 
 METRIC_TYPE = 'compute.googleapis.com/instance/uptime'
@@ -42,43 +43,46 @@ TS2 = '2016-04-06T22:05:02.042Z'
 
 class TestAligner(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.query import Aligner
         return Aligner
 
     def test_one(self):
-        self.assertTrue(hasattr(self._getTargetClass(), 'ALIGN_RATE'))
+        self.assertTrue(hasattr(self._get_target_class(), 'ALIGN_RATE'))
 
     def test_names(self):
-        for name in self._getTargetClass().__dict__:
+        for name in self._get_target_class().__dict__:
             if not name.startswith('_'):
-                self.assertEqual(getattr(self._getTargetClass(), name), name)
+                self.assertEqual(getattr(self._get_target_class(), name), name)
 
 
 class TestReducer(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.query import Reducer
         return Reducer
 
     def test_one(self):
-        self.assertTrue(hasattr(self._getTargetClass(),
+        self.assertTrue(hasattr(self._get_target_class(),
                                 'REDUCE_PERCENTILE_99'))
 
     def test_names(self):
-        for name in self._getTargetClass().__dict__:
+        for name in self._get_target_class().__dict__:
             if not name.startswith('_'):
-                self.assertEqual(getattr(self._getTargetClass(), name), name)
+                self.assertEqual(getattr(self._get_target_class(), name), name)
 
 
 class TestQuery(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.query import Query
         return Query
 
-    def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
 
     @staticmethod
     def _make_timestamp(value):
@@ -87,11 +91,11 @@ class TestQuery(unittest.TestCase):
 
     def test_constructor_minimal(self):
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client)
+        query = self._make_one(client)
 
         self.assertEqual(query._client, client)
         self.assertEqual(query._filter.metric_type,
-                         self._getTargetClass().DEFAULT_METRIC_TYPE)
+                         self._get_target_class().DEFAULT_METRIC_TYPE)
 
         self.assertIsNone(query._start_time)
         self.assertIsNone(query._end_time)
@@ -109,9 +113,9 @@ class TestQuery(unittest.TestCase):
         T0 = T1 - datetime.timedelta(days=DAYS, hours=HOURS, minutes=MINUTES)
 
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE,
-                              end_time=T1,
-                              days=DAYS, hours=HOURS, minutes=MINUTES)
+        query = self._make_one(client, METRIC_TYPE,
+                               end_time=T1,
+                               days=DAYS, hours=HOURS, minutes=MINUTES)
 
         self.assertEqual(query._client, client)
         self.assertEqual(query._filter.metric_type, METRIC_TYPE)
@@ -138,7 +142,7 @@ class TestQuery(unittest.TestCase):
 
         client = _Client(project=PROJECT, connection=_Connection())
         with _Monkey(MUT, _UTCNOW=lambda: NOW):
-            query = self._makeOne(client, METRIC_TYPE, minutes=MINUTES)
+            query = self._make_one(client, METRIC_TYPE, minutes=MINUTES)
 
         self.assertEqual(query._start_time, T0)
         self.assertEqual(query._end_time, T1)
@@ -148,29 +152,29 @@ class TestQuery(unittest.TestCase):
         T1 = datetime.datetime(2016, 4, 7, 2, 30, 30)
         client = _Client(project=PROJECT, connection=_Connection())
         with self.assertRaises(ValueError):
-            self._makeOne(client, METRIC_TYPE, end_time=T1)
+            self._make_one(client, METRIC_TYPE, end_time=T1)
 
     def test_execution_without_interval_illegal(self):
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         with self.assertRaises(ValueError):
             list(query)
 
     def test_metric_type(self):
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         self.assertEqual(query.metric_type, METRIC_TYPE)
 
     def test_filter(self):
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         expected = 'metric.type = "{type}"'.format(type=METRIC_TYPE)
         self.assertEqual(query.filter, expected)
 
     def test_filter_by_group(self):
         GROUP = '1234567'
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_group(GROUP)
         expected = (
             'metric.type = "{type}"'
@@ -181,7 +185,7 @@ class TestQuery(unittest.TestCase):
     def test_filter_by_projects(self):
         PROJECT1, PROJECT2 = 'project-1', 'project-2'
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_projects(PROJECT1, PROJECT2)
         expected = (
             'metric.type = "{type}"'
@@ -192,7 +196,7 @@ class TestQuery(unittest.TestCase):
     def test_filter_by_resources(self):
         ZONE_PREFIX = 'europe-'
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_resources(zone_prefix=ZONE_PREFIX)
         expected = (
             'metric.type = "{type}"'
@@ -203,7 +207,7 @@ class TestQuery(unittest.TestCase):
     def test_filter_by_metrics(self):
         INSTANCE = 'my-instance'
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_metrics(instance_name=INSTANCE)
         expected = (
             'metric.type = "{type}"'
@@ -217,7 +221,7 @@ class TestQuery(unittest.TestCase):
         T1 = datetime.datetime(2016, 4, 7, 2, 30, 0)
 
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_interval(end_time=T1)
         actual = list(query._build_query_params())
         expected = [
@@ -242,7 +246,7 @@ class TestQuery(unittest.TestCase):
         PAGE_TOKEN = 'second-page-please'
 
         client = _Client(project=PROJECT, connection=_Connection())
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         query = query.align(ALIGNER, minutes=MINUTES, seconds=SECONDS)
         query = query.reduce(REDUCER, FIELD1, FIELD2)
@@ -301,7 +305,7 @@ class TestQuery(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         response = list(query)
 
@@ -381,7 +385,7 @@ class TestQuery(unittest.TestCase):
 
         connection = _Connection(RESPONSE1, RESPONSE2)
         client = _Client(project=PROJECT, connection=connection)
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         response = list(query)
 
@@ -426,7 +430,7 @@ class TestQuery(unittest.TestCase):
 
         connection = _Connection({})
         client = _Client(project=PROJECT, connection=connection)
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         response = list(query)
 
@@ -467,7 +471,7 @@ class TestQuery(unittest.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        query = self._makeOne(client, METRIC_TYPE)
+        query = self._make_one(client, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
         response = list(query.iter(headers_only=True))
 
@@ -499,20 +503,21 @@ class TestQuery(unittest.TestCase):
 
 class Test_Filter(unittest.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _get_target_class():
         from google.cloud.monitoring.query import _Filter
         return _Filter
 
-    def _makeOne(self, metric_type):
-        return self._getTargetClass()(metric_type)
+    def _make_one(self, metric_type):
+        return self._get_target_class()(metric_type)
 
     def test_minimal(self):
-        obj = self._makeOne(METRIC_TYPE)
+        obj = self._make_one(METRIC_TYPE)
         expected = 'metric.type = "{type}"'.format(type=METRIC_TYPE)
         self.assertEqual(str(obj), expected)
 
     def test_maximal(self):
-        obj = self._makeOne(METRIC_TYPE)
+        obj = self._make_one(METRIC_TYPE)
         obj.group_id = '1234567'
         obj.projects = 'project-1', 'project-2'
         obj.select_resources(resource_type='some-resource',
@@ -533,18 +538,18 @@ class Test_Filter(unittest.TestCase):
 
 class Test__build_label_filter(unittest.TestCase):
 
-    def _callFUT(self, *args, **kwargs):
+    def _call_fut(self, *args, **kwargs):
         from google.cloud.monitoring.query import _build_label_filter
         return _build_label_filter(*args, **kwargs)
 
     def test_no_labels(self):
-        self.assertEqual(self._callFUT('resource'), '')
+        self.assertEqual(self._call_fut('resource'), '')
 
     def test_label_is_none(self):
-        self.assertEqual(self._callFUT('resource', foo=None), '')
+        self.assertEqual(self._call_fut('resource', foo=None), '')
 
     def test_metric_labels(self):
-        actual = self._callFUT(
+        actual = self._call_fut(
             'metric',
             alpha_prefix='a-',
             beta_gamma_suffix='-b',
@@ -558,7 +563,7 @@ class Test__build_label_filter(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_metric_label_response_code_greater_less(self):
-        actual = self._callFUT(
+        actual = self._call_fut(
             'metric',
             response_code_greater=500,
             response_code_less=600)
@@ -569,7 +574,7 @@ class Test__build_label_filter(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_metric_label_response_code_greater_less_equal(self):
-        actual = self._callFUT(
+        actual = self._call_fut(
             'metric',
             response_code_greaterequal=500,
             response_code_lessequal=600)
@@ -580,7 +585,7 @@ class Test__build_label_filter(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_resource_labels(self):
-        actual = self._callFUT(
+        actual = self._call_fut(
             'resource',
             alpha_prefix='a-',
             beta_gamma_suffix='-b',
@@ -594,7 +599,7 @@ class Test__build_label_filter(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_raw_label_filters(self):
-        actual = self._callFUT(
+        actual = self._call_fut(
             'resource',
             'resource.label.alpha = starts_with("a-")',
             'resource.label.beta_gamma = ends_with("-b")',
@@ -608,17 +613,17 @@ class Test__build_label_filter(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_resource_type(self):
-        actual = self._callFUT('resource', resource_type='foo')
+        actual = self._call_fut('resource', resource_type='foo')
         expected = 'resource.type = "foo"'
         self.assertEqual(actual, expected)
 
     def test_resource_type_prefix(self):
-        actual = self._callFUT('resource', resource_type_prefix='foo-')
+        actual = self._call_fut('resource', resource_type_prefix='foo-')
         expected = 'resource.type = starts_with("foo-")'
         self.assertEqual(actual, expected)
 
     def test_resource_type_suffix(self):
-        actual = self._callFUT('resource', resource_type_suffix='-foo')
+        actual = self._call_fut('resource', resource_type_suffix='-foo')
         expected = 'resource.type = ends_with("-foo")'
         self.assertEqual(actual, expected)
 
@@ -642,4 +647,4 @@ class _Client(object):
 
     def __init__(self, project, connection):
         self.project = project
-        self.connection = connection
+        self._connection = connection
