@@ -50,13 +50,13 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.20.0',
+    'google-cloud-core >= 0.21.0',
     'gapic-google-cloud-speech-v1beta1 >= 0.11.1, < 0.12.0',
 ]
 
 setup(
     name='google-cloud-speech',
-    version='0.20.0dev',
+    version='0.21.0',
     description='Python Client for Google Cloud Speech',
     long_description=README,
     namespace_packages=[
