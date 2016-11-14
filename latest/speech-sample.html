@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Speech Sample &mdash; google-cloud 1157488 documentation</title>
+  <title>Speech Sample &mdash; google-cloud dfc967d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 1157488 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud dfc967d documentation" href="index.html"/>
         <link rel="next" title="Speech Alternative" href="speech-alternative.html"/>
         <link rel="prev" title="Speech Result" href="speech-result.html"/> 
 
@@ -283,7 +283,7 @@
 <p>Sample class to handle content for Google Cloud Speech API.</p>
 <dl class="class">
 <dt id="google.cloud.speech.sample.Sample">
-<em class="property">class </em><code class="descclassname">google.cloud.speech.sample.</code><code class="descname">Sample</code><span class="sig-paren">(</span><em>content=None</em>, <em>source_uri=None</em>, <em>encoding=None</em>, <em>sample_rate=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/sample.html#Sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.sample.Sample" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.speech.sample.</code><code class="descname">Sample</code><span class="sig-paren">(</span><em>content=None</em>, <em>source_uri=None</em>, <em>encoding=None</em>, <em>sample_rate=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/sample.html#Sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.sample.Sample" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Representation of an audio sample to be used with Google Speech API.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -307,11 +307,54 @@ results, set the sampling rate of the audio source
 to 16000 Hz. If that&#8217;s not possible, use the
 native sample rate of the audio source (instead of
 re-sampling).</li>
+<li><strong>client</strong> (<a class="reference internal" href="speech-client.html#google.cloud.speech.client.Client" title="google.cloud.speech.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; (Optional) The client that owns this instance of sample.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="google.cloud.speech.sample.Sample.async_recognize">
+<code class="descname">async_recognize</code><span class="sig-paren">(</span><em>language_code=None</em>, <em>max_alternatives=None</em>, <em>profanity_filter=None</em>, <em>speech_context=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/sample.html#Sample.async_recognize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.sample.Sample.async_recognize" title="Permalink to this definition">#</a></dt>
+<dd><p>Asychronous Recognize request to Google Speech API.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/speech/reference/rest/v1beta1/speech/asyncrecognize">async_recognize</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The language of the supplied audio as
+BCP-47 language tag. Example: <code class="docutils literal"><span class="pre">'en-GB'</span></code>.
+If omitted, defaults to <code class="docutils literal"><span class="pre">'en-US'</span></code>.</li>
+<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of recognition
+hypotheses to be returned. The server may
+return fewer than maxAlternatives.
+Valid values are 0-30. A value of 0 or 1
+will return a maximum of 1. Defaults to 1</li>
+<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the server will attempt to filter
+out profanities, replacing all but the
+initial character in each filtered word with
+asterisks, e.g. <code class="docutils literal"><span class="pre">'f***'</span></code>. If False or
+omitted, profanities won&#8217;t be filtered out.</li>
+<li><strong>speech_context</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of strings (max 50) containing words and
+phrases &#8220;hints&#8221; so that the speech recognition
+is more likely to recognize them. This can be
+used to improve the accuracy for specific words
+and phrases. This can also be used to add new
+words to the vocabulary of the recognizer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="speech-operation.html#google.cloud.speech.operation.Operation" title="google.cloud.speech.operation.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Operation for asynchronous request to Google Speech API.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.speech.sample.Sample.chunk_size">
 <code class="descname">chunk_size</code><a class="headerlink" href="#google.cloud.speech.sample.Sample.chunk_size" title="Permalink to this definition">#</a></dt>
@@ -402,6 +445,125 @@ re-sampling).</li>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="google.cloud.speech.sample.Sample.streaming_recognize">
+<code class="descname">streaming_recognize</code><span class="sig-paren">(</span><em>language_code=None</em>, <em>max_alternatives=None</em>, <em>profanity_filter=None</em>, <em>speech_context=None</em>, <em>single_utterance=False</em>, <em>interim_results=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/sample.html#Sample.streaming_recognize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.sample.Sample.streaming_recognize" title="Permalink to this definition">#</a></dt>
+<dd><p>Streaming speech recognition.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Streaming recognition requests are limited to 1 minute of audio.
+See: <a class="reference external" href="https://cloud.google.com/speech/limits#content">https://cloud.google.com/speech/limits#content</a></p>
+</div>
+<dl class="docutils">
+<dt>Yields: Instance of</dt>
+<dd><a class="reference internal" href="speech-result.html#google.cloud.speech.result.StreamingSpeechResult" title="google.cloud.speech.result.StreamingSpeechResult"><code class="xref py py-class docutils literal"><span class="pre">StreamingSpeechResult</span></code></a>
+containing results and metadata from the streaming request.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The language of the supplied audio as
+BCP-47 language tag. Example: <code class="docutils literal"><span class="pre">'en-GB'</span></code>.
+If omitted, defaults to <code class="docutils literal"><span class="pre">'en-US'</span></code>.</li>
+<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of recognition
+hypotheses to be returned. The server may
+return fewer than maxAlternatives.
+Valid values are 0-30. A value of 0 or 1
+will return a maximum of 1. Defaults to 1</li>
+<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the server will attempt to filter
+out profanities, replacing all but the
+initial character in each filtered word with
+asterisks, e.g. <code class="docutils literal"><span class="pre">'f***'</span></code>. If False or
+omitted, profanities won&#8217;t be filtered out.</li>
+<li><strong>speech_context</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of strings (max 50) containing words and
+phrases &#8220;hints&#8221; so that the speech recognition
+is more likely to recognize them. This can be
+used to improve the accuracy for specific words
+and phrases. This can also be used to add new
+words to the vocabulary of the recognizer.</li>
+<li><strong>single_utterance</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) If false or omitted, the recognizer
+will perform continuous recognition
+(continuing to process audio even if the user
+pauses speaking) until the client closes the
+output stream (gRPC API) or when the maximum
+time limit has been reached. Multiple
+SpeechRecognitionResults with the is_final
+flag set to true may be returned.
+If true, the recognizer will detect a single
+spoken utterance. When it detects that the
+user has paused or stopped speaking, it will
+return an END_OF_UTTERANCE event and cease
+recognition. It will return no more than one
+SpeechRecognitionResult with the is_final flag
+set to true.</li>
+<li><strong>interim_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) If true, interim results (tentative
+hypotheses) may be returned as they become
+available (these interim results are indicated
+with the <code class="docutils literal"><span class="pre">is_final=False</span></code> flag). If false or
+omitted, only is_final=true result(s) are
+returned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">EnvironmentError if gRPC is not available.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.speech.sample.Sample.sync_recognize">
+<code class="descname">sync_recognize</code><span class="sig-paren">(</span><em>language_code=None</em>, <em>max_alternatives=None</em>, <em>profanity_filter=None</em>, <em>speech_context=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/speech/sample.html#Sample.sync_recognize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.speech.sample.Sample.sync_recognize" title="Permalink to this definition">#</a></dt>
+<dd><p>Synchronous Speech Recognition.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/speech/reference/rest/v1beta1/speech/syncrecognize">sync_recognize</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>language_code</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The language of the supplied audio as
+BCP-47 language tag. Example: <code class="docutils literal"><span class="pre">'en-GB'</span></code>.
+If omitted, defaults to <code class="docutils literal"><span class="pre">'en-US'</span></code>.</li>
+<li><strong>max_alternatives</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Maximum number of recognition
+hypotheses to be returned. The server may
+return fewer than maxAlternatives.
+Valid values are 0-30. A value of 0 or 1
+will return a maximum of 1. Defaults to 1</li>
+<li><strong>profanity_filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, the server will attempt to filter
+out profanities, replacing all but the
+initial character in each filtered word with
+asterisks, e.g. <code class="docutils literal"><span class="pre">'f***'</span></code>. If False or
+omitted, profanities won&#8217;t be filtered out.</li>
+<li><strong>speech_context</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of strings (max 50) containing words and
+phrases &#8220;hints&#8221; so that the speech recognition
+is more likely to recognize them. This can be
+used to improve the accuracy for specific words
+and phrases. This can also be used to add new
+words to the vocabulary of the recognizer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><p>A list of dictionaries. One dict for each alternative. Each
+dictionary typically contains two keys (though not
+all will be present in all cases)</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">transcript</span></code>: The detected text from the audio recording.</li>
+<li><code class="docutils literal"><span class="pre">confidence</span></code>: The confidence in language detection, float
+between 0 and 1.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -447,7 +609,7 @@ re-sampling).</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1157488',
+            VERSION:'dfc967d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
