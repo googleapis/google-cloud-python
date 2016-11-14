@@ -27,7 +27,7 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_ctor(self):
+    def test_constructor(self):
         from google.cloud.translate.connection import Connection
         from google.cloud.translate.client import ENGLISH_ISO_639
 
@@ -39,7 +39,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(client.api_key)
         self.assertEqual(client.target_language, ENGLISH_ISO_639)
 
-    def test_ctor_non_default(self):
+    def test_constructor_non_default(self):
         from google.cloud.translate.connection import Connection
 
         http = object()
@@ -49,6 +49,22 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._connection, Connection)
         self.assertIsNone(client._connection.credentials)
         self.assertIs(client._connection.http, http)
+        self.assertEqual(self.KEY, client.api_key)
+        self.assertEqual(client.target_language, target)
+
+    def test_constructor_api_key_override(self):
+        import mock
+        from google.cloud.translate.connection import Connection
+
+        target = 'ru'
+        with mock.patch('httplib2.Http') as http_ctor:
+            client = self._make_one(
+                target_language=target, api_key=self.KEY)
+
+        http_ctor.assert_called_once_with()
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIsNone(client._connection.credentials)
+        self.assertIs(client._connection.http, http_ctor.return_value)
         self.assertEqual(self.KEY, client.api_key)
         self.assertEqual(client.target_language, target)
 

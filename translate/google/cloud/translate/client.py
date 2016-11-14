@@ -15,6 +15,7 @@
 """Client for interacting with the Google Cloud Translate API."""
 
 
+import httplib2
 import six
 
 from google.cloud._helpers import _to_bytes
@@ -55,6 +56,12 @@ class Client(BaseClient):
                  credentials=None, http=None):
         self.api_key = api_key
         self.target_language = target_language
+
+        if api_key is not None:
+            # If API key auth is desired, make it so that no credentials
+            # will be auto-detected by the base class constructor.
+            if http is None:
+                http = httplib2.Http()
         super(Client, self).__init__(credentials=credentials, http=http)
 
     def get_languages(self, target_language=None):
