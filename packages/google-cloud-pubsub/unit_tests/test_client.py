@@ -32,12 +32,12 @@ class TestClient(unittest.TestCase):
 
     def test_publisher_api_wo_gax(self):
         from google.cloud.pubsub._http import _PublisherAPI
-        from google.cloud.pubsub import client as MUT
-        from google.cloud._testing import _Monkey
+
         creds = _Credentials()
 
-        with _Monkey(MUT, _USE_GAX=False):
-            client = self._make_one(project=self.PROJECT, credentials=creds)
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds,
+            use_gax=False)
 
         conn = client._connection = object()
         api = client.publisher_api
@@ -49,12 +49,12 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_no_gax_ctor(self):
-        from google.cloud._testing import _Monkey
+        import mock
         from google.cloud.pubsub._http import _PublisherAPI
-        from google.cloud.pubsub import client as MUT
 
         creds = _Credentials()
-        with _Monkey(MUT, _USE_GAX=True):
+        with mock.patch('google.cloud.pubsub.client._USE_GAX',
+                        new=True):
             client = self._make_one(project=self.PROJECT, credentials=creds,
                                     use_gax=False)
 
@@ -63,8 +63,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(api, _PublisherAPI)
 
     def test_publisher_api_w_gax(self):
-        from google.cloud.pubsub import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         wrapped = object()
         _called_with = []
@@ -80,11 +79,15 @@ class TestClient(unittest.TestCase):
                 self._client = client
 
         creds = _Credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds,
+            use_gax=True)
 
-        with _Monkey(MUT, _USE_GAX=True,
-                     make_gax_publisher_api=_generated_api,
-                     GAXPublisherAPI=_GaxPublisherAPI):
-            client = self._make_one(project=self.PROJECT, credentials=creds)
+        patch = mock.patch.multiple(
+            'google.cloud.pubsub.client',
+            make_gax_publisher_api=_generated_api,
+            GAXPublisherAPI=_GaxPublisherAPI)
+        with patch:
             api = client.publisher_api
 
         self.assertIsInstance(api, _GaxPublisherAPI)
@@ -98,12 +101,11 @@ class TestClient(unittest.TestCase):
 
     def test_subscriber_api_wo_gax(self):
         from google.cloud.pubsub._http import _SubscriberAPI
-        from google.cloud.pubsub import client as MUT
-        from google.cloud._testing import _Monkey
-        creds = _Credentials()
 
-        with _Monkey(MUT, _USE_GAX=False):
-            client = self._make_one(project=self.PROJECT, credentials=creds)
+        creds = _Credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds,
+            use_gax=False)
 
         conn = client._connection = object()
         api = client.subscriber_api
@@ -115,8 +117,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_subscriber_api_w_gax(self):
-        from google.cloud.pubsub import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         wrapped = object()
         _called_with = []
@@ -132,11 +133,15 @@ class TestClient(unittest.TestCase):
                 self._client = client
 
         creds = _Credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds,
+            use_gax=True)
 
-        with _Monkey(MUT, _USE_GAX=True,
-                     make_gax_subscriber_api=_generated_api,
-                     GAXSubscriberAPI=_GaxSubscriberAPI):
-            client = self._make_one(project=self.PROJECT, credentials=creds)
+        patch = mock.patch.multiple(
+            'google.cloud.pubsub.client',
+            make_gax_subscriber_api=_generated_api,
+            GAXSubscriberAPI=_GaxSubscriberAPI)
+        with patch:
             api = client.subscriber_api
 
         self.assertIsInstance(api, _GaxSubscriberAPI)

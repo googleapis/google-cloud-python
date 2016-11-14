@@ -877,8 +877,8 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         return make_gax_publisher_api(connection)
 
     def test_live_api(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.pubsub import _gax as MUT
+        import mock
+        from google.cloud.pubsub._gax import DEFAULT_USER_AGENT
 
         channels = []
         channel_args = []
@@ -899,18 +899,20 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         creds = _Credentials()
         connection = _Connection(in_emulator=False,
                                  credentials=creds)
-        with _Monkey(MUT, PublisherApi=mock_publisher_api,
-                     make_secure_channel=make_channel):
+        patch = mock.patch.multiple(
+            'google.cloud.pubsub._gax',
+            PublisherApi=mock_publisher_api,
+            make_secure_channel=make_channel)
+        with patch:
             result = self._call_fut(connection)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [channel_obj])
         self.assertEqual(channel_args,
-                         [(creds, MUT.DEFAULT_USER_AGENT, host)])
+                         [(creds, DEFAULT_USER_AGENT, host)])
 
     def test_emulator(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.pubsub import _gax as MUT
+        import mock
 
         channels = []
         mock_result = object()
@@ -927,8 +929,11 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 
         host = 'CURR_HOST:1234'
         connection = _Connection(in_emulator=True, host=host)
-        with _Monkey(MUT, PublisherApi=mock_publisher_api,
-                     insecure_channel=mock_insecure_channel):
+        patch = mock.patch.multiple(
+            'google.cloud.pubsub._gax',
+            PublisherApi=mock_publisher_api,
+            insecure_channel=mock_insecure_channel)
+        with patch:
             result = self._call_fut(connection)
 
         self.assertIs(result, mock_result)
@@ -944,8 +949,8 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
         return make_gax_subscriber_api(connection)
 
     def test_live_api(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.pubsub import _gax as MUT
+        import mock
+        from google.cloud.pubsub._gax import DEFAULT_USER_AGENT
 
         channels = []
         channel_args = []
@@ -966,18 +971,20 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
         creds = _Credentials()
         connection = _Connection(in_emulator=False,
                                  credentials=creds)
-        with _Monkey(MUT, SubscriberApi=mock_subscriber_api,
-                     make_secure_channel=make_channel):
+        patch = mock.patch.multiple(
+            'google.cloud.pubsub._gax',
+            SubscriberApi=mock_subscriber_api,
+            make_secure_channel=make_channel)
+        with patch:
             result = self._call_fut(connection)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [channel_obj])
         self.assertEqual(channel_args,
-                         [(creds, MUT.DEFAULT_USER_AGENT, host)])
+                         [(creds, DEFAULT_USER_AGENT, host)])
 
     def test_emulator(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.pubsub import _gax as MUT
+        import mock
 
         channels = []
         mock_result = object()
@@ -994,8 +1001,11 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
 
         host = 'CURR_HOST:1234'
         connection = _Connection(in_emulator=True, host=host)
-        with _Monkey(MUT, SubscriberApi=mock_subscriber_api,
-                     insecure_channel=mock_insecure_channel):
+        patch = mock.patch.multiple(
+            'google.cloud.pubsub._gax',
+            SubscriberApi=mock_subscriber_api,
+            insecure_channel=mock_insecure_channel)
+        with patch:
             result = self._call_fut(connection)
 
         self.assertIs(result, mock_result)
