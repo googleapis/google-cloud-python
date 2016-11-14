@@ -50,12 +50,12 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.20.0',
+    'google-cloud-core >= 0.21.0',
 ]
 
 setup(
     name='google-cloud-bigquery',
-    version='0.20.0',
+    version='0.21.0',
     description='Python Client for Google BigQuery',
     long_description=README,
     namespace_packages=[
