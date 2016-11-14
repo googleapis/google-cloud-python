@@ -297,6 +297,8 @@ class Query(object):
 
             query = query.select_metrics(instance_name='myinstance')
             query = query.select_metrics(instance_name_prefix='mycluster-')
+            query = query.select_metrics(
+                metric_type='compute.googleapis.com/instance/cpu/utilization')
 
         A keyword argument ``<label>=<value>`` ordinarily generates a filter
         expression of the form::
@@ -313,6 +315,20 @@ class Query(object):
         ``<label>_suffix=<value>`` generates::
 
             metric.label.<label> = ends_with("<value>")
+
+        As a special case, ``"metric_type"`` is treated as a special
+        pseudo-label corresponding to the filter object ``metric.type``.
+        For example, ``metric_type=<value>`` generates::
+
+            metric.type = "<value>"
+
+        See the `supported metrics`_.
+
+        .. note::
+
+            Currently, the query can only support a single metric type. Given
+            this, prefix and suffix filtering is not supported for
+            ``"metric_type"``.
 
         If the label's value type is ``INT64``, a similar notation can be
         used to express inequalities:
@@ -344,6 +360,8 @@ class Query(object):
 
         :rtype: :class:`Query`
         :returns: The new query object.
+
+        .. _supported metrics: https://cloud.google.com/monitoring/api/metrics
         """
         new_query = self.copy()
         new_query._filter.select_metrics(*args, **kwargs)
@@ -630,6 +648,10 @@ class _Filter(object):
 
         See :meth:`Query.select_metrics`.
         """
+        new_metric_type = kwargs.pop('metric_type', None)
+        if new_metric_type is not None:
+            self.metric_type = new_metric_type
+
         self.metric_label_filter = _build_label_filter('metric',
                                                        *args, **kwargs)
 
