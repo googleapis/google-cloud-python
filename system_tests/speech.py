@@ -98,8 +98,7 @@ class TestSpeechClient(unittest.TestCase):
                                source_uri=source_uri,
                                encoding=speech.Encoding.LINEAR16,
                                sample_rate=16000)
-        return client.sync_recognize(sample,
-                                     language_code='en-US',
+        return sample.sync_recognize(language_code='en-US',
                                      max_alternatives=max_alternatives,
                                      profanity_filter=True,
                                      speech_context=['Google', 'cloud'])
@@ -111,8 +110,7 @@ class TestSpeechClient(unittest.TestCase):
                                source_uri=source_uri,
                                encoding=speech.Encoding.LINEAR16,
                                sample_rate=16000)
-        return client.async_recognize(sample,
-                                      language_code='en-US',
+        return sample.async_recognize(language_code='en-US',
                                       max_alternatives=max_alternatives,
                                       profanity_filter=True,
                                       speech_context=['Google', 'cloud'])
@@ -123,8 +121,7 @@ class TestSpeechClient(unittest.TestCase):
         sample = client.sample(content=file_obj,
                                encoding=speech.Encoding.LINEAR16,
                                sample_rate=16000)
-        return client.streaming_recognize(sample,
-                                          single_utterance=single_utterance,
+        return sample.streaming_recognize(single_utterance=single_utterance,
                                           interim_results=interim_results,
                                           speech_context=['hello', 'google'])
 
