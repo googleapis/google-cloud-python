@@ -149,6 +149,7 @@ class TestStorageFiles(unittest.TestCase):
 
 
 class TestStorageWriteFiles(TestStorageFiles):
+    ENCRYPTION_KEY = 'b23ff11bba187db8c37077e6af3b25b8'
 
     def test_large_file_write_from_stream(self):
         blob = self.bucket.blob('LargeFile')
@@ -162,6 +163,29 @@ class TestStorageWriteFiles(TestStorageFiles):
         if not isinstance(md5_hash, six.binary_type):
             md5_hash = md5_hash.encode('utf-8')
         self.assertEqual(md5_hash, file_data['hash'])
+
+    def test_large_encrypted_file_write_from_stream(self):
+        blob = self.bucket.blob('LargeFile',
+                                encryption_key=self.ENCRYPTION_KEY)
+
+        file_data = self.FILES['big']
+        with open(file_data['path'], 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+            self.case_blobs_to_delete.append(blob)
+
+        md5_hash = blob.md5_hash
+        if not isinstance(md5_hash, six.binary_type):
+            md5_hash = md5_hash.encode('utf-8')
+        self.assertEqual(md5_hash, file_data['hash'])
+
+        temp_filename = tempfile.mktemp()
+        with open(temp_filename, 'wb') as file_obj:
+            blob.download_to_file(file_obj)
+
+        with open(temp_filename, 'rb') as file_obj:
+            md5_temp_hash = _base64_md5hash(file_obj)
+
+        self.assertEqual(md5_temp_hash, file_data['hash'])
 
     def test_small_file_write_from_filename(self):
         blob = self.bucket.blob('SmallFile')
