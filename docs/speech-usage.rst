@@ -7,12 +7,6 @@ base.
 
 .. warning::
 
-    This API, ``google-cloud-speech`` has not been released yet. In order to
-    test and explore this feature, you must install ``google-cloud`` from
-    source.
-
-.. warning::
-
     This is a Beta release of Google Speech API. This
     API is not intended for real-time usage in critical applications.
 
