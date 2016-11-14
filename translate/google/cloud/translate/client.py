@@ -26,6 +26,12 @@ from google.cloud.translate.connection import Connection
 ENGLISH_ISO_639 = 'en'
 """ISO 639-1 language code for English."""
 
+BASE = 'base'
+"""Base translation model."""
+
+NMT = 'nmt'
+"""Neural Machine Translation model."""
+
 
 class Client(BaseClient):
     """Client to bundle configuration needed for API requests.
@@ -194,7 +200,7 @@ class Client(BaseClient):
 
         :type model: str
         :param model: (Optional) The model used to translate the text. The
-                      only accepted values are ``base`` and ``nmt``.
+                      only accepted values are :attr:`BASE` and :attr:`NMT`.
 
         :rtype: str or list
         :returns: A list of dictionaries for each queried value. Each
