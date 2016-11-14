@@ -15,6 +15,15 @@
 import unittest
 
 
+def make_mock_credentials():
+    import mock
+    from oauth2client.client import GoogleCredentials
+
+    credentials = mock.Mock(spec=GoogleCredentials)
+    credentials.create_scoped_required.return_value = False
+    return credentials
+
+
 class TestClient(unittest.TestCase):
 
     @staticmethod
@@ -28,7 +37,7 @@ class TestClient(unittest.TestCase):
     def test_ctor(self):
         from google.cloud.language.connection import Connection
 
-        creds = _Credentials()
+        creds = make_mock_credentials()
         http = object()
         client = self._make_one(credentials=creds, http=http)
         self.assertIsInstance(client._connection, Connection)
@@ -38,7 +47,7 @@ class TestClient(unittest.TestCase):
     def test_document_from_text_factory(self):
         from google.cloud.language.document import Document
 
-        creds = _Credentials()
+        creds = make_mock_credentials()
         client = self._make_one(credentials=creds, http=object())
 
         content = 'abc'
@@ -53,7 +62,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(document.language, language)
 
     def test_document_from_text_factory_failure(self):
-        creds = _Credentials()
+        creds = make_mock_credentials()
         client = self._make_one(credentials=creds, http=object())
 
         with self.assertRaises(TypeError):
@@ -62,7 +71,7 @@ class TestClient(unittest.TestCase):
     def test_document_from_html_factory(self):
         from google.cloud.language.document import Document
 
-        creds = _Credentials()
+        creds = make_mock_credentials()
         client = self._make_one(credentials=creds, http=object())
 
         content = '<html>abc</html>'
@@ -77,7 +86,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(document.language, language)
 
     def test_document_from_html_factory_failure(self):
-        creds = _Credentials()
+        creds = make_mock_credentials()
         client = self._make_one(credentials=creds, http=object())
 
         with self.assertRaises(TypeError):
@@ -86,7 +95,7 @@ class TestClient(unittest.TestCase):
     def test_document_from_url_factory(self):
         from google.cloud.language.document import Document
 
-        creds = _Credentials()
+        creds = make_mock_credentials()
         client = self._make_one(credentials=creds, http=object())
 
         gcs_url = 'gs://my-text-bucket/sentiment-me.txt'
@@ -101,7 +110,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.language.document import Document
         from google.cloud.language.document import Encoding
 
-        creds = _Credentials()
+        creds = make_mock_credentials()
         client = self._make_one(credentials=creds, http=object())
 
         encoding = Encoding.UTF32
@@ -114,16 +123,3 @@ class TestClient(unittest.TestCase):
         self.assertEqual(document.gcs_url, gcs_url)
         self.assertEqual(document.doc_type, Document.HTML)
         self.assertEqual(document.encoding, encoding)
-
-
-class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
