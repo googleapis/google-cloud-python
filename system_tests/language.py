@@ -74,10 +74,11 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(entity1.name, self.NAME1)
         self.assertEqual(entity1.entity_type, EntityType.PERSON)
         self.assertGreater(entity1.salience, 0.0)
-        self.assertEqual(entity1.mentions, [entity1.name])
+        # Other mentions may occur, e.g. "painter".
+        self.assertIn(entity1.name, entity1.mentions)
         self.assertEqual(entity1.wikipedia_url,
                          'http://en.wikipedia.org/wiki/Caravaggio')
-        self.assertEqual(entity1.metadata, {})
+        self.assertIsInstance(entity1.metadata, dict)
         # Verify entity 2.
         self.assertEqual(entity2.name, self.NAME2)
         self.assertEqual(entity2.entity_type, EntityType.LOCATION)
@@ -85,7 +86,7 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(entity2.mentions, [entity2.name])
         self.assertEqual(entity2.wikipedia_url,
                          'http://en.wikipedia.org/wiki/Italy')
-        self.assertEqual(entity2.metadata, {})
+        self.assertIsInstance(entity2.metadata, dict)
         # Verify entity 3.
         self.assertEqual(entity3.name, self.NAME3)
         choices = (EntityType.EVENT, EntityType.WORK_OF_ART)
@@ -95,7 +96,7 @@ class TestLanguage(unittest.TestCase):
         wiki_url = ('http://en.wikipedia.org/wiki/'
                     'The_Calling_of_St_Matthew_(Caravaggio)')
         self.assertEqual(entity3.wikipedia_url, wiki_url)
-        self.assertEqual(entity3.metadata, {})
+        self.assertIsInstance(entity3.metadata, dict)
 
     def test_analyze_entities(self):
         document = Config.CLIENT.document_from_text(self.TEXT_CONTENT)
