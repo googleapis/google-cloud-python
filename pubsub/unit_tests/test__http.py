@@ -42,14 +42,13 @@ class TestConnection(_Base):
         self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 
     def test_custom_url_from_env(self):
-        import os
-        from google.cloud._testing import _Monkey
+        import mock
         from google.cloud.environment_vars import PUBSUB_EMULATOR
 
         HOST = 'localhost:8187'
         fake_environ = {PUBSUB_EMULATOR: HOST}
 
-        with _Monkey(os, getenv=fake_environ.get):
+        with mock.patch('os.environ', new=fake_environ):
             conn = self._make_one()
 
         klass = self._get_target_class()

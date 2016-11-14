@@ -54,8 +54,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_logging_api_w_gax(self):
-        from google.cloud.logging import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         clients = []
         api_obj = object()
@@ -68,7 +67,10 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 use_gax=True)
 
-        with _Monkey(MUT, make_gax_logging_api=make_api):
+        patch = mock.patch(
+            'google.cloud.logging.client.make_gax_logging_api',
+            new=make_api)
+        with patch:
             api = client.logging_api
 
         self.assertIs(api, api_obj)
@@ -78,12 +80,14 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_no_gax_ctor(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.logging import client as MUT
+        import mock
         from google.cloud.logging._http import _LoggingAPI
 
         creds = _Credentials()
-        with _Monkey(MUT, _USE_GAX=True):
+        patch = mock.patch(
+            'google.cloud.logging.client._USE_GAX',
+            new=True)
+        with patch:
             client = self._make_one(project=self.PROJECT, credentials=creds,
                                     use_gax=False)
 
@@ -92,11 +96,10 @@ class TestClient(unittest.TestCase):
 
     def test_sinks_api_wo_gax(self):
         from google.cloud.logging._http import _SinksAPI
-        from google.cloud.logging import client as MUT
-        from google.cloud._testing import _Monkey
 
-        with _Monkey(MUT, _USE_GAX=False):
-            client = self._make_one(self.PROJECT, credentials=_Credentials())
+        client = self._make_one(
+            self.PROJECT, credentials=_Credentials(),
+            use_gax=False)
 
         conn = client._connection = object()
         api = client.sinks_api
@@ -108,8 +111,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_sinks_api_w_gax(self):
-        from google.cloud.logging import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         clients = []
         api_obj = object()
@@ -122,7 +124,10 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 use_gax=True)
 
-        with _Monkey(MUT, make_gax_sinks_api=make_api):
+        patch = mock.patch(
+            'google.cloud.logging.client.make_gax_sinks_api',
+            new=make_api)
+        with patch:
             api = client.sinks_api
 
         self.assertIs(api, api_obj)
@@ -133,11 +138,10 @@ class TestClient(unittest.TestCase):
 
     def test_metrics_api_wo_gax(self):
         from google.cloud.logging._http import _MetricsAPI
-        from google.cloud.logging import client as MUT
-        from google.cloud._testing import _Monkey
 
-        with _Monkey(MUT, _USE_GAX=False):
-            client = self._make_one(self.PROJECT, credentials=_Credentials())
+        client = self._make_one(
+            self.PROJECT, credentials=_Credentials(),
+            use_gax=False)
 
         conn = client._connection = object()
         api = client.metrics_api
@@ -149,8 +153,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_metrics_api_w_gax(self):
-        from google.cloud.logging import client as MUT
-        from google.cloud._testing import _Monkey
+        import mock
 
         clients = []
         api_obj = object()
@@ -163,7 +166,10 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 use_gax=True)
 
-        with _Monkey(MUT, make_gax_metrics_api=make_api):
+        patch = mock.patch(
+            'google.cloud.logging.client.make_gax_metrics_api',
+            new=make_api)
+        with patch:
             api = client.metrics_api
 
         self.assertIs(api, api_obj)
