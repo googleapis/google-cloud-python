@@ -50,12 +50,12 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.20.0',
+    'google-cloud-core >= 0.21.0',
 ]
 
 setup(
     name='google-cloud-monitoring',
-    version='0.20.0',
+    version='0.21.0',
     description='Python Client for Stackdriver Monitoring',
     long_description=README,
     namespace_packages=[
