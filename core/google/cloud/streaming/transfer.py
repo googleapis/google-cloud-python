@@ -387,7 +387,7 @@ class Download(_Transfer):
         # Unless the user has requested otherwise, we want to just
         # go ahead and pump the bytes now.
         if self.auto_transfer:
-            self.stream_file(use_chunks=True)
+            self.stream_file(use_chunks=True, headers=http_request.headers)
 
     def _normalize_start_end(self, start, end=None):
         """Validate / fix up byte range.
@@ -487,7 +487,7 @@ class Download(_Transfer):
 
         return end_byte
 
-    def _get_chunk(self, start, end):
+    def _get_chunk(self, start, end, headers=None):
         """Retrieve a chunk of the file.
 
         :type start: int
@@ -496,11 +496,14 @@ class Download(_Transfer):
         :type end: int
         :param end: (Optional) end byte of the range.
 
+        :type headers: dict
+        :param headers: (Optional) Headers to be used for the ``Request``.
+
         :rtype: :class:`google.cloud.streaming.http_wrapper.Response`
         :returns: response from the chunk request.
         """
         self._ensure_initialized()
-        request = Request(url=self.url)
+        request = Request(url=self.url, headers=headers)
         self._set_range_header(request, start, end=end)
         return make_api_request(
             self.bytes_http, request, retries=self.num_retries)
@@ -589,7 +592,7 @@ class Download(_Transfer):
                 raise TransferRetryError(
                     'Zero bytes unexpectedly returned in download response')
 
-    def stream_file(self, use_chunks=True):
+    def stream_file(self, use_chunks=True, headers=None):
         """Stream the entire download.
 
         Writes retrieved bytes into :attr:`stream`.
@@ -598,6 +601,9 @@ class Download(_Transfer):
         :param use_chunks: If False, ignore :attr:`chunksize`
                            and stream this download in a single request.
                            If True, streams via chunks.
+
+        :type headers: dict
+        :param headers: (Optional) Headers to be used for the ``Request``.
         """
         self._ensure_initialized()
         while True:
@@ -607,7 +613,8 @@ class Download(_Transfer):
             else:
                 end_byte = self._compute_end_byte(self.progress,
                                                   use_chunks=use_chunks)
-                response = self._get_chunk(self.progress, end_byte)
+                response = self._get_chunk(self.progress, end_byte,
+                                           headers=headers)
             if self.total_size is None:
                 self._set_total(response.info)
             response = self._process_response(response)
