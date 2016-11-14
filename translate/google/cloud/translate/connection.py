@@ -20,7 +20,7 @@ from google.cloud import _http
 class Connection(_http.JSONConnection):
     """A connection to Google Cloud Translate via the JSON REST API."""
 
-    API_BASE_URL = 'https://www.googleapis.com'
+    API_BASE_URL = 'https://translation.googleapis.com'
     """The base of the API call URL."""
 
     API_VERSION = 'v2'
@@ -28,3 +28,6 @@ class Connection(_http.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/language/translate/{api_version}{path}'
     """A template for the URL of a particular API call."""
+
+    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
+    """The scopes required for authenticating."""
