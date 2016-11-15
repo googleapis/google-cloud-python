@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.translate.client &mdash; google-cloud f6f02f6 documentation</title>
+  <title>google.cloud.translate.client &mdash; google-cloud 1b1bfe4 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud f6f02f6 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 1b1bfe4 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -299,36 +299,56 @@
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
+<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">Client</span> <span class="k">as</span> <span class="n">BaseClient</span>
 <span class="kn">from</span> <span class="nn">google.cloud.translate.connection</span> <span class="k">import</span> <span class="n">Connection</span>
 
 
 <span class="n">ENGLISH_ISO_639</span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span>
 <span class="sd">&quot;&quot;&quot;ISO 639-1 language code for English.&quot;&quot;&quot;</span>
 
+<span class="n">BASE</span> <span class="o">=</span> <span class="s1">&#39;base&#39;</span>
+<span class="sd">&quot;&quot;&quot;Base translation model.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../translate-client.html#google.cloud.translate.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="n">NMT</span> <span class="o">=</span> <span class="s1">&#39;nmt&#39;</span>
+<span class="sd">&quot;&quot;&quot;Neural Machine Translation model.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../translate-client.html#google.cloud.translate.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">BaseClient</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
-
-<span class="sd">    :type api_key: str</span>
-<span class="sd">    :param api_key: The key used to send with requests as a query</span>
-<span class="sd">                    parameter.</span>
-
-<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``.</span>
-<span class="sd">    :param http: (Optional) HTTP object to make requests. If not</span>
-<span class="sd">                 passed, an :class:`httplib.Http` object is created.</span>
 
 <span class="sd">    :type target_language: str</span>
 <span class="sd">    :param target_language: (Optional) The target language used for</span>
 <span class="sd">                            translations and language names. (Defaults to</span>
 <span class="sd">                            :data:`ENGLISH_ISO_639`.)</span>
+
+<span class="sd">    :type api_key: str</span>
+<span class="sd">    :param api_key: (Optional) The key used to send with requests as a</span>
+<span class="sd">                    query parameter.</span>
+
+<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials`</span>
+<span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for the</span>
+<span class="sd">                        connection owned by this client. If not passed (and</span>
+<span class="sd">                        if no ``http`` object is passed), falls back to the</span>
+<span class="sd">                        default inferred from the environment.</span>
+
+<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``.</span>
+<span class="sd">    :param http: (Optional) HTTP object to make requests. If not</span>
+<span class="sd">                 passed, an :class:`httplib.Http` object is created.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="n">ENGLISH_ISO_639</span><span class="p">):</span>
+    <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="n">ENGLISH_ISO_639</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">api_key</span>
-        <span class="k">if</span> <span class="n">http</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">http</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">Http</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">target_language</span> <span class="o">=</span> <span class="n">target_language</span>
+
+        <span class="k">if</span> <span class="n">api_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># If API key auth is desired, make it so that no credentials</span>
+            <span class="c1"># will be auto-detected by the base class constructor.</span>
+            <span class="k">if</span> <span class="n">http</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">http</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">Http</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Client.get_languages"><a class="viewcode-back" href="../../../../translate-client.html#google.cloud.translate.client.Client.get_languages">[docs]</a>    <span class="k">def</span> <span class="nf">get_languages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get list of supported languages for translation.</span>
@@ -350,7 +370,9 @@
 <span class="sd">                  dictionary will also contain the name of each supported</span>
 <span class="sd">                  language (localized to the target language).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="p">}</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span>
         <span class="k">if</span> <span class="n">target_language</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">target_language</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_language</span>
         <span class="k">if</span> <span class="n">target_language</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -394,7 +416,9 @@
             <span class="n">single_value</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span><span class="p">]</span>
 
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="p">)]</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query_params</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="p">))</span>
         <span class="n">query_params</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
                             <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
@@ -426,7 +450,8 @@
             <span class="k">return</span> <span class="n">detections</span></div>
 
 <div class="viewcode-block" id="Client.translate"><a class="viewcode-back" href="../../../../translate-client.html#google.cloud.translate.client.Client.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">source_language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">customization_ids</span><span class="o">=</span><span class="p">()):</span>
+                  <span class="n">source_language</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">customization_ids</span><span class="o">=</span><span class="p">(),</span>
+                  <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Translate a string or list of strings.</span>
 
 <span class="sd">        See: https://cloud.google.com/translate/v2/\</span>
@@ -453,7 +478,11 @@
 <span class="sd">                                  for translation. Sets the ``cid`` parameter</span>
 <span class="sd">                                  in the query.</span>
 
-<span class="sd">        :rtype: str or list list</span>
+<span class="sd">        :type model: str</span>
+<span class="sd">        :param model: (Optional) The model used to translate the text. The</span>
+<span class="sd">                      only accepted values are :attr:`BASE` and :attr:`NMT`.</span>
+
+<span class="sd">        :rtype: str or list</span>
 <span class="sd">        :returns: A list of dictionaries for each queried value. Each</span>
 <span class="sd">                  dictionary typically contains three keys (though not</span>
 <span class="sd">                  all will be present in all cases)</span>
@@ -463,10 +492,11 @@
 <span class="sd">                  * ``translatedText``: The translation of the text into the</span>
 <span class="sd">                    target language.</span>
 <span class="sd">                  * ``input``: The corresponding input value.</span>
+<span class="sd">                  * ``model``: The model used to translate the text.</span>
 
 <span class="sd">                  If only a single value is passed, then only a single</span>
 <span class="sd">                  dictionary will be returned.</span>
-<span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if the number of</span>
+<span class="sd">        :raises: :class:`~exceptions.ValueError` if the number of</span>
 <span class="sd">                 values and translations differ.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">single_value</span> <span class="o">=</span> <span class="kc">False</span>
@@ -479,7 +509,9 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">customization_ids</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="n">customization_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">customization_ids</span><span class="p">]</span>
 
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">,</span> <span class="n">target_language</span><span class="p">)]</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;target&#39;</span><span class="p">,</span> <span class="n">target_language</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query_params</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="p">))</span>
         <span class="n">query_params</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
                             <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span>
         <span class="n">query_params</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="s1">&#39;cid&#39;</span><span class="p">,</span> <span class="n">cid</span><span class="p">)</span> <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="n">customization_ids</span><span class="p">)</span>
@@ -487,6 +519,8 @@
             <span class="n">query_params</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;format&#39;</span><span class="p">,</span> <span class="n">format_</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">source_language</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">query_params</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;source&#39;</span><span class="p">,</span> <span class="n">source_language</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query_params</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="n">model</span><span class="p">))</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
@@ -535,7 +569,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'f6f02f6',
+            VERSION:'1b1bfe4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
