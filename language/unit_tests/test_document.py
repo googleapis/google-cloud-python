@@ -95,6 +95,16 @@ def _get_entities(include_entities):
     return entities
 
 
+def make_mock_client(response):
+    import mock
+    from google.cloud.language.connection import Connection
+    from google.cloud.language.client import Client
+
+    connection = mock.Mock(spec=Connection)
+    connection.api_request.return_value = response
+    return mock.Mock(_connection=connection, spec=Client)
+
+
 class TestDocument(unittest.TestCase):
 
     @staticmethod
@@ -187,7 +197,36 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(entity.salience, salience)
         self.assertEqual(entity.mentions, [name])
 
+    @staticmethod
+    def _expected_data(content, encoding_type=None,
+                       extract_sentiment=False,
+                       extract_entities=False,
+                       extract_syntax=False):
+        from google.cloud.language.document import DEFAULT_LANGUAGE
+        from google.cloud.language.document import Document
+
+        expected = {
+            'document': {
+                'language': DEFAULT_LANGUAGE,
+                'type': Document.PLAIN_TEXT,
+                'content': content,
+            },
+        }
+        if encoding_type is not None:
+            expected['encodingType'] = encoding_type
+        if extract_sentiment:
+            features = expected.setdefault('features', {})
+            features['extractDocumentSentiment'] = True
+        if extract_entities:
+            features = expected.setdefault('features', {})
+            features['extractEntities'] = True
+        if extract_syntax:
+            features = expected.setdefault('features', {})
+            features['extractSyntax'] = True
+        return expected
+
     def test_analyze_entities(self):
+        from google.cloud.language.document import Encoding
         from google.cloud.language.entity import EntityType
 
         name1 = 'R-O-C-K'
@@ -229,8 +268,7 @@ class TestDocument(unittest.TestCase):
             ],
             'language': 'en-US',
         }
-        connection = _Connection(response)
-        client = _Client(connection=connection)
+        client = make_mock_client(response)
         document = self._make_one(client, content)
 
         entities = document.analyze_entities()
@@ -243,10 +281,10 @@ class TestDocument(unittest.TestCase):
                             wiki2, salience2)
 
         # Verify the request.
-        self.assertEqual(len(connection._requested), 1)
-        req = connection._requested[0]
-        self.assertEqual(req['path'], 'analyzeEntities')
-        self.assertEqual(req['method'], 'POST')
+        expected = self._expected_data(
+            content, encoding_type=Encoding.UTF8)
+        client._connection.api_request.assert_called_once_with(
+            path='analyzeEntities', method='POST', data=expected)
 
     def _verify_sentiment(self, sentiment, polarity, magnitude):
         from google.cloud.language.sentiment import Sentiment
@@ -266,18 +304,16 @@ class TestDocument(unittest.TestCase):
             },
             'language': 'en-US',
         }
-        connection = _Connection(response)
-        client = _Client(connection=connection)
+        client = make_mock_client(response)
         document = self._make_one(client, content)
 
         sentiment = document.analyze_sentiment()
         self._verify_sentiment(sentiment, polarity, magnitude)
 
         # Verify the request.
-        self.assertEqual(len(connection._requested), 1)
-        req = connection._requested[0]
-        self.assertEqual(req['path'], 'analyzeSentiment')
-        self.assertEqual(req['method'], 'POST')
+        expected = self._expected_data(content)
+        client._connection.api_request.assert_called_once_with(
+            path='analyzeSentiment', method='POST', data=expected)
 
     def _verify_sentences(self, include_syntax, annotations):
         from google.cloud.language.syntax import Sentence
@@ -307,6 +343,7 @@ class TestDocument(unittest.TestCase):
     def _annotate_text_helper(self, include_sentiment,
                               include_entities, include_syntax):
         from google.cloud.language.document import Annotations
+        from google.cloud.language.document import Encoding
         from google.cloud.language.entity import EntityType
 
         token_info, sentences = _get_token_and_sentences(include_syntax)
@@ -324,8 +361,7 @@ class TestDocument(unittest.TestCase):
                 'magnitude': ANNOTATE_MAGNITUDE,
             }
 
-        connection = _Connection(response)
-        client = _Client(connection=connection)
+        client = make_mock_client(response)
         document = self._make_one(client, ANNOTATE_CONTENT)
 
         annotations = document.annotate_text(
@@ -352,16 +388,13 @@ class TestDocument(unittest.TestCase):
             self.assertEqual(annotations.entities, [])
 
         # Verify the request.
-        self.assertEqual(len(connection._requested), 1)
-        req = connection._requested[0]
-        self.assertEqual(req['path'], 'annotateText')
-        self.assertEqual(req['method'], 'POST')
-        features = req['data']['features']
-        self.assertEqual(features.get('extractDocumentSentiment', False),
-                         include_sentiment)
-        self.assertEqual(features.get('extractEntities', False),
-                         include_entities)
-        self.assertEqual(features.get('extractSyntax', False), include_syntax)
+        expected = self._expected_data(
+            ANNOTATE_CONTENT, encoding_type=Encoding.UTF8,
+            extract_sentiment=include_sentiment,
+            extract_entities=include_entities,
+            extract_syntax=include_syntax)
+        client._connection.api_request.assert_called_once_with(
+            path='annotateText', method='POST', data=expected)
 
     def test_annotate_text(self):
         self._annotate_text_helper(True, True, True)
@@ -374,20 +407,3 @@ class TestDocument(unittest.TestCase):
 
     def test_annotate_text_syntax_only(self):
         self._annotate_text_helper(False, False, True)
-
-
-class _Connection(object):
-
-    def __init__(self, response):
-        self._response = response
-        self._requested = []
-
-    def api_request(self, **kwargs):
-        self._requested.append(kwargs)
-        return self._response
-
-
-class _Client(object):
-
-    def __init__(self, connection=None):
-        self._connection = connection
