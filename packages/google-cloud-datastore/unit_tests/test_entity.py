@@ -190,10 +190,13 @@ class TestEntity(unittest.TestCase):
 
     def test___repr___w_key_non_empty(self):
         key = _Key()
-        key._path = '/bar/baz'
+        flat_path = ('bar', 12, 'baz', 'himom')
+        key._flat_path = flat_path
         entity = self._make_one(key=key)
-        entity['foo'] = 'Foo'
-        self.assertEqual(repr(entity), "<Entity/bar/baz {'foo': 'Foo'}>")
+        entity_vals = {'foo': 'Foo'}
+        entity.update(entity_vals)
+        expected = '<Entity%s %s>' % (flat_path, entity_vals)
+        self.assertEqual(repr(entity), expected)
 
 
 class _Key(object):
@@ -206,7 +209,3 @@ class _Key(object):
 
     def __init__(self, project=_PROJECT):
         self.project = project
-
-    @property
-    def path(self):
-        return self._path

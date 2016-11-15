@@ -380,7 +380,7 @@ class Key(object):
         return self._parent
 
     def __repr__(self):
-        return '<Key%s, project=%s>' % (self.path, self.project)
+        return '<Key%s, project=%s>' % (self._flat_path, self.project)
 
 
 def _validate_project(project, parent):
