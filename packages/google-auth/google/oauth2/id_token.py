@@ -47,7 +47,7 @@ def _fetch_certs(request, certs_url):
         Mapping[str, str]: A mapping of public key ID to x.509 certificate
             data.
     """
-    response = request('GET', certs_url)
+    response = request(certs_url, method='GET')
 
     if response.status != http_client.OK:
         raise exceptions.TransportError(

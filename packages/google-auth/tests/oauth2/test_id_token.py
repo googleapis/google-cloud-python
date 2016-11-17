@@ -18,6 +18,7 @@ import mock
 import pytest
 
 from google.auth import exceptions
+import google.auth.transport
 from google.oauth2 import id_token
 
 
@@ -28,7 +29,7 @@ def make_request(status, data=None):
     if data is not None:
         response.data = json.dumps(data).encode('utf-8')
 
-    return mock.Mock(return_value=response)
+    return mock.Mock(return_value=response, spec=google.auth.transport.Request)
 
 
 def test__fetch_certs_success():
@@ -37,7 +38,7 @@ def test__fetch_certs_success():
 
     returned_certs = id_token._fetch_certs(request, mock.sentinel.cert_url)
 
-    request.assert_called_once_with('GET', mock.sentinel.cert_url)
+    request.assert_called_once_with(mock.sentinel.cert_url, method='GET')
     assert returned_certs == certs
 
 
@@ -47,7 +48,7 @@ def test__fetch_certs_failure():
     with pytest.raises(exceptions.TransportError):
         id_token._fetch_certs(request, mock.sentinel.cert_url)
 
-    request.assert_called_once_with('GET', mock.sentinel.cert_url)
+    request.assert_called_once_with(mock.sentinel.cert_url, method='GET')
 
 
 @mock.patch('google.auth.jwt.decode', autospec=True)

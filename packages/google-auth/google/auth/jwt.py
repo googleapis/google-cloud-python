@@ -96,7 +96,7 @@ def encode(signer, payload, header=None, key_id=None):
 
 def _decode_jwt_segment(encoded_section):
     """Decodes a single JWT segment."""
-    section_bytes = base64.urlsafe_b64decode(encoded_section)
+    section_bytes = _helpers.padded_urlsafe_b64decode(encoded_section)
     try:
         return json.loads(section_bytes.decode('utf-8'))
     except ValueError:
@@ -124,7 +124,7 @@ def _unverified_decode(token):
 
     encoded_header, encoded_payload, signature = token.split(b'.')
     signed_section = encoded_header + b'.' + encoded_payload
-    signature = base64.urlsafe_b64decode(signature)
+    signature = _helpers.padded_urlsafe_b64decode(signature)
 
     # Parse segments
     header = _decode_jwt_segment(encoded_header)
