@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.image &mdash; google-cloud b92f0cf documentation</title>
+  <title>google.cloud.vision.image &mdash; google-cloud a10cf56 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud b92f0cf documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud a10cf56 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -497,21 +497,23 @@
 
 <span class="k">def</span> <span class="nf">_entity_from_response_type</span><span class="p">(</span><span class="n">feature_type</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a JSON result to an entity type based on the feature.&quot;&quot;&quot;</span>
+    <span class="n">feature_key</span> <span class="o">=</span> <span class="n">_REVERSE_TYPES</span><span class="p">[</span><span class="n">feature_type</span><span class="p">]</span>
+    <span class="n">annotations</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">feature_key</span><span class="p">,</span> <span class="p">())</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">annotations</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
 
     <span class="n">detected_objects</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">feature_key</span> <span class="o">=</span> <span class="n">_REVERSE_TYPES</span><span class="p">[</span><span class="n">feature_type</span><span class="p">]</span>
-
     <span class="k">if</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_FACE_DETECTION</span><span class="p">:</span>
         <span class="n">detected_objects</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-            <span class="n">Face</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="n">feature_key</span><span class="p">])</span>
+            <span class="n">Face</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">annotations</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_IMAGE_PROPERTIES</span><span class="p">:</span>
         <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">ImagePropertiesAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="n">feature_key</span><span class="p">]))</span>
+            <span class="n">ImagePropertiesAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">annotations</span><span class="p">))</span>
     <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_SAFE_SEARCH_DETECTION</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">feature_key</span><span class="p">]</span>
-        <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SafeSearchAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+        <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">SafeSearchAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">annotations</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="n">feature_key</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">annotations</span><span class="p">:</span>
             <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">EntityAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">detected_objects</span>
 </pre></div>
@@ -547,7 +549,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'b92f0cf',
+            VERSION:'a10cf56',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
