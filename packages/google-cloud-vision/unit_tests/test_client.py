@@ -116,6 +116,24 @@ class TestClient(unittest.TestCase):
                          image_request['image']['content'])
         self.assertEqual(5, image_request['features'][0]['maxResults'])
 
+    def test_face_detection_from_content_no_results(self):
+        RETURNED = {
+            'responses': [{}]
+        }
+        credentials = _Credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials)
+        client._connection = _Connection(RETURNED)
+
+        image = client.image(content=IMAGE_CONTENT)
+        faces = image.detect_faces(limit=5)
+        self.assertEqual(faces, [])
+        self.assertEqual(len(faces), 0)
+        image_request = client._connection._requested[0]['data']['requests'][0]
+
+        self.assertEqual(B64_IMAGE_CONTENT,
+                         image_request['image']['content'])
+        self.assertEqual(5, image_request['features'][0]['maxResults'])
+
     def test_label_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
         from unit_tests._fixtures import (
@@ -137,6 +155,19 @@ class TestClient(unittest.TestCase):
         self.assertEqual('vehicle', labels[1].description)
         self.assertEqual('/m/0k4j', labels[0].mid)
         self.assertEqual('/m/07yv9', labels[1].mid)
+
+    def test_label_detection_no_results(self):
+        RETURNED = {
+            'responses': [{}]
+        }
+        credentials = _Credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials)
+        client._connection = _Connection(RETURNED)
+
+        image = client.image(content=IMAGE_CONTENT)
+        labels = image.detect_labels()
+        self.assertEqual(labels, [])
+        self.assertEqual(len(labels), 0)
 
     def test_landmark_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
@@ -177,6 +208,19 @@ class TestClient(unittest.TestCase):
         self.assertEqual(B64_IMAGE_CONTENT,
                          image_request['image']['content'])
         self.assertEqual(5, image_request['features'][0]['maxResults'])
+
+    def test_landmark_detection_no_results(self):
+        RETURNED = {
+            'responses': [{}]
+        }
+        credentials = _Credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials)
+        client._connection = _Connection(RETURNED)
+
+        image = client.image(content=IMAGE_CONTENT)
+        landmarks = image.detect_landmarks()
+        self.assertEqual(landmarks, [])
+        self.assertEqual(len(landmarks), 0)
 
     def test_logo_detection_from_source(self):
         from google.cloud.vision.entity import EntityAnnotation
@@ -254,6 +298,19 @@ class TestClient(unittest.TestCase):
         self.assertEqual('POSSIBLE', safe_search.medical)
         self.assertEqual('VERY_UNLIKELY', safe_search.violence)
 
+    def test_safe_search_no_results(self):
+        RETURNED = {
+            'responses': [{}]
+        }
+        credentials = _Credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials)
+        client._connection = _Connection(RETURNED)
+
+        image = client.image(content=IMAGE_CONTENT)
+        safe_search = image.detect_safe_search()
+        self.assertEqual(safe_search, [])
+        self.assertEqual(len(safe_search), 0)
+
     def test_image_properties_detection_from_source(self):
         from google.cloud.vision.color import ImagePropertiesAnnotation
         from unit_tests._fixtures import IMAGE_PROPERTIES_RESPONSE
@@ -276,6 +333,19 @@ class TestClient(unittest.TestCase):
         self.assertEqual(203, image_properties.colors[0].color.green)
         self.assertEqual(65, image_properties.colors[0].color.blue)
         self.assertEqual(0.0, image_properties.colors[0].color.alpha)
+
+    def test_image_properties_no_results(self):
+        RETURNED = {
+            'responses': [{}]
+        }
+        credentials = _Credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials)
+        client._connection = _Connection(RETURNED)
+
+        image = client.image(content=IMAGE_CONTENT)
+        image_properties = image.detect_properties()
+        self.assertEqual(image_properties, [])
+        self.assertEqual(len(image_properties), 0)
 
 
 class TestVisionRequest(unittest.TestCase):
