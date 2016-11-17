@@ -217,13 +217,12 @@ class Image(object):
 
 def _entity_from_response_type(feature_type, results):
     """Convert a JSON result to an entity type based on the feature."""
-
-    detected_objects = []
     feature_key = _REVERSE_TYPES[feature_type]
     annotations = results.get(feature_key, ())
     if not annotations:
         return []
 
+    detected_objects = []
     if feature_type == _FACE_DETECTION:
         detected_objects.extend(
             Face.from_api_repr(face) for face in annotations)
