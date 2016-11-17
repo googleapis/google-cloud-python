@@ -220,15 +220,17 @@ def _entity_from_response_type(feature_type, results):
 
     detected_objects = []
     feature_key = _REVERSE_TYPES[feature_type]
-    annotations = results.get(feature_key, [])
+    annotations = results.get(feature_key, ())
+    if not annotations:
+        return []
 
     if feature_type == _FACE_DETECTION:
         detected_objects.extend(
             Face.from_api_repr(face) for face in annotations)
-    elif feature_type == _IMAGE_PROPERTIES and annotations:
+    elif feature_type == _IMAGE_PROPERTIES:
         detected_objects.append(
             ImagePropertiesAnnotation.from_api_repr(annotations))
-    elif feature_type == _SAFE_SEARCH_DETECTION and annotations:
+    elif feature_type == _SAFE_SEARCH_DETECTION:
         detected_objects.append(
             SafeSearchAnnotation.from_api_repr(annotations))
     else:
