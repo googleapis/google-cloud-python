@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v0.3.1
+------
+
+- Fixed a bug where non-padded base64 encoded strings were not accepted. (#87)
+- Fixed a bug where ID token verification did not correctly call the HTTP request function. (#87)
+
 v0.3.0
 ------
 
