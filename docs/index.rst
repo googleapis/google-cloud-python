@@ -124,6 +124,7 @@
 
   error-reporting-usage
   Client <error-reporting-client>
+  error-reporting-util
 
 .. toctree::
   :maxdepth: 0
