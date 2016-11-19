@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""User friendly container for Google Cloud Bigtable Instance."""
+"""User-friendly container for Google Cloud Bigtable Instance."""
 
 
 import re
@@ -67,7 +67,7 @@ def _prepare_create_request(instance):
 class Instance(object):
     """Representation of a Google Cloud Bigtable Instance.
 
-    We can use a :class:`Instance` to:
+    We can use an :class:`Instance` to:
 
     * :meth:`reload` itself
     * :meth:`create` itself
@@ -123,10 +123,10 @@ class Instance(object):
 
     @classmethod
     def from_pb(cls, instance_pb, client):
-        """Creates a instance instance from a protobuf.
+        """Creates an instance instance from a protobuf.
 
         :type instance_pb: :class:`instance_pb2.Instance`
-        :param instance_pb: A instance protobuf object.
+        :param instance_pb: An instance protobuf object.
 
         :type client: :class:`Client <google.cloud.bigtable.client.Client>`
         :param client: The client that owns the instance.
@@ -261,7 +261,7 @@ class Instance(object):
     def delete(self):
         """Delete this instance.
 
-        Marks a instance and all of its tables for permanent deletion
+        Marks an instance and all of its tables for permanent deletion
         in 7 days.
 
         Immediately upon completion of the request:
