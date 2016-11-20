@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data API &mdash; google-cloud a10cf56 documentation</title>
+  <title>Data API &mdash; google-cloud a5c0341 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud a10cf56 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud a5c0341 documentation" href="index.html"/>
         <link rel="next" title="Client" href="bigtable-client.html"/>
         <link rel="prev" title="Table Admin API" href="bigtable-table-api.html"/> 
 
@@ -314,7 +314,7 @@ different, depending on what was stored in each row.</li>
 <li>Each cell lies in a column (<strong>not</strong> a column family). A column is really
 just a more <strong>specific</strong> modifier within a column family. A column
 can be present in every column family, in only one or anywhere in between.</li>
-<li>Within a column family there can be many columns. For example within
+<li>Within a column family there can be many columns. For example, within
 the column family <code class="docutils literal"><span class="pre">foo</span></code> we could have columns <code class="docutils literal"><span class="pre">bar</span></code> and <code class="docutils literal"><span class="pre">baz</span></code>.
 These would typically be represented as <code class="docutils literal"><span class="pre">foo:bar</span></code> and <code class="docutils literal"><span class="pre">foo:baz</span></code>.</li>
 </ul>
@@ -389,8 +389,8 @@ single value to be written to a column</p>
 </div>
 <p>If the <code class="docutils literal"><span class="pre">timestamp</span></code> is omitted, the current time on the Google Cloud
 Bigtable server will be used when the cell is stored.</p>
-<p>The value can either by bytes or an integer (which will be converted to
-bytes as a signed 64-bit integer).</p>
+<p>The value can either be bytes or an integer, which will be converted to
+bytes as a signed 64-bit integer.</p>
 </li>
 <li><p class="first"><a class="reference internal" href="bigtable-row.html#google.cloud.bigtable.row.DirectRow.delete_cell" title="google.cloud.bigtable.row.DirectRow.delete_cell"><code class="xref py py-meth docutils literal"><span class="pre">delete_cell()</span></code></a> deletes
 all cells (i.e. for all timestamps) in a given column</p>
@@ -408,7 +408,7 @@ be used</p>
 </li>
 <li><p class="first"><a class="reference internal" href="bigtable-row.html#google.cloud.bigtable.row.DirectRow.delete_cells" title="google.cloud.bigtable.row.DirectRow.delete_cells"><code class="xref py py-meth docutils literal"><span class="pre">delete_cells()</span></code></a> does
 the same thing as
-<a class="reference internal" href="bigtable-row.html#google.cloud.bigtable.row.DirectRow.delete_cell" title="google.cloud.bigtable.row.DirectRow.delete_cell"><code class="xref py py-meth docutils literal"><span class="pre">delete_cell()</span></code></a>
+<a class="reference internal" href="bigtable-row.html#google.cloud.bigtable.row.DirectRow.delete_cell" title="google.cloud.bigtable.row.DirectRow.delete_cell"><code class="xref py py-meth docutils literal"><span class="pre">delete_cell()</span></code></a>,
 but accepts a list of columns in a column family rather than a single one.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cells</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="p">[</span><span class="n">column1</span><span class="p">,</span> <span class="n">column2</span><span class="p">],</span>
                  <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">)</span>
@@ -626,7 +626,7 @@ returned <code class="docutils literal"><span class="pre">keys_iterator</span></
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'a10cf56',
+            VERSION:'a5c0341',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -17,7 +17,7 @@ Cells vs. Columns vs. Column Families
 * Each cell lies in a column (**not** a column family). A column is really
   just a more **specific** modifier within a column family. A column
   can be present in every column family, in only one or anywhere in between.
-* Within a column family there can be many columns. For example within
+* Within a column family there can be many columns. For example, within
   the column family ``foo`` we could have columns ``bar`` and ``baz``.
   These would typically be represented as ``foo:bar`` and ``foo:baz``.
 
@@ -106,8 +106,8 @@ Direct mutations can be added via one of four methods
   If the ``timestamp`` is omitted, the current time on the Google Cloud
   Bigtable server will be used when the cell is stored.
 
-  The value can either by bytes or an integer (which will be converted to
-  bytes as a signed 64-bit integer).
+  The value can either be bytes or an integer, which will be converted to
+  bytes as a signed 64-bit integer.
 
 * :meth:`delete_cell() <google.cloud.bigtable.row.DirectRow.delete_cell>` deletes
   all cells (i.e. for all timestamps) in a given column
@@ -129,7 +129,7 @@ Direct mutations can be added via one of four methods
 
 * :meth:`delete_cells() <google.cloud.bigtable.row.DirectRow.delete_cells>` does
   the same thing as
-  :meth:`delete_cell() <google.cloud.bigtable.row.DirectRow.delete_cell>`
+  :meth:`delete_cell() <google.cloud.bigtable.row.DirectRow.delete_cell>`,
   but accepts a list of columns in a column family rather than a single one.
 
   .. code:: python
