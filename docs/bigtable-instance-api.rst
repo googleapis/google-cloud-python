@@ -18,7 +18,7 @@ If you want a comprehensive list of all existing instances, make a
 Instance Factory
 ----------------
 
-To create a :class:`Instance <google.cloud.bigtable.instance.Instance>` object:
+To create an :class:`Instance <google.cloud.bigtable.instance.Instance>` object:
 
 .. code:: python
 
@@ -57,7 +57,7 @@ Check on Current Operation
 
 .. note::
 
-    When modifying a instance (via a `CreateInstance`_ request), the Bigtable
+    When modifying an instance (via a `CreateInstance`_ request), the Bigtable
     API will return a `long-running operation`_ and a corresponding
     :class:`Operation <google.cloud.bigtable.instance.Operation>` object
     will be returned by

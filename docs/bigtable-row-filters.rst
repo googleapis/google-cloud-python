@@ -6,7 +6,7 @@ It is possible to use a
 when adding mutations to a
 :class:`ConditionalRow <google.cloud.bigtable.row.ConditionalRow>` and when
 reading row data with :meth:`read_row() <google.cloud.bigtable.table.Table.read_row>`
-:meth:`read_rows() <google.cloud.bigtable.table.Table.read_rows>`.
+or :meth:`read_rows() <google.cloud.bigtable.table.Table.read_rows>`.
 
 As laid out in the `RowFilter definition`_, the following basic filters
 are provided:
