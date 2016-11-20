@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""User friendly container for Google Cloud Bigtable Row."""
+"""User-friendly container for Google Cloud Bigtable Row."""
 
 
 import struct
@@ -657,7 +657,7 @@ class AppendRow(Row):
     The first works by appending bytes and the second by incrementing an
     integer (stored in the cell as 8 bytes). In either case, if the
     cell is empty, assumes the default empty value (empty string for
-    bytes or and 0 for integer).
+    bytes or 0 for integer).
 
     :type row_key: bytes
     :param row_key: The key for the current row.
