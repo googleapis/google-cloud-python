@@ -1,7 +1,7 @@
 Table Admin API
 ===============
 
-After creating a :class:`Instance <google.cloud.bigtable.instance.Instance>`, you can
+After creating an :class:`Instance <google.cloud.bigtable.instance.Instance>`, you can
 interact with individual tables, groups of tables or column families within
 a table.
 
@@ -42,7 +42,7 @@ with :meth:`create() <google.cloud.bigtable.table.Table.create>`:
 
     table.create()
 
-If you would to initially split the table into several tablets (Tablets are
+If you would like to initially split the table into several tablets (tablets are
 similar to HBase regions):
 
 .. code:: python

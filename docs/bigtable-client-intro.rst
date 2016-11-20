@@ -65,7 +65,7 @@ API requests, you'll need to pass the ``admin`` argument:
 Read-Only Mode
 --------------
 
-If on the other hand, you only have (or want) read access to the data,
+If, on the other hand, you only have (or want) read access to the data,
 you can pass the ``read_only`` argument:
 
 .. code:: python
@@ -81,7 +81,7 @@ Next Step
 ---------
 
 After a :class:`Client <google.cloud.bigtable.client.Client>`, the next highest-level
-object is a :class:`Instance <google.cloud.bigtable.instance.Instance>`. You'll need
+object is an :class:`Instance <google.cloud.bigtable.instance.Instance>`. You'll need
 one before you can interact with tables or data.
 
 Head next to learn about the :doc:`bigtable-instance-api`.
