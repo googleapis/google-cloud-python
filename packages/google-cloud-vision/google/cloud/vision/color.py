@@ -36,8 +36,9 @@ class ImagePropertiesAnnotation(object):
         :rtype: :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`.
         :returns: Populated instance of ``ImagePropertiesAnnotation``.
         """
-        colors = [ColorInformation.from_api_repr(color) for color in
-                  response['dominantColors']['colors']]
+        raw_colors = response.get('dominantColors', {}).get('colors', ())
+        colors = [ColorInformation.from_api_repr(color)
+                  for color in raw_colors]
         return cls(colors)
 
     @property
@@ -85,10 +86,10 @@ class Color(object):
         :rtype: :class:`~google.cloud.vision.color.Color`
         :returns: Instance of :class:`~google.cloud.vision.color.Color`.
         """
-        red = response['red']
-        green = response['green']
-        blue = response['blue']
-        alpha = response.get('alpha')
+        red = response.get('red', 0)
+        green = response.get('green', 0)
+        blue = response.get('blue', 0)
+        alpha = response.get('alpha', 0.0)
 
         return cls(red, green, blue, alpha)
 
@@ -157,9 +158,9 @@ class ColorInformation(object):
         :rtype: :class:`~google.cloud.vision.color.ColorInformation`
         :returns: Instance of ``ColorInformation``.
         """
-        color = Color.from_api_repr(response['color'])
-        score = response['score']
-        pixel_fraction = response['pixelFraction']
+        color = Color.from_api_repr(response.get('color'))
+        score = response.get('score')
+        pixel_fraction = response.get('pixelFraction')
 
         return cls(color, score, pixel_fraction)
 
