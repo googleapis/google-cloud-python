@@ -324,6 +324,44 @@ def sink_pubsub(client, to_delete):
     to_delete.pop(0)
 
 
+@snippet
+def logging_handler(client):
+    # [START create_default_handler]
+    import logging
+    handler = client.get_default_handler()
+    cloud_logger = logging.getLogger('cloudLogger')
+    cloud_logger.setLevel(logging.INFO)
+    cloud_logger.addHandler(handler)
+    cloud_logger.error('bad news')
+    # [END create_default_handler]
+
+    # [START create_cloud_handler]
+    from google.cloud.logging.handlers import CloudLoggingHandler
+    handler = CloudLoggingHandler(client)
+    cloud_logger = logging.getLogger('cloudLogger')
+    cloud_logger.setLevel(logging.INFO)
+    cloud_logger.addHandler(handler)
+    cloud_logger.error('bad news')
+    # [END create_cloud_handler]
+
+    # [START create_named_handler]
+    handler = CloudLoggingHandler(client, name='mycustomlog')
+    # [END create_named_handler]
+
+
+@snippet
+def setup_logging(client):
+    import logging
+    # [START setup_logging]
+    client.setup_logging(log_level=logging.INFO)
+    # [END setup_logging]
+
+    # [START setup_logging_excludes]
+    client.setup_logging(log_level=logging.INFO,
+                         excluded_loggers=('werkzeug',))
+    # [END setup_logging_excludes]
+
+
 def _line_no(func):
     return func.__code__.co_firstlineno
 
