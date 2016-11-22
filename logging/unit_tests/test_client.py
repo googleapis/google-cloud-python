@@ -549,6 +549,79 @@ class TestClient(unittest.TestCase):
             },
         })
 
+    def test_get_default_handler_app_engine(self):
+        import os
+        from google.cloud._testing import _Monkey
+        from google.cloud.logging.client import _APPENGINE_FLEXIBLE_ENV_VM
+        from google.cloud.logging.handlers import app_engine as _MUT
+        from google.cloud.logging.handlers import AppEngineHandler
+
+        client = self._make_one(project=self.PROJECT,
+                                credentials=_Credentials(),
+                                use_gax=False)
+
+        with _Monkey(_MUT, _LOG_PATH_TEMPLATE='{pid}'):
+            with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: 'True'}):
+                handler = client.get_default_handler()
+
+        self.assertIsInstance(handler, AppEngineHandler)
+
+    def test_get_default_handler_container_engine(self):
+        import os
+        from google.cloud._testing import _Monkey
+        from google.cloud.logging.client import _CONTAINER_ENGINE_ENV
+        from google.cloud.logging.handlers import ContainerEngineHandler
+
+        client = self._make_one(project=self.PROJECT,
+                                credentials=_Credentials(),
+                                use_gax=False)
+
+        with _Monkey(os, environ={_CONTAINER_ENGINE_ENV: 'True'}):
+            handler = client.get_default_handler()
+
+        self.assertIsInstance(handler, ContainerEngineHandler)
+
+    def test_get_default_handler_general(self):
+        import httplib2
+        import mock
+        from google.cloud.logging.handlers import CloudLoggingHandler
+
+        http_mock = mock.Mock(spec=httplib2.Http)
+        credentials = _Credentials()
+        deepcopy = mock.Mock(return_value=http_mock)
+
+        with mock.patch('copy.deepcopy', new=deepcopy):
+            client = self._make_one(project=self.PROJECT,
+                                    credentials=credentials,
+                                    use_gax=False)
+            handler = client.get_default_handler()
+            deepcopy.assert_called_once_with(client._connection.http)
+
+        self.assertIsInstance(handler, CloudLoggingHandler)
+        self.assertTrue(credentials.authorized, http_mock)
+
+    def test_setup_logging(self):
+        import httplib2
+        import mock
+
+        http_mock = mock.Mock(spec=httplib2.Http)
+        deepcopy = mock.Mock(return_value=http_mock)
+        setup_logging = mock.Mock()
+
+        credentials = _Credentials()
+
+        with mock.patch('copy.deepcopy', new=deepcopy):
+            with mock.patch('google.cloud.logging.client.setup_logging',
+                            new=setup_logging):
+                client = self._make_one(project=self.PROJECT,
+                                        credentials=credentials,
+                                        use_gax=False)
+                client.setup_logging()
+                deepcopy.assert_called_once_with(client._connection.http)
+
+        setup_logging.assert_called()
+        self.assertTrue(credentials.authorized, http_mock)
+
 
 class _Credentials(object):
 
@@ -561,6 +634,9 @@ class _Credentials(object):
     def create_scoped(self, scope):
         self._scopes = scope
         return self
+
+    def authorize(self, http):
+        self.authorized = http
 
 
 class _Connection(object):

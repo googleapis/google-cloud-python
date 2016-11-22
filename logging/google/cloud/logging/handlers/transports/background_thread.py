@@ -21,8 +21,9 @@ import atexit
 import copy
 import threading
 
-from google.cloud.logging.client import Client
 from google.cloud.logging.handlers.transports.base import Transport
+
+_WORKER_THREAD_NAME = 'google.cloud.logging.handlers.transport.Worker'
 
 
 class _Worker(object):
@@ -96,8 +97,7 @@ class _Worker(object):
         try:
             self._entries_condition.acquire()
             self._thread = threading.Thread(
-                target=self._run,
-                name='google.cloud.logging.handlers.transport.Worker')
+                target=self._run, name=_WORKER_THREAD_NAME)
             self._thread.setDaemon(True)
             self._thread.start()
         finally:
@@ -152,9 +152,8 @@ class BackgroundThreadTransport(Transport):
     def __init__(self, client, name):
         http = copy.deepcopy(client._connection.http)
         http = client._connection.credentials.authorize(http)
-        self.client = Client(client.project,
-                             client._connection.credentials,
-                             http)
+        self.client = client.__class__(client.project,
+                                       client._connection.credentials, http)
         logger = self.client.logger(name)
         self.worker = _Worker(logger)
 
