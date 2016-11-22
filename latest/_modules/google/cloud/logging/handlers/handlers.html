@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.handlers.handlers &mdash; google-cloud 0e56db8 documentation</title>
+  <title>google.cloud.logging.handlers.handlers &mdash; google-cloud 5d59291 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../../search.html"/>
-    <link rel="top" title="google-cloud 0e56db8 documentation" href="../../../../../index.html"/>
+    <link rel="top" title="google-cloud 5d59291 documentation" href="../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../index.html"/> 
 
   
@@ -160,6 +160,9 @@
 <p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../logging-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging-usage.html#cloud-logging-handler">Cloud Logging Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging-usage.html#fluentd-logging-handlers">fluentd logging handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging-usage.html#cloud-logging-handler-transports">Cloud Logging Handler transports</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../logging-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../logging-logger.html">Logger</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../logging-entries.html">Entries</a></li>
@@ -167,6 +170,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../logging-sink.html">Sinks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../logging-stdlib-usage.html">Integration with Python logging module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../logging-handlers.html">Python Logging Module Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging-handlers-app-engine.html">Google App Engine flexible Log Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging-handlers-container-engine.html">Google Container Engine Log Handler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../logging-transports-sync.html">Python Logging Handler Sync Transport</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../logging-transports-thread.html">Python Logging Handler Threaded Transport</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../logging-transports-base.html">Python Logging Handler Sync Transport</a></li>
@@ -292,30 +297,25 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Python :mod:`logging` handlers for Google Cloud Logging.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Python :mod:`logging` handlers for Stackdriver Logging.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.logging.handlers.transports</span> <span class="k">import</span> <span class="n">BackgroundThreadTransport</span>
 
-
-<span class="n">EXCLUDE_LOGGER_DEFAULTS</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;google.cloud&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;oauth2client&#39;</span>
-<span class="p">)</span>
-
 <span class="n">DEFAULT_LOGGER_NAME</span> <span class="o">=</span> <span class="s1">&#39;python&#39;</span>
+
+<span class="n">EXCLUDED_LOGGER_DEFAULTS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;google.cloud&#39;</span><span class="p">,</span> <span class="s1">&#39;oauth2client&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="CloudLoggingHandler"><a class="viewcode-back" href="../../../../../logging-handlers.html#google.cloud.logging.handlers.handlers.CloudLoggingHandler">[docs]</a><span class="k">class</span> <span class="nc">CloudLoggingHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Python standard ``logging`` handler.</span>
+    <span class="sd">&quot;&quot;&quot;Handler that directly makes Stackdriver logging API calls.</span>
 
-<span class="sd">    This handler can be used to route Python standard logging messages</span>
-<span class="sd">    directly to the Stackdriver Logging API.</span>
+<span class="sd">    This is a Python standard ``logging`` handler using that can be used to</span>
+<span class="sd">    route Python standard logging messages directly to the Stackdriver</span>
+<span class="sd">    Logging API.</span>
 
-<span class="sd">    Note that this handler currently only supports a synchronous API call,</span>
-<span class="sd">    which means each logging statement that uses this handler will require</span>
-<span class="sd">    an API call.</span>
+<span class="sd">    This handler supports both an asynchronous and synchronous transport.</span>
 
 <span class="sd">    :type client: :class:`google.cloud.logging.client`</span>
 <span class="sd">    :param client: the authenticated Google Cloud Logging client for this</span>
@@ -373,8 +373,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="setup_logging"><a class="viewcode-back" href="../../../../../logging-handlers.html#google.cloud.logging.handlers.handlers.setup_logging">[docs]</a><span class="k">def</span> <span class="nf">setup_logging</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">excluded_loggers</span><span class="o">=</span><span class="n">EXCLUDE_LOGGER_DEFAULTS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Attach the ``CloudLogging`` handler to the Python root logger</span>
+<div class="viewcode-block" id="setup_logging"><a class="viewcode-back" href="../../../../../logging-handlers.html#google.cloud.logging.handlers.handlers.setup_logging">[docs]</a><span class="k">def</span> <span class="nf">setup_logging</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">excluded_loggers</span><span class="o">=</span><span class="n">EXCLUDED_LOGGER_DEFAULTS</span><span class="p">,</span>
+                  <span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Attach a logging handler to the Python root logger</span>
 
 <span class="sd">    Excludes loggers that this library itself uses to avoid</span>
 <span class="sd">    infinite recursion.</span>
@@ -383,9 +384,13 @@
 <span class="sd">    :param handler: the handler to attach to the global handler</span>
 
 <span class="sd">    :type excluded_loggers: tuple</span>
-<span class="sd">    :param excluded_loggers: The loggers to not attach the handler to. This</span>
-<span class="sd">                             will always include the loggers in the path of</span>
-<span class="sd">                             the logging client itself.</span>
+<span class="sd">    :param excluded_loggers: (Optional) The loggers to not attach the handler</span>
+<span class="sd">                             to. This will always include the loggers in the</span>
+<span class="sd">                             path of the logging client itself.</span>
+
+<span class="sd">    :type log_level: int</span>
+<span class="sd">    :param log_level: (Optional) Python logging log level. Defaults to</span>
+<span class="sd">                      :const:`logging.INFO`.</span>
 
 <span class="sd">    Example:</span>
 
@@ -403,8 +408,9 @@
 <span class="sd">        logging.error(&#39;bad news&#39;)  # API call</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">all_excluded_loggers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">excluded_loggers</span> <span class="o">+</span> <span class="n">EXCLUDE_LOGGER_DEFAULTS</span><span class="p">)</span>
+    <span class="n">all_excluded_loggers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">excluded_loggers</span> <span class="o">+</span> <span class="n">EXCLUDED_LOGGER_DEFAULTS</span><span class="p">)</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">())</span>
     <span class="k">for</span> <span class="n">logger_name</span> <span class="ow">in</span> <span class="n">all_excluded_loggers</span><span class="p">:</span>
@@ -444,7 +450,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../',
-            VERSION:'0e56db8',
+            VERSION:'5d59291',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; google-cloud 0e56db8 documentation</title>
+  <title>Index &mdash; google-cloud 5d59291 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
         <link rel="index" title="Index"
               href="#"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0e56db8 documentation" href="index.html"/> 
+    <link rel="top" title="google-cloud 5d59291 documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -160,6 +160,9 @@
 <p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="logging-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html#cloud-logging-handler">Cloud Logging Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html#fluentd-logging-handlers">fluentd logging handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html#cloud-logging-handler-transports">Cloud Logging Handler transports</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-logger.html">Logger</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-entries.html">Entries</a></li>
@@ -167,6 +170,8 @@
 <li class="toctree-l1"><a class="reference internal" href="logging-sink.html">Sinks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-stdlib-usage.html">Integration with Python logging module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-handlers.html">Python Logging Module Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-handlers-app-engine.html">Google App Engine flexible Log Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-handlers-container-engine.html">Google Container Engine Log Handler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-transports-sync.html">Python Logging Handler Sync Transport</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-transports-thread.html">Python Logging Handler Threaded Transport</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-transports-base.html">Python Logging Handler Sync Transport</a></li>
@@ -460,12 +465,12 @@
   <dt><a href="language-document.html#google.cloud.language.document.Document.annotate_text">annotate_text() (google.cloud.language.document.Document method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="language-document.html#google.cloud.language.document.Annotations">Annotations (class in google.cloud.language.document)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="dns-client.html#google.cloud.dns.connection.Connection.API_BASE_URL">API_BASE_URL (google.cloud.dns.connection.Connection attribute)</a>
   </dt>
@@ -578,6 +583,10 @@
 
       
   <dt><a href="bigtable-row.html#google.cloud.bigtable.row.AppendRow">AppendRow (class in google.cloud.bigtable.row)</a>
+  </dt>
+
+      
+  <dt><a href="logging-handlers-app-engine.html#google.cloud.logging.handlers.app_engine.AppEngineHandler">AppEngineHandler (class in google.cloud.logging.handlers.app_engine)</a>
   </dt>
 
       
@@ -1052,12 +1061,12 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="datastore-keys.html#google.cloud.datastore.key.Key.completed_key">completed_key() (google.cloud.datastore.key.Key method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="storage-blobs.html#google.cloud.storage.blob.Blob.component_count">component_count (google.cloud.storage.blob.Blob attribute)</a>
   </dt>
@@ -1150,6 +1159,10 @@
 
       
   <dt><a href="language-responses.html#google.cloud.language.entity.EntityType.CONSUMER_GOOD">CONSUMER_GOOD (google.cloud.language.entity.EntityType attribute)</a>
+  </dt>
+
+      
+  <dt><a href="logging-handlers-container-engine.html#google.cloud.logging.handlers.container_engine.ContainerEngineHandler">ContainerEngineHandler (class in google.cloud.logging.handlers.container_engine)</a>
   </dt>
 
       
@@ -2056,6 +2069,16 @@
   </dt>
 
       
+  <dt><a href="logging-handlers-app-engine.html#google.cloud.logging.handlers.app_engine.AppEngineHandler.format">format() (google.cloud.logging.handlers.app_engine.AppEngineHandler method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="logging-handlers-container-engine.html#google.cloud.logging.handlers.container_engine.ContainerEngineHandler.format">(google.cloud.logging.handlers.container_engine.ContainerEngineHandler method)</a>
+  </dt>
+
+      </dl></dd>
+      
   <dt><a href="bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset.friendly_name">friendly_name (google.cloud.bigquery.dataset.Dataset attribute)</a>
   </dt>
 
@@ -2366,6 +2389,10 @@
   </dt>
 
       
+  <dt><a href="logging-client.html#google.cloud.logging.client.Client.get_default_handler">get_default_handler() (google.cloud.logging.client.Client method)</a>
+  </dt>
+
+      
   <dt><a href="storage-acl.html#google.cloud.storage.acl.ACL.get_entities">get_entities() (google.cloud.storage.acl.ACL method)</a>
   </dt>
 
@@ -2565,6 +2592,14 @@
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="logging-handlers-app-engine.html#module-google.cloud.logging.handlers.app_engine">google.cloud.logging.handlers.app_engine (module)</a>
+  </dt>
+
+      
+  <dt><a href="logging-handlers-container-engine.html#module-google.cloud.logging.handlers.container_engine">google.cloud.logging.handlers.container_engine (module)</a>
+  </dt>
+
       
   <dt><a href="logging-handlers.html#module-google.cloud.logging.handlers.handlers">google.cloud.logging.handlers.handlers (module)</a>
   </dt>
@@ -4788,9 +4823,15 @@
   </dt>
 
       
-  <dt><a href="logging-handlers.html#google.cloud.logging.handlers.handlers.setup_logging">setup_logging() (in module google.cloud.logging.handlers.handlers)</a>
+  <dt><a href="logging-client.html#google.cloud.logging.client.Client.setup_logging">setup_logging() (google.cloud.logging.client.Client method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="logging-handlers.html#google.cloud.logging.handlers.handlers.setup_logging">(in module google.cloud.logging.handlers.handlers)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="logging-sink.html#google.cloud.logging.sink.Sink">Sink (class in google.cloud.logging.sink)</a>
   </dt>
@@ -5535,7 +5576,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0e56db8',
+            VERSION:'5d59291',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

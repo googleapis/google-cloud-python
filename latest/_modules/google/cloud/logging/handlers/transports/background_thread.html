@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.logging.handlers.transports.background_thread &mdash; google-cloud 0e56db8 documentation</title>
+  <title>google.cloud.logging.handlers.transports.background_thread &mdash; google-cloud 5d59291 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../../../search.html"/>
-    <link rel="top" title="google-cloud 0e56db8 documentation" href="../../../../../../index.html"/>
+    <link rel="top" title="google-cloud 5d59291 documentation" href="../../../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../../../index.html"/> 
 
   
@@ -160,6 +160,9 @@
 <p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-usage.html#cloud-logging-handler">Cloud Logging Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-usage.html#fluentd-logging-handlers">fluentd logging handlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-usage.html#cloud-logging-handler-transports">Cloud Logging Handler transports</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-logger.html">Logger</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-entries.html">Entries</a></li>
@@ -167,6 +170,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-sink.html">Sinks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-stdlib-usage.html">Integration with Python logging module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-handlers.html">Python Logging Module Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-handlers-app-engine.html">Google App Engine flexible Log Handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-handlers-container-engine.html">Google Container Engine Log Handler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-transports-sync.html">Python Logging Handler Sync Transport</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-transports-thread.html">Python Logging Handler Threaded Transport</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../logging-transports-base.html">Python Logging Handler Sync Transport</a></li>
@@ -301,8 +306,9 @@
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.logging.client</span> <span class="k">import</span> <span class="n">Client</span>
 <span class="kn">from</span> <span class="nn">google.cloud.logging.handlers.transports.base</span> <span class="k">import</span> <span class="n">Transport</span>
+
+<span class="n">_WORKER_THREAD_NAME</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.logging.handlers.transport.Worker&#39;</span>
 
 
 <span class="k">class</span> <span class="nc">_Worker</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -376,8 +382,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_entries_condition</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
-                <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;google.cloud.logging.handlers.transport.Worker&#39;</span><span class="p">)</span>
+                <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">_WORKER_THREAD_NAME</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
         <span class="k">finally</span><span class="p">:</span>
@@ -432,9 +437,8 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="n">http</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
         <span class="n">http</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="n">http</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-                             <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span>
-                             <span class="n">http</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+                                       <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="p">)</span>
         <span class="n">logger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">logger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">worker</span> <span class="o">=</span> <span class="n">_Worker</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
 
@@ -482,7 +486,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../../../',
-            VERSION:'0e56db8',
+            VERSION:'5d59291',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
