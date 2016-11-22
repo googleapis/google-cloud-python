@@ -42,16 +42,17 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         transport = self._make_one(client, NAME)
         transport.worker.batch = client.logger(NAME).batch()
 
-        PYTHON_LOGGER_NAME = 'mylogger'
-        MESSAGE = 'hello world'
-        record = _Record(PYTHON_LOGGER_NAME, logging.INFO, MESSAGE)
-        transport.send(record, MESSAGE)
+        python_logger_name = 'mylogger'
+        message = 'hello world'
+        record = logging.LogRecord(python_logger_name, logging.INFO,
+                                   None, None, message, None, None)
+        transport.send(record, message)
 
         EXPECTED_STRUCT = {
-            'message': MESSAGE,
-            'python_logger': PYTHON_LOGGER_NAME
+            'message': message,
+            'python_logger': python_logger_name
         }
-        EXPECTED_SENT = (EXPECTED_STRUCT, logging.INFO)
+        EXPECTED_SENT = (EXPECTED_STRUCT, 'INFO')
         self.assertEqual(transport.worker.batch.log_struct_called_with,
                          EXPECTED_SENT)
 
@@ -77,9 +78,11 @@ class TestWorker(unittest.TestCase):
         logger = _Logger(NAME)
         worker = self._make_one(logger)
 
-        PYTHON_LOGGER_NAME = 'mylogger'
-        MESSAGE = 'hello world'
-        record = _Record(PYTHON_LOGGER_NAME, logging.INFO, MESSAGE)
+        python_logger_name = 'mylogger'
+        message = 'hello world'
+        record = logging.LogRecord(python_logger_name,
+                                   logging.INFO, None, None,
+                                   message, None, None)
 
         worker._start()
 
@@ -91,7 +94,7 @@ class TestWorker(unittest.TestCase):
         while not worker.started:
             time.sleep(1)  # pragma: NO COVER
 
-        worker.enqueue(record, MESSAGE)
+        worker.enqueue(record, message)
         # Set timeout to none so worker thread finishes
         worker._stop_timeout = None
         worker._stop()
@@ -99,20 +102,22 @@ class TestWorker(unittest.TestCase):
 
     def test_run_after_stopped(self):
         # No-op
-        NAME = 'python_logger'
-        logger = _Logger(NAME)
+        name = 'python_logger'
+        logger = _Logger(name)
         worker = self._make_one(logger)
 
-        PYTHON_LOGGER_NAME = 'mylogger'
-        MESSAGE = 'hello world'
-        record = _Record(PYTHON_LOGGER_NAME, logging.INFO, MESSAGE)
+        python_logger_name = 'mylogger'
+        message = 'hello world'
+        record = logging.LogRecord(python_logger_name,
+                                   logging.INFO, None, None,
+                                   message, None, None)
 
         worker._start()
         while not worker.started:
             time.sleep(1)  # pragma: NO COVER
         worker._stop_timeout = None
         worker._stop()
-        worker.enqueue(record, MESSAGE)
+        worker.enqueue(record, message)
         self.assertFalse(worker.batch.commit_called)
         worker._stop()
 
@@ -122,28 +127,19 @@ class TestWorker(unittest.TestCase):
         logger = _Logger(NAME)
         worker = self._make_one(logger)
 
-        PYTHON_LOGGER_NAME = 'mylogger'
-        MESSAGE = 'hello world'
-        record = _Record(PYTHON_LOGGER_NAME, logging.INFO, MESSAGE)
+        python_logger_name = 'mylogger'
+        message = 'hello world'
+        record = logging.LogRecord(python_logger_name,
+                                   logging.INFO, None, None,
+                                   message, None, None)
 
-        worker.enqueue(record, MESSAGE)
+        worker.enqueue(record, message)
         worker._start()
         while not worker.started:
             time.sleep(1)  # pragma: NO COVER
         worker._stop_timeout = None
         worker._stop()
         self.assertTrue(worker.stopped)
-
-
-class _Record(object):
-
-    def __init__(self, name, level, message):
-        self.name = name
-        self.levelname = level
-        self.message = message
-        self.exc_info = None
-        self.exc_text = None
-        self.stack_info = None
 
 
 class _Batch(object):
@@ -186,8 +182,10 @@ class _Logger(object):
 
 class _Client(object):
 
-    def __init__(self, project):
+    def __init__(self, project, http=None, credentials=None):
         self.project = project
+        self.http = http
+        self.credentials = credentials
         self._connection = _Connection()
 
     def logger(self, name):  # pylint: disable=unused-argument

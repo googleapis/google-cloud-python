@@ -36,12 +36,13 @@ class TestCloudLoggingHandler(unittest.TestCase):
     def test_emit(self):
         client = _Client(self.PROJECT)
         handler = self._make_one(client, transport=_Transport)
-        LOGNAME = 'loggername'
-        MESSAGE = 'hello world'
-        record = _Record(LOGNAME, logging.INFO, MESSAGE)
+        logname = 'loggername'
+        message = 'hello world'
+        record = logging.LogRecord(logname, logging, None, None, message,
+                                   None, None)
         handler.emit(record)
 
-        self.assertEqual(handler.transport.send_called_with, (record, MESSAGE))
+        self.assertEqual(handler.transport.send_called_with, (record, message))
 
 
 class TestSetupLogging(unittest.TestCase):
@@ -98,20 +99,6 @@ class _Client(object):
 
     def __init__(self, project):
         self.project = project
-
-
-class _Record(object):
-
-    def __init__(self, name, level, message):
-        self.name = name
-        self.levelname = level
-        self.message = message
-        self.exc_info = None
-        self.exc_text = None
-        self.stack_info = None
-
-    def getMessage(self):
-        return self.message
 
 
 class _Transport(object):
