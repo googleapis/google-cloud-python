@@ -413,8 +413,15 @@ class _SubscriberAPI(object):
                 subscription_path, max_messages,
                 return_immediately=return_immediately)
         except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+            code = exc_to_code(exc.cause)
+            if code == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
+            elif code == StatusCode.DEADLINE_EXCEEDED:
+                # NOTE: The JSON-over-HTTP API returns a 200 with an empty
+                #       response when ``return_immediately`` is ``False``, so
+                #       we "mutate" the gRPC error into a non-error to conform.
+                if not return_immediately:
+                    return []
             raise
         return [_received_message_pb_to_mapping(rmpb)
                 for rmpb in response_pb.received_messages]
