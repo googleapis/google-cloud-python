@@ -241,3 +241,66 @@ def _build_udf_resources(resources):
         udf = {resource.udf_type: resource.value}
         udfs.append(udf)
     return udfs
+
+
+class ScalarQueryParameter(object):
+    """Named / positional query parameters for scalar values.
+
+    :type name: str or None
+    :param name: Parameter name, used via `@foo` syntax.  If None, the
+                 paramter can only be addressed via position (`?`).
+
+    :type type_: str
+    :param type_: name of parameter type.  One of `'STRING'`, `'INT64'`,
+                  `'FLOAT64'`, `'BOOLEAN'`, `'TIMESTAMP'`, or `'DATE'`.
+
+    :type value: str, int, float, bool, :class:`datetime.datetime`, or
+                 :class:`datetime.date`.
+    :param value: the scalar parameter value.
+    """
+    def __init__(self, name, type_, value):
+        self.name = name
+        self.type_ = type_
+        self.value = value
+
+    @classmethod
+    def positional(cls, type_, value):
+        """Factory for positional paramters.
+
+
+        :type type_: str
+        :param type_: name of paramter type.  One of `'STRING'`, `'INT64'`,
+                      `'FLOAT64'`, `'BOOLEAN'`, `'TIMESTAMP'`, or `'DATE'`.
+
+        :type value: str, int, float, bool, :class:`datetime.datetime`, or
+                     :class:`datetime.date`.
+        :param value: the scalar parameter value.
+        """
+        return cls(None, type_, value)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct paramter from JSON resource.
+
+        :type resource: dict
+        :param resource: JSON mapping of parameter
+        """
+        name = resource.get('name')
+        type_ = resource['parameterType']['type']
+        value = resource['parameterValue']['value']
+        converted = _CELLDATA_FROM_JSON[type_](value, None)
+        return cls(name, type_, converted)
+
+    def to_api_repr(self):
+        """Construct JSON API representation for the parameter."""
+        resource = {
+            'parameterType': {
+                'type': self.type_,
+            },
+            'parameterValue': {
+                'value': self.value,
+            },
+        }
+        if self.name is not None:
+            resource['name'] = self.name
+        return resource

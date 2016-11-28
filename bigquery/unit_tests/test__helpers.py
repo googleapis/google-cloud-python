@@ -491,6 +491,87 @@ class Test_UDFResourcesProperty(unittest.TestCase):
         self.assertEqual(instance.udf_resources, [])
 
 
+class Test_ScalarQueryParameter(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        return ScalarQueryParameter
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor_scalar(self):
+        parm = self._make_one(name='foo', type_='INT64', value=123)
+        self.assertEqual(parm.name, 'foo')
+        self.assertEqual(parm.type_, 'INT64')
+        self.assertEqual(parm.value, 123)
+
+    def test_positional_scalar(self):
+        klass = self._get_target_class()
+        parm = klass.positional(type_='INT64', value=123)
+        self.assertEqual(parm.name, None)
+        self.assertEqual(parm.type_, 'INT64')
+        self.assertEqual(parm.value, 123)
+
+    def test_from_api_repr_w_name(self):
+        RESOURCE = {
+            'name': 'foo',
+            'parameterType': {
+                'type': 'INT64',
+            },
+            'parameterValue': {
+                'value': 123,
+            },
+        }
+        klass = self._get_target_class()
+        parm = klass.from_api_repr(RESOURCE)
+        self.assertEqual(parm.name, 'foo')
+        self.assertEqual(parm.type_, 'INT64')
+        self.assertEqual(parm.value, 123)
+
+    def test_from_api_repr_wo_name(self):
+        RESOURCE = {
+            'parameterType': {
+                'type': 'INT64',
+            },
+            'parameterValue': {
+                'value': 123,
+            },
+        }
+        klass = self._get_target_class()
+        parm = klass.from_api_repr(RESOURCE)
+        self.assertEqual(parm.name, None)
+        self.assertEqual(parm.type_, 'INT64')
+        self.assertEqual(parm.value, 123)
+
+    def test_to_api_repr_w_name(self):
+        EXPECTED = {
+            'name': 'foo',
+            'parameterType': {
+                'type': 'INT64',
+            },
+            'parameterValue': {
+                'value': 123,
+            },
+        }
+        parm = self._make_one(name='foo', type_='INT64', value=123)
+        self.assertEqual(parm.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_wo_name(self):
+        EXPECTED = {
+            'parameterType': {
+                'type': 'INT64',
+            },
+            'parameterValue': {
+                'value': 123,
+            },
+        }
+        klass = self._get_target_class()
+        parm = klass.positional(type_='INT64', value=123)
+        self.assertEqual(parm.to_api_repr(), EXPECTED)
+
+
 class _Field(object):
 
     def __init__(self, mode, name='unknown', field_type='UNKNOWN', fields=()):
