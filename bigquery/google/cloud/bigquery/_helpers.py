@@ -58,10 +58,11 @@ def _record_from_json(value, field):
     """Coerce 'value' to a mapping, if set or not nullable."""
     if _not_null(value, field):
         record = {}
-        for subfield, cell in zip(field.fields, value['f']):
+        record_iter = zip(field.fields, value['f'])
+        for subfield, cell in record_iter:
             converter = _CELLDATA_FROM_JSON[subfield.field_type]
-            if field.mode == 'REPEATED':
-                value = [converter(item, subfield) for item in cell['v']]
+            if subfield.mode == 'REPEATED':
+                value = [converter(item['v'], subfield) for item in cell['v']]
             else:
                 value = converter(cell['v'], subfield)
             record[subfield.name] = value
@@ -103,7 +104,7 @@ def _row_from_json(row, schema):
     for field, cell in zip(schema, row['f']):
         converter = _CELLDATA_FROM_JSON[field.field_type]
         if field.mode == 'REPEATED':
-            row_data.append([converter(item, field)
+            row_data.append([converter(item['v'], field)
                              for item in cell['v']])
         else:
             row_data.append(converter(cell['v'], field))
