@@ -243,7 +243,29 @@ def _build_udf_resources(resources):
     return udfs
 
 
-class ScalarQueryParameter(object):
+class AbstractQueryParameter(object):
+    """Base class for named / positional query parameters.
+    """
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct paramter from JSON resource.
+
+        :type resource: dict
+        :param resource: JSON mapping of parameter
+
+        :rtype: :class:`ScalarQueryParameter`
+        """
+        raise NotImplementedError
+
+    def to_api_repr(self):
+        """Construct JSON API representation for the parameter.
+
+        :rtype: dict
+        """
+        raise NotImplementedError
+
+
+class ScalarQueryParameter(AbstractQueryParameter):
     """Named / positional query parameters for scalar values.
 
     :type name: str or None
@@ -275,6 +297,9 @@ class ScalarQueryParameter(object):
         :type value: str, int, float, bool, :class:`datetime.datetime`, or
                      :class:`datetime.date`.
         :param value: the scalar parameter value.
+
+        :rtype: :class:`ScalarQueryParameter`
+        :returns: instance w/o name
         """
         return cls(None, type_, value)
 
@@ -284,6 +309,9 @@ class ScalarQueryParameter(object):
 
         :type resource: dict
         :param resource: JSON mapping of parameter
+
+        :rtype: :class:`ScalarQueryParameter`
+        :returns: instance
         """
         name = resource.get('name')
         type_ = resource['parameterType']['type']
@@ -292,7 +320,11 @@ class ScalarQueryParameter(object):
         return cls(name, type_, converted)
 
     def to_api_repr(self):
-        """Construct JSON API representation for the parameter."""
+        """Construct JSON API representation for the parameter.
+
+        :rtype: dict
+        :returns: JSON mapping
+        """
         resource = {
             'parameterType': {
                 'type': self.type_,

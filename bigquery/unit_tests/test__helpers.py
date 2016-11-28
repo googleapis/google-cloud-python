@@ -491,6 +491,27 @@ class Test_UDFResourcesProperty(unittest.TestCase):
         self.assertEqual(instance.udf_resources, [])
 
 
+class Test_AbstractQueryParameter(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery._helpers import AbstractQueryParameter
+        return AbstractQueryParameter
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_from_api_virtual(self):
+        klass = self._get_target_class()
+        with self.assertRaises(NotImplementedError):
+            klass.from_api_repr({})
+
+    def test_to_api_virtual(self):
+        parm = self._make_one()
+        with self.assertRaises(NotImplementedError):
+            parm.to_api_repr()
+
+
 class Test_ScalarQueryParameter(unittest.TestCase):
 
     @staticmethod
