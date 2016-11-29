@@ -467,3 +467,20 @@ class StructQueryParameter(AbstractQueryParameter):
         if self.name is not None:
             resource['name'] = self.name
         return resource
+
+
+class QueryParametersProperty(object):
+    """Custom property type, holding query parameter instances."""
+
+    def __get__(self, instance, owner):
+        """Descriptor protocol:  accessor"""
+        if instance is None:
+            return self
+        return list(instance._query_parameters)
+
+    def __set__(self, instance, value):
+        """Descriptor protocol:  mutator"""
+        if not all(isinstance(u, AbstractQueryParameter) for u in value):
+            raise ValueError(
+                "query parameters must be derived from AbstractQueryParameter")
+        instance._query_parameters = tuple(value)

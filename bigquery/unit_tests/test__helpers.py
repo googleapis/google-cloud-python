@@ -780,6 +780,74 @@ class Test_StructQueryParameter(unittest.TestCase):
         self.assertEqual(parm.to_api_repr(), EXPECTED)
 
 
+class Test_QueryParametersProperty(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery._helpers import QueryParametersProperty
+        return QueryParametersProperty
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def _descriptor_and_klass(self):
+        descriptor = self._make_one()
+
+        class _Test(object):
+            _query_parameters = ()
+            query_parameters = descriptor
+
+        return descriptor, _Test
+
+    def test_class_getter(self):
+        descriptor, klass = self._descriptor_and_klass()
+        self.assertIs(klass.query_parameters, descriptor)
+
+    def test_instance_getter_empty(self):
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        self.assertEqual(instance.query_parameters, [])
+
+    def test_instance_getter_w_non_empty_list(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        instance._query_parameters = tuple(query_parameters)
+
+        self.assertEqual(instance.query_parameters, query_parameters)
+
+    def test_instance_setter_w_empty_list(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        instance._query_parameters = query_parameters
+
+        instance.query_parameters = []
+
+        self.assertEqual(instance.query_parameters, [])
+
+    def test_instance_setter_w_valid_udf(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+
+        instance.query_parameters = query_parameters
+
+        self.assertEqual(instance.query_parameters, query_parameters)
+
+    def test_instance_setter_w_bad_udfs(self):
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+
+        with self.assertRaises(ValueError):
+            instance.query_parameters = ["foo"]
+
+        self.assertEqual(instance.query_parameters, [])
+
+
 class _Field(object):
 
     def __init__(self, mode, name='unknown', field_type='UNKNOWN', fields=()):
