@@ -23,11 +23,11 @@ The main concepts with this API are:
 """
 
 
+from google.cloud.bigquery._helpers import ArrayQueryParameter
+from google.cloud.bigquery._helpers import ScalarQueryParameter
+from google.cloud.bigquery._helpers import StructQueryParameter
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessGrant
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
-from google.cloud.bigquery._helpers import ArrayQueryParameter
-from google.cloud.bigquery._helpers import ScalarQueryParameter
-from google.cloud.bigquery._helpers import StructQueryParameter

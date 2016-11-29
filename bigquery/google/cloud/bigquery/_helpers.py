@@ -254,8 +254,8 @@ class ScalarQueryParameter(AbstractQueryParameter):
     """Named / positional query parameters for scalar values.
 
     :type name: str or None
-    :param name: Parameter name, used via `@foo` syntax.  If None, the
-                 paramter can only be addressed via position (`?`).
+    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
+                 paramter can only be addressed via position (``?``).
 
     :type type_: str
     :param type_: name of parameter type.  One of `'STRING'`, `'INT64'`,
@@ -274,7 +274,6 @@ class ScalarQueryParameter(AbstractQueryParameter):
     def positional(cls, type_, value):
         """Factory for positional paramters.
 
-
         :type type_: str
         :param type_: name of paramter type.  One of `'STRING'`, `'INT64'`,
                       `'FLOAT64'`, `'BOOLEAN'`, `'TIMESTAMP'`, or `'DATE'`.
@@ -284,7 +283,7 @@ class ScalarQueryParameter(AbstractQueryParameter):
         :param value: the scalar parameter value.
 
         :rtype: :class:`ScalarQueryParameter`
-        :returns: instance w/o name
+        :returns: instance without name
         """
         return cls(None, type_, value)
 
@@ -327,8 +326,8 @@ class ArrayQueryParameter(AbstractQueryParameter):
     """Named / positional query parameters for array values.
 
     :type name: str or None
-    :param name: Parameter name, used via `@foo` syntax.  If None, the
-                 paramter can only be addressed via position (`?`).
+    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
+                 paramter can only be addressed via position (``?``).
 
     :type array_type: str
     :param array_type:
@@ -356,7 +355,7 @@ class ArrayQueryParameter(AbstractQueryParameter):
         :param values: the parameter array values.
 
         :rtype: :class:`ArrayQueryParameter`
-        :returns: instance w/o name
+        :returns: instance without name
         """
         return cls(None, array_type, values)
 
@@ -400,8 +399,8 @@ class StructQueryParameter(AbstractQueryParameter):
     """Named / positional query parameters for struct values.
 
     :type name: str or None
-    :param name: Parameter name, used via `@foo` syntax.  If None, the
-                 paramter can only be addressed via position (`?`).
+    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
+                 paramter can only be addressed via position (``?``).
 
     :type sub_parms: tuple of :class:`ScalarQueryParameter`
     :param sub_parms: the sub-parameters for the struct
@@ -417,10 +416,10 @@ class StructQueryParameter(AbstractQueryParameter):
         """Factory for positional paramters.
 
         :type sub_parms: tuple of :class:`ScalarQueryParameter`
-        :param sub_parms:s the sub-parameters for the struct
+        :param sub_parms: the sub-parameters for the struct
 
         :rtype: :class:`StructQueryParameter`
-        :returns: instance w/o name
+        :returns: instance without name
         """
         return cls(None, *sub_parms)
 
