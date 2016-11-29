@@ -15,6 +15,7 @@
 """Create / interact with Google Cloud Pub/Sub connections."""
 
 import base64
+import copy
 import functools
 import os
 
@@ -203,9 +204,10 @@ class _PublisherAPI(object):
         :rtype: list of string
         :returns: list of opaque IDs for published messages.
         """
-        _transform_messages_base64(messages, _base64_unicode)
+        messages_to_send = copy.deepcopy(messages)
+        _transform_messages_base64(messages_to_send, _base64_unicode)
         conn = self._connection
-        data = {'messages': messages}
+        data = {'messages': messages_to_send}
         response = conn.api_request(
             method='POST', path='/%s:publish' % (topic_path,), data=data)
         return response['messageIds']
