@@ -82,17 +82,19 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(image, Image)
 
     def test_multiple_detection_from_content(self):
+        import copy
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
         from unit_tests._fixtures import LABEL_DETECTION_RESPONSE
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
-        RETURNED = LABEL_DETECTION_RESPONSE
-        LOGOS = LOGO_DETECTION_RESPONSE['responses'][0]['logoAnnotations']
-        RETURNED['responses'][0]['logoAnnotations'] = LOGOS
+
+        returned = copy.deepcopy(LABEL_DETECTION_RESPONSE)
+        logos = copy.deepcopy(LOGO_DETECTION_RESPONSE['responses'][0])
+        returned['responses'][0]['logoAnnotations'] = logos['logoAnnotations']
 
         credentials = _Credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
-        client._connection = _Connection(RETURNED)
+        client._connection = _Connection(returned)
 
         limit = 2
         label_feature = Feature(FeatureTypes.LABEL_DETECTION, limit)
@@ -103,19 +105,26 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(items.logos), 2)
         self.assertEqual(len(items.labels), 3)
-        self.assertEqual(items.logos[0].description, 'Brand1')
-        self.assertEqual(items.logos[0].score, 0.63192177)
-        self.assertEqual(items.logos[1].description, 'Brand2')
-        self.assertEqual(items.logos[1].score, 0.5492993)
+        first_logo = items.logos[0]
+        second_logo = items.logos[1]
+        self.assertEqual(first_logo.description, 'Brand1')
+        self.assertEqual(first_logo.score, 0.63192177)
+        self.assertEqual(second_logo.description, 'Brand2')
+        self.assertEqual(second_logo.score, 0.5492993)
 
-        self.assertEqual(items.labels[0].description, 'automobile')
-        self.assertEqual(items.labels[0].score, 0.9776855)
-        self.assertEqual(items.labels[1].description, 'vehicle')
-        self.assertEqual(items.labels[1].score, 0.947987)
-        self.assertEqual(items.labels[2].description, 'truck')
-        self.assertEqual(items.labels[2].score, 0.88429511)
+        first_label = items.labels[0]
+        second_label = items.labels[1]
+        third_label = items.labels[2]
+        self.assertEqual(first_label.description, 'automobile')
+        self.assertEqual(first_label.score, 0.9776855)
+        self.assertEqual(second_label.description, 'vehicle')
+        self.assertEqual(second_label.score, 0.947987)
+        self.assertEqual(third_label.description, 'truck')
+        self.assertEqual(third_label.score, 0.88429511)
 
-        image_request = client._connection._requested[0]['data']['requests'][0]
+        requested = client._connection._requested
+        requests = requested[0]['data']['requests']
+        image_request = requests[0]
         label_request = image_request['features'][0]
         logo_request = image_request['features'][1]
 
@@ -171,7 +180,7 @@ class TestClient(unittest.TestCase):
 
         image = client.image(content=IMAGE_CONTENT)
         faces = image.detect_faces(limit=5)
-        self.assertEqual(faces, [])
+        self.assertEqual(faces, ())
         self.assertEqual(len(faces), 0)
         image_request = client._connection._requested[0]['data']['requests'][0]
 
@@ -211,7 +220,7 @@ class TestClient(unittest.TestCase):
 
         image = client.image(content=IMAGE_CONTENT)
         labels = image.detect_labels()
-        self.assertEqual(labels, [])
+        self.assertEqual(labels, ())
         self.assertEqual(len(labels), 0)
 
     def test_landmark_detection_from_source(self):
@@ -264,7 +273,7 @@ class TestClient(unittest.TestCase):
 
         image = client.image(content=IMAGE_CONTENT)
         landmarks = image.detect_landmarks()
-        self.assertEqual(landmarks, [])
+        self.assertEqual(landmarks, ())
         self.assertEqual(len(landmarks), 0)
 
     def test_logo_detection_from_source(self):
@@ -353,7 +362,7 @@ class TestClient(unittest.TestCase):
 
         image = client.image(content=IMAGE_CONTENT)
         safe_search = image.detect_safe_search()
-        self.assertEqual(safe_search, [])
+        self.assertEqual(safe_search, ())
         self.assertEqual(len(safe_search), 0)
 
     def test_image_properties_detection_from_source(self):
@@ -389,7 +398,7 @@ class TestClient(unittest.TestCase):
 
         image = client.image(content=IMAGE_CONTENT)
         image_properties = image.detect_properties()
-        self.assertEqual(image_properties, [])
+        self.assertEqual(image_properties, ())
         self.assertEqual(len(image_properties), 0)
 
 
