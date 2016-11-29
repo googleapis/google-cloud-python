@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the Vision API &mdash; google-cloud c40e0d4 documentation</title>
+  <title>Using the Vision API &mdash; google-cloud f0950ca documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud c40e0d4 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud f0950ca documentation" href="index.html"/>
         <link rel="next" title="Vision Client" href="vision-client.html"/>
         <link rel="prev" title="Translate Client" href="translate-client.html"/> 
 
@@ -201,12 +201,7 @@
 <p class="caption"><span class="caption-text">Vision</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using the Vision API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#authentication-and-configuration">Authentication and Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#annotating-an-image">Annotating an Image</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#annotate-a-single-image">Annotate a single image</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#annotate-multiple-images">Annotate multiple images</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#no-results-returned">No results returned</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#manual-detection">Manual Detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication-and-configuration">Authentication and Configuration</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#face-detection">Face Detection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#label-detection">Label Detection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#landmark-detection">Landmark Detection</a></li>
@@ -214,6 +209,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#safe-search-detection">Safe Search Detection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#text-detection">Text Detection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#image-properties">Image Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#no-results-found">No results found</a></li>
 </ul>
 </li>
 </ul>
@@ -309,86 +305,30 @@
 see <a class="reference internal" href="google-cloud-auth.html"><span class="doc">Authentication</span></a>.</p>
 </li>
 <li><p class="first">In addition to any authentication configuration, you should also set the
-<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you&#8217;d like
-to interact with. If the GOOGLE_CLOUD_PROJECT environment variable is not present,
-the project ID from JSON file credentials is used.</p>
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you&#8217;d
+like to interact with. If the GOOGLE_CLOUD_PROJECT environment variable is
+not present, the project ID from JSON file credentials is used.</p>
 <p>If you are using Google App Engine or Google Compute Engine
 this will be detected automatically.</p>
 </li>
 <li><p class="first">After configuring your environment, create a
-<a class="reference internal" href="vision-client.html#google.cloud.vision.client.Client" title="google.cloud.vision.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>
+<a class="reference internal" href="vision-client.html#google.cloud.vision.client.Client" title="google.cloud.vision.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>.</p>
 </li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>or pass in <code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">project</span></code> explicitly</p>
+<p>or pass in <code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">project</span></code> explicitly.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="annotating-an-image">
-<h2>Annotating an Image<a class="headerlink" href="#annotating-an-image" title="Permalink to this headline">#</a></h2>
-<div class="section" id="annotate-a-single-image">
-<h3>Annotate a single image<a class="headerlink" href="#annotate-a-single-image" title="Permalink to this headline">#</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">io</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;./image.png&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_faces</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">landmarks</span><span class="o">.</span><span class="n">left_eye</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x_coordinate</span>
-<span class="gp">... </span><span class="mf">1004.8003</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="annotate-multiple-images">
-<h3>Annotate multiple images<a class="headerlink" href="#annotate-multiple-images" title="Permalink to this headline">#</a></h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">io</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;./image.png&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">image_one</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image_two</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-storage-bucket/image.jpg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">batch</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="n">labels</span> <span class="o">=</span> <span class="n">image_one</span><span class="o">.</span><span class="n">detect_labels</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="n">faces</span> <span class="o">=</span> <span class="n">image_two</span><span class="o">.</span><span class="n">detect_faces</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="no-results-returned">
-<h3>No results returned<a class="headerlink" href="#no-results-returned" title="Permalink to this headline">#</a></h3>
-<p>Failing annotations return no results for the feature type requested.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-storage-bucket/image.jpg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_logos</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span>
-<span class="go">[]</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="manual-detection">
-<h3>Manual Detection<a class="headerlink" href="#manual-detection" title="Permalink to this headline">#</a></h3>
-<p>You can call the detection method manually.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.vision.image</span> <span class="kn">import</span> <span class="n">Feature</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.vision.image</span> <span class="kn">import</span> <span class="n">FeatureTypes</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-test-bucket/image.jpg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">FACE_DETECTION</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-<span class="gp">... </span>            <span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LOGO_DETECTION</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">annotations</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
 <div class="section" id="face-detection">
 <h3>Face Detection<a class="headerlink" href="#face-detection" title="Permalink to this headline">#</a></h3>
-<p>Detecting a face or faces in an image.
-For a list of the possible facial landmarks
-see: <a class="reference external" href="https://cloud.google.com/vision/reference/rest/v1/images/annotate#type_1">https://cloud.google.com/vision/reference/rest/v1/images/annotate#type_1</a></p>
+<p><a class="reference internal" href="vision-image.html#google.cloud.vision.image.Image.detect_faces" title="google.cloud.vision.image.Image.detect_faces"><code class="xref py py-meth docutils literal"><span class="pre">detect_faces()</span></code></a> will search for faces in
+an image and return the coordinates in the image of each <a class="reference external" href="https://cloud.google.com/vision/reference/rest/v1/images/annotate#type_1">landmark type</a> that
+was detected.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-test-bucket/image.jpg&#39;</span><span class="p">)</span>
@@ -408,9 +348,10 @@ see: <a class="reference external" href="https://cloud.google.com/vision/referen
 </div>
 <div class="section" id="label-detection">
 <h3>Label Detection<a class="headerlink" href="#label-detection" title="Permalink to this headline">#</a></h3>
-<p>Image labels are a way to help categorize the contents of an image.
-If you have an image with a car, person and a dog it, label detection will
-attempt to identify those objects.</p>
+<p><a class="reference internal" href="vision-image.html#google.cloud.vision.image.Image.detect_labels" title="google.cloud.vision.image.Image.detect_labels"><code class="xref py py-meth docutils literal"><span class="pre">detect_labels()</span></code></a> will attempt to label
+objects in an image. If there is a car, person and a dog in the image, label
+detection will attempt to identify those objects and score the level of
+certainty from <code class="docutils literal"><span class="pre">0.0</span> <span class="pre">to</span> <span class="pre">1.0</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-storage-bucket/image.jpg&#39;</span><span class="p">)</span>
@@ -424,12 +365,13 @@ attempt to identify those objects.</p>
 </div>
 <div class="section" id="landmark-detection">
 <h3>Landmark Detection<a class="headerlink" href="#landmark-detection" title="Permalink to this headline">#</a></h3>
-<p>The API will attemtp to detect landmarks such as Mount Rushmore and
-the Sydney Opera House. The API will also provide their known geographical
-locations if available.</p>
+<p><a class="reference internal" href="vision-image.html#google.cloud.vision.image.Image.detect_landmarks" title="google.cloud.vision.image.Image.detect_landmarks"><code class="xref py py-meth docutils literal"><span class="pre">detect_landmarks()</span></code></a> will attempt to
+detect landmarks such as &#8220;Mount Rushmore&#8221; and the &#8220;Sydney Opera House&#8221;. The API
+will also provide their known geographical locations if available.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">landmarks</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_landmarks</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
 <span class="go">&#39;Sydney Opera House&#39;</span>
@@ -446,42 +388,66 @@ locations if available.</p>
 </div>
 <div class="section" id="logo-detection">
 <h3>Logo Detection<a class="headerlink" href="#logo-detection" title="Permalink to this headline">#</a></h3>
-<p>Google Vision can also attempt to detect company and brand logos in images.</p>
+<p>With <a class="reference internal" href="vision-image.html#google.cloud.vision.image.Image.detect_logos" title="google.cloud.vision.image.Image.detect_logos"><code class="xref py py-meth docutils literal"><span class="pre">detect_logos()</span></code></a>, you can identify
+brand logos in an image. Their shape and location in the image can be found by
+iterating through the detected logo&#8217;s <code class="docutils literal"><span class="pre">vertices</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_logos</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">logos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_logos</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">logos</span><span class="p">))</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_logo</span> <span class="o">=</span> <span class="n">logos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_logo</span><span class="o">.</span><span class="n">description</span>
 <span class="go">&#39;Google&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">score</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_logo</span><span class="o">.</span><span class="n">score</span>
 <span class="go">0.9795432</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x_coordinate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">first_logo</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">))</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_logo</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x_coordinate</span>
 <span class="go">78</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y_coordinate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_logo</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y_coordinate</span>
 <span class="go">62</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="safe-search-detection">
 <h3>Safe Search Detection<a class="headerlink" href="#safe-search-detection" title="Permalink to this headline">#</a></h3>
-<p>Detecting safe search properties of an image.</p>
+<p><a class="reference internal" href="vision-image.html#google.cloud.vision.image.Image.detect_safe_search" title="google.cloud.vision.image.Image.detect_safe_search"><code class="xref py py-meth docutils literal"><span class="pre">detect_safe_search()</span></code></a> will try to
+categorize the entire contents of the image under four categories.</p>
+<ul class="simple">
+<li>adult: Represents the likelihood that the image contains adult content.</li>
+<li>spoof: The likelihood that an obvious modification was made to the image&#8217;s
+canonical version to make it appear funny or offensive.</li>
+<li>medical: Likelihood this is a medical image.</li>
+<li>violence: Violence likelihood.</li>
+</ul>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_safe_search</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">adult</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search_results</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_safe_search</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span> <span class="o">=</span> <span class="n">safe_search_results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="o">.</span><span class="n">adult</span>
 <span class="go">&#39;VERY_UNLIKELY&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">medical</span>
-<span class="go">&#39;UNLIKELY&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="o">.</span><span class="n">spoof</span>
+<span class="go">&#39;POSSIBLE&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="o">.</span><span class="n">medical</span>
+<span class="go">&#39;VERY_LIKELY&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_search</span><span class="o">.</span><span class="n">violence</span>
+<span class="go">&#39;LIKELY&#39;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="text-detection">
 <h3>Text Detection<a class="headerlink" href="#text-detection" title="Permalink to this headline">#</a></h3>
-<p>Detecting text with ORC from an image.</p>
+<p><a class="reference internal" href="vision-image.html#google.cloud.vision.image.Image.detect_text" title="google.cloud.vision.image.Image.detect_text"><code class="xref py py-meth docutils literal"><span class="pre">detect_text()</span></code></a> performs OCR to find text
+in an image.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">texts</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_text</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">texts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">locale</span>
 <span class="go">&#39;en&#39;</span>
@@ -494,20 +460,38 @@ locations if available.</p>
 </div>
 <div class="section" id="image-properties">
 <h3>Image Properties<a class="headerlink" href="#image-properties" title="Permalink to this headline">#</a></h3>
-<p>Detecting image color properties.</p>
+<p><a class="reference internal" href="vision-image.html#google.cloud.vision.image.Image.detect_properties" title="google.cloud.vision.image.Image.detect_properties"><code class="xref py py-meth docutils literal"><span class="pre">detect_properties()</span></code></a> will process the
+image and determine the dominant colors in the image.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_properties</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">red</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_color</span><span class="o">.</span><span class="n">red</span>
 <span class="go">244</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">blue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_color</span><span class="o">.</span><span class="n">blue</span>
 <span class="go">134</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">score</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_color</span><span class="o">.</span><span class="n">score</span>
 <span class="go">0.65519291</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pixel_fraction</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_color</span><span class="o">.</span><span class="n">pixel_fraction</span>
 <span class="go">0.758658</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="no-results-found">
+<h3>No results found<a class="headerlink" href="#no-results-found" title="Permalink to this headline">#</a></h3>
+<p>If no results for the detection performed can be extracted from the image, then
+an empty list is returned. This behavior is similiar with all detection types.</p>
+<p>Example with <a class="reference internal" href="vision-image.html#google.cloud.vision.image.Image.detect_logos" title="google.cloud.vision.image.Image.detect_logos"><code class="xref py py-meth docutils literal"><span class="pre">detect_logos()</span></code></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./image.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image_file</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">image_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_logos</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logos</span>
+<span class="go">[]</span>
 </pre></div>
 </div>
 </div>
@@ -555,7 +539,7 @@ locations if available.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'c40e0d4',
+            VERSION:'f0950ca',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
