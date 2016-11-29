@@ -26,7 +26,6 @@ from google.cloud.bigquery.table import _parse_schema_resource
 from google.cloud.bigquery._helpers import UDFResourcesProperty
 from google.cloud.bigquery._helpers import _EnumProperty
 from google.cloud.bigquery._helpers import _TypedProperty
-from google.cloud.bigquery._helpers import _build_udf_resources
 
 
 class Compression(_EnumProperty):
@@ -1032,8 +1031,10 @@ class QueryJob(_AsyncJob):
         if self.maximum_bytes_billed is not None:
             configuration['maximumBytesBilled'] = self.maximum_bytes_billed
         if len(self._udf_resources) > 0:
-            configuration[self._UDF_KEY] = _build_udf_resources(
-                self._udf_resources)
+            configuration[self._UDF_KEY] = [
+                {udf_resource.udf_type: udf_resource.value}
+                for udf_resource in self._udf_resources
+            ]
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""

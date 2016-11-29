@@ -228,21 +228,6 @@ class UDFResourcesProperty(object):
         instance._udf_resources = tuple(value)
 
 
-def _build_udf_resources(resources):
-    """
-    :type resources: sequence of :class:`UDFResource`
-    :param resources: fields to be appended.
-
-    :rtype: mapping
-    :returns: a mapping describing userDefinedFunctionResources for the query.
-    """
-    udfs = []
-    for resource in resources:
-        udf = {resource.udf_type: resource.value}
-        udfs.append(udf)
-    return udfs
-
-
 class AbstractQueryParameter(object):
     """Base class for named / positional query parameters.
     """

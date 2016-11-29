@@ -21,7 +21,6 @@ from google.cloud.bigquery._helpers import _rows_from_json
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.table import _parse_schema_resource
-from google.cloud.bigquery._helpers import _build_udf_resources
 from google.cloud.bigquery._helpers import UDFResourcesProperty
 
 
@@ -314,7 +313,10 @@ class QueryResults(object):
             resource['dryRun'] = self.dry_run
 
         if len(self._udf_resources) > 0:
-            resource[self._UDF_KEY] = _build_udf_resources(self._udf_resources)
+            resource[self._UDF_KEY] = [
+                {udf_resource.udf_type: udf_resource.value}
+                for udf_resource in self._udf_resources
+            ]
 
         return resource
 
