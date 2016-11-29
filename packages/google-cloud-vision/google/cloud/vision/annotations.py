@@ -15,26 +15,14 @@
 """Annotations management for Vision API responses."""
 
 
+from google.cloud.vision.color import ImagePropertiesAnnotation
 from google.cloud.vision.entity import EntityAnnotation
 from google.cloud.vision.face import Face
-from google.cloud.vision.feature import FeatureTypes
-from google.cloud.vision.color import ImagePropertiesAnnotation
 from google.cloud.vision.safe import SafeSearchAnnotation
 
 
-_REVERSE_TYPES = {
-    FeatureTypes.FACE_DETECTION: 'faceAnnotations',
-    FeatureTypes.IMAGE_PROPERTIES: 'imagePropertiesAnnotation',
-    FeatureTypes.LABEL_DETECTION: 'labelAnnotations',
-    FeatureTypes.LANDMARK_DETECTION: 'landmarkAnnotations',
-    FeatureTypes.LOGO_DETECTION: 'logoAnnotations',
-    FeatureTypes.SAFE_SEARCH_DETECTION: 'safeSearchAnnotation',
-    FeatureTypes.TEXT_DETECTION: 'textAnnotations',
-}
-
-
 class Annotations(object):
-    """Annotation class for managing responses.
+    """Helper class to bundle annotation responses.
 
     :type faces: list
     :param faces: List of :class:`~google.cloud.vision.face.Face`.
@@ -65,13 +53,13 @@ class Annotations(object):
     """
     def __init__(self, faces=None, properties=None, labels=None,
                  landmarks=None, logos=None, safe_searches=None, texts=None):
-        self.faces = faces or []
-        self.properties = properties or []
-        self.labels = labels or []
-        self.landmarks = landmarks or []
-        self.logos = logos or []
-        self.safe_searches = safe_searches or []
-        self.texts = texts or []
+        self.faces = faces or ()
+        self.properties = properties or ()
+        self.labels = labels or ()
+        self.landmarks = landmarks or ()
+        self.logos = logos or ()
+        self.safe_searches = safe_searches or ()
+        self.texts = texts or ()
 
     @classmethod
     def from_api_repr(cls, response):
@@ -84,45 +72,41 @@ class Annotations(object):
         :returns: An instance of ``Annotations`` with detection types loaded.
         """
         annotations = {}
-
-        for feature_type in response.keys():
-            annotations[feature_type] = []
+        key_map = {
+            'faceAnnotations': 'faces',
+            'imagePropertiesAnnotation': 'properties',
+            'labelAnnotations': 'labels',
+            'landmarkAnnotations': 'landmarks',
+            'logoAnnotations': 'logos',
+            'safeSearchAnnotation': 'safe_searches',
+            'textAnnotations': 'texts'
+        }
 
         for feature_type, annotation in response.items():
-            annotations[feature_type].extend(
+            curr_feature = annotations.setdefault(key_map[feature_type], [])
+            curr_feature.extend(
                 _entity_from_response_type(feature_type, annotation))
-
-        faces = annotations.get(
-            _REVERSE_TYPES[FeatureTypes.FACE_DETECTION], [])
-        properties = annotations.get(
-            _REVERSE_TYPES[FeatureTypes.IMAGE_PROPERTIES], [])
-        labels = annotations.get(
-            _REVERSE_TYPES[FeatureTypes.LABEL_DETECTION], [])
-        landmarks = annotations.get(
-            _REVERSE_TYPES[FeatureTypes.LANDMARK_DETECTION], [])
-        logos = annotations.get(
-            _REVERSE_TYPES[FeatureTypes.LOGO_DETECTION], [])
-        safe_searches = annotations.get(
-            _REVERSE_TYPES[FeatureTypes.SAFE_SEARCH_DETECTION], [])
-        texts = annotations.get(
-            _REVERSE_TYPES[FeatureTypes.TEXT_DETECTION], [])
-
-        return cls(faces=faces, properties=properties, labels=labels,
-                   landmarks=landmarks, logos=logos,
-                   safe_searches=safe_searches, texts=texts)
+        return cls(**annotations)
 
 
 def _entity_from_response_type(feature_type, results):
-    """Convert a JSON result to an entity type based on the feature."""
+    """Convert a JSON result to an entity type based on the feature.
 
+    :rtype: list
+    :returns: List containing any of
+              :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`,
+              :class:`~google.cloud.vision.entity.EntityAnnotation`,
+              :class:`~google.cloud.vision.face.Face`,
+              :class:`~google.cloud.vision.safe.SafeSearchAnnotation`.
+    """
     detected_objects = []
-    if feature_type == _REVERSE_TYPES[FeatureTypes.FACE_DETECTION]:
+    if feature_type == 'faceAnnotations':
         detected_objects.extend(
             Face.from_api_repr(face) for face in results)
-    elif feature_type == _REVERSE_TYPES[FeatureTypes.IMAGE_PROPERTIES]:
+    elif feature_type == 'imagePropertiesAnnotation':
         detected_objects.append(
             ImagePropertiesAnnotation.from_api_repr(results))
-    elif feature_type == _REVERSE_TYPES[FeatureTypes.SAFE_SEARCH_DETECTION]:
+    elif feature_type == 'safeSearchAnnotation':
         detected_objects.append(SafeSearchAnnotation.from_api_repr(results))
     else:
         for result in results:
