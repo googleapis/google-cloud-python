@@ -1287,12 +1287,31 @@ class TestQueryJob(unittest.TestCase, _Base):
         else:
             self.assertIsNone(job.maximum_bytes_billed)
 
+    def _verifyUDFResources(self, job, config):
+        udf_resources = config.get('userDefinedFunctionResources', ())
+        self.assertEqual(len(job.udf_resources), len(udf_resources))
+        for found, expected in zip(job.udf_resources, udf_resources):
+            if 'resourceUri' in expected:
+                self.assertEqual(found.udf_type, 'resourceUri')
+                self.assertEqual(found.value, expected['resourceUri'])
+            else:
+                self.assertEqual(found.udf_type, 'inlineCode')
+                self.assertEqual(found.value, expected['inlineCode'])
+
+    def _verifyQueryParameters(self, job, config):
+        query_parameters = config.get('queryParameters', ())
+        self.assertEqual(len(job.query_parameters), len(query_parameters))
+        for found, expected in zip(job.query_parameters, query_parameters):
+            self.assertEqual(found.to_api_repr(), expected)
+
     def _verifyResourceProperties(self, job, resource):
         self._verifyReadonlyResourceProperties(job, resource)
 
         config = resource.get('configuration', {}).get('query')
         self._verifyBooleanResourceProperties(job, config)
         self._verifyIntegerResourceProperties(job, config)
+        self._verifyUDFResources(job, config)
+        self._verifyQueryParameters(job, config)
 
         self.assertEqual(job.query, config['query'])
         if 'createDisposition' in config:
@@ -1330,7 +1349,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         else:
             self.assertIsNone(job.write_disposition)
 
-    def test_ctor(self):
+    def test_ctor_defaults(self):
         client = _Client(self.PROJECT)
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
         self.assertEqual(job.query, self.QUERY)
@@ -1355,6 +1374,23 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.maximum_billing_tier)
         self.assertIsNone(job.maximum_bytes_billed)
+
+    def test_ctor_w_udf_resources(self):
+        from google.cloud.bigquery._helpers import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client,
+                             udf_resources=udf_resources)
+        self.assertEqual(job.udf_resources, udf_resources)
+
+    def test_ctor_w_query_parameters(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client,
+                             query_parameters=query_parameters)
+        self.assertEqual(job.query_parameters, query_parameters)
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
@@ -1520,7 +1556,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(job, RESOURCE)
 
-    def test_begin_w_bound_client_and_udf(self):
+    def test_begin_w_udf(self):
         from google.cloud.bigquery._helpers import UDFResource
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         PATH = 'projects/%s/jobs' % self.PROJECT
@@ -1530,8 +1566,15 @@ class TestQueryJob(unittest.TestCase, _Base):
         del RESOURCE['etag']
         del RESOURCE['selfLink']
         del RESOURCE['user_email']
+        RESOURCE['configuration']['query']['userDefinedFunctionResources'] = [
+            {'resourceUri': RESOURCE_URI},
+        ]
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
+        udf_resources = [
+            UDFResource("resourceUri", RESOURCE_URI),
+            UDFResource("inlineCode", INLINE_UDF_CODE),
+        ]
         job = self._make_one(self.JOB_NAME, self.QUERY, client,
                              udf_resources=[
                                  UDFResource("resourceUri", RESOURCE_URI)
@@ -1555,6 +1598,107 @@ class TestQueryJob(unittest.TestCase, _Base):
                     'query': self.QUERY,
                     'userDefinedFunctionResources':
                         [{'resourceUri': RESOURCE_URI}]
+                },
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_begin_w_named_query_parameter(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        query_parameters = [ScalarQueryParameter('foo', 'INT64', 123)]
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource()
+        # Ensure None for missing server-set props
+        del RESOURCE['statistics']['creationTime']
+        del RESOURCE['etag']
+        del RESOURCE['selfLink']
+        del RESOURCE['user_email']
+        config = RESOURCE['configuration']['query']
+        config['parameterMode'] = 'NAMED'
+        config['queryParameters'] = [
+            {
+                'name': 'foo',
+                'parameterType': {
+                    'type': 'INT64',
+                },
+                'parameterValue': {
+                    'value': 123,
+                },
+            },
+        ]
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client,
+                             query_parameters=query_parameters)
+
+        job.begin()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(job.query_parameters, query_parameters)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'query': {
+                    'query': self.QUERY,
+                    'parameterMode': 'NAMED',
+                    'queryParameters': config['queryParameters'],
+                },
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_begin_w_positional_query_parameter(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        query_parameters = [ScalarQueryParameter.positional('INT64', 123)]
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource()
+        # Ensure None for missing server-set props
+        del RESOURCE['statistics']['creationTime']
+        del RESOURCE['etag']
+        del RESOURCE['selfLink']
+        del RESOURCE['user_email']
+        config = RESOURCE['configuration']['query']
+        config['parameterMode'] = 'POSITIONAL'
+        config['queryParameters'] = [
+            {
+                'parameterType': {
+                    'type': 'INT64',
+                },
+                'parameterValue': {
+                    'value': 123,
+                },
+            },
+        ]
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client,
+                             query_parameters=query_parameters)
+
+        job.begin()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(job.query_parameters, query_parameters)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'query': {
+                    'query': self.QUERY,
+                    'parameterMode': 'POSITIONAL',
+                    'queryParameters': config['queryParameters'],
                 },
             },
         }
