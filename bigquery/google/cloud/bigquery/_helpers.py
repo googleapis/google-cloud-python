@@ -336,3 +336,76 @@ class ScalarQueryParameter(AbstractQueryParameter):
         if self.name is not None:
             resource['name'] = self.name
         return resource
+
+
+class ArrayQueryParameter(AbstractQueryParameter):
+    """Named / positional query parameters for array values.
+
+    :type name: str or None
+    :param name: Parameter name, used via `@foo` syntax.  If None, the
+                 paramter can only be addressed via position (`?`).
+
+    :type array_type: str
+    :param array_type:
+        name of type of array elements.  One of `'STRING'`, `'INT64'`,
+        `'FLOAT64'`, `'BOOLEAN'`, `'TIMESTAMP'`, or `'DATE'`.
+
+    :type values: list of appropriate scalar type.
+    :param values: the parameter array values.
+    """
+    def __init__(self, name, array_type, values):
+        self.name = name
+        self.array_type = array_type
+        self.values = values
+
+    @classmethod
+    def positional(cls, array_type, values):
+        """Factory for positional paramters.
+
+        :type array_type: str
+        :param array_type:
+            name of type of array elements.  One of `'STRING'`, `'INT64'`,
+            `'FLOAT64'`, `'BOOLEAN'`, `'TIMESTAMP'`, or `'DATE'`.
+
+        :type values: list of appropriate scalar type
+        :param values: the parameter array values.
+
+        :rtype: :class:`ArrayQueryParameter`
+        :returns: instance w/o name
+        """
+        return cls(None, array_type, values)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct paramter from JSON resource.
+
+        :type resource: dict
+        :param resource: JSON mapping of parameter
+
+        :rtype: :class:`ArrayQueryParameter`
+        :returns: instance
+        """
+        name = resource.get('name')
+        array_type = resource['parameterType']['arrayType']
+        values = resource['parameterValue']['arrayValues']
+        converted = [
+            _CELLDATA_FROM_JSON[array_type](value, None) for value in values]
+        return cls(name, array_type, converted)
+
+    def to_api_repr(self):
+        """Construct JSON API representation for the parameter.
+
+        :rtype: dict
+        :returns: JSON mapping
+        """
+        resource = {
+            'parameterType': {
+                'arrayType': self.array_type,
+            },
+            'parameterValue': {
+                'arrayValues': self.values,
+            },
+        }
+        if self.name is not None:
+            resource['name'] = self.name
+        return resource

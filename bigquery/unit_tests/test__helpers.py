@@ -522,13 +522,13 @@ class Test_ScalarQueryParameter(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_ctor_scalar(self):
+    def test_ctor(self):
         parm = self._make_one(name='foo', type_='INT64', value=123)
         self.assertEqual(parm.name, 'foo')
         self.assertEqual(parm.type_, 'INT64')
         self.assertEqual(parm.value, 123)
 
-    def test_positional_scalar(self):
+    def test_positional(self):
         klass = self._get_target_class()
         parm = klass.positional(type_='INT64', value=123)
         self.assertEqual(parm.name, None)
@@ -557,7 +557,7 @@ class Test_ScalarQueryParameter(unittest.TestCase):
                 'type': 'INT64',
             },
             'parameterValue': {
-                'value': 123,
+                'value': '123',
             },
         }
         klass = self._get_target_class()
@@ -590,6 +590,87 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         }
         klass = self._get_target_class()
         parm = klass.positional(type_='INT64', value=123)
+        self.assertEqual(parm.to_api_repr(), EXPECTED)
+
+
+class Test_ArrayQueryParameter(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery._helpers import ArrayQueryParameter
+        return ArrayQueryParameter
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor(self):
+        parm = self._make_one(name='foo', array_type='INT64', values=[1, 2])
+        self.assertEqual(parm.name, 'foo')
+        self.assertEqual(parm.array_type, 'INT64')
+        self.assertEqual(parm.values, [1, 2])
+
+    def test_positional(self):
+        klass = self._get_target_class()
+        parm = klass.positional(array_type='INT64', values=[1, 2])
+        self.assertEqual(parm.name, None)
+        self.assertEqual(parm.array_type, 'INT64')
+        self.assertEqual(parm.values, [1, 2])
+
+    def test_from_api_repr_w_name(self):
+        RESOURCE = {
+            'name': 'foo',
+            'parameterType': {
+                'arrayType': 'INT64',
+            },
+            'parameterValue': {
+                'arrayValues': ['1', '2'],
+            },
+        }
+        klass = self._get_target_class()
+        parm = klass.from_api_repr(RESOURCE)
+        self.assertEqual(parm.name, 'foo')
+        self.assertEqual(parm.array_type, 'INT64')
+        self.assertEqual(parm.values, [1, 2])
+
+    def test_from_api_repr_wo_name(self):
+        RESOURCE = {
+            'parameterType': {
+                'arrayType': 'INT64',
+            },
+            'parameterValue': {
+                'arrayValues': ['1', '2'],
+            },
+        }
+        klass = self._get_target_class()
+        parm = klass.from_api_repr(RESOURCE)
+        self.assertEqual(parm.name, None)
+        self.assertEqual(parm.array_type, 'INT64')
+        self.assertEqual(parm.values, [1, 2])
+
+    def test_to_api_repr_w_name(self):
+        EXPECTED = {
+            'name': 'foo',
+            'parameterType': {
+                'arrayType': 'INT64',
+            },
+            'parameterValue': {
+                'arrayValues': [1, 2],
+            },
+        }
+        parm = self._make_one(name='foo', array_type='INT64', values=[1, 2])
+        self.assertEqual(parm.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_wo_name(self):
+        EXPECTED = {
+            'parameterType': {
+                'arrayType': 'INT64',
+            },
+            'parameterValue': {
+                'arrayValues': [1, 2],
+            },
+        }
+        klass = self._get_target_class()
+        parm = klass.positional(array_type='INT64', values=[1, 2])
         self.assertEqual(parm.to_api_repr(), EXPECTED)
 
 
