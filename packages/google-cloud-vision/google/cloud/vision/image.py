@@ -30,6 +30,9 @@ class Image(object):
     :type content: bytes
     :param content: Byte stream of an image.
 
+    :type filename: str
+    :param filename: Filename to image.
+
     :type source_uri: str
     :param source_uri: Google Cloud Storage URI of image.
 
@@ -37,15 +40,25 @@ class Image(object):
     :param client: Instance of Vision client.
     """
 
-    def __init__(self, client, content=None, source_uri=None):
-        self.client = client
-        self._content = None
-        self._source = None
+    def __init__(self, client, content=None, filename=None, source_uri=None):
+        sources = [source for source in (content, filename, source_uri)
+                   if source is not None]
+        if len(sources) != 1:
+            raise ValueError(
+                'Specify exactly one of "content", "filename", or '
+                '"source_uri".')
 
-        if source_uri:
-            self._source = source_uri
-        else:
-            self._content = _bytes_to_unicode(b64encode(_to_bytes(content)))
+        self.client = client
+
+        if filename is not None:
+            with open(filename, 'rb') as file_obj:
+                content = file_obj.read()
+
+        if content is not None:
+            content = _bytes_to_unicode(b64encode(_to_bytes(content)))
+
+        self._content = content
+        self._source = source_uri
 
     def as_dict(self):
         """Generate dictionary structure for request.

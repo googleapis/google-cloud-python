@@ -33,29 +33,44 @@ class TestVisionImage(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
+    def test_must_set_one_source(self):
+        with self.assertRaises(ValueError):
+            self._make_one(CLIENT_MOCK)
+
+        with self.assertRaises(ValueError):
+            self._make_one(CLIENT_MOCK, content=IMAGE_CONTENT,
+                           source_uri=IMAGE_SOURCE)
+
+        with self.assertRaises(ValueError):
+            self._make_one(CLIENT_MOCK, content=IMAGE_CONTENT,
+                           source_uri=IMAGE_SOURCE, filename='myimage.jpg')
+
+        image = self._make_one(CLIENT_MOCK, content=IMAGE_CONTENT)
+        self.assertEqual(image.content, B64_IMAGE_CONTENT)
+
     def test_image_source_type_content(self):
         image = self._make_one(CLIENT_MOCK, content=IMAGE_CONTENT)
 
-        _AS_DICT = {
-            'content': B64_IMAGE_CONTENT
+        as_dict = {
+            'content': B64_IMAGE_CONTENT,
         }
 
         self.assertEqual(B64_IMAGE_CONTENT, image.content)
         self.assertEqual(None, image.source)
-        self.assertEqual(_AS_DICT, image.as_dict())
+        self.assertEqual(image.as_dict(), as_dict)
 
     def test_image_source_type_google_cloud_storage(self):
         image = self._make_one(CLIENT_MOCK, source_uri=IMAGE_SOURCE)
 
-        _AS_DICT = {
+        as_dict = {
             'source': {
-                'gcs_image_uri': IMAGE_SOURCE
+                'gcs_image_uri': IMAGE_SOURCE,
             }
         }
 
         self.assertEqual(IMAGE_SOURCE, image.source)
         self.assertEqual(None, image.content)
-        self.assertEqual(_AS_DICT, image.as_dict())
+        self.assertEqual(image.as_dict(), as_dict)
 
     def test_cannot_set_both_source_and_content(self):
         image = self._make_one(CLIENT_MOCK, content=IMAGE_CONTENT)
@@ -68,3 +83,18 @@ class TestVisionImage(unittest.TestCase):
         self.assertEqual(IMAGE_SOURCE, image.source)
         with self.assertRaises(AttributeError):
             image.content = IMAGE_CONTENT
+
+    def test_image_from_filename(self):
+        from mock import mock_open
+        from mock import patch
+
+        as_dict = {
+            'content': B64_IMAGE_CONTENT,
+        }
+
+        with patch('google.cloud.vision.image.open',
+                   mock_open(read_data=IMAGE_CONTENT)) as m:
+            image = self._make_one(CLIENT_MOCK, filename='my-image-file.jpg')
+        m.assert_called_once_with('my-image-file.jpg', 'rb')
+        self.assertEqual(image.content, B64_IMAGE_CONTENT)
+        self.assertEqual(image.as_dict(), as_dict)
