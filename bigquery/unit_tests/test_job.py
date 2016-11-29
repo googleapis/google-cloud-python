@@ -1559,6 +1559,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_begin_w_udf(self):
         from google.cloud.bigquery._helpers import UDFResource
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        INLINE_UDF_CODE = 'var someCode = "here";'
         PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource()
         # Ensure None for missing server-set props
@@ -1568,6 +1569,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         del RESOURCE['user_email']
         RESOURCE['configuration']['query']['userDefinedFunctionResources'] = [
             {'resourceUri': RESOURCE_URI},
+            {'inlineCode': INLINE_UDF_CODE},
         ]
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -1576,9 +1578,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             UDFResource("inlineCode", INLINE_UDF_CODE),
         ]
         job = self._make_one(self.JOB_NAME, self.QUERY, client,
-                             udf_resources=[
-                                 UDFResource("resourceUri", RESOURCE_URI)
-                             ])
+                             udf_resources=udf_resources)
 
         job.begin()
 
@@ -1586,8 +1586,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
-        self.assertEqual(job.udf_resources,
-                         [UDFResource("resourceUri", RESOURCE_URI)])
+        self.assertEqual(job.udf_resources, udf_resources)
         SENT = {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -1596,8 +1595,10 @@ class TestQueryJob(unittest.TestCase, _Base):
             'configuration': {
                 'query': {
                     'query': self.QUERY,
-                    'userDefinedFunctionResources':
-                        [{'resourceUri': RESOURCE_URI}]
+                    'userDefinedFunctionResources': [
+                        {'resourceUri': RESOURCE_URI},
+                        {'inlineCode': INLINE_UDF_CODE},
+                    ]
                 },
             },
         }
