@@ -674,6 +674,112 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         self.assertEqual(parm.to_api_repr(), EXPECTED)
 
 
+class Test_StructQueryParameter(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery._helpers import StructQueryParameter
+        return StructQueryParameter
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    @staticmethod
+    def _make_subparam(name, type_, value):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        return ScalarQueryParameter(name, type_, value)
+
+    def test_ctor(self):
+        sub_1 = self._make_subparam('bar', 'INT64', 123)
+        sub_2 = self._make_subparam('baz', 'STRING', 'abc')
+        parm = self._make_one('foo', sub_1, sub_2)
+        self.assertEqual(parm.name, 'foo')
+        self.assertEqual(parm.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
+        self.assertEqual(parm.struct_values, {'bar': 123, 'baz': 'abc'})
+
+    def test_positional(self):
+        sub_1 = self._make_subparam('bar', 'INT64', 123)
+        sub_2 = self._make_subparam('baz', 'STRING', 'abc')
+        klass = self._get_target_class()
+        parm = klass.positional(sub_1, sub_2)
+        self.assertEqual(parm.name, None)
+        self.assertEqual(parm.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
+        self.assertEqual(parm.struct_values, {'bar': 123, 'baz': 'abc'})
+
+    def test_from_api_repr_w_name(self):
+        RESOURCE = {
+            'name': 'foo',
+            'parameterType': {
+                'structTypes': [
+                    {'name': 'bar', 'type': 'INT64'},
+                    {'name': 'baz', 'type': 'STRING'},
+                ],
+            },
+            'parameterValue': {
+                'structValues': {'bar': 123, 'baz': 'abc'},
+            },
+        }
+        klass = self._get_target_class()
+        parm = klass.from_api_repr(RESOURCE)
+        self.assertEqual(parm.name, 'foo')
+        self.assertEqual(parm.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
+        self.assertEqual(parm.struct_values, {'bar': 123, 'baz': 'abc'})
+
+    def test_from_api_repr_wo_name(self):
+        RESOURCE = {
+            'parameterType': {
+                'structTypes': [
+                    {'name': 'bar', 'type': 'INT64'},
+                    {'name': 'baz', 'type': 'STRING'},
+                ],
+            },
+            'parameterValue': {
+                'structValues': {'bar': 123, 'baz': 'abc'},
+            },
+        }
+        klass = self._get_target_class()
+        parm = klass.from_api_repr(RESOURCE)
+        self.assertEqual(parm.name, None)
+        self.assertEqual(parm.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
+        self.assertEqual(parm.struct_values, {'bar': 123, 'baz': 'abc'})
+
+    def test_to_api_repr_w_name(self):
+        EXPECTED = {
+            'name': 'foo',
+            'parameterType': {
+                'structTypes': [
+                    {'name': 'bar', 'type': 'INT64'},
+                    {'name': 'baz', 'type': 'STRING'},
+                ],
+            },
+            'parameterValue': {
+                'structValues': {'bar': 123, 'baz': 'abc'},
+            },
+        }
+        sub_1 = self._make_subparam('bar', 'INT64', 123)
+        sub_2 = self._make_subparam('baz', 'STRING', 'abc')
+        parm = self._make_one('foo', sub_1, sub_2)
+        self.assertEqual(parm.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_wo_name(self):
+        EXPECTED = {
+            'parameterType': {
+                'structTypes': [
+                    {'name': 'bar', 'type': 'INT64'},
+                    {'name': 'baz', 'type': 'STRING'},
+                ],
+            },
+            'parameterValue': {
+                'structValues': {'bar': 123, 'baz': 'abc'},
+            },
+        }
+        sub_1 = self._make_subparam('bar', 'INT64', 123)
+        sub_2 = self._make_subparam('baz', 'STRING', 'abc')
+        klass = self._get_target_class()
+        parm = klass.positional(sub_1, sub_2)
+        self.assertEqual(parm.to_api_repr(), EXPECTED)
+
+
 class _Field(object):
 
     def __init__(self, mode, name='unknown', field_type='UNKNOWN', fields=()):

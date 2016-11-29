@@ -409,3 +409,76 @@ class ArrayQueryParameter(AbstractQueryParameter):
         if self.name is not None:
             resource['name'] = self.name
         return resource
+
+
+class StructQueryParameter(AbstractQueryParameter):
+    """Named / positional query parameters for struct values.
+
+    :type name: str or None
+    :param name: Parameter name, used via `@foo` syntax.  If None, the
+                 paramter can only be addressed via position (`?`).
+
+    :type sub_parms: tuple of :class:`ScalarQueryParameter`
+    :param sub_parms: the sub-parameters for the struct
+    """
+    def __init__(self, name, *sub_parms):
+        self.name = name
+        self._order = [sub.name for sub in sub_parms]
+        self.struct_types = {sub.name: sub.type_ for sub in sub_parms}
+        self.struct_values = {sub.name: sub.value for sub in sub_parms}
+
+    @classmethod
+    def positional(cls, *sub_parms):
+        """Factory for positional paramters.
+
+        :type sub_parms: tuple of :class:`ScalarQueryParameter`
+        :param sub_parms:s the sub-parameters for the struct
+
+        :rtype: :class:`StructQueryParameter`
+        :returns: instance w/o name
+        """
+        return cls(None, *sub_parms)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct paramter from JSON resource.
+
+        :type resource: dict
+        :param resource: JSON mapping of parameter
+
+        :rtype: :class:`StructQueryParameter`
+        :returns: instance
+        """
+        name = resource.get('name')
+        instance = cls(name)
+        types = instance.struct_types = {
+            item['name']: item['type']
+            for item in resource['parameterType']['structTypes']
+        }
+        struct_values = resource['parameterValue']['structValues']
+        values = instance.struct_values = {}
+        for key, value in struct_values.items():
+            values[key] = _CELLDATA_FROM_JSON[types[key]](value, None)
+        return instance
+
+    def to_api_repr(self):
+        """Construct JSON API representation for the parameter.
+
+        :rtype: dict
+        :returns: JSON mapping
+        """
+        types = [
+            {'name': name, 'type': self.struct_types[name]}
+            for name in self._order
+        ]
+        resource = {
+            'parameterType': {
+                'structTypes': types,
+            },
+            'parameterValue': {
+                'structValues': self.struct_values,
+            },
+        }
+        if self.name is not None:
+            resource['name'] = self.name
+        return resource
