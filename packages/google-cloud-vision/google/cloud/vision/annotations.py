@@ -21,17 +21,17 @@ from google.cloud.vision.face import Face
 from google.cloud.vision.safe import SafeSearchAnnotation
 
 
-FACE_ANNOTATIONS = 'faceAnnotations'
-IMAGE_PROPERTIES_ANNOTATION = 'imagePropertiesAnnotation'
-SAFE_SEARCH_ANNOTATION = 'safeSearchAnnotation'
+_FACE_ANNOTATIONS = 'faceAnnotations'
+_IMAGE_PROPERTIES_ANNOTATION = 'imagePropertiesAnnotation'
+_SAFE_SEARCH_ANNOTATION = 'safeSearchAnnotation'
 
 _KEY_MAP = {
-    FACE_ANNOTATIONS: 'faces',
-    IMAGE_PROPERTIES_ANNOTATION: 'properties',
+    _FACE_ANNOTATIONS: 'faces',
+    _IMAGE_PROPERTIES_ANNOTATION: 'properties',
     'labelAnnotations': 'labels',
     'landmarkAnnotations': 'landmarks',
     'logoAnnotations': 'logos',
-    SAFE_SEARCH_ANNOTATION: 'safe_searches',
+    _SAFE_SEARCH_ANNOTATION: 'safe_searches',
     'textAnnotations': 'texts'
 }
 
@@ -105,13 +105,13 @@ def _entity_from_response_type(feature_type, results):
               :class:`~google.cloud.vision.safe.SafeSearchAnnotation`.
     """
     detected_objects = []
-    if feature_type == FACE_ANNOTATIONS:
+    if feature_type == _FACE_ANNOTATIONS:
         detected_objects.extend(
             Face.from_api_repr(face) for face in results)
-    elif feature_type == IMAGE_PROPERTIES_ANNOTATION:
+    elif feature_type == _IMAGE_PROPERTIES_ANNOTATION:
         detected_objects.append(
             ImagePropertiesAnnotation.from_api_repr(results))
-    elif feature_type == SAFE_SEARCH_ANNOTATION:
+    elif feature_type == _SAFE_SEARCH_ANNOTATION:
         detected_objects.append(SafeSearchAnnotation.from_api_repr(results))
     else:
         for result in results:
