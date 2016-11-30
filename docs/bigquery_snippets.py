@@ -461,8 +461,8 @@ def client_list_jobs(client, _):
         pass
 
     # [START client_list_jobs]
-    job_iterator = client.list_jobs()   # API request
-    for job in job_iterator:
+    job_iterator = client.list_jobs()
+    for job in job_iterator:   # API request(s)
         do_something_with(job)
     # [END client_list_jobs]
 
