@@ -472,13 +472,24 @@ class QueryParametersProperty(object):
     """Custom property type, holding query parameter instances."""
 
     def __get__(self, instance, owner):
-        """Descriptor protocol:  accessor"""
+        """Descriptor protocol:  accessor
+
+        :rtype: list of instances of classes derived from
+                :class:`AbstractQueryParameter`.
+        :returns: the descriptor, if accessed via the class, or the instance's
+                  query paramters.
+        """
         if instance is None:
             return self
         return list(instance._query_parameters)
 
     def __set__(self, instance, value):
-        """Descriptor protocol:  mutator"""
+        """Descriptor protocol:  mutator
+
+        :type value: list of instances of classes derived from
+                :class:`AbstractQueryParameter`.
+        :param value: new query parameters for the instance.
+        """
         if not all(isinstance(u, AbstractQueryParameter) for u in value):
             raise ValueError(
                 "query parameters must be derived from AbstractQueryParameter")
