@@ -106,6 +106,11 @@ See `CONTRIBUTING`_ for more information on how to get started.
 
 .. _CONTRIBUTING: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst
 
+Community
+---------
+
+Google Cloud Platform Python developers hang out in [Slack](https://googlecloud-community.slack.com) in the #python channel (get an invitation [here](https://gcp-slack.appspot.com/)). 
+
 License
 -------
 
