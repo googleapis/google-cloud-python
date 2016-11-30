@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.annotations &mdash; google-cloud 5cbbcb9 documentation</title>
+  <title>google.cloud.vision.annotations &mdash; google-cloud 51c2cf3 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5cbbcb9 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 51c2cf3 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -307,17 +307,17 @@
 <span class="kn">from</span> <span class="nn">google.cloud.vision.safe</span> <span class="k">import</span> <span class="n">SafeSearchAnnotation</span>
 
 
-<span class="n">FACE_ANNOTATIONS</span> <span class="o">=</span> <span class="s1">&#39;faceAnnotations&#39;</span>
-<span class="n">IMAGE_PROPERTIES_ANNOTATION</span> <span class="o">=</span> <span class="s1">&#39;imagePropertiesAnnotation&#39;</span>
-<span class="n">SAFE_SEARCH_ANNOTATION</span> <span class="o">=</span> <span class="s1">&#39;safeSearchAnnotation&#39;</span>
+<span class="n">_FACE_ANNOTATIONS</span> <span class="o">=</span> <span class="s1">&#39;faceAnnotations&#39;</span>
+<span class="n">_IMAGE_PROPERTIES_ANNOTATION</span> <span class="o">=</span> <span class="s1">&#39;imagePropertiesAnnotation&#39;</span>
+<span class="n">_SAFE_SEARCH_ANNOTATION</span> <span class="o">=</span> <span class="s1">&#39;safeSearchAnnotation&#39;</span>
 
 <span class="n">_KEY_MAP</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">FACE_ANNOTATIONS</span><span class="p">:</span> <span class="s1">&#39;faces&#39;</span><span class="p">,</span>
-    <span class="n">IMAGE_PROPERTIES_ANNOTATION</span><span class="p">:</span> <span class="s1">&#39;properties&#39;</span><span class="p">,</span>
+    <span class="n">_FACE_ANNOTATIONS</span><span class="p">:</span> <span class="s1">&#39;faces&#39;</span><span class="p">,</span>
+    <span class="n">_IMAGE_PROPERTIES_ANNOTATION</span><span class="p">:</span> <span class="s1">&#39;properties&#39;</span><span class="p">,</span>
     <span class="s1">&#39;labelAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;labels&#39;</span><span class="p">,</span>
     <span class="s1">&#39;landmarkAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;landmarks&#39;</span><span class="p">,</span>
     <span class="s1">&#39;logoAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;logos&#39;</span><span class="p">,</span>
-    <span class="n">SAFE_SEARCH_ANNOTATION</span><span class="p">:</span> <span class="s1">&#39;safe_searches&#39;</span><span class="p">,</span>
+    <span class="n">_SAFE_SEARCH_ANNOTATION</span><span class="p">:</span> <span class="s1">&#39;safe_searches&#39;</span><span class="p">,</span>
     <span class="s1">&#39;textAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;texts&#39;</span>
 <span class="p">}</span>
 
@@ -391,13 +391,13 @@
 <span class="sd">              :class:`~google.cloud.vision.safe.SafeSearchAnnotation`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">detected_objects</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">FACE_ANNOTATIONS</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_FACE_ANNOTATIONS</span><span class="p">:</span>
         <span class="n">detected_objects</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
             <span class="n">Face</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">results</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">IMAGE_PROPERTIES_ANNOTATION</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_IMAGE_PROPERTIES_ANNOTATION</span><span class="p">:</span>
         <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">ImagePropertiesAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
-    <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">SAFE_SEARCH_ANNOTATION</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_SAFE_SEARCH_ANNOTATION</span><span class="p">:</span>
         <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SafeSearchAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
@@ -436,7 +436,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5cbbcb9',
+            VERSION:'51c2cf3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
