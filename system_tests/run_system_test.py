@@ -27,11 +27,13 @@ import speech
 import storage
 import system_test_utils
 import translate
+import vision
 
 
 TEST_MODULES = {
     'datastore': datastore,
     'speech': speech,
+    'vision': vision,
     'storage': storage,
     'pubsub': pubsub,
     'bigquery': bigquery,

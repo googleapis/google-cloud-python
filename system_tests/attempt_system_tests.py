@@ -60,6 +60,7 @@ MODULES = (  # ordered from most to least stable
     'datastore',
     'storage',
     'speech',
+    'vision',
     'bigquery',
     'pubsub',
     'language',
