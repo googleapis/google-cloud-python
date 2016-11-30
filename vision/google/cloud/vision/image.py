@@ -19,31 +19,9 @@ from base64 import b64encode
 
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
-from google.cloud.vision.entity import EntityAnnotation
-from google.cloud.vision.face import Face
+from google.cloud.vision.annotations import Annotations
 from google.cloud.vision.feature import Feature
 from google.cloud.vision.feature import FeatureTypes
-from google.cloud.vision.color import ImagePropertiesAnnotation
-from google.cloud.vision.safe import SafeSearchAnnotation
-
-
-_FACE_DETECTION = 'FACE_DETECTION'
-_IMAGE_PROPERTIES = 'IMAGE_PROPERTIES'
-_LABEL_DETECTION = 'LABEL_DETECTION'
-_LANDMARK_DETECTION = 'LANDMARK_DETECTION'
-_LOGO_DETECTION = 'LOGO_DETECTION'
-_SAFE_SEARCH_DETECTION = 'SAFE_SEARCH_DETECTION'
-_TEXT_DETECTION = 'TEXT_DETECTION'
-
-_REVERSE_TYPES = {
-    _FACE_DETECTION: 'faceAnnotations',
-    _IMAGE_PROPERTIES: 'imagePropertiesAnnotation',
-    _LABEL_DETECTION: 'labelAnnotations',
-    _LANDMARK_DETECTION: 'landmarkAnnotations',
-    _LOGO_DETECTION: 'logoAnnotations',
-    _SAFE_SEARCH_DETECTION: 'safeSearchAnnotation',
-    _TEXT_DETECTION: 'textAnnotations',
-}
 
 
 class Image(object):
@@ -105,7 +83,7 @@ class Image(object):
         return self._source
 
     def _detect_annotation(self, features):
-        """Generic method for detecting a single annotation.
+        """Generic method for detecting annotations.
 
         :type features: list
         :param features: List of :class:`~google.cloud.vision.feature.Feature`
@@ -118,12 +96,21 @@ class Image(object):
                   :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`,
                   :class:`~google.cloud.vision.sage.SafeSearchAnnotation`,
         """
-        detected_objects = []
         results = self.client.annotate(self, features)
-        for feature in features:
-            detected_objects.extend(
-                _entity_from_response_type(feature.feature_type, results))
-        return detected_objects
+        return Annotations.from_api_repr(results)
+
+    def detect(self, features):
+        """Detect multiple feature types.
+
+        :type features: list of :class:`~google.cloud.vision.feature.Feature`
+        :param features: List of the ``Feature`` indication the type of
+                         annotation to perform.
+
+        :rtype: list
+        :returns: List of
+                  :class:`~google.cloud.vision.entity.EntityAnnotation`.
+        """
+        return self._detect_annotation(features)
 
     def detect_faces(self, limit=10):
         """Detect faces in image.
@@ -135,7 +122,8 @@ class Image(object):
         :returns: List of :class:`~google.cloud.vision.face.Face`.
         """
         features = [Feature(FeatureTypes.FACE_DETECTION, limit)]
-        return self._detect_annotation(features)
+        annotations = self._detect_annotation(features)
+        return annotations.faces
 
     def detect_labels(self, limit=10):
         """Detect labels that describe objects in an image.
@@ -147,7 +135,8 @@ class Image(object):
         :returns: List of :class:`~google.cloud.vision.entity.EntityAnnotation`
         """
         features = [Feature(FeatureTypes.LABEL_DETECTION, limit)]
-        return self._detect_annotation(features)
+        annotations = self._detect_annotation(features)
+        return annotations.labels
 
     def detect_landmarks(self, limit=10):
         """Detect landmarks in an image.
@@ -160,7 +149,8 @@ class Image(object):
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
         features = [Feature(FeatureTypes.LANDMARK_DETECTION, limit)]
-        return self._detect_annotation(features)
+        annotations = self._detect_annotation(features)
+        return annotations.landmarks
 
     def detect_logos(self, limit=10):
         """Detect logos in an image.
@@ -173,7 +163,8 @@ class Image(object):
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
         features = [Feature(FeatureTypes.LOGO_DETECTION, limit)]
-        return self._detect_annotation(features)
+        annotations = self._detect_annotation(features)
+        return annotations.logos
 
     def detect_properties(self, limit=10):
         """Detect the color properties of an image.
@@ -186,7 +177,8 @@ class Image(object):
                   :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`.
         """
         features = [Feature(FeatureTypes.IMAGE_PROPERTIES, limit)]
-        return self._detect_annotation(features)
+        annotations = self._detect_annotation(features)
+        return annotations.properties
 
     def detect_safe_search(self, limit=10):
         """Retreive safe search properties from an image.
@@ -199,7 +191,8 @@ class Image(object):
                   :class:`~google.cloud.vision.sage.SafeSearchAnnotation`.
         """
         features = [Feature(FeatureTypes.SAFE_SEARCH_DETECTION, limit)]
-        return self._detect_annotation(features)
+        annotations = self._detect_annotation(features)
+        return annotations.safe_searches
 
     def detect_text(self, limit=10):
         """Detect text in an image.
@@ -212,27 +205,5 @@ class Image(object):
                   :class:`~google.cloud.vision.entity.EntityAnnotation`.
         """
         features = [Feature(FeatureTypes.TEXT_DETECTION, limit)]
-        return self._detect_annotation(features)
-
-
-def _entity_from_response_type(feature_type, results):
-    """Convert a JSON result to an entity type based on the feature."""
-    feature_key = _REVERSE_TYPES[feature_type]
-    annotations = results.get(feature_key, ())
-    if not annotations:
-        return []
-
-    detected_objects = []
-    if feature_type == _FACE_DETECTION:
-        detected_objects.extend(
-            Face.from_api_repr(face) for face in annotations)
-    elif feature_type == _IMAGE_PROPERTIES:
-        detected_objects.append(
-            ImagePropertiesAnnotation.from_api_repr(annotations))
-    elif feature_type == _SAFE_SEARCH_DETECTION:
-        detected_objects.append(
-            SafeSearchAnnotation.from_api_repr(annotations))
-    else:
-        for result in annotations:
-            detected_objects.append(EntityAnnotation.from_api_repr(result))
-    return detected_objects
+        annotations = self._detect_annotation(features)
+        return annotations.texts
