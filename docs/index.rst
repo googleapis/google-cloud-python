@@ -153,6 +153,7 @@
   :caption: Vision
 
   vision-usage
+  vision-annotations
   vision-client
   vision-color
   vision-entity
