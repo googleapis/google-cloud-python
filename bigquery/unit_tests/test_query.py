@@ -100,7 +100,7 @@ class TestQueryResults(unittest.TestCase):
                 self.assertEqual(f_row,
                                  tuple([cell['v'] for cell in e_row['f']]))
 
-    def _verifyUDFResources(self, query, resource):
+    def _verify_udf_resources(self, query, resource):
         udf_resources = resource.get('userDefinedFunctionResources', ())
         self.assertEqual(len(query.udf_resources), len(udf_resources))
         for found, expected in zip(query.udf_resources, udf_resources):
@@ -131,7 +131,7 @@ class TestQueryResults(unittest.TestCase):
         else:
             self.assertIsNone(query.name)
 
-        self._verifyUDFResources(query, resource)
+        self._verify_udf_resources(query, resource)
         self._verifyQueryParameters(query, resource)
         self._verifySchema(query, resource)
         self._verifyRows(query, resource)

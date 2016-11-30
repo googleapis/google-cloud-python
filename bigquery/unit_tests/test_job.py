@@ -1287,7 +1287,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         else:
             self.assertIsNone(job.maximum_bytes_billed)
 
-    def _verifyUDFResources(self, job, config):
+    def _verify_udf_resources(self, job, config):
         udf_resources = config.get('userDefinedFunctionResources', ())
         self.assertEqual(len(job.udf_resources), len(udf_resources))
         for found, expected in zip(job.udf_resources, udf_resources):
@@ -1310,7 +1310,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         config = resource.get('configuration', {}).get('query')
         self._verifyBooleanResourceProperties(job, config)
         self._verifyIntegerResourceProperties(job, config)
-        self._verifyUDFResources(job, config)
+        self._verify_udf_resources(job, config)
         self._verifyQueryParameters(job, config)
 
         self.assertEqual(job.query, config['query'])
