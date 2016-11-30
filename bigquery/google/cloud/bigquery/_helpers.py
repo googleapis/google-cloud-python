@@ -14,6 +14,8 @@
 
 """Shared helper functions for BigQuery API classes."""
 
+from collections import OrderedDict
+
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _date_from_iso8601_date
 
@@ -407,8 +409,8 @@ class StructQueryParameter(AbstractQueryParameter):
     """
     def __init__(self, name, *sub_parms):
         self.name = name
-        self._order = [sub.name for sub in sub_parms]
-        self.struct_types = {sub.name: sub.type_ for sub in sub_parms}
+        self.struct_types = OrderedDict(
+            (sub.name, sub.type_) for sub in sub_parms)
         self.struct_values = {sub.name: sub.value for sub in sub_parms}
 
     @classmethod
@@ -452,8 +454,8 @@ class StructQueryParameter(AbstractQueryParameter):
         :returns: JSON mapping
         """
         types = [
-            {'name': name, 'type': self.struct_types[name]}
-            for name in self._order
+            {'name': key, 'type': value}
+            for key, value in self.struct_types.items()
         ]
         resource = {
             'parameterType': {
@@ -474,6 +476,13 @@ class QueryParametersProperty(object):
     def __get__(self, instance, owner):
         """Descriptor protocol:  accessor
 
+        :type instance: :class:`QueryParametersProperty`
+        :param instance: instance owning the property (None if accessed via
+                         the class).
+
+        :type owner: type
+        :param owner: the class owning the property.
+
         :rtype: list of instances of classes derived from
                 :class:`AbstractQueryParameter`.
         :returns: the descriptor, if accessed via the class, or the instance's
@@ -485,6 +494,10 @@ class QueryParametersProperty(object):
 
     def __set__(self, instance, value):
         """Descriptor protocol:  mutator
+
+        :type instance: :class:`QueryParametersProperty`
+        :param instance: instance owning the property (None if accessed via
+                         the class).
 
         :type value: list of instances of classes derived from
                 :class:`AbstractQueryParameter`.
