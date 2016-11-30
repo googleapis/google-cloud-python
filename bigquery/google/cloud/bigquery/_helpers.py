@@ -404,26 +404,26 @@ class StructQueryParameter(AbstractQueryParameter):
     :param name: Parameter name, used via ``@foo`` syntax.  If None, the
                  paramter can only be addressed via position (``?``).
 
-    :type sub_parms: tuple of :class:`ScalarQueryParameter`
-    :param sub_parms: the sub-parameters for the struct
+    :type sub_params: tuple of :class:`ScalarQueryParameter`
+    :param sub_params: the sub-parameters for the struct
     """
-    def __init__(self, name, *sub_parms):
+    def __init__(self, name, *sub_params):
         self.name = name
         self.struct_types = OrderedDict(
-            (sub.name, sub.type_) for sub in sub_parms)
-        self.struct_values = {sub.name: sub.value for sub in sub_parms}
+            (sub.name, sub.type_) for sub in sub_params)
+        self.struct_values = {sub.name: sub.value for sub in sub_params}
 
     @classmethod
-    def positional(cls, *sub_parms):
+    def positional(cls, *sub_params):
         """Factory for positional paramters.
 
-        :type sub_parms: tuple of :class:`ScalarQueryParameter`
-        :param sub_parms: the sub-parameters for the struct
+        :type sub_params: tuple of :class:`ScalarQueryParameter`
+        :param sub_params: the sub-parameters for the struct
 
         :rtype: :class:`StructQueryParameter`
         :returns: instance without name
         """
-        return cls(None, *sub_parms)
+        return cls(None, *sub_params)
 
     @classmethod
     def from_api_repr(cls, resource):

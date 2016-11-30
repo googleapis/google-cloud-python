@@ -507,9 +507,9 @@ class Test_AbstractQueryParameter(unittest.TestCase):
             klass.from_api_repr({})
 
     def test_to_api_virtual(self):
-        parm = self._make_one()
+        param = self._make_one()
         with self.assertRaises(NotImplementedError):
-            parm.to_api_repr()
+            param.to_api_repr()
 
 
 class Test_ScalarQueryParameter(unittest.TestCase):
@@ -523,17 +523,17 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        parm = self._make_one(name='foo', type_='INT64', value=123)
-        self.assertEqual(parm.name, 'foo')
-        self.assertEqual(parm.type_, 'INT64')
-        self.assertEqual(parm.value, 123)
+        param = self._make_one(name='foo', type_='INT64', value=123)
+        self.assertEqual(param.name, 'foo')
+        self.assertEqual(param.type_, 'INT64')
+        self.assertEqual(param.value, 123)
 
     def test_positional(self):
         klass = self._get_target_class()
-        parm = klass.positional(type_='INT64', value=123)
-        self.assertEqual(parm.name, None)
-        self.assertEqual(parm.type_, 'INT64')
-        self.assertEqual(parm.value, 123)
+        param = klass.positional(type_='INT64', value=123)
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.type_, 'INT64')
+        self.assertEqual(param.value, 123)
 
     def test_from_api_repr_w_name(self):
         RESOURCE = {
@@ -546,10 +546,10 @@ class Test_ScalarQueryParameter(unittest.TestCase):
             },
         }
         klass = self._get_target_class()
-        parm = klass.from_api_repr(RESOURCE)
-        self.assertEqual(parm.name, 'foo')
-        self.assertEqual(parm.type_, 'INT64')
-        self.assertEqual(parm.value, 123)
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, 'foo')
+        self.assertEqual(param.type_, 'INT64')
+        self.assertEqual(param.value, 123)
 
     def test_from_api_repr_wo_name(self):
         RESOURCE = {
@@ -561,10 +561,10 @@ class Test_ScalarQueryParameter(unittest.TestCase):
             },
         }
         klass = self._get_target_class()
-        parm = klass.from_api_repr(RESOURCE)
-        self.assertEqual(parm.name, None)
-        self.assertEqual(parm.type_, 'INT64')
-        self.assertEqual(parm.value, 123)
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.type_, 'INT64')
+        self.assertEqual(param.value, 123)
 
     def test_to_api_repr_w_name(self):
         EXPECTED = {
@@ -576,8 +576,8 @@ class Test_ScalarQueryParameter(unittest.TestCase):
                 'value': 123,
             },
         }
-        parm = self._make_one(name='foo', type_='INT64', value=123)
-        self.assertEqual(parm.to_api_repr(), EXPECTED)
+        param = self._make_one(name='foo', type_='INT64', value=123)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_wo_name(self):
         EXPECTED = {
@@ -589,8 +589,8 @@ class Test_ScalarQueryParameter(unittest.TestCase):
             },
         }
         klass = self._get_target_class()
-        parm = klass.positional(type_='INT64', value=123)
-        self.assertEqual(parm.to_api_repr(), EXPECTED)
+        param = klass.positional(type_='INT64', value=123)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
 
 
 class Test_ArrayQueryParameter(unittest.TestCase):
@@ -604,17 +604,17 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        parm = self._make_one(name='foo', array_type='INT64', values=[1, 2])
-        self.assertEqual(parm.name, 'foo')
-        self.assertEqual(parm.array_type, 'INT64')
-        self.assertEqual(parm.values, [1, 2])
+        param = self._make_one(name='foo', array_type='INT64', values=[1, 2])
+        self.assertEqual(param.name, 'foo')
+        self.assertEqual(param.array_type, 'INT64')
+        self.assertEqual(param.values, [1, 2])
 
     def test_positional(self):
         klass = self._get_target_class()
-        parm = klass.positional(array_type='INT64', values=[1, 2])
-        self.assertEqual(parm.name, None)
-        self.assertEqual(parm.array_type, 'INT64')
-        self.assertEqual(parm.values, [1, 2])
+        param = klass.positional(array_type='INT64', values=[1, 2])
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.array_type, 'INT64')
+        self.assertEqual(param.values, [1, 2])
 
     def test_from_api_repr_w_name(self):
         RESOURCE = {
@@ -627,10 +627,10 @@ class Test_ArrayQueryParameter(unittest.TestCase):
             },
         }
         klass = self._get_target_class()
-        parm = klass.from_api_repr(RESOURCE)
-        self.assertEqual(parm.name, 'foo')
-        self.assertEqual(parm.array_type, 'INT64')
-        self.assertEqual(parm.values, [1, 2])
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, 'foo')
+        self.assertEqual(param.array_type, 'INT64')
+        self.assertEqual(param.values, [1, 2])
 
     def test_from_api_repr_wo_name(self):
         RESOURCE = {
@@ -642,10 +642,10 @@ class Test_ArrayQueryParameter(unittest.TestCase):
             },
         }
         klass = self._get_target_class()
-        parm = klass.from_api_repr(RESOURCE)
-        self.assertEqual(parm.name, None)
-        self.assertEqual(parm.array_type, 'INT64')
-        self.assertEqual(parm.values, [1, 2])
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.array_type, 'INT64')
+        self.assertEqual(param.values, [1, 2])
 
     def test_to_api_repr_w_name(self):
         EXPECTED = {
@@ -657,8 +657,8 @@ class Test_ArrayQueryParameter(unittest.TestCase):
                 'arrayValues': [1, 2],
             },
         }
-        parm = self._make_one(name='foo', array_type='INT64', values=[1, 2])
-        self.assertEqual(parm.to_api_repr(), EXPECTED)
+        param = self._make_one(name='foo', array_type='INT64', values=[1, 2])
+        self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_wo_name(self):
         EXPECTED = {
@@ -670,8 +670,8 @@ class Test_ArrayQueryParameter(unittest.TestCase):
             },
         }
         klass = self._get_target_class()
-        parm = klass.positional(array_type='INT64', values=[1, 2])
-        self.assertEqual(parm.to_api_repr(), EXPECTED)
+        param = klass.positional(array_type='INT64', values=[1, 2])
+        self.assertEqual(param.to_api_repr(), EXPECTED)
 
 
 class Test_StructQueryParameter(unittest.TestCase):
@@ -692,19 +692,19 @@ class Test_StructQueryParameter(unittest.TestCase):
     def test_ctor(self):
         sub_1 = self._make_subparam('bar', 'INT64', 123)
         sub_2 = self._make_subparam('baz', 'STRING', 'abc')
-        parm = self._make_one('foo', sub_1, sub_2)
-        self.assertEqual(parm.name, 'foo')
-        self.assertEqual(parm.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
-        self.assertEqual(parm.struct_values, {'bar': 123, 'baz': 'abc'})
+        param = self._make_one('foo', sub_1, sub_2)
+        self.assertEqual(param.name, 'foo')
+        self.assertEqual(param.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
+        self.assertEqual(param.struct_values, {'bar': 123, 'baz': 'abc'})
 
     def test_positional(self):
         sub_1 = self._make_subparam('bar', 'INT64', 123)
         sub_2 = self._make_subparam('baz', 'STRING', 'abc')
         klass = self._get_target_class()
-        parm = klass.positional(sub_1, sub_2)
-        self.assertEqual(parm.name, None)
-        self.assertEqual(parm.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
-        self.assertEqual(parm.struct_values, {'bar': 123, 'baz': 'abc'})
+        param = klass.positional(sub_1, sub_2)
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
+        self.assertEqual(param.struct_values, {'bar': 123, 'baz': 'abc'})
 
     def test_from_api_repr_w_name(self):
         RESOURCE = {
@@ -720,10 +720,10 @@ class Test_StructQueryParameter(unittest.TestCase):
             },
         }
         klass = self._get_target_class()
-        parm = klass.from_api_repr(RESOURCE)
-        self.assertEqual(parm.name, 'foo')
-        self.assertEqual(parm.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
-        self.assertEqual(parm.struct_values, {'bar': 123, 'baz': 'abc'})
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, 'foo')
+        self.assertEqual(param.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
+        self.assertEqual(param.struct_values, {'bar': 123, 'baz': 'abc'})
 
     def test_from_api_repr_wo_name(self):
         RESOURCE = {
@@ -738,10 +738,10 @@ class Test_StructQueryParameter(unittest.TestCase):
             },
         }
         klass = self._get_target_class()
-        parm = klass.from_api_repr(RESOURCE)
-        self.assertEqual(parm.name, None)
-        self.assertEqual(parm.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
-        self.assertEqual(parm.struct_values, {'bar': 123, 'baz': 'abc'})
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
+        self.assertEqual(param.struct_values, {'bar': 123, 'baz': 'abc'})
 
     def test_to_api_repr_w_name(self):
         EXPECTED = {
@@ -758,8 +758,8 @@ class Test_StructQueryParameter(unittest.TestCase):
         }
         sub_1 = self._make_subparam('bar', 'INT64', 123)
         sub_2 = self._make_subparam('baz', 'STRING', 'abc')
-        parm = self._make_one('foo', sub_1, sub_2)
-        self.assertEqual(parm.to_api_repr(), EXPECTED)
+        param = self._make_one('foo', sub_1, sub_2)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_wo_name(self):
         EXPECTED = {
@@ -776,8 +776,8 @@ class Test_StructQueryParameter(unittest.TestCase):
         sub_1 = self._make_subparam('bar', 'INT64', 123)
         sub_2 = self._make_subparam('baz', 'STRING', 'abc')
         klass = self._get_target_class()
-        parm = klass.positional(sub_1, sub_2)
-        self.assertEqual(parm.to_api_repr(), EXPECTED)
+        param = klass.positional(sub_1, sub_2)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
 
 
 class Test_QueryParametersProperty(unittest.TestCase):

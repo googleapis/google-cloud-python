@@ -488,11 +488,11 @@ def client_run_sync_query(client, _):
 @snippet
 def client_run_sync_query_w_param(client, _):
     """Run a synchronous query using a query parameter"""
-    QUERY_W_PARM = (
+    QUERY_W_PARAM = (
         'SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` '
         'WHERE state = @state')
     LIMIT = 100
-    LIMITED = '%s LIMIT %d' % (QUERY_W_PARM, LIMIT)
+    LIMITED = '%s LIMIT %d' % (QUERY_W_PARAM, LIMIT)
     TIMEOUT_MS = 1000
 
     # [START client_run_sync_query_w_param]
