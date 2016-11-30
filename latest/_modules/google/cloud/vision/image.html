@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.image &mdash; google-cloud f0950ca documentation</title>
+  <title>google.cloud.vision.image &mdash; google-cloud 5cbbcb9 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud f0950ca documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 5cbbcb9 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -200,6 +200,7 @@
 <p class="caption"><span class="caption-text">Vision</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-usage.html">Using the Vision API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision-annotations.html">Vision Annotations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-color.html">Vision Image Properties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision-entity.html">Vision Entity</a></li>
@@ -304,31 +305,9 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_bytes_to_unicode</span>
-<span class="kn">from</span> <span class="nn">google.cloud.vision.entity</span> <span class="k">import</span> <span class="n">EntityAnnotation</span>
-<span class="kn">from</span> <span class="nn">google.cloud.vision.face</span> <span class="k">import</span> <span class="n">Face</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.annotations</span> <span class="k">import</span> <span class="n">Annotations</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.feature</span> <span class="k">import</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.feature</span> <span class="k">import</span> <span class="n">FeatureTypes</span>
-<span class="kn">from</span> <span class="nn">google.cloud.vision.color</span> <span class="k">import</span> <span class="n">ImagePropertiesAnnotation</span>
-<span class="kn">from</span> <span class="nn">google.cloud.vision.safe</span> <span class="k">import</span> <span class="n">SafeSearchAnnotation</span>
-
-
-<span class="n">_FACE_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;FACE_DETECTION&#39;</span>
-<span class="n">_IMAGE_PROPERTIES</span> <span class="o">=</span> <span class="s1">&#39;IMAGE_PROPERTIES&#39;</span>
-<span class="n">_LABEL_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;LABEL_DETECTION&#39;</span>
-<span class="n">_LANDMARK_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;LANDMARK_DETECTION&#39;</span>
-<span class="n">_LOGO_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;LOGO_DETECTION&#39;</span>
-<span class="n">_SAFE_SEARCH_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;SAFE_SEARCH_DETECTION&#39;</span>
-<span class="n">_TEXT_DETECTION</span> <span class="o">=</span> <span class="s1">&#39;TEXT_DETECTION&#39;</span>
-
-<span class="n">_REVERSE_TYPES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">_FACE_DETECTION</span><span class="p">:</span> <span class="s1">&#39;faceAnnotations&#39;</span><span class="p">,</span>
-    <span class="n">_IMAGE_PROPERTIES</span><span class="p">:</span> <span class="s1">&#39;imagePropertiesAnnotation&#39;</span><span class="p">,</span>
-    <span class="n">_LABEL_DETECTION</span><span class="p">:</span> <span class="s1">&#39;labelAnnotations&#39;</span><span class="p">,</span>
-    <span class="n">_LANDMARK_DETECTION</span><span class="p">:</span> <span class="s1">&#39;landmarkAnnotations&#39;</span><span class="p">,</span>
-    <span class="n">_LOGO_DETECTION</span><span class="p">:</span> <span class="s1">&#39;logoAnnotations&#39;</span><span class="p">,</span>
-    <span class="n">_SAFE_SEARCH_DETECTION</span><span class="p">:</span> <span class="s1">&#39;safeSearchAnnotation&#39;</span><span class="p">,</span>
-    <span class="n">_TEXT_DETECTION</span><span class="p">:</span> <span class="s1">&#39;textAnnotations&#39;</span><span class="p">,</span>
-<span class="p">}</span>
 
 
 <div class="viewcode-block" id="Image"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image">[docs]</a><span class="k">class</span> <span class="nc">Image</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -390,7 +369,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source</span>
 
     <span class="k">def</span> <span class="nf">_detect_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generic method for detecting a single annotation.</span>
+        <span class="sd">&quot;&quot;&quot;Generic method for detecting annotations.</span>
 
 <span class="sd">        :type features: list</span>
 <span class="sd">        :param features: List of :class:`~google.cloud.vision.feature.Feature`</span>
@@ -403,12 +382,21 @@
 <span class="sd">                  :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`,</span>
 <span class="sd">                  :class:`~google.cloud.vision.sage.SafeSearchAnnotation`,</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">detected_objects</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
-            <span class="n">detected_objects</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-                <span class="n">_entity_from_response_type</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">feature_type</span><span class="p">,</span> <span class="n">results</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">detected_objects</span>
+        <span class="k">return</span> <span class="n">Annotations</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Image.detect"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect">[docs]</a>    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Detect multiple feature types.</span>
+
+<span class="sd">        :type features: list of :class:`~google.cloud.vision.feature.Feature`</span>
+<span class="sd">        :param features: List of the ``Feature`` indication the type of</span>
+<span class="sd">                         annotation to perform.</span>
+
+<span class="sd">        :rtype: list</span>
+<span class="sd">        :returns: List of</span>
+<span class="sd">                  :class:`~google.cloud.vision.entity.EntityAnnotation`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Image.detect_faces"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_faces">[docs]</a>    <span class="k">def</span> <span class="nf">detect_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect faces in image.</span>
@@ -420,7 +408,8 @@
 <span class="sd">        :returns: List of :class:`~google.cloud.vision.face.Face`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">FACE_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span></div>
+        <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">faces</span></div>
 
 <div class="viewcode-block" id="Image.detect_labels"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_labels">[docs]</a>    <span class="k">def</span> <span class="nf">detect_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect labels that describe objects in an image.</span>
@@ -432,7 +421,8 @@
 <span class="sd">        :returns: List of :class:`~google.cloud.vision.entity.EntityAnnotation`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LABEL_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span></div>
+        <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">labels</span></div>
 
 <div class="viewcode-block" id="Image.detect_landmarks"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_landmarks">[docs]</a>    <span class="k">def</span> <span class="nf">detect_landmarks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect landmarks in an image.</span>
@@ -445,7 +435,8 @@
 <span class="sd">                  :class:`~google.cloud.vision.entity.EntityAnnotation`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LANDMARK_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span></div>
+        <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">landmarks</span></div>
 
 <div class="viewcode-block" id="Image.detect_logos"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_logos">[docs]</a>    <span class="k">def</span> <span class="nf">detect_logos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect logos in an image.</span>
@@ -458,7 +449,8 @@
 <span class="sd">                  :class:`~google.cloud.vision.entity.EntityAnnotation`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LOGO_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span></div>
+        <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">logos</span></div>
 
 <div class="viewcode-block" id="Image.detect_properties"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_properties">[docs]</a>    <span class="k">def</span> <span class="nf">detect_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect the color properties of an image.</span>
@@ -471,7 +463,8 @@
 <span class="sd">                  :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">IMAGE_PROPERTIES</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span></div>
+        <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">properties</span></div>
 
 <div class="viewcode-block" id="Image.detect_safe_search"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_safe_search">[docs]</a>    <span class="k">def</span> <span class="nf">detect_safe_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retreive safe search properties from an image.</span>
@@ -484,7 +477,8 @@
 <span class="sd">                  :class:`~google.cloud.vision.sage.SafeSearchAnnotation`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">SAFE_SEARCH_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span></div>
+        <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">safe_searches</span></div>
 
 <div class="viewcode-block" id="Image.detect_text"><a class="viewcode-back" href="../../../../vision-image.html#google.cloud.vision.image.Image.detect_text">[docs]</a>    <span class="k">def</span> <span class="nf">detect_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect text in an image.</span>
@@ -497,30 +491,8 @@
 <span class="sd">                  :class:`~google.cloud.vision.entity.EntityAnnotation`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">TEXT_DETECTION</span><span class="p">,</span> <span class="n">limit</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span></div></div>
-
-
-<span class="k">def</span> <span class="nf">_entity_from_response_type</span><span class="p">(</span><span class="n">feature_type</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a JSON result to an entity type based on the feature.&quot;&quot;&quot;</span>
-    <span class="n">feature_key</span> <span class="o">=</span> <span class="n">_REVERSE_TYPES</span><span class="p">[</span><span class="n">feature_type</span><span class="p">]</span>
-    <span class="n">annotations</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">feature_key</span><span class="p">,</span> <span class="p">())</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">annotations</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[]</span>
-
-    <span class="n">detected_objects</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_FACE_DETECTION</span><span class="p">:</span>
-        <span class="n">detected_objects</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-            <span class="n">Face</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">annotations</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_IMAGE_PROPERTIES</span><span class="p">:</span>
-        <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">ImagePropertiesAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">annotations</span><span class="p">))</span>
-    <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">_SAFE_SEARCH_DETECTION</span><span class="p">:</span>
-        <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">SafeSearchAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">annotations</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">annotations</span><span class="p">:</span>
-            <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">EntityAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">detected_objects</span>
+        <span class="n">annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detect_annotation</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">annotations</span><span class="o">.</span><span class="n">texts</span></div></div>
 </pre></div>
 
            </div>
@@ -554,7 +526,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'f0950ca',
+            VERSION:'5cbbcb9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

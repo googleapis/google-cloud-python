@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.pubsub.client &mdash; google-cloud 5cbbcb9 documentation</title>
+  <title>google.cloud.vision.annotations &mdash; google-cloud 5cbbcb9 documentation</title>
   
 
   
@@ -271,7 +271,7 @@
       
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
       
-    <li>google.cloud.pubsub.client</li>
+    <li>google.cloud.vision.annotations</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -283,8 +283,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for google.cloud.pubsub.client</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2015 Google Inc.</span>
+  <h1>Source code for google.cloud.vision.annotations</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2016 Google Inc.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -298,181 +298,111 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Client for interacting with the Google Cloud Pub/Sub API.&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
-
-<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">JSONClient</span>
-<span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
-<span class="kn">from</span> <span class="nn">google.cloud.pubsub._http</span> <span class="k">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">google.cloud.pubsub._http</span> <span class="k">import</span> <span class="n">_PublisherAPI</span> <span class="k">as</span> <span class="n">JSONPublisherAPI</span>
-<span class="kn">from</span> <span class="nn">google.cloud.pubsub._http</span> <span class="k">import</span> <span class="n">_SubscriberAPI</span> <span class="k">as</span> <span class="n">JSONSubscriberAPI</span>
-<span class="kn">from</span> <span class="nn">google.cloud.pubsub._http</span> <span class="k">import</span> <span class="n">_IAMPolicyAPI</span>
-<span class="kn">from</span> <span class="nn">google.cloud.pubsub.topic</span> <span class="k">import</span> <span class="n">Topic</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.pubsub._gax</span> <span class="k">import</span> <span class="n">_PublisherAPI</span> <span class="k">as</span> <span class="n">GAXPublisherAPI</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.pubsub._gax</span> <span class="k">import</span> <span class="n">_SubscriberAPI</span> <span class="k">as</span> <span class="n">GAXSubscriberAPI</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.pubsub._gax</span> <span class="k">import</span> <span class="n">make_gax_publisher_api</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.pubsub._gax</span> <span class="k">import</span> <span class="n">make_gax_subscriber_api</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
-    <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">GAXPublisherAPI</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">GAXSubscriberAPI</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">make_gax_publisher_api</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">make_gax_subscriber_api</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">_HAVE_GAX</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="sd">&quot;&quot;&quot;Annotations management for Vision API responses.&quot;&quot;&quot;</span>
 
 
-<span class="n">_DISABLE_GAX</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DISABLE_GRPC</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-<span class="n">_USE_GAX</span> <span class="o">=</span> <span class="n">_HAVE_GAX</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_DISABLE_GAX</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.color</span> <span class="k">import</span> <span class="n">ImagePropertiesAnnotation</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.entity</span> <span class="k">import</span> <span class="n">EntityAnnotation</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.face</span> <span class="k">import</span> <span class="n">Face</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision.safe</span> <span class="k">import</span> <span class="n">SafeSearchAnnotation</span>
 
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../pubsub-client.html#google.cloud.pubsub.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
+<span class="n">FACE_ANNOTATIONS</span> <span class="o">=</span> <span class="s1">&#39;faceAnnotations&#39;</span>
+<span class="n">IMAGE_PROPERTIES_ANNOTATION</span> <span class="o">=</span> <span class="s1">&#39;imagePropertiesAnnotation&#39;</span>
+<span class="n">SAFE_SEARCH_ANNOTATION</span> <span class="o">=</span> <span class="s1">&#39;safeSearchAnnotation&#39;</span>
 
-<span class="sd">    :type project: str</span>
-<span class="sd">    :param project: the project which the client acts on behalf of. Will be</span>
-<span class="sd">                    passed when creating a topic.  If not passed,</span>
-<span class="sd">                    falls back to the default inferred from the environment.</span>
+<span class="n">_KEY_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">FACE_ANNOTATIONS</span><span class="p">:</span> <span class="s1">&#39;faces&#39;</span><span class="p">,</span>
+    <span class="n">IMAGE_PROPERTIES_ANNOTATION</span><span class="p">:</span> <span class="s1">&#39;properties&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;labelAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;labels&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;landmarkAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;landmarks&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;logoAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;logos&#39;</span><span class="p">,</span>
+    <span class="n">SAFE_SEARCH_ANNOTATION</span><span class="p">:</span> <span class="s1">&#39;safe_searches&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;textAnnotations&#39;</span><span class="p">:</span> <span class="s1">&#39;texts&#39;</span>
+<span class="p">}</span>
 
-<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or</span>
-<span class="sd">                       :class:`NoneType`</span>
-<span class="sd">    :param credentials: The OAuth2 Credentials to use for the connection</span>
-<span class="sd">                        owned by this client. If not passed (and if no ``http``</span>
-<span class="sd">                        object is passed), falls back to the default inferred</span>
-<span class="sd">                        from the environment.</span>
 
-<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``.</span>
-<span class="sd">    :param http: An optional HTTP object to make requests. If not passed, an</span>
-<span class="sd">                 ``http`` object is created that is bound to the</span>
-<span class="sd">                 ``credentials`` for the current object.</span>
+<div class="viewcode-block" id="Annotations"><a class="viewcode-back" href="../../../../vision-annotations.html#google.cloud.vision.annotations.Annotations">[docs]</a><span class="k">class</span> <span class="nc">Annotations</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper class to bundle annotation responses.</span>
 
-<span class="sd">    :type use_gax: bool</span>
-<span class="sd">    :param use_gax: (Optional) Explicitly specifies whether</span>
-<span class="sd">                    to use the gRPC transport (via GAX) or HTTP. If unset,</span>
-<span class="sd">                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment</span>
-<span class="sd">                    variable</span>
+<span class="sd">    :type faces: list</span>
+<span class="sd">    :param faces: List of :class:`~google.cloud.vision.face.Face`.</span>
+
+<span class="sd">    :type properties: list</span>
+<span class="sd">    :param properties:</span>
+<span class="sd">        List of :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`.</span>
+
+<span class="sd">    :type labels: list</span>
+<span class="sd">    :param labels: List of</span>
+<span class="sd">                   :class:`~google.cloud.vision.entity.EntityAnnotation`.</span>
+
+<span class="sd">    :type landmarks: list</span>
+<span class="sd">    :param landmarks: List of</span>
+<span class="sd">                      :class:`~google.cloud.vision.entity.EntityAnnotation.`</span>
+
+<span class="sd">    :type logos: list</span>
+<span class="sd">    :param logos: List of</span>
+<span class="sd">                  :class:`~google.cloud.vision.entity.EntityAnnotation`.</span>
+
+<span class="sd">    :type safe_searches: list</span>
+<span class="sd">    :param safe_searches:</span>
+<span class="sd">        List of :class:`~google.cloud.vision.safe.SafeSearchAnnotation`</span>
+
+<span class="sd">    :type texts: list</span>
+<span class="sd">    :param texts: List of</span>
+<span class="sd">                  :class:`~google.cloud.vision.entity.EntityAnnotation`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_gax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">use_gax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">_USE_GAX</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">use_gax</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="p">(),</span> <span class="n">properties</span><span class="o">=</span><span class="p">(),</span> <span class="n">labels</span><span class="o">=</span><span class="p">(),</span> <span class="n">landmarks</span><span class="o">=</span><span class="p">(),</span>
+                 <span class="n">logos</span><span class="o">=</span><span class="p">(),</span> <span class="n">safe_searches</span><span class="o">=</span><span class="p">(),</span> <span class="n">texts</span><span class="o">=</span><span class="p">()):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="n">properties</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">landmarks</span> <span class="o">=</span> <span class="n">landmarks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logos</span> <span class="o">=</span> <span class="n">logos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">safe_searches</span> <span class="o">=</span> <span class="n">safe_searches</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">texts</span> <span class="o">=</span> <span class="n">texts</span>
 
-    <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
-    <span class="n">_publisher_api</span> <span class="o">=</span> <span class="n">_subscriber_api</span> <span class="o">=</span> <span class="n">_iam_policy_api</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Annotations.from_api_repr"><a class="viewcode-back" href="../../../../vision-annotations.html#google.cloud.vision.annotations.Annotations.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct an instance of ``Annotations`` from a response.</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">publisher_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Helper for publisher-related API calls.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_publisher_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
-                <span class="n">generated</span> <span class="o">=</span> <span class="n">make_gax_publisher_api</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_publisher_api</span> <span class="o">=</span> <span class="n">GAXPublisherAPI</span><span class="p">(</span><span class="n">generated</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_publisher_api</span> <span class="o">=</span> <span class="n">JSONPublisherAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_publisher_api</span>
+<span class="sd">        :type response: dict</span>
+<span class="sd">        :param response: Vision API response object.</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">subscriber_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Helper for subscriber-related API calls.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subscriber_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span><span class="p">:</span>
-                <span class="n">generated</span> <span class="o">=</span> <span class="n">make_gax_subscriber_api</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_subscriber_api</span> <span class="o">=</span> <span class="n">GAXSubscriberAPI</span><span class="p">(</span><span class="n">generated</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_subscriber_api</span> <span class="o">=</span> <span class="n">JSONSubscriberAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subscriber_api</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">iam_policy_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Helper for IAM policy-related API calls.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iam_policy_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_iam_policy_api</span> <span class="o">=</span> <span class="n">_IAMPolicyAPI</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iam_policy_api</span>
-
-<div class="viewcode-block" id="Client.list_topics"><a class="viewcode-back" href="../../../../pubsub-client.html#google.cloud.pubsub.client.Client.list_topics">[docs]</a>    <span class="k">def</span> <span class="nf">list_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List topics for the project associated with this client.</span>
-
-<span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list</span>
-
-<span class="sd">        Example:</span>
-
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
-<span class="sd">           :start-after: [START client_list_topics]</span>
-<span class="sd">           :end-before: [END client_list_topics]</span>
-
-<span class="sd">        :type page_size: int</span>
-<span class="sd">        :param page_size: maximum number of topics to return, If not passed,</span>
-<span class="sd">                          defaults to a value set by the API.</span>
-
-<span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of topics. If not</span>
-<span class="sd">                           passed, the API will return the first page of</span>
-<span class="sd">                           topics.</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
-<span class="sd">        :returns: Iterator of :class:`~google.cloud.pubsub.topic.Topic`</span>
-<span class="sd">                  accessible to the current API.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.vision.annotations.Annotations`</span>
+<span class="sd">        :returns: An instance of ``Annotations`` with detection types loaded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">publisher_api</span>
-        <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">list_topics</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="p">)</span></div>
+        <span class="n">annotations</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">feature_type</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">curr_feature</span> <span class="o">=</span> <span class="n">annotations</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">_KEY_MAP</span><span class="p">[</span><span class="n">feature_type</span><span class="p">],</span> <span class="p">[])</span>
+            <span class="n">curr_feature</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="n">_entity_from_response_type</span><span class="p">(</span><span class="n">feature_type</span><span class="p">,</span> <span class="n">annotation</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">annotations</span><span class="p">)</span></div></div>
 
-<div class="viewcode-block" id="Client.list_subscriptions"><a class="viewcode-back" href="../../../../pubsub-client.html#google.cloud.pubsub.client.Client.list_subscriptions">[docs]</a>    <span class="k">def</span> <span class="nf">list_subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List subscriptions for the project associated with this client.</span>
 
-<span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list</span>
+<span class="k">def</span> <span class="nf">_entity_from_response_type</span><span class="p">(</span><span class="n">feature_type</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON result to an entity type based on the feature.</span>
 
-<span class="sd">        Example:</span>
-
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
-<span class="sd">           :start-after: [START client_list_subscriptions]</span>
-<span class="sd">           :end-before: [END client_list_subscriptions]</span>
-
-<span class="sd">        :type page_size: int</span>
-<span class="sd">        :param page_size: maximum number of topics to return, If not passed,</span>
-<span class="sd">                          defaults to a value set by the API.</span>
-
-<span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of topics. If not</span>
-<span class="sd">                           passed, the API will return the first page of</span>
-<span class="sd">                           topics.</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
-<span class="sd">        :returns: Iterator of</span>
-<span class="sd">                  :class:`~google.cloud.pubsub.subscription.Subscription`</span>
-<span class="sd">                  accessible to the current client.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_api</span>
-        <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Client.topic"><a class="viewcode-back" href="../../../../pubsub-client.html#google.cloud.pubsub.client.Client.topic">[docs]</a>    <span class="k">def</span> <span class="nf">topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">timestamp_messages</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Creates a topic bound to the current client.</span>
-
-<span class="sd">        Example:</span>
-
-<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
-<span class="sd">           :start-after: [START client_topic]</span>
-<span class="sd">           :end-before: [END client_topic]</span>
-
-<span class="sd">        :type name: str</span>
-<span class="sd">        :param name: the name of the topic to be constructed.</span>
-
-<span class="sd">        :type timestamp_messages: bool</span>
-<span class="sd">        :param timestamp_messages: To be passed to ``Topic`` constructor.</span>
-
-<span class="sd">        :rtype: :class:`google.cloud.pubsub.topic.Topic`</span>
-<span class="sd">        :returns: Topic created with the current client.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Topic</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp_messages</span><span class="o">=</span><span class="n">timestamp_messages</span><span class="p">)</span></div></div>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    :returns: List containing any of</span>
+<span class="sd">              :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`,</span>
+<span class="sd">              :class:`~google.cloud.vision.entity.EntityAnnotation`,</span>
+<span class="sd">              :class:`~google.cloud.vision.face.Face`,</span>
+<span class="sd">              :class:`~google.cloud.vision.safe.SafeSearchAnnotation`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">detected_objects</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">FACE_ANNOTATIONS</span><span class="p">:</span>
+        <span class="n">detected_objects</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="n">Face</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">results</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">IMAGE_PROPERTIES_ANNOTATION</span><span class="p">:</span>
+        <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">ImagePropertiesAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">feature_type</span> <span class="o">==</span> <span class="n">SAFE_SEARCH_ANNOTATION</span><span class="p">:</span>
+        <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SafeSearchAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">detected_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">EntityAnnotation</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">detected_objects</span>
 </pre></div>
 
            </div>

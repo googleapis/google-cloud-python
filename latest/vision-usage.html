@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the Vision API &mdash; google-cloud f0950ca documentation</title>
+  <title>Using the Vision API &mdash; google-cloud 5cbbcb9 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud f0950ca documentation" href="index.html"/>
-        <link rel="next" title="Vision Client" href="vision-client.html"/>
+    <link rel="top" title="google-cloud 5cbbcb9 documentation" href="index.html"/>
+        <link rel="next" title="Vision Annotations" href="vision-annotations.html"/>
         <link rel="prev" title="Translate Client" href="translate-client.html"/> 
 
   
@@ -202,6 +202,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using the Vision API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#authentication-and-configuration">Authentication and Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#manual-detection">Manual Detection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#face-detection">Face Detection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#label-detection">Label Detection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#landmark-detection">Landmark Detection</a></li>
@@ -214,6 +215,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="vision-annotations.html">Vision Annotations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
@@ -323,6 +325,32 @@ this will be detected automatically.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">)</span>
 </pre></div>
+</div>
+<div class="section" id="manual-detection">
+<h3>Manual Detection<a class="headerlink" href="#manual-detection" title="Permalink to this headline">#</a></h3>
+<p>You can call the detection method manually.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">vision</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.vision.feature</span> <span class="kn">import</span> <span class="n">Feature</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.vision.feature</span> <span class="kn">import</span> <span class="n">FeatureTypes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-test-bucket/image.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">FACE_DETECTION</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="n">Feature</span><span class="p">(</span><span class="n">FeatureTypes</span><span class="o">.</span><span class="n">LOGO_DETECTION</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">annotations</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">annotations</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">annotations</span><span class="o">.</span><span class="n">faces</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">joy_likelihood</span><span class="p">)</span>
+<span class="go">0.94099093</span>
+<span class="go">0.54453093</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">annotations</span><span class="o">.</span><span class="n">logos</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">logo</span> <span class="ow">in</span> <span class="n">annotations</span><span class="o">.</span><span class="n">logos</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">logo</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="go">&#39;google&#39;</span>
+<span class="go">&#39;github&#39;</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="face-detection">
 <h3>Face Detection<a class="headerlink" href="#face-detection" title="Permalink to this headline">#</a></h3>
@@ -505,7 +533,7 @@ an empty list is returned. This behavior is similiar with all detection types.</
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="vision-client.html" class="btn btn-neutral float-right" title="Vision Client" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="vision-annotations.html" class="btn btn-neutral float-right" title="Vision Annotations" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="translate-client.html" class="btn btn-neutral" title="Translate Client" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -539,7 +567,7 @@ an empty list is returned. This behavior is similiar with all detection types.</
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'f0950ca',
+            VERSION:'5cbbcb9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

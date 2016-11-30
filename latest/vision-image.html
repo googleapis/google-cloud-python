@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Image &mdash; google-cloud f0950ca documentation</title>
+  <title>Vision Image &mdash; google-cloud 5cbbcb9 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud f0950ca documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 5cbbcb9 documentation" href="index.html"/>
         <link rel="next" title="Vision Safe Search" href="vision-safe-search.html"/>
         <link rel="prev" title="Vision Face" href="vision-face.html"/> 
 
@@ -201,6 +201,7 @@
 <p class="caption"><span class="caption-text">Vision</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="vision-usage.html">Using the Vision API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision-annotations.html">Vision Annotations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-client.html">Vision Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-color.html">Vision Image Properties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vision-entity.html">Vision Entity</a></li>
@@ -338,6 +339,26 @@
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Base64 encoded image bytes.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.vision.image.Image.detect">
+<code class="descname">detect</code><span class="sig-paren">(</span><em>features</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/image.html#Image.detect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.image.Image.detect" title="Permalink to this definition">#</a></dt>
+<dd><p>Detect multiple feature types.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>features</strong> (list of <a class="reference internal" href="vision-feature.html#google.cloud.vision.feature.Feature" title="google.cloud.vision.feature.Feature"><code class="xref py py-class docutils literal"><span class="pre">Feature</span></code></a>) &#8211; List of the <code class="docutils literal"><span class="pre">Feature</span></code> indication the type of
+annotation to perform.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of
+<a class="reference internal" href="vision-entity.html#google.cloud.vision.entity.EntityAnnotation" title="google.cloud.vision.entity.EntityAnnotation"><code class="xref py py-class docutils literal"><span class="pre">EntityAnnotation</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -855,7 +876,7 @@ longitude.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'f0950ca',
+            VERSION:'5cbbcb9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
