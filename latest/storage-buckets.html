@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Buckets &mdash; google-cloud 68ccb76 documentation</title>
+  <title>Buckets &mdash; google-cloud ce6756f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 68ccb76 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud ce6756f documentation" href="index.html"/>
         <link rel="next" title="ACL" href="storage-acl.html"/>
         <link rel="prev" title="Blobs / Objects" href="storage-blobs.html"/> 
 
@@ -362,14 +362,13 @@ if your bucket name is a domain name
 </div>
 <p>If you want this bucket to host a website, just provide the name
 of an index page and a page to use when a blob isn&#8217;t found:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">configure_website</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">,</span> <span class="s1">&#39;404.html&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
+    <span class="n">bucket</span><span class="o">.</span><span class="n">configure_website</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">,</span> <span class="s1">&#39;404.html&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You probably should also make the whole bucket public:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">make_public</span><span class="p">(</span><span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">bucket</span><span class="o">.</span><span class="n">make_public</span><span class="p">(</span><span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This says: &#8220;Make the bucket public, and all the stuff already in
@@ -513,17 +512,16 @@ contains more than 256 objects / blobs.</p>
 <p>If the blob isn&#8217;t found (backend 404), raises a
 <a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a>.</p>
 <p>For example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">())</span>
-<span class="go">[&lt;Blob: my-bucket, my-file.txt&gt;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s1">&#39;my-file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>  <span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s1">&#39;doesnt-exist&#39;</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-<span class="gp">... </span>  <span class="k">pass</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(),</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="c1"># [&lt;Blob: my-bucket, my-file.txt&gt;]</span>
+    <span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s1">&#39;my-file.txt&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s1">&#39;doesnt-exist&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
+        <span class="k">pass</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -538,16 +536,16 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a> (to suppress
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="google-cloud-api.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a> (to suppress
 the exception, call <code class="docutils literal"><span class="pre">delete_blobs</span></code>, passing a no-op
 <code class="docutils literal"><span class="pre">on_error</span></code> callback, e.g.:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">([</span><span class="n">blob</span><span class="p">],</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
-</pre></div>
-</div>
 </td>
 </tr>
 </tbody>
 </table>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">bucket</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">([</span><span class="n">blob</span><span class="p">],</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -658,13 +656,12 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <code class="descname">get_blob</code><span class="sig-paren">(</span><em>blob_name</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/storage/bucket.html#Bucket.get_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.get_blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a blob object by name.</p>
 <p>This will return None if the blob doesn&#8217;t exist:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s1">&#39;/path/to/blob.txt&#39;</span><span class="p">))</span>
-<span class="go">&lt;Blob: my-bucket, /path/to/blob.txt&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s1">&#39;/does-not-exist.txt&#39;</span><span class="p">))</span>
-<span class="go">None</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s1">&#39;/path/to/blob.txt&#39;</span><span class="p">),</span> <span class="n">Blob</span><span class="p">)</span>
+    <span class="c1"># &lt;Blob: my-bucket, /path/to/blob.txt&gt;</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s1">&#39;/does-not-exist.txt&#39;</span><span class="p">)</span>
+    <span class="c1"># None</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1094,7 +1091,7 @@ details.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'68ccb76',
+            VERSION:'ce6756f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

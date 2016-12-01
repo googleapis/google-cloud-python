@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ACL &mdash; google-cloud 68ccb76 documentation</title>
+  <title>ACL &mdash; google-cloud ce6756f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 68ccb76 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud ce6756f documentation" href="index.html"/>
         <link rel="next" title="Batches" href="storage-batch.html"/>
         <link rel="prev" title="Buckets" href="storage-buckets.html"/> 
 
@@ -290,10 +290,9 @@
 <p><a class="reference internal" href="storage-buckets.html#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.bucket.Bucket</span></code></a> has a getting method that creates
 an ACL object under the hood, and you can interact with that using
 <a class="reference internal" href="storage-buckets.html#google.cloud.storage.bucket.Bucket.acl" title="google.cloud.storage.bucket.Bucket.acl"><code class="xref py py-func docutils literal"><span class="pre">google.cloud.storage.bucket.Bucket.acl()</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">acl</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
+    <span class="n">acl</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">acl</span>
 </pre></div>
 </div>
 <p>Adding and removing permissions can be done with the following methods
@@ -321,30 +320,30 @@ per user basis (either by ID or e-mail address).</li>
 </ul>
 <p>You can use any of these like any other factory method (these happen to
 be <code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code> factories):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s1">&#39;me@example.org&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">all_authenticated</span><span class="p">()</span><span class="o">.</span><span class="n">grant_write</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">acl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s1">&#39;me@example.org&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
+    <span class="n">acl</span><span class="o">.</span><span class="n">all_authenticated</span><span class="p">()</span><span class="o">.</span><span class="n">grant_write</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>You can also chain these <code class="docutils literal"><span class="pre">grant_*</span></code> and <code class="docutils literal"><span class="pre">revoke_*</span></code> methods together
 for brevity:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span><span class="o">.</span><span class="n">revoke_write</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span><span class="o">.</span><span class="n">revoke_write</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>After that, you can save any changes you make with the
 <a class="reference internal" href="#google.cloud.storage.acl.ACL.save" title="google.cloud.storage.acl.ACL.save"><code class="xref py py-func docutils literal"><span class="pre">google.cloud.storage.acl.ACL.save()</span></code></a> method:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>You can alternatively save any existing <a class="reference internal" href="#google.cloud.storage.acl.ACL" title="google.cloud.storage.acl.ACL"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.acl.ACL</span></code></a>
 object (whether it was created by a factory method or not) from a
 <a class="reference internal" href="storage-buckets.html#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.bucket.Bucket</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="n">acl</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="n">acl</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>To get the list of <code class="docutils literal"><span class="pre">entity</span></code> and <code class="docutils literal"><span class="pre">role</span></code> for each unique pair, the
 <a class="reference internal" href="#google.cloud.storage.acl.ACL" title="google.cloud.storage.acl.ACL"><code class="xref py py-class docutils literal"><span class="pre">ACL</span></code></a> class is iterable:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ACL</span><span class="p">))</span>
-<span class="go">[{&#39;role&#39;: &#39;OWNER&#39;, &#39;entity&#39;: &#39;allUsers&#39;}, ...]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">acl</span><span class="p">))</span>
+    <span class="c1"># [{&#39;role&#39;: &#39;OWNER&#39;, &#39;entity&#39;: &#39;allUsers&#39;}, ...]</span>
 </pre></div>
 </div>
 <p>This list of tuples can be used as the <code class="docutils literal"><span class="pre">entity</span></code> and <code class="docutils literal"><span class="pre">role</span></code> fields
@@ -356,7 +355,7 @@ when sending metadata for ACLs to the API.</p>
 <p>Container class representing a list of access controls.</p>
 <dl class="attribute">
 <dt id="google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS">
-<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset(['publicRead', 'bucketOwnerRead', 'publicReadWrite', 'private', 'bucketOwnerFullControl', 'projectPrivate', 'authenticatedRead'])</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
+<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset(['bucketOwnerFullControl', 'authenticatedRead', 'bucketOwnerRead', 'publicReadWrite', 'publicRead', 'private', 'projectPrivate'])</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
 <dd><p>See:
 <a class="reference external" href="https://cloud.google.com/storage/docs/access-control#predefined-acl">https://cloud.google.com/storage/docs/access-control#predefined-acl</a></p>
 </dd></dl>
@@ -783,7 +782,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'68ccb76',
+            VERSION:'ce6756f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

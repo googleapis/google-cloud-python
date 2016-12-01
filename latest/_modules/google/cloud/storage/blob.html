@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.blob &mdash; google-cloud 68ccb76 documentation</title>
+  <title>google.cloud.storage.blob &mdash; google-cloud ce6756f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 68ccb76 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud ce6756f documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -585,18 +585,11 @@
 <span class="sd">           initialized, makes an additional API request to load it.</span>
 
 <span class="sd">         Downloading a file that has been encrypted with a `customer-supplied`_</span>
-<span class="sd">         encryption key::</span>
+<span class="sd">         encryption key:</span>
 
-<span class="sd">            &gt;&gt;&gt; from google.cloud import storage</span>
-<span class="sd">            &gt;&gt;&gt; from google.cloud.storage import Blob</span>
-
-<span class="sd">            &gt;&gt;&gt; client = storage.Client(project=&#39;my-project&#39;)</span>
-<span class="sd">            &gt;&gt;&gt; bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">            &gt;&gt;&gt; encryption_key = &#39;aa426195405adee2c8081bb9e7e74b19&#39;</span>
-<span class="sd">            &gt;&gt;&gt; blob = Blob(&#39;secure-data&#39;, bucket,</span>
-<span class="sd">            ...             encryption_key=encryption_key)</span>
-<span class="sd">            &gt;&gt;&gt; with open(&#39;/tmp/my-secure-file&#39;, &#39;wb&#39;) as file_obj:</span>
-<span class="sd">            &gt;&gt;&gt;     blob.download_to_file(file_obj)</span>
+<span class="sd">         .. literalinclude:: storage_snippets.py</span>
+<span class="sd">            :start-after: [START download_to_file]</span>
+<span class="sd">            :end-before: [END download_to_file]</span>
 
 <span class="sd">        The ``encryption_key`` should be a str or bytes with a length of at</span>
 <span class="sd">        least 32.</span>
@@ -704,18 +697,11 @@
 <span class="sd">           `lifecycle &lt;https://cloud.google.com/storage/docs/lifecycle&gt;`_</span>
 <span class="sd">           API documents for details.</span>
 
-<span class="sd">        Uploading a file with a `customer-supplied`_ encryption key::</span>
+<span class="sd">        Uploading a file with a `customer-supplied`_ encryption key:</span>
 
-<span class="sd">            &gt;&gt;&gt; from google.cloud import storage</span>
-<span class="sd">            &gt;&gt;&gt; from google.cloud.storage import Blob</span>
-
-<span class="sd">            &gt;&gt;&gt; client = storage.Client(project=&#39;my-project&#39;)</span>
-<span class="sd">            &gt;&gt;&gt; bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">            &gt;&gt;&gt; encryption_key = &#39;aa426195405adee2c8081bb9e7e74b19&#39;</span>
-<span class="sd">            &gt;&gt;&gt; blob = Blob(&#39;secure-data&#39;, bucket,</span>
-<span class="sd">            ...             encryption_key=encryption_key)</span>
-<span class="sd">            &gt;&gt;&gt; with open(&#39;my-file&#39;, &#39;rb&#39;) as my_file:</span>
-<span class="sd">            &gt;&gt;&gt;     blob.upload_from_file(my_file)</span>
+<span class="sd">        .. literalinclude:: storage_snippets.py</span>
+<span class="sd">            :start-after: [START upload_from_file]</span>
+<span class="sd">            :end-before: [END upload_from_file]</span>
 
 <span class="sd">        The ``encryption_key`` should be a str or bytes with a length of at</span>
 <span class="sd">        least 32.</span>
@@ -1333,7 +1319,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'68ccb76',
+            VERSION:'ce6756f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

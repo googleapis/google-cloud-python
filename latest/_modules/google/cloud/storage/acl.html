@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.acl &mdash; google-cloud 68ccb76 documentation</title>
+  <title>google.cloud.storage.acl &mdash; google-cloud ce6756f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 68ccb76 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud ce6756f documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -302,12 +302,12 @@
 
 <span class="sd">:class:`google.cloud.storage.bucket.Bucket` has a getting method that creates</span>
 <span class="sd">an ACL object under the hood, and you can interact with that using</span>
-<span class="sd">:func:`google.cloud.storage.bucket.Bucket.acl`::</span>
+<span class="sd">:func:`google.cloud.storage.bucket.Bucket.acl`:</span>
 
-<span class="sd">  &gt;&gt;&gt; from google.cloud import storage</span>
-<span class="sd">  &gt;&gt;&gt; client = storage.Client()</span>
-<span class="sd">  &gt;&gt;&gt; bucket = client.get_bucket(bucket_name)</span>
-<span class="sd">  &gt;&gt;&gt; acl = bucket.acl</span>
+<span class="sd">.. literalinclude:: storage_snippets.py</span>
+<span class="sd">    :start-after: [START client_bucket_acl]</span>
+<span class="sd">    :end-before: [END client_bucket_acl]</span>
+
 
 <span class="sd">Adding and removing permissions can be done with the following methods</span>
 <span class="sd">(in increasing order of granularity):</span>
@@ -333,32 +333,40 @@
 <span class="sd">  :func:`_ACLEntity.grant_owner` and :func:`_ACLEntity.revoke_owner`</span>
 
 <span class="sd">You can use any of these like any other factory method (these happen to</span>
-<span class="sd">be :class:`_ACLEntity` factories)::</span>
+<span class="sd">be :class:`_ACLEntity` factories):</span>
 
-<span class="sd">  &gt;&gt;&gt; acl.user(&#39;me@example.org&#39;).grant_read()</span>
-<span class="sd">  &gt;&gt;&gt; acl.all_authenticated().grant_write()</span>
+<span class="sd">.. literalinclude:: storage_snippets.py</span>
+<span class="sd">   :start-after: [START acl_user_settings]</span>
+<span class="sd">   :end-before: [END acl_user_settings]</span>
 
 <span class="sd">You can also chain these ``grant_*`` and ``revoke_*`` methods together</span>
-<span class="sd">for brevity::</span>
+<span class="sd">for brevity:</span>
 
-<span class="sd">  &gt;&gt;&gt; acl.all().grant_read().revoke_write()</span>
+<span class="sd">.. literalinclude:: storage_snippets.py</span>
+<span class="sd">   :start-after: [START acl_revoke_write]</span>
+<span class="sd">   :end-before: [END acl_revoke_write]</span>
 
 <span class="sd">After that, you can save any changes you make with the</span>
-<span class="sd">:func:`google.cloud.storage.acl.ACL.save` method::</span>
+<span class="sd">:func:`google.cloud.storage.acl.ACL.save` method:</span>
 
-<span class="sd">  &gt;&gt;&gt; acl.save()</span>
+<span class="sd">.. literalinclude:: storage_snippets.py</span>
+<span class="sd">   :start-after: [START acl_save]</span>
+<span class="sd">   :end-before: [END acl_save]</span>
 
 <span class="sd">You can alternatively save any existing :class:`google.cloud.storage.acl.ACL`</span>
 <span class="sd">object (whether it was created by a factory method or not) from a</span>
-<span class="sd">:class:`google.cloud.storage.bucket.Bucket`::</span>
+<span class="sd">:class:`google.cloud.storage.bucket.Bucket`:</span>
 
-<span class="sd">  &gt;&gt;&gt; bucket.acl.save(acl=acl)</span>
+<span class="sd">.. literalinclude:: storage_snippets.py</span>
+<span class="sd">   :start-after: [START acl_save_bucket]</span>
+<span class="sd">   :end-before: [END acl_save_bucket]</span>
 
 <span class="sd">To get the list of ``entity`` and ``role`` for each unique pair, the</span>
-<span class="sd">:class:`ACL` class is iterable::</span>
+<span class="sd">:class:`ACL` class is iterable:</span>
 
-<span class="sd">  &gt;&gt;&gt; print(list(ACL))</span>
-<span class="sd">  [{&#39;role&#39;: &#39;OWNER&#39;, &#39;entity&#39;: &#39;allUsers&#39;}, ...]</span>
+<span class="sd">.. literalinclude:: storage_snippets.py</span>
+<span class="sd">   :start-after: [START acl_print]</span>
+<span class="sd">   :end-before: [END acl_print]</span>
 
 <span class="sd">This list of tuples can be used as the ``entity`` and ``role`` fields</span>
 <span class="sd">when sending metadata for ACLs to the API.</span>
@@ -883,7 +891,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'68ccb76',
+            VERSION:'ce6756f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

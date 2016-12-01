@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.bucket &mdash; google-cloud 68ccb76 documentation</title>
+  <title>google.cloud.storage.bucket &mdash; google-cloud ce6756f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 68ccb76 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud ce6756f documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -495,15 +495,11 @@
 <div class="viewcode-block" id="Bucket.get_blob"><a class="viewcode-back" href="../../../../storage-buckets.html#google.cloud.storage.bucket.Bucket.get_blob">[docs]</a>    <span class="k">def</span> <span class="nf">get_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a blob object by name.</span>
 
-<span class="sd">        This will return None if the blob doesn&#39;t exist::</span>
+<span class="sd">        This will return None if the blob doesn&#39;t exist:</span>
 
-<span class="sd">          &gt;&gt;&gt; from google.cloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; client = storage.Client()</span>
-<span class="sd">          &gt;&gt;&gt; bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print(bucket.get_blob(&#39;/path/to/blob.txt&#39;))</span>
-<span class="sd">          &lt;Blob: my-bucket, /path/to/blob.txt&gt;</span>
-<span class="sd">          &gt;&gt;&gt; print(bucket.get_blob(&#39;/does-not-exist.txt&#39;))</span>
-<span class="sd">          None</span>
+<span class="sd">        .. literalinclude:: storage_snippets.py</span>
+<span class="sd">          :start-after: [START get_blob]</span>
+<span class="sd">          :end-before: [END get_blob]</span>
 
 <span class="sd">        :type blob_name: str</span>
 <span class="sd">        :param blob_name: The name of the blob to retrieve.</span>
@@ -658,19 +654,11 @@
 <span class="sd">        If the blob isn&#39;t found (backend 404), raises a</span>
 <span class="sd">        :class:`google.cloud.exceptions.NotFound`.</span>
 
-<span class="sd">        For example::</span>
+<span class="sd">        For example:</span>
 
-<span class="sd">          &gt;&gt;&gt; from google.cloud.exceptions import NotFound</span>
-<span class="sd">          &gt;&gt;&gt; from google.cloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; client = storage.Client()</span>
-<span class="sd">          &gt;&gt;&gt; bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print(bucket.list_blobs())</span>
-<span class="sd">          [&lt;Blob: my-bucket, my-file.txt&gt;]</span>
-<span class="sd">          &gt;&gt;&gt; bucket.delete_blob(&#39;my-file.txt&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; try:</span>
-<span class="sd">          ...   bucket.delete_blob(&#39;doesnt-exist&#39;)</span>
-<span class="sd">          ... except NotFound:</span>
-<span class="sd">          ...   pass</span>
+<span class="sd">        .. literalinclude:: storage_snippets.py</span>
+<span class="sd">          :start-after: [START delete_blob]</span>
+<span class="sd">          :end-before: [END delete_blob]</span>
 
 <span class="sd">        :type blob_name: str</span>
 <span class="sd">        :param blob_name: A blob name to delete.</span>
@@ -682,9 +670,12 @@
 
 <span class="sd">        :raises: :class:`google.cloud.exceptions.NotFound` (to suppress</span>
 <span class="sd">                 the exception, call ``delete_blobs``, passing a no-op</span>
-<span class="sd">                 ``on_error`` callback, e.g.::</span>
+<span class="sd">                 ``on_error`` callback, e.g.:</span>
 
-<span class="sd">                 &gt;&gt;&gt; bucket.delete_blobs([blob], on_error=lambda blob: None)</span>
+<span class="sd">        .. literalinclude:: storage_snippets.py</span>
+<span class="sd">            :start-after: [START delete_blobs]</span>
+<span class="sd">            :end-before: [END delete_blobs]</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">blob_path</span> <span class="o">=</span> <span class="n">Blob</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">)</span>
@@ -1038,16 +1029,17 @@
 <span class="sd">          (and to do that, you need to get approved somehow...).</span>
 
 <span class="sd">        If you want this bucket to host a website, just provide the name</span>
-<span class="sd">        of an index page and a page to use when a blob isn&#39;t found::</span>
+<span class="sd">        of an index page and a page to use when a blob isn&#39;t found:</span>
 
-<span class="sd">          &gt;&gt;&gt; from google.cloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; client = storage.Client()</span>
-<span class="sd">          &gt;&gt;&gt; bucket = client.get_bucket(bucket_name)</span>
-<span class="sd">          &gt;&gt;&gt; bucket.configure_website(&#39;index.html&#39;, &#39;404.html&#39;)</span>
+<span class="sd">        .. literalinclude:: storage_snippets.py</span>
+<span class="sd">          :start-after: [START configure_website]</span>
+<span class="sd">          :end-before: [END configure_website]</span>
 
-<span class="sd">        You probably should also make the whole bucket public::</span>
+<span class="sd">        You probably should also make the whole bucket public:</span>
 
-<span class="sd">          &gt;&gt;&gt; bucket.make_public(recursive=True, future=True)</span>
+<span class="sd">        .. literalinclude:: storage_snippets.py</span>
+<span class="sd">            :start-after: [START make_public]</span>
+<span class="sd">            :end-before: [END make_public]</span>
 
 <span class="sd">        This says: &quot;Make the bucket public, and all the stuff already in</span>
 <span class="sd">        the bucket, and anything else I add to the bucket.  Just make it</span>
@@ -1155,7 +1147,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'68ccb76',
+            VERSION:'ce6756f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

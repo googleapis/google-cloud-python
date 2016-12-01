@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.storage.client &mdash; google-cloud 68ccb76 documentation</title>
+  <title>google.cloud.storage.client &mdash; google-cloud ce6756f documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 68ccb76 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud ce6756f documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -435,12 +435,9 @@
 
 <span class="sd">        For example:</span>
 
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">          &gt;&gt;&gt; try:</span>
-<span class="sd">          &gt;&gt;&gt;   bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; except google.cloud.exceptions.NotFound:</span>
-<span class="sd">          &gt;&gt;&gt;   print(&#39;Sorry, that bucket does not exist!&#39;)</span>
+<span class="sd">        .. literalinclude:: storage_snippets.py</span>
+<span class="sd">            :start-after: [START get_bucket]</span>
+<span class="sd">            :end-before: [END get_bucket]</span>
 
 <span class="sd">        This implements &quot;storage.buckets.get&quot;.</span>
 
@@ -461,14 +458,9 @@
 <span class="sd">        You can use this if you would rather check for a None value</span>
 <span class="sd">        than catching an exception:</span>
 
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">          &gt;&gt;&gt; bucket = client.lookup_bucket(&#39;doesnt-exist&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print(bucket)</span>
-<span class="sd">          None</span>
-<span class="sd">          &gt;&gt;&gt; bucket = client.lookup_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print(bucket)</span>
-<span class="sd">          &lt;Bucket: my-bucket&gt;</span>
+<span class="sd">        .. literalinclude:: storage_snippets.py</span>
+<span class="sd">            :start-after: [START lookup_bucket]</span>
+<span class="sd">            :end-before: [END lookup_bucket]</span>
 
 <span class="sd">        :type bucket_name: str</span>
 <span class="sd">        :param bucket_name: The name of the bucket to get.</span>
@@ -486,11 +478,9 @@
 
 <span class="sd">        For example:</span>
 
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">          &gt;&gt;&gt; bucket = client.create_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print(bucket)</span>
-<span class="sd">          &lt;Bucket: my-bucket&gt;</span>
+<span class="sd">        .. literalinclude:: storage_snippets.py</span>
+<span class="sd">            :start-after: [START create_bucket]</span>
+<span class="sd">            :end-before: [END create_bucket]</span>
 
 <span class="sd">        This implements &quot;storage.buckets.insert&quot;.</span>
 
@@ -514,10 +504,9 @@
 <span class="sd">        This will not populate the list of blobs available in each</span>
 <span class="sd">        bucket.</span>
 
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">          &gt;&gt;&gt; for bucket in client.list_buckets():</span>
-<span class="sd">          ...   print(bucket)</span>
+<span class="sd">        .. literalinclude:: storage_snippets.py</span>
+<span class="sd">            :start-after: [START list_buckets]</span>
+<span class="sd">            :end-before: [END list_buckets]</span>
 
 <span class="sd">        This implements &quot;storage.buckets.list&quot;.</span>
 
@@ -614,7 +603,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'68ccb76',
+            VERSION:'ce6756f',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
