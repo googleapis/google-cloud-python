@@ -169,15 +169,8 @@ def _ensure_tuple_or_list(arg_name, tuple_or_list):
 def _determine_default_project(project=None):
     """Determine default project ID explicitly or implicitly as fall-back.
 
-    In implicit case, supports three environments. In order of precedence, the
-    implicit environments are:
-
-    * GOOGLE_CLOUD_PROJECT and GCLOUD_PROJECT environment variable
-    * GOOGLE_APPLICATION_CREDENTIALS JSON file
-    * Get default service project from
-      ``$ gcloud beta auth application-default login``
-    * Google App Engine application ID
-    * Google Compute Engine project ID (from metadata server)
+    See :func:`google.auth.default` for details on how the default project
+    is determined.
 
     :type project: str
     :param project: Optional. The project name to use as default.
