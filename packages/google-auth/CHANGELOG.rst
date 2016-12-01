@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v0.3.2
+------
+
+- Fixed an issue where an `ImportError` would occur if `google.oauth2` was imported before `google.auth`. (#88)
+
 v0.3.1
 ------
 
