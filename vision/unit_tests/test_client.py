@@ -72,14 +72,40 @@ class TestClient(unittest.TestCase):
                          client._connection._requested[0]['data'])
         self.assertTrue('faceAnnotations' in response)
 
-    def test_image_with_client(self):
+    def test_image_with_client_gcs_source(self):
         from google.cloud.vision.image import Image
 
         credentials = _Credentials()
         client = self._make_one(project=PROJECT,
                                 credentials=credentials)
-        image = client.image(source_uri=IMAGE_SOURCE)
-        self.assertIsInstance(image, Image)
+        gcs_image = client.image(source_uri=IMAGE_SOURCE)
+        self.assertIsInstance(gcs_image, Image)
+        self.assertEqual(gcs_image.source, IMAGE_SOURCE)
+
+    def test_image_with_client_raw_content(self):
+        from google.cloud.vision.image import Image
+
+        credentials = _Credentials()
+        client = self._make_one(project=PROJECT,
+                                credentials=credentials)
+        raw_image = client.image(content=IMAGE_CONTENT)
+        self.assertIsInstance(raw_image, Image)
+        self.assertEqual(raw_image.content, B64_IMAGE_CONTENT)
+
+    def test_image_with_client_filename(self):
+        from mock import mock_open
+        from mock import patch
+        from google.cloud.vision.image import Image
+
+        credentials = _Credentials()
+        client = self._make_one(project=PROJECT,
+                                credentials=credentials)
+        with patch('google.cloud.vision.image.open',
+                   mock_open(read_data=IMAGE_CONTENT)) as m:
+            file_image = client.image(filename='my_image.jpg')
+        m.assert_called_once_with('my_image.jpg', 'rb')
+        self.assertIsInstance(file_image, Image)
+        self.assertEqual(file_image.content, B64_IMAGE_CONTENT)
 
     def test_multiple_detection_from_content(self):
         import copy
