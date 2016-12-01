@@ -101,7 +101,17 @@ class Emotions(object):
                    anger_likelihood)
 
     @property
-    def joy_likelihood(self):
+    def anger(self):
+        """Likelihood of anger in detected face.
+
+        :rtype: str
+        :returns: String derived from
+                  :class:`~google.cloud.vision.face.Likelihood`.
+        """
+        return self._anger_likelihood
+
+    @property
+    def joy(self):
         """Likelihood of joy in detected face.
 
         :rtype: str
@@ -111,7 +121,7 @@ class Emotions(object):
         return self._joy_likelihood
 
     @property
-    def sorrow_likelihood(self):
+    def sorrow(self):
         """Likelihood of sorrow in detected face.
 
         :rtype: str
@@ -121,7 +131,7 @@ class Emotions(object):
         return self._sorrow_likelihood
 
     @property
-    def surprise_likelihood(self):
+    def surprise(self):
         """Likelihood of surprise in detected face.
 
         :rtype: str
@@ -129,16 +139,6 @@ class Emotions(object):
                   :class:`~google.cloud.vision.face.Likelihood`.
         """
         return self._surprise_likelihood
-
-    @property
-    def anger_likelihood(self):
-        """Likelihood of anger in detected face.
-
-        :rtype: str
-        :returns: String derived from
-                  :class:`~google.cloud.vision.face.Likelihood`.
-        """
-        return self._anger_likelihood
 
 
 class Face(object):
@@ -181,6 +181,16 @@ class Face(object):
         return cls(angles, bounds, detection_confidence, emotions, fd_bounds,
                    headwear_likelihood, image_properties, landmarks,
                    landmarking_confidence)
+
+    @property
+    def anger(self):
+        """Accessor to likelihood that the detected face is angry.
+
+        :rtype: str
+        :returns: String derived from
+                  :class:`~google.cloud.vision.face.Likelihood`.
+        """
+        return self.emotions.anger
 
     @property
     def angles(self):
@@ -230,7 +240,7 @@ class Face(object):
         return self._fd_bounds
 
     @property
-    def headwear_likelihood(self):
+    def headwear(self):
         """Headwear likelihood.
 
         :rtype: :class:`~google.cloud.vision.face.Likelihood`
@@ -247,6 +257,16 @@ class Face(object):
         :returns: ``FaceImageProperties`` object with image properties.
         """
         return self._image_properties
+
+    @property
+    def joy(self):
+        """Likelihood of joy in detected face.
+
+        :rtype: str
+        :returns: String derived from
+                  :class:`~google.cloud.vision.face.Likelihood`.
+        """
+        return self.emotions.joy
 
     @property
     def landmarks(self):
@@ -266,6 +286,26 @@ class Face(object):
                   determining the landmarks on a face.
         """
         return self._landmarking_confidence
+
+    @property
+    def sorrow(self):
+        """Likelihood of sorrow in detected face.
+
+        :rtype: str
+        :returns: String derived from
+                  :class:`~google.cloud.vision.face.Likelihood`.
+        """
+        return self.emotions.sorrow
+
+    @property
+    def surprise(self):
+        """Likelihood of surprise in detected face.
+
+        :rtype: str
+        :returns: String derived from
+                  :class:`~google.cloud.vision.face.Likelihood`.
+        """
+        return self.emotions.surprise
 
 
 class FaceImageProperties(object):
@@ -289,7 +329,7 @@ class FaceImageProperties(object):
         return cls(blurred_likelihood, underexposed_likelihood)
 
     @property
-    def blurred_likelihood(self):
+    def blurred(self):
         """Likelihood of the image being blurred.
 
         :rtype: str
@@ -299,7 +339,7 @@ class FaceImageProperties(object):
         return self._blurred_likelihood
 
     @property
-    def underexposed_likelihood(self):
+    def underexposed(self):
         """Likelihood that the image used for detection was underexposed.
 
         :rtype: str
