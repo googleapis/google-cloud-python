@@ -5,7 +5,9 @@ Contributing
 #. **Please sign one of the contributor license agreements below.**
 #. Fork the repo, develop and test your code changes, add docs.
 #. Make sure that your commit messages clearly describe the changes.
-#. Send a pull request.
+#. Send a pull request. (Please Read: `Faster Pull Request Reviews`_)
+
+.. _Faster Pull Request Reviews: https://github.com/kubernetes/kubernetes/blob/master/docs/devel/faster_reviews.md
 
 .. contents:: Here are some guidelines for hacking on ``google-cloud-python``.
 
