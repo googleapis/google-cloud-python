@@ -114,15 +114,16 @@ was detected.
     >>> client = vision.Client()
     >>> image = client.image(source_uri='gs://my-test-bucket/image.jpg')
     >>> faces = image.detect_faces(limit=10)
-    >>> faces[0].landmarks.left_eye.landmark_type
+    >>> first_face = faces[0]
+    >>> first_face.landmarks.left_eye.landmark_type
     'LEFT_EYE'
-    >>> faces[0].landmarks.left_eye.position.x_coordinate
+    >>> first_face.landmarks.left_eye.position.x_coordinate
     1301.2404
-    >>> faces[0].detection_confidence
+    >>> first_face.detection_confidence
     0.9863683
-    >>> faces[0].joy_likelihood
+    >>> first_face.joy
     0.54453093
-    >>> faces[0].anger_likelihood
+    >>> first_face.anger
     0.02545464
 
 

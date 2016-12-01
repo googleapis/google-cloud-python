@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.face &mdash; google-cloud e96c06a documentation</title>
+  <title>google.cloud.vision.face &mdash; google-cloud ce110fe documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud e96c06a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud ce110fe documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -387,7 +387,17 @@
                    <span class="n">anger_likelihood</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">joy_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">anger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Likelihood of anger in detected face.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: String derived from</span>
+<span class="sd">                  :class:`~google.cloud.vision.face.Likelihood`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_anger_likelihood</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">joy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Likelihood of joy in detected face.</span>
 
 <span class="sd">        :rtype: str</span>
@@ -397,7 +407,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_joy_likelihood</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">sorrow_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">sorrow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Likelihood of sorrow in detected face.</span>
 
 <span class="sd">        :rtype: str</span>
@@ -407,24 +417,14 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sorrow_likelihood</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">surprise_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">surprise</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Likelihood of surprise in detected face.</span>
 
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: String derived from</span>
 <span class="sd">                  :class:`~google.cloud.vision.face.Likelihood`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surprise_likelihood</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">anger_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Likelihood of anger in detected face.</span>
-
-<span class="sd">        :rtype: str</span>
-<span class="sd">        :returns: String derived from</span>
-<span class="sd">                  :class:`~google.cloud.vision.face.Likelihood`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_anger_likelihood</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_surprise_likelihood</span></div>
 
 
 <div class="viewcode-block" id="Face"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.Face">[docs]</a><span class="k">class</span> <span class="nc">Face</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -467,6 +467,16 @@
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">bounds</span><span class="p">,</span> <span class="n">detection_confidence</span><span class="p">,</span> <span class="n">emotions</span><span class="p">,</span> <span class="n">fd_bounds</span><span class="p">,</span>
                    <span class="n">headwear_likelihood</span><span class="p">,</span> <span class="n">image_properties</span><span class="p">,</span> <span class="n">landmarks</span><span class="p">,</span>
                    <span class="n">landmarking_confidence</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">anger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Accessor to likelihood that the detected face is angry.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: String derived from</span>
+<span class="sd">                  :class:`~google.cloud.vision.face.Likelihood`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">emotions</span><span class="o">.</span><span class="n">anger</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">angles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -516,7 +526,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fd_bounds</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">headwear_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">headwear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Headwear likelihood.</span>
 
 <span class="sd">        :rtype: :class:`~google.cloud.vision.face.Likelihood`</span>
@@ -535,6 +545,16 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image_properties</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">joy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Likelihood of joy in detected face.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: String derived from</span>
+<span class="sd">                  :class:`~google.cloud.vision.face.Likelihood`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">emotions</span><span class="o">.</span><span class="n">joy</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">landmarks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Accessor to the facial landmarks detected in a face.</span>
 
@@ -551,7 +571,27 @@
 <span class="sd">        :returns: Float representing the confidence of the Vision API in</span>
 <span class="sd">                  determining the landmarks on a face.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_landmarking_confidence</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_landmarking_confidence</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sorrow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Likelihood of sorrow in detected face.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: String derived from</span>
+<span class="sd">                  :class:`~google.cloud.vision.face.Likelihood`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">emotions</span><span class="o">.</span><span class="n">sorrow</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">surprise</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Likelihood of surprise in detected face.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: String derived from</span>
+<span class="sd">                  :class:`~google.cloud.vision.face.Likelihood`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">emotions</span><span class="o">.</span><span class="n">surprise</span></div>
 
 
 <div class="viewcode-block" id="FaceImageProperties"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.FaceImageProperties">[docs]</a><span class="k">class</span> <span class="nc">FaceImageProperties</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -575,7 +615,7 @@
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">blurred_likelihood</span><span class="p">,</span> <span class="n">underexposed_likelihood</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">blurred_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">blurred</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Likelihood of the image being blurred.</span>
 
 <span class="sd">        :rtype: str</span>
@@ -585,7 +625,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blurred_likelihood</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">underexposed_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">underexposed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Likelihood that the image used for detection was underexposed.</span>
 
 <span class="sd">        :rtype: str</span>
@@ -720,7 +760,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'e96c06a',
+            VERSION:'ce110fe',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

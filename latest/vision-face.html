@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Face &mdash; google-cloud e96c06a documentation</title>
+  <title>Vision Face &mdash; google-cloud ce110fe documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud e96c06a documentation" href="index.html"/>
+    <link rel="top" title="google-cloud ce110fe documentation" href="index.html"/>
         <link rel="next" title="Vision Image" href="vision-image.html"/>
         <link rel="prev" title="Vision Feature" href="vision-feature.html"/> 
 
@@ -376,8 +376,8 @@
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Emotions displayed by the face detected in an image.</p>
 <dl class="attribute">
-<dt id="google.cloud.vision.face.Emotions.anger_likelihood">
-<code class="descname">anger_likelihood</code><a class="headerlink" href="#google.cloud.vision.face.Emotions.anger_likelihood" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.face.Emotions.anger">
+<code class="descname">anger</code><a class="headerlink" href="#google.cloud.vision.face.Emotions.anger" title="Permalink to this definition">#</a></dt>
 <dd><p>Likelihood of anger in detected face.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -411,8 +411,8 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.vision.face.Emotions.joy_likelihood">
-<code class="descname">joy_likelihood</code><a class="headerlink" href="#google.cloud.vision.face.Emotions.joy_likelihood" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.face.Emotions.joy">
+<code class="descname">joy</code><a class="headerlink" href="#google.cloud.vision.face.Emotions.joy" title="Permalink to this definition">#</a></dt>
 <dd><p>Likelihood of joy in detected face.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -428,8 +428,8 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.vision.face.Emotions.sorrow_likelihood">
-<code class="descname">sorrow_likelihood</code><a class="headerlink" href="#google.cloud.vision.face.Emotions.sorrow_likelihood" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.face.Emotions.sorrow">
+<code class="descname">sorrow</code><a class="headerlink" href="#google.cloud.vision.face.Emotions.sorrow" title="Permalink to this definition">#</a></dt>
 <dd><p>Likelihood of sorrow in detected face.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -445,8 +445,8 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.vision.face.Emotions.surprise_likelihood">
-<code class="descname">surprise_likelihood</code><a class="headerlink" href="#google.cloud.vision.face.Emotions.surprise_likelihood" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.face.Emotions.surprise">
+<code class="descname">surprise</code><a class="headerlink" href="#google.cloud.vision.face.Emotions.surprise" title="Permalink to this definition">#</a></dt>
 <dd><p>Likelihood of surprise in detected face.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -475,6 +475,23 @@
 <em class="property">class </em><code class="descclassname">google.cloud.vision.face.</code><code class="descname">Face</code><span class="sig-paren">(</span><em>angles</em>, <em>bounds</em>, <em>detection_confidence</em>, <em>emotions</em>, <em>fd_bounds</em>, <em>headwear_likelihood</em>, <em>image_properties</em>, <em>landmarks</em>, <em>landmarking_confidence</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/face.html#Face"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.face.Face" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Representation of a face found by the Vision API</p>
+<dl class="attribute">
+<dt id="google.cloud.vision.face.Face.anger">
+<code class="descname">anger</code><a class="headerlink" href="#google.cloud.vision.face.Face.anger" title="Permalink to this definition">#</a></dt>
+<dd><p>Accessor to likelihood that the detected face is angry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">String derived from
+<code class="xref py py-class docutils literal"><span class="pre">Likelihood</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.vision.face.Face.angles">
 <code class="descname">angles</code><a class="headerlink" href="#google.cloud.vision.face.Face.angles" title="Permalink to this definition">#</a></dt>
@@ -575,8 +592,8 @@ likelihood.</td>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.vision.face.Face.headwear_likelihood">
-<code class="descname">headwear_likelihood</code><a class="headerlink" href="#google.cloud.vision.face.Face.headwear_likelihood" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.face.Face.headwear">
+<code class="descname">headwear</code><a class="headerlink" href="#google.cloud.vision.face.Face.headwear" title="Permalink to this definition">#</a></dt>
 <dd><p>Headwear likelihood.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -602,6 +619,23 @@ likelihood.</td>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.vision.face.FaceImageProperties" title="google.cloud.vision.face.FaceImageProperties"><code class="xref py py-class docutils literal"><span class="pre">FaceImageProperties</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">FaceImageProperties</span></code> object with image properties.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision.face.Face.joy">
+<code class="descname">joy</code><a class="headerlink" href="#google.cloud.vision.face.Face.joy" title="Permalink to this definition">#</a></dt>
+<dd><p>Likelihood of joy in detected face.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">String derived from
+<code class="xref py py-class docutils literal"><span class="pre">Likelihood</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -640,6 +674,40 @@ determining the landmarks on a face.</td>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.vision.face.Face.sorrow">
+<code class="descname">sorrow</code><a class="headerlink" href="#google.cloud.vision.face.Face.sorrow" title="Permalink to this definition">#</a></dt>
+<dd><p>Likelihood of sorrow in detected face.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">String derived from
+<code class="xref py py-class docutils literal"><span class="pre">Likelihood</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision.face.Face.surprise">
+<code class="descname">surprise</code><a class="headerlink" href="#google.cloud.vision.face.Face.surprise" title="Permalink to this definition">#</a></dt>
+<dd><p>Likelihood of surprise in detected face.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">String derived from
+<code class="xref py py-class docutils literal"><span class="pre">Likelihood</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -648,8 +716,8 @@ determining the landmarks on a face.</td>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A representation of the image properties from face detection.</p>
 <dl class="attribute">
-<dt id="google.cloud.vision.face.FaceImageProperties.blurred_likelihood">
-<code class="descname">blurred_likelihood</code><a class="headerlink" href="#google.cloud.vision.face.FaceImageProperties.blurred_likelihood" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.face.FaceImageProperties.blurred">
+<code class="descname">blurred</code><a class="headerlink" href="#google.cloud.vision.face.FaceImageProperties.blurred" title="Permalink to this definition">#</a></dt>
 <dd><p>Likelihood of the image being blurred.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -681,8 +749,8 @@ determining the landmarks on a face.</td>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.vision.face.FaceImageProperties.underexposed_likelihood">
-<code class="descname">underexposed_likelihood</code><a class="headerlink" href="#google.cloud.vision.face.FaceImageProperties.underexposed_likelihood" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.vision.face.FaceImageProperties.underexposed">
+<code class="descname">underexposed</code><a class="headerlink" href="#google.cloud.vision.face.FaceImageProperties.underexposed" title="Permalink to this definition">#</a></dt>
 <dd><p>Likelihood that the image used for detection was underexposed.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -991,7 +1059,7 @@ determining the landmarks on a face.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'e96c06a',
+            VERSION:'ce110fe',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

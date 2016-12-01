@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the Vision API &mdash; google-cloud e96c06a documentation</title>
+  <title>Using the Vision API &mdash; google-cloud ce110fe documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud e96c06a documentation" href="index.html"/>
+    <link rel="top" title="google-cloud ce110fe documentation" href="index.html"/>
         <link rel="next" title="Vision Annotations" href="vision-annotations.html"/>
         <link rel="prev" title="Translate Client" href="translate-client.html"/> 
 
@@ -392,15 +392,16 @@ was detected.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source_uri</span><span class="o">=</span><span class="s1">&#39;gs://my-test-bucket/image.jpg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">detect_faces</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">landmarks</span><span class="o">.</span><span class="n">left_eye</span><span class="o">.</span><span class="n">landmark_type</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_face</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_face</span><span class="o">.</span><span class="n">landmarks</span><span class="o">.</span><span class="n">left_eye</span><span class="o">.</span><span class="n">landmark_type</span>
 <span class="go">&#39;LEFT_EYE&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">landmarks</span><span class="o">.</span><span class="n">left_eye</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x_coordinate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_face</span><span class="o">.</span><span class="n">landmarks</span><span class="o">.</span><span class="n">left_eye</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x_coordinate</span>
 <span class="go">1301.2404</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detection_confidence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_face</span><span class="o">.</span><span class="n">detection_confidence</span>
 <span class="go">0.9863683</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">joy_likelihood</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_face</span><span class="o">.</span><span class="n">joy</span>
 <span class="go">0.54453093</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">anger_likelihood</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_face</span><span class="o">.</span><span class="n">anger</span>
 <span class="go">0.02545464</span>
 </pre></div>
 </div>
@@ -597,7 +598,7 @@ an empty list is returned. This behavior is similiar with all detection types.</
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'e96c06a',
+            VERSION:'ce110fe',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
