@@ -22,16 +22,9 @@ import json
 import logging
 import os
 
-from google.auth import _cloud_sdk
-from google.auth import app_engine
-from google.auth import compute_engine
 from google.auth import environment_vars
 from google.auth import exceptions
-from google.auth.compute_engine import _metadata
-import google.auth.credentials
 import google.auth.transport._http_client
-from google.oauth2 import service_account
-import google.oauth2.credentials
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -79,6 +72,8 @@ def _load_credentials_from_file(filename):
     credential_type = info.get('type')
 
     if credential_type == _AUTHORIZED_USER_TYPE:
+        from google.auth import _cloud_sdk
+
         try:
             credentials = _cloud_sdk.load_authorized_user_credentials(info)
         except ValueError as exc:
@@ -89,6 +84,8 @@ def _load_credentials_from_file(filename):
         return credentials, None
 
     elif credential_type == _SERVICE_ACCOUNT_TYPE:
+        from google.oauth2 import service_account
+
         try:
             credentials = (
                 service_account.Credentials.from_service_account_info(info))
@@ -107,6 +104,8 @@ def _load_credentials_from_file(filename):
 
 def _get_gcloud_sdk_credentials():
     """Gets the credentials and project ID from the Cloud SDK."""
+    from google.auth import _cloud_sdk
+
     # Check if application default credentials exist.
     credentials_filename = (
         _cloud_sdk.get_application_default_credentials_path())
@@ -152,6 +151,8 @@ def _get_explicit_environ_credentials():
 
 def _get_gae_credentials():
     """Gets Google App Engine App Identity credentials and project ID."""
+    from google.auth import app_engine
+
     try:
         credentials = app_engine.Credentials()
         project_id = app_engine.get_project_id()
@@ -166,6 +167,8 @@ def _get_gce_credentials(request=None):
     # to require no arguments. So, we'll use the _http_client transport which
     # uses http.client. This is only acceptable because the metadata server
     # doesn't do SSL and never requires proxies.
+    from google.auth import compute_engine
+    from google.auth.compute_engine import _metadata
 
     if request is None:
         request = google.auth.transport._http_client.Request()
@@ -258,6 +261,8 @@ def default(scopes=None, request=None):
             If no credentials were found, or if the credentials found were
             invalid.
     """
+    from google.auth.credentials import with_scopes_if_required
+
     explicit_project_id = os.environ.get(
         environment_vars.PROJECT,
         os.environ.get(environment_vars.LEGACY_PROJECT))
@@ -271,8 +276,7 @@ def default(scopes=None, request=None):
     for checker in checkers:
         credentials, project_id = checker()
         if credentials is not None:
-            credentials = google.auth.credentials.with_scopes_if_required(
-                credentials, scopes)
+            credentials = with_scopes_if_required(credentials, scopes)
             return credentials, explicit_project_id or project_id
 
     raise exceptions.DefaultCredentialsError(_HELP_MESSAGE)
