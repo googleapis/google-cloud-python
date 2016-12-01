@@ -284,33 +284,37 @@ class Test_rows_from_json(unittest.TestCase):
         coerced = self._call_fut(rows, schema)
         self.assertEqual(coerced, expected)
 
-    def test_w_int64_float64(self):
-        # "Standard" SQL dialect uses 'INT64', 'FLOAT64'.
+    def test_w_int64_float64_bool(self):
+        # "Standard" SQL dialect uses 'INT64', 'FLOAT64', 'BOOL'.
         candidate = _Field('REQUIRED', 'candidate', 'STRING')
         votes = _Field('REQUIRED', 'votes', 'INT64')
         percentage = _Field('REQUIRED', 'percentage', 'FLOAT64')
-        schema = [candidate, votes, percentage]
+        incumbent = _Field('REQUIRED', 'incumbent', 'BOOL')
+        schema = [candidate, votes, percentage, incumbent]
         rows = [
             {'f': [
                 {'v': 'Phred Phlyntstone'},
                 {'v': 8},
                 {'v': 0.25},
+                {'v': 'true'},
             ]},
             {'f': [
                 {'v': 'Bharney Rhubble'},
                 {'v': 4},
                 {'v': 0.125},
+                {'v': 'false'},
             ]},
             {'f': [
                 {'v': 'Wylma Phlyntstone'},
                 {'v': 20},
                 {'v': 0.625},
+                {'v': 'false'},
             ]},
         ]
         expected = [
-            ('Phred Phlyntstone', 8, 0.25),
-            ('Bharney Rhubble', 4, 0.125),
-            ('Wylma Phlyntstone', 20, 0.625),
+            ('Phred Phlyntstone', 8, 0.25, True),
+            ('Bharney Rhubble', 4, 0.125, False),
+            ('Wylma Phlyntstone', 20, 0.625, False),
         ]
         coerced = self._call_fut(rows, schema)
         self.assertEqual(coerced, expected)
