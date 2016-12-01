@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Python Logging Handler Sync Transport &mdash; google-cloud 7b74630 documentation</title>
+  <title>Error Reporting Utilities &mdash; google-cloud 7b74630 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="google-cloud 7b74630 documentation" href="index.html"/>
-        <link rel="next" title="Python Logging Handler Threaded Transport" href="logging-transports-thread.html"/>
-        <link rel="prev" title="Google Container Engine Log Handler" href="logging-handlers-container-engine.html"/> 
+        <link rel="next" title="Using the API" href="monitoring-usage.html"/>
+        <link rel="prev" title="Error Reporting Client" href="error-reporting-client.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -159,7 +159,7 @@
 <li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="logging-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-usage.html#cloud-logging-handler">Cloud Logging Handler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-usage.html#fluentd-logging-handlers">fluentd logging handlers</a></li>
@@ -173,15 +173,15 @@
 <li class="toctree-l1"><a class="reference internal" href="logging-handlers.html">Python Logging Module Handler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-handlers-app-engine.html">Google App Engine flexible Log Handler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-handlers-container-engine.html">Google Container Engine Log Handler</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Python Logging Handler Sync Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-transports-sync.html">Python Logging Handler Sync Transport</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-transports-thread.html">Python Logging Handler Threaded Transport</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-transports-base.html">Python Logging Handler Sync Transport</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Stackdriver Error Reporting</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="error-reporting-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="error-reporting-client.html">Client</a></li>
-<li class="toctree-l1"><a class="reference internal" href="error-reporting-util.html">Error Reporting Utilities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Error Reporting Utilities</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Stackdriver Monitoring</span></p>
 <ul>
@@ -271,11 +271,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Python Logging Handler Sync Transport</li>
+    <li>Error Reporting Utilities</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/logging-transports-sync.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/error-reporting-util.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -285,35 +285,36 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-google.cloud.logging.handlers.transports.sync">
-<span id="python-logging-handler-sync-transport"></span><h1>Python Logging Handler Sync Transport<a class="headerlink" href="#module-google.cloud.logging.handlers.transports.sync" title="Permalink to this headline">#</a></h1>
-<p>Transport for Python logging handler.</p>
-<p>Logs directly to the the Stackdriver Logging API with a synchronous call.</p>
-<dl class="class">
-<dt id="google.cloud.logging.handlers.transports.sync.SyncTransport">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.handlers.transports.sync.</code><code class="descname">SyncTransport</code><span class="sig-paren">(</span><em>client</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/handlers/transports/sync.html#SyncTransport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.sync.SyncTransport" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="logging-transports-base.html#google.cloud.logging.handlers.transports.base.Transport" title="google.cloud.logging.handlers.transports.base.Transport"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.handlers.transports.base.Transport</span></code></a></p>
-<p>Basic sychronous transport.</p>
-<p>Uses this library&#8217;s Logging client to directly make the API call.</p>
-<dl class="method">
-<dt id="google.cloud.logging.handlers.transports.sync.SyncTransport.send">
-<code class="descname">send</code><span class="sig-paren">(</span><em>record</em>, <em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/handlers/transports/sync.html#SyncTransport.send"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.handlers.transports.sync.SyncTransport.send" title="Permalink to this definition">#</a></dt>
-<dd><p>Overrides transport.send().</p>
+  <div class="section" id="module-google.cloud.error_reporting.util">
+<span id="error-reporting-utilities"></span><h1>Error Reporting Utilities<a class="headerlink" href="#module-google.cloud.error_reporting.util" title="Permalink to this headline">#</a></h1>
+<p>Utility functions for Stackdriver Error Reporting.</p>
+<dl class="function">
+<dt id="google.cloud.error_reporting.util.build_flask_context">
+<code class="descclassname">google.cloud.error_reporting.util.</code><code class="descname">build_flask_context</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/error_reporting/util.html#build_flask_context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.error_reporting.util.build_flask_context" title="Permalink to this definition">#</a></dt>
+<dd><p>Builds an HTTP context object from a Flask (Werkzeug) request object.</p>
+<blockquote>
+<div>This helper method extracts the relevant HTTP context from a Flask request
+object into an object ready to be sent to Error Reporting.</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@app.errorhandler</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">handle_error</span><span class="p">(</span><span class="n">exc</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">client</span><span class="o">.</span><span class="n">report_exception</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">http_context</span><span class="o">=</span><span class="n">build_flask_context</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="c1"># rest of error response code here</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>record</strong> (<a class="reference external" href="https://docs.python.org/2/library/logging.html#logging.LogRecord" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">logging.LogRecord</span></code></a>) &#8211; Python log record that the handler was called with.</li>
-<li><strong>message</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The message from the <code class="docutils literal"><span class="pre">LogRecord</span></code> after being
-formatted by the associated log formatters.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> (<code class="xref py py-class docutils literal"><span class="pre">werkzeug.wrappers.request</span></code>) &#8211; The Flask request object to convert.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="error-reporting-client.html#google.cloud.error_reporting.client.HTTPContext" title="google.cloud.error_reporting.client.HTTPContext"><code class="xref py py-class docutils literal"><span class="pre">HTTPContext</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An HTTPContext object ready to be sent to the Stackdriver Error
+Reporting API.</td>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -325,10 +326,10 @@ formatted by the associated log formatters.</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="logging-transports-thread.html" class="btn btn-neutral float-right" title="Python Logging Handler Threaded Transport" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="monitoring-usage.html" class="btn btn-neutral float-right" title="Using the API" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="logging-handlers-container-engine.html" class="btn btn-neutral" title="Google Container Engine Log Handler" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="error-reporting-client.html" class="btn btn-neutral" title="Error Reporting Client" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.connection &mdash; google-cloud 7b74630 documentation</title>
+  <title>google.cloud.error_reporting.util &mdash; google-cloud 7b74630 documentation</title>
   
 
   
@@ -272,7 +272,7 @@
       
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
       
-    <li>google.cloud.speech.connection</li>
+    <li>google.cloud.error_reporting.util</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -284,8 +284,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for google.cloud.speech.connection</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2016 Google Inc.</span>
+  <h1>Source code for google.cloud.error_reporting.util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2016 Google Inc. All Rights Reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -299,25 +299,36 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Create / interact with Google Cloud Speech connections.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Utility functions for Stackdriver Error Reporting.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">_http</span>
+<span class="kn">from</span> <span class="nn">google.cloud.error_reporting.client</span> <span class="k">import</span> <span class="n">HTTPContext</span>
 
 
-<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">_http</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Speech JSON REST API.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="build_flask_context"><a class="viewcode-back" href="../../../../error-reporting-util.html#google.cloud.error_reporting.util.build_flask_context">[docs]</a><span class="k">def</span> <span class="nf">build_flask_context</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Builds an HTTP context object from a Flask (Werkzeug) request object.</span>
 
-    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://speech.googleapis.com&#39;</span>
-    <span class="sd">&quot;&quot;&quot;The base of the API call URL.&quot;&quot;&quot;</span>
+<span class="sd">     This helper method extracts the relevant HTTP context from a Flask request</span>
+<span class="sd">     object into an object ready to be sent to Error Reporting.</span>
 
-    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s1">&#39;v1beta1&#39;</span>
-    <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
+<span class="sd">    .. code-block:: python</span>
 
-    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{api_base_url}</span><span class="s1">/</span><span class="si">{api_version}</span><span class="s1">/</span><span class="si">{path}</span><span class="s1">&#39;</span>
-    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
+<span class="sd">        &gt;&gt;&gt; @app.errorhandler(HTTPException)</span>
+<span class="sd">        ... def handle_error(exc):</span>
+<span class="sd">        ...     client.report_exception(</span>
+<span class="sd">        ...         http_context=build_flask_context(request))</span>
+<span class="sd">        ...     # rest of error response code here</span>
 
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,)</span>
-    <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as an API consumer.&quot;&quot;&quot;</span></div>
+<span class="sd">    :type request: :class:`werkzeug.wrappers.request`</span>
+<span class="sd">    :param request: The Flask request object to convert.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.error_reporting.client.HTTPContext`</span>
+<span class="sd">    :returns: An HTTPContext object ready to be sent to the Stackdriver Error</span>
+<span class="sd">              Reporting API.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">HTTPContext</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+                       <span class="n">user_agent</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user_agent</span><span class="o">.</span><span class="n">string</span><span class="p">,</span>
+                       <span class="n">referrer</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">,</span>
+                       <span class="n">remote_ip</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
