@@ -598,7 +598,6 @@ class TestClient(unittest.TestCase):
             deepcopy.assert_called_once_with(client._connection.http)
 
         self.assertIsInstance(handler, CloudLoggingHandler)
-        self.assertTrue(credentials.authorized, http_mock)
 
     def test_setup_logging(self):
         import httplib2
@@ -620,23 +619,10 @@ class TestClient(unittest.TestCase):
                 deepcopy.assert_called_once_with(client._connection.http)
 
         setup_logging.assert_called()
-        self.assertTrue(credentials.authorized, http_mock)
 
 
 class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
-
-    def authorize(self, http):
-        self.authorized = http
+    pass
 
 
 class _Connection(object):

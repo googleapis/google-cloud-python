@@ -158,9 +158,7 @@ class _Batch(object):
 
 
 class _Credentials(object):
-
-    def authorize(self, _):
-        pass
+    pass
 
 
 class _Connection(object):
