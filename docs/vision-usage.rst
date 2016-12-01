@@ -1,8 +1,11 @@
+####################
 Using the Vision API
-====================
+####################
 
+
+********************************
 Authentication and Configuration
---------------------------------
+********************************
 
 - For an overview of authentication in ``google-cloud-python``,
   see :doc:`google-cloud-auth`.
@@ -31,8 +34,43 @@ or pass in ``credentials`` and ``project`` explicitly.
      >>> client = vision.Client(project='my-project', credentials=creds)
 
 
+*****************************************************
+Creating an :class:`~google.cloud.vision.image.Image`
+*****************************************************
+
+The :class:`~google.cloud.vision.image.Image` class is used to load image
+data from sources such as a Google Cloud Storage URI, raw bytes, or a file.
+
+
+From a Google Cloud Storage URI
+===============================
+
+.. code-block:: python
+
+    >>> from google.cloud import vision
+    >>> client = vision.Client()
+    >>> image = client.image(source_uri='gs://my-test-bucket/image.jpg')
+
+
+From a filename
+===============
+
+.. code-block:: python
+
+    >>> image = client.image(filename='image.jpg')
+
+From raw bytes
+==============
+
+.. code-block:: python
+
+    >>> with open('./image.jpg', 'rb') as image_file:
+    ...     bytes_image = client.image(content=image_file.read())
+
+
+****************
 Manual Detection
-~~~~~~~~~~~~~~~~
+****************
 
 You can call the detection method manually.
 
@@ -60,8 +98,9 @@ You can call the detection method manually.
     'github'
 
 
+**************
 Face Detection
-~~~~~~~~~~~~~~
+**************
 
 :meth:`~google.cloud.vision.image.Image.detect_faces` will search for faces in
 an image and return the coordinates in the image of each `landmark type`_ that
@@ -87,8 +126,9 @@ was detected.
     0.02545464
 
 
+***************
 Label Detection
-~~~~~~~~~~~~~~~
+***************
 
 :meth:`~google.cloud.vision.image.Image.detect_labels` will attempt to label
 objects in an image. If there is a car, person and a dog in the image, label
@@ -107,8 +147,9 @@ certainty from ``0.0 to 1.0``.
     0.9863683
 
 
+******************
 Landmark Detection
-~~~~~~~~~~~~~~~~~~
+******************
 
 :meth:`~google.cloud.vision.image.Image.detect_landmarks` will attempt to
 detect landmarks such as "Mount Rushmore" and the "Sydney Opera House". The API
@@ -133,8 +174,9 @@ will also provide their known geographical locations if available.
     162
 
 
+**************
 Logo Detection
-~~~~~~~~~~~~~~
+**************
 
 With :meth:`~google.cloud.vision.image.Image.detect_logos`, you can identify
 brand logos in an image. Their shape and location in the image can be found by
@@ -162,8 +204,9 @@ iterating through the detected logo's ``vertices``.
     62
 
 
+*********************
 Safe Search Detection
-~~~~~~~~~~~~~~~~~~~~~
+*********************
 
 :meth:`~google.cloud.vision.image.Image.detect_safe_search` will try to
 categorize the entire contents of the image under four categories.
@@ -192,8 +235,9 @@ categorize the entire contents of the image under four categories.
     'LIKELY'
 
 
+**************
 Text Detection
-~~~~~~~~~~~~~~
+**************
 
 :meth:`~google.cloud.vision.image.Image.detect_text` performs OCR to find text
 in an image.
@@ -213,8 +257,9 @@ in an image.
     'some other text in the image'
 
 
+****************
 Image Properties
-~~~~~~~~~~~~~~~~
+****************
 
 :meth:`~google.cloud.vision.image.Image.detect_properties` will process the
 image and determine the dominant colors in the image.
@@ -238,8 +283,9 @@ image and determine the dominant colors in the image.
     0.758658
 
 
+****************
 No results found
-~~~~~~~~~~~~~~~~
+****************
 
 If no results for the detection performed can be extracted from the image, then
 an empty list is returned. This behavior is similiar with all detection types.
