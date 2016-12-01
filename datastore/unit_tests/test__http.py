@@ -455,9 +455,7 @@ class TestConnection(unittest.TestCase):
 
     def test_ctor_explicit(self):
         class Creds(object):
-
-            def create_scoped_required(self):
-                return False
+            pass
 
         creds = Creds()
         conn = self._make_one(creds)
@@ -475,23 +473,12 @@ class TestConnection(unittest.TestCase):
         self.assertIsInstance(conn.http, httplib2.Http)
 
     def test_http_w_creds(self):
-        import httplib2
-
-        authorized = object()
-
         class Creds(object):
-
-            def authorize(self, http):
-                self._called_with = http
-                return authorized
-
-            def create_scoped_required(self):
-                return False
+            pass
 
         creds = Creds()
         conn = self._make_one(creds)
-        self.assertIs(conn.http, authorized)
-        self.assertIsInstance(creds._called_with, httplib2.Http)
+        self.assertIs(conn.http.credentials, creds)
 
     def test_build_api_url_w_default_base_version(self):
         PROJECT = 'PROJECT'
