@@ -30,9 +30,10 @@ import google.auth
 from google.protobuf import timestamp_pb2
 import google_auth_httplib2
 
-try:  # pragma: NO COVER
+try:
     import grpc
-    from google.auth.transport.grpc import AuthMetadataPlugin
+    from google.auth.transport.grpc import (
+        AuthMetadataPlugin)  # pragma: NO COVER
 except ImportError:
     grpc = None
     AuthMetadataPlugin = None
