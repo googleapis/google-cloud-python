@@ -79,6 +79,7 @@ _CELLDATA_FROM_JSON = {
     'FLOAT': _float_from_json,
     'FLOAT64': _float_from_json,
     'BOOLEAN': _bool_from_json,
+    'BOOL': _bool_from_json,
     'TIMESTAMP': _datetime_from_json,
     'DATE': _date_from_json,
     'RECORD': _record_from_json,
