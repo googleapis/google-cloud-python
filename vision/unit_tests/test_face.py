@@ -44,13 +44,13 @@ class TestFace(unittest.TestCase):
     def test_facial_emotions(self):
         from google.cloud.vision.face import Likelihood
         self.assertEqual(Likelihood.VERY_LIKELY,
-                         self.face.emotions.joy_likelihood)
+                         self.face.joy)
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.emotions.sorrow_likelihood)
+                         self.face.sorrow)
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.emotions.surprise_likelihood)
+                         self.face.surprise)
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.emotions.anger_likelihood)
+                         self.face.anger)
 
     def test_faciale_angles(self):
         self.assertEqual(-0.43419784, self.face.angles.roll)
@@ -60,11 +60,11 @@ class TestFace(unittest.TestCase):
     def test_face_headware_and_blur_and_underexposed(self):
         from google.cloud.vision.face import Likelihood
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.image_properties.blurred_likelihood)
+                         self.face.image_properties.blurred)
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.headwear_likelihood)
+                         self.face.headwear)
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.image_properties.underexposed_likelihood)
+                         self.face.image_properties.underexposed)
 
     def test_face_bounds(self):
         self.assertEqual(4, len(self.face.bounds.vertices))
