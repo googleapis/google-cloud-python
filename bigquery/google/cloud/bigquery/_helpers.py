@@ -261,7 +261,7 @@ class ScalarQueryParameter(AbstractQueryParameter):
 
     :type type_: str
     :param type_: name of parameter type.  One of `'STRING'`, `'INT64'`,
-                  `'FLOAT64'`, `'BOOLEAN'`, `'TIMESTAMP'`, or `'DATE'`.
+                  `'FLOAT64'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
     :type value: str, int, float, bool, :class:`datetime.datetime`, or
                  :class:`datetime.date`.
@@ -278,7 +278,7 @@ class ScalarQueryParameter(AbstractQueryParameter):
 
         :type type_: str
         :param type_: name of paramter type.  One of `'STRING'`, `'INT64'`,
-                      `'FLOAT64'`, `'BOOLEAN'`, `'TIMESTAMP'`, or `'DATE'`.
+                      `'FLOAT64'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
         :type value: str, int, float, bool, :class:`datetime.datetime`, or
                      :class:`datetime.date`.
@@ -334,7 +334,7 @@ class ArrayQueryParameter(AbstractQueryParameter):
     :type array_type: str
     :param array_type:
         name of type of array elements.  One of `'STRING'`, `'INT64'`,
-        `'FLOAT64'`, `'BOOLEAN'`, `'TIMESTAMP'`, or `'DATE'`.
+        `'FLOAT64'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
     :type values: list of appropriate scalar type.
     :param values: the parameter array values.
@@ -351,7 +351,7 @@ class ArrayQueryParameter(AbstractQueryParameter):
         :type array_type: str
         :param array_type:
             name of type of array elements.  One of `'STRING'`, `'INT64'`,
-            `'FLOAT64'`, `'BOOLEAN'`, `'TIMESTAMP'`, or `'DATE'`.
+            `'FLOAT64'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
         :type values: list of appropriate scalar type
         :param values: the parameter array values.
