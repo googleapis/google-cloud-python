@@ -53,7 +53,7 @@ REQUIREMENTS = [
     'httplib2 >= 0.9.1',
     'googleapis-common-protos >= 1.3.4',
     'protobuf >= 3.0.0',
-    'google-auth >= 0.3.0, < 2.0.0dev',
+    'google-auth >= 0.3.2, < 2.0.0dev',
     'google-auth-httplib2',
     'six',
 ]
