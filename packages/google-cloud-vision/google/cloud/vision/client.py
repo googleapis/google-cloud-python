@@ -106,11 +106,14 @@ class Client(JSONClient):
 
         return response['responses'][0]
 
-    def image(self, content=None, source_uri=None):
+    def image(self, content=None, filename=None, source_uri=None):
         """Get instance of Image using current client.
 
         :type content: bytes
         :param content: Byte stream of an image.
+
+        :type filename: str
+        :param filename: Filename to image.
 
         :type source_uri: str
         :param source_uri: Google Cloud Storage URI of image.
@@ -118,4 +121,5 @@ class Client(JSONClient):
         :rtype: :class:`~google.cloud.vision.image.Image`
         :returns: Image instance with the current client attached.
         """
-        return Image(client=self, content=content, source_uri=source_uri)
+        return Image(client=self, content=content, filename=filename,
+                     source_uri=source_uri)
