@@ -68,14 +68,8 @@ Credential Discovery Precedence
 -------------------------------
 
 When loading the `Application Default Credentials`_,
-the library will check properties of your local environment
-in the following order:
-
-#. Application running in Google App Engine
-#. JSON or PKCS12/P12 keyfile pointed to by
-   ``GOOGLE_APPLICATION_CREDENTIALS`` environment variable
-#. Credentials provided by the Google Cloud SDK (via ``gcloud auth login``)
-#. Application running in Google Compute Engine
+the library will check for credentials in your environment by following the
+precedence outlined by :func:`google.auth.default`.
 
 Explicit Credentials
 ====================
@@ -93,10 +87,9 @@ However, you may want to be explicit because
   from different projects
 
 In these situations, you can create an explicit
-:class:`Credentials <oauth2client.client.Credentials>` object suited to your
-environment.
-After creation,
-you can pass it directly to a :class:`Client <google.cloud.client.Client>`:
+:class:`Credentials <google.auth.credentials.Credentials>` object suited to your
+environment. After creation, you can pass it directly to a
+:class:`Client <google.cloud.client.Client>`:
 
 .. code:: python
 
@@ -106,42 +99,35 @@ Google App Engine Environment
 -----------------------------
 
 To create
-:class:`credentials <oauth2client.contrib.appengine.AppAssertionCredentials>`
+:class:`credentials <google.auth.app_engine.Credentials>`
 just for Google App Engine:
 
 .. code:: python
 
-    from oauth2client.contrib.appengine import AppAssertionCredentials
-    credentials = AppAssertionCredentials([])
+    from google.auth import app_engine
+    credentials = app_engine.Credentials()
 
 Google Compute Engine Environment
 ---------------------------------
 
 To create
-:class:`credentials <oauth2client.contrib.gce.AppAssertionCredentials>`
+:class:`credentials <google.auth.compute_engine.Credentials>`
 just for Google Compute Engine:
 
 .. code:: python
 
-    from oauth2client.contrib.gce import AppAssertionCredentials
-    credentials = AppAssertionCredentials([])
+    from google.auth import compute_engine
+    credentials = compute_engine.Credentials()
 
 Service Accounts
 ----------------
 
-A `service account`_ can be used with both a JSON keyfile and
-a PKCS12/P12 keyfile.
+A `service account`_ is stored in a JSON keyfile.
 
-Directly creating ``credentials`` in `oauth2client`_ for a service
-account is a rather complex process,
-so as a convenience, the
+The
 :meth:`from_service_account_json() <google.cloud.client.Client.from_service_account_json>`
-and
-:meth:`from_service_account_p12() <google.cloud.client.Client.from_service_account_p12>`
-factories are provided to create a :class:`Client <google.cloud.client.Client>` with
+factory can be used to create a :class:`Client <google.cloud.client.Client>` with
 service account credentials.
-
-.. _oauth2client: http://oauth2client.readthedocs.io/en/latest/
 
 For example, with a JSON keyfile:
 
@@ -151,9 +137,9 @@ For example, with a JSON keyfile:
 
 .. tip::
 
-    Unless you have a specific reason to use a PKCS12/P12 key for your
-    service account,
-    we recommend using a JSON key.
+    Previously the Google Cloud Console would issue a PKCS12/P12 key for your
+    service account. This library does not support that key format. You can
+    generate a new JSON key for the same service account from the console.
 
 User Accounts (3-legged OAuth 2.0) with a refresh token
 -------------------------------------------------------
@@ -173,12 +159,13 @@ possible to call Google Cloud APIs with a user account via
 
 The simplest way to use credentials from a user account is via
 Application Default Credentials using ``gcloud auth login``
-(as mentioned above):
+(as mentioned above) and :func:`google.auth.default`:
 
 .. code:: python
 
-    from oauth2client.client import GoogleCredentials
-    credentials = GoogleCredentials.get_application_default()
+    import google.auth
+
+    credentials, project = google.auth.default()
 
 This will still follow the :ref:`precedence <Precedence>`
 described above,
@@ -192,10 +179,14 @@ After creation, :class:`Credentials <oauth2client.client.Credentials>`
 can be serialized with
 :meth:`to_json() <oauth2client.client.Credentials.to_json>`
 and stored in a file and then and deserialized with
-:meth:`from_json() <oauth2client.client.Credentials.from_json>`.
+:meth:`from_json() <oauth2client.client.Credentials.from_json>`. In order
+to use ``oauth2client``'s credentials with this library, you'll need to `convert
+them`_.
 
+.. _oauth2client: https://github.com/Google/oauth2client.
 .. _client secrets: https://developers.google.com/api-client-library/python/guide/aaa_oauth#flow_from_clientsecrets
 .. _webserver flow: https://developers.google.com/api-client-library/python/guide/aaa_oauth#OAuth2WebServerFlow
+.. _convert them: http://google-auth.readthedocs.io/en/stable/user-guide.html#user-credentials
 
 Troubleshooting
 ===============
@@ -307,9 +298,11 @@ you add the correct scopes for the APIs you want to access:
 Advanced Customization
 ======================
 
-Though the ``google-cloud-python`` library defaults to using `oauth2client`_
+Though the ``google-cloud-python`` library defaults to using `google-auth`_
 to sign requests and ``httplib2`` for sending requests,
 it is not a strict requirement.
+
+.. _google-auth: http://google-auth.readthedocs.io/en/stable/
 
 The :class:`Client <google.cloud.client.Client>` constructor accepts an optional
 ``http`` argument in place of a ``credentials`` object.
@@ -337,10 +330,7 @@ using the `requests`_ library.
 .. _custom HTTP class: https://github.com/GoogleCloudPlatform/google-cloud-python/issues/908#issuecomment-110811556
 .. _requests: http://www.python-requests.org/en/latest/
 
-As for handling authentication on your own,
-it may be easiest just to re-use bits from ``oauth2client``.
-Unfortunately, these parts have a hard dependency on ``httplib2``.
-We hope to enable using `custom HTTP libraries`_ with ``oauth2client`` at
+We hope to enable using `custom HTTP libraries`_ with this library at
 some point.
 
 .. _custom HTTP libraries: https://github.com/google/oauth2client/issues/128
