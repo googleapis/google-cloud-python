@@ -62,7 +62,7 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
 
 
 def secure_authorized_channel(
-        credentials, request, target, ssl_credentials=None):
+        credentials, request, target, ssl_credentials=None, **kwargs):
     """Creates a secure authorized gRPC channel.
 
     This creates a channel with SSL and :class:`AuthMetadataPlugin`. This
@@ -98,6 +98,7 @@ def secure_authorized_channel(
         target (str): The host and port of the service.
         ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
             credentials. This can be used to specify different certificates.
+        kwargs: Additional arguments to pass to :func:`grpc.secure_channel`.
 
     Returns:
         grpc.Channel: The created gRPC channel.
@@ -115,4 +116,4 @@ def secure_authorized_channel(
     composite_credentials = grpc.composite_channel_credentials(
         ssl_credentials, google_auth_credentials)
 
-    return grpc.secure_channel(target, composite_credentials)
+    return grpc.secure_channel(target, composite_credentials, **kwargs)

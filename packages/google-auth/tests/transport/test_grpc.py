@@ -82,7 +82,7 @@ def test_secure_authorized_channel(
     target = 'example.com:80'
 
     channel = google.auth.transport.grpc.secure_authorized_channel(
-        credentials, request, target)
+        credentials, request, target, options=mock.sentinel.options)
 
     # Check the auth plugin construction.
     auth_plugin = metadata_call_credentials.call_args[0][0]
@@ -101,7 +101,8 @@ def test_secure_authorized_channel(
 
     # Check the channel call.
     secure_channel.assert_called_once_with(
-        target, composite_channel_credentials.return_value)
+        target, composite_channel_credentials.return_value,
+        options=mock.sentinel.options)
     assert channel == secure_channel.return_value
 
 
