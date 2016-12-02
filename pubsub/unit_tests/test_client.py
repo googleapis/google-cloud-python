@@ -351,16 +351,7 @@ class TestClient(unittest.TestCase):
 
 
 class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
+    pass
 
 
 class _Iterator(object):

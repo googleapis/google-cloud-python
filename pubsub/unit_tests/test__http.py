@@ -905,7 +905,4 @@ class _Client(object):
 
 
 class _Credentials(object):
-
-    @staticmethod
-    def create_scoped_required():
-        return False
+    pass
