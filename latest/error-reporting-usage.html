@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud ce110fe documentation</title>
+  <title>Using the API &mdash; google-cloud 52867ec documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud ce110fe documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 52867ec documentation" href="index.html"/>
         <link rel="next" title="Error Reporting Client" href="error-reporting-client.html"/>
         <link rel="prev" title="Python Logging Handler Sync Transport" href="logging-transports-base.html"/> 
 
@@ -186,6 +186,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="error-reporting-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="error-reporting-util.html">Error Reporting Utilities</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Stackdriver Monitoring</span></p>
 <ul>
@@ -356,6 +357,18 @@ be used by Stackdriver Error Reporting to help group exceptions.</p>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">client</span><span class="o">.</span><span class="n">report_exception</span><span class="p">(</span><span class="n">http_context</span><span class="o">=</span><span class="n">http_context</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">))</span>
 </pre></div>
 </div>
+<p>An automatic helper to build the HTTP Context from a Flask (Werkzeug) request
+object is provided.</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.error_reporting</span> <span class="kn">import</span> <span class="n">build_flask_context</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@app.errorhandler</span><span class="p">(</span><span class="n">HTTPException</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">handle_error</span><span class="p">(</span><span class="n">exc</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">client</span><span class="o">.</span><span class="n">report_exception</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">http_context</span><span class="o">=</span><span class="n">build_flask_context</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="c1"># rest of error response code here</span>
+</pre></div>
+</div>
+</div></blockquote>
 </div>
 <div class="section" id="reporting-an-error-without-an-exception">
 <h2>Reporting an error without an exception<a class="headerlink" href="#reporting-an-error-without-an-exception" title="Permalink to this headline">#</a></h2>
@@ -421,7 +434,7 @@ error was reported.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'ce110fe',
+            VERSION:'52867ec',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.dns.client &mdash; google-cloud 52867ec documentation</title>
+  <title>google.cloud.error_reporting.util &mdash; google-cloud 52867ec documentation</title>
   
 
   
@@ -272,7 +272,7 @@
       
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
       
-    <li>google.cloud.dns.client</li>
+    <li>google.cloud.error_reporting.util</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -284,8 +284,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for google.cloud.dns.client</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2015 Google Inc.</span>
+  <h1>Source code for google.cloud.error_reporting.util</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2016 Google Inc. All Rights Reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -299,116 +299,36 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Client for interacting with the Google Cloud DNS API.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Utility functions for Stackdriver Error Reporting.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.error_reporting.client</span> <span class="k">import</span> <span class="n">HTTPContext</span>
 
 
-<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">JSONClient</span>
-<span class="kn">from</span> <span class="nn">google.cloud.dns.connection</span> <span class="k">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">google.cloud.dns.zone</span> <span class="k">import</span> <span class="n">ManagedZone</span>
-<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
+<div class="viewcode-block" id="build_flask_context"><a class="viewcode-back" href="../../../../error-reporting-util.html#google.cloud.error_reporting.util.build_flask_context">[docs]</a><span class="k">def</span> <span class="nf">build_flask_context</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Builds an HTTP context object from a Flask (Werkzeug) request object.</span>
 
+<span class="sd">     This helper method extracts the relevant HTTP context from a Flask request</span>
+<span class="sd">     object into an object ready to be sent to Error Reporting.</span>
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../dns-client.html#google.cloud.dns.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
+<span class="sd">    .. code-block:: python</span>
 
-<span class="sd">    :type project: str</span>
-<span class="sd">    :param project: the project which the client acts on behalf of. Will be</span>
-<span class="sd">                    passed when creating a zone.  If not passed,</span>
-<span class="sd">                    falls back to the default inferred from the environment.</span>
+<span class="sd">        &gt;&gt;&gt; @app.errorhandler(HTTPException)</span>
+<span class="sd">        ... def handle_error(exc):</span>
+<span class="sd">        ...     client.report_exception(</span>
+<span class="sd">        ...         http_context=build_flask_context(request))</span>
+<span class="sd">        ...     # rest of error response code here</span>
 
-<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or</span>
-<span class="sd">                       :class:`NoneType`</span>
-<span class="sd">    :param credentials: The OAuth2 Credentials to use for the connection</span>
-<span class="sd">                        owned by this client. If not passed (and if no ``http``</span>
-<span class="sd">                        object is passed), falls back to the default inferred</span>
-<span class="sd">                        from the environment.</span>
+<span class="sd">    :type request: :class:`werkzeug.wrappers.request`</span>
+<span class="sd">    :param request: The Flask request object to convert.</span>
 
-<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``.</span>
-<span class="sd">    :param http: An optional HTTP object to make requests. If not passed, an</span>
-<span class="sd">                 ``http`` object is created that is bound to the</span>
-<span class="sd">                 ``credentials`` for the current object.</span>
+<span class="sd">    :rtype: :class:`~google.cloud.error_reporting.client.HTTPContext`</span>
+<span class="sd">    :returns: An HTTPContext object ready to be sent to the Stackdriver Error</span>
+<span class="sd">              Reporting API.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
-
-<div class="viewcode-block" id="Client.quotas"><a class="viewcode-back" href="../../../../dns-client.html#google.cloud.dns.client.Client.quotas">[docs]</a>    <span class="k">def</span> <span class="nf">quotas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return DNS quotas for the project associated with this client.</span>
-
-<span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/dns/api/v1/projects/get</span>
-
-<span class="sd">        :rtype: mapping</span>
-<span class="sd">        :returns: keys for the mapping correspond to those of the ``quota``</span>
-<span class="sd">                  sub-mapping of the project resource.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;quota&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s1">&#39;kind&#39;</span><span class="p">}</span></div>
-
-<div class="viewcode-block" id="Client.list_zones"><a class="viewcode-back" href="../../../../dns-client.html#google.cloud.dns.client.Client.list_zones">[docs]</a>    <span class="k">def</span> <span class="nf">list_zones</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List zones for the project associated with this client.</span>
-
-<span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/dns/api/v1/managedZones/list</span>
-
-<span class="sd">        :type max_results: int</span>
-<span class="sd">        :param max_results: maximum number of zones to return, If not</span>
-<span class="sd">                            passed, defaults to a value set by the API.</span>
-
-<span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of zones. If</span>
-<span class="sd">                           not passed, the API will return the first page of</span>
-<span class="sd">                           zones.</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
-<span class="sd">        :returns: Iterator of :class:`~google.cloud.dns.zone.ManagedZone`</span>
-<span class="sd">                  belonging to this project.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/managedZones&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
-        <span class="k">return</span> <span class="n">HTTPIterator</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_zone</span><span class="p">,</span>
-            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;managedZones&#39;</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
-            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Client.zone"><a class="viewcode-back" href="../../../../dns-client.html#google.cloud.dns.client.Client.zone">[docs]</a>    <span class="k">def</span> <span class="nf">zone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dns_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a zone bound to this client.</span>
-
-<span class="sd">        :type name: str</span>
-<span class="sd">        :param name: Name of the zone.</span>
-
-<span class="sd">        :type dns_name: str</span>
-<span class="sd">        :param dns_name:</span>
-<span class="sd">            (Optional) DNS name of the zone.  If not passed, then calls to</span>
-<span class="sd">            :meth:`zone.create` will fail.</span>
-
-<span class="sd">        :type description: str</span>
-<span class="sd">        :param description:</span>
-<span class="sd">            (Optional) the description for the zone.  If not passed, defaults</span>
-<span class="sd">            to the value of &#39;dns_name&#39;.</span>
-
-<span class="sd">        :rtype: :class:`google.cloud.dns.zone.ManagedZone`</span>
-<span class="sd">        :returns: a new ``ManagedZone`` instance.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">ManagedZone</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dns_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-                           <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span></div></div>
-
-
-<span class="k">def</span> <span class="nf">_item_to_zone</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a JSON managed zone to the native object.</span>
-
-<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
-<span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
-
-<span class="sd">    :type resource: dict</span>
-<span class="sd">    :param resource: An item to be converted to a managed zone.</span>
-
-<span class="sd">    :rtype: :class:`.ManagedZone`</span>
-<span class="sd">    :returns: The next managed zone in the page.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ManagedZone</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HTTPContext</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+                       <span class="n">user_agent</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user_agent</span><span class="o">.</span><span class="n">string</span><span class="p">,</span>
+                       <span class="n">referrer</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">,</span>
+                       <span class="n">remote_ip</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
