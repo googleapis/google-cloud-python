@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Query &mdash; google-cloud e4ce734 documentation</title>
+  <title>Query &mdash; google-cloud 75c4115 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud e4ce734 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 75c4115 documentation" href="index.html"/>
         <link rel="next" title="Schemas" href="bigquery-schema.html"/>
         <link rel="prev" title="Tables" href="bigquery-table.html"/> 
 
@@ -290,7 +290,7 @@
 <p>Define API Queries.</p>
 <dl class="class">
 <dt id="google.cloud.bigquery.query.QueryResults">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.query.</code><code class="descname">QueryResults</code><span class="sig-paren">(</span><em>query</em>, <em>client</em>, <em>udf_resources=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/query.html#QueryResults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.query.</code><code class="descname">QueryResults</code><span class="sig-paren">(</span><em>query</em>, <em>client</em>, <em>udf_resources=()</em>, <em>query_parameters=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/query.html#QueryResults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Synchronous job: query tables.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -303,6 +303,9 @@
 for the dataset (which requires a project).</li>
 <li><strong>udf_resources</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; An iterable of
 <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.job.UDFResource</span></code>
+(empty by default)</li>
+<li><strong>query_parameters</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; An iterable of
+<code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery._helpers.AbstractQueryParameter</span></code>
 (empty by default)</li>
 </ul>
 </td>
@@ -677,7 +680,7 @@ until set by the server).</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'e4ce734',
+            VERSION:'75c4115',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

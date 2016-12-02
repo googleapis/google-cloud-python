@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud e4ce734 documentation</title>
+  <title>Using the API &mdash; google-cloud 75c4115 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud e4ce734 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 75c4115 documentation" href="index.html"/>
         <link rel="next" title="BigQuery Client" href="bigquery-client.html"/>
         <link rel="prev" title="IAM Policy" href="pubsub-iam.html"/> 
 
@@ -524,19 +524,28 @@ dataset will have the value as their expiration period.</li>
 <li>Copy a table</li>
 </ul>
 <p>List jobs for a project:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">jobs</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">()</span>   <span class="c1"># API request</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">:</span>
-            <span class="n">do_something_with</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">break</span>
-        <span class="n">jobs</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>  <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">job_iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">job_iterator</span><span class="p">:</span>   <span class="c1"># API request(s)</span>
+        <span class="n">do_something_with</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="section" id="querying-data-synchronous">
 <h3>Querying data (synchronous)<a class="headerlink" href="#querying-data-synchronous" title="Permalink to this headline">#</a></h3>
 <p>Run a query which can be expected to complete within bounded time:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_sync_query</span><span class="p">(</span><span class="n">LIMITED</span><span class="p">)</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="n">TIMEOUT_MS</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>             <span class="c1"># API request</span>
+
+    <span class="k">assert</span> <span class="n">query</span><span class="o">.</span><span class="n">complete</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="n">LIMIT</span>
+    <span class="k">assert</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">schema</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Run a query using a named query parameter:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">ScalarQueryParameter</span>
+    <span class="n">param</span> <span class="o">=</span> <span class="n">ScalarQueryParameter</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="s1">&#39;TX&#39;</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_sync_query</span><span class="p">(</span><span class="n">LIMITED</span><span class="p">,</span> <span class="n">query_parameters</span><span class="o">=</span><span class="p">[</span><span class="n">param</span><span class="p">])</span>
+    <span class="n">query</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">query</span><span class="o">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="n">TIMEOUT_MS</span>
     <span class="n">query</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>             <span class="c1"># API request</span>
 
@@ -869,7 +878,7 @@ is submitted to the BigQuery back-end.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'e4ce734',
+            VERSION:'75c4115',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

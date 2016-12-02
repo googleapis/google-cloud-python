@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.job &mdash; google-cloud e4ce734 documentation</title>
+  <title>google.cloud.bigquery.job &mdash; google-cloud 75c4115 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud e4ce734 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 75c4115 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -310,10 +310,10 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">Table</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_build_schema_resource</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_parse_schema_resource</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">QueryParametersProperty</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">UDFResourcesProperty</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_EnumProperty</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_TypedProperty</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_build_udf_resources</span>
 
 
 <div class="viewcode-block" id="Compression"><a class="viewcode-back" href="../../../../bigquery-job.html#google.cloud.bigquery.job.Compression">[docs]</a><span class="k">class</span> <span class="nc">Compression</span><span class="p">(</span><span class="n">_EnumProperty</span><span class="p">):</span>
@@ -1196,14 +1196,23 @@
 <span class="sd">    :param udf_resources: An iterable of</span>
 <span class="sd">                        :class:`google.cloud.bigquery._helpers.UDFResource`</span>
 <span class="sd">                        (empty by default)</span>
+
+<span class="sd">    :type query_parameters: tuple</span>
+<span class="sd">    :param query_parameters:</span>
+<span class="sd">        An iterable of</span>
+<span class="sd">        :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`</span>
+<span class="sd">        (empty by default)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;query&#39;</span>
     <span class="n">_UDF_KEY</span> <span class="o">=</span> <span class="s1">&#39;userDefinedFunctionResources&#39;</span>
+    <span class="n">_QUERY_PARAMETERS_KEY</span> <span class="o">=</span> <span class="s1">&#39;queryParameters&#39;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">udf_resources</span><span class="o">=</span><span class="p">()):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span>
+                 <span class="n">udf_resources</span><span class="o">=</span><span class="p">(),</span> <span class="n">query_parameters</span><span class="o">=</span><span class="p">()):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">QueryJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">udf_resources</span> <span class="o">=</span> <span class="n">udf_resources</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_parameters</span> <span class="o">=</span> <span class="n">query_parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span> <span class="o">=</span> <span class="n">_AsyncQueryConfiguration</span><span class="p">()</span>
 
     <span class="n">allow_large_results</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;allow_large_results&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
@@ -1235,6 +1244,8 @@
     <span class="sd">&quot;&quot;&quot;See:</span>
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.priority</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">query_parameters</span> <span class="o">=</span> <span class="n">QueryParametersProperty</span><span class="p">()</span>
 
     <span class="n">udf_resources</span> <span class="o">=</span> <span class="n">UDFResourcesProperty</span><span class="p">()</span>
 
@@ -1319,8 +1330,19 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum_bytes_billed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;maximumBytesBilled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum_bytes_billed</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_udf_resources</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">configuration</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_UDF_KEY</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_udf_resources</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_udf_resources</span><span class="p">)</span>
+            <span class="n">configuration</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_UDF_KEY</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">{</span><span class="n">udf_resource</span><span class="o">.</span><span class="n">udf_type</span><span class="p">:</span> <span class="n">udf_resource</span><span class="o">.</span><span class="n">value</span><span class="p">}</span>
+                <span class="k">for</span> <span class="n">udf_resource</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_udf_resources</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_parameters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">configuration</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_QUERY_PARAMETERS_KEY</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">query_parameter</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">query_parameter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_parameters</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;parameterMode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;POSITIONAL&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;parameterMode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;NAMED&#39;</span>
 
     <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for :meth:`begin`.&quot;&quot;&quot;</span>
@@ -1424,7 +1446,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'e4ce734',
+            VERSION:'75c4115',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

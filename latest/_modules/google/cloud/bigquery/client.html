@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.client &mdash; google-cloud e4ce734 documentation</title>
+  <title>google.cloud.bigquery.client &mdash; google-cloud 75c4115 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud e4ce734 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 75c4115 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -562,7 +562,8 @@
         <span class="k">return</span> <span class="n">ExtractTableToStorageJob</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span>
                                         <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.run_async_query"><a class="viewcode-back" href="../../../../bigquery-client.html#google.cloud.bigquery.client.Client.run_async_query">[docs]</a>    <span class="k">def</span> <span class="nf">run_async_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_name</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.run_async_query"><a class="viewcode-back" href="../../../../bigquery-client.html#google.cloud.bigquery.client.Client.run_async_query">[docs]</a>    <span class="k">def</span> <span class="nf">run_async_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span>
+                        <span class="n">udf_resources</span><span class="o">=</span><span class="p">(),</span> <span class="n">query_parameters</span><span class="o">=</span><span class="p">()):</span>
         <span class="sd">&quot;&quot;&quot;Construct a job for running a SQL query asynchronously.</span>
 
 <span class="sd">        See:</span>
@@ -574,21 +575,47 @@
 <span class="sd">        :type query: str</span>
 <span class="sd">        :param query: SQL query to be executed</span>
 
+<span class="sd">        :type udf_resources: tuple</span>
+<span class="sd">        :param udf_resources: An iterable of</span>
+<span class="sd">                            :class:`google.cloud.bigquery._helpers.UDFResource`</span>
+<span class="sd">                            (empty by default)</span>
+
+<span class="sd">        :type query_parameters: tuple</span>
+<span class="sd">        :param query_parameters:</span>
+<span class="sd">            An iterable of</span>
+<span class="sd">            :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`</span>
+<span class="sd">            (empty by default)</span>
+
 <span class="sd">        :rtype: :class:`google.cloud.bigquery.job.QueryJob`</span>
 <span class="sd">        :returns: a new ``QueryJob`` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">QueryJob</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">QueryJob</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">udf_resources</span><span class="o">=</span><span class="n">udf_resources</span><span class="p">,</span>
+                        <span class="n">query_parameters</span><span class="o">=</span><span class="n">query_parameters</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.run_sync_query"><a class="viewcode-back" href="../../../../bigquery-client.html#google.cloud.bigquery.client.Client.run_sync_query">[docs]</a>    <span class="k">def</span> <span class="nf">run_sync_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.run_sync_query"><a class="viewcode-back" href="../../../../bigquery-client.html#google.cloud.bigquery.client.Client.run_sync_query">[docs]</a>    <span class="k">def</span> <span class="nf">run_sync_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">udf_resources</span><span class="o">=</span><span class="p">(),</span> <span class="n">query_parameters</span><span class="o">=</span><span class="p">()):</span>
         <span class="sd">&quot;&quot;&quot;Run a SQL query synchronously.</span>
 
 <span class="sd">        :type query: str</span>
 <span class="sd">        :param query: SQL query to be executed</span>
 
+<span class="sd">        :type udf_resources: tuple</span>
+<span class="sd">        :param udf_resources: An iterable of</span>
+<span class="sd">                            :class:`google.cloud.bigquery._helpers.UDFResource`</span>
+<span class="sd">                            (empty by default)</span>
+
+<span class="sd">        :type query_parameters: tuple</span>
+<span class="sd">        :param query_parameters:</span>
+<span class="sd">            An iterable of</span>
+<span class="sd">            :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`</span>
+<span class="sd">            (empty by default)</span>
+
 <span class="sd">        :rtype: :class:`google.cloud.bigquery.query.QueryResults`</span>
 <span class="sd">        :returns: a new ``QueryResults`` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">QueryResults</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">QueryResults</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">udf_resources</span><span class="o">=</span><span class="n">udf_resources</span><span class="p">,</span>
+                            <span class="n">query_parameters</span><span class="o">=</span><span class="n">query_parameters</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># pylint: disable=unused-argument</span>
@@ -669,7 +696,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'e4ce734',
+            VERSION:'75c4115',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
