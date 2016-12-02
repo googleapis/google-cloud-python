@@ -17,7 +17,7 @@ import unittest
 
 ANNOTATE_NAME = 'Moon'
 ANNOTATE_CONTENT = 'A cow jumped over the %s.' % (ANNOTATE_NAME,)
-ANNOTATE_POLARITY = 1
+ANNOTATE_SCORE = 1
 ANNOTATE_MAGNITUDE = 0.2
 ANNOTATE_SALIENCE = 0.11793101
 ANNOTATE_WIKI_URL = 'http://en.wikipedia.org/wiki/Natural_satellite'
@@ -286,20 +286,20 @@ class TestDocument(unittest.TestCase):
         client._connection.api_request.assert_called_once_with(
             path='analyzeEntities', method='POST', data=expected)
 
-    def _verify_sentiment(self, sentiment, polarity, magnitude):
+    def _verify_sentiment(self, sentiment, score, magnitude):
         from google.cloud.language.sentiment import Sentiment
 
         self.assertIsInstance(sentiment, Sentiment)
-        self.assertEqual(sentiment.polarity, polarity)
+        self.assertEqual(sentiment.score, score)
         self.assertEqual(sentiment.magnitude, magnitude)
 
     def test_analyze_sentiment(self):
         content = 'All the pretty horses.'
-        polarity = 1
+        score = 1
         magnitude = 0.6
         response = {
             'documentSentiment': {
-                'polarity': polarity,
+                'score': score,
                 'magnitude': magnitude,
             },
             'language': 'en-US',
@@ -308,12 +308,163 @@ class TestDocument(unittest.TestCase):
         document = self._make_one(client, content)
 
         sentiment = document.analyze_sentiment()
-        self._verify_sentiment(sentiment, polarity, magnitude)
+        self._verify_sentiment(sentiment, score, magnitude)
 
         # Verify the request.
         expected = self._expected_data(content)
         client._connection.api_request.assert_called_once_with(
             path='analyzeSentiment', method='POST', data=expected)
+
+    def _verify_token(self, token, text_content, part_of_speech, lemma):
+        from google.cloud.language.syntax import Token
+        from google.cloud.language.syntax import PartOfSpeech
+
+        self.assertIsInstance(token, Token)
+        self.assertEqual(token.text_content, text_content)
+        self.assertEqual(token.part_of_speech, part_of_speech)
+        self.assertEqual(token.lemma, lemma)
+
+    def test_analyze_syntax(self):
+        from google.cloud.language.document import Encoding
+        from google.cloud.language.syntax import Token
+        from google.cloud.language.syntax import PartOfSpeech
+
+        name1 = 'R-O-C-K'
+        name2 = 'USA'
+        content = name1 + ' in the ' + name2
+        response = {
+            'sentences': [
+                {
+                    'text': {
+                        'content': 'R-O-C-K in the USA',
+                        'beginOffset': -1,
+                    },
+                    'sentiment': None,
+                }
+            ],
+            'tokens': [
+                {
+                    'text': {
+                        'content': 'R-O-C-K',
+                        'beginOffset': -1,
+                    },
+                    'partOfSpeech': {
+                        'tag': 'NOUN',
+                        'aspect': 'ASPECT_UNKNOWN',
+                        'case': 'CASE_UNKNOWN',
+                        'form': 'FORM_UNKNOWN',
+                        'gender': 'GENDER_UNKNOWN',
+                        'mood': 'MOOD_UNKNOWN',
+                        'number': 'SINGULAR',
+                        'person': 'PERSON_UNKNOWN',
+                        'proper': 'PROPER',
+                        'reciprocity': 'RECIPROCITY_UNKNOWN',
+                        'tense': 'TENSE_UNKNOWN',
+                        'voice': 'VOICE_UNKNOWN',
+                    },
+                    'dependencyEdge': {
+                        'headTokenIndex': 0,
+                        'label': 'ROOT',
+                    },
+                    'lemma': 'R-O-C-K',
+                },
+                {
+                    'text': {
+                        'content': 'in',
+                        'beginOffset': -1,
+                    },
+                    'partOfSpeech': {
+                        'tag': 'ADP',
+                        'aspect': 'ASPECT_UNKNOWN',
+                        'case': 'CASE_UNKNOWN',
+                        'form': 'FORM_UNKNOWN',
+                        'gender': 'GENDER_UNKNOWN',
+                        'mood': 'MOOD_UNKNOWN',
+                        'number': 'NUMBER_UNKNOWN',
+                        'person': 'PERSON_UNKNOWN',
+                        'proper': 'PROPER_UNKNOWN',
+                        'reciprocity': 'RECIPROCITY_UNKNOWN',
+                        'tense': 'TENSE_UNKNOWN',
+                        'voice': 'VOICE_UNKNOWN',
+                    },
+                    'dependencyEdge': {
+                        'headTokenIndex': 0,
+                        'label': 'PREP',
+                    },
+                    'lemma': 'in',
+                },
+                {
+                    'text': {
+                        'content': 'the',
+                        'beginOffset': -1,
+                    },
+                    'partOfSpeech': {
+                        'tag': 'DET',
+                        'aspect': 'ASPECT_UNKNOWN',
+                        'case': 'CASE_UNKNOWN',
+                        'form': 'FORM_UNKNOWN',
+                        'gender': 'GENDER_UNKNOWN',
+                        'mood': 'MOOD_UNKNOWN',
+                        'number': 'NUMBER_UNKNOWN',
+                        'person': 'PERSON_UNKNOWN',
+                        'proper': 'PROPER_UNKNOWN',
+                        'reciprocity': 'RECIPROCITY_UNKNOWN',
+                        'tense': 'TENSE_UNKNOWN',
+                        'voice': 'VOICE_UNKNOWN',
+                    },
+                    'dependencyEdge': {
+                        'headTokenIndex': 3,
+                        'label': 'DET',
+                    },
+                    'lemma': 'the',
+                },
+                {
+                    'text': {
+                        'content': 'USA',
+                        'beginOffset': -1,
+                    },
+                    'partOfSpeech': {
+                        'tag': 'NOUN',
+                        'aspect': 'ASPECT_UNKNOWN',
+                        'case': 'CASE_UNKNOWN',
+                        'form': 'FORM_UNKNOWN',
+                        'gender': 'GENDER_UNKNOWN',
+                        'mood': 'MOOD_UNKNOWN',
+                        'number': 'SINGULAR',
+                        'person': 'PERSON_UNKNOWN',
+                        'proper': 'PROPER',
+                        'reciprocity': 'RECIPROCITY_UNKNOWN',
+                        'tense': 'TENSE_UNKNOWN',
+                        'voice': 'VOICE_UNKNOWN',
+                    },
+                    'dependencyEdge': {
+                        'headTokenIndex': 1,
+                        'label': 'POBJ',
+                    },
+                    'lemma': 'USA',
+                },
+            ],
+            'language': 'en-US',
+        }
+        client = make_mock_client(response)
+        document = self._make_one(client, content)
+
+        tokens = document.analyze_syntax()
+        self.assertEqual(len(tokens), 4)
+        token1 = tokens[0]
+        self._verify_token(token1, name1, PartOfSpeech.NOUN, name1)
+        token2 = tokens[1]
+        self._verify_token(token2, 'in', PartOfSpeech.ADPOSITION, 'in')
+        token3 = tokens[2]
+        self._verify_token(token3, 'the', PartOfSpeech.DETERMINER, 'the')
+        token4 = tokens[3]
+        self._verify_token(token4, name2, PartOfSpeech.NOUN, name2)
+
+        # Verify the request.
+        expected = self._expected_data(
+            content, encoding_type=Encoding.UTF8)
+        client._connection.api_request.assert_called_once_with(
+            path='analyzeSyntax', method='POST', data=expected)
 
     def _verify_sentences(self, include_syntax, annotations):
         from google.cloud.language.syntax import Sentence
@@ -357,7 +508,7 @@ class TestDocument(unittest.TestCase):
         }
         if include_sentiment:
             response['documentSentiment'] = {
-                'polarity': ANNOTATE_POLARITY,
+                'score': ANNOTATE_SCORE,
                 'magnitude': ANNOTATE_MAGNITUDE,
             }
 
@@ -375,7 +526,7 @@ class TestDocument(unittest.TestCase):
         # Sentiment
         if include_sentiment:
             self._verify_sentiment(annotations.sentiment,
-                                   ANNOTATE_POLARITY, ANNOTATE_MAGNITUDE)
+                                   ANNOTATE_SCORE, ANNOTATE_MAGNITUDE)
         else:
             self.assertIsNone(annotations.sentiment)
         # Entity

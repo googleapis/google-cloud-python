@@ -58,9 +58,9 @@ class Entity(object):
     and put in its own property.
 
     .. _Entity message: https://cloud.google.com/natural-language/\
-                        reference/rest/v1beta1/Entity
+                        reference/rest/v1/Entity
     .. _EntityType enum: https://cloud.google.com/natural-language/\
-                         reference/rest/v1beta1/Entity#Type
+                         reference/rest/v1/Entity#Type
 
     See `Entity message`_.
 
