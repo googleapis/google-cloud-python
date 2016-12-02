@@ -38,14 +38,14 @@ class TestClient(unittest.TestCase):
     VERSION = 'myversion'
 
     def test_ctor_default(self):
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS)
         self.assertEquals(target.service, target.DEFAULT_SERVICE)
         self.assertEquals(target.version, None)
 
     def test_ctor_params(self):
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS,
                                 service=self.SERVICE,
@@ -54,7 +54,7 @@ class TestClient(unittest.TestCase):
         self.assertEquals(target.version, self.VERSION)
 
     def test_report_exception(self):
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS)
 
@@ -74,7 +74,7 @@ class TestClient(unittest.TestCase):
         self.assertIn('test_client.py', payload['message'])
 
     def test_report_exception_with_service_version_in_constructor(self):
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         SERVICE = "notdefault"
         VERSION = "notdefaultversion"
         target = self._make_one(project=self.PROJECT,
@@ -109,7 +109,7 @@ class TestClient(unittest.TestCase):
         self.assertEquals(payload['context']['user'], USER)
 
     def test_report(self):
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS)
 
@@ -126,19 +126,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(report_location['functionName'], 'test_report')
         self.assertGreater(report_location['lineNumber'], 100)
         self.assertLess(report_location['lineNumber'], 150)
-
-
-class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
 
 
 class _Logger(object):
