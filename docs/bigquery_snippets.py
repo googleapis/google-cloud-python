@@ -461,13 +461,9 @@ def client_list_jobs(client, _):
         pass
 
     # [START client_list_jobs]
-    jobs, token = client.list_jobs()   # API request
-    while True:
-        for job in jobs:
-            do_something_with(job)
-        if token is None:
-            break
-        jobs, token = client.list_jobs(page_token=token)  # API request
+    job_iterator = client.list_jobs()
+    for job in job_iterator:   # API request(s)
+        do_something_with(job)
     # [END client_list_jobs]
 
 
@@ -487,6 +483,30 @@ def client_run_sync_query(client, _):
     assert len(query.rows) == LIMIT
     assert [field.name for field in query.schema] == ['name']
     # [END client_run_sync_query]
+
+
+@snippet
+def client_run_sync_query_w_param(client, _):
+    """Run a synchronous query using a query parameter"""
+    QUERY_W_PARAM = (
+        'SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` '
+        'WHERE state = @state')
+    LIMIT = 100
+    LIMITED = '%s LIMIT %d' % (QUERY_W_PARAM, LIMIT)
+    TIMEOUT_MS = 1000
+
+    # [START client_run_sync_query_w_param]
+    from google.cloud.bigquery import ScalarQueryParameter
+    param = ScalarQueryParameter('state', 'STRING', 'TX')
+    query = client.run_sync_query(LIMITED, query_parameters=[param])
+    query.use_legacy_sql = False
+    query.timeout_ms = TIMEOUT_MS
+    query.run()             # API request
+
+    assert query.complete
+    assert len(query.rows) == LIMIT
+    assert [field.name for field in query.schema] == ['name']
+    # [END client_run_sync_query_w_param]
 
 
 @snippet

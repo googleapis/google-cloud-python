@@ -21,7 +21,7 @@ from google.cloud.bigquery._helpers import _rows_from_json
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.table import _parse_schema_resource
-from google.cloud.bigquery._helpers import _build_udf_resources
+from google.cloud.bigquery._helpers import QueryParametersProperty
 from google.cloud.bigquery._helpers import UDFResourcesProperty
 
 
@@ -53,16 +53,24 @@ class QueryResults(object):
     :param udf_resources: An iterable of
                         :class:`google.cloud.bigquery.job.UDFResource`
                         (empty by default)
+
+    :type query_parameters: tuple
+    :param query_parameters:
+        An iterable of
+        :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`
+        (empty by default)
     """
 
     _UDF_KEY = 'userDefinedFunctionResources'
+    _QUERY_PARAMETERS_KEY = 'queryParameters'
 
-    def __init__(self, query, client, udf_resources=()):
+    def __init__(self, query, client, udf_resources=(), query_parameters=()):
         self._client = client
         self._properties = {}
         self.query = query
         self._configuration = _SyncQueryConfiguration()
         self.udf_resources = udf_resources
+        self.query_parameters = query_parameters
         self._job = None
 
     @classmethod
@@ -258,6 +266,8 @@ class QueryResults(object):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#preserveNulls
     """
 
+    query_parameters = QueryParametersProperty()
+
     timeout_ms = _TypedProperty('timeout_ms', six.integer_types)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#timeoutMs
@@ -314,7 +324,19 @@ class QueryResults(object):
             resource['dryRun'] = self.dry_run
 
         if len(self._udf_resources) > 0:
-            resource[self._UDF_KEY] = _build_udf_resources(self._udf_resources)
+            resource[self._UDF_KEY] = [
+                {udf_resource.udf_type: udf_resource.value}
+                for udf_resource in self._udf_resources
+            ]
+        if len(self._query_parameters) > 0:
+            resource[self._QUERY_PARAMETERS_KEY] = [
+                query_parameter.to_api_repr()
+                for query_parameter in self._query_parameters
+            ]
+            if self._query_parameters[0].name is None:
+                resource['parameterMode'] = 'POSITIONAL'
+            else:
+                resource['parameterMode'] = 'NAMED'
 
         return resource
 
