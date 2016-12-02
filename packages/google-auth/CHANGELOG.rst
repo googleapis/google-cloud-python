@@ -1,10 +1,17 @@
 Changelog
 =========
 
+v0.4.0
+------
+
+- ``transports.grpc.secure_authorized_channel`` now passes ``kwargs`` to ``grpc.secure_channel``. (#90)
+- Added new property ``credentials.Singing.signer_email`` which can be used to identify the signer of a message. (#89)
+- (google_auth_httplib2) Added a proxy to ``httplib2.Http.connections``.
+
 v0.3.2
 ------
 
-- Fixed an issue where an `ImportError` would occur if `google.oauth2` was imported before `google.auth`. (#88)
+- Fixed an issue where an ``ImportError`` would occur if ``google.oauth2`` was imported before ``google.auth``. (#88)
 
 v0.3.1
 ------
