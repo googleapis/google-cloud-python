@@ -100,6 +100,23 @@ class TestQueryResults(unittest.TestCase):
                 self.assertEqual(f_row,
                                  tuple([cell['v'] for cell in e_row['f']]))
 
+    def _verify_udf_resources(self, query, resource):
+        udf_resources = resource.get('userDefinedFunctionResources', ())
+        self.assertEqual(len(query.udf_resources), len(udf_resources))
+        for found, expected in zip(query.udf_resources, udf_resources):
+            if 'resourceUri' in expected:
+                self.assertEqual(found.udf_type, 'resourceUri')
+                self.assertEqual(found.value, expected['resourceUri'])
+            else:
+                self.assertEqual(found.udf_type, 'inlineCode')
+                self.assertEqual(found.value, expected['inlineCode'])
+
+    def _verifyQueryParameters(self, query, resource):
+        query_parameters = resource.get('queryParameters', ())
+        self.assertEqual(len(query.query_parameters), len(query_parameters))
+        for found, expected in zip(query.query_parameters, query_parameters):
+            self.assertEqual(found.to_api_repr(), expected)
+
     def _verifyResourceProperties(self, query, resource):
         self.assertEqual(query.cache_hit, resource.get('cacheHit'))
         self.assertEqual(query.complete, resource.get('jobComplete'))
@@ -114,10 +131,12 @@ class TestQueryResults(unittest.TestCase):
         else:
             self.assertIsNone(query.name)
 
+        self._verify_udf_resources(query, resource)
+        self._verifyQueryParameters(query, resource)
         self._verifySchema(query, resource)
         self._verifyRows(query, resource)
 
-    def test_ctor(self):
+    def test_ctor_defaults(self):
         client = _Client(self.PROJECT)
         query = self._make_one(self.QUERY, client)
         self.assertEqual(query.query, self.QUERY)
@@ -128,16 +147,34 @@ class TestQueryResults(unittest.TestCase):
         self.assertIsNone(query.errors)
         self.assertIsNone(query.name)
         self.assertIsNone(query.page_token)
+        self.assertEqual(query.query_parameters, [])
         self.assertEqual(query.rows, [])
         self.assertIsNone(query.schema)
         self.assertIsNone(query.total_rows)
         self.assertIsNone(query.total_bytes_processed)
+        self.assertEqual(query.udf_resources, [])
 
         self.assertIsNone(query.default_dataset)
         self.assertIsNone(query.max_results)
         self.assertIsNone(query.preserve_nulls)
         self.assertIsNone(query.use_query_cache)
         self.assertIsNone(query.use_legacy_sql)
+
+    def test_ctor_w_udf_resources(self):
+        from google.cloud.bigquery._helpers import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client, udf_resources=udf_resources)
+        self.assertEqual(query.udf_resources, udf_resources)
+
+    def test_ctor_w_query_parameters(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
+        client = _Client(self.PROJECT)
+        query = self._make_one(self.QUERY, client,
+                               query_parameters=query_parameters)
+        self.assertEqual(query.query_parameters, query_parameters)
 
     def test_from_query_job(self):
         from google.cloud.bigquery.dataset import Dataset
@@ -293,6 +330,9 @@ class TestQueryResults(unittest.TestCase):
         INLINE_UDF_CODE = 'var someCode = "here";'
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
+        RESOURCE['userDefinedFunctionResources'] = [
+            {'inlineCode': INLINE_UDF_CODE},
+        ]
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         query = self._make_one(self.QUERY, client)
@@ -315,6 +355,9 @@ class TestQueryResults(unittest.TestCase):
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
+        RESOURCE['userDefinedFunctionResources'] = [
+            {'resourceUri': RESOURCE_URI},
+        ]
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         query = self._make_one(self.QUERY, client)
@@ -338,6 +381,10 @@ class TestQueryResults(unittest.TestCase):
         INLINE_UDF_CODE = 'var someCode = "here";'
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
+        RESOURCE['userDefinedFunctionResources'] = [
+            {'resourceUri': RESOURCE_URI},
+            {'inlineCode': INLINE_UDF_CODE},
+        ]
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         query = self._make_one(self.QUERY, client)
@@ -357,6 +404,75 @@ class TestQueryResults(unittest.TestCase):
                 'userDefinedFunctionResources': [
                     {'resourceUri': RESOURCE_URI},
                     {"inlineCode": INLINE_UDF_CODE}]}
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(query, RESOURCE)
+
+    def test_run_w_named_query_paramter(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        PATH = 'projects/%s/queries' % self.PROJECT
+        RESOURCE = self._makeResource(complete=False)
+        RESOURCE['parameterMode'] = 'NAMED'
+        RESOURCE['queryParameters'] = [
+            {
+                'name': 'foo',
+                'parameterType': {
+                    'type': 'INT64',
+                },
+                'parameterValue': {
+                    'value': 123,
+                },
+            },
+        ]
+        query_parameters = [ScalarQueryParameter('foo', 'INT64', 123)]
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        query = self._make_one(self.QUERY, client,
+                               query_parameters=query_parameters)
+        query.run()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'query': self.QUERY,
+            'parameterMode': 'NAMED',
+            'queryParameters': RESOURCE['queryParameters'],
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(query, RESOURCE)
+
+    def test_run_w_positional_query_paramter(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        PATH = 'projects/%s/queries' % self.PROJECT
+        RESOURCE = self._makeResource(complete=False)
+        RESOURCE['parameterMode'] = 'POSITIONAL'
+        RESOURCE['queryParameters'] = [
+            {
+                'parameterType': {
+                    'type': 'INT64',
+                },
+                'parameterValue': {
+                    'value': 123,
+                },
+            },
+        ]
+        query_parameters = [ScalarQueryParameter.positional('INT64', 123)]
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        query = self._make_one(self.QUERY, client,
+                               query_parameters=query_parameters)
+        query.run()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'query': self.QUERY,
+            'parameterMode': 'POSITIONAL',
+            'queryParameters': RESOURCE['queryParameters'],
+        }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(query, RESOURCE)
 

@@ -470,7 +470,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.source, source)
         self.assertEqual(list(job.destination_uris), [DESTINATION])
 
-    def test_run_async_query(self):
+    def test_run_async_query_defaults(self):
         from google.cloud.bigquery.job import QueryJob
         PROJECT = 'PROJECT'
         JOB = 'job_name'
@@ -483,19 +483,96 @@ class TestClient(unittest.TestCase):
         self.assertIs(job._client, client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(job.query, QUERY)
+        self.assertEqual(job.udf_resources, [])
+        self.assertEqual(job.query_parameters, [])
 
-    def test_run_sync_query(self):
+    def test_run_async_w_udf_resources(self):
+        from google.cloud.bigquery._helpers import UDFResource
+        from google.cloud.bigquery.job import QueryJob
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        PROJECT = 'PROJECT'
+        JOB = 'job_name'
+        QUERY = 'select count(*) from persons'
+        creds = _Credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+        job = client.run_async_query(JOB, QUERY, udf_resources=udf_resources)
+        self.assertIsInstance(job, QueryJob)
+        self.assertIs(job._client, client)
+        self.assertEqual(job.name, JOB)
+        self.assertEqual(job.query, QUERY)
+        self.assertEqual(job.udf_resources, udf_resources)
+        self.assertEqual(job.query_parameters, [])
+
+    def test_run_async_w_query_parameters(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        from google.cloud.bigquery.job import QueryJob
+        PROJECT = 'PROJECT'
+        JOB = 'job_name'
+        QUERY = 'select count(*) from persons'
+        creds = _Credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
+        query_parameters = [ScalarQueryParameter('foo', 'INT64', 123)]
+        job = client.run_async_query(JOB, QUERY,
+                                     query_parameters=query_parameters)
+        self.assertIsInstance(job, QueryJob)
+        self.assertIs(job._client, client)
+        self.assertEqual(job.name, JOB)
+        self.assertEqual(job.query, QUERY)
+        self.assertEqual(job.udf_resources, [])
+        self.assertEqual(job.query_parameters, query_parameters)
+
+    def test_run_sync_query_defaults(self):
         from google.cloud.bigquery.query import QueryResults
         PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
         creds = _Credentials()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
-        job = client.run_sync_query(QUERY)
-        self.assertIsInstance(job, QueryResults)
-        self.assertIs(job._client, client)
-        self.assertIsNone(job.name)
-        self.assertEqual(job.query, QUERY)
+        query = client.run_sync_query(QUERY)
+        self.assertIsInstance(query, QueryResults)
+        self.assertIs(query._client, client)
+        self.assertIsNone(query.name)
+        self.assertEqual(query.query, QUERY)
+        self.assertEqual(query.udf_resources, [])
+        self.assertEqual(query.query_parameters, [])
+
+    def test_run_sync_query_w_udf_resources(self):
+        from google.cloud.bigquery._helpers import UDFResource
+        from google.cloud.bigquery.query import QueryResults
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        PROJECT = 'PROJECT'
+        QUERY = 'select count(*) from persons'
+        creds = _Credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+        query = client.run_sync_query(QUERY, udf_resources=udf_resources)
+        self.assertIsInstance(query, QueryResults)
+        self.assertIs(query._client, client)
+        self.assertIsNone(query.name)
+        self.assertEqual(query.query, QUERY)
+        self.assertEqual(query.udf_resources, udf_resources)
+        self.assertEqual(query.query_parameters, [])
+
+    def test_run_sync_query_w_query_parameters(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        from google.cloud.bigquery.query import QueryResults
+        PROJECT = 'PROJECT'
+        QUERY = 'select count(*) from persons'
+        creds = _Credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, http=http)
+        query_parameters = [ScalarQueryParameter('foo', 'INT64', 123)]
+        query = client.run_sync_query(QUERY, query_parameters=query_parameters)
+        self.assertIsInstance(query, QueryResults)
+        self.assertIs(query._client, client)
+        self.assertIsNone(query.name)
+        self.assertEqual(query.query, QUERY)
+        self.assertEqual(query.udf_resources, [])
+        self.assertEqual(query.query_parameters, query_parameters)
 
 
 class _Credentials(object):

@@ -586,6 +586,363 @@ class Test_UDFResourcesProperty(unittest.TestCase):
         self.assertEqual(instance.udf_resources, [])
 
 
+class Test_AbstractQueryParameter(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery._helpers import AbstractQueryParameter
+        return AbstractQueryParameter
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_from_api_virtual(self):
+        klass = self._get_target_class()
+        with self.assertRaises(NotImplementedError):
+            klass.from_api_repr({})
+
+    def test_to_api_virtual(self):
+        param = self._make_one()
+        with self.assertRaises(NotImplementedError):
+            param.to_api_repr()
+
+
+class Test_ScalarQueryParameter(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        return ScalarQueryParameter
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor(self):
+        param = self._make_one(name='foo', type_='INT64', value=123)
+        self.assertEqual(param.name, 'foo')
+        self.assertEqual(param.type_, 'INT64')
+        self.assertEqual(param.value, 123)
+
+    def test_positional(self):
+        klass = self._get_target_class()
+        param = klass.positional(type_='INT64', value=123)
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.type_, 'INT64')
+        self.assertEqual(param.value, 123)
+
+    def test_from_api_repr_w_name(self):
+        RESOURCE = {
+            'name': 'foo',
+            'parameterType': {
+                'type': 'INT64',
+            },
+            'parameterValue': {
+                'value': 123,
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, 'foo')
+        self.assertEqual(param.type_, 'INT64')
+        self.assertEqual(param.value, 123)
+
+    def test_from_api_repr_wo_name(self):
+        RESOURCE = {
+            'parameterType': {
+                'type': 'INT64',
+            },
+            'parameterValue': {
+                'value': '123',
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.type_, 'INT64')
+        self.assertEqual(param.value, 123)
+
+    def test_to_api_repr_w_name(self):
+        EXPECTED = {
+            'name': 'foo',
+            'parameterType': {
+                'type': 'INT64',
+            },
+            'parameterValue': {
+                'value': 123,
+            },
+        }
+        param = self._make_one(name='foo', type_='INT64', value=123)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_wo_name(self):
+        EXPECTED = {
+            'parameterType': {
+                'type': 'INT64',
+            },
+            'parameterValue': {
+                'value': 123,
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_='INT64', value=123)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+
+class Test_ArrayQueryParameter(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery._helpers import ArrayQueryParameter
+        return ArrayQueryParameter
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor(self):
+        param = self._make_one(name='foo', array_type='INT64', values=[1, 2])
+        self.assertEqual(param.name, 'foo')
+        self.assertEqual(param.array_type, 'INT64')
+        self.assertEqual(param.values, [1, 2])
+
+    def test_positional(self):
+        klass = self._get_target_class()
+        param = klass.positional(array_type='INT64', values=[1, 2])
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.array_type, 'INT64')
+        self.assertEqual(param.values, [1, 2])
+
+    def test_from_api_repr_w_name(self):
+        RESOURCE = {
+            'name': 'foo',
+            'parameterType': {
+                'arrayType': 'INT64',
+            },
+            'parameterValue': {
+                'arrayValues': ['1', '2'],
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, 'foo')
+        self.assertEqual(param.array_type, 'INT64')
+        self.assertEqual(param.values, [1, 2])
+
+    def test_from_api_repr_wo_name(self):
+        RESOURCE = {
+            'parameterType': {
+                'arrayType': 'INT64',
+            },
+            'parameterValue': {
+                'arrayValues': ['1', '2'],
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.array_type, 'INT64')
+        self.assertEqual(param.values, [1, 2])
+
+    def test_to_api_repr_w_name(self):
+        EXPECTED = {
+            'name': 'foo',
+            'parameterType': {
+                'arrayType': 'INT64',
+            },
+            'parameterValue': {
+                'arrayValues': [1, 2],
+            },
+        }
+        param = self._make_one(name='foo', array_type='INT64', values=[1, 2])
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_wo_name(self):
+        EXPECTED = {
+            'parameterType': {
+                'arrayType': 'INT64',
+            },
+            'parameterValue': {
+                'arrayValues': [1, 2],
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(array_type='INT64', values=[1, 2])
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+
+class Test_StructQueryParameter(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery._helpers import StructQueryParameter
+        return StructQueryParameter
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    @staticmethod
+    def _make_subparam(name, type_, value):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        return ScalarQueryParameter(name, type_, value)
+
+    def test_ctor(self):
+        sub_1 = self._make_subparam('bar', 'INT64', 123)
+        sub_2 = self._make_subparam('baz', 'STRING', 'abc')
+        param = self._make_one('foo', sub_1, sub_2)
+        self.assertEqual(param.name, 'foo')
+        self.assertEqual(param.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
+        self.assertEqual(param.struct_values, {'bar': 123, 'baz': 'abc'})
+
+    def test_positional(self):
+        sub_1 = self._make_subparam('bar', 'INT64', 123)
+        sub_2 = self._make_subparam('baz', 'STRING', 'abc')
+        klass = self._get_target_class()
+        param = klass.positional(sub_1, sub_2)
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
+        self.assertEqual(param.struct_values, {'bar': 123, 'baz': 'abc'})
+
+    def test_from_api_repr_w_name(self):
+        RESOURCE = {
+            'name': 'foo',
+            'parameterType': {
+                'structTypes': [
+                    {'name': 'bar', 'type': 'INT64'},
+                    {'name': 'baz', 'type': 'STRING'},
+                ],
+            },
+            'parameterValue': {
+                'structValues': {'bar': 123, 'baz': 'abc'},
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, 'foo')
+        self.assertEqual(param.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
+        self.assertEqual(param.struct_values, {'bar': 123, 'baz': 'abc'})
+
+    def test_from_api_repr_wo_name(self):
+        RESOURCE = {
+            'parameterType': {
+                'structTypes': [
+                    {'name': 'bar', 'type': 'INT64'},
+                    {'name': 'baz', 'type': 'STRING'},
+                ],
+            },
+            'parameterValue': {
+                'structValues': {'bar': 123, 'baz': 'abc'},
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
+        self.assertEqual(param.struct_values, {'bar': 123, 'baz': 'abc'})
+
+    def test_to_api_repr_w_name(self):
+        EXPECTED = {
+            'name': 'foo',
+            'parameterType': {
+                'structTypes': [
+                    {'name': 'bar', 'type': 'INT64'},
+                    {'name': 'baz', 'type': 'STRING'},
+                ],
+            },
+            'parameterValue': {
+                'structValues': {'bar': 123, 'baz': 'abc'},
+            },
+        }
+        sub_1 = self._make_subparam('bar', 'INT64', 123)
+        sub_2 = self._make_subparam('baz', 'STRING', 'abc')
+        param = self._make_one('foo', sub_1, sub_2)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_wo_name(self):
+        EXPECTED = {
+            'parameterType': {
+                'structTypes': [
+                    {'name': 'bar', 'type': 'INT64'},
+                    {'name': 'baz', 'type': 'STRING'},
+                ],
+            },
+            'parameterValue': {
+                'structValues': {'bar': 123, 'baz': 'abc'},
+            },
+        }
+        sub_1 = self._make_subparam('bar', 'INT64', 123)
+        sub_2 = self._make_subparam('baz', 'STRING', 'abc')
+        klass = self._get_target_class()
+        param = klass.positional(sub_1, sub_2)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+
+class Test_QueryParametersProperty(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery._helpers import QueryParametersProperty
+        return QueryParametersProperty
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def _descriptor_and_klass(self):
+        descriptor = self._make_one()
+
+        class _Test(object):
+            _query_parameters = ()
+            query_parameters = descriptor
+
+        return descriptor, _Test
+
+    def test_class_getter(self):
+        descriptor, klass = self._descriptor_and_klass()
+        self.assertIs(klass.query_parameters, descriptor)
+
+    def test_instance_getter_empty(self):
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        self.assertEqual(instance.query_parameters, [])
+
+    def test_instance_getter_w_non_empty_list(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        instance._query_parameters = tuple(query_parameters)
+
+        self.assertEqual(instance.query_parameters, query_parameters)
+
+    def test_instance_setter_w_empty_list(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        instance._query_parameters = query_parameters
+
+        instance.query_parameters = []
+
+        self.assertEqual(instance.query_parameters, [])
+
+    def test_instance_setter_w_valid_udf(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+
+        instance.query_parameters = query_parameters
+
+        self.assertEqual(instance.query_parameters, query_parameters)
+
+    def test_instance_setter_w_bad_udfs(self):
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+
+        with self.assertRaises(ValueError):
+            instance.query_parameters = ["foo"]
+
+        self.assertEqual(instance.query_parameters, [])
+
+
 class _Field(object):
 
     def __init__(self, mode, name='unknown', field_type='UNKNOWN', fields=()):
