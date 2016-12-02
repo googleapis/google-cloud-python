@@ -454,7 +454,7 @@ class Test_SubscriberAPI(_Base):
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         RETURNED = {'subscriptions': [SUB_INFO]}
         connection = _Connection(RETURNED)
-        creds = _Credentials()
+        creds = object()
         client = Client(project=self.PROJECT, credentials=creds)
         client._connection = connection
         api = self._make_one(client)
@@ -497,7 +497,7 @@ class Test_SubscriberAPI(_Base):
             'nextPageToken': 'TOKEN2',
         }
         connection = _Connection(RETURNED)
-        creds = _Credentials()
+        creds = object()
         client = Client(project=self.PROJECT, credentials=creds)
         client._connection = connection
         api = self._make_one(client)
@@ -902,7 +902,3 @@ class _Client(object):
     def __init__(self, connection, project):
         self._connection = connection
         self.project = project
-
-
-class _Credentials(object):
-    pass

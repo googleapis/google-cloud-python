@@ -26,10 +26,6 @@ class TestConnection(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_default_url(self):
-        creds = _Credentials()
+        creds = object()
         conn = self._make_one(creds)
         self.assertEqual(conn.credentials, creds)
-
-
-class _Credentials(object):
-    pass

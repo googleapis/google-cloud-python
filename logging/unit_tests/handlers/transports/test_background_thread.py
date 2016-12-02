@@ -157,15 +157,11 @@ class _Batch(object):
         del self.entries[:]
 
 
-class _Credentials(object):
-    pass
-
-
 class _Connection(object):
 
     def __init__(self):
         self.http = None
-        self.credentials = _Credentials()
+        self.credentials = object()
 
 
 class _Logger(object):

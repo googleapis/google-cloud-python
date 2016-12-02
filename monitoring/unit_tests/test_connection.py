@@ -26,10 +26,6 @@ class TestConnection(unittest.TestCase):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
-        credentials = _Credentials()
+        credentials = object()
         connection = self._make_one(credentials)
         self.assertEqual(connection.credentials, credentials)
-
-
-class _Credentials(object):
-    pass

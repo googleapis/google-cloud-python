@@ -29,7 +29,7 @@ class TestConnection(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_default_url(self):
-        creds = _Credentials()
+        creds = object()
         conn = self._make_one(creds)
         self.assertEqual(conn.credentials, creds)
 
@@ -756,10 +756,6 @@ class Test_MetricsAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['method'], 'DELETE')
         path = '/projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
         self.assertEqual(conn._called_with['path'], path)
-
-
-class _Credentials(object):
-    pass
 
 
 class _Connection(object):

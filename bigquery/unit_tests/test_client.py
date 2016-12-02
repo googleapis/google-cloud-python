@@ -28,7 +28,7 @@ class TestClient(unittest.TestCase):
     def test_ctor(self):
         from google.cloud.bigquery._http import Connection
         PROJECT = 'PROJECT'
-        creds = _Credentials()
+        creds = object()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
         self.assertIsInstance(client._connection, Connection)
@@ -57,7 +57,7 @@ class TestClient(unittest.TestCase):
                  'friendlyName': 'Two'},
             ]
         }
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(PROJECT_1, creds)
         conn = client._connection = _Connection(DATA)
 
@@ -86,7 +86,7 @@ class TestClient(unittest.TestCase):
         PATH = 'projects'
         TOKEN = 'TOKEN'
         DATA = {}
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
@@ -128,7 +128,7 @@ class TestClient(unittest.TestCase):
                  'friendlyName': 'Two'},
             ]
         }
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
@@ -156,7 +156,7 @@ class TestClient(unittest.TestCase):
         PATH = 'projects/%s/datasets' % PROJECT
         TOKEN = 'TOKEN'
         DATA = {}
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
@@ -180,7 +180,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.dataset import Dataset
         PROJECT = 'PROJECT'
         DATASET = 'dataset_name'
-        creds = _Credentials()
+        creds = object()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
@@ -190,7 +190,7 @@ class TestClient(unittest.TestCase):
 
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(PROJECT, creds)
         with self.assertRaises(ValueError):
             client.job_from_resource({'configuration': {'nonesuch': {}}})
@@ -304,7 +304,7 @@ class TestClient(unittest.TestCase):
                 LOAD_DATA,
             ]
         }
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
@@ -360,7 +360,7 @@ class TestClient(unittest.TestCase):
                 LOAD_DATA,
             ]
         }
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
@@ -388,7 +388,7 @@ class TestClient(unittest.TestCase):
         PATH = 'projects/%s/jobs' % PROJECT
         DATA = {}
         TOKEN = 'TOKEN'
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
@@ -419,7 +419,7 @@ class TestClient(unittest.TestCase):
         DATASET = 'dataset_name'
         DESTINATION = 'destination_table'
         SOURCE_URI = 'http://example.com/source.csv'
-        creds = _Credentials()
+        creds = object()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
@@ -438,7 +438,7 @@ class TestClient(unittest.TestCase):
         DATASET = 'dataset_name'
         SOURCE = 'source_table'
         DESTINATION = 'destination_table'
-        creds = _Credentials()
+        creds = object()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
@@ -458,7 +458,7 @@ class TestClient(unittest.TestCase):
         DATASET = 'dataset_name'
         SOURCE = 'source_table'
         DESTINATION = 'gs://bucket_name/object_name'
-        creds = _Credentials()
+        creds = object()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
         dataset = client.dataset(DATASET)
@@ -475,7 +475,7 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         QUERY = 'select count(*) from persons'
-        creds = _Credentials()
+        creds = object()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
         job = client.run_async_query(JOB, QUERY)
@@ -488,7 +488,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.query import QueryResults
         PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
-        creds = _Credentials()
+        creds = object()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
         job = client.run_sync_query(QUERY)
@@ -496,10 +496,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(job._client, client)
         self.assertIsNone(job.name)
         self.assertEqual(job.query, QUERY)
-
-
-class _Credentials(object):
-    pass
 
 
 class _Connection(object):

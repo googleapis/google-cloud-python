@@ -28,7 +28,7 @@ class TestClient(unittest.TestCase):
     def test_config(self):
         PROJECT = 'PROJECT'
         CONFIG_NAME = 'config_name'
-        creds = _Credentials()
+        creds = object()
 
         client_obj = self._make_one(project=PROJECT, credentials=creds)
         new_config = client_obj.config(CONFIG_NAME)
@@ -38,7 +38,3 @@ class TestClient(unittest.TestCase):
         self.assertEqual(new_config.full_name,
                          'projects/%s/configs/%s' % (PROJECT, CONFIG_NAME))
         self.assertFalse(new_config.description)
-
-
-class _Credentials(object):
-    pass
