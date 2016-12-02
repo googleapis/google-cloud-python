@@ -186,7 +186,7 @@ class Test_record_from_json(unittest.TestCase):
     def test_w_repeated_subfield(self):
         subfield = _Field('REPEATED', 'color', 'STRING')
         field = _Field('REQUIRED', fields=[subfield])
-        value = {'f': [{'v': ['red', 'yellow', 'blue']}]}
+        value = {'f': [{'v': [{'v': 'red'}, {'v': 'yellow'}, {'v': 'blue'}]}]}
         coerced = self._call_fut(value, field)
         self.assertEqual(coerced, {'color': ['red', 'yellow', 'blue']})
 
@@ -234,6 +234,97 @@ class Test_string_from_json(unittest.TestCase):
         self.assertEqual(coerced, 'Wonderful!')
 
 
+class Test_row_from_json(unittest.TestCase):
+
+    def _call_fut(self, row, schema):
+        from google.cloud.bigquery._helpers import _row_from_json
+        return _row_from_json(row, schema)
+
+    def test_w_single_scalar_column(self):
+        # SELECT 1 AS col
+        col = _Field('REQUIRED', 'col', 'INTEGER')
+        row = {u'f': [{u'v': u'1'}]}
+        self.assertEqual(self._call_fut(row, schema=[col]), (1,))
+
+    def test_w_single_struct_column(self):
+        # SELECT (1, 2) AS col
+        sub_1 = _Field('REQUIRED', 'sub_1', 'INTEGER')
+        sub_2 = _Field('REQUIRED', 'sub_2', 'INTEGER')
+        col = _Field('REQUIRED', 'col', 'RECORD', fields=[sub_1, sub_2])
+        row = {u'f': [{u'v': {u'f': [{u'v': u'1'}, {u'v': u'2'}]}}]}
+        self.assertEqual(self._call_fut(row, schema=[col]),
+                         ({'sub_1': 1, 'sub_2': 2},))
+
+    def test_w_single_array_column(self):
+        # SELECT [1, 2, 3] as col
+        col = _Field('REPEATED', 'col', 'INTEGER')
+        row = {u'f': [{u'v': [{u'v': u'1'}, {u'v': u'2'}, {u'v': u'3'}]}]}
+        self.assertEqual(self._call_fut(row, schema=[col]),
+                         ([1, 2, 3],))
+
+    def test_w_struct_w_nested_array_column(self):
+        # SELECT ([1, 2], 3, [4, 5]) as col
+        first = _Field('REPEATED', 'first', 'INTEGER')
+        second = _Field('REQUIRED', 'second', 'INTEGER')
+        third = _Field('REPEATED', 'third', 'INTEGER')
+        col = _Field('REQUIRED', 'col', 'RECORD',
+                     fields=[first, second, third])
+        row = {
+            u'f': [
+                {u'v': {
+                    u'f': [
+                        {u'v': [{u'v': u'1'}, {u'v': u'2'}]},
+                        {u'v': u'3'},
+                        {u'v': [{u'v': u'4'}, {u'v': u'5'}]}
+                    ]
+                }},
+            ]
+        }
+        self.assertEqual(
+            self._call_fut(row, schema=[col]),
+            ({u'first': [1, 2], u'second': 3, u'third': [4, 5]},))
+
+    def test_w_array_of_struct(self):
+        # SELECT [(1, 2, 3), (4, 5, 6)] as col
+        first = _Field('REQUIRED', 'first', 'INTEGER')
+        second = _Field('REQUIRED', 'second', 'INTEGER')
+        third = _Field('REQUIRED', 'third', 'INTEGER')
+        col = _Field('REPEATED', 'col', 'RECORD',
+                     fields=[first, second, third])
+        row = {u'f': [{u'v': [
+            {u'v': {u'f': [{u'v': u'1'}, {u'v': u'2'}, {u'v': u'3'}]}},
+            {u'v': {u'f': [{u'v': u'4'}, {u'v': u'5'}, {u'v': u'6'}]}},
+        ]}]}
+        self.assertEqual(
+            self._call_fut(row, schema=[col]),
+            ([
+                {u'first': 1, u'second': 2, u'third': 3},
+                {u'first': 4, u'second': 5, u'third': 6},
+            ],))
+
+    def test_w_array_of_struct_w_array(self):
+        # SELECT [([1, 2, 3], 4), ([5, 6], 7)]
+        first = _Field('REPEATED', 'first', 'INTEGER')
+        second = _Field('REQUIRED', 'second', 'INTEGER')
+        col = _Field('REPEATED', 'col', 'RECORD', fields=[first, second])
+        row = {u'f': [{u'v': [
+            {u'v': {u'f': [
+                {u'v': [{u'v': u'1'}, {u'v': u'2'}, {u'v': u'3'}]},
+                {u'v': u'4'}
+            ]}},
+            {u'v': {u'f': [
+                {u'v': [{u'v': u'5'}, {u'v': u'6'}]},
+                {u'v': u'7'}
+            ]}}
+        ]}]}
+        self.assertEqual(
+            self._call_fut(row, schema=[col]),
+            ([
+                {u'first': [1, 2, 3], u'second': 4},
+                {u'first': [5, 6], u'second': 7},
+            ],))
+
+
 class Test_rows_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
@@ -253,12 +344,12 @@ class Test_rows_from_json(unittest.TestCase):
             {'f': [
                 {'v': 'Phred Phlyntstone'},
                 {'v': {'f': [{'v': '800'}, {'v': '555-1212'}, {'v': 1}]}},
-                {'v': ['orange', 'black']},
+                {'v': [{'v': 'orange'}, {'v': 'black'}]},
             ]},
             {'f': [
                 {'v': 'Bharney Rhubble'},
                 {'v': {'f': [{'v': '877'}, {'v': '768-5309'}, {'v': 2}]}},
-                {'v': ['brown']},
+                {'v': [{'v': 'brown'}]},
             ]},
             {'f': [
                 {'v': 'Wylma Phlyntstone'},
