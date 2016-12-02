@@ -35,7 +35,7 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(project=PROJECT, credentials=creds)
         self.assertEqual(client.project, PROJECT)
 
@@ -59,7 +59,7 @@ class TestClient(unittest.TestCase):
                 }
             ]
         }
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -75,7 +75,7 @@ class TestClient(unittest.TestCase):
     def test_image_with_client(self):
         from google.cloud.vision.image import Image
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT,
                                 credentials=credentials)
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -92,7 +92,7 @@ class TestClient(unittest.TestCase):
         logos = copy.deepcopy(LOGO_DETECTION_RESPONSE['responses'][0])
         returned['responses'][0]['logoAnnotations'] = logos['logoAnnotations']
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(returned)
 
@@ -139,7 +139,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.face import Face
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -156,7 +156,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.face import Face
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -174,7 +174,7 @@ class TestClient(unittest.TestCase):
         RETURNED = {
             'responses': [{}]
         }
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -193,7 +193,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import (
             LABEL_DETECTION_RESPONSE as RETURNED)
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -214,7 +214,7 @@ class TestClient(unittest.TestCase):
         RETURNED = {
             'responses': [{}]
         }
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -228,7 +228,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import (
             LANDMARK_DETECTION_RESPONSE as RETURNED)
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -250,7 +250,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import (
             LANDMARK_DETECTION_RESPONSE as RETURNED)
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -267,7 +267,7 @@ class TestClient(unittest.TestCase):
         RETURNED = {
             'responses': [{}]
         }
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -280,7 +280,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.entity import EntityAnnotation
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
         RETURNED = LOGO_DETECTION_RESPONSE
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -297,7 +297,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.entity import EntityAnnotation
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
         RETURNED = LOGO_DETECTION_RESPONSE
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -315,7 +315,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import (
             TEXT_DETECTION_RESPONSE as RETURNED)
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -337,7 +337,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
 
         RETURNED = SAFE_SEARCH_DETECTION_RESPONSE
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -356,7 +356,7 @@ class TestClient(unittest.TestCase):
         RETURNED = {
             'responses': [{}]
         }
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -370,7 +370,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import IMAGE_PROPERTIES_RESPONSE
 
         RETURNED = IMAGE_PROPERTIES_RESPONSE
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -392,7 +392,7 @@ class TestClient(unittest.TestCase):
         RETURNED = {
             'responses': [{}]
         }
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -424,19 +424,6 @@ class TestVisionRequest(unittest.TestCase):
     def test_make_vision_request_with_bad_feature(self):
         with self.assertRaises(TypeError):
             self._make_one(IMAGE_CONTENT, 'nonsensefeature')
-
-
-class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
 
 
 class _Connection(object):
