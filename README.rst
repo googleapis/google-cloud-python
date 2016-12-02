@@ -109,12 +109,13 @@ See `CONTRIBUTING`_ for more information on how to get started.
 Community
 ---------
 
-Google Cloud Platform Python developers hang out in `Slack`_ in the #python
+Google Cloud Platform Python developers hang out in `Slack`_ in the ```#python``
 channel, click here to `get an invitation`_.
 
 
 .. _Slack: https://googlecloud-community.slack.com
 .. _get an invitation: https://gcp-slack.appspot.com/
+
 License
 -------
 
