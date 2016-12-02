@@ -43,7 +43,7 @@ def get_credentials():
 def _get_signed_query_params(credentials, expiration, string_to_sign):
     """Gets query parameters for creating a signed URL.
 
-    :type credentials: :class:`google.auth.credentials.Credentials`
+    :type credentials: :class:`google.auth.credentials.Signer`
     :param credentials: The credentials used to create a private key
                         for signing text.
 
@@ -69,7 +69,7 @@ def _get_signed_query_params(credentials, expiration, string_to_sign):
 
     signature_bytes = credentials.sign_bytes(string_to_sign)
     signature = base64.b64encode(signature_bytes)
-    service_account_name = credentials.service_account_email
+    service_account_name = credentials.signer_email
     return {
         'GoogleAccessId': service_account_name,
         'Expires': str(expiration),

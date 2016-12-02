@@ -52,12 +52,12 @@ class Test_generate_signed_url(unittest.TestCase):
         RESOURCE = '/name/path'
         SIGNED = base64.b64encode(b'DEADBEEF')
         CREDENTIALS = mock.Mock(spec=google.auth.credentials.Signing)
-        CREDENTIALS.service_account_email = 'service@example.com'
+        CREDENTIALS.signer_email = 'service@example.com'
 
         def _get_signed_query_params(*args):
             credentials, expiration = args[:2]
             return {
-                'GoogleAccessId': credentials.service_account_email,
+                'GoogleAccessId': credentials.signer_email,
                 'Expires': str(expiration),
                 'Signature': SIGNED,
             }
@@ -78,7 +78,7 @@ class Test_generate_signed_url(unittest.TestCase):
         self.assertEqual(params.pop('Signature'), [SIGNED.decode('ascii')])
         self.assertEqual(params.pop('Expires'), ['1000'])
         self.assertEqual(params.pop('GoogleAccessId'),
-                         [CREDENTIALS.service_account_email])
+                         [CREDENTIALS.signer_email])
         if response_type is not None:
             self.assertEqual(params.pop('response-content-type'),
                              [response_type])
@@ -130,7 +130,7 @@ class Test__get_signed_query_params(unittest.TestCase):
         SIG_BYTES = b'DEADBEEF'
         ACCOUNT_NAME = mock.sentinel.service_account_email
         CREDENTIALS = mock.Mock(spec=google.auth.credentials.Signing)
-        CREDENTIALS.service_account_email = ACCOUNT_NAME
+        CREDENTIALS.signer_email = ACCOUNT_NAME
         CREDENTIALS.sign_bytes.return_value = SIG_BYTES
         EXPIRATION = 100
         STRING_TO_SIGN = 'dummy_signature'
