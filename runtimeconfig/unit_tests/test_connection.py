@@ -28,18 +28,8 @@ class TestConnection(unittest.TestCase):
     def test_default_url(self):
         creds = _Credentials()
         conn = self._make_one(creds)
-        klass = self._get_target_class()
-        self.assertEqual(conn.credentials._scopes, klass.SCOPE)
+        self.assertEqual(conn.credentials, creds)
 
 
 class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
+    pass
