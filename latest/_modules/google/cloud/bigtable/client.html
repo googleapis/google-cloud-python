@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigtable.client &mdash; google-cloud 75c4115 documentation</title>
+  <title>google.cloud.bigtable.client &mdash; google-cloud 0581c28 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 75c4115 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 0581c28 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -316,6 +316,7 @@
 
 <span class="kn">import</span> <span class="nn">os</span>
 
+<span class="kn">import</span> <span class="nn">google.auth.credentials</span>
 <span class="kn">from</span> <span class="nn">google.longrunning</span> <span class="k">import</span> <span class="n">operations_grpc</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">make_insecure_stub</span>
@@ -488,14 +489,16 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">scopes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DATA_SCOPE</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">read_only</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">admin</span><span class="p">:</span>
             <span class="n">scopes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ADMIN_SCOPE</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">create_scoped</span><span class="p">(</span><span class="n">scopes</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="k">pass</span>
+
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">with_scopes_if_required</span><span class="p">(</span>
+            <span class="n">credentials</span><span class="p">,</span> <span class="n">scopes</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="o">=</span> <span class="n">credentials</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span> <span class="o">=</span> <span class="n">user_agent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">emulator_host</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">BIGTABLE_EMULATOR</span><span class="p">)</span>
@@ -516,12 +519,10 @@
 <span class="sd">        :rtype: :class:`.Client`</span>
 <span class="sd">        :returns: A copy of the current client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">credentials</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span>
-        <span class="n">copied_creds</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">create_scoped</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">scopes</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-            <span class="n">copied_creds</span><span class="p">,</span>
-            <span class="n">READ_ONLY_SCOPE</span> <span class="ow">in</span> <span class="n">copied_creds</span><span class="o">.</span><span class="n">scopes</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span><span class="p">,</span>
         <span class="p">)</span></div>
@@ -674,7 +675,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'75c4115',
+            VERSION:'0581c28',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

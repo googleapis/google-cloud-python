@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.client &mdash; google-cloud 75c4115 documentation</title>
+  <title>google.cloud.client &mdash; google-cloud 0581c28 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud 75c4115 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud 0581c28 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -301,7 +301,7 @@
 
 <span class="sd">&quot;&quot;&quot;Base classes for client used to interact with Google Cloud APIs.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">oauth2client.service_account</span> <span class="k">import</span> <span class="n">ServiceAccountCredentials</span>
+<span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_determine_default_project</span>
@@ -342,43 +342,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;credentials&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;credentials must not be in keyword arguments&#39;</span><span class="p">)</span>
-        <span class="n">credentials</span> <span class="o">=</span> <span class="n">ServiceAccountCredentials</span><span class="o">.</span><span class="n">from_json_keyfile_name</span><span class="p">(</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span>
             <span class="n">json_credentials_path</span><span class="p">)</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_service_account_p12</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">,</span>
-                                 <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory to retrieve P12 credentials while creating client.</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">          Unless you have an explicit reason to use a PKCS12 key for your</span>
-<span class="sd">          service account, we recommend using a JSON key.</span>
-
-<span class="sd">        :type client_email: str</span>
-<span class="sd">        :param client_email: The e-mail attached to the service account.</span>
-
-<span class="sd">        :type private_key_path: str</span>
-<span class="sd">        :param private_key_path: The path to a private key file (this file was</span>
-<span class="sd">                                 given to you when you created the service</span>
-<span class="sd">                                 account). This file must be in P12 format.</span>
-
-<span class="sd">        :type args: tuple</span>
-<span class="sd">        :param args: Remaining positional arguments to pass to constructor.</span>
-
-<span class="sd">        :type kwargs: dict</span>
-<span class="sd">        :param kwargs: Remaining keyword arguments to pass to constructor.</span>
-
-<span class="sd">        :rtype: :class:`google.cloud.client.Client`</span>
-<span class="sd">        :returns: The client created with the retrieved P12 credentials.</span>
-<span class="sd">        :raises: :class:`TypeError` if there is a conflict with the kwargs</span>
-<span class="sd">                 and the credentials created by the factory.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s1">&#39;credentials&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;credentials must not be in keyword arguments&#39;</span><span class="p">)</span>
-        <span class="n">credentials</span> <span class="o">=</span> <span class="n">ServiceAccountCredentials</span><span class="o">.</span><span class="n">from_p12_keyfile</span><span class="p">(</span>
-            <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -389,7 +354,7 @@
 <span class="sd">    Assumes that the associated ``_connection_class`` only accepts</span>
 <span class="sd">    ``http`` and ``credentials`` in its constructor.</span>
 
-<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or</span>
+<span class="sd">    :type credentials: :class:`google.auth.credentials.Credentials` or</span>
 <span class="sd">                       :class:`NoneType`</span>
 <span class="sd">    :param credentials: The OAuth2 Credentials to use for the connection</span>
 <span class="sd">                        owned by this client. If not passed (and if no ``http``</span>
@@ -452,7 +417,7 @@
 <span class="sd">                    passed falls back to the default inferred from the</span>
 <span class="sd">                    environment.</span>
 
-<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or</span>
+<span class="sd">    :type credentials: :class:`google.auth.credentials.Credentials` or</span>
 <span class="sd">                       :class:`NoneType`</span>
 <span class="sd">    :param credentials: The OAuth2 Credentials to use for the connection</span>
 <span class="sd">                        owned by this client. If not passed (and if no ``http``</span>
@@ -504,7 +469,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'75c4115',
+            VERSION:'0581c28',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

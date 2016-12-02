@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Shared Core Modules &mdash; google-cloud 75c4115 documentation</title>
+  <title>Shared Core Modules &mdash; google-cloud 0581c28 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 75c4115 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 0581c28 documentation" href="index.html"/>
         <link rel="next" title="Configuration" href="google-cloud-config.html"/>
         <link rel="prev" title="Getting started" href="index.html"/> 
 
@@ -308,7 +308,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.4.0)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
 owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
 object is passed), falls back to the default inferred
@@ -355,43 +355,6 @@ and the credentials created by the factory.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="google.cloud.client.Client.from_service_account_p12">
-<code class="descname">from_service_account_p12</code><span class="sig-paren">(</span><em>client_email</em>, <em>private_key_path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.client.Client.from_service_account_p12" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory to retrieve P12 credentials while creating client.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Unless you have an explicit reason to use a PKCS12 key for your
-service account, we recommend using a JSON key.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client_email</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The path to a private key file (this file was
-given to you when you created the service
-account). This file must be in P12 format.</li>
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Remaining positional arguments to pass to constructor.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Remaining keyword arguments to pass to constructor.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.Client</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The client created with the retrieved P12 credentials.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">TypeError</span></code> if there is a conflict with the kwargs
-and the credentials created by the factory.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
@@ -409,7 +372,7 @@ value.</p>
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the project which the client acts on behalf of. If not
 passed falls back to the default inferred from the
 environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.4.0)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
 owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
 object is passed), falls back to the default inferred
@@ -460,43 +423,6 @@ and the credentials created by the factory.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="google.cloud.client.JSONClient.from_service_account_p12">
-<code class="descname">from_service_account_p12</code><span class="sig-paren">(</span><em>client_email</em>, <em>private_key_path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.client.JSONClient.from_service_account_p12" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory to retrieve P12 credentials while creating client.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Unless you have an explicit reason to use a PKCS12 key for your
-service account, we recommend using a JSON key.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client_email</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The path to a private key file (this file was
-given to you when you created the service
-account). This file must be in P12 format.</li>
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Remaining positional arguments to pass to constructor.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Remaining keyword arguments to pass to constructor.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.Client</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The client created with the retrieved P12 credentials.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">TypeError</span></code> if there is a conflict with the kwargs
-and the credentials created by the factory.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -509,10 +435,8 @@ and the credentials created by the factory.</p>
 <dd><p>Generate signed URL to provide query-string auth&#8217;n to a resource.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Assumes <code class="docutils literal"><span class="pre">credentials</span></code> implements a <code class="docutils literal"><span class="pre">sign_blob()</span></code> method that takes
-bytes to sign and returns a pair of the key ID (unused here) and the
-signed bytes (this is abstract in the base class
-<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.AssertionCredentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.AssertionCredentials</span></code></a>). Also assumes
+<p class="last">Assumes <code class="docutils literal"><span class="pre">credentials</span></code> implements the
+<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Signing" title="(in google-auth v0.4.0)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Signing</span></code></a> interface. Also assumes
 <code class="docutils literal"><span class="pre">credentials</span></code> has a <code class="docutils literal"><span class="pre">service_account_email</span></code> property which
 identifies the credentials.</p>
 </div>
@@ -529,7 +453,7 @@ from a JSON file rather than a GCE service account.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.appengine.AppAssertionCredentials</span></code>) &#8211; Credentials object with an associated private key to
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Signing" title="(in google-auth v0.4.0)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Signing</span></code></a>) &#8211; Credentials object with an associated private key to
 sign text.</li>
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; A pointer to a specific resource
 (typically, <code class="docutils literal"><span class="pre">/bucket-name/path/to/blob.txt</span></code>).</li>
@@ -567,57 +491,12 @@ until expiration.</p>
 <dt id="google.cloud.credentials.get_credentials">
 <code class="descclassname">google.cloud.credentials.</code><code class="descname">get_credentials</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/credentials.html#get_credentials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.credentials.get_credentials" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets credentials implicitly from the current environment.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">You should not need to use this function directly. Instead, use a
-helper method which uses this method under the hood.</p>
-</div>
-<p>Checks environment in order of precedence:</p>
-<ul class="simple">
-<li>Google App Engine (production and testing)</li>
-<li>Environment variable <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> pointing to
-a file with stored credentials information.</li>
-<li>Stored &#8220;well known&#8221; file associated with <code class="docutils literal"><span class="pre">gcloud</span></code> command line tool.</li>
-<li>Google Compute Engine production environment.</li>
-</ul>
-<p>The file referred to in <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> is
-expected to contain information about credentials that are ready to use.
-This means either service account information or user account information
-with a ready-to-use refresh token:</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;authorized_user&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;client_id&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;client_secret&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;refresh_token&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>or</p>
-<div class="code json highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;service_account&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;project_id&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;private_key_id&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;private_key&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;client_email&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;client_id&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;auth_uri&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;token_uri&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;auth_provider_x509_cert_url&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;client_x509_cert_url&#39;</span><span class="p">:</span> <span class="s1">&#39;...&#39;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>The second of these is simply a JSON key downloaded from the Google APIs
-console. The first is a close cousin of the &#8220;client secrets&#8221; JSON file
-used by <a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.clientsecrets.html#module-oauth2client.clientsecrets" title="(in oauth2client v4.0.0)"><code class="xref py py-mod docutils literal"><span class="pre">oauth2client.clientsecrets</span></code></a> but differs in formatting.</p>
+<p>Uses <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v0.4.0)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.GoogleCredentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.GoogleCredentials</span></code></a>,
-<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.contrib.appengine.html#oauth2client.contrib.appengine.AppAssertionCredentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.contrib.appengine.AppAssertionCredentials</span></code></a>,
-<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.contrib.gce.html#oauth2client.contrib.gce.AppAssertionCredentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.contrib.gce.AppAssertionCredentials</span></code></a>,
-<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.service_account.html#oauth2client.service_account.ServiceAccountCredentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.service_account.ServiceAccountCredentials</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.4.0)"><code class="xref py py-class docutils literal"><span class="pre">google.auth.credentials.Credentials</span></code></a>,</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new credentials instance corresponding to the implicit
 environment.</td>
@@ -866,12 +745,6 @@ and tests.</p>
 </dd></dl>
 
 <dl class="data">
-<dt id="google.cloud.environment_vars.CREDENTIALS">
-<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">CREDENTIALS</code><em class="property"> = 'GOOGLE_APPLICATION_CREDENTIALS'</em><a class="headerlink" href="#google.cloud.environment_vars.CREDENTIALS" title="Permalink to this definition">#</a></dt>
-<dd><p>Environment variable defining location of Google credentials.</p>
-</dd></dl>
-
-<dl class="data">
 <dt id="google.cloud.environment_vars.DISABLE_GRPC">
 <code class="descclassname">google.cloud.environment_vars.</code><code class="descname">DISABLE_GRPC</code><em class="property"> = 'GOOGLE_CLOUD_DISABLE_GRPC'</em><a class="headerlink" href="#google.cloud.environment_vars.DISABLE_GRPC" title="Permalink to this definition">#</a></dt>
 <dd><p>Environment variable acting as flag to disable gRPC.</p>
@@ -889,12 +762,6 @@ exist.</p>
 <dt id="google.cloud.environment_vars.GCD_HOST">
 <code class="descclassname">google.cloud.environment_vars.</code><code class="descname">GCD_HOST</code><em class="property"> = 'DATASTORE_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.GCD_HOST" title="Permalink to this definition">#</a></dt>
 <dd><p>Environment variable defining host for GCD dataset server.</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="google.cloud.environment_vars.PROJECT">
-<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">PROJECT</code><em class="property"> = 'GOOGLE_CLOUD_PROJECT'</em><a class="headerlink" href="#google.cloud.environment_vars.PROJECT" title="Permalink to this definition">#</a></dt>
-<dd><p>Environment variable defining default project.</p>
 </dd></dl>
 
 <dl class="data">
@@ -947,7 +814,7 @@ exist.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'75c4115',
+            VERSION:'0581c28',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
