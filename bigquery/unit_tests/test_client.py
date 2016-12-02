@@ -493,7 +493,7 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         QUERY = 'select count(*) from persons'
-        creds = _Credentials()
+        creds = object()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
@@ -528,7 +528,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.query import QueryResults
         PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
-        creds = _Credentials()
+        creds = object()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
         query = client.run_sync_query(QUERY)
@@ -545,7 +545,7 @@ class TestClient(unittest.TestCase):
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
-        creds = _Credentials()
+        creds = object()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
@@ -562,7 +562,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.query import QueryResults
         PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
-        creds = _Credentials()
+        creds = object()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, http=http)
         query_parameters = [ScalarQueryParameter('foo', 'INT64', 123)]
