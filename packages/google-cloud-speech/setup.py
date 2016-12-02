@@ -48,10 +48,9 @@ SETUP_BASE = {
     ],
 }
 
-
 REQUIREMENTS = [
     'google-cloud-core >= 0.21.0',
-    'gapic-google-cloud-speech-v1beta1 >= 0.11.1, < 0.12.0',
+    'gapic-google-cloud-speech-v1beta1 >= 0.14.0, < 0.15dev',
 ]
 
 setup(
