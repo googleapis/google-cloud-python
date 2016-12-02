@@ -317,7 +317,6 @@ class TestDocument(unittest.TestCase):
 
     def _verify_token(self, token, text_content, part_of_speech, lemma):
         from google.cloud.language.syntax import Token
-        from google.cloud.language.syntax import PartOfSpeech
 
         self.assertIsInstance(token, Token)
         self.assertEqual(token.text_content, text_content)
@@ -326,7 +325,6 @@ class TestDocument(unittest.TestCase):
 
     def test_analyze_syntax(self):
         from google.cloud.language.document import Encoding
-        from google.cloud.language.syntax import Token
         from google.cloud.language.syntax import PartOfSpeech
 
         name1 = 'R-O-C-K'
@@ -350,17 +348,6 @@ class TestDocument(unittest.TestCase):
                     },
                     'partOfSpeech': {
                         'tag': 'NOUN',
-                        'aspect': 'ASPECT_UNKNOWN',
-                        'case': 'CASE_UNKNOWN',
-                        'form': 'FORM_UNKNOWN',
-                        'gender': 'GENDER_UNKNOWN',
-                        'mood': 'MOOD_UNKNOWN',
-                        'number': 'SINGULAR',
-                        'person': 'PERSON_UNKNOWN',
-                        'proper': 'PROPER',
-                        'reciprocity': 'RECIPROCITY_UNKNOWN',
-                        'tense': 'TENSE_UNKNOWN',
-                        'voice': 'VOICE_UNKNOWN',
                     },
                     'dependencyEdge': {
                         'headTokenIndex': 0,
@@ -375,17 +362,6 @@ class TestDocument(unittest.TestCase):
                     },
                     'partOfSpeech': {
                         'tag': 'ADP',
-                        'aspect': 'ASPECT_UNKNOWN',
-                        'case': 'CASE_UNKNOWN',
-                        'form': 'FORM_UNKNOWN',
-                        'gender': 'GENDER_UNKNOWN',
-                        'mood': 'MOOD_UNKNOWN',
-                        'number': 'NUMBER_UNKNOWN',
-                        'person': 'PERSON_UNKNOWN',
-                        'proper': 'PROPER_UNKNOWN',
-                        'reciprocity': 'RECIPROCITY_UNKNOWN',
-                        'tense': 'TENSE_UNKNOWN',
-                        'voice': 'VOICE_UNKNOWN',
                     },
                     'dependencyEdge': {
                         'headTokenIndex': 0,
@@ -400,17 +376,6 @@ class TestDocument(unittest.TestCase):
                     },
                     'partOfSpeech': {
                         'tag': 'DET',
-                        'aspect': 'ASPECT_UNKNOWN',
-                        'case': 'CASE_UNKNOWN',
-                        'form': 'FORM_UNKNOWN',
-                        'gender': 'GENDER_UNKNOWN',
-                        'mood': 'MOOD_UNKNOWN',
-                        'number': 'NUMBER_UNKNOWN',
-                        'person': 'PERSON_UNKNOWN',
-                        'proper': 'PROPER_UNKNOWN',
-                        'reciprocity': 'RECIPROCITY_UNKNOWN',
-                        'tense': 'TENSE_UNKNOWN',
-                        'voice': 'VOICE_UNKNOWN',
                     },
                     'dependencyEdge': {
                         'headTokenIndex': 3,
@@ -425,17 +390,6 @@ class TestDocument(unittest.TestCase):
                     },
                     'partOfSpeech': {
                         'tag': 'NOUN',
-                        'aspect': 'ASPECT_UNKNOWN',
-                        'case': 'CASE_UNKNOWN',
-                        'form': 'FORM_UNKNOWN',
-                        'gender': 'GENDER_UNKNOWN',
-                        'mood': 'MOOD_UNKNOWN',
-                        'number': 'SINGULAR',
-                        'person': 'PERSON_UNKNOWN',
-                        'proper': 'PROPER',
-                        'reciprocity': 'RECIPROCITY_UNKNOWN',
-                        'tense': 'TENSE_UNKNOWN',
-                        'voice': 'VOICE_UNKNOWN',
                     },
                     'dependencyEdge': {
                         'headTokenIndex': 1,
