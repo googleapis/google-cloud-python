@@ -16,14 +16,26 @@
 
 You'll typically use these to get started with the API:
 
-.. code-block:: python
+.. testsetup:: constructors
 
-  from google.cloud import datastore
+  import os
+  os.environ['GOOGLE_CLOUD_PROJECT'] = u'my-project'
 
-  client = datastore.Client()
-  key = client.key('EntityKind', 1234)
-  entity = datastore.Entity(key)
-  query = client.query(kind='EntityKind')
+.. doctest:: constructors
+
+  >>> from google.cloud import datastore
+  >>>
+  >>> client = datastore.Client()
+  >>> print(client.project)
+  my-project
+  >>> key = client.key('EntityKind', 1234)
+  >>> key
+  <Key('EntityKind', 1234), project=my-project>
+  >>> entity = datastore.Entity(key)
+  >>> entity['answer'] = 42
+  >>> entity
+  <Entity('EntityKind', 1234) {'answer': 42}>
+  >>> query = client.query(kind='EntityKind')
 
 The main concepts with this API are:
 

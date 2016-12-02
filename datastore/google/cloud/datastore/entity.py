@@ -144,7 +144,7 @@ class Entity(dict):
 
     def __repr__(self):
         if self.key:
-            return '<Entity%s %s>' % (self.key.path,
+            return '<Entity%s %s>' % (self.key._flat_path,
                                       super(Entity, self).__repr__())
         else:
-            return '<Entity %s>' % (super(Entity, self).__repr__())
+            return '<Entity %s>' % (super(Entity, self).__repr__(),)
