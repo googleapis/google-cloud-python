@@ -87,7 +87,7 @@ However, you may want to be explicit because
   from different projects
 
 In these situations, you can create an explicit
-:class:`Credentials <google.auth.credentials.Credentials>` object suited to your
+:class:`~google.auth.credentials.Credentials>` object suited to your
 environment. After creation, you can pass it directly to a
 :class:`Client <google.cloud.client.Client>`:
 
@@ -180,8 +180,8 @@ can be serialized with
 :meth:`to_json() <oauth2client.client.Credentials.to_json>`
 and stored in a file and then and deserialized with
 :meth:`from_json() <oauth2client.client.Credentials.from_json>`. In order
-to use ``oauth2client``'s credentials with this library, you'll need to `convert
-them`_.
+to use ``oauth2client``'s credentials with this library, you'll need to
+`convert them`_.
 
 .. _oauth2client: https://github.com/Google/oauth2client.
 .. _client secrets: https://developers.google.com/api-client-library/python/guide/aaa_oauth#flow_from_clientsecrets
