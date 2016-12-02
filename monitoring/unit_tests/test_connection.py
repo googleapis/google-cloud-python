@@ -26,20 +26,6 @@ class TestConnection(unittest.TestCase):
         return self._get_target_class()(*args, **kwargs)
 
     def test_constructor(self):
-        credentials = _Credentials()
+        credentials = object()
         connection = self._make_one(credentials)
-        self.assertEqual(connection.credentials._scopes,
-                         self._get_target_class().SCOPE)
-
-
-class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
+        self.assertEqual(connection.credentials, credentials)

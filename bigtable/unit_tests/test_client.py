@@ -26,7 +26,7 @@ class Test__make_data_stub(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
-        credentials = _Credentials()
+        credentials = object()
         user_agent = 'you-sir-age-int'
         client = _Client(credentials, user_agent)
 
@@ -86,7 +86,7 @@ class Test__make_instance_stub(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
-        credentials = _Credentials()
+        credentials = object()
         user_agent = 'you-sir-age-int'
         client = _Client(credentials, user_agent)
 
@@ -148,7 +148,7 @@ class Test__make_operations_stub(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
-        credentials = _Credentials()
+        credentials = object()
         user_agent = 'you-sir-age-int'
         client = _Client(credentials, user_agent)
 
@@ -210,7 +210,7 @@ class Test__make_table_stub(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
-        credentials = _Credentials()
+        credentials = object()
         user_agent = 'you-sir-age-int'
         client = _Client(credentials, user_agent)
 
@@ -289,6 +289,11 @@ class TestClient(unittest.TestCase):
                      _make_table_stub=mock_make_table_stub):
             return self._make_one(*args, **kwargs)
 
+    def _make_credentials(self):
+        import mock
+        import google.auth.credentials
+        return mock.Mock(spec=google.auth.credentials.Scoped)
+
     def _constructor_test_helper(self, expected_scopes, creds,
                                  read_only=False, admin=False,
                                  user_agent=None, expected_creds=None):
@@ -320,10 +325,11 @@ class TestClient(unittest.TestCase):
             self.assertSequenceEqual(mock_make_operations_stub.calls, [])
             self.assertSequenceEqual(mock_make_table_stub.calls, [])
 
-        expected_creds = expected_creds or creds
+        expected_creds = expected_creds or creds.with_scopes.return_value
         self.assertIs(client._credentials, expected_creds)
+
         if expected_scopes is not None:
-            self.assertEqual(client._credentials.scopes, expected_scopes)
+            creds.with_scopes.assert_called_once_with(expected_scopes)
 
         self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client.user_agent, user_agent)
@@ -345,7 +351,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigtable import client as MUT
 
         expected_scopes = [MUT.DATA_SCOPE]
-        creds = _Credentials()
+        creds = self._make_credentials()
         self._constructor_test_helper(expected_scopes, creds)
 
     def test_constructor_custom_user_agent(self):
@@ -353,7 +359,7 @@ class TestClient(unittest.TestCase):
 
         CUSTOM_USER_AGENT = 'custom-application'
         expected_scopes = [MUT.DATA_SCOPE]
-        creds = _Credentials()
+        creds = self._make_credentials()
         self._constructor_test_helper(expected_scopes, creds,
                                       user_agent=CUSTOM_USER_AGENT)
 
@@ -361,18 +367,18 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigtable import client as MUT
 
         expected_scopes = [MUT.DATA_SCOPE, MUT.ADMIN_SCOPE]
-        creds = _Credentials()
+        creds = self._make_credentials()
         self._constructor_test_helper(expected_scopes, creds, admin=True)
 
     def test_constructor_with_read_only(self):
         from google.cloud.bigtable import client as MUT
 
         expected_scopes = [MUT.READ_ONLY_SCOPE]
-        creds = _Credentials()
+        creds = self._make_credentials()
         self._constructor_test_helper(expected_scopes, creds, read_only=True)
 
     def test_constructor_both_admin_and_read_only(self):
-        creds = _Credentials()
+        creds = self._make_credentials()
         with self.assertRaises(ValueError):
             self._constructor_test_helper([], creds, admin=True,
                                           read_only=True)
@@ -381,18 +387,21 @@ class TestClient(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
-        creds = _Credentials()
+        creds = self._make_credentials()
         expected_scopes = [MUT.DATA_SCOPE]
 
         def mock_get_credentials():
             return creds
 
         with _Monkey(MUT, get_credentials=mock_get_credentials):
-            self._constructor_test_helper(expected_scopes, None,
-                                          expected_creds=creds)
+            self._constructor_test_helper(
+                None, None,
+                expected_creds=creds.with_scopes.return_value)
+
+        creds.with_scopes.assert_called_once_with(expected_scopes)
 
     def test_constructor_credentials_wo_create_scoped(self):
-        creds = object()
+        creds = self._make_credentials()
         expected_scopes = None
         self._constructor_test_helper(expected_scopes, creds)
 
@@ -400,7 +409,7 @@ class TestClient(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
-        credentials = _Credentials('value')
+        credentials = self._make_credentials()
         client = self._make_oneWithMocks(
             project=self.PROJECT,
             credentials=credentials,
@@ -447,14 +456,14 @@ class TestClient(unittest.TestCase):
         self._copy_test_helper(read_only=True)
 
     def test_credentials_getter(self):
-        credentials = _Credentials()
+        credentials = object()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials)
         self.assertIs(client.credentials, credentials)
 
     def test_project_name_property(self):
-        credentials = _Credentials()
+        credentials = object()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials)
@@ -462,14 +471,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project_name, project_name)
 
     def test_instance_stub_getter(self):
-        credentials = _Credentials()
+        credentials = object()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials, admin=True)
         self.assertIs(client._instance_stub, client._instance_stub_internal)
 
     def test_instance_stub_non_admin_failure(self):
-        credentials = _Credentials()
+        credentials = object()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials, admin=False)
@@ -477,7 +486,7 @@ class TestClient(unittest.TestCase):
             getattr(client, '_instance_stub')
 
     def test_operations_stub_getter(self):
-        credentials = _Credentials()
+        credentials = object()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials, admin=True)
@@ -485,7 +494,7 @@ class TestClient(unittest.TestCase):
                       client._operations_stub_internal)
 
     def test_operations_stub_non_admin_failure(self):
-        credentials = _Credentials()
+        credentials = object()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials, admin=False)
@@ -493,14 +502,14 @@ class TestClient(unittest.TestCase):
             getattr(client, '_operations_stub')
 
     def test_table_stub_getter(self):
-        credentials = _Credentials()
+        credentials = object()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials, admin=True)
         self.assertIs(client._table_stub, client._table_stub_internal)
 
     def test_table_stub_non_admin_failure(self):
-        credentials = _Credentials()
+        credentials = object()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials, admin=False)
@@ -516,7 +525,7 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
         DISPLAY_NAME = 'display-name'
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_oneWithMocks(project=PROJECT,
                                          credentials=credentials)
 
@@ -538,7 +547,7 @@ class TestClient(unittest.TestCase):
         DISPLAY_NAME = 'display-name'
         LOCATION_ID = 'locname'
         SERVE_NODES = 5
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_oneWithMocks(project=PROJECT,
                                          credentials=credentials)
 
@@ -569,7 +578,7 @@ class TestClient(unittest.TestCase):
         INSTANCE_NAME2 = (
             'projects/' + self.PROJECT + '/instances/' + INSTANCE_ID2)
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_oneWithMocks(
             project=self.PROJECT,
             credentials=credentials,
@@ -617,22 +626,6 @@ class TestClient(unittest.TestCase):
             (request_pb,),
             {},
         )])
-
-
-class _Credentials(object):
-
-    scopes = None
-
-    def __init__(self, access_token=None):
-        self._access_token = access_token
-        self._tokens = []
-
-    def create_scoped(self, scope):
-        self.scopes = scope
-        return self
-
-    def __eq__(self, other):
-        return self._access_token == other._access_token
 
 
 class _Client(object):

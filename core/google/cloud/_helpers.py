@@ -22,27 +22,25 @@ from __future__ import absolute_import
 
 import calendar
 import datetime
-import json
 import os
 import re
-import socket
 from threading import local as Local
 
+import google.auth
 from google.protobuf import timestamp_pb2
-try:
-    from google.appengine.api import app_identity
-except ImportError:
-    app_identity = None
+import google_auth_httplib2
+
 try:
     import grpc
-except ImportError:  # pragma: NO COVER
+    from google.auth.transport.grpc import (
+        AuthMetadataPlugin)  # pragma: NO COVER
+except ImportError:
     grpc = None
+    AuthMetadataPlugin = None
+
+import httplib2
 import six
 from six.moves import http_client
-from six.moves import configparser
-
-from google.cloud.environment_vars import PROJECT
-from google.cloud.environment_vars import CREDENTIALS
 
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.
@@ -168,139 +166,11 @@ def _ensure_tuple_or_list(arg_name, tuple_or_list):
     return list(tuple_or_list)
 
 
-def _app_engine_id():
-    """Gets the App Engine application ID if it can be inferred.
-
-    :rtype: str or ``NoneType``
-    :returns: App Engine application ID if running in App Engine,
-              else ``None``.
-    """
-    if app_identity is None:
-        return None
-
-    return app_identity.get_application_id()
-
-
-def _file_project_id():
-    """Gets the project ID from the credentials file if one is available.
-
-    :rtype: str or ``NoneType``
-    :returns: Project ID from JSON credentials file if value exists,
-              else ``None``.
-    """
-    credentials_file_path = os.getenv(CREDENTIALS)
-    if credentials_file_path:
-        with open(credentials_file_path, 'rb') as credentials_file:
-            credentials_json = credentials_file.read()
-            credentials = json.loads(credentials_json.decode('utf-8'))
-            return credentials.get('project_id')
-
-
-def _get_nix_config_path():
-    """Get the ``gcloud`` CLI config path on *nix systems.
-
-    :rtype: str
-    :returns: The filename on a *nix system containing the CLI
-              config file.
-    """
-    return os.path.join(_USER_ROOT, '.config', _GCLOUD_CONFIG_FILE)
-
-
-def _get_windows_config_path():
-    """Get the ``gcloud`` CLI config path on Windows systems.
-
-    :rtype: str
-    :returns: The filename on a Windows system containing the CLI
-              config file.
-    """
-    appdata_dir = os.getenv('APPDATA', '')
-    return os.path.join(appdata_dir, _GCLOUD_CONFIG_FILE)
-
-
-def _default_service_project_id():
-    """Retrieves the project ID from the gcloud command line tool.
-
-    This assumes the ``.config`` directory is stored
-    - in ~/.config on *nix systems
-    - in the %APPDATA% directory on Windows systems
-
-    Additionally, the ${HOME} / "~" directory may not be present on Google
-    App Engine, so this may be conditionally ignored.
-
-    Files that cannot be opened with configparser are silently ignored; this is
-    designed so that you can specify a list of potential configuration file
-    locations.
-
-    :rtype: str or ``NoneType``
-    :returns: Project-ID from default configuration file else ``None``
-    """
-    search_paths = []
-    if _USER_ROOT is not None:
-        search_paths.append(_get_nix_config_path())
-
-    if os.name == 'nt':
-        search_paths.append(_get_windows_config_path())
-
-    config = configparser.RawConfigParser()
-    config.read(search_paths)
-
-    if config.has_section(_GCLOUD_CONFIG_SECTION):
-        try:
-            return config.get(_GCLOUD_CONFIG_SECTION, _GCLOUD_CONFIG_KEY)
-        except configparser.NoOptionError:
-            return None
-
-
-def _compute_engine_id():
-    """Gets the Compute Engine project ID if it can be inferred.
-
-    Uses 169.254.169.254 for the metadata server to avoid request
-    latency from DNS lookup.
-
-    See https://cloud.google.com/compute/docs/metadata#metadataserver
-    for information about this IP address. (This IP is also used for
-    Amazon EC2 instances, so the metadata flavor is crucial.)
-
-    See https://github.com/google/oauth2client/issues/93 for context about
-    DNS latency.
-
-    :rtype: str or ``NoneType``
-    :returns: Compute Engine project ID if the metadata service is available,
-              else ``None``.
-    """
-    host = '169.254.169.254'
-    uri_path = '/computeMetadata/v1/project/project-id'
-    headers = {'Metadata-Flavor': 'Google'}
-    connection = http_client.HTTPConnection(host, timeout=0.1)
-
-    try:
-        connection.request('GET', uri_path, headers=headers)
-        response = connection.getresponse()
-        if response.status == 200:
-            return response.read()
-    except socket.error:  # socket.timeout or socket.error(64, 'Host is down')
-        pass
-    finally:
-        connection.close()
-
-
-def _get_production_project():
-    """Gets the production project if it can be inferred."""
-    return os.getenv(PROJECT)
-
-
 def _determine_default_project(project=None):
     """Determine default project ID explicitly or implicitly as fall-back.
 
-    In implicit case, supports three environments. In order of precedence, the
-    implicit environments are:
-
-    * GOOGLE_CLOUD_PROJECT environment variable
-    * GOOGLE_APPLICATION_CREDENTIALS JSON file
-    * Get default service project from
-      ``$ gcloud beta auth application-default login``
-    * Google App Engine application ID
-    * Google Compute Engine project ID (from metadata server)
+    See :func:`google.auth.default` for details on how the default project
+    is determined.
 
     :type project: str
     :param project: Optional. The project name to use as default.
@@ -309,20 +179,7 @@ def _determine_default_project(project=None):
     :returns: Default project if it can be determined.
     """
     if project is None:
-        project = _get_production_project()
-
-    if project is None:
-        project = _file_project_id()
-
-    if project is None:
-        project = _default_service_project_id()
-
-    if project is None:
-        project = _app_engine_id()
-
-    if project is None:
-        project = _compute_engine_id()
-
+        _, project = google.auth.default()
     return project
 
 
@@ -597,40 +454,12 @@ def _name_from_project_path(path, project, template):
     return match.group('name')
 
 
-class MetadataPlugin(object):
-    """Callable class to transform metadata for gRPC requests.
-
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
-    :param credentials: The OAuth2 Credentials to use for creating
-                        access tokens.
-    """
-
-    def __init__(self, credentials):
-        self._credentials = credentials
-
-    def __call__(self, unused_context, callback):
-        """Adds authorization header to request metadata.
-
-        :type unused_context: object
-        :param unused_context: A gRPC context which is not needed
-                               to modify headers.
-
-        :type callback: callable
-        :param callback: A callback which will use the headers.
-        """
-        access_token = self._credentials.get_access_token().access_token
-        headers = [
-            ('authorization', 'Bearer ' + access_token),
-        ]
-        callback(headers, None)
-
-
 def make_secure_channel(credentials, user_agent, host):
     """Makes a secure channel for an RPC service.
 
     Uses / depends on gRPC.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
+    :type credentials: :class:`google.auth.credentials.Credentials`
     :param credentials: The OAuth2 Credentials to use for creating
                         access tokens.
 
@@ -646,7 +475,9 @@ def make_secure_channel(credentials, user_agent, host):
     # ssl_channel_credentials() loads root certificates from
     # `grpc/_adapter/credentials/roots.pem`.
     transport_creds = grpc.ssl_channel_credentials()
-    custom_metadata_plugin = MetadataPlugin(credentials)
+    http = httplib2.Http()
+    custom_metadata_plugin = AuthMetadataPlugin(
+        credentials, google_auth_httplib2.Request(http=http))
     auth_creds = grpc.metadata_call_credentials(
         custom_metadata_plugin, name='google_creds')
     channel_creds = grpc.composite_channel_credentials(
@@ -664,7 +495,7 @@ def make_secure_stub(credentials, user_agent, stub_class, host):
 
     Uses / depends on gRPC.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
+    :type credentials: :class:`google.auth.credentials.Credentials`
     :param credentials: The OAuth2 Credentials to use for creating
                         access tokens.
 

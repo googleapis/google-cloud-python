@@ -430,7 +430,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
                                 push_config=push_cfg_pb)
         response = _GAXPageIterator([sub_pb])
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
-        creds = _Credentials()
+        creds = object()
         client = Client(project=self.PROJECT, credentials=creds)
         api = self._make_one(gax_api, client)
 
@@ -476,7 +476,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([sub_pb], page_token=NEW_TOKEN)
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
         client = _Client(self.PROJECT)
-        creds = _Credentials()
+        creds = object()
         client = Client(project=self.PROJECT, credentials=creds)
         api = self._make_one(gax_api, client)
 
@@ -914,7 +914,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 
         mock_publisher_api.SERVICE_ADDRESS = host
 
-        creds = _Credentials()
+        creds = object()
         connection = _Connection(in_emulator=False,
                                  credentials=creds)
         patch = mock.patch.multiple(
@@ -986,7 +986,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
 
         mock_subscriber_api.SERVICE_ADDRESS = host
 
-        creds = _Credentials()
+        creds = object()
         connection = _Connection(in_emulator=False,
                                  credentials=creds)
         patch = mock.patch.multiple(
@@ -1216,10 +1216,3 @@ class _Client(object):
 
     def __init__(self, project):
         self.project = project
-
-
-class _Credentials(object):
-
-    @staticmethod
-    def create_scoped_required():
-        return False

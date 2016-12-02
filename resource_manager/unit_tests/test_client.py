@@ -29,7 +29,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.resource_manager.connection import Connection
 
         http = object()
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(credentials=credentials, http=http)
         self.assertIsInstance(client._connection, Connection)
         self.assertEqual(client._connection._credentials, credentials)
@@ -38,7 +38,7 @@ class TestClient(unittest.TestCase):
     def test_new_project_factory(self):
         from google.cloud.resource_manager.project import Project
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(credentials=credentials)
         project_id = 'project_id'
         name = object()
@@ -66,7 +66,7 @@ class TestClient(unittest.TestCase):
             'lifecycleState': 'ACTIVE',
         }
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(credentials=credentials)
         # Patch the connection with one we can easily control.
         client._connection = _Connection(project_resource)
@@ -81,7 +81,7 @@ class TestClient(unittest.TestCase):
     def test_list_projects_return_type(self):
         from google.cloud.iterator import HTTPIterator
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(credentials=credentials)
         # Patch the connection with one we can easily control.
         client._connection = _Connection({})
@@ -90,7 +90,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(results, HTTPIterator)
 
     def test_list_projects_no_paging(self):
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(credentials=credentials)
 
         PROJECT_ID = 'project-id'
@@ -118,7 +118,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project.status, STATUS)
 
     def test_list_projects_with_paging(self):
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(credentials=credentials)
 
         PROJECT_ID1 = 'project-id'
@@ -181,7 +181,7 @@ class TestClient(unittest.TestCase):
         })
 
     def test_list_projects_with_filter(self):
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(credentials=credentials)
 
         PROJECT_ID = 'project-id'
@@ -220,7 +220,7 @@ class TestClient(unittest.TestCase):
     def test_page_empty_response(self):
         from google.cloud.iterator import Page
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(credentials=credentials)
         iterator = client.list_projects()
         page = Page(iterator, (), None)
@@ -246,7 +246,7 @@ class TestClient(unittest.TestCase):
             'lifecycleState': project_lifecycle_state,
         }
         response = {'projects': [api_resource]}
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(credentials=credentials)
 
         def dummy_response():
@@ -266,19 +266,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project.number, project_number)
         self.assertEqual(project.labels, project_labels)
         self.assertEqual(project.status, project_lifecycle_state)
-
-
-class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
 
 
 class _Connection(object):
