@@ -85,7 +85,7 @@ class TestClient(unittest.TestCase):
     def test_image_with_client_raw_content(self):
         from google.cloud.vision.image import Image
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT,
                                 credentials=credentials)
         raw_image = client.image(content=IMAGE_CONTENT)
@@ -97,7 +97,7 @@ class TestClient(unittest.TestCase):
         from mock import patch
         from google.cloud.vision.image import Image
 
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=PROJECT,
                                 credentials=credentials)
         with patch('google.cloud.vision.image.open',
