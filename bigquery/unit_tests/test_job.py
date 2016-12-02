@@ -426,7 +426,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
             job.begin()
 
     def test_begin_w_bound_client(self):
-        PATH = 'projects/%s/jobs' % self.PROJECT
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
@@ -443,7 +443,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         SENT = {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -465,7 +465,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
 
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.schema import SchemaField
-        PATH = 'projects/%s/jobs' % self.PROJECT
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource(ended=True)
         LOAD_CONFIGURATION = {
             'sourceUris': [self.SOURCE1],
@@ -519,7 +519,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         SENT = {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -533,7 +533,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_exists_miss_w_bound_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         table = _Table()
@@ -544,11 +544,11 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
@@ -562,11 +562,11 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_reload_w_bound_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -578,11 +578,11 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         RESOURCE = self._makeResource()
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
@@ -597,11 +597,11 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_cancel_w_bound_client(self):
-        PATH = 'projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_NAME)
         RESOURCE = self._makeResource(ended=True)
         RESPONSE = {'job': RESOURCE}
         conn = _Connection(RESPONSE)
@@ -614,11 +614,11 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_cancel_w_alternate_client(self):
-        PATH = 'projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_NAME)
         RESOURCE = self._makeResource(ended=True)
         RESPONSE = {'job': RESOURCE}
         conn1 = _Connection()
@@ -634,7 +634,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
 
@@ -773,7 +773,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_begin_w_bound_client(self):
-        PATH = 'projects/%s/jobs' % self.PROJECT
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
@@ -791,7 +791,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         SENT = {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -816,7 +816,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
-        PATH = 'projects/%s/jobs' % self.PROJECT
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource(ended=True)
         COPY_CONFIGURATION = {
             'sourceTables': [{
@@ -850,7 +850,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         SENT = {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -864,7 +864,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_exists_miss_w_bound_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         source = _Table(self.SOURCE_TABLE)
@@ -876,11 +876,11 @@ class TestCopyJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
@@ -895,11 +895,11 @@ class TestCopyJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_reload_w_bound_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -912,11 +912,11 @@ class TestCopyJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         RESOURCE = self._makeResource()
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
@@ -932,7 +932,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
 
@@ -1071,7 +1071,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_begin_w_bound_client(self):
-        PATH = 'projects/%s/jobs' % self.PROJECT
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
@@ -1089,7 +1089,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         SENT = {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -1110,7 +1110,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
-        PATH = 'projects/%s/jobs' % self.PROJECT
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource(ended=True)
         EXTRACT_CONFIGURATION = {
             'sourceTable': {
@@ -1144,7 +1144,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         SENT = {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -1158,7 +1158,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_exists_miss_w_bound_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         source = _Table(self.SOURCE_TABLE)
@@ -1170,11 +1170,11 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
@@ -1189,11 +1189,11 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_reload_w_bound_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -1206,11 +1206,11 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         RESOURCE = self._makeResource()
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
@@ -1226,7 +1226,7 @@ class TestExtractTableToStorageJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
 
@@ -1454,7 +1454,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIs(results._job, job)
 
     def test_begin_w_bound_client(self):
-        PATH = 'projects/%s/jobs' % self.PROJECT
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
@@ -1470,7 +1470,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         SENT = {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -1488,7 +1488,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.dataset import Dataset
         from google.cloud.bigquery.dataset import Table
-        PATH = 'projects/%s/jobs' % self.PROJECT
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         TABLE = 'TABLE'
         DS_NAME = 'DATASET'
         RESOURCE = self._makeResource(ended=True)
@@ -1543,7 +1543,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         SENT = {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -1560,7 +1560,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         from google.cloud.bigquery._helpers import UDFResource
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         INLINE_UDF_CODE = 'var someCode = "here";'
-        PATH = 'projects/%s/jobs' % self.PROJECT
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
@@ -1585,7 +1585,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(job.udf_resources, udf_resources)
         SENT = {
             'jobReference': {
@@ -1608,7 +1608,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_begin_w_named_query_parameter(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
         query_parameters = [ScalarQueryParameter('foo', 'INT64', 123)]
-        PATH = 'projects/%s/jobs' % self.PROJECT
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
@@ -1638,7 +1638,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(job.query_parameters, query_parameters)
         SENT = {
             'jobReference': {
@@ -1659,7 +1659,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_begin_w_positional_query_parameter(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
         query_parameters = [ScalarQueryParameter.positional('INT64', 123)]
-        PATH = 'projects/%s/jobs' % self.PROJECT
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
         RESOURCE = self._makeResource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
@@ -1688,7 +1688,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(job.query_parameters, query_parameters)
         SENT = {
             'jobReference': {
@@ -1707,7 +1707,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_exists_miss_w_bound_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
@@ -1717,11 +1717,11 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
@@ -1734,13 +1734,13 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_reload_w_bound_client(self):
         from google.cloud.bigquery.dataset import Dataset
         from google.cloud.bigquery.dataset import Table
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         DS_NAME = 'DATASET'
         DEST_TABLE = 'dest_table'
         RESOURCE = self._makeResource()
@@ -1759,11 +1759,11 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_reload_w_alternate_client(self):
-        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         DS_NAME = 'DATASET'
         DEST_TABLE = 'dest_table'
         RESOURCE = self._makeResource()
@@ -1785,7 +1785,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
 
