@@ -437,14 +437,13 @@ class StructQueryParameter(AbstractQueryParameter):
         """
         name = resource.get('name')
         instance = cls(name)
-        types = instance.struct_types = {
-            item['name']: item['type']
-            for item in resource['parameterType']['structTypes']
-        }
+        types = instance.struct_types
+        for item in resource['parameterType']['structTypes']:
+            types[item['name']] = item['type']
         struct_values = resource['parameterValue']['structValues']
-        values = instance.struct_values = {}
         for key, value in struct_values.items():
-            values[key] = _CELLDATA_FROM_JSON[types[key]](value, None)
+            converted = _CELLDATA_FROM_JSON[types[key]](value, None)
+            instance.struct_values[key] = converted
         return instance
 
     def to_api_repr(self):
