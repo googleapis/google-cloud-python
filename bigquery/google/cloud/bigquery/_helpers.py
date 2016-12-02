@@ -500,7 +500,7 @@ class QueryParametersProperty(object):
                          the class).
 
         :type value: list of instances of classes derived from
-                :class:`AbstractQueryParameter`.
+                     :class:`AbstractQueryParameter`.
         :param value: new query parameters for the instance.
         """
         if not all(isinstance(u, AbstractQueryParameter) for u in value):
