@@ -30,7 +30,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor(self):
         from google.cloud.dns.connection import Connection
-        creds = _Credentials()
+        creds = object()
         http = object()
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 http=http)
@@ -58,7 +58,7 @@ class TestClient(unittest.TestCase):
         }
         CONVERTED = {key: int(value)
                      for key, value in DATA['quota'].items()}
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
@@ -93,7 +93,7 @@ class TestClient(unittest.TestCase):
                      for key, value in DATA['quota'].items()}
         WITH_KIND = {'quota': DATA['quota'].copy()}
         WITH_KIND['quota']['kind'] = 'dns#quota'
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(WITH_KIND)
 
@@ -130,7 +130,7 @@ class TestClient(unittest.TestCase):
                  'dnsName': DNS_2},
             ]
         }
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
@@ -175,7 +175,7 @@ class TestClient(unittest.TestCase):
                  'dnsName': DNS_2},
             ]
         }
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
@@ -203,7 +203,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.dns.zone import ManagedZone
         DESCRIPTION = 'DESCRIPTION'
         DNS_NAME = 'test.example.com'
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME, DNS_NAME, DESCRIPTION)
         self.assertIsInstance(zone, ManagedZone)
@@ -215,7 +215,7 @@ class TestClient(unittest.TestCase):
     def test_zone_w_dns_name_wo_description(self):
         from google.cloud.dns.zone import ManagedZone
         DNS_NAME = 'test.example.com'
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME, DNS_NAME)
         self.assertIsInstance(zone, ManagedZone)
@@ -226,7 +226,7 @@ class TestClient(unittest.TestCase):
 
     def test_zone_wo_dns_name(self):
         from google.cloud.dns.zone import ManagedZone
-        creds = _Credentials()
+        creds = object()
         client = self._make_one(self.PROJECT, creds)
         zone = client.zone(self.ZONE_NAME)
         self.assertIsInstance(zone, ManagedZone)
@@ -234,19 +234,6 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(zone.dns_name)
         self.assertIsNone(zone.description)
         self.assertIs(zone._client, client)
-
-
-class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
 
 
 class _Connection(object):
