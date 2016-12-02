@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class Test_get_credentials(unittest.TestCase):
 
@@ -22,15 +24,13 @@ class Test_get_credentials(unittest.TestCase):
         return credentials.get_credentials()
 
     def test_it(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud import credentials as MUT
-
-        client = _Client()
-        with _Monkey(MUT, client=client):
+        with mock.patch('google.auth.default', autospec=True) as default:
+            default.return_value = (
+                mock.sentinel.credentials, mock.sentinel.project)
             found = self._call_fut()
-        self.assertIsInstance(found, _Credentials)
-        self.assertIs(found, client._signed)
-        self.assertTrue(client._get_app_default_called)
+
+        self.assertIs(found, mock.sentinel.credentials)
+        default.assert_called_once_with()
 
 
 class Test_generate_signed_url(unittest.TestCase):
@@ -44,18 +44,20 @@ class Test_generate_signed_url(unittest.TestCase):
         import base64
         from six.moves.urllib.parse import parse_qs
         from six.moves.urllib.parse import urlsplit
+        import google.auth.credentials
         from google.cloud._testing import _Monkey
         from google.cloud import credentials as MUT
 
         ENDPOINT = 'http://api.example.com'
         RESOURCE = '/name/path'
         SIGNED = base64.b64encode(b'DEADBEEF')
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = mock.Mock(spec=google.auth.credentials.Signing)
+        CREDENTIALS.signer_email = 'service@example.com'
 
         def _get_signed_query_params(*args):
             credentials, expiration = args[:2]
             return {
-                'GoogleAccessId': credentials.service_account_email,
+                'GoogleAccessId': credentials.signer_email,
                 'Expires': str(expiration),
                 'Signature': SIGNED,
             }
@@ -76,7 +78,7 @@ class Test_generate_signed_url(unittest.TestCase):
         self.assertEqual(params.pop('Signature'), [SIGNED.decode('ascii')])
         self.assertEqual(params.pop('Expires'), ['1000'])
         self.assertEqual(params.pop('GoogleAccessId'),
-                         [CREDENTIALS.service_account_email])
+                         [CREDENTIALS.signer_email])
         if response_type is not None:
             self.assertEqual(params.pop('response-content-type'),
                              [response_type])
@@ -104,10 +106,11 @@ class Test_generate_signed_url(unittest.TestCase):
 class Test_generate_signed_url_exception(unittest.TestCase):
     def test_with_google_credentials(self):
         import time
+        import google.auth.credentials
         from google.cloud.credentials import generate_signed_url
         RESOURCE = '/name/path'
 
-        credentials = _GoogleCredentials()
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
         expiration = int(time.time() + 5)
         self.assertRaises(AttributeError, generate_signed_url, credentials,
                           resource=RESOURCE, expiration=expiration)
@@ -122,11 +125,13 @@ class Test__get_signed_query_params(unittest.TestCase):
 
     def test_it(self):
         import base64
+        import google.auth.credentials
 
         SIG_BYTES = b'DEADBEEF'
-        ACCOUNT_NAME = object()
-        CREDENTIALS = _Credentials(sign_result=SIG_BYTES,
-                                   service_account_email=ACCOUNT_NAME)
+        ACCOUNT_NAME = mock.sentinel.service_account_email
+        CREDENTIALS = mock.Mock(spec=google.auth.credentials.Signing)
+        CREDENTIALS.signer_email = ACCOUNT_NAME
+        CREDENTIALS.sign_bytes.return_value = SIG_BYTES
         EXPIRATION = 100
         STRING_TO_SIGN = 'dummy_signature'
         result = self._call_fut(CREDENTIALS, EXPIRATION,
@@ -137,7 +142,7 @@ class Test__get_signed_query_params(unittest.TestCase):
             'Expires': str(EXPIRATION),
             'Signature': base64.b64encode(b'DEADBEEF'),
         })
-        self.assertEqual(CREDENTIALS._signed, [STRING_TO_SIGN])
+        CREDENTIALS.sign_bytes.assert_called_once_with(STRING_TO_SIGN)
 
 
 class Test__get_expiration_seconds(unittest.TestCase):
@@ -221,36 +226,3 @@ class Test__get_expiration_seconds(unittest.TestCase):
             result = self._call_fut(expiration_as_delta)
 
         self.assertEqual(result, utc_seconds + 86400)
-
-
-class _Credentials(object):
-
-    def __init__(self, service_account_email='testing@example.com',
-                 sign_result=''):
-        self.service_account_email = service_account_email
-        self._sign_result = sign_result
-        self._signed = []
-
-    def sign_blob(self, bytes_to_sign):
-        self._signed.append(bytes_to_sign)
-        return None, self._sign_result
-
-
-class _GoogleCredentials(object):
-
-    def __init__(self, service_account_email='testing@example.com'):
-        self.service_account_email = service_account_email
-
-
-class _Client(object):
-
-    def __init__(self):
-        self._signed = _Credentials()
-
-        class GoogleCredentials(object):
-            @staticmethod
-            def get_application_default():
-                self._get_app_default_called = True
-                return self._signed
-
-        self.GoogleCredentials = GoogleCredentials

@@ -19,6 +19,8 @@ from pkg_resources import get_distribution
 import six
 from six.moves.urllib.parse import urlencode
 
+import google.auth.credentials
+import google_auth_httplib2
 import httplib2
 
 from google.cloud.exceptions import make_exception
@@ -59,9 +61,9 @@ class Connection(object):
     object will also need to be able to add a bearer token to API
     requests and handle token refresh on 401 errors.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+    :type credentials: :class:`google.auth.credentials.Credentials` or
                        :class:`NoneType`
-    :param credentials: The OAuth2 Credentials to use for this connection.
+    :param credentials: The credentials to use for this connection.
 
     :type http: :class:`httplib2.Http` or class that defines ``request()``.
     :param http: An optional HTTP object to make requests.
@@ -77,14 +79,14 @@ class Connection(object):
 
     def __init__(self, credentials=None, http=None):
         self._http = http
-        self._credentials = self._create_scoped_credentials(
+        self._credentials = google.auth.credentials.with_scopes_if_required(
             credentials, self.SCOPE)
 
     @property
     def credentials(self):
         """Getter for current credentials.
 
-        :rtype: :class:`oauth2client.client.OAuth2Credentials` or
+        :rtype: :class:`google.auth.credentials.Credentials` or
                 :class:`NoneType`
         :returns: The credentials object associated with this connection.
         """
@@ -98,33 +100,12 @@ class Connection(object):
         :returns: A Http object used to transport data.
         """
         if self._http is None:
-            self._http = httplib2.Http()
             if self._credentials:
-                self._http = self._credentials.authorize(self._http)
+                self._http = google_auth_httplib2.AuthorizedHttp(
+                    self._credentials)
+            else:
+                self._http = httplib2.Http()
         return self._http
-
-    @staticmethod
-    def _create_scoped_credentials(credentials, scope):
-        """Create a scoped set of credentials if it is required.
-
-        :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
-                           :class:`NoneType`
-        :param credentials: The OAuth2 Credentials to add a scope to.
-
-        :type scope: list of URLs
-        :param scope: the effective service auth scopes for the connection.
-
-        :rtype: :class:`oauth2client.client.OAuth2Credentials` or
-                :class:`NoneType`
-        :returns: A new credentials object that has a scope added (if needed).
-        """
-        if credentials:
-            try:
-                if credentials.create_scoped_required():
-                    credentials = credentials.create_scoped(scope)
-            except AttributeError:
-                pass
-        return credentials
 
 
 class JSONConnection(Connection):

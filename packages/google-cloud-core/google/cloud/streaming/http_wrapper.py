@@ -90,7 +90,7 @@ def _httplib2_debug_level(http_request, level, http=None):
     old_level = httplib2.debuglevel
     http_levels = {}
     httplib2.debuglevel = level
-    if http is not None:
+    if http is not None and getattr(http, 'connections', None) is not None:
         for connection_key, connection in http.connections.items():
             # httplib2 stores two kinds of values in this dict, connection
             # classes and instances. Since the connection types are all

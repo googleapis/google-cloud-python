@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class TestConnection(unittest.TestCase):
 
@@ -31,11 +33,14 @@ class TestConnection(unittest.TestCase):
         self.assertIsNone(conn.credentials)
 
     def test_ctor_explicit(self):
-        credentials = _Credentials()
-        self.assertEqual(credentials._create_scoped_calls, 0)
+        import google.auth.credentials
+
+        credentials = mock.Mock(spec=google.auth.credentials.Scoped)
+
         conn = self._make_one(credentials)
-        self.assertEqual(credentials._create_scoped_calls, 1)
-        self.assertIs(conn.credentials, credentials)
+
+        credentials.with_scopes.assert_called_once_with(conn.SCOPE)
+        self.assertIs(conn.credentials, credentials.with_scopes.return_value)
         self.assertIsNone(conn._http)
 
     def test_ctor_explicit_http(self):
@@ -61,13 +66,15 @@ class TestConnection(unittest.TestCase):
         self.assertIsInstance(conn.http, httplib2.Http)
 
     def test_http_w_creds(self):
-        import httplib2
+        import google.auth.credentials
+        import google_auth_httplib2
 
-        authorized = object()
-        credentials = _Credentials(authorized)
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+
         conn = self._make_one(credentials)
-        self.assertIs(conn.http, authorized)
-        self.assertIsInstance(credentials._called_with, httplib2.Http)
+
+        self.assertIsInstance(conn.http, google_auth_httplib2.AuthorizedHttp)
+        self.assertIs(conn.http.credentials, credentials)
 
     def test_user_agent_format(self):
         from pkg_resources import get_distribution
@@ -75,37 +82,6 @@ class TestConnection(unittest.TestCase):
             get_distribution('google-cloud-core').version)
         conn = self._make_one()
         self.assertEqual(conn.USER_AGENT, expected_ua)
-
-    def test__create_scoped_credentials_with_scoped_credentials(self):
-        klass = self._get_target_class()
-        scoped_creds = object()
-        scope = 'google-specific-scope'
-        credentials = _Credentials(scoped=scoped_creds)
-
-        result = klass._create_scoped_credentials(credentials, scope)
-        self.assertIs(result, scoped_creds)
-        self.assertEqual(credentials._create_scoped_calls, 1)
-        self.assertEqual(credentials._scopes, [scope])
-
-    def test__create_scoped_credentials_without_scope_required(self):
-        klass = self._get_target_class()
-        credentials = _Credentials()
-
-        result = klass._create_scoped_credentials(credentials, None)
-        self.assertIs(result, credentials)
-        self.assertEqual(credentials._create_scoped_calls, 1)
-        self.assertEqual(credentials._scopes, [])
-
-    def test__create_scoped_credentials_non_scoped_credentials(self):
-        klass = self._get_target_class()
-        credentials = object()
-        result = klass._create_scoped_credentials(credentials, None)
-        self.assertIs(result, credentials)
-
-    def test__create_scoped_credentials_no_credentials(self):
-        klass = self._get_target_class()
-        result = klass._create_scoped_credentials(None, None)
-        self.assertIsNone(result)
 
 
 class TestJSONConnection(unittest.TestCase):
@@ -137,9 +113,8 @@ class TestJSONConnection(unittest.TestCase):
         self.assertIsNone(conn.credentials)
 
     def test_ctor_explicit(self):
-        credentials = _Credentials()
-        conn = self._make_one(credentials)
-        self.assertIs(conn.credentials, credentials)
+        conn = self._make_one(mock.sentinel.credentials)
+        self.assertIs(conn.credentials, mock.sentinel.credentials)
 
     def test_http_w_existing(self):
         conn = self._make_one()
@@ -152,13 +127,15 @@ class TestJSONConnection(unittest.TestCase):
         self.assertIsInstance(conn.http, httplib2.Http)
 
     def test_http_w_creds(self):
-        import httplib2
+        import google.auth.credentials
+        import google_auth_httplib2
 
-        authorized = object()
-        credentials = _Credentials(authorized)
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+
         conn = self._make_one(credentials)
-        self.assertIs(conn.http, authorized)
-        self.assertIsInstance(credentials._called_with, httplib2.Http)
+
+        self.assertIsInstance(conn.http, google_auth_httplib2.AuthorizedHttp)
+        self.assertIs(conn.http.credentials, credentials)
 
     def test_build_api_url_no_extra_query_params(self):
         conn = self._makeMockOne()
@@ -437,25 +414,3 @@ class _Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._response, self._content
-
-
-class _Credentials(object):
-
-    def __init__(self, authorized=None, scoped=None):
-        self._authorized = authorized
-        self._scoped = scoped
-        self._scoped_required = scoped is not None
-        self._create_scoped_calls = 0
-        self._scopes = []
-
-    def authorize(self, http):
-        self._called_with = http
-        return self._authorized
-
-    def create_scoped_required(self):
-        self._create_scoped_calls += 1
-        return self._scoped_required
-
-    def create_scoped(self, scope):
-        self._scopes.append(scope)
-        return self._scoped

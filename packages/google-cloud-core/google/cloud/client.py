@@ -14,7 +14,7 @@
 
 """Base classes for client used to interact with Google Cloud APIs."""
 
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2 import service_account
 import six
 
 from google.cloud._helpers import _determine_default_project
@@ -55,43 +55,8 @@ class _ClientFactoryMixin(object):
         """
         if 'credentials' in kwargs:
             raise TypeError('credentials must not be in keyword arguments')
-        credentials = ServiceAccountCredentials.from_json_keyfile_name(
+        credentials = service_account.Credentials.from_service_account_file(
             json_credentials_path)
-        kwargs['credentials'] = credentials
-        return cls(*args, **kwargs)
-
-    @classmethod
-    def from_service_account_p12(cls, client_email, private_key_path,
-                                 *args, **kwargs):
-        """Factory to retrieve P12 credentials while creating client.
-
-        .. note::
-          Unless you have an explicit reason to use a PKCS12 key for your
-          service account, we recommend using a JSON key.
-
-        :type client_email: str
-        :param client_email: The e-mail attached to the service account.
-
-        :type private_key_path: str
-        :param private_key_path: The path to a private key file (this file was
-                                 given to you when you created the service
-                                 account). This file must be in P12 format.
-
-        :type args: tuple
-        :param args: Remaining positional arguments to pass to constructor.
-
-        :type kwargs: dict
-        :param kwargs: Remaining keyword arguments to pass to constructor.
-
-        :rtype: :class:`google.cloud.client.Client`
-        :returns: The client created with the retrieved P12 credentials.
-        :raises: :class:`TypeError` if there is a conflict with the kwargs
-                 and the credentials created by the factory.
-        """
-        if 'credentials' in kwargs:
-            raise TypeError('credentials must not be in keyword arguments')
-        credentials = ServiceAccountCredentials.from_p12_keyfile(
-            client_email, private_key_path)
         kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
@@ -102,7 +67,7 @@ class Client(_ClientFactoryMixin):
     Assumes that the associated ``_connection_class`` only accepts
     ``http`` and ``credentials`` in its constructor.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+    :type credentials: :class:`google.auth.credentials.Credentials` or
                        :class:`NoneType`
     :param credentials: The OAuth2 Credentials to use for the connection
                         owned by this client. If not passed (and if no ``http``
@@ -165,7 +130,7 @@ class JSONClient(Client, _ClientProjectMixin):
                     passed falls back to the default inferred from the
                     environment.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+    :type credentials: :class:`google.auth.credentials.Credentials` or
                        :class:`NoneType`
     :param credentials: The OAuth2 Credentials to use for the connection
                         owned by this client. If not passed (and if no ``http``
