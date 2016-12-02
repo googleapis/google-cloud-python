@@ -264,6 +264,10 @@ class TestCredentials:
         signature = self.credentials.sign_bytes(to_sign)
         assert crypt.verify_signature(to_sign, signature, PUBLIC_CERT_BYTES)
 
+    def test_signer_email(self):
+        assert (self.credentials.signer_email ==
+                SERVICE_ACCOUNT_INFO['client_email'])
+
     def _verify_token(self, token):
         payload = jwt.decode(token, PUBLIC_CERT_BYTES)
         assert payload['iss'] == self.SERVICE_ACCOUNT_EMAIL

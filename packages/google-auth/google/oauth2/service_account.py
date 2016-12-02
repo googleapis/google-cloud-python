@@ -317,3 +317,8 @@ class Credentials(credentials.Signing,
     @_helpers.copy_docstring(credentials.Signing)
     def sign_bytes(self, message):
         return self._signer.sign(message)
+
+    @property
+    @_helpers.copy_docstring(credentials.Signing)
+    def signer_email(self):
+        return self._service_account_email

@@ -110,3 +110,8 @@ class Credentials(credentials.Scoped, credentials.Signing,
     @_helpers.copy_docstring(credentials.Signing)
     def sign_bytes(self, message):
         return app_identity.sign_blob(message)
+
+    @property
+    @_helpers.copy_docstring(credentials.Signing)
+    def signer_email(self):
+        return self.service_account_email

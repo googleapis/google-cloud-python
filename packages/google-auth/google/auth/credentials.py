@@ -229,3 +229,10 @@ class Signing(object):
         # pylint: disable=missing-raises-doc,redundant-returns-doc
         # (pylint doesn't recognize that this is abstract)
         raise NotImplementedError('Sign bytes must be implemented.')
+
+    @abc.abstractproperty
+    def signer_email(self):
+        """Optional[str]: An email address that identifies the signer."""
+        # pylint: disable=missing-raises-doc
+        # (pylint doesn't recognize that this is abstract)
+        raise NotImplementedError('Signer email must be implemented.')

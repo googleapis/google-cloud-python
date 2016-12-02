@@ -463,6 +463,11 @@ class Credentials(credentials.Signing,
         """
         return self._signer.sign(message)
 
+    @property
+    @_helpers.copy_docstring(credentials.Signing)
+    def signer_email(self):
+        return self._issuer
+
     def before_request(self, request, method, url, headers):
         """Performs credential-specific before request logic.
 
