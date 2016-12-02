@@ -23,10 +23,10 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import _build_schema_resource
 from google.cloud.bigquery.table import _parse_schema_resource
+from google.cloud.bigquery._helpers import QueryParametersProperty
 from google.cloud.bigquery._helpers import UDFResourcesProperty
 from google.cloud.bigquery._helpers import _EnumProperty
 from google.cloud.bigquery._helpers import _TypedProperty
-from google.cloud.bigquery._helpers import _build_udf_resources
 
 
 class Compression(_EnumProperty):
@@ -909,14 +909,23 @@ class QueryJob(_AsyncJob):
     :param udf_resources: An iterable of
                         :class:`google.cloud.bigquery._helpers.UDFResource`
                         (empty by default)
+
+    :type query_parameters: tuple
+    :param query_parameters:
+        An iterable of
+        :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`
+        (empty by default)
     """
     _JOB_TYPE = 'query'
     _UDF_KEY = 'userDefinedFunctionResources'
+    _QUERY_PARAMETERS_KEY = 'queryParameters'
 
-    def __init__(self, name, query, client, udf_resources=()):
+    def __init__(self, name, query, client,
+                 udf_resources=(), query_parameters=()):
         super(QueryJob, self).__init__(name, client)
         self.query = query
         self.udf_resources = udf_resources
+        self.query_parameters = query_parameters
         self._configuration = _AsyncQueryConfiguration()
 
     allow_large_results = _TypedProperty('allow_large_results', bool)
@@ -948,6 +957,8 @@ class QueryJob(_AsyncJob):
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.priority
     """
+
+    query_parameters = QueryParametersProperty()
 
     udf_resources = UDFResourcesProperty()
 
@@ -1032,8 +1043,19 @@ class QueryJob(_AsyncJob):
         if self.maximum_bytes_billed is not None:
             configuration['maximumBytesBilled'] = self.maximum_bytes_billed
         if len(self._udf_resources) > 0:
-            configuration[self._UDF_KEY] = _build_udf_resources(
-                self._udf_resources)
+            configuration[self._UDF_KEY] = [
+                {udf_resource.udf_type: udf_resource.value}
+                for udf_resource in self._udf_resources
+            ]
+        if len(self._query_parameters) > 0:
+            configuration[self._QUERY_PARAMETERS_KEY] = [
+                query_parameter.to_api_repr()
+                for query_parameter in self._query_parameters
+            ]
+            if self._query_parameters[0].name is None:
+                configuration['parameterMode'] = 'POSITIONAL'
+            else:
+                configuration['parameterMode'] = 'NAMED'
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""

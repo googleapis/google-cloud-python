@@ -209,6 +209,12 @@ Run a query which can be expected to complete within bounded time:
    :start-after: [START client_run_sync_query]
    :end-before: [END client_run_sync_query]
 
+Run a query using a named query parameter:
+
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START client_run_sync_query_w_param]
+   :end-before: [END client_run_sync_query_w_param]
+
 If the rows returned by the query do not fit into the initial response,
 then we need to fetch the remaining rows via
 :meth:`~google.cloud.bigquery.query.QueryResults.fetch_data`:
