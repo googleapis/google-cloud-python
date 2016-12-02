@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the API &mdash; google-cloud 0581c28 documentation</title>
+  <title>Using the API &mdash; google-cloud dc95e51 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 0581c28 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud dc95e51 documentation" href="index.html"/>
         <link rel="next" title="Datastore Client" href="datastore-client.html"/>
         <link rel="prev" title="Long-Running Operations" href="operation-api.html"/> 
 
@@ -292,11 +292,9 @@
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
-<span class="go">my-project</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span>
-<span class="go">&lt;Key(&#39;EntityKind&#39;, 1234), project=my-project&gt;</span>
+<span class="go">&lt;Key(&#39;EntityKind&#39;, 1234), project=...&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="p">[</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span>
@@ -365,7 +363,7 @@ when race conditions may occur.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0581c28',
+            VERSION:'dc95e51',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
