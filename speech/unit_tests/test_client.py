@@ -725,20 +725,7 @@ class _MockGAPICSpeechAPI(object):
 
 
 class _Credentials(object):
-
-    _scopes = ('https://www.googleapis.com/auth/cloud-platform',)
-
-    def __init__(self, authorized=None):
-        self._authorized = authorized
-        self._create_scoped_calls = 0
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
+    pass
 
 
 class _Connection(object):
