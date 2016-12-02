@@ -223,3 +223,13 @@ class AuthorizedHttp(object):
                 **kwargs)
 
         return response, content
+
+    @property
+    def connections(self):
+        """Proxy to httplib2.Http.connections."""
+        return self.http.connections
+
+    @connections.setter
+    def connections(self, value):
+        """Proxy to httplib2.Http.connections."""
+        self.http.connections = value

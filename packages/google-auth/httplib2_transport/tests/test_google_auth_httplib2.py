@@ -86,6 +86,15 @@ class TestAuthorizedHttp(object):
         assert authed_http.credentials == mock.sentinel.credentials
         assert isinstance(authed_http.http, httplib2.Http)
 
+    def test_connections(self):
+        authed_http = google_auth_httplib2.AuthorizedHttp(
+            mock.sentinel.credentials)
+
+        assert authed_http.connections == authed_http.http.connections
+
+        authed_http.connections = mock.sentinel.connections
+        assert authed_http.http.connections == mock.sentinel.connections
+
     def test_request_no_refresh(self):
         mock_credentials = mock.Mock(wraps=MockCredentials())
         mock_response = MockResponse()
