@@ -76,19 +76,6 @@ be used by Stackdriver Error Reporting to help group exceptions.
    >>> except Exception:
    >>>     client.report_exception(http_context=http_context, user=user))
 
-An automatic helper to build the HTTP Context from a Flask (Werkzeug) request
-object is provided.
-
- .. code-block:: python
-
-    >>> from google.cloud.error_reporting import build_flask_context
-    >>> @app.errorhandler(HTTPException)
-    ... def handle_error(exc):
-    ...     client.report_exception(
-    ...         http_context=build_flask_context(request))
-    ...     # rest of error response code here
-
-
 Reporting an error without an exception
 -----------------------------------------
 
