@@ -478,3 +478,49 @@ class TestBigQuery(unittest.TestCase):
         # them here.  The best we can do is not that the API call didn't
         # raise an error, and that the job completed (in the `retry()`
         # above).
+
+    def test_sync_query_w_nested_arrays_and_structs(self):
+        EXAMPLES = [
+            {
+                'sql': 'SELECT 1',
+                'expected': 1,
+            },
+            {
+                'sql': 'SELECT (1, 2)',
+                'expected': {'_field_1': 1, '_field_2': 2},
+            },
+            {
+                'sql': 'SELECT [1, 2, 3]',
+                'expected': [1, 2, 3],
+            },
+            {
+                'sql': 'SELECT ([1, 2], 3, [4, 5])',
+                'expected':
+                    {'_field_1': [1, 2], '_field_2': 3, '_field_3': [4, 5]},
+            },
+            {
+                'sql': 'SELECT [(1, 2, 3), (4, 5, 6)]',
+                'expected': [
+                    {'_field_1': 1, '_field_2': 2, '_field_3': 3},
+                    {'_field_1': 4, '_field_2': 5, '_field_3': 6},
+                ],
+            },
+            {
+                'sql': 'SELECT [([1, 2, 3], 4), ([5, 6], 7)]',
+                'expected': [
+                    {u'_field_1': [1, 2, 3], u'_field_2': 4},
+                    {u'_field_1': [5, 6], u'_field_2': 7},
+                ],
+            },
+            {
+                'sql': 'SELECT ARRAY(SELECT STRUCT([1, 2]))',
+                'expected': [{u'_field_1': [1, 2]}],
+            },
+        ]
+        for example in EXAMPLES:
+            query = Config.CLIENT.run_sync_query(example['sql'])
+            query.use_legacy_sql = False
+            query.run()
+            self.assertEqual(len(query.rows), 1)
+            self.assertEqual(len(query.rows[0]), 1)
+            self.assertEqual(query.rows[0][0], example['expected'])
