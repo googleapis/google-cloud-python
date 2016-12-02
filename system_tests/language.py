@@ -126,7 +126,6 @@ class TestLanguage(unittest.TestCase):
 
     def _verify_token(self, token, text_content, part_of_speech, lemma):
         from google.cloud.language.syntax import Token
-        from google.cloud.language.syntax import PartOfSpeech
 
         self.assertIsInstance(token, Token)
         self.assertEqual(token.text_content, text_content)
@@ -134,7 +133,6 @@ class TestLanguage(unittest.TestCase):
         self.assertEqual(token.lemma, lemma)
 
     def _check_analyze_syntax_result(self, tokens):
-        from google.cloud.language.syntax import Token
         from google.cloud.language.syntax import PartOfSpeech
 
         self.assertEqual(len(tokens), 3)
