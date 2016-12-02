@@ -29,6 +29,7 @@ In the hierarchy of API concepts
 
 import os
 
+import google.auth.credentials
 from google.longrunning import operations_grpc
 
 from google.cloud._helpers import make_insecure_stub
@@ -201,14 +202,16 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         else:
             scopes.append(DATA_SCOPE)
 
+        self._read_only = bool(read_only)
+
         if admin:
             scopes.append(ADMIN_SCOPE)
 
         self._admin = bool(admin)
-        try:
-            credentials = credentials.create_scoped(scopes)
-        except AttributeError:
-            pass
+
+        credentials = google.auth.credentials.with_scopes_if_required(
+            credentials, scopes)
+
         self._credentials = credentials
         self.user_agent = user_agent
         self.emulator_host = os.getenv(BIGTABLE_EMULATOR)
@@ -229,12 +232,10 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :rtype: :class:`.Client`
         :returns: A copy of the current client.
         """
-        credentials = self._credentials
-        copied_creds = credentials.create_scoped(credentials.scopes)
         return self.__class__(
             self.project,
-            copied_creds,
-            READ_ONLY_SCOPE in copied_creds.scopes,
+            self._credentials,
+            self._read_only,
             self._admin,
             self.user_agent,
         )
