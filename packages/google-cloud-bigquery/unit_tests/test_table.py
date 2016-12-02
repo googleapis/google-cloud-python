@@ -1173,22 +1173,27 @@ class TestTable(unittest.TestCase, _SchemaBase):
             'pageToken': TOKEN,
             'rows': [
                 {'f': [
-                    {'v': ['red', 'green']},
-                    {'v': [{'f': [{'v': ['1', '2']},
-                                  {'v': ['3.1415', '1.414']}]}]},
+                    {'v': [{'v': 'red'}, {'v': 'green'}]},
+                    {'v': [{
+                        'v': {
+                            'f': [
+                                {'v': [{'v': '1'}, {'v': '2'}]},
+                                {'v': [{'v': '3.1415'}, {'v': '1.414'}]},
+                            ]}
+                    }]},
                 ]},
             ]
         }
         conn = _Connection(DATA)
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
-        full_name = SchemaField('color', 'STRING', mode='REPEATED')
+        color = SchemaField('color', 'STRING', mode='REPEATED')
         index = SchemaField('index', 'INTEGER', 'REPEATED')
         score = SchemaField('score', 'FLOAT', 'REPEATED')
         struct = SchemaField('struct', 'RECORD', mode='REPEATED',
                              fields=[index, score])
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                               schema=[full_name, struct])
+                               schema=[color, struct])
 
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
