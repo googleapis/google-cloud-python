@@ -87,7 +87,7 @@ However, you may want to be explicit because
   from different projects
 
 In these situations, you can create an explicit
-:class:`~google.auth.credentials.Credentials>` object suited to your
+:class:`~google.auth.credentials.Credentials` object suited to your
 environment. After creation, you can pass it directly to a
 :class:`Client <google.cloud.client.Client>`:
 
