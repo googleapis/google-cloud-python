@@ -17,10 +17,9 @@ import unittest
 
 def make_mock_credentials():
     import mock
-    from oauth2client.client import GoogleCredentials
+    from google.auth import credentials
 
-    credentials = mock.Mock(spec=GoogleCredentials)
-    credentials.create_scoped_required.return_value = False
+    credentials = mock.Mock(spec=credentials.Credentials)
     return credentials
 
 
