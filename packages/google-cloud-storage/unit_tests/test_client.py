@@ -29,7 +29,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage._http import Connection
 
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
 
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         self.assertEqual(client.project, PROJECT)
@@ -42,7 +42,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage.batch import Batch
 
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
 
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         batch1 = Batch(client)
@@ -61,7 +61,7 @@ class TestClient(unittest.TestCase):
 
     def test__connection_setter(self):
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         client._base_connection = None  # Unset the value from the constructor
         client._connection = connection = object()
@@ -69,13 +69,13 @@ class TestClient(unittest.TestCase):
 
     def test__connection_setter_when_set(self):
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         self.assertRaises(ValueError, setattr, client, '_connection', None)
 
     def test__connection_getter_no_batch(self):
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         self.assertIs(client._connection, client._base_connection)
         self.assertIsNone(client.current_batch)
@@ -83,7 +83,7 @@ class TestClient(unittest.TestCase):
     def test__connection_getter_with_batch(self):
         from google.cloud.storage.batch import Batch
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         batch = Batch(client)
         client._push_batch(batch)
@@ -95,7 +95,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage.bucket import Bucket
 
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         BUCKET_NAME = 'BUCKET_NAME'
 
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
@@ -108,7 +108,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage.batch import Batch
 
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
 
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
         batch = client.batch()
@@ -119,7 +119,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.exceptions import NotFound
 
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         NONESUCH = 'nonesuch'
@@ -142,7 +142,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage.bucket import Bucket
 
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BLOB_NAME = 'blob-name'
@@ -166,7 +166,7 @@ class TestClient(unittest.TestCase):
 
     def test_lookup_bucket_miss(self):
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         NONESUCH = 'nonesuch'
@@ -190,7 +190,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage.bucket import Bucket
 
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BLOB_NAME = 'blob-name'
@@ -216,7 +216,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.exceptions import Conflict
 
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BLOB_NAME = 'blob-name'
@@ -239,7 +239,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage.bucket import Bucket
 
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BLOB_NAME = 'blob-name'
@@ -265,7 +265,7 @@ class TestClient(unittest.TestCase):
         from six.moves.urllib.parse import urlparse
 
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         EXPECTED_QUERY = {
@@ -297,7 +297,7 @@ class TestClient(unittest.TestCase):
         from six.moves.urllib.parse import urlencode
         from six.moves.urllib.parse import urlparse
         PROJECT = 'PROJECT'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BUCKET_NAME = 'bucket-name'
@@ -326,7 +326,7 @@ class TestClient(unittest.TestCase):
         from six.moves.urllib.parse import urlparse
 
         PROJECT = 'foo-bar'
-        CREDENTIALS = _Credentials()
+        CREDENTIALS = object()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         MAX_RESULTS = 10
@@ -374,7 +374,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.iterator import Page
 
         project = 'PROJECT'
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=project, credentials=credentials)
         iterator = client.list_buckets()
         page = Page(iterator, (), None)
@@ -386,7 +386,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage.bucket import Bucket
 
         project = 'PROJECT'
-        credentials = _Credentials()
+        credentials = object()
         client = self._make_one(project=project, credentials=credentials)
 
         blob_name = 'blob-name'
@@ -404,19 +404,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(page.remaining, 0)
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, blob_name)
-
-
-class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
 
 
 class _Http(object):
