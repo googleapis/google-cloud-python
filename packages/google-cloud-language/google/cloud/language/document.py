@@ -207,7 +207,7 @@ class Document(object):
         api_response = self.client._connection.api_request(
             method='POST', path='analyzeSyntax', data=data)
         return [Token.from_api_repr(token)
-                for token in api_response['tokens']]
+                for token in api_response.get('tokens', ())]
 
     def annotate_text(self, include_syntax=True, include_entities=True,
                       include_sentiment=True):
