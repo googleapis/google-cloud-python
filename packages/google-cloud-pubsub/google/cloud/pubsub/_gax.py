@@ -16,15 +16,15 @@
 
 import functools
 
-from google.cloud.gapic.pubsub.v1.publisher_api import PublisherApi
-from google.cloud.gapic.pubsub.v1.subscriber_api import SubscriberApi
+from google.cloud.gapic.pubsub.v1.publisher_client import PublisherClient
+from google.cloud.gapic.pubsub.v1.subscriber_client import SubscriberClient
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
 from google.protobuf.json_format import MessageToDict
-from google.pubsub.v1.pubsub_pb2 import PubsubMessage
-from google.pubsub.v1.pubsub_pb2 import PushConfig
+from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PubsubMessage
+from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PushConfig
 from grpc import insecure_channel
 from grpc import StatusCode
 
@@ -43,7 +43,7 @@ from google.cloud.pubsub.topic import Topic
 class _PublisherAPI(object):
     """Helper mapping publisher-related APIs.
 
-    :type gax_api: :class:`google.pubsub.v1.publisher_api.PublisherApi`
+    :type gax_api: :class:`.publisher_client.PublisherClient`
     :param gax_api: API object used to make GAX requests.
 
     :type client: :class:`~google.cloud.pubsub.client.Client`
@@ -223,7 +223,7 @@ class _PublisherAPI(object):
 class _SubscriberAPI(object):
     """Helper mapping subscriber-related APIs.
 
-    :type gax_api: :class:`google.pubsub.v1.publisher_api.SubscriberApi`
+    :type gax_api: :class:`.publisher_client.SubscriberClient`
     :param gax_api: API object used to make GAX requests.
 
     :type client: :class:`~google.cloud.pubsub.client.Client`
@@ -522,18 +522,17 @@ def make_gax_publisher_api(connection):
     :type connection: :class:`~google.cloud.pubsub._http.Connection`
     :param connection: The connection that holds configuration details.
 
-    :rtype: :class:`~google.cloud.pubsub.v1.publisher_api.PublisherApi`
+    :rtype: :class:`.publisher_client.PublisherClient`
     :returns: A publisher API instance with the proper connection
               configuration.
-    :rtype: :class:`~google.cloud.pubsub.v1.subscriber_api.SubscriberApi`
     """
     if connection.in_emulator:
         channel = insecure_channel(connection.host)
     else:
         channel = make_secure_channel(
             connection.credentials, DEFAULT_USER_AGENT,
-            PublisherApi.SERVICE_ADDRESS)
-    return PublisherApi(channel=channel)
+            PublisherClient.SERVICE_ADDRESS)
+    return PublisherClient(channel=channel)
 
 
 def make_gax_subscriber_api(connection):
@@ -546,7 +545,7 @@ def make_gax_subscriber_api(connection):
     :type connection: :class:`~google.cloud.pubsub._http.Connection`
     :param connection: The connection that holds configuration details.
 
-    :rtype: :class:`~google.cloud.pubsub.v1.subscriber_api.SubscriberApi`
+    :rtype: :class:`.subscriber_client.SubscriberClient`
     :returns: A subscriber API instance with the proper connection
               configuration.
     """
@@ -555,8 +554,8 @@ def make_gax_subscriber_api(connection):
     else:
         channel = make_secure_channel(
             connection.credentials, DEFAULT_USER_AGENT,
-            SubscriberApi.SERVICE_ADDRESS)
-    return SubscriberApi(channel=channel)
+            SubscriberClient.SERVICE_ADDRESS)
+    return SubscriberClient(channel=channel)
 
 
 def _item_to_topic(iterator, resource):
@@ -565,7 +564,7 @@ def _item_to_topic(iterator, resource):
     :type iterator: :class:`~google.cloud.iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
-    :type resource: :class:`google.pubsub.v1.pubsub_pb2.Topic`
+    :type resource: :class:`.pubsub_pb2.Topic`
     :param resource: A topic returned from the API.
 
     :rtype: :class:`~google.cloud.pubsub.topic.Topic`
@@ -607,7 +606,7 @@ def _item_to_sub_for_client(iterator, sub_pb, topics):
     :type iterator: :class:`~google.cloud.iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
-    :type sub_pb: :class:`~google.pubsub.v1.pubsub_pb2.Subscription`
+    :type sub_pb: :class:`.pubsub_pb2.Subscription`
     :param sub_pb: A subscription returned from the API.
 
     :type topics: dict
