@@ -1624,7 +1624,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                     'type': 'INT64',
                 },
                 'parameterValue': {
-                    'value': 123,
+                    'value': '123',
                 },
             },
         ]
@@ -1674,7 +1674,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                     'type': 'INT64',
                 },
                 'parameterValue': {
-                    'value': 123,
+                    'value': '123',
                 },
             },
         ]
