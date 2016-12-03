@@ -416,8 +416,9 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
-        from google.pubsub.v1.pubsub_pb2 import PushConfig
-        from google.pubsub.v1.pubsub_pb2 import Subscription as SubscriptionPB
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PushConfig
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import (
+            Subscription as SubscriptionPB)
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.pubsub.client import Client
         from google.cloud.pubsub.subscription import Subscription
@@ -458,8 +459,9 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_list_subscriptions_with_paging(self):
-        from google.pubsub.v1.pubsub_pb2 import PushConfig
-        from google.pubsub.v1.pubsub_pb2 import Subscription as SubscriptionPB
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PushConfig
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import (
+            Subscription as SubscriptionPB)
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.pubsub.client import Client
         from google.cloud.pubsub.subscription import Subscription
@@ -505,7 +507,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, TOKEN)
 
     def test_subscription_create(self):
-        from google.pubsub.v1.pubsub_pb2 import Subscription
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import Subscription
 
         sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH)
         gax_api = _GAXSubscriberAPI(_create_subscription_response=sub_pb)
@@ -564,8 +566,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_subscription_get_hit(self):
-        from google.pubsub.v1.pubsub_pb2 import PushConfig
-        from google.pubsub.v1.pubsub_pb2 import Subscription
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PushConfig
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import Subscription
 
         push_cfg_pb = PushConfig(push_endpoint=self.PUSH_ENDPOINT)
         sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH,
@@ -919,7 +921,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
                                  credentials=creds)
         patch = mock.patch.multiple(
             'google.cloud.pubsub._gax',
-            PublisherApi=mock_publisher_api,
+            PublisherClient=mock_publisher_api,
             make_secure_channel=make_channel)
         with patch:
             result = self._call_fut(connection)
@@ -949,7 +951,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         connection = _Connection(in_emulator=True, host=host)
         patch = mock.patch.multiple(
             'google.cloud.pubsub._gax',
-            PublisherApi=mock_publisher_api,
+            PublisherClient=mock_publisher_api,
             insecure_channel=mock_insecure_channel)
         with patch:
             result = self._call_fut(connection)
@@ -991,7 +993,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
                                  credentials=creds)
         patch = mock.patch.multiple(
             'google.cloud.pubsub._gax',
-            SubscriberApi=mock_subscriber_api,
+            SubscriberClient=mock_subscriber_api,
             make_secure_channel=make_channel)
         with patch:
             result = self._call_fut(connection)
@@ -1021,7 +1023,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
         connection = _Connection(in_emulator=True, host=host)
         patch = mock.patch.multiple(
             'google.cloud.pubsub._gax',
-            SubscriberApi=mock_subscriber_api,
+            SubscriberClient=mock_subscriber_api,
             insecure_channel=mock_insecure_channel)
         with patch:
             result = self._call_fut(connection)

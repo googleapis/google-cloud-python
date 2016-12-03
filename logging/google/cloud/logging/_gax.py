@@ -16,19 +16,19 @@
 
 import functools
 
-from google.cloud.gapic.logging.v2.config_service_v2_api import (
-    ConfigServiceV2Api)
-from google.cloud.gapic.logging.v2.logging_service_v2_api import (
-    LoggingServiceV2Api)
-from google.cloud.gapic.logging.v2.metrics_service_v2_api import (
-    MetricsServiceV2Api)
+from google.cloud.gapic.logging.v2.config_service_v2_client import (
+    ConfigServiceV2Client)
+from google.cloud.gapic.logging.v2.logging_service_v2_client import (
+    LoggingServiceV2Client)
+from google.cloud.gapic.logging.v2.metrics_service_v2_client import (
+    MetricsServiceV2Client)
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
-from google.logging.v2.logging_config_pb2 import LogSink
-from google.logging.v2.logging_metrics_pb2 import LogMetric
-from google.logging.v2.log_entry_pb2 import LogEntry
+from google.cloud.grpc.logging.v2.logging_config_pb2 import LogSink
+from google.cloud.grpc.logging.v2.logging_metrics_pb2 import LogMetric
+from google.cloud.grpc.logging.v2.log_entry_pb2 import LogEntry
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import ParseDict
 from grpc import StatusCode
@@ -48,7 +48,7 @@ class _LoggingAPI(object):
     """Helper mapping logging-related APIs.
 
     :type gax_api:
-        :class:`google.logging.v2.logging_service_v2_api.LoggingServiceV2Api`
+        :class:`.logging_service_v2_client.LoggingServiceV2Client`
     :param gax_api: API object used to make GAX requests.
 
     :type client: :class:`~google.cloud.logging.client.Client`
@@ -92,7 +92,7 @@ class _LoggingAPI(object):
             page_token = INITIAL_PAGE
         options = CallOptions(page_token=page_token)
         page_iter = self._gax_api.list_log_entries(
-            projects, filter_=filter_, order_by=order_by,
+            [], project_ids=projects, filter_=filter_, order_by=order_by,
             page_size=page_size, options=options)
 
         # We attach a mutable loggers dictionary so that as Logger
@@ -152,7 +152,7 @@ class _SinksAPI(object):
     """Helper mapping sink-related APIs.
 
     :type gax_api:
-        :class:`google.logging.v2.config_service_v2_api.ConfigServiceV2Api`
+        :class:`.config_service_v2_client.ConfigServiceV2Client`
     :param gax_api: API object used to make GAX requests.
 
     :type client: :class:`~google.cloud.logging.client.Client`
@@ -300,7 +300,8 @@ class _MetricsAPI(object):
     """Helper mapping sink-related APIs.
 
     :type gax_api:
-        :class:`google.logging.v2.metrics_service_v2_api.MetricsServiceV2Api`
+        :class:`.metrics_service_v2_client.MetricsServiceV2Client`
+
     :param gax_api: API object used to make GAX requests.
 
     :type client: :class:`~google.cloud.logging.client.Client`
@@ -471,7 +472,7 @@ def _item_to_entry(iterator, entry_pb, loggers):
     :type iterator: :class:`~google.cloud.iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
-    :type entry_pb: :class:`~google.logging.v2.log_entry_pb2.LogEntry`
+    :type entry_pb: :class:`.log_entry_pb2.LogEntry`
     :param entry_pb: Log entry protobuf returned from the API.
 
     :type loggers: dict
@@ -494,7 +495,7 @@ def _item_to_sink(iterator, log_sink_pb):
     :param iterator: The iterator that is currently in use.
 
     :type log_sink_pb:
-        :class:`~google.logging.v2.logging_config_pb2.LogSink`
+        :class:`.logging_config_pb2.LogSink`
     :param log_sink_pb: Sink protobuf returned from the API.
 
     :rtype: :class:`~google.cloud.logging.sink.Sink`
@@ -511,7 +512,7 @@ def _item_to_metric(iterator, log_metric_pb):
     :param iterator: The iterator that is currently in use.
 
     :type log_metric_pb:
-        :class:`~google.logging.v2.logging_metrics_pb2.LogMetric`
+        :class:`.logging_metrics_pb2.LogMetric`
     :param log_metric_pb: Metric protobuf returned from the API.
 
     :rtype: :class:`~google.cloud.logging.metric.Metric`
@@ -532,8 +533,8 @@ def make_gax_logging_api(client):
     """
     channel = make_secure_channel(
         client._connection.credentials, DEFAULT_USER_AGENT,
-        LoggingServiceV2Api.SERVICE_ADDRESS)
-    generated = LoggingServiceV2Api(channel=channel)
+        LoggingServiceV2Client.SERVICE_ADDRESS)
+    generated = LoggingServiceV2Client(channel=channel)
     return _LoggingAPI(generated, client)
 
 
@@ -548,8 +549,8 @@ def make_gax_metrics_api(client):
     """
     channel = make_secure_channel(
         client._connection.credentials, DEFAULT_USER_AGENT,
-        MetricsServiceV2Api.SERVICE_ADDRESS)
-    generated = MetricsServiceV2Api(channel=channel)
+        MetricsServiceV2Client.SERVICE_ADDRESS)
+    generated = MetricsServiceV2Client(channel=channel)
     return _MetricsAPI(generated, client)
 
 
@@ -564,6 +565,6 @@ def make_gax_sinks_api(client):
     """
     channel = make_secure_channel(
         client._connection.credentials, DEFAULT_USER_AGENT,
-        ConfigServiceV2Api.SERVICE_ADDRESS)
-    generated = ConfigServiceV2Api(channel=channel)
+        ConfigServiceV2Client.SERVICE_ADDRESS)
+    generated = ConfigServiceV2Client(channel=channel)
     return _SinksAPI(generated, client)

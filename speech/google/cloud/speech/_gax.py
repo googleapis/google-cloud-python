@@ -15,7 +15,7 @@
 """GAX/GAPIC module for managing Speech API requests."""
 
 
-from google.cloud.gapic.speech.v1beta1.speech_api import SpeechApi
+from google.cloud.gapic.speech.v1beta1.speech_client import SpeechClient
 from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import RecognitionAudio
 from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import RecognitionConfig
 from google.cloud.grpc.speech.v1beta1.cloud_speech_pb2 import SpeechContext
@@ -42,8 +42,8 @@ class GAPICSpeechAPI(object):
         credentials = self._client._connection.credentials
         channel = make_secure_channel(
             credentials, DEFAULT_USER_AGENT,
-            SpeechApi.SERVICE_ADDRESS)
-        self._gapic_api = SpeechApi(channel=channel)
+            SpeechClient.SERVICE_ADDRESS)
+        self._gapic_api = SpeechClient(channel=channel)
         self._operations_stub = make_secure_stub(
             credentials,
             DEFAULT_USER_AGENT,

@@ -252,7 +252,7 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
@@ -310,7 +310,7 @@ class TestClient(unittest.TestCase):
                                encoding=speech.Encoding.FLAC,
                                sample_rate=self.SAMPLE_RATE)
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
@@ -398,7 +398,7 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             api = client.speech_api
 
@@ -460,7 +460,7 @@ class TestClient(unittest.TestCase):
                                encoding=Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
@@ -512,7 +512,7 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
@@ -585,7 +585,7 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
@@ -629,7 +629,7 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
@@ -663,7 +663,7 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
