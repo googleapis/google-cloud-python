@@ -21,6 +21,7 @@ from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _microseconds_from_datetime
+from google.cloud._helpers import _RFC3339_NO_FRACTION
 
 
 def _not_null(value, field):
@@ -57,7 +58,7 @@ def _datetime_from_json(value, field):
     """Coerce 'value' to a datetime, if set or not nullable."""
     if _not_null(value, field):
         # value will be a string, in YYYY-MM-DDTHH:MM:SS form.
-        return datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
+        return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION)
 
 
 def _date_from_json(value, field):
