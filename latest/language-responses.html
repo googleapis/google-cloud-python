@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Natural Language Response Classes &mdash; google-cloud 7c73b58 documentation</title>
+  <title>Natural Language Response Classes &mdash; google-cloud a02ac50 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 7c73b58 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud a02ac50 documentation" href="index.html"/>
         <link rel="next" title="Using the API" href="speech-usage.html"/>
         <link rel="prev" title="Document" href="language-document.html"/> 
 
@@ -307,14 +307,14 @@ salience and mentions, with entities.</p>
 <p>The only supported metadata (as of August 2016) is <code class="docutils literal"><span class="pre">wikipedia_url</span></code>,
 so this value will be removed from the passed in <code class="docutils literal"><span class="pre">metadata</span></code>
 and put in its own property.</p>
-<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/Entity">Entity message</a>.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/Entity">Entity message</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name / phrase identified as the entity.</li>
-<li><strong>entity_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The type of the entity. See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/Entity#Type">EntityType enum</a>.</li>
+<li><strong>entity_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The type of the entity. See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/Entity#Type">EntityType enum</a>.</li>
 <li><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; The metadata associated with the entity.</li>
 <li><strong>salience</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The prominence of the entity / phrase within the text
 containing it.</li>
@@ -406,20 +406,20 @@ containing it.</li>
 <p>Sentiment is the response to an <code class="docutils literal"><span class="pre">analyzeSentiment</span></code> request.</p>
 <dl class="class">
 <dt id="google.cloud.language.sentiment.Sentiment">
-<em class="property">class </em><code class="descclassname">google.cloud.language.sentiment.</code><code class="descname">Sentiment</code><span class="sig-paren">(</span><em>polarity</em>, <em>magnitude</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/sentiment.html#Sentiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.sentiment.Sentiment" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.language.sentiment.</code><code class="descname">Sentiment</code><span class="sig-paren">(</span><em>score</em>, <em>magnitude</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/sentiment.html#Sentiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.sentiment.Sentiment" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A Google Cloud Natural Language API sentiment object.</p>
-<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/Sentiment">Sentiment message</a> and <a class="reference external" href="https://cloud.google.com/natural-language/docs/basics#sentiment-analysis-values">Sentiment basics</a>.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/Sentiment">Sentiment message</a> and <a class="reference external" href="https://cloud.google.com/natural-language/docs/basics#sentiment-analysis-values">Sentiment basics</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>polarity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Polarity of the sentiment in the <code class="docutils literal"><span class="pre">[-1.0,</span> <span class="pre">1.0]</span></code> range.
+<li><strong>score</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Score of the sentiment in the <code class="docutils literal"><span class="pre">[-1.0,</span> <span class="pre">1.0]</span></code> range.
 Larger numbers represent more positive sentiments.</li>
 <li><strong>magnitude</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; A non-negative number in the <code class="docutils literal"><span class="pre">[0,</span> <span class="pre">+inf)</span></code> range, which
 represents the absolute magnitude of sentiment
-regardless of polarity (positive or negative).</li>
+regardless of score (positive or negative).</li>
 </ul>
 </td>
 </tr>
@@ -571,7 +571,7 @@ speech enum.</td>
 <em class="property">class </em><code class="descclassname">google.cloud.language.syntax.</code><code class="descname">Sentence</code><span class="sig-paren">(</span><em>content</em>, <em>begin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/syntax.html#Sentence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.syntax.Sentence" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A Google Cloud Natural Language API sentence object.</p>
-<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/annotateText#Sentence">Sentence message</a>.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/documents/annotateText#Sentence">Sentence message</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -611,7 +611,7 @@ in the API request.</li>
 <em class="property">class </em><code class="descclassname">google.cloud.language.syntax.</code><code class="descname">Token</code><span class="sig-paren">(</span><em>text_content</em>, <em>text_begin</em>, <em>part_of_speech</em>, <em>edge_index</em>, <em>edge_label</em>, <em>lemma</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/syntax.html#Token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.syntax.Token" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A Google Cloud Natural Language API token object.</p>
-<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/annotateText#Token">Token message</a>.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/documents/annotateText#Token">Token message</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -629,7 +629,7 @@ token. The index is the position of the token in the
 array of tokens returned by the API method. If this
 token is a root token, then the <code class="docutils literal"><span class="pre">edge_index</span></code> is
 its own index.</li>
-<li><strong>edge_label</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/annotateText#Label">Label enum</a>.</li>
+<li><strong>edge_label</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/documents/annotateText#Label">Label enum</a>.</li>
 <li><strong>lemma</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The <a class="reference external" href="https://en.wikipedia.org/wiki/Lemma_(morphology)">Lemma</a> of the token.</li>
 </ul>
 </td>
@@ -639,7 +639,7 @@ its own index.</li>
 <dl class="classmethod">
 <dt id="google.cloud.language.syntax.Token.from_api_repr">
 <em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>payload</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/syntax.html#Token.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.syntax.Token.from_api_repr" title="Permalink to this definition">#</a></dt>
-<dd><p>Convert a token from the JSON API into a <code class="xref py py-class docutils literal"><span class="pre">Sentiment</span></code>.</p>
+<dd><p>Convert a token from the JSON API into a <a class="reference internal" href="#google.cloud.language.syntax.Token" title="google.cloud.language.syntax.Token"><code class="xref py py-class docutils literal"><span class="pre">Token</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -700,7 +700,7 @@ its own index.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'7c73b58',
+            VERSION:'a02ac50',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

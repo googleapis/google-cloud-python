@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Document &mdash; google-cloud 7c73b58 documentation</title>
+  <title>Document &mdash; google-cloud a02ac50 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 7c73b58 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud a02ac50 documentation" href="index.html"/>
         <link rel="next" title="Natural Language Response Classes" href="language-responses.html"/>
         <link rel="prev" title="Natural Language Client" href="language-client.html"/> 
 
@@ -405,7 +405,7 @@ are specified or if neither are specified.</p>
 <p>Finds named entities (currently finds proper names as of August 2016)
 in the text, entity types, salience, mentions for each entity, and
 other properties.</p>
-<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/analyzeEntities">analyzeEntities</a>.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/documents/analyzeEntities">analyzeEntities</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -423,7 +423,7 @@ the API.</td>
 <dt id="google.cloud.language.document.Document.analyze_sentiment">
 <code class="descname">analyze_sentiment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/document.html#Document.analyze_sentiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.document.Document.analyze_sentiment" title="Permalink to this definition">#</a></dt>
 <dd><p>Analyze the sentiment in the current document.</p>
-<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/analyzeSentiment">analyzeSentiment</a>.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/documents/analyzeSentiment">analyzeSentiment</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -431,6 +431,24 @@ the API.</td>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="language-responses.html#google.cloud.language.sentiment.Sentiment" title="google.cloud.language.sentiment.Sentiment"><code class="xref py py-class docutils literal"><span class="pre">Sentiment</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The sentiment of the current document.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.language.document.Document.analyze_syntax">
+<code class="descname">analyze_syntax</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/document.html#Document.analyze_syntax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.document.Document.analyze_syntax" title="Permalink to this definition">#</a></dt>
+<dd><p>Analyze the syntax in the current document.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/documents/analyzeSyntax">analyzeSyntax</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of <a class="reference internal" href="language-responses.html#google.cloud.language.syntax.Token" title="google.cloud.language.syntax.Token"><code class="xref py py-class docutils literal"><span class="pre">Token</span></code></a> returned from
+the API.</td>
 </tr>
 </tbody>
 </table>
@@ -450,7 +468,7 @@ the document for semantic and syntacticinformation.</p>
 <p class="last">This API is intended for users who are familiar with machine
 learning and need in-depth text features to build upon.</p>
 </div>
-<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1beta1/documents/annotateText">annotateText</a>.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/documents/annotateText">annotateText</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -552,7 +570,7 @@ sentences, tokens, sentiment and entities.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'7c73b58',
+            VERSION:'a02ac50',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
