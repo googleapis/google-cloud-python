@@ -432,6 +432,96 @@ class Test_rows_from_json(unittest.TestCase):
         self.assertEqual(coerced, expected)
 
 
+class Test_int_to_json(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _int_to_json
+        return _int_to_json(value)
+
+    def test_w_int(self):
+        self.assertEqual(self._call_fut(123), '123')
+
+    def test_w_string(self):
+        self.assertEqual(self._call_fut('123'), '123')
+
+
+class Test_float_to_json(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _float_to_json
+        return _float_to_json(value)
+
+    def test_w_float(self):
+        self.assertEqual(self._call_fut(1.23), 1.23)
+
+
+class Test_bool_to_json(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _bool_to_json
+        return _bool_to_json(value)
+
+    def test_w_true(self):
+        self.assertEqual(self._call_fut(True), 'true')
+
+    def test_w_false(self):
+        self.assertEqual(self._call_fut(False), 'false')
+
+    def test_w_string(self):
+        self.assertEqual(self._call_fut('false'), 'false')
+
+
+class Test_timestamp_to_json(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _timestamp_to_json
+        return _timestamp_to_json(value)
+
+    def test_w_float(self):
+        self.assertEqual(self._call_fut(1.234567), 1.234567)
+
+    def test_w_datetime(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _microseconds_from_datetime
+        when = datetime.datetime(2016, 12, 3, 14, 11, 27, tzinfo=UTC)
+        self.assertEqual(self._call_fut(when),
+                         _microseconds_from_datetime(when) / 1e6)
+
+
+class Test_datetime_to_json(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _datetime_to_json
+        return _datetime_to_json(value)
+
+    def test_w_string(self):
+        RFC3339 = '2016-12-03T14:14:51Z'
+        self.assertEqual(self._call_fut(RFC3339), RFC3339)
+
+    def test_w_datetime(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        when = datetime.datetime(2016, 12, 3, 14, 11, 27, 123456, tzinfo=UTC)
+        self.assertEqual(self._call_fut(when), '2016-12-03T14:11:27.123456Z')
+
+
+class Test_date_to_json(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _date_to_json
+        return _date_to_json(value)
+
+    def test_w_string(self):
+        RFC3339 = '2016-12-03'
+        self.assertEqual(self._call_fut(RFC3339), RFC3339)
+
+    def test_w_datetime(self):
+        import datetime
+        when = datetime.date(2016, 12, 3)
+        self.assertEqual(self._call_fut(when), '2016-12-03')
+
+
 class Test_ConfigurationProperty(unittest.TestCase):
 
     @staticmethod
@@ -832,6 +922,19 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         param = klass.positional(type_='DATE', value=today_str)
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
+    def test_to_api_repr_w_unknown_type(self):
+        EXPECTED = {
+            'parameterType': {
+                'type': 'UNKNOWN',
+            },
+            'parameterValue': {
+                'value': 'unknown',
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_='UNKNOWN', value='unknown')
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
 
 class Test_ArrayQueryParameter(unittest.TestCase):
 
@@ -911,6 +1014,19 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         }
         klass = self._get_target_class()
         param = klass.positional(array_type='INT64', values=[1, 2])
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_unknown_type(self):
+        EXPECTED = {
+            'parameterType': {
+                'arrayType': 'UNKNOWN',
+            },
+            'parameterValue': {
+                'arrayValues': ['unknown'],
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(array_type='UNKNOWN', values=['unknown'])
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
 
