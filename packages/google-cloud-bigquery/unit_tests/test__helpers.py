@@ -105,11 +105,11 @@ class Test_bool_from_json(unittest.TestCase):
         self.assertFalse(coerced)
 
 
-class Test_datetime_from_json(unittest.TestCase):
+class Test_timestamp_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
-        from google.cloud.bigquery._helpers import _datetime_from_json
-        return _datetime_from_json(value, field)
+        from google.cloud.bigquery._helpers import _timestamp_from_json
+        return _timestamp_from_json(value, field)
 
     def test_w_none_nullable(self):
         self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
@@ -133,6 +133,27 @@ class Test_datetime_from_json(unittest.TestCase):
         self.assertEqual(
             coerced,
             _EPOCH + datetime.timedelta(seconds=1, microseconds=234567))
+
+
+class Test_datetime_from_json(unittest.TestCase):
+
+    def _call_fut(self, value, field):
+        from google.cloud.bigquery._helpers import _datetime_from_json
+        return _datetime_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
+
+    def test_w_none_required(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None, _Field('REQUIRED'))
+
+    def test_w_string_value(self):
+        import datetime
+        coerced = self._call_fut('2016-12-02T18:51:33', object())
+        self.assertEqual(
+            coerced,
+            datetime.datetime(2016, 12, 2, 18, 51, 33))
 
 
 class Test_date_from_json(unittest.TestCase):
@@ -668,7 +689,7 @@ class Test_ScalarQueryParameter(unittest.TestCase):
                 'type': 'INT64',
             },
             'parameterValue': {
-                'value': 123,
+                'value': '123',
             },
         }
         param = self._make_one(name='foo', type_='INT64', value=123)
@@ -680,11 +701,135 @@ class Test_ScalarQueryParameter(unittest.TestCase):
                 'type': 'INT64',
             },
             'parameterValue': {
-                'value': 123,
+                'value': '123',
             },
         }
         klass = self._get_target_class()
         param = klass.positional(type_='INT64', value=123)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_float(self):
+        EXPECTED = {
+            'parameterType': {
+                'type': 'FLOAT64',
+            },
+            'parameterValue': {
+                'value': 12.345,
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_='FLOAT64', value=12.345)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_bool(self):
+        EXPECTED = {
+            'parameterType': {
+                'type': 'BOOL',
+            },
+            'parameterValue': {
+                'value': 'false',
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_='BOOL', value=False)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_timestamp_datetime(self):
+        import datetime
+        from google.cloud._helpers import _microseconds_from_datetime
+        now = datetime.datetime.utcnow()
+        seconds = _microseconds_from_datetime(now) / 1.0e6
+        EXPECTED = {
+            'parameterType': {
+                'type': 'TIMESTAMP',
+            },
+            'parameterValue': {
+                'value': seconds,
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_='TIMESTAMP', value=now)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_timestamp_micros(self):
+        import datetime
+        from google.cloud._helpers import _microseconds_from_datetime
+        now = datetime.datetime.utcnow()
+        seconds = _microseconds_from_datetime(now) / 1.0e6
+        EXPECTED = {
+            'parameterType': {
+                'type': 'TIMESTAMP',
+            },
+            'parameterValue': {
+                'value': seconds,
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_='TIMESTAMP', value=seconds)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_datetime_datetime(self):
+        import datetime
+        from google.cloud._helpers import _datetime_to_rfc3339
+        now = datetime.datetime.utcnow()
+        EXPECTED = {
+            'parameterType': {
+                'type': 'DATETIME',
+            },
+            'parameterValue': {
+                'value': _datetime_to_rfc3339(now),
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_='DATETIME', value=now)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_datetime_string(self):
+        import datetime
+        from google.cloud._helpers import _datetime_to_rfc3339
+        now = datetime.datetime.utcnow()
+        now_str = _datetime_to_rfc3339(now)
+        EXPECTED = {
+            'parameterType': {
+                'type': 'DATETIME',
+            },
+            'parameterValue': {
+                'value': now_str,
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_='DATETIME', value=now_str)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_date_date(self):
+        import datetime
+        today = datetime.date.today()
+        EXPECTED = {
+            'parameterType': {
+                'type': 'DATE',
+            },
+            'parameterValue': {
+                'value': today.isoformat(),
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_='DATE', value=today)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_date_string(self):
+        import datetime
+        today = datetime.date.today()
+        today_str = today.isoformat(),
+        EXPECTED = {
+            'parameterType': {
+                'type': 'DATE',
+            },
+            'parameterValue': {
+                'value': today_str,
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_='DATE', value=today_str)
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
 
@@ -749,7 +894,7 @@ class Test_ArrayQueryParameter(unittest.TestCase):
                 'arrayType': 'INT64',
             },
             'parameterValue': {
-                'arrayValues': [1, 2],
+                'arrayValues': ['1', '2'],
             },
         }
         param = self._make_one(name='foo', array_type='INT64', values=[1, 2])
@@ -761,7 +906,7 @@ class Test_ArrayQueryParameter(unittest.TestCase):
                 'arrayType': 'INT64',
             },
             'parameterValue': {
-                'arrayValues': [1, 2],
+                'arrayValues': ['1', '2'],
             },
         }
         klass = self._get_target_class()
@@ -848,7 +993,7 @@ class Test_StructQueryParameter(unittest.TestCase):
                 ],
             },
             'parameterValue': {
-                'structValues': {'bar': 123, 'baz': 'abc'},
+                'structValues': {'bar': '123', 'baz': 'abc'},
             },
         }
         sub_1 = self._make_subparam('bar', 'INT64', 123)
@@ -865,7 +1010,7 @@ class Test_StructQueryParameter(unittest.TestCase):
                 ],
             },
             'parameterValue': {
-                'structValues': {'bar': 123, 'baz': 'abc'},
+                'structValues': {'bar': '123', 'baz': 'abc'},
             },
         }
         sub_1 = self._make_subparam('bar', 'INT64', 123)
