@@ -121,5 +121,31 @@ class TestLanguage(unittest.TestCase):
         positive_msg = 'Jogging is fun'
         document = Config.CLIENT.document_from_text(positive_msg)
         sentiment = document.analyze_sentiment()
-        self.assertEqual(sentiment.polarity, 1)
+        self.assertEqual(sentiment.score, 0.5)
         self.assertTrue(0.0 < sentiment.magnitude < 1.5)
+
+    def _verify_token(self, token, text_content, part_of_speech, lemma):
+        from google.cloud.language.syntax import Token
+
+        self.assertIsInstance(token, Token)
+        self.assertEqual(token.text_content, text_content)
+        self.assertEqual(token.part_of_speech, part_of_speech)
+        self.assertEqual(token.lemma, lemma)
+
+    def _check_analyze_syntax_result(self, tokens):
+        from google.cloud.language.syntax import PartOfSpeech
+
+        self.assertEqual(len(tokens), 3)
+        token1, token2, token3 = tokens
+        # Verify token 1.
+        self._verify_token(token1, 'Jogging', PartOfSpeech.NOUN, 'Jogging')
+        # Verify token 2.
+        self._verify_token(token2, 'is', PartOfSpeech.VERB, 'be')
+        # Verify token 3.
+        self._verify_token(token3, 'fun', PartOfSpeech.ADJECTIVE, 'fun')
+
+    def test_analyze_syntax(self):
+        positive_msg = 'Jogging is fun'
+        document = Config.CLIENT.document_from_text(positive_msg)
+        tokens = document.analyze_syntax()
+        self._check_analyze_syntax_result(tokens)

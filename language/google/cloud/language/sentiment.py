@@ -22,24 +22,24 @@ class Sentiment(object):
     """A Google Cloud Natural Language API sentiment object.
 
     .. _Sentiment message: https://cloud.google.com/natural-language/\
-                           reference/rest/v1beta1/Sentiment
+                           reference/rest/v1/Sentiment
     .. _Sentiment basics: https://cloud.google.com/natural-language/\
                           docs/basics#sentiment-analysis-values
 
     See `Sentiment message`_ and `Sentiment basics`_.
 
-    :type polarity: float
-    :param polarity: Polarity of the sentiment in the ``[-1.0, 1.0]`` range.
+    :type score: float
+    :param score: Score of the sentiment in the ``[-1.0, 1.0]`` range.
                      Larger numbers represent more positive sentiments.
 
     :type magnitude: float
     :param magnitude: A non-negative number in the ``[0, +inf)`` range, which
                       represents the absolute magnitude of sentiment
-                      regardless of polarity (positive or negative).
+                      regardless of score (positive or negative).
     """
 
-    def __init__(self, polarity, magnitude):
-        self.polarity = polarity
+    def __init__(self, score, magnitude):
+        self.score = score
         self.magnitude = magnitude
 
     @classmethod
@@ -52,6 +52,6 @@ class Sentiment(object):
         :rtype: :class:`Sentiment`
         :returns: The sentiment parsed from the API representation.
         """
-        polarity = payload['polarity']
+        score = payload['score']
         magnitude = payload['magnitude']
-        return cls(polarity, magnitude)
+        return cls(score, magnitude)

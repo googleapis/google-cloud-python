@@ -103,10 +103,10 @@ class Token(object):
     """A Google Cloud Natural Language API token object.
 
     .. _Token message: https://cloud.google.com/natural-language/reference\
-                       /rest/v1beta1/documents/annotateText#Token
+                       /rest/v1/documents/annotateText#Token
     .. _Lemma: https://en.wikipedia.org/wiki/Lemma_(morphology)
     .. _Label enum: https://cloud.google.com/natural-language/reference/\
-                    rest/v1beta1/documents/annotateText#Label
+                    rest/v1/documents/annotateText#Label
 
     See `Token message`_.
 
@@ -148,7 +148,7 @@ class Token(object):
 
     @classmethod
     def from_api_repr(cls, payload):
-        """Convert a token from the JSON API into a :class:`Sentiment`.
+        """Convert a token from the JSON API into a :class:`Token`.
 
         :param payload: dict
         :type payload: The value from the backend.
@@ -172,7 +172,7 @@ class Sentence(object):
     """A Google Cloud Natural Language API sentence object.
 
     .. _Sentence message: https://cloud.google.com/natural-language/reference\
-                          /rest/v1beta1/documents/annotateText#Sentence
+                          /rest/v1/documents/annotateText#Sentence
 
     See `Sentence message`_.
 
