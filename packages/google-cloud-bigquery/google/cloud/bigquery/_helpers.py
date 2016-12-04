@@ -15,9 +15,13 @@
 """Shared helper functions for BigQuery API classes."""
 
 from collections import OrderedDict
+import datetime
 
-from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _date_from_iso8601_date
+from google.cloud._helpers import _datetime_from_microseconds
+from google.cloud._helpers import _datetime_to_rfc3339
+from google.cloud._helpers import _microseconds_from_datetime
+from google.cloud._helpers import _RFC3339_NO_FRACTION
 
 
 def _not_null(value, field):
@@ -43,11 +47,18 @@ def _bool_from_json(value, field):
         return value.lower() in ['t', 'true', '1']
 
 
-def _datetime_from_json(value, field):
+def _timestamp_from_json(value, field):
     """Coerce 'value' to a datetime, if set or not nullable."""
     if _not_null(value, field):
         # value will be a float in seconds, to microsecond precision, in UTC.
         return _datetime_from_microseconds(1e6 * float(value))
+
+
+def _datetime_from_json(value, field):
+    """Coerce 'value' to a datetime, if set or not nullable."""
+    if _not_null(value, field):
+        # value will be a string, in YYYY-MM-DDTHH:MM:SS form.
+        return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION)
 
 
 def _date_from_json(value, field):
@@ -83,10 +94,64 @@ _CELLDATA_FROM_JSON = {
     'FLOAT64': _float_from_json,
     'BOOLEAN': _bool_from_json,
     'BOOL': _bool_from_json,
-    'TIMESTAMP': _datetime_from_json,
+    'TIMESTAMP': _timestamp_from_json,
+    'DATETIME': _datetime_from_json,
     'DATE': _date_from_json,
     'RECORD': _record_from_json,
     'STRING': _string_from_json,
+}
+
+
+def _int_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, int):
+        value = str(value)
+    return value
+
+
+def _float_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    return value
+
+
+def _bool_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, bool):
+        value = 'true' if value else 'false'
+    return value
+
+
+def _timestamp_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, datetime.datetime):
+        value = _microseconds_from_datetime(value) / 1.0e6
+    return value
+
+
+def _datetime_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, datetime.datetime):
+        value = _datetime_to_rfc3339(value)
+    return value
+
+
+def _date_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, datetime.date):
+        value = value.isoformat()
+    return value
+
+
+_SCALAR_VALUE_TO_JSON = {
+    'INTEGER': _int_to_json,
+    'INT64': _int_to_json,
+    'FLOAT': _float_to_json,
+    'FLOAT64': _float_to_json,
+    'BOOLEAN': _bool_to_json,
+    'BOOL': _bool_to_json,
+    'TIMESTAMP': _timestamp_to_json,
+    'DATETIME': _datetime_to_json,
+    'DATE': _date_to_json,
 }
 
 
@@ -262,8 +327,8 @@ class ScalarQueryParameter(AbstractQueryParameter):
                  paramter can only be addressed via position (``?``).
 
     :type type_: str
-    :param type_: name of parameter type.  One of `'STRING'`, `'INT64'`,
-                  `'FLOAT64'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
+    :param type_: name of parameter type.  One of 'STRING', 'INT64',
+                  'FLOAT64', 'BOOL', 'TIMESTAMP', 'DATETIME', or 'DATE'.
 
     :type value: str, int, float, bool, :class:`datetime.datetime`, or
                  :class:`datetime.date`.
@@ -279,8 +344,9 @@ class ScalarQueryParameter(AbstractQueryParameter):
         """Factory for positional paramters.
 
         :type type_: str
-        :param type_: name of paramter type.  One of `'STRING'`, `'INT64'`,
-                      `'FLOAT64'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
+        :param type_:
+            name of paramter type.  One of 'STRING', 'INT64',
+            'FLOAT64', 'BOOL', 'TIMESTAMP', 'DATETIME', or 'DATE'.
 
         :type value: str, int, float, bool, :class:`datetime.datetime`, or
                      :class:`datetime.date`.
@@ -313,12 +379,16 @@ class ScalarQueryParameter(AbstractQueryParameter):
         :rtype: dict
         :returns: JSON mapping
         """
+        value = self.value
+        converter = _SCALAR_VALUE_TO_JSON.get(self.type_)
+        if converter is not None:
+            value = converter(value)
         resource = {
             'parameterType': {
                 'type': self.type_,
             },
             'parameterValue': {
-                'value': self.value,
+                'value': value,
             },
         }
         if self.name is not None:
@@ -386,12 +456,16 @@ class ArrayQueryParameter(AbstractQueryParameter):
         :rtype: dict
         :returns: JSON mapping
         """
+        values = self.values
+        converter = _SCALAR_VALUE_TO_JSON.get(self.array_type)
+        if converter is not None:
+            values = [converter(value) for value in values]
         resource = {
             'parameterType': {
                 'arrayType': self.array_type,
             },
             'parameterValue': {
-                'arrayValues': self.values,
+                'arrayValues': values,
             },
         }
         if self.name is not None:
@@ -458,12 +532,19 @@ class StructQueryParameter(AbstractQueryParameter):
             {'name': key, 'type': value}
             for key, value in self.struct_types.items()
         ]
+        values = {}
+        for name, value in self.struct_values.items():
+            converter = _SCALAR_VALUE_TO_JSON.get(self.struct_types[name])
+            if converter is not None:
+                value = converter(value)
+            values[name] = value
+
         resource = {
             'parameterType': {
                 'structTypes': types,
             },
             'parameterValue': {
-                'structValues': self.struct_values,
+                'structValues': values,
             },
         }
         if self.name is not None:
