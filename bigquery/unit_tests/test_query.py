@@ -419,7 +419,7 @@ class TestQueryResults(unittest.TestCase):
                     'type': 'INT64',
                 },
                 'parameterValue': {
-                    'value': 123,
+                    'value': '123',
                 },
             },
         ]
@@ -453,7 +453,7 @@ class TestQueryResults(unittest.TestCase):
                     'type': 'INT64',
                 },
                 'parameterValue': {
-                    'value': 123,
+                    'value': '123',
                 },
             },
         ]
