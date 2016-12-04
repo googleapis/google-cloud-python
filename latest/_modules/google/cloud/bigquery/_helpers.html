@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery._helpers &mdash; google-cloud a02ac50 documentation</title>
+  <title>google.cloud.bigquery._helpers &mdash; google-cloud 03864ce documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud a02ac50 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 03864ce documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -302,9 +302,13 @@
 <span class="sd">&quot;&quot;&quot;Shared helper functions for BigQuery API classes.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_date_from_iso8601_date</span>
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_microseconds_from_datetime</span>
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_RFC3339_NO_FRACTION</span>
 
 
 <span class="k">def</span> <span class="nf">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
@@ -330,11 +334,18 @@
         <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_datetime_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_timestamp_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to a datetime, if set or not nullable.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
         <span class="c1"># value will be a float in seconds, to microsecond precision, in UTC.</span>
         <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="mi">1</span><span class="n">e6</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_datetime_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to a datetime, if set or not nullable.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="c1"># value will be a string, in YYYY-MM-DDTHH:MM:SS form.</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_RFC3339_NO_FRACTION</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_date_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
@@ -370,10 +381,64 @@
     <span class="s1">&#39;FLOAT64&#39;</span><span class="p">:</span> <span class="n">_float_from_json</span><span class="p">,</span>
     <span class="s1">&#39;BOOLEAN&#39;</span><span class="p">:</span> <span class="n">_bool_from_json</span><span class="p">,</span>
     <span class="s1">&#39;BOOL&#39;</span><span class="p">:</span> <span class="n">_bool_from_json</span><span class="p">,</span>
-    <span class="s1">&#39;TIMESTAMP&#39;</span><span class="p">:</span> <span class="n">_datetime_from_json</span><span class="p">,</span>
+    <span class="s1">&#39;TIMESTAMP&#39;</span><span class="p">:</span> <span class="n">_timestamp_from_json</span><span class="p">,</span>
+    <span class="s1">&#39;DATETIME&#39;</span><span class="p">:</span> <span class="n">_datetime_from_json</span><span class="p">,</span>
     <span class="s1">&#39;DATE&#39;</span><span class="p">:</span> <span class="n">_date_from_json</span><span class="p">,</span>
     <span class="s1">&#39;RECORD&#39;</span><span class="p">:</span> <span class="n">_record_from_json</span><span class="p">,</span>
     <span class="s1">&#39;STRING&#39;</span><span class="p">:</span> <span class="n">_string_from_json</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">_int_to_json</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to an JSON-compatible representation.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">def</span> <span class="nf">_float_to_json</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to an JSON-compatible representation.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">def</span> <span class="nf">_bool_to_json</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to an JSON-compatible representation.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">def</span> <span class="nf">_timestamp_to_json</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to an JSON-compatible representation.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">_microseconds_from_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1.0e6</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">def</span> <span class="nf">_datetime_to_json</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to an JSON-compatible representation.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">_datetime_to_rfc3339</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">def</span> <span class="nf">_date_to_json</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to an JSON-compatible representation.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="n">_SCALAR_VALUE_TO_JSON</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;INTEGER&#39;</span><span class="p">:</span> <span class="n">_int_to_json</span><span class="p">,</span>
+    <span class="s1">&#39;INT64&#39;</span><span class="p">:</span> <span class="n">_int_to_json</span><span class="p">,</span>
+    <span class="s1">&#39;FLOAT&#39;</span><span class="p">:</span> <span class="n">_float_to_json</span><span class="p">,</span>
+    <span class="s1">&#39;FLOAT64&#39;</span><span class="p">:</span> <span class="n">_float_to_json</span><span class="p">,</span>
+    <span class="s1">&#39;BOOLEAN&#39;</span><span class="p">:</span> <span class="n">_bool_to_json</span><span class="p">,</span>
+    <span class="s1">&#39;BOOL&#39;</span><span class="p">:</span> <span class="n">_bool_to_json</span><span class="p">,</span>
+    <span class="s1">&#39;TIMESTAMP&#39;</span><span class="p">:</span> <span class="n">_timestamp_to_json</span><span class="p">,</span>
+    <span class="s1">&#39;DATETIME&#39;</span><span class="p">:</span> <span class="n">_datetime_to_json</span><span class="p">,</span>
+    <span class="s1">&#39;DATE&#39;</span><span class="p">:</span> <span class="n">_date_to_json</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -549,8 +614,8 @@
 <span class="sd">                 paramter can only be addressed via position (``?``).</span>
 
 <span class="sd">    :type type_: str</span>
-<span class="sd">    :param type_: name of parameter type.  One of `&#39;STRING&#39;`, `&#39;INT64&#39;`,</span>
-<span class="sd">                  `&#39;FLOAT64&#39;`, `&#39;BOOL&#39;`, `&#39;TIMESTAMP&#39;`, or `&#39;DATE&#39;`.</span>
+<span class="sd">    :param type_: name of parameter type.  One of &#39;STRING&#39;, &#39;INT64&#39;,</span>
+<span class="sd">                  &#39;FLOAT64&#39;, &#39;BOOL&#39;, &#39;TIMESTAMP&#39;, &#39;DATETIME&#39;, or &#39;DATE&#39;.</span>
 
 <span class="sd">    :type value: str, int, float, bool, :class:`datetime.datetime`, or</span>
 <span class="sd">                 :class:`datetime.date`.</span>
@@ -566,8 +631,9 @@
         <span class="sd">&quot;&quot;&quot;Factory for positional paramters.</span>
 
 <span class="sd">        :type type_: str</span>
-<span class="sd">        :param type_: name of paramter type.  One of `&#39;STRING&#39;`, `&#39;INT64&#39;`,</span>
-<span class="sd">                      `&#39;FLOAT64&#39;`, `&#39;BOOL&#39;`, `&#39;TIMESTAMP&#39;`, or `&#39;DATE&#39;`.</span>
+<span class="sd">        :param type_:</span>
+<span class="sd">            name of paramter type.  One of &#39;STRING&#39;, &#39;INT64&#39;,</span>
+<span class="sd">            &#39;FLOAT64&#39;, &#39;BOOL&#39;, &#39;TIMESTAMP&#39;, &#39;DATETIME&#39;, or &#39;DATE&#39;.</span>
 
 <span class="sd">        :type value: str, int, float, bool, :class:`datetime.datetime`, or</span>
 <span class="sd">                     :class:`datetime.date`.</span>
@@ -600,12 +666,16 @@
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: JSON mapping</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">converter</span> <span class="o">=</span> <span class="n">_SCALAR_VALUE_TO_JSON</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -673,12 +743,16 @@
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: JSON mapping</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">converter</span> <span class="o">=</span> <span class="n">_SCALAR_VALUE_TO_JSON</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
         <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;arrayType&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;arrayValues&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                <span class="s1">&#39;arrayValues&#39;</span><span class="p">:</span> <span class="n">values</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -745,12 +819,19 @@
             <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_types</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">converter</span> <span class="o">=</span> <span class="n">_SCALAR_VALUE_TO_JSON</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">struct_types</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
         <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;structTypes&#39;</span><span class="p">:</span> <span class="n">types</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;structValues&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_values</span><span class="p">,</span>
+                <span class="s1">&#39;structValues&#39;</span><span class="p">:</span> <span class="n">values</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -828,7 +909,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'a02ac50',
+            VERSION:'03864ce',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
