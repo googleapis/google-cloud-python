@@ -9,12 +9,12 @@ addons:
     - python3.5
 
 install:
-  - pip install --upgrade pip tox
+  - pip install --upgrade pip ci-diff-helper tox
 
 script:
   - python2.7 scripts/run_unit_tests.py
-  - python3.4 scripts/run_unit_tests.py
-  - python3.5 scripts/run_unit_tests.py
+  - pip install ci-diff-helper && python3.4 scripts/run_unit_tests.py
+  - pip install ci-diff-helper && python3.5 scripts/run_unit_tests.py
   - python scripts/run_unit_tests.py --tox-env cover
   - tox -e lint
   - tox -e system-tests

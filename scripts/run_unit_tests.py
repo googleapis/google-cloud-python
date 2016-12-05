@@ -29,11 +29,11 @@ import sys
 from script_utils import check_output
 from script_utils import follow_dependencies
 from script_utils import get_changed_packages
-from script_utils import in_travis
-from script_utils import in_travis_pr
+from script_utils import in_ci
+from script_utils import in_pr
 from script_utils import local_diff_branch
 from script_utils import PROJECT_ROOT
-from script_utils import travis_branch
+from script_utils import ci_branch
 
 
 IGNORED_DIRECTORIES = (
@@ -73,12 +73,12 @@ def get_package_directories():
     return result
 
 
-def get_travis_directories(package_list):
-    """Get list of packages that need to be tested on Travis CI.
+def get_ci_directories(package_list):
+    """Get list of packages that need to be tested on CI.
 
     See: https://travis-ci.com/
 
-    If the current Travis build is for a pull request (PR), this will
+    If the current CI build is for a pull request (PR), this will
     limit the directories to the ones impacted by the PR. Otherwise
     it will just test all package directories.
 
@@ -89,8 +89,8 @@ def get_travis_directories(package_list):
     :returns: A list of all package directories where tests
               need to be run.
     """
-    if in_travis_pr():
-        pr_against_branch = travis_branch()
+    if in_pr():
+        pr_against_branch = ci_branch()
         return get_changed_packages('HEAD', pr_against_branch,
                                     package_list)
     else:
@@ -150,8 +150,8 @@ def get_test_packages():
         changed_packages = get_changed_packages(
             'HEAD', local_diff, all_packages)
         return follow_dependencies(changed_packages, all_packages)
-    elif in_travis():
-        changed_packages = get_travis_directories(all_packages)
+    elif in_ci():
+        changed_packages = get_ci_directories(all_packages)
         return follow_dependencies(changed_packages, all_packages)
     else:
         return all_packages
