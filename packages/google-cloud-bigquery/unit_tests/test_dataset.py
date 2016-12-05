@@ -174,7 +174,7 @@ class TestDataset(unittest.TestCase):
         else:
             self.assertEqual(dataset.access_grants, [])
 
-    def test_ctor(self):
+    def test_ctor_defaults(self):
         client = _Client(self.PROJECT)
         dataset = self._make_one(self.DS_NAME, client)
         self.assertEqual(dataset.name, self.DS_NAME)
@@ -196,13 +196,42 @@ class TestDataset(unittest.TestCase):
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.location)
 
-    def test_access_roles_setter_non_list(self):
+    def test_ctor_explicit(self):
+        from google.cloud.bigquery.dataset import AccessGrant
+        phred = AccessGrant('OWNER', 'userByEmail', 'phred@example.com')
+        bharney = AccessGrant('OWNER', 'userByEmail', 'bharney@example.com')
+        grants = [phred, bharney]
+        OTHER_PROJECT = 'foo-bar-123'
+        client = _Client(self.PROJECT)
+        dataset = self._make_one(self.DS_NAME, client,
+                                 access_grants=grants,
+                                 project=OTHER_PROJECT)
+        self.assertEqual(dataset.name, self.DS_NAME)
+        self.assertIs(dataset._client, client)
+        self.assertEqual(dataset.project, OTHER_PROJECT)
+        self.assertEqual(
+            dataset.path,
+            '/projects/%s/datasets/%s' % (OTHER_PROJECT, self.DS_NAME))
+        self.assertEqual(dataset.access_grants, grants)
+
+        self.assertIsNone(dataset.created)
+        self.assertIsNone(dataset.dataset_id)
+        self.assertIsNone(dataset.etag)
+        self.assertIsNone(dataset.modified)
+        self.assertIsNone(dataset.self_link)
+
+        self.assertIsNone(dataset.default_table_expiration_ms)
+        self.assertIsNone(dataset.description)
+        self.assertIsNone(dataset.friendly_name)
+        self.assertIsNone(dataset.location)
+
+    def test_access_grants_setter_non_list(self):
         client = _Client(self.PROJECT)
         dataset = self._make_one(self.DS_NAME, client)
         with self.assertRaises(TypeError):
             dataset.access_grants = object()
 
-    def test_access_roles_setter_invalid_field(self):
+    def test_access_grants_setter_invalid_field(self):
         from google.cloud.bigquery.dataset import AccessGrant
         client = _Client(self.PROJECT)
         dataset = self._make_one(self.DS_NAME, client)
@@ -210,7 +239,7 @@ class TestDataset(unittest.TestCase):
         with self.assertRaises(ValueError):
             dataset.access_grants = [phred, object()]
 
-    def test_access_roles_setter(self):
+    def test_access_grants_setter(self):
         from google.cloud.bigquery.dataset import AccessGrant
         client = _Client(self.PROJECT)
         dataset = self._make_one(self.DS_NAME, client)

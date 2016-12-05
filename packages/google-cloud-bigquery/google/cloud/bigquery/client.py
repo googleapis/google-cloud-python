@@ -129,16 +129,20 @@ class Client(JSONClient):
             items_key='datasets', page_token=page_token,
             max_results=max_results, extra_params=extra_params)
 
-    def dataset(self, dataset_name):
+    def dataset(self, dataset_name, project=None):
         """Construct a dataset bound to this client.
 
         :type dataset_name: str
         :param dataset_name: Name of the dataset.
 
+        :type project: str
+        :param project: (Optional) project ID for the dataset (defaults to
+                        the project of the client).
+
         :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
         :returns: a new ``Dataset`` instance
         """
-        return Dataset(dataset_name, client=self)
+        return Dataset(dataset_name, client=self, project=project)
 
     def job_from_resource(self, resource):
         """Detect correct job type from resource and instantiate.
