@@ -624,65 +624,25 @@ class Test_make_secure_channel(unittest.TestCase):
 
     def test_it(self):
         from six.moves import http_client
-        from google.cloud import _helpers as MUT
 
-        SSL_CREDS = object()
-        METADATA_CREDS = object()
-        COMPOSITE_CREDS = object()
-        CHANNEL = object()
-
-        class _GRPCModule(object):
-
-            def __init__(self):
-                self.ssl_channel_credentials_args = None
-                self.metadata_call_credentials_args = None
-                self.composite_channel_credentials_args = None
-                self.secure_channel_args = None
-
-            def ssl_channel_credentials(self, *args):
-                self.ssl_channel_credentials_args = args
-                return SSL_CREDS
-
-            def metadata_call_credentials(self, *args, **kwargs):
-                self.metadata_call_credentials_args = (args, kwargs)
-                return METADATA_CREDS
-
-            def composite_channel_credentials(self, *args):
-                self.composite_channel_credentials_args = args
-                return COMPOSITE_CREDS
-
-            def secure_channel(self, *args, **kwargs):
-                self.secure_channel_args = (args, kwargs)
-                return CHANNEL
-
-        grpc_mod = _GRPCModule()
-
-        host = 'HOST'
         credentials = object()
+        host = 'HOST'
         user_agent = 'USER_AGENT'
 
-        grpc_patch = mock.patch.object(MUT, 'grpc', new=grpc_mod)
-        request_patch = mock.patch('google_auth_httplib2.Request')
-        plugin_patch = mock.patch.object(
-            MUT, 'AuthMetadataPlugin', create=True)
-        with grpc_patch, request_patch as request_mock, plugin_patch as plugin:
+        secure_authorized_channel_patch = mock.patch(
+            'google.auth.transport.grpc.secure_authorized_channel',
+            autospec=True)
+
+        with secure_authorized_channel_patch as secure_authorized_channel:
             result = self._call_fut(credentials, user_agent, host)
 
-        self.assertIs(result, CHANNEL)
-        plugin.assert_called_once_with(credentials, request_mock.return_value)
-        self.assertEqual(grpc_mod.ssl_channel_credentials_args, ())
-        self.assertEqual(grpc_mod.metadata_call_credentials_args,
-                         ((plugin.return_value,), {'name': 'google_creds'}))
-        self.assertEqual(
-            grpc_mod.composite_channel_credentials_args,
-            (SSL_CREDS, METADATA_CREDS))
-        target = '%s:%d' % (host, http_client.HTTPS_PORT)
-        secure_args = (target, COMPOSITE_CREDS)
-        secure_kwargs = {
-            'options': (('grpc.primary_user_agent', user_agent),)
-        }
-        self.assertEqual(grpc_mod.secure_channel_args,
-                         (secure_args, secure_kwargs))
+        self.assertIs(result, secure_authorized_channel.return_value)
+
+        expected_target = '%s:%d' % (host, http_client.HTTPS_PORT)
+        expected_options = (('grpc.primary_user_agent', user_agent),)
+
+        secure_authorized_channel.assert_called_once_with(
+            credentials, mock.ANY, expected_target, options=expected_options)
 
 
 class Test_make_secure_stub(unittest.TestCase):
