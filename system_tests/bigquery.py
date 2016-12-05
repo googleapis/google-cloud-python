@@ -479,11 +479,48 @@ class TestBigQuery(unittest.TestCase):
         # raise an error, and that the job completed (in the `retry()`
         # above).
 
-    def test_sync_query_w_nested_arrays_and_structs(self):
+    def test_sync_query_w_standard_sql_types(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
+        stamp = "%s %s" %(naive.date().isoformat(), naive.time().isoformat())
+        zoned = naive.replace(tzinfo=UTC)
         EXAMPLES = [
             {
                 'sql': 'SELECT 1',
                 'expected': 1,
+            },
+            {
+                'sql': 'SELECT 1.3',
+                'expected': 1.3,
+            },
+            {
+                'sql': 'SELECT TRUE',
+                'expected': True,
+            },
+            {
+                'sql': 'SELECT "ABC"',
+                'expected': 'ABC',
+            },
+            {
+                'sql': 'SELECT CAST("foo" AS BYTES)',
+                'expected': b'foo',
+            },
+            {
+                'sql': 'SELECT TIMESTAMP "%s"' % (stamp,),
+                'expected': zoned,
+            },
+            {
+                'sql': 'SELECT DATETIME(TIMESTAMP "%s")' % (stamp,),
+                'expected': naive,
+            },
+            {
+                'sql': 'SELECT DATE(TIMESTAMP "%s")' % (stamp,),
+                'expected': naive.date(),
+            },
+            {
+                'sql': 'SELECT TIME(TIMESTAMP "%s")' % (stamp,),
+                'expected': naive.time(),
             },
             {
                 'sql': 'SELECT (1, 2)',
