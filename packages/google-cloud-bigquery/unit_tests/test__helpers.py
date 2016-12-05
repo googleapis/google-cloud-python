@@ -137,7 +137,7 @@ class Test_bytes_from_json(unittest.TestCase):
 
     def test_w_base64_encoded_value(self):
         import base64
-        expected = 'Wonderful!'
+        expected = b'Wonderful!'
         encoded = base64.encodestring(expected)
         coerced = self._call_fut(encoded, object())
         self.assertEqual(coerced, expected)
