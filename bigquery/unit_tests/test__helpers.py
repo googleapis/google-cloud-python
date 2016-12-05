@@ -105,6 +105,23 @@ class Test_bool_from_json(unittest.TestCase):
         self.assertFalse(coerced)
 
 
+class Test_string_from_json(unittest.TestCase):
+
+    def _call_fut(self, value, field):
+        from google.cloud.bigquery._helpers import _string_from_json
+        return _string_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
+
+    def test_w_none_required(self):
+        self.assertIsNone(self._call_fut(None, _Field('RECORD')))
+
+    def test_w_string_value(self):
+        coerced = self._call_fut('Wonderful!', object())
+        self.assertEqual(coerced, 'Wonderful!')
+
+
 class Test_timestamp_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
@@ -236,23 +253,6 @@ class Test_record_from_json(unittest.TestCase):
         }
         coerced = self._call_fut(value, person)
         self.assertEqual(coerced, expected)
-
-
-class Test_string_from_json(unittest.TestCase):
-
-    def _call_fut(self, value, field):
-        from google.cloud.bigquery._helpers import _string_from_json
-        return _string_from_json(value, field)
-
-    def test_w_none_nullable(self):
-        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
-
-    def test_w_none_required(self):
-        self.assertIsNone(self._call_fut(None, _Field('RECORD')))
-
-    def test_w_string_value(self):
-        coerced = self._call_fut('Wonderful!', object())
-        self.assertEqual(coerced, 'Wonderful!')
 
 
 class Test_row_from_json(unittest.TestCase):
