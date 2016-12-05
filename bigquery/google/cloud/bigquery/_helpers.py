@@ -47,6 +47,11 @@ def _bool_from_json(value, field):
         return value.lower() in ['t', 'true', '1']
 
 
+def _string_from_json(value, _):
+    """NOOP string -> string coercion"""
+    return value
+
+
 def _timestamp_from_json(value, field):
     """Coerce 'value' to a datetime, if set or not nullable."""
     if _not_null(value, field):
@@ -82,11 +87,6 @@ def _record_from_json(value, field):
         return record
 
 
-def _string_from_json(value, _):
-    """NOOP string -> string coercion"""
-    return value
-
-
 _CELLDATA_FROM_JSON = {
     'INTEGER': _int_from_json,
     'INT64': _int_from_json,
@@ -94,11 +94,11 @@ _CELLDATA_FROM_JSON = {
     'FLOAT64': _float_from_json,
     'BOOLEAN': _bool_from_json,
     'BOOL': _bool_from_json,
+    'STRING': _string_from_json,
     'TIMESTAMP': _timestamp_from_json,
     'DATETIME': _datetime_from_json,
     'DATE': _date_from_json,
     'RECORD': _record_from_json,
-    'STRING': _string_from_json,
 }
 
 
