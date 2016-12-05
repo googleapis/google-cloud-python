@@ -251,6 +251,19 @@ def _date_from_iso8601_date(value):
     return datetime.datetime.strptime(value, '%Y-%m-%d').date()
 
 
+def _time_from_iso8601_time_naive(value):
+    """Convert a zoneless ISO8601 time string to naive datetime time
+
+    :type value: str
+    :param value: The time string to convert
+
+    :rtype: :class:`datetime.time`
+    :returns: A datetime time object created from the string
+
+    """
+    return datetime.datetime.strptime(value, '%H:%M:%S').time()
+
+
 def _rfc3339_to_datetime(dt_str):
     """Convert a microsecond-precision timetamp to a native datetime.
 
