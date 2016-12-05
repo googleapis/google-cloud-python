@@ -105,6 +105,44 @@ class Test_bool_from_json(unittest.TestCase):
         self.assertFalse(coerced)
 
 
+class Test_string_from_json(unittest.TestCase):
+
+    def _call_fut(self, value, field):
+        from google.cloud.bigquery._helpers import _string_from_json
+        return _string_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
+
+    def test_w_none_required(self):
+        self.assertIsNone(self._call_fut(None, _Field('REQUIRED')))
+
+    def test_w_string_value(self):
+        coerced = self._call_fut('Wonderful!', object())
+        self.assertEqual(coerced, 'Wonderful!')
+
+
+class Test_bytes_from_json(unittest.TestCase):
+
+    def _call_fut(self, value, field):
+        from google.cloud.bigquery._helpers import _bytes_from_json
+        return _bytes_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
+
+    def test_w_none_required(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None, _Field('REQUIRED'))
+
+    def test_w_base64_encoded_value(self):
+        import base64
+        expected = b'Wonderful!'
+        encoded = base64.encodestring(expected)
+        coerced = self._call_fut(encoded, object())
+        self.assertEqual(coerced, expected)
+
+
 class Test_timestamp_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
@@ -177,6 +215,27 @@ class Test_date_from_json(unittest.TestCase):
             datetime.date(1987, 9, 22))
 
 
+class Test_time_from_json(unittest.TestCase):
+
+    def _call_fut(self, value, field):
+        from google.cloud.bigquery._helpers import _time_from_json
+        return _time_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
+
+    def test_w_none_required(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None, _Field('REQUIRED'))
+
+    def test_w_string_value(self):
+        import datetime
+        coerced = self._call_fut('12:12:27', object())
+        self.assertEqual(
+            coerced,
+            datetime.time(12, 12, 27))
+
+
 class Test_record_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
@@ -236,23 +295,6 @@ class Test_record_from_json(unittest.TestCase):
         }
         coerced = self._call_fut(value, person)
         self.assertEqual(coerced, expected)
-
-
-class Test_string_from_json(unittest.TestCase):
-
-    def _call_fut(self, value, field):
-        from google.cloud.bigquery._helpers import _string_from_json
-        return _string_from_json(value, field)
-
-    def test_w_none_nullable(self):
-        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
-
-    def test_w_none_required(self):
-        self.assertIsNone(self._call_fut(None, _Field('RECORD')))
-
-    def test_w_string_value(self):
-        coerced = self._call_fut('Wonderful!', object())
-        self.assertEqual(coerced, 'Wonderful!')
 
 
 class Test_row_from_json(unittest.TestCase):
@@ -471,6 +513,23 @@ class Test_bool_to_json(unittest.TestCase):
         self.assertEqual(self._call_fut('false'), 'false')
 
 
+class Test_bytes_to_json(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _bytes_to_json
+        return _bytes_to_json(value)
+
+    def test_w_non_bytes(self):
+        non_bytes = object()
+        self.assertIs(self._call_fut(non_bytes), non_bytes)
+
+    def test_w_bytes(self):
+        import base64
+        source = b'source'
+        expected = base64.encodestring(source)
+        self.assertEqual(self._call_fut(source), expected)
+
+
 class Test_timestamp_to_json(unittest.TestCase):
 
     def _call_fut(self, value):
@@ -520,6 +579,22 @@ class Test_date_to_json(unittest.TestCase):
         import datetime
         when = datetime.date(2016, 12, 3)
         self.assertEqual(self._call_fut(when), '2016-12-03')
+
+
+class Test_time_to_json(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _time_to_json
+        return _time_to_json(value)
+
+    def test_w_string(self):
+        RFC3339 = '12:13:41'
+        self.assertEqual(self._call_fut(RFC3339), RFC3339)
+
+    def test_w_datetime(self):
+        import datetime
+        when = datetime.time(12, 13, 41)
+        self.assertEqual(self._call_fut(when), '12:13:41')
 
 
 class Test_ConfigurationProperty(unittest.TestCase):
