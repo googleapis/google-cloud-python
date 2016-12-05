@@ -32,11 +32,9 @@ import google_auth_httplib2
 
 try:
     import grpc
-    from google.auth.transport.grpc import (
-        AuthMetadataPlugin)  # pragma: NO COVER
-except ImportError:
+    import google.auth.transport.grpc
+except ImportError:  # pragma: NO COVER
     grpc = None
-    AuthMetadataPlugin = None
 
 import httplib2
 import six
@@ -472,22 +470,16 @@ def make_secure_channel(credentials, user_agent, host):
     :rtype: :class:`grpc._channel.Channel`
     :returns: gRPC secure channel with credentials attached.
     """
-    # ssl_channel_credentials() loads root certificates from
-    # `grpc/_adapter/credentials/roots.pem`.
-    transport_creds = grpc.ssl_channel_credentials()
-    http = httplib2.Http()
-    custom_metadata_plugin = AuthMetadataPlugin(
-        credentials, google_auth_httplib2.Request(http=http))
-    auth_creds = grpc.metadata_call_credentials(
-        custom_metadata_plugin, name='google_creds')
-    channel_creds = grpc.composite_channel_credentials(
-        transport_creds, auth_creds)
     target = '%s:%d' % (host, http_client.HTTPS_PORT)
-    channel_args = (
+    http_request = google_auth_httplib2.Request(http=httplib2.Http())
+    options = (
         ('grpc.primary_user_agent', user_agent),
     )
-    return grpc.secure_channel(target, channel_creds,
-                               options=channel_args)
+    return google.auth.transport.grpc.secure_authorized_channel(
+        credentials,
+        http_request,
+        target,
+        options=options)
 
 
 def make_secure_stub(credentials, user_agent, stub_class, host):
