@@ -122,6 +122,27 @@ class Test_string_from_json(unittest.TestCase):
         self.assertEqual(coerced, 'Wonderful!')
 
 
+class Test_bytes_from_json(unittest.TestCase):
+
+    def _call_fut(self, value, field):
+        from google.cloud.bigquery._helpers import _bytes_from_json
+        return _bytes_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
+
+    def test_w_none_required(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(None, _Field('REQUIRED'))
+
+    def test_w_base64_encoded_value(self):
+        import base64
+        expected = 'Wonderful!'
+        encoded = base64.encodestring(expected)
+        coerced = self._call_fut(encoded, object())
+        self.assertEqual(coerced, expected)
+
+
 class Test_timestamp_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
@@ -469,6 +490,23 @@ class Test_bool_to_json(unittest.TestCase):
 
     def test_w_string(self):
         self.assertEqual(self._call_fut('false'), 'false')
+
+
+class Test_bytes_to_json(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _bytes_to_json
+        return _bytes_to_json(value)
+
+    def test_w_non_bytes(self):
+        non_bytes = object()
+        self.assertIs(self._call_fut(non_bytes), non_bytes)
+
+    def test_w_bytes(self):
+        import base64
+        source = b'source'
+        expected = base64.encodestring(source)
+        self.assertEqual(self._call_fut(source), expected)
 
 
 class Test_timestamp_to_json(unittest.TestCase):
