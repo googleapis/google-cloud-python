@@ -44,10 +44,8 @@ for changes to your data and return based on certain conditions.
 .. _RuntimeConfig: https://cloud.google.com/deployment-manager/runtime-configurator/
 .. _RuntimeConfig API docs: https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/
 
-See the ``google-cloud-python`` API `runtimeconfig documentation`_ to learn
+See the ``google-cloud-python`` API runtimeconfig `Documentation`_ to learn
 how to interact with Cloud RuntimeConfig using this Client Library.
-
-.. _RuntimeConfig documentation: https://google-cloud-python.readthedocs.io/en/latest/runtimeconfig-usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-runtimeconfig.svg
    :target: https://pypi.python.org/pypi/google-cloud-runtimeconfig
