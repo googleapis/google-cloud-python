@@ -101,16 +101,21 @@ class Dataset(object):
 
     :type access_grants: list of :class:`AccessGrant`
     :param access_grants: roles granted to entities for this dataset
+
+    :type project: str
+    :param project: (Optional) project ID for the dataset (defaults to
+                    the project of the client).
     """
 
     _access_grants = None
 
-    def __init__(self, name, client, access_grants=()):
+    def __init__(self, name, client, access_grants=(), project=None):
         self.name = name
         self._client = client
         self._properties = {}
         # Let the @property do validation.
         self.access_grants = access_grants
+        self._project = project or client.project
 
     @property
     def project(self):
@@ -119,7 +124,7 @@ class Dataset(object):
         :rtype: str
         :returns: the project (derived from the client).
         """
-        return self._client.project
+        return self._project
 
     @property
     def path(self):
