@@ -738,11 +738,6 @@ class Table(object):
         rows_info = []
         data = {'rows': rows_info}
 
-        def _convert_timestamp(value):
-            if isinstance(value, datetime.datetime):
-                value = _microseconds_from_datetime(value) * 1e-6
-            return value
-
         for index, row in enumerate(rows):
             row_info = {}
 
@@ -1134,3 +1129,10 @@ class _UrlBuilder(object):
     def __init__(self):
         self.query_params = {}
         self._relative_path = ''
+
+
+def _convert_timestamp(value):
+    """Helper for :meth:`Table.insert_data`."""
+    if isinstance(value, datetime.datetime):
+        value = _microseconds_from_datetime(value) * 1e-6
+    return value
