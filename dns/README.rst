@@ -38,10 +38,8 @@ manage DNS for your applications.
 .. _DNS: https://cloud.google.com/dns/
 .. _DNS API docs: https://cloud.google.com/dns/docs/apis
 
-See the ``google-cloud-python`` API `DNS documentation`_ to learn
+See the ``google-cloud-python`` API DNS `Documentation`_ to learn
 how to manage DNS records using this Client Library.
-
-.. _DNS documentation: https://google-cloud-python.readthedocs.io/en/stable/dns-usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
    :target: https://pypi.python.org/pypi/google-cloud-dns
