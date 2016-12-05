@@ -561,3 +561,12 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(len(query.rows), 1)
             self.assertEqual(len(query.rows[0]), 1)
             self.assertEqual(query.rows[0][0], example['expected'])
+
+    def test_dump_table_w_public_data(self):
+        PUBLIC = 'bigquery-public-data'
+        DATASET_NAME = 'samples'
+        TABLE_NAME = 'natality'
+
+        dataset = Config.CLIENT.dataset(DATASET_NAME, project=PUBLIC)
+        table = dataset.table(TABLE_NAME)
+        self._fetch_single_page(table)
