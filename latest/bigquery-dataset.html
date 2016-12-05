@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Datasets &mdash; google-cloud 03864ce documentation</title>
+  <title>Datasets &mdash; google-cloud c50daa3 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 03864ce documentation" href="index.html"/>
+    <link rel="top" title="google-cloud c50daa3 documentation" href="index.html"/>
         <link rel="next" title="Jobs" href="bigquery-job.html"/>
         <link rel="prev" title="BigQuery Client" href="bigquery-client.html"/> 
 
@@ -275,7 +275,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/bigquery-dataset.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/bigquery-dataset.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -327,7 +327,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessGrant.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset(['specialGroup', 'userByEmail', 'groupByEmail', 'view', 'domain'])</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessGrant.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset(['groupByEmail', 'userByEmail', 'domain', 'specialGroup', 'view'])</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessGrant.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 
@@ -335,7 +335,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 
 <dl class="class">
 <dt id="google.cloud.bigquery.dataset.Dataset">
-<em class="property">class </em><code class="descclassname">google.cloud.bigquery.dataset.</code><code class="descname">Dataset</code><span class="sig-paren">(</span><em>name</em>, <em>client</em>, <em>access_grants=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/dataset.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.dataset.</code><code class="descname">Dataset</code><span class="sig-paren">(</span><em>name</em>, <em>client</em>, <em>access_grants=()</em>, <em>project=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/dataset.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Datasets are containers for tables.</p>
 <p>See:
@@ -349,6 +349,8 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 <li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
 for the dataset (which requires a project).</li>
 <li><strong>access_grants</strong> (list of <a class="reference internal" href="#google.cloud.bigquery.dataset.AccessGrant" title="google.cloud.bigquery.dataset.AccessGrant"><code class="xref py py-class docutils literal"><span class="pre">AccessGrant</span></code></a>) &#8211; roles granted to entities for this dataset</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) project ID for the dataset (defaults to
+the project of the client).</li>
 </ul>
 </td>
 </tr>
@@ -789,7 +791,7 @@ contained within the current dataset.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'03864ce',
+            VERSION:'c50daa3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>BigQuery Client &mdash; google-cloud 03864ce documentation</title>
+  <title>BigQuery Client &mdash; google-cloud c50daa3 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 03864ce documentation" href="index.html"/>
+    <link rel="top" title="google-cloud c50daa3 documentation" href="index.html"/>
         <link rel="next" title="Datasets" href="bigquery-dataset.html"/>
         <link rel="prev" title="Using the API" href="bigquery-usage.html"/> 
 
@@ -275,7 +275,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/bigquery-client.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/bigquery-client.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -343,17 +343,24 @@ from the environment.</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.client.Client.dataset">
-<code class="descname">dataset</code><span class="sig-paren">(</span><em>dataset_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/client.html#Client.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.dataset" title="Permalink to this definition">#</a></dt>
+<code class="descname">dataset</code><span class="sig-paren">(</span><em>dataset_name</em>, <em>project=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/bigquery/client.html#Client.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a dataset bound to this client.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the dataset.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the dataset.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) project ID for the dataset (defaults to
+the project of the client).</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dataset.Dataset</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="bigquery-dataset.html#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dataset.Dataset</span></code></a></p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new <code class="docutils literal"><span class="pre">Dataset</span></code> instance</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <code class="docutils literal"><span class="pre">Dataset</span></code> instance</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -671,7 +678,7 @@ accessible to the current client.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'03864ce',
+            VERSION:'c50daa3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

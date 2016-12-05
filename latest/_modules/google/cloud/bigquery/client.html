@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.client &mdash; google-cloud 03864ce documentation</title>
+  <title>google.cloud.bigquery.client &mdash; google-cloud c50daa3 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 03864ce documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud c50daa3 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -416,16 +416,20 @@
             <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;datasets&#39;</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.dataset"><a class="viewcode-back" href="../../../../bigquery-client.html#google.cloud.bigquery.client.Client.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.dataset"><a class="viewcode-back" href="../../../../bigquery-client.html#google.cloud.bigquery.client.Client.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a dataset bound to this client.</span>
 
 <span class="sd">        :type dataset_name: str</span>
 <span class="sd">        :param dataset_name: Name of the dataset.</span>
 
+<span class="sd">        :type project: str</span>
+<span class="sd">        :param project: (Optional) project ID for the dataset (defaults to</span>
+<span class="sd">                        the project of the client).</span>
+
 <span class="sd">        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`</span>
 <span class="sd">        :returns: a new ``Dataset`` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.job_from_resource"><a class="viewcode-back" href="../../../../bigquery-client.html#google.cloud.bigquery.client.Client.job_from_resource">[docs]</a>    <span class="k">def</span> <span class="nf">job_from_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect correct job type from resource and instantiate.</span>
@@ -696,7 +700,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'03864ce',
+            VERSION:'c50daa3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

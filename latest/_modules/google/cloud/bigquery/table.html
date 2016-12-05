@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.bigquery.table &mdash; google-cloud 03864ce documentation</title>
+  <title>google.cloud.bigquery.table &mdash; google-cloud c50daa3 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 03864ce documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud c50daa3 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -1029,11 +1029,11 @@
             <span class="n">row_info</span> <span class="o">=</span> <span class="p">{}</span>
 
             <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span> <span class="o">==</span> <span class="s1">&#39;TIMESTAMP&#39;</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span> <span class="o">==</span> <span class="s1">&#39;TIMESTAMP&#39;</span><span class="p">:</span>
                     <span class="c1"># BigQuery stores TIMESTAMP data internally as a</span>
                     <span class="c1"># UNIX timestamp with microsecond precision.</span>
                     <span class="c1"># Specifies the number of seconds since the epoch.</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="n">_microseconds_from_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">_convert_timestamp</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
                 <span class="n">row_info</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
             <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;json&#39;</span><span class="p">:</span> <span class="n">row_info</span><span class="p">}</span>
@@ -1416,6 +1416,13 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_relative_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">_convert_timestamp</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper for :meth:`Table.insert_data`.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">_microseconds_from_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span>
+    <span class="k">return</span> <span class="n">value</span>
 </pre></div>
 
            </div>
@@ -1449,7 +1456,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'03864ce',
+            VERSION:'c50daa3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
