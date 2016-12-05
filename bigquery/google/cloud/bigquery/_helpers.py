@@ -14,6 +14,7 @@
 
 """Shared helper functions for BigQuery API classes."""
 
+import base64
 from collections import OrderedDict
 import datetime
 
@@ -22,6 +23,7 @@ from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _RFC3339_NO_FRACTION
+from google.cloud._helpers import _time_from_iso8601_time_naive
 
 
 def _not_null(value, field):
@@ -47,6 +49,17 @@ def _bool_from_json(value, field):
         return value.lower() in ['t', 'true', '1']
 
 
+def _string_from_json(value, _):
+    """NOOP string -> string coercion"""
+    return value
+
+
+def _bytes_from_json(value, field):
+    """Base64-decode value"""
+    if _not_null(value, field):
+        return base64.decodestring(value)
+
+
 def _timestamp_from_json(value, field):
     """Coerce 'value' to a datetime, if set or not nullable."""
     if _not_null(value, field):
@@ -64,7 +77,15 @@ def _datetime_from_json(value, field):
 def _date_from_json(value, field):
     """Coerce 'value' to a datetime date, if set or not nullable"""
     if _not_null(value, field):
+        # value will be a string, in YYYY-MM-DD form.
         return _date_from_iso8601_date(value)
+
+
+def _time_from_json(value, field):
+    """Coerce 'value' to a datetime date, if set or not nullable"""
+    if _not_null(value, field):
+        # value will be a string, in HH:MM:SS form.
+        return _time_from_iso8601_time_naive(value)
 
 
 def _record_from_json(value, field):
@@ -82,11 +103,6 @@ def _record_from_json(value, field):
         return record
 
 
-def _string_from_json(value, _):
-    """NOOP string -> string coercion"""
-    return value
-
-
 _CELLDATA_FROM_JSON = {
     'INTEGER': _int_from_json,
     'INT64': _int_from_json,
@@ -94,11 +110,13 @@ _CELLDATA_FROM_JSON = {
     'FLOAT64': _float_from_json,
     'BOOLEAN': _bool_from_json,
     'BOOL': _bool_from_json,
+    'STRING': _string_from_json,
+    'BYTES': _bytes_from_json,
     'TIMESTAMP': _timestamp_from_json,
     'DATETIME': _datetime_from_json,
     'DATE': _date_from_json,
+    'TIME': _time_from_json,
     'RECORD': _record_from_json,
-    'STRING': _string_from_json,
 }
 
 
@@ -118,6 +136,13 @@ def _bool_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, bool):
         value = 'true' if value else 'false'
+    return value
+
+
+def _bytes_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, bytes):
+        value = base64.encodestring(value)
     return value
 
 
@@ -142,6 +167,13 @@ def _date_to_json(value):
     return value
 
 
+def _time_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, datetime.time):
+        value = value.isoformat()
+    return value
+
+
 _SCALAR_VALUE_TO_JSON = {
     'INTEGER': _int_to_json,
     'INT64': _int_to_json,
@@ -149,9 +181,11 @@ _SCALAR_VALUE_TO_JSON = {
     'FLOAT64': _float_to_json,
     'BOOLEAN': _bool_to_json,
     'BOOL': _bool_to_json,
+    'BYTES': _bytes_to_json,
     'TIMESTAMP': _timestamp_to_json,
     'DATETIME': _datetime_to_json,
     'DATE': _date_to_json,
+    'TIME': _time_to_json,
 }
 
 

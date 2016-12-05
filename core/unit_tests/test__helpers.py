@@ -265,6 +265,18 @@ class Test___date_from_iso8601_date(unittest.TestCase):
         self.assertEqual(self._call_fut(TODAY.strftime("%Y-%m-%d")), TODAY)
 
 
+class Test___time_from_iso8601_time_naive(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud._helpers import _time_from_iso8601_time_naive
+        return _time_from_iso8601_time_naive(value)
+
+    def test_todays_date(self):
+        import datetime
+        WHEN = datetime.time(12, 9, 42)
+        self.assertEqual(self._call_fut(("12:09:42")), WHEN)
+
+
 class Test__rfc3339_to_datetime(unittest.TestCase):
 
     def _call_fut(self, dt_str):
