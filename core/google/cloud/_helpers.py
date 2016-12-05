@@ -34,7 +34,7 @@ try:
     import grpc
     from google.auth.transport.grpc import (
         AuthMetadataPlugin)  # pragma: NO COVER
-except ImportError:
+except ImportError:  # pragma: NO COVER
     grpc = None
     AuthMetadataPlugin = None
 
