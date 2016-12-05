@@ -38,10 +38,8 @@ dynamically translate text between thousands of language pairs.
 .. _Translate: https://cloud.google.com/translate/
 .. _Translate API docs: https://cloud.google.com/translate/docs/apis
 
-See the ``google-cloud-python`` API `Translate documentation`_ to learn
+See the ``google-cloud-python`` API Translate `Documentation`_ to learn
 how to translate text using this library.
-
-.. _Translate documentation: https://google-cloud-python.readthedocs.io/en/stable/translate-usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-translate.svg
    :target: https://pypi.python.org/pypi/google-cloud-translate
