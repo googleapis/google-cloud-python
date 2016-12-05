@@ -46,10 +46,8 @@ Storage.
 .. _Vision: https://cloud.google.com/vision/
 .. _Vision API docs: https://cloud.google.com/vision/reference/rest/
 
-See the ``google-cloud-python`` API `Vision documentation`_ to learn
+See the ``google-cloud-python`` API `Documentation`_ to learn
 how to analyze images using this library.
-
-.. _Vision documentation: https://google-cloud-python.readthedocs.io/en/stable/vision-usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-vision.svg
    :target: https://pypi.python.org/pypi/google-cloud-vision
