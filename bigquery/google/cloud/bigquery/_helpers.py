@@ -14,6 +14,7 @@
 
 """Shared helper functions for BigQuery API classes."""
 
+import base64
 from collections import OrderedDict
 import datetime
 
@@ -50,6 +51,12 @@ def _bool_from_json(value, field):
 def _string_from_json(value, _):
     """NOOP string -> string coercion"""
     return value
+
+
+def _bytes_from_json(value, field):
+    """Base64-decode value"""
+    if _not_null(value, field):
+        return base64.decodestring(value)
 
 
 def _timestamp_from_json(value, field):
@@ -95,6 +102,7 @@ _CELLDATA_FROM_JSON = {
     'BOOLEAN': _bool_from_json,
     'BOOL': _bool_from_json,
     'STRING': _string_from_json,
+    'BYTES': _bytes_from_json,
     'TIMESTAMP': _timestamp_from_json,
     'DATETIME': _datetime_from_json,
     'DATE': _date_from_json,
@@ -118,6 +126,13 @@ def _bool_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, bool):
         value = 'true' if value else 'false'
+    return value
+
+
+def _bytes_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, bytes):
+        value = base64.encodestring(value)
     return value
 
 
@@ -149,6 +164,7 @@ _SCALAR_VALUE_TO_JSON = {
     'FLOAT64': _float_to_json,
     'BOOLEAN': _bool_to_json,
     'BOOL': _bool_to_json,
+    'BYTES': _bytes_to_json,
     'TIMESTAMP': _timestamp_to_json,
     'DATETIME': _datetime_to_json,
     'DATE': _date_to_json,
