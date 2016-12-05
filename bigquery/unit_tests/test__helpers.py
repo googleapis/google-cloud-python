@@ -115,7 +115,7 @@ class Test_string_from_json(unittest.TestCase):
         self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
 
     def test_w_none_required(self):
-        self.assertIsNone(self._call_fut(None, _Field('RECORD')))
+        self.assertIsNone(self._call_fut(None, _Field('REQUIRED')))
 
     def test_w_string_value(self):
         coerced = self._call_fut('Wonderful!', object())
