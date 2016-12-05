@@ -402,22 +402,23 @@ class Bucket(_PropertyMixin):
     def delete_blobs(self, blobs, on_error=None, client=None):
         """Deletes a list of blobs from the current bucket.
 
-        Uses :func:`Bucket.delete_blob` to delete each individual blob.
+        Uses :meth:`delete_blob` to delete each individual blob.
 
-        :type blobs: list of string or :class:`google.cloud.storage.blob.Blob`
-        :param blobs: A list of blob names or Blob objects to delete.
+        :type blobs: list
+        :param blobs: A list of :class:`~google.cloud.storage.blob.Blob`-s or
+                      blob names to delete.
 
-        :type on_error: a callable taking (blob)
-        :param on_error: If not ``None``, called once for each blob raising
-                         :class:`google.cloud.exceptions.NotFound`;
+        :type on_error: callable
+        :param on_error: (Optional) Takes single argument: ``blob``. Called
+                         called once for each blob raising
+                         :class:`~google.cloud.exceptions.NotFound`;
                          otherwise, the exception is propagated.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :raises: :class:`google.cloud.exceptions.NotFound` (if
+        :raises: :class:`~google.cloud.exceptions.NotFound` (if
                  `on_error` is not passed).
         """
         for blob in blobs:
