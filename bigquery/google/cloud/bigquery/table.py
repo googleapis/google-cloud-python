@@ -738,15 +738,20 @@ class Table(object):
         rows_info = []
         data = {'rows': rows_info}
 
+        def _convert_timestamp(value):
+            if isinstance(value, datetime.datetime):
+                value = _microseconds_from_datetime(value) * 1e-6
+            return value
+
         for index, row in enumerate(rows):
             row_info = {}
 
             for field, value in zip(self._schema, row):
-                if field.field_type == 'TIMESTAMP' and value is not None:
+                if field.field_type == 'TIMESTAMP':
                     # BigQuery stores TIMESTAMP data internally as a
                     # UNIX timestamp with microsecond precision.
                     # Specifies the number of seconds since the epoch.
-                    value = _microseconds_from_datetime(value) * 1e-6
+                    value = _convert_timestamp(value)
                 row_info[field.name] = value
 
             info = {'json': row_info}
