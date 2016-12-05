@@ -483,7 +483,7 @@ class TestBigQuery(unittest.TestCase):
         import datetime
         from google.cloud._helpers import UTC
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
-        stamp = "%s %s" %(naive.date().isoformat(), naive.time().isoformat())
+        stamp = "%s %s" % (naive.date().isoformat(), naive.time().isoformat())
         zoned = naive.replace(tzinfo=UTC)
         EXAMPLES = [
             {
