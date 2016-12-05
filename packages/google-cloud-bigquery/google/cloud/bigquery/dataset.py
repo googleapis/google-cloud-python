@@ -115,7 +115,7 @@ class Dataset(object):
         self._properties = {}
         # Let the @property do validation.
         self.access_grants = access_grants
-        self._project = project
+        self._project = project or client.project
 
     @property
     def project(self):
@@ -124,7 +124,7 @@ class Dataset(object):
         :rtype: str
         :returns: the project (derived from the client).
         """
-        return self._project or self._client.project
+        return self._project
 
     @property
     def path(self):
