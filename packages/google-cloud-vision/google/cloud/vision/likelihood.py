@@ -15,7 +15,10 @@
 """Likelihood constants returned from Vision API."""
 
 
-class Likelihood(object):
+from enum import Enum
+
+
+class Likelihood(Enum):
     """A representation of likelihood to give stable results across upgrades.
 
     See:
