@@ -359,6 +359,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(694, text[0].bounds.vertices[0].y_coordinate)
 
     def test_safe_search_detection_from_source(self):
+        from google.cloud.vision.likelihood import Likelihood
         from google.cloud.vision.safe import SafeSearchAnnotation
         from unit_tests._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
 
@@ -373,10 +374,10 @@ class TestClient(unittest.TestCase):
         image_request = client._connection._requested[0]['data']['requests'][0]
         self.assertEqual(IMAGE_SOURCE,
                          image_request['image']['source']['gcs_image_uri'])
-        self.assertEqual('VERY_UNLIKELY', safe_search.adult)
-        self.assertEqual('UNLIKELY', safe_search.spoof)
-        self.assertEqual('POSSIBLE', safe_search.medical)
-        self.assertEqual('VERY_UNLIKELY', safe_search.violence)
+        self.assertEqual(safe_search.adult, Likelihood.VERY_UNLIKELY)
+        self.assertEqual(safe_search.spoof, Likelihood.UNLIKELY)
+        self.assertEqual(safe_search.medical, Likelihood.POSSIBLE)
+        self.assertEqual(safe_search.violence, Likelihood.VERY_UNLIKELY)
 
     def test_safe_search_no_results(self):
         RETURNED = {

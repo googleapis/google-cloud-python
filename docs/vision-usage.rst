@@ -116,15 +116,15 @@ was detected.
     >>> faces = image.detect_faces(limit=10)
     >>> first_face = faces[0]
     >>> first_face.landmarks.left_eye.landmark_type
-    'LEFT_EYE'
+    <LandmarkTypes.LEFT_EYE: 'LEFT_EYE'>
     >>> first_face.landmarks.left_eye.position.x_coordinate
     1301.2404
     >>> first_face.detection_confidence
     0.9863683
     >>> first_face.joy
-    0.54453093
+    <Likelihood.VERY_LIKELY: 'VERY_LIKELY'>
     >>> first_face.anger
-    0.02545464
+    <Likelihood.VERY_UNLIKELY: 'VERY_UNLIKELY'>
 
 
 ***************
@@ -227,13 +227,13 @@ categorize the entire contents of the image under four categories.
     >>> safe_search_results = image.detect_safe_search()
     >>> safe_search = safe_search_results[0]
     >>> safe_search.adult
-    'VERY_UNLIKELY'
+    <Likelihood.VERY_UNLIKELY: 'VERY_UNLIKELY'>
     >>> safe_search.spoof
-    'POSSIBLE'
+    <Likelihood.POSSIBLE: 'POSSIBLE'>
     >>> safe_search.medical
-    'VERY_LIKELY'
+    <Likelihood.VERY_LIKELY: 'VERY_LIKELY'>
     >>> safe_search.violence
-    'LIKELY'
+    <Likelihood.LIKELY: 'LIKELY'>
 
 
 **************
