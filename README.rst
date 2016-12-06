@@ -15,14 +15,12 @@ Google Cloud Python Client
 .. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/
 .. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
-
 This client supports the following Google Cloud Platform services at a Beta_ quality level:
 
 -  `Google BigQuery`_ (`BigQuery README`_) (Beta)
 -  `Google Cloud Datastore`_ (`Datastore README`_) (Beta)
 -  `Stackdriver Logging`_ (`Logging README`_) (Beta)
 -  `Google Cloud Storage`_ (`Storage README`_) (Beta)
-
 
 This client supports the following Google Cloud Platform services at an Alpha_ quality level:
 
@@ -132,7 +130,6 @@ Community
 
 Google Cloud Platform Python developers hang out in `Slack`_ in the ``#python``
 channel, click here to `get an invitation`_.
-
 
 .. _Slack: https://googlecloud-community.slack.com
 .. _get an invitation: https://gcp-slack.appspot.com/
