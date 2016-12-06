@@ -18,12 +18,15 @@ import base64
 from collections import OrderedDict
 import datetime
 
+import six
+
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _time_from_iso8601_time_naive
+from google.cloud._helpers import _to_bytes
 
 
 def _not_null(value, field):
@@ -57,7 +60,8 @@ def _string_from_json(value, _):
 def _bytes_from_json(value, field):
     """Base64-decode value"""
     if _not_null(value, field):
-        return base64.decodestring(value)
+        return base64.decodestring(
+            _to_bytes(value) if isinstance(value, six.text_type) else value)
 
 
 def _timestamp_from_json(value, field):
