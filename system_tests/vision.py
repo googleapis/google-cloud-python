@@ -121,9 +121,8 @@ class TestVisionClientFace(unittest.TestCase):
 
     def _assert_coordinate(self, coordinate):
         if coordinate is None:
-            return True
-
-        self.assertIn(type(coordinate), [int, float])
+            return
+        self.assertIsInstance(coordinate, (int, float))
         self.assertGreater(abs(coordinate), 0.0)
 
     def _assert_likelihood(self, likelihood):
@@ -134,22 +133,25 @@ class TestVisionClientFace(unittest.TestCase):
                   Likelihood.VERY_UNLIKELY]
         self.assertIn(likelihood, levels)
 
-    def _assert_landmark(self, landmark):
+    def _assert_landmarks(self, landmarks):
         from google.cloud.vision.face import Landmark
-        from google.cloud.vision.face import FaceLandmarkTypes
+        from google.cloud.vision.face import LandmarkTypes
+        from google.cloud.vision.face import Position
 
-        self.assertIsInstance(landmark, Landmark)
-
-        valid_landmark_type = getattr(FaceLandmarkTypes,
-                                      landmark.landmark_type, False)
-        if valid_landmark_type:
-            return True
-        return False
+        for landmark in LandmarkTypes:
+            if landmark is not LandmarkTypes.UNKNOWN_LANDMARK:
+                feature = getattr(landmarks, landmark.value.lower())
+                self.assertIsInstance(feature, Landmark)
+                self.assertIsInstance(feature.position, Position)
+                self._assert_coordinate(feature.position.x_coordinate)
+                self._assert_coordinate(feature.position.y_coordinate)
+                self._assert_coordinate(feature.position.z_coordinate)
 
     def _assert_face(self, face):
         from google.cloud.vision.face import Bounds
         from google.cloud.vision.face import FDBounds
         from google.cloud.vision.face import Face
+        from google.cloud.vision.face import Landmarks
         from google.cloud.vision.geometry import Vertex
 
         self.assertIsInstance(face, Face)
@@ -161,9 +163,9 @@ class TestVisionClientFace(unittest.TestCase):
         self._assert_likelihood(face.image_properties.blurred)
         self._assert_likelihood(face.image_properties.underexposed)
         self._assert_likelihood(face.headwear)
-        self.assertGreater(abs(face.angles.roll), 0.0)
-        self.assertGreater(abs(face.angles.pan), 0.0)
-        self.assertGreater(abs(face.angles.tilt), 0.0)
+        self.assertNotEqual(face.angles.roll, 0.0)
+        self.assertNotEqual(face.angles.pan, 0.0)
+        self.assertNotEqual(face.angles.tilt, 0.0)
 
         self.assertIsInstance(face.bounds, Bounds)
         for vertex in face.bounds.vertices:
@@ -176,6 +178,9 @@ class TestVisionClientFace(unittest.TestCase):
             self.assertIsInstance(vertex, Vertex)
             self._assert_coordinate(vertex.x_coordinate)
             self._assert_coordinate(vertex.y_coordinate)
+
+        self.assertIsInstance(face.landmarks, Landmarks)
+        self._assert_landmarks(face.landmarks)
 
     def test_detect_faces_content(self):
         client = Config.CLIENT
