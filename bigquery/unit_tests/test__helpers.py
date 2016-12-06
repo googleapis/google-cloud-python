@@ -135,10 +135,17 @@ class Test_bytes_from_json(unittest.TestCase):
         with self.assertRaises(TypeError):
             self._call_fut(None, _Field('REQUIRED'))
 
-    def test_w_base64_encoded_value(self):
+    def test_w_base64_encoded_bytes(self):
         import base64
         expected = b'Wonderful!'
         encoded = base64.encodestring(expected)
+        coerced = self._call_fut(encoded, object())
+        self.assertEqual(coerced, expected)
+
+    def test_w_base64_encoded_text(self):
+        import base64
+        expected = b'Wonderful!'
+        encoded = base64.encodestring(expected).decode('ascii')
         coerced = self._call_fut(encoded, object())
         self.assertEqual(coerced, expected)
 
