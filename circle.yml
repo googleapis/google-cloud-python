@@ -1,6 +1,6 @@
 dependencies:
   override:
-    - pip install --upgrade pip tox tox-pyenv
+    - pip install --upgrade pip ci-diff-helper tox tox-pyenv
     # latest as of Nov. 7, 2016: 2.7.12, 3.4.5, 3.5.2
     - pyenv local 2.7.12 3.4.4 3.5.2
 

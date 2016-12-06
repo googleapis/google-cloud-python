@@ -20,86 +20,89 @@ import ast
 import os
 import subprocess
 
+import ci_diff_helper
+
 
 PROJECT_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..'))
 LOCAL_REMOTE_ENV = 'GOOGLE_CLOUD_TESTING_REMOTE'
 LOCAL_BRANCH_ENV = 'GOOGLE_CLOUD_TESTING_BRANCH'
-IN_TRAVIS_ENV = 'TRAVIS'
-TRAVIS_PR_ENV = 'TRAVIS_PULL_REQUEST'
-TRAVIS_BRANCH_ENV = 'TRAVIS_BRANCH'
+
 INST_REQS_KWARG = 'install_requires'
 REQ_VAR = 'REQUIREMENTS'
 PACKAGE_PREFIX = 'google-cloud-'
 
 
-def in_travis():
-    """Detect if we are running in Travis.
+def in_ci():
+    """Detect if we are running in CI.
 
     .. _Travis env docs: https://docs.travis-ci.com/user/\
                          environment-variables\
                          #Default-Environment-Variables
+    .. _CircleCI env docs: https://circleci.com/docs/environment-variables
 
-    See `Travis env docs`_.
+    See `Travis env docs`_ and `CircleCI env docs`_.
 
     :rtype: bool
-    :returns: Flag indicating if we are running on Travis.
+    :returns: Flag indicating if we are running on CI.
     """
-    return os.getenv(IN_TRAVIS_ENV) == 'true'
+    config = ci_diff_helper.get_config()
+    return config
 
 
-def in_travis_pr():
-    """Detect if we are running in a pull request on Travis.
+def in_pr():
+    """Detect if we are running in a pull request on CI.
 
     .. _Travis env docs: https://docs.travis-ci.com/user/\
                          environment-variables\
                          #Default-Environment-Variables
+    .. _CircleCI env docs: https://circleci.com/docs/environment-variables
 
-    See `Travis env docs`_.
+
+    See `Travis env docs`_ and `CircleCI env docs`_.
 
     .. note::
 
-        This assumes we already know we are running in Travis.
+        This assumes we already know we are running in CI.
 
     :rtype: bool
-    :returns: Flag indicating if we are in a pull request on Travis.
+    :returns: Flag indicating if we are in a pull request on CI.
     """
     # NOTE: We're a little extra cautious and make sure that the
     #       PR environment variable is an integer.
-    try:
-        int(os.getenv(TRAVIS_PR_ENV, ''))
-        return True
-    except ValueError:
-        return False
+    config = ci_diff_helper.get_config()
+    return config.in_pr
 
 
-def travis_branch():
+def ci_branch():
     """Get the current branch of the PR.
 
     .. _Travis env docs: https://docs.travis-ci.com/user/\
                          environment-variables\
                          #Default-Environment-Variables
+    .. _CircleCI env docs: https://circleci.com/docs/environment-variables
 
-    See `Travis env docs`_.
+    See `Travis env docs`_ and `CircleCI env docs`_.
 
     .. note::
 
-        This assumes we already know we are running in Travis
-        during a PR.
+        This assumes we already know we are running in CI during a PR.
 
     :rtype: str
     :returns: The name of the branch the current pull request is
               changed against.
-    :raises: :class:`~exceptions.OSError` if the ``TRAVIS_BRANCH_ENV``
-             environment variable isn't set during a pull request
-             build.
+    :raises: :class:`~exceptions.OSError` if the ``TRAVIS_BRANCH_ENV`` or
+             ```CIRCLECI_BRANCH_ENV`` environment variable isn't set during a
+             pull request build.
     """
-    try:
-        return os.environ[TRAVIS_BRANCH_ENV]
-    except KeyError:
+    config = ci_diff_helper.get_config()
+    branch_name = config.base
+    print('Branch Name: %s' % (branch_name,))
+    if not branch_name:
         msg = ('Pull request build does not have an '
-               'associated branch set (via %s)') % (TRAVIS_BRANCH_ENV,)
+               'associated branch environment variable set.')
         raise OSError(msg)
+    return branch_name
 
 
 def check_output(*args):
@@ -193,11 +196,11 @@ def get_affected_files(allow_limited=True):
     uses a specific commit or branch (a so-called diff base) to compare
     against for changed files. (This requires ``allow_limited=True``.)
 
-    To speed up linting on Travis pull requests against master, we manually
-    set the diff base to the branch the pull request is against. We don't do
-    this on "push" builds since "master" will be the currently checked out
-    code. One could potentially use ${TRAVIS_COMMIT_RANGE} to find a diff base
-    but this value is not dependable.
+    To speed up linting on Travis and CircleCI pull requests against master, we
+    manually set the diff base to the branch the pull request is against. We
+    don't do this on "push" builds since "master" will be the currently checked
+    out code. One could potentially use ${TRAVIS_COMMIT_RANGE} to find a diff
+    base but this value is not dependable.
 
     To allow faster local ``tox`` runs, the local remote and local branch
     environment variables can be set to specify a remote branch to diff
@@ -212,11 +215,11 @@ def get_affected_files(allow_limited=True):
               linted.
     """
     diff_base = None
-    if in_travis():
+    if in_ci():
         # In the case of a pull request into a branch, we want to
         # diff against HEAD in that branch.
-        if in_travis_pr():
-            diff_base = travis_branch()
+        if in_pr():
+            diff_base = ci_branch()
     else:
         diff_base = local_diff_branch()
 
