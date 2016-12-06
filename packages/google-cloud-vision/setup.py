@@ -50,6 +50,7 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
+    'enum34',
     'google-cloud-core >= 0.21.0, < 0.22dev',
 ]
 

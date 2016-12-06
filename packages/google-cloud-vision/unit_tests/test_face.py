@@ -29,6 +29,8 @@ class TestFace(unittest.TestCase):
             self.FACE_ANNOTATIONS['faceAnnotations'][0])
 
     def test_face_landmarks(self):
+        from google.cloud.vision.face import LandmarkTypes
+
         self.assertEqual(0.54453093, self.face.landmarking_confidence)
         self.assertEqual(0.9863683, self.face.detection_confidence)
         self.assertTrue(hasattr(self.face.landmarks, 'left_eye'))
@@ -38,8 +40,8 @@ class TestFace(unittest.TestCase):
                          self.face.landmarks.left_eye.position.y_coordinate)
         self.assertEqual(0.0016593217,
                          self.face.landmarks.left_eye.position.z_coordinate)
-        self.assertEqual('LEFT_EYE',
-                         self.face.landmarks.left_eye.landmark_type)
+        self.assertEqual(self.face.landmarks.left_eye.landmark_type,
+                         LandmarkTypes.LEFT_EYE)
 
     def test_facial_emotions(self):
         from google.cloud.vision.face import Likelihood
