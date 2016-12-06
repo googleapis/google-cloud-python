@@ -15,7 +15,6 @@
 """Client for interacting with the Google Cloud Translate API."""
 
 
-import httplib2
 import six
 
 from google.cloud._helpers import _to_bytes
@@ -41,10 +40,6 @@ class Client(BaseClient):
                             translations and language names. (Defaults to
                             :data:`ENGLISH_ISO_639`.)
 
-    :type api_key: str
-    :param api_key: (Optional) The key used to send with requests as a
-                    query parameter.
-
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for the
                         connection owned by this client. If not passed (and
@@ -58,16 +53,9 @@ class Client(BaseClient):
 
     _connection_class = Connection
 
-    def __init__(self, target_language=ENGLISH_ISO_639, api_key=None,
+    def __init__(self, target_language=ENGLISH_ISO_639,
                  credentials=None, http=None):
-        self.api_key = api_key
         self.target_language = target_language
-
-        if api_key is not None:
-            # If API key auth is desired, make it so that no credentials
-            # will be auto-detected by the base class constructor.
-            if http is None:
-                http = httplib2.Http()
         super(Client, self).__init__(credentials=credentials, http=http)
 
     def get_languages(self, target_language=None):
@@ -91,8 +79,6 @@ class Client(BaseClient):
                   language (localized to the target language).
         """
         query_params = {}
-        if self.api_key is not None:
-            query_params['key'] = self.api_key
         if target_language is None:
             target_language = self.target_language
         if target_language is not None:
@@ -137,8 +123,6 @@ class Client(BaseClient):
             values = [values]
 
         query_params = []
-        if self.api_key is not None:
-            query_params.append(('key', self.api_key))
         query_params.extend(('q', _to_bytes(value, 'utf-8'))
                             for value in values)
         response = self._connection.api_request(
@@ -230,8 +214,6 @@ class Client(BaseClient):
             customization_ids = [customization_ids]
 
         query_params = [('target', target_language)]
-        if self.api_key is not None:
-            query_params.append(('key', self.api_key))
         query_params.extend(('q', _to_bytes(value, 'utf-8'))
                             for value in values)
         query_params.extend(('cid', cid) for cid in customization_ids)
