@@ -17,24 +17,24 @@ Google Cloud Python Client
 
 This client supports the following Google Cloud Platform services at a Beta_ quality level:
 
--  `Google BigQuery`_ (`BigQuery README`_) (Beta)
--  `Google Cloud Datastore`_ (`Datastore README`_) (Beta)
--  `Stackdriver Logging`_ (`Logging README`_) (Beta)
--  `Google Cloud Storage`_ (`Storage README`_) (Beta)
+-  `Google BigQuery`_ (`BigQuery README`_)
+-  `Google Cloud Datastore`_ (`Datastore README`_)
+-  `Stackdriver Logging`_ (`Logging README`_)
+-  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
+-  `Google Cloud Storage`_ (`Storage README`_)
 
 This client supports the following Google Cloud Platform services at an Alpha_ quality level:
 
--  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_) (Alpha)
--  `Google Cloud Resource Manager`_ (`Resource Manager README`_) (Alpha)
--  `Stackdriver Monitoring`_ (`Monitoring README`_) (Alpha)
--  `Google Cloud Bigtable`_ (`Bigtable README`_) (Alpha)
--  `Google Cloud DNS`_ (`DNS README`_) (Alpha)
--  `Stackdriver Error Reporting`_ (`Error Reporting README`_) (Alpha)
--  `Google Cloud Natural Language`_ (`Natural Language README`_) (Alpha)
--  `Google Translate`_ (`Translate README`_) (Alpha)
--  `Google Cloud Vision`_ (`Vision README`_) (Alpha)
--  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_) (Alpha)
--  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_) (Alpha)
+-  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
+-  `Stackdriver Monitoring`_ (`Monitoring README`_)
+-  `Google Cloud Bigtable`_ (`Bigtable README`_)
+-  `Google Cloud DNS`_ (`DNS README`_)
+-  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
+-  `Google Cloud Natural Language`_ (`Natural Language README`_)
+-  `Google Translate`_ (`Translate README`_)
+-  `Google Cloud Vision`_ (`Vision README`_)
+-  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
+-  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 
 .. _Google Cloud Datastore: https://pypi.python.org/pypi/google-cloud-datastore
 .. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
