@@ -27,6 +27,7 @@ import re
 from threading import local as Local
 
 import google.auth
+from google.cloud.environment_vars import AUTH_LOCAL
 from google.protobuf import timestamp_pb2
 import google_auth_httplib2
 
@@ -545,6 +546,40 @@ def make_insecure_stub(stub_class, host, port=None):
         target = '%s:%d' % (host, port)
     channel = grpc.insecure_channel(target)
     return stub_class(channel)
+
+
+def get_authorization_metadata(credentials, host):
+  """Gets Bearer token for authorization header.
+
+  This is a helper method which allows getting access to the Bearer token for
+  special use cases. Having access to the authorization header allows for
+  authenticated plaintext traffic. Note: this token is sensitive! As such, we
+  only return the token when an environment veriable (defined by AUTH_LOCAL) is
+  true, and the connection is with localhost (minimizing the chance of leaking
+  the token externally). Having access to the authorization header allows for
+  authenticated plaintext traffic. If you use this method, you MUST take
+  special care to ensure you do not leak your authentication credentials.
+
+  :type credentials: :class:`oauth2client.client.OAuth2Credentials`
+  :param credentials: The OAuth2 Credentials to use for this connection.
+
+  :type host: string
+  :param host: the host to route traffic to
+
+  :rtype: (string, string) or None
+  :returns: authorization header (if appropriate)
+  """
+  auth_local = os.environ.get(AUTH_LOCAL)
+  parse_host = re.match("(?:http://)?(\w+)(?:\d*)?", host)
+  is_local = (parse_host is not None and
+              parse_host.group(0) == 'localhost')
+  if (is_local and auth_local is not None and
+      auth_local.lower() in ['1', 't', 'true']):
+    access_token = credentials.get_access_token().access_token
+    return ('authorization', 'Bearer ' + access_token)
+  else:
+    return None
+
 
 
 try:

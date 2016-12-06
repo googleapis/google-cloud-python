@@ -18,6 +18,10 @@ These enable many types of implicit behavior in both production
 and tests.
 """
 
+AUTH_LOCAL = 'GOOGLE_AUTH_LOCAL_TRAFFIC'
+"""Environment variable which, if true, will allow authorization header to be
+present in insecure local traffic."""
+
 GCD_DATASET = 'DATASTORE_DATASET'
 """Environment variable defining default dataset ID under GCD."""
 
