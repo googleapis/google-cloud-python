@@ -15,23 +15,28 @@ Google Cloud Python Client
 .. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/
 .. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
-This client supports the following Google Cloud Platform services:
 
--  `Google Cloud Datastore`_ (`Datastore README`_)
--  `Google Cloud Storage`_ (`Storage README`_)
--  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
--  `Google BigQuery`_ (`BigQuery README`_)
--  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
--  `Stackdriver Logging`_ (`Logging README`_)
--  `Stackdriver Monitoring`_ (`Monitoring README`_)
--  `Google Cloud Bigtable`_ (`Bigtable README`_)
--  `Google Cloud DNS`_ (`DNS README`_)
--  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
--  `Google Cloud Natural Language`_ (`Natural Language README`_)
--  `Google Translate`_ (`Translate README`_)
--  `Google Cloud Vision`_ (`Vision README`_)
--  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
--  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
+This client supports the following Google Cloud Platform services at a Beta_ quality level:
+
+-  `Google BigQuery`_ (`BigQuery README`_) (Beta)
+-  `Google Cloud Datastore`_ (`Datastore README`_) (Beta)
+-  `Stackdriver Logging`_ (`Logging README`_) (Beta)
+-  `Google Cloud Storage`_ (`Storage README`_) (Beta)
+
+
+This client supports the following Google Cloud Platform services at an Alpha_ quality level:
+
+-  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_) (Alpha)
+-  `Google Cloud Resource Manager`_ (`Resource Manager README`_) (Alpha)
+-  `Stackdriver Monitoring`_ (`Monitoring README`_) (Alpha)
+-  `Google Cloud Bigtable`_ (`Bigtable README`_) (Alpha)
+-  `Google Cloud DNS`_ (`DNS README`_) (Alpha)
+-  `Stackdriver Error Reporting`_ (`Error Reporting README`_) (Alpha)
+-  `Google Cloud Natural Language`_ (`Natural Language README`_) (Alpha)
+-  `Google Translate`_ (`Translate README`_) (Alpha)
+-  `Google Cloud Vision`_ (`Vision README`_) (Alpha)
+-  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_) (Alpha)
+-  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_) (Alpha)
 
 .. _Google Cloud Datastore: https://pypi.python.org/pypi/google-cloud-datastore
 .. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
@@ -96,6 +101,22 @@ You may also find the `authentication document`_ shared by all the
 
 .. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
+
+.. _Alpha: #versioning
+.. _Beta: #versioning
+
+Versioning
+----------
+
+This library follows `Semantic Versioning`_.
+
+Please note it is currently under active development. Any release versioned 0.x.y is subject to backwards incompatible changes at any time.
+
+**Beta**: Libraries defined at a Beta quality level are expected to be mostly stable and we're working towards their release candidate. We will address issues and requests with a higher priority.
+
+**Alpha**: Libraries defined at an Alpha quality level are still a work-in-progress and are more likely to get backwards-incompatible updates.
+
+.. _Semantic Versioning: http://semver.org
 
 Contributing
 ------------
