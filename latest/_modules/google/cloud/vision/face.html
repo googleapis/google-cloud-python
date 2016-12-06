@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.face &mdash; google-cloud 5f68b4a documentation</title>
+  <title>google.cloud.vision.face &mdash; google-cloud cfe5b88 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 5f68b4a documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud cfe5b88 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -302,6 +302,8 @@
 <span class="sd">&quot;&quot;&quot;Face class representing the Vision API&#39;s face detection response.&quot;&quot;&quot;</span>
 
 
+<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
+
 <span class="kn">from</span> <span class="nn">google.cloud.vision.geometry</span> <span class="k">import</span> <span class="n">BoundsBase</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.likelihood</span> <span class="k">import</span> <span class="n">Likelihood</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.geometry</span> <span class="k">import</span> <span class="n">Position</span>
@@ -378,11 +380,10 @@
 <span class="sd">        :rtype: :class:`~google.cloud.vision.face.Emotions`</span>
 <span class="sd">        :returns: Populated instance of `Emotions`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">joy_likelihood</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Likelihood</span><span class="p">,</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;joyLikelihood&#39;</span><span class="p">])</span>
-        <span class="n">sorrow_likelihood</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Likelihood</span><span class="p">,</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;sorrowLikelihood&#39;</span><span class="p">])</span>
-        <span class="n">surprise_likelihood</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Likelihood</span><span class="p">,</span>
-                                      <span class="n">response</span><span class="p">[</span><span class="s1">&#39;surpriseLikelihood&#39;</span><span class="p">])</span>
-        <span class="n">anger_likelihood</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Likelihood</span><span class="p">,</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;angerLikelihood&#39;</span><span class="p">])</span>
+        <span class="n">joy_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;joyLikelihood&#39;</span><span class="p">]]</span>
+        <span class="n">sorrow_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;sorrowLikelihood&#39;</span><span class="p">]]</span>
+        <span class="n">surprise_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;surpriseLikelihood&#39;</span><span class="p">]]</span>
+        <span class="n">anger_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;angerLikelihood&#39;</span><span class="p">]]</span>
 
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">joy_likelihood</span><span class="p">,</span> <span class="n">sorrow_likelihood</span><span class="p">,</span> <span class="n">surprise_likelihood</span><span class="p">,</span>
                    <span class="n">anger_likelihood</span><span class="p">)</span></div>
@@ -459,8 +460,7 @@
         <span class="n">detection_confidence</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;detectionConfidence&#39;</span><span class="p">]</span>
         <span class="n">emotions</span> <span class="o">=</span> <span class="n">Emotions</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
         <span class="n">fd_bounds</span> <span class="o">=</span> <span class="n">FDBounds</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;fdBoundingPoly&#39;</span><span class="p">])</span>
-        <span class="n">headwear_likelihood</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Likelihood</span><span class="p">,</span>
-                                      <span class="n">response</span><span class="p">[</span><span class="s1">&#39;headwearLikelihood&#39;</span><span class="p">])</span>
+        <span class="n">headwear_likelihood</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;headwearLikelihood&#39;</span><span class="p">]]</span>
         <span class="n">image_properties</span> <span class="o">=</span> <span class="n">FaceImageProperties</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
         <span class="n">landmarks</span> <span class="o">=</span> <span class="n">Landmarks</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;landmarks&#39;</span><span class="p">])</span>
         <span class="n">landmarking_confidence</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;landmarkingConfidence&#39;</span><span class="p">]</span>
@@ -608,12 +608,10 @@
 <span class="sd">        :rtype: :class:`~google.cloud.vision.face.FaceImageProperties`</span>
 <span class="sd">        :returns: Instance populated with image property data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">blurred_likelihood</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Likelihood</span><span class="p">,</span>
-                                     <span class="n">response</span><span class="p">[</span><span class="s1">&#39;blurredLikelihood&#39;</span><span class="p">])</span>
-        <span class="n">underexposed_likelihood</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Likelihood</span><span class="p">,</span>
-                                          <span class="n">response</span><span class="p">[</span><span class="s1">&#39;underExposedLikelihood&#39;</span><span class="p">])</span>
+        <span class="n">blurred</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;blurredLikelihood&#39;</span><span class="p">]]</span>
+        <span class="n">underexposed</span> <span class="o">=</span> <span class="n">Likelihood</span><span class="p">[</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;underExposedLikelihood&#39;</span><span class="p">]]</span>
 
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">blurred_likelihood</span><span class="p">,</span> <span class="n">underexposed_likelihood</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">blurred</span><span class="p">,</span> <span class="n">underexposed</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">blurred</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -636,7 +634,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_underexposed_likelihood</span></div>
 
 
-<div class="viewcode-block" id="FaceLandmarkTypes"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.FaceLandmarkTypes">[docs]</a><span class="k">class</span> <span class="nc">FaceLandmarkTypes</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="LandmarkTypes"><a class="viewcode-back" href="../../../../vision-face.html#google.cloud.vision.face.LandmarkTypes">[docs]</a><span class="k">class</span> <span class="nc">LandmarkTypes</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A representation of the face detection landmark types.</span>
 
 <span class="sd">    See:</span>
@@ -700,7 +698,7 @@
 <span class="sd">        :returns: Populated instance of `Landmark`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">position</span> <span class="o">=</span> <span class="n">Position</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">response_landmark</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">])</span>
-        <span class="n">landmark_type</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">FaceLandmarkTypes</span><span class="p">,</span> <span class="n">response_landmark</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
+        <span class="n">landmark_type</span> <span class="o">=</span> <span class="n">LandmarkTypes</span><span class="p">[</span><span class="n">response_landmark</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]]</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">landmark_type</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
@@ -727,7 +725,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landmarks</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">landmark_response</span> <span class="ow">in</span> <span class="n">landmarks</span><span class="p">:</span>
             <span class="n">landmark</span> <span class="o">=</span> <span class="n">Landmark</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">landmark_response</span><span class="p">)</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landmark</span><span class="o">.</span><span class="n">landmark_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">landmark</span><span class="p">)</span></div>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">landmark</span><span class="o">.</span><span class="n">landmark_type</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">landmark</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -761,7 +759,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'5f68b4a',
+            VERSION:'cfe5b88',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
