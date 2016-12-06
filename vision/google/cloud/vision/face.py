@@ -15,6 +15,8 @@
 """Face class representing the Vision API's face detection response."""
 
 
+from enum import Enum
+
 from google.cloud.vision.geometry import BoundsBase
 from google.cloud.vision.likelihood import Likelihood
 from google.cloud.vision.geometry import Position
@@ -91,11 +93,10 @@ class Emotions(object):
         :rtype: :class:`~google.cloud.vision.face.Emotions`
         :returns: Populated instance of `Emotions`.
         """
-        joy_likelihood = getattr(Likelihood, response['joyLikelihood'])
-        sorrow_likelihood = getattr(Likelihood, response['sorrowLikelihood'])
-        surprise_likelihood = getattr(Likelihood,
-                                      response['surpriseLikelihood'])
-        anger_likelihood = getattr(Likelihood, response['angerLikelihood'])
+        joy_likelihood = Likelihood[response['joyLikelihood']]
+        sorrow_likelihood = Likelihood[response['sorrowLikelihood']]
+        surprise_likelihood = Likelihood[response['surpriseLikelihood']]
+        anger_likelihood = Likelihood[response['angerLikelihood']]
 
         return cls(joy_likelihood, sorrow_likelihood, surprise_likelihood,
                    anger_likelihood)
@@ -172,8 +173,7 @@ class Face(object):
         detection_confidence = response['detectionConfidence']
         emotions = Emotions.from_api_repr(response)
         fd_bounds = FDBounds.from_api_repr(response['fdBoundingPoly'])
-        headwear_likelihood = getattr(Likelihood,
-                                      response['headwearLikelihood'])
+        headwear_likelihood = Likelihood[response['headwearLikelihood']]
         image_properties = FaceImageProperties.from_api_repr(response)
         landmarks = Landmarks(response['landmarks'])
         landmarking_confidence = response['landmarkingConfidence']
@@ -321,12 +321,10 @@ class FaceImageProperties(object):
         :rtype: :class:`~google.cloud.vision.face.FaceImageProperties`
         :returns: Instance populated with image property data.
         """
-        blurred_likelihood = getattr(Likelihood,
-                                     response['blurredLikelihood'])
-        underexposed_likelihood = getattr(Likelihood,
-                                          response['underExposedLikelihood'])
+        blurred = Likelihood[response['blurredLikelihood']]
+        underexposed = Likelihood[response['underExposedLikelihood']]
 
-        return cls(blurred_likelihood, underexposed_likelihood)
+        return cls(blurred, underexposed)
 
     @property
     def blurred(self):
@@ -349,7 +347,7 @@ class FaceImageProperties(object):
         return self._underexposed_likelihood
 
 
-class FaceLandmarkTypes(object):
+class LandmarkTypes(Enum):
     """A representation of the face detection landmark types.
 
     See:
@@ -413,7 +411,7 @@ class Landmark(object):
         :returns: Populated instance of `Landmark`.
         """
         position = Position.from_api_repr(response_landmark['position'])
-        landmark_type = getattr(FaceLandmarkTypes, response_landmark['type'])
+        landmark_type = LandmarkTypes[response_landmark['type']]
         return cls(position, landmark_type)
 
     @property
@@ -440,4 +438,4 @@ class Landmarks(object):
     def __init__(self, landmarks):
         for landmark_response in landmarks:
             landmark = Landmark.from_api_repr(landmark_response)
-            setattr(self, landmark.landmark_type.lower(), landmark)
+            setattr(self, landmark.landmark_type.value.lower(), landmark)
