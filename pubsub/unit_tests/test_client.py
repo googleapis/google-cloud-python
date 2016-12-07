@@ -56,7 +56,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_no_gax_ctor(self):
-        import mock
         from google.cloud.pubsub._http import _PublisherAPI
 
         creds = _make_credentials()
@@ -70,8 +69,6 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(api, _PublisherAPI)
 
     def test_publisher_api_w_gax(self):
-        import mock
-
         wrapped = object()
         _called_with = []
 
@@ -124,8 +121,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_subscriber_api_w_gax(self):
-        import mock
-
         wrapped = object()
         _called_with = []
 

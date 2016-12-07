@@ -143,7 +143,6 @@ class TestTopic(unittest.TestCase):
 
     def test_publish_single_bytes_wo_attrs_w_add_timestamp_alt_client(self):
         import datetime
-        import mock
         from google.cloud._helpers import _RFC3339_MICROS
 
         NOW = datetime.datetime.utcnow()

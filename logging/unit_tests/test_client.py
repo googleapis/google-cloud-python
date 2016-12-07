@@ -62,8 +62,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_logging_api_w_gax(self):
-        import mock
-
         clients = []
         api_obj = object()
 
@@ -88,7 +86,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_no_gax_ctor(self):
-        import mock
         from google.cloud.logging._http import _LoggingAPI
 
         creds = _make_credentials()
@@ -119,8 +116,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_sinks_api_w_gax(self):
-        import mock
-
         clients = []
         api_obj = object()
 
@@ -161,8 +156,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_metrics_api_w_gax(self):
-        import mock
-
         clients = []
         api_obj = object()
 
@@ -592,7 +585,6 @@ class TestClient(unittest.TestCase):
 
     def test_get_default_handler_general(self):
         import httplib2
-        import mock
         from google.cloud.logging.handlers import CloudLoggingHandler
 
         http_mock = mock.Mock(spec=httplib2.Http)
@@ -610,7 +602,6 @@ class TestClient(unittest.TestCase):
 
     def test_setup_logging(self):
         import httplib2
-        import mock
 
         http_mock = mock.Mock(spec=httplib2.Http)
         deepcopy = mock.Mock(return_value=http_mock)

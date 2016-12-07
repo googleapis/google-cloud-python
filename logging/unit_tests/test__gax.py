@@ -14,6 +14,12 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
 
 try:
     # pylint: disable=unused-import
@@ -79,7 +85,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
                             text_payload=TEXT)
         response = _GAXPageIterator([entry_pb], page_token=TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
-        client = Client(project=self.PROJECT, credentials=object(),
+        client = Client(project=self.PROJECT, credentials=_make_credentials(),
                         use_gax=True)
         api = self._make_one(gax_api, client)
 
@@ -136,7 +142,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
                             json_payload=struct_pb)
         response = _GAXPageIterator([entry_pb], page_token=NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
-        client = Client(project=self.PROJECT, credentials=object(),
+        client = Client(project=self.PROJECT, credentials=_make_credentials(),
                         use_gax=True)
         api = self._make_one(gax_api, client)
 
@@ -277,7 +283,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
         response = _GAXPageIterator([entry_pb], page_token=NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
-        client = Client(project=self.PROJECT, credentials=object(),
+        client = Client(project=self.PROJECT, credentials=_make_credentials(),
                         use_gax=True)
         api = self._make_one(gax_api, client)
 

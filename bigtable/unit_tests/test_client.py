@@ -296,11 +296,6 @@ class TestClient(unittest.TestCase):
                      _make_table_stub=mock_make_table_stub):
             return self._make_one(*args, **kwargs)
 
-    def _make_credentials(self):
-        import mock
-        import google.auth.credentials
-        return mock.Mock(spec=google.auth.credentials.Scoped)
-
     def _constructor_test_helper(self, expected_scopes, creds,
                                  read_only=False, admin=False,
                                  user_agent=None, expected_creds=None):
@@ -358,7 +353,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigtable import client as MUT
 
         expected_scopes = [MUT.DATA_SCOPE]
-        creds = self._make_credentials()
+        creds = _make_credentials()
         self._constructor_test_helper(expected_scopes, creds)
 
     def test_constructor_custom_user_agent(self):
@@ -366,7 +361,7 @@ class TestClient(unittest.TestCase):
 
         CUSTOM_USER_AGENT = 'custom-application'
         expected_scopes = [MUT.DATA_SCOPE]
-        creds = self._make_credentials()
+        creds = _make_credentials()
         self._constructor_test_helper(expected_scopes, creds,
                                       user_agent=CUSTOM_USER_AGENT)
 
@@ -374,18 +369,18 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigtable import client as MUT
 
         expected_scopes = [MUT.DATA_SCOPE, MUT.ADMIN_SCOPE]
-        creds = self._make_credentials()
+        creds = _make_credentials()
         self._constructor_test_helper(expected_scopes, creds, admin=True)
 
     def test_constructor_with_read_only(self):
         from google.cloud.bigtable import client as MUT
 
         expected_scopes = [MUT.READ_ONLY_SCOPE]
-        creds = self._make_credentials()
+        creds = _make_credentials()
         self._constructor_test_helper(expected_scopes, creds, read_only=True)
 
     def test_constructor_both_admin_and_read_only(self):
-        creds = self._make_credentials()
+        creds = _make_credentials()
         with self.assertRaises(ValueError):
             self._constructor_test_helper([], creds, admin=True,
                                           read_only=True)
@@ -394,7 +389,7 @@ class TestClient(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
-        creds = self._make_credentials()
+        creds = _make_credentials()
         expected_scopes = [MUT.DATA_SCOPE]
 
         def mock_get_credentials():
@@ -408,7 +403,7 @@ class TestClient(unittest.TestCase):
         creds.with_scopes.assert_called_once_with(expected_scopes)
 
     def test_constructor_credentials_wo_create_scoped(self):
-        creds = self._make_credentials()
+        creds = _make_credentials()
         expected_scopes = None
         self._constructor_test_helper(expected_scopes, creds)
 
@@ -416,7 +411,7 @@ class TestClient(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
-        credentials = self._make_credentials()
+        credentials = _make_credentials()
         client = self._make_oneWithMocks(
             project=self.PROJECT,
             credentials=credentials,

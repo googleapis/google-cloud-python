@@ -45,15 +45,12 @@ class Test__get_gcd_project(unittest.TestCase):
         return _get_gcd_project()
 
     def test_no_value(self):
-        import mock
-
         environ = {}
         with mock.patch('os.getenv', new=environ.get):
             project = self._call_fut()
             self.assertIsNone(project)
 
     def test_value_set(self):
-        import mock
         from google.cloud.datastore.client import GCD_DATASET
 
         MOCK_PROJECT = object()
@@ -72,8 +69,6 @@ class Test__determine_default_project(unittest.TestCase):
 
     def _determine_default_helper(self, gcd=None, fallback=None,
                                   project_called=None):
-        import mock
-
         _callers = []
 
         def gcd_mock():
@@ -144,8 +139,6 @@ class TestClient(unittest.TestCase):
                                         http=http)
 
     def test_ctor_w_project_no_environ(self):
-        import mock
-
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
         patch = mock.patch(
@@ -155,8 +148,6 @@ class TestClient(unittest.TestCase):
             self.assertRaises(EnvironmentError, self._make_one, None)
 
     def test_ctor_w_implicit_inputs(self):
-        import mock
-
         OTHER = 'other'
         creds = _make_credentials()
         default_called = []
@@ -503,7 +494,6 @@ class TestClient(unittest.TestCase):
             client.get_multi([key1, key2])
 
     def test_get_multi_max_loops(self):
-        import mock
         from google.cloud.datastore.key import Key
 
         KIND = 'Kind'
@@ -712,8 +702,6 @@ class TestClient(unittest.TestCase):
                           client.key, KIND, ID, project=self.PROJECT)
 
     def test_key_wo_project(self):
-        import mock
-
         KIND = 'KIND'
         ID = 1234
 
@@ -734,8 +722,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_key_w_namespace(self):
-        import mock
-
         KIND = 'KIND'
         ID = 1234
         NAMESPACE = object()
@@ -756,8 +742,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_key_w_namespace_collision(self):
-        import mock
-
         KIND = 'KIND'
         ID = 1234
         NAMESPACE1 = object()
@@ -779,8 +763,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_batch(self):
-        import mock
-
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
@@ -794,8 +776,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(batch.kwargs, {})
 
     def test_transaction_defaults(self):
-        import mock
-
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
@@ -827,8 +807,6 @@ class TestClient(unittest.TestCase):
                           client.query, kind=KIND, project=self.PROJECT)
 
     def test_query_w_defaults(self):
-        import mock
-
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
@@ -846,8 +824,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query.kwargs, expected_kwargs)
 
     def test_query_explicit(self):
-        import mock
-
         KIND = 'KIND'
         NAMESPACE = 'NAMESPACE'
         ANCESTOR = object()
@@ -887,8 +863,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query.kwargs, kwargs)
 
     def test_query_w_namespace(self):
-        import mock
-
         KIND = 'KIND'
         NAMESPACE = object()
 
@@ -910,8 +884,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query.kwargs, expected_kwargs)
 
     def test_query_w_namespace_collision(self):
-        import mock
-
         KIND = 'KIND'
         NAMESPACE1 = object()
         NAMESPACE2 = object()

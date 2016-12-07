@@ -903,7 +903,6 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         return make_gax_publisher_api(connection)
 
     def test_live_api(self):
-        import mock
         from google.cloud.pubsub._gax import DEFAULT_USER_AGENT
 
         channels = []
@@ -938,8 +937,6 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
                          [(creds, DEFAULT_USER_AGENT, host)])
 
     def test_emulator(self):
-        import mock
-
         channels = []
         mock_result = object()
         insecure_args = []
@@ -975,7 +972,6 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
         return make_gax_subscriber_api(connection)
 
     def test_live_api(self):
-        import mock
         from google.cloud.pubsub._gax import DEFAULT_USER_AGENT
 
         channels = []
@@ -1010,8 +1006,6 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
                          [(creds, DEFAULT_USER_AGENT, host)])
 
     def test_emulator(self):
-        import mock
-
         channels = []
         mock_result = object()
         insecure_args = []

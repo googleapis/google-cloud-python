@@ -49,7 +49,6 @@ class TestConnection(_Base):
         self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 
     def test_custom_url_from_env(self):
-        import mock
         from google.cloud.environment_vars import PUBSUB_EMULATOR
 
         HOST = 'localhost:8187'
