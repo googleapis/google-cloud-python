@@ -29,7 +29,9 @@ from google.cloud._testing import _GAXBaseAPI
 
 
 def _make_credentials():
+    # pylint: disable=redefined-outer-name
     import google.auth.credentials
+    # pylint: enable=redefined-outer-name
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 

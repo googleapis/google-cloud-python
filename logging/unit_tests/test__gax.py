@@ -29,7 +29,9 @@ from google.cloud._testing import _GAXBaseAPI
 
 
 def _make_credentials():
+    # pylint: disable=redefined-outer-name
     import google.auth.credentials
+    # pylint: enable=redefined-outer-name
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
@@ -1079,7 +1081,6 @@ class Test_make_gax_logging_api(unittest.TestCase):
         return make_gax_logging_api(client)
 
     def test_it(self):
-        import mock
         from google.cloud.logging._gax import _LoggingAPI
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
@@ -1125,7 +1126,6 @@ class Test_make_gax_metrics_api(unittest.TestCase):
         return make_gax_metrics_api(client)
 
     def test_it(self):
-        import mock
         from google.cloud.logging._gax import _MetricsAPI
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
@@ -1171,7 +1171,6 @@ class Test_make_gax_sinks_api(unittest.TestCase):
         return make_gax_sinks_api(client)
 
     def test_it(self):
-        import mock
         from google.cloud.logging._gax import _SinksAPI
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
