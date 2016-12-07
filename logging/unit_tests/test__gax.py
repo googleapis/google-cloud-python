@@ -16,11 +16,6 @@ import unittest
 
 import mock
 
-
-def _make_credentials():
-    import google.auth.credentials
-    return mock.Mock(spec=google.auth.credentials.Credentials)
-
 try:
     # pylint: disable=unused-import
     import google.cloud.logging._gax
@@ -31,6 +26,11 @@ else:
     _HAVE_GAX = True
 
 from google.cloud._testing import _GAXBaseAPI
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
 class _Base(object):
