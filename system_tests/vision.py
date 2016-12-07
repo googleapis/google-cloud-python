@@ -31,6 +31,7 @@ _SYS_TESTS_DIR = os.path.abspath(os.path.dirname(__file__))
 LOGO_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'logo.png')
 FACE_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'faces.jpg')
 LABEL_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'car.jpg')
+LANDMARK_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'landmark.jpg')
 
 
 class Config(object):
@@ -243,7 +244,6 @@ class TestVisionClientLabel(BaseVisionTestCase):
             value.delete()
 
     def _assert_label(self, label):
-
         self.assertIsInstance(label, EntityAnnotation)
         self.assertIn(label.description, self.DESCRIPTIONS)
         self.assertIsInstance(label.mid, six.text_type)
@@ -282,3 +282,61 @@ class TestVisionClientLabel(BaseVisionTestCase):
         self.assertEqual(len(labels), 10)
         for label in labels:
             self._assert_label(label)
+
+
+class TestVisionClientLandmark(BaseVisionTestCase):
+    DESCRIPTIONS = ('Mount Rushmore')
+
+    def setUp(self):
+        self.to_delete_by_case = []
+
+    def tearDown(self):
+        for value in self.to_delete_by_case:
+            value.delete()
+
+    def _assert_landmark(self, landmark):
+        self.assertIsInstance(landmark, EntityAnnotation)
+        self.assertIn(landmark.description, self.DESCRIPTIONS)
+        self.assertEqual(len(landmark.locations), 1)
+        location = landmark.locations[0]
+        self._assert_coordinate(location.latitude)
+        self._assert_coordinate(location.longitude)
+        for vertex in landmark.bounds.vertices:
+            self._assert_coordinate(vertex.x_coordinate)
+            self._assert_coordinate(vertex.y_coordinate)
+        self.assertGreater(landmark.score, 0.2)
+        self.assertIsInstance(landmark.mid, six.text_type)
+
+    def test_detect_landmark_content(self):
+        client = Config.CLIENT
+        with open(LANDMARK_FILE, 'rb') as image_file:
+            image = client.image(content=image_file.read())
+        landmarks = image.detect_landmarks()
+        self.assertEqual(len(landmarks), 1)
+        landmark = landmarks[0]
+        self._assert_landmark(landmark)
+
+    def test_detect_landmark_gcs(self):
+        bucket_name = Config.TEST_BUCKET.name
+        blob_name = 'landmark.jpg'
+        blob = Config.TEST_BUCKET.blob(blob_name)
+        self.to_delete_by_case.append(blob)  # Clean-up.
+        with open(LANDMARK_FILE, 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+
+        source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
+
+        client = Config.CLIENT
+        image = client.image(source_uri=source_uri)
+        landmarks = image.detect_landmarks()
+        self.assertEqual(len(landmarks), 1)
+        landmark = landmarks[0]
+        self._assert_landmark(landmark)
+
+    def test_detect_landmark_filename(self):
+        client = Config.CLIENT
+        image = client.image(filename=LANDMARK_FILE)
+        landmarks = image.detect_landmarks()
+        self.assertEqual(len(landmarks), 1)
+        landmark = landmarks[0]
+        self._assert_landmark(landmark)
