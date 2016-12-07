@@ -23,30 +23,50 @@ from google.cloud.datastore._generated import entity_pb2 as _entity_pb2
 class Key(object):
     """An immutable representation of a datastore Key.
 
-    To create a basic key:
+    .. testsetup:: key-ctor
 
-    .. code-block:: python
+       from google.cloud import datastore
 
-      >>> Key('EntityKind', 1234)
-      <Key[{'kind': 'EntityKind', 'id': 1234}]>
-      >>> Key('EntityKind', 'foo')
-      <Key[{'kind': 'EntityKind', 'name': 'foo'}]>
+       project = 'my-special-pony'
+       client = datastore.Client(project=project)
+       Key = datastore.Key
+
+       parent_key = client.key('Parent', 'foo')
+
+    To create a basic key directly:
+
+    .. doctest:: key-ctor
+
+       >>> Key('EntityKind', 1234, project=project)
+       <Key('EntityKind', 1234), project=...>
+       >>> Key('EntityKind', 'foo', project=project)
+       <Key('EntityKind', 'foo'), project=...>
+
+    Though typical usage comes via the
+    :meth:`~google.cloud.datastore.client.Client.key` factory:
+
+    .. doctest:: key-ctor
+
+       >>> client.key('EntityKind', 1234)
+       <Key('EntityKind', 1234), project=...>
+       >>> client.key('EntityKind', 'foo')
+       <Key('EntityKind', 'foo'), project=...>
 
     To create a key with a parent:
 
-    .. code-block:: python
+    .. doctest:: key-ctor
 
-      >>> Key('Parent', 'foo', 'Child', 1234)
-      <Key[{'kind': 'Parent', 'name': 'foo'}, {'kind': 'Child', 'id': 1234}]>
-      >>> Key('Child', 1234, parent=parent_key)
-      <Key[{'kind': 'Parent', 'name': 'foo'}, {'kind': 'Child', 'id': 1234}]>
+       >>> client.key('Parent', 'foo', 'Child', 1234)
+       <Key('Parent', 'foo', 'Child', 1234), project=...>
+       >>> client.key('Child', 1234, parent=parent_key)
+       <Key('Parent', 'foo', 'Child', 1234), project=...>
 
     To create a partial key:
 
-    .. code-block:: python
+    .. doctest:: key-ctor
 
-      >>> Key('Parent', 'foo', 'Child')
-      <Key[{'kind': 'Parent', 'name': 'foo'}, {'kind': 'Child'}]>
+       >>> client.key('Parent', 'foo', 'Child')
+       <Key('Parent', 'foo', 'Child'), project=...>
 
     :type path_args: tuple of string and integer
     :param path_args: May represent a partial (odd length) or full (even
