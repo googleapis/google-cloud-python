@@ -20,7 +20,13 @@ import mock
 
 def _make_credentials():
     import google.auth.credentials
-    return mock.Mock(spec=google.auth.credentials.Credentials)
+
+    class _CredentialsWithScopes(
+            google.auth.credentials.Credentials,
+            google.auth.credentials.Scoped):
+        pass
+
+    return mock.Mock(spec=_CredentialsWithScopes)
 
 
 class Test__make_data_stub(unittest.TestCase):
@@ -462,7 +468,7 @@ class TestClient(unittest.TestCase):
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials)
-        self.assertIs(client.credentials, credentials)
+        self.assertIs(client.credentials, credentials.with_scopes.return_value)
 
     def test_project_name_property(self):
         credentials = _make_credentials()
