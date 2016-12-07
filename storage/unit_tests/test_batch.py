@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class TestMIMEApplicationHTTP(unittest.TestCase):
 
@@ -89,7 +96,7 @@ class TestBatch(unittest.TestCase):
     def test_current(self):
         from google.cloud.storage.client import Client
         project = 'PROJECT'
-        credentials = object()
+        credentials = _make_credentials()
         client = Client(project=project, credentials=credentials)
         batch1 = self._make_one(client)
         self.assertIsNone(batch1.current())
@@ -378,7 +385,7 @@ class TestBatch(unittest.TestCase):
         expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
         http = _HTTP((expected, _THREE_PART_MIME_RESPONSE))
         project = 'PROJECT'
-        credentials = object()
+        credentials = _make_credentials()
         client = Client(project=project, credentials=credentials)
         client._base_connection._http = http
 
@@ -414,7 +421,7 @@ class TestBatch(unittest.TestCase):
         http = _HTTP()
         connection = _Connection(http=http)
         project = 'PROJECT'
-        credentials = object()
+        credentials = _make_credentials()
         client = Client(project=project, credentials=credentials)
         client._base_connection = connection
 
