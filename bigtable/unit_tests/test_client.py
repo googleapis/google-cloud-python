@@ -15,6 +15,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class Test__make_data_stub(unittest.TestCase):
 
@@ -26,7 +33,7 @@ class Test__make_data_stub(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
-        credentials = object()
+        credentials = _make_credentials()
         user_agent = 'you-sir-age-int'
         client = _Client(credentials, user_agent)
 
@@ -86,7 +93,7 @@ class Test__make_instance_stub(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
-        credentials = object()
+        credentials = _make_credentials()
         user_agent = 'you-sir-age-int'
         client = _Client(credentials, user_agent)
 
@@ -148,7 +155,7 @@ class Test__make_operations_stub(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
-        credentials = object()
+        credentials = _make_credentials()
         user_agent = 'you-sir-age-int'
         client = _Client(credentials, user_agent)
 
@@ -210,7 +217,7 @@ class Test__make_table_stub(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import client as MUT
 
-        credentials = object()
+        credentials = _make_credentials()
         user_agent = 'you-sir-age-int'
         client = _Client(credentials, user_agent)
 
@@ -456,14 +463,14 @@ class TestClient(unittest.TestCase):
         self._copy_test_helper(read_only=True)
 
     def test_credentials_getter(self):
-        credentials = object()
+        credentials = _make_credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials)
         self.assertIs(client.credentials, credentials)
 
     def test_project_name_property(self):
-        credentials = object()
+        credentials = _make_credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials)
@@ -471,14 +478,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project_name, project_name)
 
     def test_instance_stub_getter(self):
-        credentials = object()
+        credentials = _make_credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials, admin=True)
         self.assertIs(client._instance_stub, client._instance_stub_internal)
 
     def test_instance_stub_non_admin_failure(self):
-        credentials = object()
+        credentials = _make_credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials, admin=False)
@@ -486,7 +493,7 @@ class TestClient(unittest.TestCase):
             getattr(client, '_instance_stub')
 
     def test_operations_stub_getter(self):
-        credentials = object()
+        credentials = _make_credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials, admin=True)
@@ -494,7 +501,7 @@ class TestClient(unittest.TestCase):
                       client._operations_stub_internal)
 
     def test_operations_stub_non_admin_failure(self):
-        credentials = object()
+        credentials = _make_credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials, admin=False)
@@ -502,14 +509,14 @@ class TestClient(unittest.TestCase):
             getattr(client, '_operations_stub')
 
     def test_table_stub_getter(self):
-        credentials = object()
+        credentials = _make_credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials, admin=True)
         self.assertIs(client._table_stub, client._table_stub_internal)
 
     def test_table_stub_non_admin_failure(self):
-        credentials = object()
+        credentials = _make_credentials()
         project = 'PROJECT'
         client = self._make_oneWithMocks(project=project,
                                          credentials=credentials, admin=False)
@@ -525,7 +532,7 @@ class TestClient(unittest.TestCase):
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
         DISPLAY_NAME = 'display-name'
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_oneWithMocks(project=PROJECT,
                                          credentials=credentials)
 
@@ -547,7 +554,7 @@ class TestClient(unittest.TestCase):
         DISPLAY_NAME = 'display-name'
         LOCATION_ID = 'locname'
         SERVE_NODES = 5
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_oneWithMocks(project=PROJECT,
                                          credentials=credentials)
 
@@ -578,7 +585,7 @@ class TestClient(unittest.TestCase):
         INSTANCE_NAME2 = (
             'projects/' + self.PROJECT + '/instances/' + INSTANCE_ID2)
 
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_oneWithMocks(
             project=self.PROJECT,
             credentials=credentials,
