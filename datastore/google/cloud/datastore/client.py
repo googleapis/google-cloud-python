@@ -146,6 +146,11 @@ def _extended_lookup(connection, project, key_pbs,
 class Client(_BaseClient, _ClientProjectMixin):
     """Convenience wrapper for invoking APIs/factories w/ a project.
 
+    .. doctest::
+
+       >>> from google.cloud import datastore
+       >>> client = datastore.Client()
+
     :type project: str
     :param project: (optional) The project to pass to proxied API methods.
 
@@ -449,51 +454,65 @@ class Client(_BaseClient, _ClientProjectMixin):
 
         Using query to search a datastore:
 
-        .. code-block:: python
+        .. testsetup:: query
 
-          >>> from google.cloud import datastore
-          >>> client = datastore.Client()
-          >>> query = client.query(kind='MyKind')
-          >>> query.add_filter('property', '=', 'val')
+           from google.cloud import datastore
+
+           client = datastore.Client()
+           query = client.query(kind='_Doctest')
+
+           def do_something(entity):
+               pass
+
+        .. doctest:: query
+
+           >>> query = client.query(kind='MyKind')
+           >>> query.add_filter('property', '=', 'val')
 
         Using the query iterator
 
-        .. code-block:: python
+        .. doctest:: query
 
-          >>> query_iter = query.fetch()
-          >>> for entity in query_iter:
-          ...     do_something(entity)
+           >>> query_iter = query.fetch()
+           >>> for entity in query_iter:
+           ...     do_something(entity)
 
         or manually page through results
 
-        .. code-block:: python
+        .. testsetup:: query-page
 
-          >>> query_iter = query.fetch(start_cursor='2mdd223i944')
-          >>> pages = query_iter.pages
-          >>>
-          >>> first_page = next(pages)
-          >>> first_page_entities = list(first_page)
-          >>> query_iter.next_page_token
-          'abc-some-cursor'
-          >>>
-          >>> second_page = next(pages)
-          >>> second_page_entities = list(second_page)
-          >>> query_iter.next_page_token is None
-          True
+           from google.cloud import datastore
+           from datastore import Config  # system tests
 
-        Under the hood this is doing:
+           client = datastore.Client()
 
-        .. code-block:: python
+           key = client.key('_Doctest')
+           entity1 = datastore.Entity(key=key)
+           entity1['foo'] = 1337
+           entity2 = datastore.Entity(key=key)
+           entity2['foo'] = 42
+           Config.TO_DELETE.extend([entity1, entity2])
+           client.put_multi([entity1, entity2])
 
-          >>> connection.run_query('project', query.to_protobuf())
-          [<list of Entity Protobufs>], cursor, more_results, skipped_results
+           query = client.query(kind='_Doctest')
+           cursor = None
+
+        .. doctest:: query-page
+
+           >>> query_iter = query.fetch(start_cursor=cursor)
+           >>> pages = query_iter.pages
+           >>>
+           >>> first_page = next(pages)
+           >>> first_page_entities = list(first_page)
+           >>> query_iter.next_page_token
+           '...'
 
         :type kwargs: dict
         :param kwargs: Parameters for initializing and instance of
-                       :class:`google.cloud.datastore.query.Query`.
+                       :class:`~google.cloud.datastore.query.Query`.
 
-        :rtype: :class:`google.cloud.datastore.query.Query`
-        :returns: An instance of :class:`google.cloud.datastore.query.Query`
+        :rtype: :class:`~google.cloud.datastore.query.Query`
+        :returns: A query object.
         """
         if 'client' in kwargs:
             raise TypeError('Cannot pass client')
