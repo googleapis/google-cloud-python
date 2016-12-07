@@ -40,30 +40,48 @@ class Entity(dict):
     Use :meth:`~google.cloud.datastore.client.Client.get` to retrieve an
     existing entity:
 
-    .. code-block:: python
+    .. testsetup:: entity-ctor
 
-      >>> from google.cloud import datastore
-      >>> client = datastore.Client()
-      >>> client.get(key)
-      <Entity[{'kind': 'EntityKind', id: 1234}] {'property': 'value'}>
+       from google.cloud import datastore
+       from datastore import Config  # system tests
+
+       client = datastore.Client()
+       key = client.key('EntityKind', 1234, namespace='_Doctest')
+       entity = datastore.Entity(key=key)
+       entity['property'] = 'value'
+       Config.TO_DELETE.append(entity)
+
+       client.put(entity)
+
+    .. doctest:: entity-ctor
+
+       >>> client.get(key)
+       <Entity(u'EntityKind', 1234L) {u'property': 'value'}>
 
     You can the set values on the entity just like you would on any
     other dictionary.
 
-    .. code-block:: python
+    .. doctest:: entity-ctor
 
-      >>> entity['age'] = 20
-      >>> entity['name'] = 'JJ'
-      >>> entity
-      <Entity[{'kind': 'EntityKind', id: 1234}] {'age': 20, 'name': 'JJ'}>
+       >>> entity['age'] = 20
+       >>> entity['name'] = 'JJ'
 
-    And you can convert an entity to a regular Python dictionary with the
-    ``dict`` builtin:
+    And you can treat an entity like a regular Python dictionary:
 
-    .. code-block:: python
+    .. testsetup:: entity-dict
 
-      >>> dict(entity)
-      {'age': 20, 'name': 'JJ'}
+       from google.cloud import datastore
+
+       entity = datastore.Entity()
+       entity['age'] = 20
+       entity['name'] = 'JJ'
+
+    .. doctest:: entity-dict
+
+       >>> sorted(entity.keys())
+       ['age', 'name']
+       >>> sorted(entity.items())
+       [('age', 20), ('name', 'JJ')]
 
     .. note::
 
