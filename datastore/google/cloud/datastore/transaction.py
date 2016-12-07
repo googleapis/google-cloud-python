@@ -27,31 +27,61 @@ class Transaction(Batch):
     operations (either ``insert`` or ``upsert``) into the same
     mutation, and execute those within a transaction:
 
-    .. code-block:: python
+    .. testsetup:: txn-put-multi, txn-api
 
-      >>> client = datastore.Client()
-      >>> with client.transaction():
-      ...     client.put_multi([entity1, entity2])
+       from google.cloud import datastore
+       from datastore import Config  # system tests
+
+       client = datastore.Client()
+       key1 = client.key('_Doctest')
+       entity1 = datastore.Entity(key=key1)
+       entity1['foo'] = 1337
+
+       key2 = client.key('_Doctest', 'abcd1234')
+       entity2 = datastore.Entity(key=key2)
+       entity2['foo'] = 42
+
+       Config.TO_DELETE.extend([entity1, entity2])
+
+    .. doctest:: txn-put-multi
+
+       >>> with client.transaction():
+       ...     client.put_multi([entity1, entity2])
 
     Because it derives from :class:`~google.cloud.datastore.batch.Batch`,
     :class:`Transaction` also provides :meth:`put` and :meth:`delete` methods:
 
-    .. code-block:: python
+    .. doctest:: txn-api
 
-      >>> with client.transaction() as xact:
-      ...     xact.put(entity1)
-      ...     xact.delete(entity2.key)
+       >>> with client.transaction() as xact:
+       ...     xact.put(entity1)
+       ...     xact.delete(entity2.key)
 
     By default, the transaction is rolled back if the transaction block
     exits with an error:
 
-    .. code-block:: python
+    .. testsetup:: txn-error
 
-      >>> with client.transaction():
-      ...     do_some_work()
-      ...     raise SomeException()  # rolls back
+       from google.cloud import datastore
 
-    If the transaction block exists without an exception, it will commit
+       client = datastore.Client()
+
+       def do_some_work():
+           return
+
+       class SomeException(Exception):
+           pass
+
+    .. doctest:: txn-error
+
+       >>> with client.transaction():
+       ...     do_some_work()
+       ...     raise SomeException  # rolls back
+       Traceback (most recent call last):
+         ...
+       SomeException
+
+    If the transaction block exits without an exception, it will commit
     by default.
 
     .. warning::
@@ -60,11 +90,23 @@ class Transaction(Batch):
        entities will not be available at save time!  That means, if you
        try:
 
-       .. code-block:: python
+       .. testsetup:: txn-entity-key, txn-entity-key-after, txn-manual
 
-         >>> with client.transaction():
-         ...     entity = datastore.Entity(key=client.key('Thing'))
-         ...     client.put(entity)
+          from google.cloud import datastore
+          from datastore import Config  # system tests
+
+          client = datastore.Client()
+
+          def Entity(*args, **kwargs):
+              entity = datastore.Entity(*args, **kwargs)
+              Config.TO_DELETE.append(entity)
+              return entity
+
+       .. doctest:: txn-entity-key
+
+          >>> with client.transaction():
+          ...     entity = Entity(key=client.key('Thing'))
+          ...     client.put(entity)
 
        ``entity`` won't have a complete key until the transaction is
        committed.
@@ -72,32 +114,29 @@ class Transaction(Batch):
        Once you exit the transaction (or call :meth:`commit`), the
        automatically generated ID will be assigned to the entity:
 
-       .. code-block:: python
+       .. doctest:: txn-entity-key-after
 
-         >>> with client.transaction():
-         ...     entity = datastore.Entity(key=client.key('Thing'))
-         ...     client.put(entity)
-         ...     print(entity.key.is_partial)  # There is no ID on this key.
-         ...
-         True
-         >>> print(entity.key.is_partial)  # There *is* an ID.
-         False
+          >>> with client.transaction():
+          ...     entity = Entity(key=client.key('Thing'))
+          ...     client.put(entity)
+          ...     print(entity.key.is_partial)  # There is no ID on this key.
+          ...
+          True
+          >>> print(entity.key.is_partial)  # There *is* an ID.
+          False
 
     If you don't want to use the context manager you can initialize a
     transaction manually:
 
-    .. code-block:: python
+    .. doctest:: txn-manual
 
-      >>> transaction = client.transaction()
-      >>> transaction.begin()
-      >>>
-      >>> entity = datastore.Entity(key=client.key('Thing'))
-      >>> transaction.put(entity)
-      >>>
-      >>> if error:
-      ...     transaction.rollback()
-      ... else:
-      ...     transaction.commit()
+       >>> transaction = client.transaction()
+       >>> transaction.begin()
+       >>>
+       >>> entity = Entity(key=client.key('Thing'))
+       >>> transaction.put(entity)
+       >>>
+       >>> transaction.commit()
 
     :type client: :class:`google.cloud.datastore.client.Client`
     :param client: the client used to connect to datastore.
