@@ -225,7 +225,7 @@ def session_app_engine(session):
     # Grab the project ID from the cloud sdk.
     project_id = subprocess.check_output([
         'gcloud', 'config', 'list', 'project', '--format',
-        'value(core.project)']).strip()
+        'value(core.project)']).decode('utf-8').strip()
 
     if not project_id:
         session.error(
