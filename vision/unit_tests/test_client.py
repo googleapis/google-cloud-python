@@ -15,14 +15,18 @@
 import base64
 import unittest
 
-from google.cloud._helpers import _to_bytes
-from google.cloud._helpers import _bytes_to_unicode
+import mock
 
 
-IMAGE_CONTENT = _to_bytes('/9j/4QNURXhpZgAASUkq')
+IMAGE_CONTENT = b'/9j/4QNURXhpZgAASUkq'
 IMAGE_SOURCE = 'gs://some/image.jpg'
 PROJECT = 'PROJECT'
-B64_IMAGE_CONTENT = _bytes_to_unicode(base64.b64encode(IMAGE_CONTENT))
+B64_IMAGE_CONTENT = base64.b64encode(IMAGE_CONTENT).decode('ascii')
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
 class TestClient(unittest.TestCase):
@@ -35,7 +39,7 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=creds)
         self.assertEqual(client.project, PROJECT)
 
@@ -59,7 +63,7 @@ class TestClient(unittest.TestCase):
                 }
             ]
         }
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -75,7 +79,7 @@ class TestClient(unittest.TestCase):
     def test_image_with_client_gcs_source(self):
         from google.cloud.vision.image import Image
 
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT,
                                 credentials=credentials)
         gcs_image = client.image(source_uri=IMAGE_SOURCE)
@@ -85,7 +89,7 @@ class TestClient(unittest.TestCase):
     def test_image_with_client_raw_content(self):
         from google.cloud.vision.image import Image
 
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT,
                                 credentials=credentials)
         raw_image = client.image(content=IMAGE_CONTENT)
@@ -97,7 +101,7 @@ class TestClient(unittest.TestCase):
         from mock import patch
         from google.cloud.vision.image import Image
 
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT,
                                 credentials=credentials)
         with patch('google.cloud.vision.image.open',
@@ -118,7 +122,7 @@ class TestClient(unittest.TestCase):
         logos = copy.deepcopy(LOGO_DETECTION_RESPONSE['responses'][0])
         returned['responses'][0]['logoAnnotations'] = logos['logoAnnotations']
 
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(returned)
 
@@ -165,7 +169,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.face import Face
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -182,7 +186,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.face import Face
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -200,7 +204,7 @@ class TestClient(unittest.TestCase):
         RETURNED = {
             'responses': [{}]
         }
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -219,7 +223,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import (
             LABEL_DETECTION_RESPONSE as RETURNED)
 
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -240,7 +244,7 @@ class TestClient(unittest.TestCase):
         RETURNED = {
             'responses': [{}]
         }
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -254,7 +258,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import (
             LANDMARK_DETECTION_RESPONSE as RETURNED)
 
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -276,7 +280,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import (
             LANDMARK_DETECTION_RESPONSE as RETURNED)
 
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -293,7 +297,7 @@ class TestClient(unittest.TestCase):
         RETURNED = {
             'responses': [{}]
         }
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -306,7 +310,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.entity import EntityAnnotation
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
         RETURNED = LOGO_DETECTION_RESPONSE
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -323,7 +327,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.entity import EntityAnnotation
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
         RETURNED = LOGO_DETECTION_RESPONSE
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -341,7 +345,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import (
             TEXT_DETECTION_RESPONSE as RETURNED)
 
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -364,7 +368,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import SAFE_SEARCH_DETECTION_RESPONSE
 
         RETURNED = SAFE_SEARCH_DETECTION_RESPONSE
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -383,7 +387,7 @@ class TestClient(unittest.TestCase):
         RETURNED = {
             'responses': [{}]
         }
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -397,7 +401,7 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import IMAGE_PROPERTIES_RESPONSE
 
         RETURNED = IMAGE_PROPERTIES_RESPONSE
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
@@ -419,7 +423,7 @@ class TestClient(unittest.TestCase):
         RETURNED = {
             'responses': [{}]
         }
-        credentials = object()
+        credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials)
         client._connection = _Connection(RETURNED)
 
