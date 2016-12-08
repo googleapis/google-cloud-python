@@ -15,18 +15,20 @@ Google Cloud Python Client
 .. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/
 .. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
-This client supports the following Google Cloud Platform services at **Beta**:
+This client library has **beta** support for the following Google
+Cloud Platform services:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Datastore`_ (`Datastore README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
 
-Libraries defined as **Beta** quality are expected to be mostly stable and
-we're working towards their release candidate. We will address issues and
-requests with a higher priority.
+**Beta** indicates that the client library for a particular service is
+mostly stable and is being prepared for release. Issues and requests
+against beta libraries are addressed with a higher priority.
 
-This client supports the following Google Cloud Platform services at **Alpha**:
+This client library has **alpha** support for the following Google
+Cloud Platform services:
 
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
@@ -40,9 +42,9 @@ This client supports the following Google Cloud Platform services at **Alpha**:
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 
-Libraries defined as **Alpha** quality level are still a work-in-progress
-and are more likely to get backwards-incompatible updates. See `versioning`_
-for more details.
+**Alpha** indicates that the client library for a particular service is
+still a work-in-progress and is more likely to get backwards-incompatible
+updates. See `versioning`_ for more details.
 
 .. _Google Cloud Datastore: https://pypi.python.org/pypi/google-cloud-datastore
 .. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
