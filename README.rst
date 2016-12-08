@@ -15,14 +15,18 @@ Google Cloud Python Client
 .. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/
 .. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
-This client supports the following Google Cloud Platform services at a Beta_ quality level:
+This client supports the following Google Cloud Platform services at **Beta**:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Datastore`_ (`Datastore README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
 
-This client supports the following Google Cloud Platform services at an Alpha_ quality level:
+Libraries defined as **Beta** quality are expected to be mostly stable and
+we're working towards their release candidate. We will address issues and
+requests with a higher priority.
+
+This client supports the following Google Cloud Platform services at **Alpha**:
 
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
@@ -35,6 +39,10 @@ This client supports the following Google Cloud Platform services at an Alpha_ q
 -  `Google Cloud Vision`_ (`Vision README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
+
+Libraries defined as **Alpha** quality level are still a work-in-progress
+and are more likely to get backwards-incompatible updates. See `versioning`_
+for more details.
 
 .. _Google Cloud Datastore: https://pypi.python.org/pypi/google-cloud-datastore
 .. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
@@ -66,6 +74,7 @@ This client supports the following Google Cloud Platform services at an Alpha_ q
 .. _HappyBase README: https://github.com/GoogleCloudPlatform/google-cloud-python-happybase
 .. _Google Cloud Runtime Configuration: https://cloud.google.com/deployment-manager/runtime-configurator/
 .. _Runtime Config README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/runtimeconfig
+.. _versioning: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst#versioning
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
@@ -99,22 +108,6 @@ You may also find the `authentication document`_ shared by all the
 
 .. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
-
-.. _Alpha: #versioning
-.. _Beta: #versioning
-
-Versioning
-----------
-
-This library follows `Semantic Versioning`_.
-
-Please note it is currently under active development. Any release versioned 0.x.y is subject to backwards incompatible changes at any time.
-
-**Beta**: Libraries defined at a Beta quality level are expected to be mostly stable and we're working towards their release candidate. We will address issues and requests with a higher priority.
-
-**Alpha**: Libraries defined at an Alpha quality level are still a work-in-progress and are more likely to get backwards-incompatible updates.
-
-.. _Semantic Versioning: http://semver.org
 
 Contributing
 ------------
