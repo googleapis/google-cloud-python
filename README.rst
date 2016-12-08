@@ -20,11 +20,11 @@ This client supports the following Google Cloud Platform services at a Beta_ qua
 -  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Datastore`_ (`Datastore README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
--  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
 
 This client supports the following Google Cloud Platform services at an Alpha_ quality level:
 
+-  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
