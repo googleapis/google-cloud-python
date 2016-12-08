@@ -51,12 +51,12 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'enum34',
-    'google-cloud-core >= 0.21.0, < 0.22dev',
+    'google-cloud-core >= 0.22.1, < 0.23dev',
 ]
 
 setup(
     name='google-cloud-vision',
-    version='0.21.0',
+    version='0.22.0',
     description='Python Client for Google Cloud Vision',
     long_description=README,
     namespace_packages=[
