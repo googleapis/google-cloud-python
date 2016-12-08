@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.key &mdash; google-cloud c4aa9df documentation</title>
+  <title>google.cloud.datastore.key &mdash; google-cloud 4a0225d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud c4aa9df documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 4a0225d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -310,30 +310,50 @@
 <div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../../datastore-keys.html#google.cloud.datastore.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An immutable representation of a datastore Key.</span>
 
-<span class="sd">    To create a basic key:</span>
+<span class="sd">    .. testsetup:: key-ctor</span>
 
-<span class="sd">    .. code-block:: python</span>
+<span class="sd">       from google.cloud import datastore</span>
 
-<span class="sd">      &gt;&gt;&gt; Key(&#39;EntityKind&#39;, 1234)</span>
-<span class="sd">      &lt;Key[{&#39;kind&#39;: &#39;EntityKind&#39;, &#39;id&#39;: 1234}]&gt;</span>
-<span class="sd">      &gt;&gt;&gt; Key(&#39;EntityKind&#39;, &#39;foo&#39;)</span>
-<span class="sd">      &lt;Key[{&#39;kind&#39;: &#39;EntityKind&#39;, &#39;name&#39;: &#39;foo&#39;}]&gt;</span>
+<span class="sd">       project = &#39;my-special-pony&#39;</span>
+<span class="sd">       client = datastore.Client(project=project)</span>
+<span class="sd">       Key = datastore.Key</span>
+
+<span class="sd">       parent_key = client.key(&#39;Parent&#39;, &#39;foo&#39;)</span>
+
+<span class="sd">    To create a basic key directly:</span>
+
+<span class="sd">    .. doctest:: key-ctor</span>
+
+<span class="sd">       &gt;&gt;&gt; Key(&#39;EntityKind&#39;, 1234, project=project)</span>
+<span class="sd">       &lt;Key(&#39;EntityKind&#39;, 1234), project=...&gt;</span>
+<span class="sd">       &gt;&gt;&gt; Key(&#39;EntityKind&#39;, &#39;foo&#39;, project=project)</span>
+<span class="sd">       &lt;Key(&#39;EntityKind&#39;, &#39;foo&#39;), project=...&gt;</span>
+
+<span class="sd">    Though typical usage comes via the</span>
+<span class="sd">    :meth:`~google.cloud.datastore.client.Client.key` factory:</span>
+
+<span class="sd">    .. doctest:: key-ctor</span>
+
+<span class="sd">       &gt;&gt;&gt; client.key(&#39;EntityKind&#39;, 1234)</span>
+<span class="sd">       &lt;Key(&#39;EntityKind&#39;, 1234), project=...&gt;</span>
+<span class="sd">       &gt;&gt;&gt; client.key(&#39;EntityKind&#39;, &#39;foo&#39;)</span>
+<span class="sd">       &lt;Key(&#39;EntityKind&#39;, &#39;foo&#39;), project=...&gt;</span>
 
 <span class="sd">    To create a key with a parent:</span>
 
-<span class="sd">    .. code-block:: python</span>
+<span class="sd">    .. doctest:: key-ctor</span>
 
-<span class="sd">      &gt;&gt;&gt; Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;, 1234)</span>
-<span class="sd">      &lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;, &#39;id&#39;: 1234}]&gt;</span>
-<span class="sd">      &gt;&gt;&gt; Key(&#39;Child&#39;, 1234, parent=parent_key)</span>
-<span class="sd">      &lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;, &#39;id&#39;: 1234}]&gt;</span>
+<span class="sd">       &gt;&gt;&gt; client.key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;, 1234)</span>
+<span class="sd">       &lt;Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;, 1234), project=...&gt;</span>
+<span class="sd">       &gt;&gt;&gt; client.key(&#39;Child&#39;, 1234, parent=parent_key)</span>
+<span class="sd">       &lt;Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;, 1234), project=...&gt;</span>
 
 <span class="sd">    To create a partial key:</span>
 
-<span class="sd">    .. code-block:: python</span>
+<span class="sd">    .. doctest:: key-ctor</span>
 
-<span class="sd">      &gt;&gt;&gt; Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;)</span>
-<span class="sd">      &lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;}]&gt;</span>
+<span class="sd">       &gt;&gt;&gt; client.key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;)</span>
+<span class="sd">       &lt;Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;), project=...&gt;</span>
 
 <span class="sd">    :type path_args: tuple of string and integer</span>
 <span class="sd">    :param path_args: May represent a partial (odd length) or full (even</span>
@@ -727,7 +747,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'c4aa9df',
+            VERSION:'4a0225d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

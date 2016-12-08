@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Datastore Client &mdash; google-cloud c4aa9df documentation</title>
+  <title>Datastore Client &mdash; google-cloud 4a0225d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud c4aa9df documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 4a0225d documentation" href="index.html"/>
         <link rel="next" title="Entities" href="datastore-entities.html"/>
         <link rel="prev" title="Using the API" href="datastore-usage.html"/> 
 
@@ -293,6 +293,10 @@
 <em class="property">class </em><code class="descclassname">google.cloud.datastore.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>namespace=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="google-cloud-api.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.Client</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">google.cloud.client._ClientProjectMixin</span></code></p>
 <p>Convenience wrapper for invoking APIs/factories w/ a project.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -537,36 +541,24 @@ entity or multiple entities in a commit request.</p>
 <dd><p>Proxy to <a class="reference internal" href="datastore-queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.query.Query</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">project</span></code>.</p>
 <p>Using query to search a datastore:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;MyKind&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;MyKind&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s1">&#39;property&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Using the query iterator</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">query_iter</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">do_something</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>or manually page through results</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">start_cursor</span><span class="o">=</span><span class="s1">&#39;2mdd223i944&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">start_cursor</span><span class="o">=</span><span class="n">cursor</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pages</span> <span class="o">=</span> <span class="n">query_iter</span><span class="o">.</span><span class="n">pages</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_page</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_page_entities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">first_page</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span><span class="o">.</span><span class="n">next_page_token</span>
-<span class="go">&#39;abc-some-cursor&#39;</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">second_page</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">second_page_entities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">second_page</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span><span class="o">.</span><span class="n">next_page_token</span> <span class="ow">is</span> <span class="bp">None</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<p>Under the hood this is doing:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">,</span> <span class="n">query</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
-<span class="go">[&lt;list of Entity Protobufs&gt;], cursor, more_results, skipped_results</span>
+<span class="go">&#39;...&#39;</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -574,11 +566,11 @@ entity or multiple entities in a commit request.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Parameters for initializing and instance of
-<a class="reference internal" href="datastore-queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.query.Query</span></code></a>.</td>
+<a class="reference internal" href="datastore-queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.query.Query</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An instance of <a class="reference internal" href="datastore-queries.html#google.cloud.datastore.query.Query" title="google.cloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.query.Query</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A query object.</td>
 </tr>
 </tbody>
 </table>
@@ -635,7 +627,7 @@ entity or multiple entities in a commit request.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'c4aa9df',
+            VERSION:'4a0225d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

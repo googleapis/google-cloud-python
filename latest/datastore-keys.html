@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Keys &mdash; google-cloud c4aa9df documentation</title>
+  <title>Keys &mdash; google-cloud 4a0225d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud c4aa9df documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 4a0225d documentation" href="index.html"/>
         <link rel="next" title="Queries" href="datastore-queries.html"/>
         <link rel="prev" title="Entities" href="datastore-entities.html"/> 
 
@@ -293,23 +293,31 @@
 <em class="property">class </em><code class="descclassname">google.cloud.datastore.key.</code><code class="descname">Key</code><span class="sig-paren">(</span><em>*path_args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/datastore/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.key.Key" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>An immutable representation of a datastore Key.</p>
-<p>To create a basic key:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
-<span class="go">&lt;Key[{&#39;kind&#39;: &#39;EntityKind&#39;, &#39;id&#39;: 1234}]&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">)</span>
-<span class="go">&lt;Key[{&#39;kind&#39;: &#39;EntityKind&#39;, &#39;name&#39;: &#39;foo&#39;}]&gt;</span>
+<p>To create a basic key directly:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
+<span class="go">&lt;Key(&#39;EntityKind&#39;, 1234), project=...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
+<span class="go">&lt;Key(&#39;EntityKind&#39;, &#39;foo&#39;), project=...&gt;</span>
+</pre></div>
+</div>
+<p>Though typical usage comes via the
+<a class="reference internal" href="datastore-client.html#google.cloud.datastore.client.Client.key" title="google.cloud.datastore.client.Client.key"><code class="xref py py-meth docutils literal"><span class="pre">key()</span></code></a> factory:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
+<span class="go">&lt;Key(&#39;EntityKind&#39;, 1234), project=...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+<span class="go">&lt;Key(&#39;EntityKind&#39;, &#39;foo&#39;), project=...&gt;</span>
 </pre></div>
 </div>
 <p>To create a key with a parent:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
-<span class="go">&lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;, &#39;id&#39;: 1234}]&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent_key</span><span class="p">)</span>
-<span class="go">&lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;, &#39;id&#39;: 1234}]&gt;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
+<span class="go">&lt;Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;, 1234), project=...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent_key</span><span class="p">)</span>
+<span class="go">&lt;Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;, 1234), project=...&gt;</span>
 </pre></div>
 </div>
 <p>To create a partial key:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">)</span>
-<span class="go">&lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;}]&gt;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">)</span>
+<span class="go">&lt;Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;), project=...&gt;</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -580,7 +588,7 @@ one path element, returns <code class="docutils literal"><span class="pre">None<
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'c4aa9df',
+            VERSION:'4a0225d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

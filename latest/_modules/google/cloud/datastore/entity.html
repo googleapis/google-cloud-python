@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.datastore.entity &mdash; google-cloud c4aa9df documentation</title>
+  <title>google.cloud.datastore.entity &mdash; google-cloud 4a0225d documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud c4aa9df documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 4a0225d documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -327,30 +327,48 @@
 <span class="sd">    Use :meth:`~google.cloud.datastore.client.Client.get` to retrieve an</span>
 <span class="sd">    existing entity:</span>
 
-<span class="sd">    .. code-block:: python</span>
+<span class="sd">    .. testsetup:: entity-ctor</span>
 
-<span class="sd">      &gt;&gt;&gt; from google.cloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; client = datastore.Client()</span>
-<span class="sd">      &gt;&gt;&gt; client.get(key)</span>
-<span class="sd">      &lt;Entity[{&#39;kind&#39;: &#39;EntityKind&#39;, id: 1234}] {&#39;property&#39;: &#39;value&#39;}&gt;</span>
+<span class="sd">       from google.cloud import datastore</span>
+<span class="sd">       from datastore import Config  # system tests</span>
+
+<span class="sd">       client = datastore.Client()</span>
+<span class="sd">       key = client.key(&#39;EntityKind&#39;, 1234, namespace=&#39;_Doctest&#39;)</span>
+<span class="sd">       entity = datastore.Entity(key=key)</span>
+<span class="sd">       entity[&#39;property&#39;] = &#39;value&#39;</span>
+<span class="sd">       Config.TO_DELETE.append(entity)</span>
+
+<span class="sd">       client.put(entity)</span>
+
+<span class="sd">    .. doctest:: entity-ctor</span>
+
+<span class="sd">       &gt;&gt;&gt; client.get(key)</span>
+<span class="sd">       &lt;Entity(u&#39;EntityKind&#39;, 1234L) {u&#39;property&#39;: &#39;value&#39;}&gt;</span>
 
 <span class="sd">    You can the set values on the entity just like you would on any</span>
 <span class="sd">    other dictionary.</span>
 
-<span class="sd">    .. code-block:: python</span>
+<span class="sd">    .. doctest:: entity-ctor</span>
 
-<span class="sd">      &gt;&gt;&gt; entity[&#39;age&#39;] = 20</span>
-<span class="sd">      &gt;&gt;&gt; entity[&#39;name&#39;] = &#39;JJ&#39;</span>
-<span class="sd">      &gt;&gt;&gt; entity</span>
-<span class="sd">      &lt;Entity[{&#39;kind&#39;: &#39;EntityKind&#39;, id: 1234}] {&#39;age&#39;: 20, &#39;name&#39;: &#39;JJ&#39;}&gt;</span>
+<span class="sd">       &gt;&gt;&gt; entity[&#39;age&#39;] = 20</span>
+<span class="sd">       &gt;&gt;&gt; entity[&#39;name&#39;] = &#39;JJ&#39;</span>
 
-<span class="sd">    And you can convert an entity to a regular Python dictionary with the</span>
-<span class="sd">    ``dict`` builtin:</span>
+<span class="sd">    And you can treat an entity like a regular Python dictionary:</span>
 
-<span class="sd">    .. code-block:: python</span>
+<span class="sd">    .. testsetup:: entity-dict</span>
 
-<span class="sd">      &gt;&gt;&gt; dict(entity)</span>
-<span class="sd">      {&#39;age&#39;: 20, &#39;name&#39;: &#39;JJ&#39;}</span>
+<span class="sd">       from google.cloud import datastore</span>
+
+<span class="sd">       entity = datastore.Entity()</span>
+<span class="sd">       entity[&#39;age&#39;] = 20</span>
+<span class="sd">       entity[&#39;name&#39;] = &#39;JJ&#39;</span>
+
+<span class="sd">    .. doctest:: entity-dict</span>
+
+<span class="sd">       &gt;&gt;&gt; sorted(entity.keys())</span>
+<span class="sd">       [&#39;age&#39;, &#39;name&#39;]</span>
+<span class="sd">       &gt;&gt;&gt; sorted(entity.items())</span>
+<span class="sd">       [(&#39;age&#39;, 20), (&#39;name&#39;, &#39;JJ&#39;)]</span>
 
 <span class="sd">    .. note::</span>
 
@@ -468,7 +486,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'c4aa9df',
+            VERSION:'4a0225d',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
