@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class TestGAPICSpeechAPI(unittest.TestCase):
     SAMPLE_RATE = 16000
@@ -31,7 +38,7 @@ class TestGAPICSpeechAPI(unittest.TestCase):
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
 
-        credentials = {}
+        credentials = _make_credentials()
         client = speech.Client(credentials=credentials, use_gax=True)
         client.connection = _Connection()
         client.connection.credentials = credentials
