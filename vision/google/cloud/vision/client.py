@@ -14,49 +14,10 @@
 
 """Client for interacting with the Google Cloud Vision API."""
 
-
 from google.cloud.client import JSONClient
 from google.cloud.vision.connection import Connection
-from google.cloud.vision.feature import Feature
 from google.cloud.vision.image import Image
-
-
-class VisionRequest(object):
-    """Request container with image and features information to annotate.
-
-    :type features: list of :class:`~gcoud.vision.feature.Feature`.
-    :param features: The features that dictate which annotations to run.
-
-    :type image: bytes
-    :param image: Either Google Cloud Storage URI or raw byte stream of image.
-    """
-    def __init__(self, image, features):
-        self._features = []
-        self._image = image
-
-        if isinstance(features, list):
-            self._features.extend(features)
-        elif isinstance(features, Feature):
-            self._features.append(features)
-        else:
-            raise TypeError('Feature or list of Feature classes are required.')
-
-    def as_dict(self):
-        """Dictionary representation of Image."""
-        return {
-            'image': self.image.as_dict(),
-            'features': [feature.as_dict() for feature in self.features]
-        }
-
-    @property
-    def features(self):
-        """List of Feature objects."""
-        return self._features
-
-    @property
-    def image(self):
-        """Image object containing image content."""
-        return self._image
+from google.cloud.vision._http import _HTTPVisionAPI
 
 
 class Client(JSONClient):
@@ -80,36 +41,13 @@ class Client(JSONClient):
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
     """
+    _vision_api_internal = None
 
     def __init__(self, project=None, credentials=None, http=None):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
         self._connection = Connection(
             credentials=self._credentials, http=self._http)
-
-    def annotate(self, image, features):
-        """Annotate an image to discover it's attributes.
-
-        :type image: str
-        :param image: A string which can be a URL, a Google Cloud Storage path,
-                      or a byte stream of the image.
-
-        :type features:  list of :class:`~google.cloud.vision.feature.Feature`
-        :param features: The type of detection that the Vision API should
-                         use to determine image attributes. Pricing is
-                         based on the number of Feature Types.
-
-                         See: https://cloud.google.com/vision/docs/pricing
-        :rtype: dict
-        :returns: List of annotations.
-        """
-        request = VisionRequest(image, features)
-
-        data = {'requests': [request.as_dict()]}
-        response = self._connection.api_request(
-            method='POST', path='/images:annotate', data=data)
-
-        return response['responses'][0]
 
     def image(self, content=None, filename=None, source_uri=None):
         """Get instance of Image using current client.
@@ -128,3 +66,14 @@ class Client(JSONClient):
         """
         return Image(client=self, content=content, filename=filename,
                      source_uri=source_uri)
+
+    @property
+    def _vision_api(self):
+        """Proxy method that handles which transport call Vision Annotate.
+
+        :rtype: :class:`~google.cloud.vision._rest._HTTPVisionAPI`
+        :returns: Instance of ``_HTTPVisionAPI`` used to make requests.
+        """
+        if self._vision_api_internal is None:
+            self._vision_api_internal = _HTTPVisionAPI(self)
+        return self._vision_api_internal
