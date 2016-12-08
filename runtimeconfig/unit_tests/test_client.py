@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class TestClient(unittest.TestCase):
 
@@ -28,7 +35,7 @@ class TestClient(unittest.TestCase):
     def test_config(self):
         PROJECT = 'PROJECT'
         CONFIG_NAME = 'config_name'
-        creds = object()
+        creds = _make_credentials()
 
         client_obj = self._make_one(project=PROJECT, credentials=creds)
         new_config = client_obj.config(CONFIG_NAME)

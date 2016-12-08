@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class _Base(unittest.TestCase):
     PROJECT = 'PROJECT'
@@ -42,7 +49,6 @@ class TestConnection(_Base):
         self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 
     def test_custom_url_from_env(self):
-        import mock
         from google.cloud.environment_vars import PUBSUB_EMULATOR
 
         HOST = 'localhost:8187'
@@ -454,7 +460,7 @@ class Test_SubscriberAPI(_Base):
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         RETURNED = {'subscriptions': [SUB_INFO]}
         connection = _Connection(RETURNED)
-        creds = object()
+        creds = _make_credentials()
         client = Client(project=self.PROJECT, credentials=creds)
         client._connection = connection
         api = self._make_one(client)
@@ -497,7 +503,7 @@ class Test_SubscriberAPI(_Base):
             'nextPageToken': 'TOKEN2',
         }
         connection = _Connection(RETURNED)
-        creds = object()
+        creds = _make_credentials()
         client = Client(project=self.PROJECT, credentials=creds)
         client._connection = connection
         api = self._make_one(client)

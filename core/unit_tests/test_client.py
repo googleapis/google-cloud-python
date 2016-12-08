@@ -17,6 +17,11 @@ import unittest
 import mock
 
 
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
+
 class Test_ClientFactoryMixin(unittest.TestCase):
 
     @staticmethod
@@ -52,7 +57,7 @@ class TestClient(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud import client
 
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         FUNC_CALLS = []
 
         def mock_get_credentials():
@@ -67,7 +72,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(FUNC_CALLS, ['get_credentials'])
 
     def test_ctor_explicit(self):
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         HTTP = object()
         client_obj = self._make_one(credentials=CREDENTIALS, http=HTTP)
 
@@ -75,12 +80,19 @@ class TestClient(unittest.TestCase):
         self.assertIs(client_obj._connection.credentials, CREDENTIALS)
         self.assertIs(client_obj._connection.http, HTTP)
 
+    def test_ctor_bad_credentials(self):
+        CREDENTIALS = object()
+
+        with self.assertRaises(ValueError):
+            self._make_one(credentials=CREDENTIALS)
+
     def test_from_service_account_json(self):
         KLASS = self._get_target_class()
 
         constructor_patch = mock.patch(
             'google.oauth2.service_account.Credentials.'
-            'from_service_account_file')
+            'from_service_account_file',
+            return_value=_make_credentials())
 
         with constructor_patch as constructor:
             client_obj = KLASS.from_service_account_json(
@@ -122,7 +134,7 @@ class TestJSONClient(unittest.TestCase):
         from google.cloud import client
 
         PROJECT = 'PROJECT'
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         FUNC_CALLS = []
 
         def mock_determine_proj(project):
@@ -160,7 +172,7 @@ class TestJSONClient(unittest.TestCase):
         self.assertEqual(FUNC_CALLS, [(None, '_determine_default_project')])
 
     def test_ctor_w_invalid_project(self):
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         HTTP = object()
         with self.assertRaises(ValueError):
             self._make_one(project=object(), credentials=CREDENTIALS,
@@ -169,7 +181,7 @@ class TestJSONClient(unittest.TestCase):
     def _explicit_ctor_helper(self, project):
         import six
 
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         HTTP = object()
 
         client_obj = self._make_one(project=project, credentials=CREDENTIALS,

@@ -15,6 +15,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class TestClient(unittest.TestCase):
 
@@ -38,14 +45,14 @@ class TestClient(unittest.TestCase):
     VERSION = 'myversion'
 
     def test_ctor_default(self):
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS)
         self.assertEquals(target.service, target.DEFAULT_SERVICE)
         self.assertEquals(target.version, None)
 
     def test_ctor_params(self):
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS,
                                 service=self.SERVICE,
@@ -54,7 +61,7 @@ class TestClient(unittest.TestCase):
         self.assertEquals(target.version, self.VERSION)
 
     def test_report_exception(self):
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS)
 
@@ -74,7 +81,7 @@ class TestClient(unittest.TestCase):
         self.assertIn('test_client.py', payload['message'])
 
     def test_report_exception_with_service_version_in_constructor(self):
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         SERVICE = "notdefault"
         VERSION = "notdefaultversion"
         target = self._make_one(project=self.PROJECT,
@@ -109,7 +116,7 @@ class TestClient(unittest.TestCase):
         self.assertEquals(payload['context']['user'], USER)
 
     def test_report(self):
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         target = self._make_one(project=self.PROJECT,
                                 credentials=CREDENTIALS)
 
