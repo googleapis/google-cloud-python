@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.client &mdash; google-cloud 2d9c109 documentation</title>
+  <title>google.cloud.client &mdash; google-cloud c4aa9df documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="google-cloud 2d9c109 documentation" href="../../../index.html"/>
+    <link rel="top" title="google-cloud c4aa9df documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -301,12 +301,20 @@
 
 <span class="sd">&quot;&quot;&quot;Base classes for client used to interact with Google Cloud APIs.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">google.auth.credentials</span>
 <span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_determine_default_project</span>
 <span class="kn">from</span> <span class="nn">google.cloud._http</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.credentials</span> <span class="k">import</span> <span class="n">get_credentials</span>
+
+
+<span class="n">_GOOGLE_AUTH_CREDENTIALS_HELP</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;This library only supports credentials from google-auth-library-python. &#39;</span>
+    <span class="s1">&#39;See https://google-cloud-python.readthedocs.io/en/latest/&#39;</span>
+    <span class="s1">&#39;google-cloud-auth.html for help on authentication with this library.&#39;</span>
+<span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">_ClientFactoryMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -370,6 +378,10 @@
     <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
+                <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="n">credentials</span><span class="p">,</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">Credentials</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_GOOGLE_AUTH_CREDENTIALS_HELP</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">http</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_credentials</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection_class</span><span class="p">(</span>
@@ -469,7 +481,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'2d9c109',
+            VERSION:'c4aa9df',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
