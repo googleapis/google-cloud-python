@@ -124,6 +124,7 @@ Community
 Google Cloud Platform Python developers hang out in `Slack`_ in the ``#python``
 channel, click here to `get an invitation`_.
 
+
 .. _Slack: https://googlecloud-community.slack.com
 .. _get an invitation: https://gcp-slack.appspot.com/
 
