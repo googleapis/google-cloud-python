@@ -14,12 +14,20 @@
 
 """Base classes for client used to interact with Google Cloud APIs."""
 
+import google.auth.credentials
 from google.oauth2 import service_account
 import six
 
 from google.cloud._helpers import _determine_default_project
 from google.cloud._http import Connection
 from google.cloud.credentials import get_credentials
+
+
+_GOOGLE_AUTH_CREDENTIALS_HELP = (
+    'This library only supports credentials from google-auth-library-python. '
+    'See https://google-cloud-python.readthedocs.io/en/latest/'
+    'google-cloud-auth.html for help on authentication with this library.'
+)
 
 
 class _ClientFactoryMixin(object):
@@ -83,6 +91,10 @@ class Client(_ClientFactoryMixin):
     _connection_class = Connection
 
     def __init__(self, credentials=None, http=None):
+        if (credentials is not None and
+                not isinstance(
+                    credentials, google.auth.credentials.Credentials)):
+            raise ValueError(_GOOGLE_AUTH_CREDENTIALS_HELP)
         if credentials is None and http is None:
             credentials = get_credentials()
         self._connection = self._connection_class(

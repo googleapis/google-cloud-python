@@ -14,6 +14,7 @@
 
 import unittest
 
+import mock
 
 try:
     # pylint: disable=unused-import
@@ -25,6 +26,13 @@ else:
     _HAVE_GAX = True
 
 from google.cloud._testing import _GAXBaseAPI
+
+
+def _make_credentials():
+    # pylint: disable=redefined-outer-name
+    import google.auth.credentials
+    # pylint: enable=redefined-outer-name
+    return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
 class _Base(object):
@@ -431,7 +439,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
                                 push_config=push_cfg_pb)
         response = _GAXPageIterator([sub_pb])
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
-        creds = object()
+        creds = _make_credentials()
         client = Client(project=self.PROJECT, credentials=creds)
         api = self._make_one(gax_api, client)
 
@@ -478,7 +486,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([sub_pb], page_token=NEW_TOKEN)
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
         client = _Client(self.PROJECT)
-        creds = object()
+        creds = _make_credentials()
         client = Client(project=self.PROJECT, credentials=creds)
         api = self._make_one(gax_api, client)
 
@@ -897,7 +905,6 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         return make_gax_publisher_api(connection)
 
     def test_live_api(self):
-        import mock
         from google.cloud.pubsub._gax import DEFAULT_USER_AGENT
 
         channels = []
@@ -916,7 +923,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 
         mock_publisher_api.SERVICE_ADDRESS = host
 
-        creds = object()
+        creds = _make_credentials()
         connection = _Connection(in_emulator=False,
                                  credentials=creds)
         patch = mock.patch.multiple(
@@ -932,8 +939,6 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
                          [(creds, DEFAULT_USER_AGENT, host)])
 
     def test_emulator(self):
-        import mock
-
         channels = []
         mock_result = object()
         insecure_args = []
@@ -969,7 +974,6 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
         return make_gax_subscriber_api(connection)
 
     def test_live_api(self):
-        import mock
         from google.cloud.pubsub._gax import DEFAULT_USER_AGENT
 
         channels = []
@@ -988,7 +992,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
 
         mock_subscriber_api.SERVICE_ADDRESS = host
 
-        creds = object()
+        creds = _make_credentials()
         connection = _Connection(in_emulator=False,
                                  credentials=creds)
         patch = mock.patch.multiple(
@@ -1004,8 +1008,6 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
                          [(creds, DEFAULT_USER_AGENT, host)])
 
     def test_emulator(self):
-        import mock
-
         channels = []
         mock_result = object()
         insecure_args = []

@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
     from google.cloud.datastore._generated import entity_pb2
@@ -38,15 +45,12 @@ class Test__get_gcd_project(unittest.TestCase):
         return _get_gcd_project()
 
     def test_no_value(self):
-        import mock
-
         environ = {}
         with mock.patch('os.getenv', new=environ.get):
             project = self._call_fut()
             self.assertIsNone(project)
 
     def test_value_set(self):
-        import mock
         from google.cloud.datastore.client import GCD_DATASET
 
         MOCK_PROJECT = object()
@@ -65,8 +69,6 @@ class Test__determine_default_project(unittest.TestCase):
 
     def _determine_default_helper(self, gcd=None, fallback=None,
                                   project_called=None):
-        import mock
-
         _callers = []
 
         def gcd_mock():
@@ -137,8 +139,6 @@ class TestClient(unittest.TestCase):
                                         http=http)
 
     def test_ctor_w_project_no_environ(self):
-        import mock
-
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
         patch = mock.patch(
@@ -148,10 +148,8 @@ class TestClient(unittest.TestCase):
             self.assertRaises(EnvironmentError, self._make_one, None)
 
     def test_ctor_w_implicit_inputs(self):
-        import mock
-
         OTHER = 'other'
-        creds = object()
+        creds = _make_credentials()
         default_called = []
 
         def fallback_mock(project):
@@ -181,7 +179,7 @@ class TestClient(unittest.TestCase):
     def test_ctor_w_explicit_inputs(self):
         OTHER = 'other'
         NAMESPACE = 'namespace'
-        creds = object()
+        creds = _make_credentials()
         http = object()
         client = self._make_one(project=OTHER,
                                 namespace=NAMESPACE,
@@ -196,7 +194,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(client._batch_stack), [])
 
     def test__push_batch_and__pop_batch(self):
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         batch = client.batch()
         xact = client.transaction()
@@ -221,7 +219,7 @@ class TestClient(unittest.TestCase):
             _called_with.append((args, kw))
             return []
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client.get_multi = _get_multi
 
@@ -244,7 +242,7 @@ class TestClient(unittest.TestCase):
             _called_with.append((args, kw))
             return [_entity]
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client.get_multi = _get_multi
 
@@ -259,7 +257,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(_called_with[0][1]['transaction'], TXN_ID)
 
     def test_get_multi_no_keys(self):
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         results = client.get_multi([])
         self.assertEqual(results, [])
@@ -267,7 +265,7 @@ class TestClient(unittest.TestCase):
     def test_get_multi_miss(self):
         from google.cloud.datastore.key import Key
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client._connection._add_lookup_result()
         key = Key('Kind', 1234, project=self.PROJECT)
@@ -288,7 +286,7 @@ class TestClient(unittest.TestCase):
         path_element.kind = KIND
         path_element.id = ID
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         # Set missing entity on mock connection.
         client._connection._add_lookup_result(missing=[missed])
@@ -303,7 +301,7 @@ class TestClient(unittest.TestCase):
     def test_get_multi_w_missing_non_empty(self):
         from google.cloud.datastore.key import Key
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         key = Key('Kind', 1234, project=self.PROJECT)
 
@@ -314,7 +312,7 @@ class TestClient(unittest.TestCase):
     def test_get_multi_w_deferred_non_empty(self):
         from google.cloud.datastore.key import Key
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         key = Key('Kind', 1234, project=self.PROJECT)
 
@@ -328,7 +326,7 @@ class TestClient(unittest.TestCase):
         key = Key('Kind', 1234, project=self.PROJECT)
 
         # Set deferred entity on mock connection.
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client._connection._add_lookup_result(deferred=[key.to_protobuf()])
 
@@ -353,7 +351,7 @@ class TestClient(unittest.TestCase):
         entity2_pb = entity_pb2.Entity()
         entity2_pb.key.CopyFrom(key2_pb)
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         # mock up two separate requests
         client._connection._add_lookup_result([entity1_pb], deferred=[key2_pb])
@@ -402,7 +400,7 @@ class TestClient(unittest.TestCase):
         entity_pb = _make_entity_pb(self.PROJECT, KIND, ID, 'foo', 'Foo')
 
         # Make a connection to return the entity pb.
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client._connection._add_lookup_result([entity_pb])
 
@@ -429,7 +427,7 @@ class TestClient(unittest.TestCase):
         entity_pb = _make_entity_pb(self.PROJECT, KIND, ID, 'foo', 'Foo')
 
         # Make a connection to return the entity pb.
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client._connection._add_lookup_result([entity_pb])
 
@@ -463,7 +461,7 @@ class TestClient(unittest.TestCase):
         entity_pb2 = _make_entity_pb(self.PROJECT, KIND, ID2)
 
         # Make a connection to return the entity pbs.
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client._connection._add_lookup_result([entity_pb1, entity_pb2])
 
@@ -489,14 +487,13 @@ class TestClient(unittest.TestCase):
         key1 = Key('KIND', 1234, project=PROJECT1)
         key2 = Key('KIND', 1234, project=PROJECT2)
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         with self.assertRaises(ValueError):
             client.get_multi([key1, key2])
 
     def test_get_multi_max_loops(self):
-        import mock
         from google.cloud.datastore.key import Key
 
         KIND = 'Kind'
@@ -506,7 +503,7 @@ class TestClient(unittest.TestCase):
         entity_pb = _make_entity_pb(self.PROJECT, KIND, ID, 'foo', 'Foo')
 
         # Make a connection to return the entity pb.
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client._connection._add_lookup_result([entity_pb])
 
@@ -532,7 +529,7 @@ class TestClient(unittest.TestCase):
         def _put_multi(*args, **kw):
             _called_with.append((args, kw))
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client.put_multi = _put_multi
         entity = object()
@@ -543,7 +540,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(_called_with[0][1]['entities'], [entity])
 
     def test_put_multi_no_entities(self):
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         self.assertIsNone(client.put_multi([]))
 
@@ -551,7 +548,7 @@ class TestClient(unittest.TestCase):
         # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/649
         from google.cloud.datastore.entity import Entity
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         self.assertRaises(ValueError, client.put_multi, Entity())
 
@@ -562,7 +559,7 @@ class TestClient(unittest.TestCase):
         key = entity.key = _Key(self.PROJECT)
         key._id = None
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client._connection._commit.append([_KeyPB(key)])
 
@@ -588,7 +585,7 @@ class TestClient(unittest.TestCase):
     def test_put_multi_existing_batch_w_completed_key(self):
         from google.cloud.datastore.helpers import _property_tuples
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(self.PROJECT)
@@ -612,7 +609,7 @@ class TestClient(unittest.TestCase):
         def _delete_multi(*args, **kw):
             _called_with.append((args, kw))
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client.delete_multi = _delete_multi
         key = object()
@@ -623,7 +620,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(_called_with[0][1]['keys'], [key])
 
     def test_delete_multi_no_keys(self):
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         result = client.delete_multi([])
         self.assertIsNone(result)
@@ -632,7 +629,7 @@ class TestClient(unittest.TestCase):
     def test_delete_multi_no_batch(self):
         key = _Key(self.PROJECT)
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         client._connection._commit.append([])
 
@@ -648,7 +645,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(transaction_id)
 
     def test_delete_multi_w_existing_batch(self):
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         key = _Key(self.PROJECT)
 
@@ -661,7 +658,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(client._connection._commit_cw), 0)
 
     def test_delete_multi_w_existing_transaction(self):
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         key = _Key(self.PROJECT)
 
@@ -679,7 +676,7 @@ class TestClient(unittest.TestCase):
         INCOMPLETE_KEY = _Key(self.PROJECT)
         INCOMPLETE_KEY._id = None
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         result = client.allocate_ids(INCOMPLETE_KEY, NUM_IDS)
@@ -688,7 +685,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual([key._id for key in result], list(range(NUM_IDS)))
 
     def test_allocate_ids_with_completed_key(self):
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         COMPLETE_KEY = _Key(self.PROJECT)
@@ -698,19 +695,17 @@ class TestClient(unittest.TestCase):
         KIND = 'KIND'
         ID = 1234
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         self.assertRaises(TypeError,
                           client.key, KIND, ID, project=self.PROJECT)
 
     def test_key_wo_project(self):
-        import mock
-
         KIND = 'KIND'
         ID = 1234
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
@@ -727,13 +722,11 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_key_w_namespace(self):
-        import mock
-
         KIND = 'KIND'
         ID = 1234
         NAMESPACE = object()
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(namespace=NAMESPACE, credentials=creds)
 
         patch = mock.patch(
@@ -749,14 +742,12 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_key_w_namespace_collision(self):
-        import mock
-
         KIND = 'KIND'
         ID = 1234
         NAMESPACE1 = object()
         NAMESPACE2 = object()
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(namespace=NAMESPACE1, credentials=creds)
 
         patch = mock.patch(
@@ -772,9 +763,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_batch(self):
-        import mock
-
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
@@ -787,9 +776,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(batch.kwargs, {})
 
     def test_transaction_defaults(self):
-        import mock
-
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
@@ -804,25 +791,23 @@ class TestClient(unittest.TestCase):
     def test_query_w_client(self):
         KIND = 'KIND'
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
-        other = self._make_one(credentials=object())
+        other = self._make_one(credentials=_make_credentials())
 
         self.assertRaises(TypeError, client.query, kind=KIND, client=other)
 
     def test_query_w_project(self):
         KIND = 'KIND'
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         self.assertRaises(TypeError,
                           client.query, kind=KIND, project=self.PROJECT)
 
     def test_query_w_defaults(self):
-        import mock
-
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
@@ -839,8 +824,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query.kwargs, expected_kwargs)
 
     def test_query_explicit(self):
-        import mock
-
         KIND = 'KIND'
         NAMESPACE = 'NAMESPACE'
         ANCESTOR = object()
@@ -849,7 +832,7 @@ class TestClient(unittest.TestCase):
         ORDER = ['PROPERTY']
         DISTINCT_ON = ['DISTINCT_ON']
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
 
         patch = mock.patch(
@@ -880,12 +863,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query.kwargs, kwargs)
 
     def test_query_w_namespace(self):
-        import mock
-
         KIND = 'KIND'
         NAMESPACE = object()
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(namespace=NAMESPACE, credentials=creds)
 
         patch = mock.patch(
@@ -903,13 +884,11 @@ class TestClient(unittest.TestCase):
         self.assertEqual(query.kwargs, expected_kwargs)
 
     def test_query_w_namespace_collision(self):
-        import mock
-
         KIND = 'KIND'
         NAMESPACE1 = object()
         NAMESPACE2 = object()
 
-        creds = object()
+        creds = _make_credentials()
         client = self._make_one(namespace=NAMESPACE1, credentials=creds)
 
         patch = mock.patch(

@@ -14,7 +14,15 @@
 
 import unittest
 
+import mock
+
+
 PROJECT = 'my-project'
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
 class TestClient(unittest.TestCase):
@@ -85,7 +93,8 @@ class TestClient(unittest.TestCase):
 
         RESPONSE = {'timeSeries': [SERIES1, SERIES2]}
 
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         connection = client._connection = _Connection(RESPONSE)
 
         # A simple query. In practice, it can be very convenient to let the
@@ -138,7 +147,8 @@ class TestClient(unittest.TestCase):
         VALUE_TYPE = 'DOUBLE'
         DESCRIPTION = 'This is my metric.'
 
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         client._connection = _Connection()   # For safety's sake.
         descriptor = client.metric_descriptor(TYPE,
                                               metric_kind=METRIC_KIND,
@@ -164,7 +174,8 @@ class TestClient(unittest.TestCase):
             'instance_name': 'my-instance'
         }
 
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         client._connection = _Connection()   # For safety's sake.
         metric = client.metric(TYPE, LABELS)
         self.assertEqual(metric.type, TYPE)
@@ -177,7 +188,8 @@ class TestClient(unittest.TestCase):
             'zone': 'us-central1-f'
         }
 
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         client._connection = _Connection()   # For safety's sake.
         resource = client.resource(TYPE, LABELS)
         self.assertEqual(resource.type, TYPE)
@@ -185,7 +197,6 @@ class TestClient(unittest.TestCase):
 
     def test_timeseries_factory_gauge(self):
         import datetime
-        import mock
         from google.cloud._helpers import _datetime_to_rfc3339
         METRIC_TYPE = 'custom.googleapis.com/my_metric'
         METRIC_LABELS = {
@@ -202,7 +213,8 @@ class TestClient(unittest.TestCase):
         TIME1 = datetime.datetime.utcnow()
         TIME1_STR = _datetime_to_rfc3339(TIME1, ignore_zone=False)
 
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         client._connection = _Connection()   # For safety's sake.
         metric = client.metric(METRIC_TYPE, METRIC_LABELS)
         resource = client.resource(RESOURCE_TYPE, RESOURCE_LABELS)
@@ -242,7 +254,8 @@ class TestClient(unittest.TestCase):
             'zone': 'us-central1-f'
         }
 
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         client._connection = _Connection()   # For safety's sake.
         resource = client.resource(RESOURCE_TYPE, RESOURCE_LABELS)
 
@@ -296,7 +309,8 @@ class TestClient(unittest.TestCase):
 
         # This test is identical to TestMetricDescriptor.test_fetch()
         # except for the following three lines.
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         connection = client._connection = _Connection(METRIC_DESCRIPTOR)
         descriptor = client.fetch_metric_descriptor(TYPE)
 
@@ -340,7 +354,8 @@ class TestClient(unittest.TestCase):
 
         # This test is identical to TestMetricDescriptor.test_list()
         # except for the following three lines.
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         connection = client._connection = _Connection(RESPONSE)
         descriptors = client.list_metric_descriptors()
 
@@ -385,7 +400,8 @@ class TestClient(unittest.TestCase):
 
         # This test is identical to TestResourceDescriptor.test_fetch()
         # except for the following three lines.
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         connection = client._connection = _Connection(RESOURCE_DESCRIPTOR)
         descriptor = client.fetch_resource_descriptor(TYPE)
 
@@ -433,7 +449,8 @@ class TestClient(unittest.TestCase):
 
         # This test is identical to TestResourceDescriptor.test_list()
         # except for the following three lines.
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         connection = client._connection = _Connection(RESPONSE)
         descriptors = client.list_resource_descriptors()
 
@@ -460,7 +477,8 @@ class TestClient(unittest.TestCase):
         FILTER = 'resource.type = "gce_instance"'
         IS_CLUSTER = False
 
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         group = client.group(GROUP_ID, display_name=DISPLAY_NAME,
                              parent_id=PARENT_ID, filter_string=FILTER,
                              is_cluster=IS_CLUSTER)
@@ -472,7 +490,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(group.is_cluster, IS_CLUSTER)
 
     def test_group_defaults(self):
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         group = client.group()
 
         self.assertIsNone(group.id)
@@ -499,7 +518,8 @@ class TestClient(unittest.TestCase):
             'isCluster': IS_CLUSTER
         }
 
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         connection = client._connection = _Connection(GROUP)
         group = client.fetch_group(GROUP_ID)
 
@@ -532,7 +552,8 @@ class TestClient(unittest.TestCase):
         RESPONSE = {
             'group': [GROUP],
         }
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
         connection = client._connection = _Connection(RESPONSE)
         groups = client.list_groups()
 
@@ -552,7 +573,8 @@ class TestClient(unittest.TestCase):
 
     def test_write_time_series(self):
         PATH = '/projects/{project}/timeSeries/'.format(project=PROJECT)
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
 
         RESOURCE_TYPE = 'gce_instance'
         RESOURCE_LABELS = {
@@ -594,7 +616,8 @@ class TestClient(unittest.TestCase):
     def test_write_point(self):
         import datetime
         PATH = '/projects/{project}/timeSeries/'.format(project=PROJECT)
-        client = self._make_one(project=PROJECT, credentials=object())
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials())
 
         RESOURCE_TYPE = 'gce_instance'
         RESOURCE_LABELS = {
