@@ -55,7 +55,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-bigquery',
-    version='0.22.0',
+    version='0.22.1',
     description='Python Client for Google BigQuery',
     long_description=README,
     namespace_packages=[
