@@ -14,6 +14,7 @@
 
 import unittest
 
+import mock
 
 try:
     # pylint: disable=unused-import
@@ -25,6 +26,13 @@ else:
     _HAVE_GAX = True
 
 from google.cloud._testing import _GAXBaseAPI
+
+
+def _make_credentials():
+    # pylint: disable=redefined-outer-name
+    import google.auth.credentials
+    # pylint: enable=redefined-outer-name
+    return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
 class _Base(object):
@@ -79,7 +87,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
                             text_payload=TEXT)
         response = _GAXPageIterator([entry_pb], page_token=TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
-        client = Client(project=self.PROJECT, credentials=object(),
+        client = Client(project=self.PROJECT, credentials=_make_credentials(),
                         use_gax=True)
         api = self._make_one(gax_api, client)
 
@@ -136,7 +144,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
                             json_payload=struct_pb)
         response = _GAXPageIterator([entry_pb], page_token=NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
-        client = Client(project=self.PROJECT, credentials=object(),
+        client = Client(project=self.PROJECT, credentials=_make_credentials(),
                         use_gax=True)
         api = self._make_one(gax_api, client)
 
@@ -277,7 +285,7 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
 
         response = _GAXPageIterator([entry_pb], page_token=NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
-        client = Client(project=self.PROJECT, credentials=object(),
+        client = Client(project=self.PROJECT, credentials=_make_credentials(),
                         use_gax=True)
         api = self._make_one(gax_api, client)
 
@@ -1073,7 +1081,6 @@ class Test_make_gax_logging_api(unittest.TestCase):
         return make_gax_logging_api(client)
 
     def test_it(self):
-        import mock
         from google.cloud.logging._gax import _LoggingAPI
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
@@ -1119,7 +1126,6 @@ class Test_make_gax_metrics_api(unittest.TestCase):
         return make_gax_metrics_api(client)
 
     def test_it(self):
-        import mock
         from google.cloud.logging._gax import _MetricsAPI
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
@@ -1165,7 +1171,6 @@ class Test_make_gax_sinks_api(unittest.TestCase):
         return make_gax_sinks_api(client)
 
     def test_it(self):
-        import mock
         from google.cloud.logging._gax import _SinksAPI
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 

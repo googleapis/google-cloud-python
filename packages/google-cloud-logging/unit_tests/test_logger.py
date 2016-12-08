@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class TestLogger(unittest.TestCase):
 
@@ -352,7 +359,8 @@ class TestLogger(unittest.TestCase):
 
         TOKEN = 'TOKEN'
 
-        client = Client(project=self.PROJECT, credentials=object(),
+        client = Client(project=self.PROJECT,
+                        credentials=_make_credentials(),
                         use_gax=False)
         returned = {
             'nextPageToken': TOKEN,
@@ -389,7 +397,8 @@ class TestLogger(unittest.TestCase):
         FILTER = 'resource.type:global'
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
-        client = Client(project=self.PROJECT, credentials=object(),
+        client = Client(project=self.PROJECT,
+                        credentials=_make_credentials(),
                         use_gax=False)
         client._connection = _Connection({})
         logger = self._make_one(self.LOGGER_NAME, client=client)
@@ -440,7 +449,7 @@ class TestBatch(unittest.TestCase):
 
     def test_log_text_defaults(self):
         TEXT = 'This is the entry text'
-        client = _Client(project=self.PROJECT, connection=object())
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_text(TEXT)
@@ -460,7 +469,7 @@ class TestBatch(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
-        client = _Client(project=self.PROJECT, connection=object())
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_text(TEXT, labels=LABELS, insert_id=IID, severity=SEVERITY,
@@ -470,7 +479,7 @@ class TestBatch(unittest.TestCase):
 
     def test_log_struct_defaults(self):
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
-        client = _Client(project=self.PROJECT, connection=object())
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_struct(STRUCT)
@@ -490,7 +499,7 @@ class TestBatch(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
-        client = _Client(project=self.PROJECT, connection=object())
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_struct(STRUCT, labels=LABELS, insert_id=IID,
@@ -501,7 +510,7 @@ class TestBatch(unittest.TestCase):
     def test_log_proto_defaults(self):
         from google.protobuf.struct_pb2 import Struct, Value
         message = Struct(fields={'foo': Value(bool_value=True)})
-        client = _Client(project=self.PROJECT, connection=object())
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_proto(message)
@@ -522,7 +531,7 @@ class TestBatch(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
-        client = _Client(project=self.PROJECT, connection=object())
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_proto(message, labels=LABELS, insert_id=IID,
@@ -532,7 +541,7 @@ class TestBatch(unittest.TestCase):
 
     def test_commit_w_invalid_entry_type(self):
         logger = _Logger()
-        client = _Client(project=self.PROJECT, connection=object())
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
         batch = self._make_one(logger, client)
         batch.entries.append(('bogus', 'BOGUS', None, None, None, None))
         with self.assertRaises(ValueError):
