@@ -45,9 +45,10 @@ class Client(client_module.Client):
 
         :type kwargs: dict
         :param kwargs: Remaining keyword arguments to be passed along to the
-                       :class:`.Document` constructor.
+                       :class:`~google.cloud.language.document.Document`
+                       constructor.
 
-        :rtype: :class:`.Document`
+        :rtype: :class:`~google.cloud.language.document.Document`
         :returns: A plain-text document bound to this client.
         :raises: :class:`~exceptions.TypeError` if ``doc_type`` is passed as a
                  keyword argument.
@@ -65,9 +66,10 @@ class Client(client_module.Client):
 
         :type kwargs: dict
         :param kwargs: Remaining keyword arguments to be passed along to the
-                       :class:`.Document` constructor.
+                       :class:`~google.cloud.language.document.Document`
+                       constructor.
 
-        :rtype: :class:`.Document`
+        :rtype: :class:`~google.cloud.language.document.Document`
         :returns: An HTML document bound to this client.
         :raises: :class:`~exceptions.TypeError` if ``doc_type`` is passed as a
                  keyword argument.
@@ -93,9 +95,10 @@ class Client(client_module.Client):
 
         :type kwargs: dict
         :param kwargs: Remaining keyword arguments to be passed along to the
-                       :class:`.Document` constructor.
+                       :class:`~google.cloud.language.document.Document`
+                       constructor.
 
-        :rtype: :class:`.Document`
+        :rtype: :class:`~google.cloud.language.document.Document`
         :returns: A document bound to this client.
         """
         return Document(self, gcs_url=gcs_url, doc_type=doc_type, **kwargs)
