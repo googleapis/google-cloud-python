@@ -15,14 +15,23 @@ Google Cloud Python Client
 .. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/
 .. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
-This client supports the following Google Cloud Platform services:
+This client library has **beta** support for the following Google
+Cloud Platform services:
 
--  `Google Cloud Datastore`_ (`Datastore README`_)
--  `Google Cloud Storage`_ (`Storage README`_)
--  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google BigQuery`_ (`BigQuery README`_)
--  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
+-  `Google Cloud Datastore`_ (`Datastore README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
+-  `Google Cloud Storage`_ (`Storage README`_)
+
+**Beta** indicates that the client library for a particular service is
+mostly stable and is being prepared for release. Issues and requests
+against beta libraries are addressed with a higher priority.
+
+This client library has **alpha** support for the following Google
+Cloud Platform services:
+
+-  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
+-  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud DNS`_ (`DNS README`_)
@@ -32,6 +41,10 @@ This client supports the following Google Cloud Platform services:
 -  `Google Cloud Vision`_ (`Vision README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
+
+**Alpha** indicates that the client library for a particular service is
+still a work-in-progress and is more likely to get backwards-incompatible
+updates. See `versioning`_ for more details.
 
 .. _Google Cloud Datastore: https://pypi.python.org/pypi/google-cloud-datastore
 .. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
@@ -63,6 +76,7 @@ This client supports the following Google Cloud Platform services:
 .. _HappyBase README: https://github.com/GoogleCloudPlatform/google-cloud-python-happybase
 .. _Google Cloud Runtime Configuration: https://cloud.google.com/deployment-manager/runtime-configurator/
 .. _Runtime Config README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/runtimeconfig
+.. _versioning: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst#versioning
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
