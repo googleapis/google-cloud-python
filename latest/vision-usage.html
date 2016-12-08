@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the Vision API &mdash; google-cloud 4a0225d documentation</title>
+  <title>Using the Vision API &mdash; google-cloud 06d78fc documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 4a0225d documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 06d78fc documentation" href="index.html"/>
         <link rel="next" title="Vision Annotations" href="vision-annotations.html"/>
         <link rel="prev" title="Translate Client" href="translate-client.html"/> 
 
@@ -440,9 +440,9 @@ will also provide their known geographical locations if available.</p>
 <span class="go">-33.857123</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">longitude</span>
 <span class="go">151.213921</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x_coordinate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x_coordinate</span>
 <span class="go">78</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y_coordinate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">landmarks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y_coordinate</span>
 <span class="go">162</span>
 </pre></div>
 </div>
@@ -464,11 +464,11 @@ iterating through the detected logo&#8217;s <code class="docutils literal"><span
 <span class="go">&#39;Google&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_logo</span><span class="o">.</span><span class="n">score</span>
 <span class="go">0.9795432</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">first_logo</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">first_logo</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">vertices</span><span class="p">))</span>
 <span class="go">4</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">first_logo</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x_coordinate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_logo</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x_coordinate</span>
 <span class="go">78</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">first_logo</span><span class="o">.</span><span class="n">bounding_poly</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y_coordinate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_logo</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y_coordinate</span>
 <span class="go">62</span>
 </pre></div>
 </div>
@@ -599,7 +599,7 @@ an empty list is returned. This behavior is similiar with all detection types.</
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'4a0225d',
+            VERSION:'06d78fc',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
