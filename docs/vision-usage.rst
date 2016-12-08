@@ -169,9 +169,9 @@ will also provide their known geographical locations if available.
     -33.857123
     >>> landmarks[0].locations[0].longitude
     151.213921
-    >>> landmarks[0].bounding_poly.vertices[0].x_coordinate
+    >>> landmarks[0].bounds.vertices[0].x_coordinate
     78
-    >>> landmarks[0].bounding_poly.vertices[0].y_coordinate
+    >>> landmarks[0].bounds.vertices[0].y_coordinate
     162
 
 
@@ -197,11 +197,11 @@ iterating through the detected logo's ``vertices``.
     'Google'
     >>> first_logo.score
     0.9795432
-    >>> print(len(first_logo.bounding_poly.vertices))
+    >>> print(len(first_logo.bounds.vertices))
     4
-    >>> first_logo.bounding_poly.vertices[0].x_coordinate
+    >>> first_logo.bounds.vertices[0].x_coordinate
     78
-    >>> first_logo.bounding_poly.vertices[0].y_coordinate
+    >>> first_logo.bounds.vertices[0].y_coordinate
     62
 
 
