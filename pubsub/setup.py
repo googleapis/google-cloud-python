@@ -51,6 +51,7 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core >= 0.21.0, < 0.22dev',
+    'grpcio >= 1.0.2rc0, < 2.0dev',
     'gapic-google-cloud-pubsub-v1 >= 0.14.0, < 0.15dev',
 ]
 
