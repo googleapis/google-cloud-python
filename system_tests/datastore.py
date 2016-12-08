@@ -57,6 +57,7 @@ class Config(object):
     global state.
     """
     CLIENT = None
+    TO_DELETE = []
 
 
 def clone_client(client):
@@ -81,6 +82,12 @@ def setUpModule():
                                          namespace=test_namespace,
                                          credentials=credentials,
                                          http=http)
+
+
+def tearDownModule():
+    keys = [entity.key for entity in Config.TO_DELETE]
+    with Config.CLIENT.transaction():
+        Config.CLIENT.delete_multi(keys)
 
 
 class TestDatastore(unittest.TestCase):
