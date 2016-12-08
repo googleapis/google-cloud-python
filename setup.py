@@ -50,14 +50,14 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-bigquery >= 0.22.0, < 0.23dev',
+    'google-cloud-bigquery >= 0.22.1, < 0.23dev',
     'google-cloud-bigtable >= 0.22.0, < 0.23dev',
     'google-cloud-happybase >= 0.22.0, < 0.23dev',
     'google-cloud-core >= 0.22.1, < 0.23dev',
     'google-cloud-datastore >= 0.22.0, < 0.23dev',
     'google-cloud-dns >= 0.22.0, < 0.23dev',
     'google-cloud-error-reporting >= 0.22.0, < 0.23dev',
-    'google-cloud-language >= 0.22.0, < 0.23dev',
+    'google-cloud-language >= 0.22.1, < 0.23dev',
     'google-cloud-logging >= 0.22.0, < 0.23dev',
     'google-cloud-monitoring >= 0.22.0, < 0.23dev',
     'google-cloud-pubsub >= 0.22.0, < 0.23dev',
