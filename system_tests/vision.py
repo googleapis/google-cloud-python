@@ -392,3 +392,65 @@ class TestVisionClientSafeSearch(BaseVisionTestCase):
         self.assertEqual(len(safe_searches), 1)
         safe_search = safe_searches[0]
         self._assert_safe_search(safe_search)
+
+
+class TestVisionClientImageProperties(BaseVisionTestCase):
+    def setUp(self):
+        self.to_delete_by_case = []
+
+    def tearDown(self):
+        for value in self.to_delete_by_case:
+            value.delete()
+
+    def _assert_color(self, color):
+        self.assertIsInstance(color.red, int)
+        self.assertIsInstance(color.green, int)
+        self.assertIsInstance(color.blue, int)
+        self.assertNotEqual(color.red, 0.0)
+        self.assertNotEqual(color.green, 0.0)
+        self.assertNotEqual(color.blue, 0.0)
+        self.assertIsInstance(color.alpha, float)
+
+    def _assert_properties(self, image_property):
+        from google.cloud.vision.color import ImagePropertiesAnnotation
+
+        self.assertIsInstance(image_property, ImagePropertiesAnnotation)
+        results = image_property.colors
+        for color_info in results:
+            self._assert_color(color_info.color)
+            self.assertNotEqual(color_info.pixel_fraction, 0.0)
+            self.assertNotEqual(color_info.score, 0.0)
+
+    def test_detect_properties_content(self):
+        client = Config.CLIENT
+        with open(FACE_FILE, 'rb') as image_file:
+            image = client.image(content=image_file.read())
+        properties = image.detect_properties()
+        self.assertEqual(len(properties), 1)
+        image_property = properties[0]
+        self._assert_properties(image_property)
+
+    def test_detect_properties_gcs(self):
+        bucket_name = Config.TEST_BUCKET.name
+        blob_name = 'faces.jpg'
+        blob = Config.TEST_BUCKET.blob(blob_name)
+        self.to_delete_by_case.append(blob)  # Clean-up.
+        with open(FACE_FILE, 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+
+        source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
+
+        client = Config.CLIENT
+        image = client.image(source_uri=source_uri)
+        properties = image.detect_properties()
+        self.assertEqual(len(properties), 1)
+        image_property = properties[0]
+        self._assert_properties(image_property)
+
+    def test_detect_properties_filename(self):
+        client = Config.CLIENT
+        image = client.image(filename=FACE_FILE)
+        properties = image.detect_properties()
+        self.assertEqual(len(properties), 1)
+        image_property = properties[0]
+        self._assert_properties(image_property)
