@@ -118,7 +118,7 @@ class TestSpeechClient(unittest.TestCase):
     def _make_streaming_request(self, file_obj, single_utterance=True,
                                 interim_results=False):
         client = Config.CLIENT
-        sample = client.sample(content=file_obj,
+        sample = client.sample(stream=file_obj,
                                encoding=speech.Encoding.LINEAR16,
                                sample_rate=16000)
         return sample.streaming_recognize(single_utterance=single_utterance,

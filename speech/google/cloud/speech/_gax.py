@@ -182,9 +182,7 @@ class GAPICSpeechAPI(object):
                        .cloud_speech_pb2.StreamingRecognizeResponse`
         :returns: ``StreamingRecognizeResponse`` instances.
         """
-        if getattr(sample.content, 'closed', None) is None:
-            raise ValueError('Please use file-like object for data stream.')
-        if sample.content.closed:
+        if sample.stream.closed:
             raise ValueError('Stream is closed.')
 
         requests = _stream_requests(sample, language_code=language_code,
@@ -252,7 +250,6 @@ class GAPICSpeechAPI(object):
             language_code=language_code, max_alternatives=max_alternatives,
             profanity_filter=profanity_filter,
             speech_context=SpeechContext(phrases=speech_context))
-
         audio = RecognitionAudio(content=sample.content,
                                  uri=sample.source_uri)
         api = self._gapic_api
@@ -337,7 +334,7 @@ def _stream_requests(sample, language_code=None, max_alternatives=None,
     yield config_request
 
     while True:
-        data = sample.content.read(sample.chunk_size)
+        data = sample.stream.read(sample.chunk_size)
         if not data:
             break
         yield StreamingRecognizeRequest(audio_content=data)
