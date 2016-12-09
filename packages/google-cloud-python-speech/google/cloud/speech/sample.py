@@ -14,6 +14,7 @@
 
 """Sample class to handle content for Google Cloud Speech API."""
 
+
 from google.cloud.speech.encoding import Encoding
 from google.cloud.speech.result import StreamingSpeechResult
 
@@ -22,7 +23,7 @@ class Sample(object):
     """Representation of an audio sample to be used with Google Speech API.
 
     :type content: bytes
-    :param content: (Optional) Byte stream of audio.
+    :param content: (Optional) Bytes containing audio data.
 
     :type source_uri: str
     :param source_uri: (Optional) URI that points to a file that contains
@@ -30,6 +31,9 @@ class Sample(object):
                        Currently, only Google Cloud Storage URIs are
                        supported, which must be specified in the following
                        format: ``gs://bucket_name/object_name``.
+
+    :type stream: file
+    :param stream: (Optional) File like object to stream.
 
     :type encoding: str
     :param encoding: encoding of audio data sent in all RecognitionAudio
@@ -51,17 +55,19 @@ class Sample(object):
     default_encoding = Encoding.FLAC
     default_sample_rate = 16000
 
-    def __init__(self, content=None, source_uri=None,
+    def __init__(self, content=None, source_uri=None, stream=None,
                  encoding=None, sample_rate=None, client=None):
         self._client = client
 
-        no_source = content is None and source_uri is None
-        both_source = content is not None and source_uri is not None
-        if no_source or both_source:
-            raise ValueError('Supply one of \'content\' or \'source_uri\'')
+        sources = [content is not None, source_uri is not None,
+                   stream is not None]
+        if sources.count(True) != 1:
+            raise ValueError('Supply exactly one of '
+                             '\'content\',  \'source_uri\', \'stream\'')
 
         self._content = content
         self._source_uri = source_uri
+        self._stream = stream
 
         if sample_rate is not None and not 8000 <= sample_rate <= 48000:
             raise ValueError('The value of sample_rate must be between 8000'
@@ -108,6 +114,15 @@ class Sample(object):
         :returns: Integer between 8000 and 48,000.
         """
         return self._sample_rate
+
+    @property
+    def stream(self):
+        """Stream the content when it is a file-like object.
+
+        :rtype: file
+        :returns: File like object to stream.
+        """
+        return self._stream
 
     @property
     def encoding(self):
