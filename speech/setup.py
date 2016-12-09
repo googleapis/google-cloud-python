@@ -50,6 +50,7 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core >= 0.21.0',
+    'grpcio >= 1.0.2rc0, < 2.0dev',
     'gapic-google-cloud-speech-v1beta1 >= 0.14.0, < 0.15dev',
 ]
 
