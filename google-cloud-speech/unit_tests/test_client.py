@@ -72,7 +72,7 @@ class TestClient(unittest.TestCase):
     SAMPLE_RATE = 16000
     HINTS = ['hi']
     AUDIO_SOURCE_URI = 'gs://sample-bucket/sample-recording.flac'
-    AUDIO_CONTENT = '/9j/4QNURXhpZgAASUkq'
+    AUDIO_CONTENT = b'testing 1 2 3'
 
     @staticmethod
     def _get_target_class():
@@ -125,14 +125,12 @@ class TestClient(unittest.TestCase):
         from base64 import b64encode
 
         from google.cloud._helpers import _bytes_to_unicode
-        from google.cloud._helpers import _to_bytes
 
         from google.cloud import speech
         from google.cloud.speech.alternative import Alternative
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
 
-        _AUDIO_CONTENT = _to_bytes(self.AUDIO_CONTENT)
-        _B64_AUDIO_CONTENT = _bytes_to_unicode(b64encode(_AUDIO_CONTENT))
+        _B64_AUDIO_CONTENT = _bytes_to_unicode(b64encode(self.AUDIO_CONTENT))
         RETURNED = SYNC_RECOGNIZE_RESPONSE
         REQUEST = {
             'config': {
@@ -325,8 +323,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(low_level, _MockGAPICSpeechAPI)
         self.assertIs(low_level._channel, channel_obj)
         self.assertEqual(
-            channel_args,
-            [(creds, _gax.DEFAULT_USER_AGENT, host)])
+            channel_args, [(creds, _gax.DEFAULT_USER_AGENT, host)])
 
         results = sample.sync_recognize()
 
@@ -462,8 +459,9 @@ class TestClient(unittest.TestCase):
         speech_api.SERVICE_ADDRESS = host
 
         stream.close()
+        self.assertTrue(stream.closed)
 
-        sample = client.sample(content=stream,
+        sample = client.sample(stream=stream,
                                encoding=Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
 
@@ -523,7 +521,7 @@ class TestClient(unittest.TestCase):
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
-        sample = client.sample(content=stream,
+        sample = client.sample(stream=stream,
                                encoding=Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
 
@@ -596,7 +594,7 @@ class TestClient(unittest.TestCase):
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
-        sample = client.sample(content=stream,
+        sample = client.sample(stream=stream,
                                encoding=Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
 
@@ -640,7 +638,7 @@ class TestClient(unittest.TestCase):
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
-        sample = client.sample(content=stream,
+        sample = client.sample(stream=stream,
                                encoding=Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
 
