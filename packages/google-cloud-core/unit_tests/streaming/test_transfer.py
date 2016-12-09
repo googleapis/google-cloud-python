@@ -196,6 +196,7 @@ class Test_Download(unittest.TestCase):
 
     def test_from_file_w_existing_file_no_override(self):
         import os
+        from google.cloud._testing import _tempdir
         klass = self._get_target_class()
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.out')
@@ -206,6 +207,7 @@ class Test_Download(unittest.TestCase):
 
     def test_from_file_w_existing_file_w_override_wo_auto_transfer(self):
         import os
+        from google.cloud._testing import _tempdir
         klass = self._get_target_class()
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.out')
@@ -837,6 +839,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_from_file_wo_mimetype_w_unguessable_filename(self):
         import os
+        from google.cloud._testing import _tempdir
         klass = self._get_target_class()
         CONTENT = b'EXISTING FILE W/ UNGUESSABLE MIMETYPE'
         with _tempdir() as tempdir:
@@ -848,6 +851,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_from_file_wo_mimetype_w_guessable_filename(self):
         import os
+        from google.cloud._testing import _tempdir
         klass = self._get_target_class()
         CONTENT = b'EXISTING FILE W/ GUESSABLE MIMETYPE'
         with _tempdir() as tempdir:
@@ -862,6 +866,7 @@ class Test_Upload(unittest.TestCase):
 
     def test_from_file_w_mimetype_w_auto_transfer_w_kwds(self):
         import os
+        from google.cloud._testing import _tempdir
         klass = self._get_target_class()
         CONTENT = b'EXISTING FILE W/ GUESSABLE MIMETYPE'
         CHUNK_SIZE = 3
@@ -1940,21 +1945,3 @@ class _MediaStreamer(object):
         assert self._called_with is None
         self._called_with = (request, end)
         return self._response
-
-
-def _tempdir_maker():
-    import contextlib
-    import shutil
-    import tempfile
-
-    @contextlib.contextmanager
-    def _tempdir_mgr():
-        temp_dir = tempfile.mkdtemp()
-        yield temp_dir
-        shutil.rmtree(temp_dir)
-
-    return _tempdir_mgr
-
-
-_tempdir = _tempdir_maker()
-del _tempdir_maker
