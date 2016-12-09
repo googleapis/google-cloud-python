@@ -553,6 +553,7 @@ class TestClient(unittest.TestCase):
 
     def test_get_default_handler_app_engine(self):
         import os
+        import shutil
         import tempfile
         from google.cloud._testing import _Monkey
         from google.cloud.logging.client import _APPENGINE_FLEXIBLE_ENV_VM
@@ -563,12 +564,14 @@ class TestClient(unittest.TestCase):
                                 credentials=_make_credentials(),
                                 use_gax=False)
 
-        temp_log_path = os.path.join(tempfile.mkdtemp(), '{pid}')
+        temp_dir = tempfile.mkdtemp()
+        temp_log_path = os.path.join(temp_dir, '{pid}')
         with _Monkey(_MUT, _LOG_PATH_TEMPLATE=temp_log_path):
             with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: 'True'}):
                 handler = client.get_default_handler()
 
         self.assertIsInstance(handler, AppEngineHandler)
+        shutil.rmtree(temp_dir)  # Clean up.
 
     def test_get_default_handler_container_engine(self):
         import os
