@@ -24,7 +24,7 @@ general:
 
 deployment:
   release:
-    tag: /(([a-z]+)-)?([0-9]+)\.([0-9]+)\.([0-9]+)/
+    tag: /(([a-z]+)-)*([0-9]+)\.([0-9]+)\.([0-9]+)/
     owner: GoogleCloudPlatform
     commands:
       - pip install --upgrade twine
