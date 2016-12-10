@@ -24,7 +24,7 @@ import re
 import sys
 
 
-RE_TXT = r'^((?P<pkg>[a-z]+)-)?([0-9]+)\.([0-9]+)\.([0-9]+)$'
+RE_TXT = r'^(?P<pkg>(([a-z]+)-)*)([0-9]+)\.([0-9]+)\.([0-9]+)$'
 TAG_RE = re.compile(RE_TXT)
 TAG_ENV = 'CIRCLE_TAG'
 ERROR_MSG = '%s env. var. not set' % (TAG_ENV,)
@@ -52,7 +52,7 @@ def main():
     if pkg_name is None:
         print(ROOT_DIR)
     else:
-        pkg_dir = pkg_name.replace('-', '_')
+        pkg_dir = pkg_name.rstrip('-').replace('-', '_')
         print(os.path.join(ROOT_DIR, pkg_dir))
 
 
