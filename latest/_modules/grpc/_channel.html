@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>grpc._channel &mdash; google-cloud 3a3ba9d documentation</title>
+  <title>grpc._channel &mdash; google-cloud 920345a documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="google-cloud 3a3ba9d documentation" href="../../index.html"/>
+    <link rel="top" title="google-cloud 920345a documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -323,8 +323,8 @@
 <span class="kn">import</span> <span class="nn">grpc</span>
 <span class="kn">from</span> <span class="nn">grpc</span> <span class="k">import</span> <span class="n">_common</span>
 <span class="kn">from</span> <span class="nn">grpc</span> <span class="k">import</span> <span class="n">_grpcio_metadata</span>
-<span class="kn">from</span> <span class="nn">grpc.framework.foundation</span> <span class="k">import</span> <span class="n">callable_util</span>
 <span class="kn">from</span> <span class="nn">grpc._cython</span> <span class="k">import</span> <span class="n">cygrpc</span>
+<span class="kn">from</span> <span class="nn">grpc.framework.foundation</span> <span class="k">import</span> <span class="n">callable_util</span>
 
 <span class="n">_USER_AGENT</span> <span class="o">=</span> <span class="s1">&#39;Python-gRPC-</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_grpcio_metadata</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 
@@ -645,7 +645,7 @@
       <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">callbacks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
       <span class="k">else</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">callback</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
 
   <span class="k">def</span> <span class="nf">initial_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -722,10 +722,10 @@
 <span class="k">class</span> <span class="nc">_UnaryUnaryMultiCallable</span><span class="p">(</span><span class="n">grpc</span><span class="o">.</span><span class="n">UnaryUnaryMultiCallable</span><span class="p">):</span>
 
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-      <span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">create_managed_call</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="p">,</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">managed_call</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="p">,</span>
       <span class="n">response_deserializer</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">channel</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_create_managed_call</span> <span class="o">=</span> <span class="n">create_managed_call</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_managed_call</span> <span class="o">=</span> <span class="n">managed_call</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_method</span> <span class="o">=</span> <span class="n">method</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_request_serializer</span> <span class="o">=</span> <span class="n">request_serializer</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_response_deserializer</span> <span class="o">=</span> <span class="n">response_deserializer</span>
@@ -777,23 +777,24 @@
     <span class="k">if</span> <span class="n">rendezvous</span><span class="p">:</span>
       <span class="k">return</span> <span class="n">rendezvous</span>
     <span class="k">else</span><span class="p">:</span>
-      <span class="n">call</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_managed_call</span><span class="p">(</span>
+      <span class="n">call</span><span class="p">,</span> <span class="n">drive_call</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_managed_call</span><span class="p">(</span>
           <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">deadline_timespec</span><span class="p">)</span>
       <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">call</span><span class="o">.</span><span class="n">set_credentials</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
       <span class="n">event_handler</span> <span class="o">=</span> <span class="n">_event_handler</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_deserializer</span><span class="p">)</span>
       <span class="k">with</span> <span class="n">state</span><span class="o">.</span><span class="n">condition</span><span class="p">:</span>
         <span class="n">call</span><span class="o">.</span><span class="n">start_client_batch</span><span class="p">(</span><span class="n">cygrpc</span><span class="o">.</span><span class="n">Operations</span><span class="p">(</span><span class="n">operations</span><span class="p">),</span> <span class="n">event_handler</span><span class="p">)</span>
+        <span class="n">drive_call</span><span class="p">()</span>
       <span class="k">return</span> <span class="n">_Rendezvous</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_deserializer</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">_UnaryStreamMultiCallable</span><span class="p">(</span><span class="n">grpc</span><span class="o">.</span><span class="n">UnaryStreamMultiCallable</span><span class="p">):</span>
 
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-      <span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">create_managed_call</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="p">,</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">managed_call</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="p">,</span>
       <span class="n">response_deserializer</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">channel</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_create_managed_call</span> <span class="o">=</span> <span class="n">create_managed_call</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_managed_call</span> <span class="o">=</span> <span class="n">managed_call</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_method</span> <span class="o">=</span> <span class="n">method</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_request_serializer</span> <span class="o">=</span> <span class="n">request_serializer</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_response_deserializer</span> <span class="o">=</span> <span class="n">response_deserializer</span>
@@ -805,7 +806,7 @@
       <span class="k">raise</span> <span class="n">rendezvous</span>
     <span class="k">else</span><span class="p">:</span>
       <span class="n">state</span> <span class="o">=</span> <span class="n">_RPCState</span><span class="p">(</span><span class="n">_UNARY_STREAM_INITIAL_DUE</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-      <span class="n">call</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_managed_call</span><span class="p">(</span>
+      <span class="n">call</span><span class="p">,</span> <span class="n">drive_call</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_managed_call</span><span class="p">(</span>
           <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">deadline_timespec</span><span class="p">)</span>
       <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">call</span><span class="o">.</span><span class="n">set_credentials</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
@@ -823,16 +824,17 @@
             <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_receive_status_on_client</span><span class="p">(</span><span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="n">call</span><span class="o">.</span><span class="n">start_client_batch</span><span class="p">(</span><span class="n">cygrpc</span><span class="o">.</span><span class="n">Operations</span><span class="p">(</span><span class="n">operations</span><span class="p">),</span> <span class="n">event_handler</span><span class="p">)</span>
+        <span class="n">drive_call</span><span class="p">()</span>
       <span class="k">return</span> <span class="n">_Rendezvous</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_deserializer</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">_StreamUnaryMultiCallable</span><span class="p">(</span><span class="n">grpc</span><span class="o">.</span><span class="n">StreamUnaryMultiCallable</span><span class="p">):</span>
 
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-      <span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">create_managed_call</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="p">,</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">managed_call</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="p">,</span>
       <span class="n">response_deserializer</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">channel</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_create_managed_call</span> <span class="o">=</span> <span class="n">create_managed_call</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_managed_call</span> <span class="o">=</span> <span class="n">managed_call</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_method</span> <span class="o">=</span> <span class="n">method</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_request_serializer</span> <span class="o">=</span> <span class="n">request_serializer</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_response_deserializer</span> <span class="o">=</span> <span class="n">response_deserializer</span>
@@ -884,7 +886,7 @@
       <span class="bp">self</span><span class="p">,</span> <span class="n">request_iterator</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">deadline</span><span class="p">,</span> <span class="n">deadline_timespec</span> <span class="o">=</span> <span class="n">_deadline</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
     <span class="n">state</span> <span class="o">=</span> <span class="n">_RPCState</span><span class="p">(</span><span class="n">_STREAM_UNARY_INITIAL_DUE</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="n">call</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_managed_call</span><span class="p">(</span>
+    <span class="n">call</span><span class="p">,</span> <span class="n">drive_call</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_managed_call</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">deadline_timespec</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
       <span class="n">call</span><span class="o">.</span><span class="n">set_credentials</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
@@ -901,6 +903,7 @@
           <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_receive_status_on_client</span><span class="p">(</span><span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
       <span class="p">)</span>
       <span class="n">call</span><span class="o">.</span><span class="n">start_client_batch</span><span class="p">(</span><span class="n">cygrpc</span><span class="o">.</span><span class="n">Operations</span><span class="p">(</span><span class="n">operations</span><span class="p">),</span> <span class="n">event_handler</span><span class="p">)</span>
+      <span class="n">drive_call</span><span class="p">()</span>
       <span class="n">_consume_request_iterator</span><span class="p">(</span>
           <span class="n">request_iterator</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_serializer</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_Rendezvous</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_deserializer</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
@@ -909,10 +912,10 @@
 <span class="k">class</span> <span class="nc">_StreamStreamMultiCallable</span><span class="p">(</span><span class="n">grpc</span><span class="o">.</span><span class="n">StreamStreamMultiCallable</span><span class="p">):</span>
 
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
-      <span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">create_managed_call</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="p">,</span>
+      <span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">managed_call</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="p">,</span>
       <span class="n">response_deserializer</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">channel</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_create_managed_call</span> <span class="o">=</span> <span class="n">create_managed_call</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_managed_call</span> <span class="o">=</span> <span class="n">managed_call</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_method</span> <span class="o">=</span> <span class="n">method</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_request_serializer</span> <span class="o">=</span> <span class="n">request_serializer</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_response_deserializer</span> <span class="o">=</span> <span class="n">response_deserializer</span>
@@ -921,7 +924,7 @@
       <span class="bp">self</span><span class="p">,</span> <span class="n">request_iterator</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">deadline</span><span class="p">,</span> <span class="n">deadline_timespec</span> <span class="o">=</span> <span class="n">_deadline</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
     <span class="n">state</span> <span class="o">=</span> <span class="n">_RPCState</span><span class="p">(</span><span class="n">_STREAM_STREAM_INITIAL_DUE</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="n">call</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_managed_call</span><span class="p">(</span>
+    <span class="n">call</span><span class="p">,</span> <span class="n">drive_call</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_managed_call</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">deadline_timespec</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
       <span class="n">call</span><span class="o">.</span><span class="n">set_credentials</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">_credentials</span><span class="p">)</span>
@@ -937,6 +940,7 @@
           <span class="n">cygrpc</span><span class="o">.</span><span class="n">operation_receive_status_on_client</span><span class="p">(</span><span class="n">_EMPTY_FLAGS</span><span class="p">),</span>
       <span class="p">)</span>
       <span class="n">call</span><span class="o">.</span><span class="n">start_client_batch</span><span class="p">(</span><span class="n">cygrpc</span><span class="o">.</span><span class="n">Operations</span><span class="p">(</span><span class="n">operations</span><span class="p">),</span> <span class="n">event_handler</span><span class="p">)</span>
+      <span class="n">drive_call</span><span class="p">()</span>
       <span class="n">_consume_request_iterator</span><span class="p">(</span>
           <span class="n">request_iterator</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_serializer</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_Rendezvous</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_deserializer</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
@@ -974,16 +978,13 @@
   <span class="n">channel_spin_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
 
-<span class="k">def</span> <span class="nf">_create_channel_managed_call</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
-  <span class="k">def</span> <span class="nf">create_channel_managed_call</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">deadline</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Creates a managed cygrpc.Call.</span>
+<span class="k">def</span> <span class="nf">_channel_managed_call_management</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">deadline</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates a managed cygrpc.Call and a function to call to drive it.</span>
 
-<span class="sd">    Callers of this function must conduct at least one operation on the returned</span>
-<span class="sd">    call. The tags associated with operations conducted on the returned call</span>
-<span class="sd">    must be no-argument callables that return None to indicate that this channel</span>
-<span class="sd">    should continue polling for events associated with the call and return the</span>
-<span class="sd">    call itself to indicate that no more events associated with the call will be</span>
-<span class="sd">    generated.</span>
+<span class="sd">    If operations are successfully added to the returned cygrpc.Call, the</span>
+<span class="sd">    returned function must be called. If operations are not successfully added</span>
+<span class="sd">    to the returned cygrpc.Call, the returned function must not be called.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      parent: A cygrpc.Call to be used as the parent of the created call.</span>
@@ -993,18 +994,22 @@
 <span class="sd">      deadline: A cygrpc.Timespec to be the deadline of the created call.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">      A cygrpc.Call with which to conduct an RPC.</span>
+<span class="sd">      A cygrpc.Call with which to conduct an RPC and a function to call if</span>
+<span class="sd">        operations are successfully started on the call.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="n">state</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
-      <span class="n">call</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">create_call</span><span class="p">(</span>
-          <span class="n">parent</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">completion_queue</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
-      <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">managed_calls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">state</span><span class="o">.</span><span class="n">managed_calls</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="n">call</span><span class="p">,))</span>
-        <span class="n">_run_channel_spin_thread</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-      <span class="k">else</span><span class="p">:</span>
-        <span class="n">state</span><span class="o">.</span><span class="n">managed_calls</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
-      <span class="k">return</span> <span class="n">call</span>
-  <span class="k">return</span> <span class="n">create_channel_managed_call</span>
+    <span class="n">call</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">create_call</span><span class="p">(</span>
+        <span class="n">parent</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">completion_queue</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">drive</span><span class="p">():</span>
+      <span class="k">with</span> <span class="n">state</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">managed_calls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+          <span class="n">state</span><span class="o">.</span><span class="n">managed_calls</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="n">call</span><span class="p">,))</span>
+          <span class="n">_run_channel_spin_thread</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="n">state</span><span class="o">.</span><span class="n">managed_calls</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">call</span><span class="p">,</span> <span class="n">drive</span>
+  <span class="k">return</span> <span class="n">create</span>
 
 
 <span class="k">class</span> <span class="nc">_ChannelConnectivityState</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -1144,6 +1149,7 @@
 
 
 <span class="k">class</span> <span class="nc">Channel</span><span class="p">(</span><span class="n">grpc</span><span class="o">.</span><span class="n">Channel</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;A cygrpc.Channel-backed implementation of grpc.Channel.&quot;&quot;&quot;</span>
 
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">credentials</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Constructor.</span>
@@ -1167,25 +1173,25 @@
   <span class="k">def</span> <span class="nf">unary_unary</span><span class="p">(</span>
       <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">_UnaryUnaryMultiCallable</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span> <span class="n">_create_channel_managed_call</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_state</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span> <span class="n">_channel_managed_call_management</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_state</span><span class="p">),</span>
         <span class="n">_common</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">method</span><span class="p">),</span> <span class="n">request_serializer</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="p">)</span>
 
   <span class="k">def</span> <span class="nf">unary_stream</span><span class="p">(</span>
       <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">_UnaryStreamMultiCallable</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span> <span class="n">_create_channel_managed_call</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_state</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span> <span class="n">_channel_managed_call_management</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_state</span><span class="p">),</span>
         <span class="n">_common</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">method</span><span class="p">),</span> <span class="n">request_serializer</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="p">)</span>
 
   <span class="k">def</span> <span class="nf">stream_unary</span><span class="p">(</span>
       <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">_StreamUnaryMultiCallable</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span> <span class="n">_create_channel_managed_call</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_state</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span> <span class="n">_channel_managed_call_management</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_state</span><span class="p">),</span>
         <span class="n">_common</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">method</span><span class="p">),</span> <span class="n">request_serializer</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="p">)</span>
 
   <span class="k">def</span> <span class="nf">stream_stream</span><span class="p">(</span>
       <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">_StreamStreamMultiCallable</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span> <span class="n">_create_channel_managed_call</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_state</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="p">,</span> <span class="n">_channel_managed_call_management</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_state</span><span class="p">),</span>
         <span class="n">_common</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">method</span><span class="p">),</span> <span class="n">request_serializer</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="p">)</span>
 
   <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1223,7 +1229,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'3a3ba9d',
+            VERSION:'920345a',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
