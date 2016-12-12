@@ -568,6 +568,7 @@ class TestClient(unittest.TestCase):
             with _Monkey(_MUT, _LOG_PATH_TEMPLATE=temp_log_path):
                 with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: 'True'}):
                     handler = client.get_default_handler()
+                    handler.close()  # allow tempdir cleanup on Windows
 
         self.assertIsInstance(handler, AppEngineHandler)
 
