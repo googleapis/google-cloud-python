@@ -201,7 +201,7 @@ only supports English text.
      >>> text_content = "Jogging isn't very fun."
      >>> document = client.document(text_content)
      >>> sentiment = document.analyze_sentiment()
-     >>> print(sentiment.polarity)
+     >>> print(sentiment.score)
      -1
      >>> print(sentiment.magnitude)
      0.8
@@ -256,7 +256,7 @@ the response is :data:`None`.
             NOUN: Moon
      PUNCTUATION: .
      >>> # Sentiment present if include_sentiment=True
-     >>> print(annotations.sentiment.polarity)
+     >>> print(annotations.sentiment.score)
      1
      >>> print(annotations.sentiment.magnitude)
      0.1
