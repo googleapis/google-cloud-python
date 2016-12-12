@@ -32,6 +32,7 @@ LOGO_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'logo.png')
 FACE_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'faces.jpg')
 LABEL_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'car.jpg')
 LANDMARK_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'landmark.jpg')
+TEXT_FILE = os.path.join(_SYS_TESTS_DIR, 'data', 'text.jpg')
 
 
 class Config(object):
@@ -285,7 +286,7 @@ class TestVisionClientLabel(BaseVisionTestCase):
 
 
 class TestVisionClientLandmark(BaseVisionTestCase):
-    DESCRIPTIONS = ('Mount Rushmore')
+    DESCRIPTIONS = ('Mount Rushmore',)
 
     def setUp(self):
         self.to_delete_by_case = []
@@ -392,6 +393,67 @@ class TestVisionClientSafeSearch(BaseVisionTestCase):
         self.assertEqual(len(safe_searches), 1)
         safe_search = safe_searches[0]
         self._assert_safe_search(safe_search)
+
+
+class TestVisionClientText(unittest.TestCase):
+    DESCRIPTIONS = (
+        'Do',
+        'what',
+        'is',
+        'right,',
+        'not',
+        'what',
+        'is',
+        'easy',
+        'Do what is\nright, not\nwhat is easy\n',
+    )
+
+    def setUp(self):
+        self.to_delete_by_case = []
+
+    def tearDown(self):
+        for value in self.to_delete_by_case:
+            value.delete()
+
+    def _assert_text(self, text):
+        self.assertIsInstance(text, EntityAnnotation)
+        self.assertIn(text.description, self.DESCRIPTIONS)
+        self.assertIn(text.locale, (None, 'en'))
+        self.assertNotEqual(text.score, 0.0)
+
+    def test_detect_text_content(self):
+        client = Config.CLIENT
+        with open(TEXT_FILE, 'rb') as image_file:
+            image = client.image(content=image_file.read())
+        texts = image.detect_text()
+        self.assertEqual(len(texts), 9)
+        for text in texts:
+            self._assert_text(text)
+
+    def test_detect_text_gcs(self):
+        bucket_name = Config.TEST_BUCKET.name
+        blob_name = 'text.jpg'
+        blob = Config.TEST_BUCKET.blob(blob_name)
+        self.to_delete_by_case.append(blob)  # Clean-up.
+        with open(TEXT_FILE, 'rb') as file_obj:
+            blob.upload_from_file(file_obj)
+
+        source_uri = 'gs://%s/%s' % (bucket_name, blob_name)
+
+        client = Config.CLIENT
+        image = client.image(source_uri=source_uri)
+        texts = image.detect_text()
+        self.assertEqual(len(texts), 9)
+        for text in texts:
+            self._assert_text(text)
+
+    def test_detect_text_filename(self):
+        client = Config.CLIENT
+        image = client.image(filename=TEXT_FILE)
+        texts = image.detect_text()
+        self.assertEqual(len(texts), 9)
+        for text in texts:
+            self._assert_text(text)
 
 
 class TestVisionClientImageProperties(BaseVisionTestCase):
