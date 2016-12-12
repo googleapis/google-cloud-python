@@ -125,3 +125,28 @@ class TestSentence(unittest.TestCase):
         sentence = klass.from_api_repr(payload)
         self.assertEqual(sentence.content, content)
         self.assertEqual(sentence.begin, begin)
+        self.assertEqual(sentence.sentiment, None)
+
+    def test_from_api_repr_with_sentiment(self):
+        from google.cloud.language.sentiment import Sentiment
+        klass = self._get_target_class()
+        content = 'All the pretty horses.'
+        begin = -1
+        score = 0.5
+        magnitude = 0.5
+        payload = {
+            'text': {
+                'content': content,
+                'beginOffset': begin,
+            },
+            'sentiment': {
+                'score': score,
+                'magnitude': magnitude,
+            }
+        }
+        sentence = klass.from_api_repr(payload)
+        self.assertEqual(sentence.content, content)
+        self.assertEqual(sentence.begin, begin)
+        self.assertIsInstance(sentence.sentiment, Sentiment)
+        self.assertEqual(sentence.sentiment.score, score)
+        self.assertEqual(sentence.sentiment.magnitude, magnitude)
