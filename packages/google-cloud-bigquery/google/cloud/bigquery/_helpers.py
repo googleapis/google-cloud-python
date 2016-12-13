@@ -497,10 +497,13 @@ class ArrayQueryParameter(AbstractQueryParameter):
             values = [converter(value) for value in values]
         resource = {
             'parameterType': {
-                'arrayType': self.array_type,
+                'type': 'ARRAY',
+                'arrayType': {
+                    'type': self.array_type,
+                },
             },
             'parameterValue': {
-                'arrayValues': values,
+                'arrayValues': [{'value': value} for value in values],
             },
         }
         if self.name is not None:
