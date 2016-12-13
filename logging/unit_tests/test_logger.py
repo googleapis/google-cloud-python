@@ -454,7 +454,7 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(logger, client=client)
         batch.log_text(TEXT)
         self.assertEqual(batch.entries,
-                         [('text', TEXT, None, None, None, None)])
+                         [('text', TEXT, None, None, None, None, None)])
 
     def test_log_text_explicit(self):
         TEXT = 'This is the entry text'
@@ -469,13 +469,14 @@ class TestBatch(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
+        TIMESTAMP = '2016-10-12T15:01:23.045123456Z'
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_text(TEXT, labels=LABELS, insert_id=IID, severity=SEVERITY,
-                       http_request=REQUEST)
+                       http_request=REQUEST, timestamp=TIMESTAMP)
         self.assertEqual(batch.entries,
-                         [('text', TEXT, LABELS, IID, SEVERITY, REQUEST)])
+                         [('text', TEXT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP)])
 
     def test_log_struct_defaults(self):
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
@@ -484,7 +485,7 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(logger, client=client)
         batch.log_struct(STRUCT)
         self.assertEqual(batch.entries,
-                         [('struct', STRUCT, None, None, None, None)])
+                         [('struct', STRUCT, None, None, None, None, None)])
 
     def test_log_struct_explicit(self):
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
@@ -499,13 +500,14 @@ class TestBatch(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
+        TIMESTAMP = '2016-10-12T15:01:23.045123456Z'
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_struct(STRUCT, labels=LABELS, insert_id=IID,
-                         severity=SEVERITY, http_request=REQUEST)
+                         severity=SEVERITY, http_request=REQUEST, timestamp=TIMESTAMP)
         self.assertEqual(batch.entries,
-                         [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST)])
+                         [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP)])
 
     def test_log_proto_defaults(self):
         from google.protobuf.struct_pb2 import Struct, Value
@@ -515,7 +517,7 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(logger, client=client)
         batch.log_proto(message)
         self.assertEqual(batch.entries,
-                         [('proto', message, None, None, None, None)])
+                         [('proto', message, None, None, None, None, None)])
 
     def test_log_proto_explicit(self):
         from google.protobuf.struct_pb2 import Struct, Value
@@ -531,13 +533,14 @@ class TestBatch(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
+        TIMESTAMP = '2016-10-12T15:01:23.045123456Z'
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_proto(message, labels=LABELS, insert_id=IID,
-                        severity=SEVERITY, http_request=REQUEST)
+                        severity=SEVERITY, http_request=REQUEST, timestamp=TIMESTAMP)
         self.assertEqual(batch.entries,
-                         [('proto', message, LABELS, IID, SEVERITY, REQUEST)])
+                         [('proto', message, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP)])
 
     def test_commit_w_invalid_entry_type(self):
         logger = _Logger()
@@ -681,20 +684,21 @@ class TestBatch(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
+        TIMESTAMP = '2016-10-12T15:01:23.045123456Z'
         message = Struct(fields={'foo': Value(bool_value=True)})
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = _Logger()
         UNSENT = [
-            ('text', TEXT, None, IID, None, None),
-            ('struct', STRUCT, None, None, SEVERITY, None),
-            ('proto', message, LABELS, None, None, REQUEST),
+            ('text', TEXT, None, IID, None, None, TIMESTAMP),
+            ('struct', STRUCT, None, None, SEVERITY, None, None),
+            ('proto', message, LABELS, None, None, REQUEST, None),
         ]
         batch = self._make_one(logger, client=client)
 
         try:
             with batch as other:
-                other.log_text(TEXT, insert_id=IID)
+                other.log_text(TEXT, insert_id=IID, timestamp=TIMESTAMP)
                 other.log_struct(STRUCT, severity=SEVERITY)
                 other.log_proto(message, labels=LABELS, http_request=REQUEST)
                 raise _Bugout()
