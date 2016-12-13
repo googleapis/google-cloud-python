@@ -48,9 +48,9 @@ def _handle_error_response(response_body):
     """
     try:
         error_data = json.loads(response_body)
-        error_details = ': '.join([
+        error_details = '{}: {}'.format(
             error_data['error'],
-            error_data.get('error_description')])
+            error_data.get('error_description'))
     # If no details could be extracted, use the response data.
     except (KeyError, ValueError):
         error_details = response_body
