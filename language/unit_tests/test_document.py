@@ -17,7 +17,7 @@ import unittest
 
 ANNOTATE_NAME = 'Moon'
 ANNOTATE_CONTENT = 'A cow jumped over the %s.' % (ANNOTATE_NAME,)
-ANNOTATE_POLARITY = 1
+ANNOTATE_SCORE = 1
 ANNOTATE_MAGNITUDE = 0.2
 ANNOTATE_SALIENCE = 0.11793101
 ANNOTATE_WIKI_URL = 'http://en.wikipedia.org/wiki/Natural_satellite'
@@ -93,6 +93,16 @@ def _get_entities(include_entities):
         entities = []
 
     return entities
+
+
+def make_mock_client(response):
+    import mock
+    from google.cloud.language.connection import Connection
+    from google.cloud.language.client import Client
+
+    connection = mock.Mock(spec=Connection)
+    connection.api_request.return_value = response
+    return mock.Mock(_connection=connection, spec=Client)
 
 
 class TestDocument(unittest.TestCase):
@@ -187,7 +197,36 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(entity.salience, salience)
         self.assertEqual(entity.mentions, [name])
 
+    @staticmethod
+    def _expected_data(content, encoding_type=None,
+                       extract_sentiment=False,
+                       extract_entities=False,
+                       extract_syntax=False):
+        from google.cloud.language.document import DEFAULT_LANGUAGE
+        from google.cloud.language.document import Document
+
+        expected = {
+            'document': {
+                'language': DEFAULT_LANGUAGE,
+                'type': Document.PLAIN_TEXT,
+                'content': content,
+            },
+        }
+        if encoding_type is not None:
+            expected['encodingType'] = encoding_type
+        if extract_sentiment:
+            features = expected.setdefault('features', {})
+            features['extractDocumentSentiment'] = True
+        if extract_entities:
+            features = expected.setdefault('features', {})
+            features['extractEntities'] = True
+        if extract_syntax:
+            features = expected.setdefault('features', {})
+            features['extractSyntax'] = True
+        return expected
+
     def test_analyze_entities(self):
+        from google.cloud.language.document import Encoding
         from google.cloud.language.entity import EntityType
 
         name1 = 'R-O-C-K'
@@ -229,8 +268,7 @@ class TestDocument(unittest.TestCase):
             ],
             'language': 'en-US',
         }
-        connection = _Connection(response)
-        client = _Client(connection=connection)
+        client = make_mock_client(response)
         document = self._make_one(client, content)
 
         entities = document.analyze_entities()
@@ -243,41 +281,144 @@ class TestDocument(unittest.TestCase):
                             wiki2, salience2)
 
         # Verify the request.
-        self.assertEqual(len(connection._requested), 1)
-        req = connection._requested[0]
-        self.assertEqual(req['path'], 'analyzeEntities')
-        self.assertEqual(req['method'], 'POST')
+        expected = self._expected_data(
+            content, encoding_type=Encoding.UTF8)
+        client._connection.api_request.assert_called_once_with(
+            path='analyzeEntities', method='POST', data=expected)
 
-    def _verify_sentiment(self, sentiment, polarity, magnitude):
+    def _verify_sentiment(self, sentiment, score, magnitude):
         from google.cloud.language.sentiment import Sentiment
 
         self.assertIsInstance(sentiment, Sentiment)
-        self.assertEqual(sentiment.polarity, polarity)
+        self.assertEqual(sentiment.score, score)
         self.assertEqual(sentiment.magnitude, magnitude)
 
     def test_analyze_sentiment(self):
         content = 'All the pretty horses.'
-        polarity = 1
+        score = 1
         magnitude = 0.6
         response = {
             'documentSentiment': {
-                'polarity': polarity,
+                'score': score,
                 'magnitude': magnitude,
             },
             'language': 'en-US',
         }
-        connection = _Connection(response)
-        client = _Client(connection=connection)
+        client = make_mock_client(response)
         document = self._make_one(client, content)
 
         sentiment = document.analyze_sentiment()
-        self._verify_sentiment(sentiment, polarity, magnitude)
+        self._verify_sentiment(sentiment, score, magnitude)
 
         # Verify the request.
-        self.assertEqual(len(connection._requested), 1)
-        req = connection._requested[0]
-        self.assertEqual(req['path'], 'analyzeSentiment')
-        self.assertEqual(req['method'], 'POST')
+        expected = self._expected_data(content)
+        client._connection.api_request.assert_called_once_with(
+            path='analyzeSentiment', method='POST', data=expected)
+
+    def _verify_token(self, token, text_content, part_of_speech, lemma):
+        from google.cloud.language.syntax import Token
+
+        self.assertIsInstance(token, Token)
+        self.assertEqual(token.text_content, text_content)
+        self.assertEqual(token.part_of_speech, part_of_speech)
+        self.assertEqual(token.lemma, lemma)
+
+    def test_analyze_syntax(self):
+        from google.cloud.language.document import Encoding
+        from google.cloud.language.syntax import PartOfSpeech
+
+        name1 = 'R-O-C-K'
+        name2 = 'USA'
+        content = name1 + ' in the ' + name2
+        response = {
+            'sentences': [
+                {
+                    'text': {
+                        'content': 'R-O-C-K in the USA',
+                        'beginOffset': -1,
+                    },
+                    'sentiment': None,
+                }
+            ],
+            'tokens': [
+                {
+                    'text': {
+                        'content': 'R-O-C-K',
+                        'beginOffset': -1,
+                    },
+                    'partOfSpeech': {
+                        'tag': 'NOUN',
+                    },
+                    'dependencyEdge': {
+                        'headTokenIndex': 0,
+                        'label': 'ROOT',
+                    },
+                    'lemma': 'R-O-C-K',
+                },
+                {
+                    'text': {
+                        'content': 'in',
+                        'beginOffset': -1,
+                    },
+                    'partOfSpeech': {
+                        'tag': 'ADP',
+                    },
+                    'dependencyEdge': {
+                        'headTokenIndex': 0,
+                        'label': 'PREP',
+                    },
+                    'lemma': 'in',
+                },
+                {
+                    'text': {
+                        'content': 'the',
+                        'beginOffset': -1,
+                    },
+                    'partOfSpeech': {
+                        'tag': 'DET',
+                    },
+                    'dependencyEdge': {
+                        'headTokenIndex': 3,
+                        'label': 'DET',
+                    },
+                    'lemma': 'the',
+                },
+                {
+                    'text': {
+                        'content': 'USA',
+                        'beginOffset': -1,
+                    },
+                    'partOfSpeech': {
+                        'tag': 'NOUN',
+                    },
+                    'dependencyEdge': {
+                        'headTokenIndex': 1,
+                        'label': 'POBJ',
+                    },
+                    'lemma': 'USA',
+                },
+            ],
+            'language': 'en-US',
+        }
+        client = make_mock_client(response)
+        document = self._make_one(client, content)
+
+        tokens = document.analyze_syntax()
+        self.assertEqual(len(tokens), 4)
+        token1 = tokens[0]
+        self._verify_token(token1, name1, PartOfSpeech.NOUN, name1)
+        token2 = tokens[1]
+        self._verify_token(token2, 'in', PartOfSpeech.ADPOSITION, 'in')
+        token3 = tokens[2]
+        self._verify_token(token3, 'the', PartOfSpeech.DETERMINER, 'the')
+        token4 = tokens[3]
+        self._verify_token(token4, name2, PartOfSpeech.NOUN, name2)
+
+        # Verify the request.
+        expected = self._expected_data(
+            content, encoding_type=Encoding.UTF8)
+        client._connection.api_request.assert_called_once_with(
+            path='analyzeSyntax', method='POST', data=expected)
 
     def _verify_sentences(self, include_syntax, annotations):
         from google.cloud.language.syntax import Sentence
@@ -307,6 +448,7 @@ class TestDocument(unittest.TestCase):
     def _annotate_text_helper(self, include_sentiment,
                               include_entities, include_syntax):
         from google.cloud.language.document import Annotations
+        from google.cloud.language.document import Encoding
         from google.cloud.language.entity import EntityType
 
         token_info, sentences = _get_token_and_sentences(include_syntax)
@@ -320,12 +462,11 @@ class TestDocument(unittest.TestCase):
         }
         if include_sentiment:
             response['documentSentiment'] = {
-                'polarity': ANNOTATE_POLARITY,
+                'score': ANNOTATE_SCORE,
                 'magnitude': ANNOTATE_MAGNITUDE,
             }
 
-        connection = _Connection(response)
-        client = _Client(connection=connection)
+        client = make_mock_client(response)
         document = self._make_one(client, ANNOTATE_CONTENT)
 
         annotations = document.annotate_text(
@@ -339,7 +480,7 @@ class TestDocument(unittest.TestCase):
         # Sentiment
         if include_sentiment:
             self._verify_sentiment(annotations.sentiment,
-                                   ANNOTATE_POLARITY, ANNOTATE_MAGNITUDE)
+                                   ANNOTATE_SCORE, ANNOTATE_MAGNITUDE)
         else:
             self.assertIsNone(annotations.sentiment)
         # Entity
@@ -352,16 +493,13 @@ class TestDocument(unittest.TestCase):
             self.assertEqual(annotations.entities, [])
 
         # Verify the request.
-        self.assertEqual(len(connection._requested), 1)
-        req = connection._requested[0]
-        self.assertEqual(req['path'], 'annotateText')
-        self.assertEqual(req['method'], 'POST')
-        features = req['data']['features']
-        self.assertEqual(features.get('extractDocumentSentiment', False),
-                         include_sentiment)
-        self.assertEqual(features.get('extractEntities', False),
-                         include_entities)
-        self.assertEqual(features.get('extractSyntax', False), include_syntax)
+        expected = self._expected_data(
+            ANNOTATE_CONTENT, encoding_type=Encoding.UTF8,
+            extract_sentiment=include_sentiment,
+            extract_entities=include_entities,
+            extract_syntax=include_syntax)
+        client._connection.api_request.assert_called_once_with(
+            path='annotateText', method='POST', data=expected)
 
     def test_annotate_text(self):
         self._annotate_text_helper(True, True, True)
@@ -374,20 +512,3 @@ class TestDocument(unittest.TestCase):
 
     def test_annotate_text_syntax_only(self):
         self._annotate_text_helper(False, False, True)
-
-
-class _Connection(object):
-
-    def __init__(self, response):
-        self._response = response
-        self._requested = []
-
-    def api_request(self, **kwargs):
-        self._requested.append(kwargs)
-        return self._response
-
-
-class _Client(object):
-
-    def __init__(self, connection=None):
-        self._connection = connection

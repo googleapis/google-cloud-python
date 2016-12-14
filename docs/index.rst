@@ -111,6 +111,8 @@
   logging-sink
   logging-stdlib-usage
   logging-handlers
+  logging-handlers-app-engine
+  logging-handlers-container-engine
   logging-transports-sync
   logging-transports-thread
   logging-transports-base
@@ -122,6 +124,7 @@
 
   error-reporting-usage
   Client <error-reporting-client>
+  error-reporting-util
 
 .. toctree::
   :maxdepth: 0
@@ -151,6 +154,7 @@
   :caption: Vision
 
   vision-usage
+  vision-annotations
   vision-client
   vision-color
   vision-entity

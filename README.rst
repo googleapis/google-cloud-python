@@ -5,7 +5,7 @@ Google Cloud Python Client
 
 .. _Google Cloud Platform: https://cloud.google.com/
 
-|pypi| |build| |appveyor| |coverage| |versions|
+|pypi| |circleci| |build| |appveyor| |coverage| |versions|
 
 -  `Homepage`_
 -  `API Documentation`_
@@ -13,16 +13,25 @@ Google Cloud Python Client
 
 .. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
 .. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/
-.. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/stable/
+.. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
-This client supports the following Google Cloud Platform services:
+This client library has **beta** support for the following Google
+Cloud Platform services:
 
--  `Google Cloud Datastore`_ (`Datastore README`_)
--  `Google Cloud Storage`_ (`Storage README`_)
--  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google BigQuery`_ (`BigQuery README`_)
--  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
+-  `Google Cloud Datastore`_ (`Datastore README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
+-  `Google Cloud Storage`_ (`Storage README`_)
+
+**Beta** indicates that the client library for a particular service is
+mostly stable and is being prepared for release. Issues and requests
+against beta libraries are addressed with a higher priority.
+
+This client library has **alpha** support for the following Google
+Cloud Platform services:
+
+-  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
+-  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud DNS`_ (`DNS README`_)
@@ -32,6 +41,10 @@ This client supports the following Google Cloud Platform services:
 -  `Google Cloud Vision`_ (`Vision README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
+
+**Alpha** indicates that the client library for a particular service is
+still a work-in-progress and is more likely to get backwards-incompatible
+updates. See `versioning`_ for more details.
 
 .. _Google Cloud Datastore: https://pypi.python.org/pypi/google-cloud-datastore
 .. _Datastore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/datastore
@@ -63,6 +76,7 @@ This client supports the following Google Cloud Platform services:
 .. _HappyBase README: https://github.com/GoogleCloudPlatform/google-cloud-python-happybase
 .. _Google Cloud Runtime Configuration: https://cloud.google.com/deployment-manager/runtime-configurator/
 .. _Runtime Config README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/runtimeconfig
+.. _versioning: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst#versioning
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
@@ -106,6 +120,16 @@ See `CONTRIBUTING`_ for more information on how to get started.
 
 .. _CONTRIBUTING: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst
 
+Community
+---------
+
+Google Cloud Platform Python developers hang out in `Slack`_ in the ``#python``
+channel, click here to `get an invitation`_.
+
+
+.. _Slack: https://googlecloud-community.slack.com
+.. _get an invitation: https://gcp-slack.appspot.com/
+
 License
 -------
 
@@ -115,6 +139,8 @@ Apache 2.0 - See `LICENSE`_ for more information.
 
 .. |build| image:: https://travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master
    :target: https://travis-ci.org/GoogleCloudPlatform/google-cloud-python
+.. |circleci| image:: https://circleci.com/gh/GoogleCloudPlatform/google-cloud-python.svg?style=shield
+   :target: https://circleci.com/gh/GoogleCloudPlatform/google-cloud-python
 .. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/googlecloudplatform/google-cloud-python?branch=master&svg=true
    :target: https://ci.appveyor.com/project/GoogleCloudPlatform/google-cloud-python
 .. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/google-cloud-python/badge.png?branch=master

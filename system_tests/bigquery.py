@@ -478,3 +478,95 @@ class TestBigQuery(unittest.TestCase):
         # them here.  The best we can do is not that the API call didn't
         # raise an error, and that the job completed (in the `retry()`
         # above).
+
+    def test_sync_query_w_standard_sql_types(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
+        stamp = "%s %s" % (naive.date().isoformat(), naive.time().isoformat())
+        zoned = naive.replace(tzinfo=UTC)
+        EXAMPLES = [
+            {
+                'sql': 'SELECT 1',
+                'expected': 1,
+            },
+            {
+                'sql': 'SELECT 1.3',
+                'expected': 1.3,
+            },
+            {
+                'sql': 'SELECT TRUE',
+                'expected': True,
+            },
+            {
+                'sql': 'SELECT "ABC"',
+                'expected': 'ABC',
+            },
+            {
+                'sql': 'SELECT CAST("foo" AS BYTES)',
+                'expected': b'foo',
+            },
+            {
+                'sql': 'SELECT TIMESTAMP "%s"' % (stamp,),
+                'expected': zoned,
+            },
+            {
+                'sql': 'SELECT DATETIME(TIMESTAMP "%s")' % (stamp,),
+                'expected': naive,
+            },
+            {
+                'sql': 'SELECT DATE(TIMESTAMP "%s")' % (stamp,),
+                'expected': naive.date(),
+            },
+            {
+                'sql': 'SELECT TIME(TIMESTAMP "%s")' % (stamp,),
+                'expected': naive.time(),
+            },
+            {
+                'sql': 'SELECT (1, 2)',
+                'expected': {'_field_1': 1, '_field_2': 2},
+            },
+            {
+                'sql': 'SELECT [1, 2, 3]',
+                'expected': [1, 2, 3],
+            },
+            {
+                'sql': 'SELECT ([1, 2], 3, [4, 5])',
+                'expected':
+                    {'_field_1': [1, 2], '_field_2': 3, '_field_3': [4, 5]},
+            },
+            {
+                'sql': 'SELECT [(1, 2, 3), (4, 5, 6)]',
+                'expected': [
+                    {'_field_1': 1, '_field_2': 2, '_field_3': 3},
+                    {'_field_1': 4, '_field_2': 5, '_field_3': 6},
+                ],
+            },
+            {
+                'sql': 'SELECT [([1, 2, 3], 4), ([5, 6], 7)]',
+                'expected': [
+                    {u'_field_1': [1, 2, 3], u'_field_2': 4},
+                    {u'_field_1': [5, 6], u'_field_2': 7},
+                ],
+            },
+            {
+                'sql': 'SELECT ARRAY(SELECT STRUCT([1, 2]))',
+                'expected': [{u'_field_1': [1, 2]}],
+            },
+        ]
+        for example in EXAMPLES:
+            query = Config.CLIENT.run_sync_query(example['sql'])
+            query.use_legacy_sql = False
+            query.run()
+            self.assertEqual(len(query.rows), 1)
+            self.assertEqual(len(query.rows[0]), 1)
+            self.assertEqual(query.rows[0][0], example['expected'])
+
+    def test_dump_table_w_public_data(self):
+        PUBLIC = 'bigquery-public-data'
+        DATASET_NAME = 'samples'
+        TABLE_NAME = 'natality'
+
+        dataset = Config.CLIENT.dataset(DATASET_NAME, project=PUBLIC)
+        table = dataset.table(TABLE_NAME)
+        self._fetch_single_page(table)

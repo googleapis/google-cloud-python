@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class TestClient(unittest.TestCase):
 
@@ -35,14 +42,15 @@ class TestClient(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         self.assertEqual(client.project, self.PROJECT)
 
     def test_logging_api_wo_gax(self):
         from google.cloud.logging._http import _LoggingAPI
 
-        client = self._make_one(self.PROJECT, credentials=_Credentials(),
+        client = self._make_one(self.PROJECT,
+                                credentials=_make_credentials(),
                                 use_gax=False)
         conn = client._connection = object()
         api = client.logging_api
@@ -54,9 +62,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_logging_api_w_gax(self):
-        from google.cloud.logging import client as MUT
-        from google.cloud._testing import _Monkey
-
         clients = []
         api_obj = object()
 
@@ -64,11 +69,14 @@ class TestClient(unittest.TestCase):
             clients.append(client_obj)
             return api_obj
 
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 use_gax=True)
 
-        with _Monkey(MUT, make_gax_logging_api=make_api):
+        patch = mock.patch(
+            'google.cloud.logging.client.make_gax_logging_api',
+            new=make_api)
+        with patch:
             api = client.logging_api
 
         self.assertIs(api, api_obj)
@@ -78,12 +86,13 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_no_gax_ctor(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.logging import client as MUT
         from google.cloud.logging._http import _LoggingAPI
 
-        creds = _Credentials()
-        with _Monkey(MUT, _USE_GAX=True):
+        creds = _make_credentials()
+        patch = mock.patch(
+            'google.cloud.logging.client._USE_GAX',
+            new=True)
+        with patch:
             client = self._make_one(project=self.PROJECT, credentials=creds,
                                     use_gax=False)
 
@@ -92,11 +101,10 @@ class TestClient(unittest.TestCase):
 
     def test_sinks_api_wo_gax(self):
         from google.cloud.logging._http import _SinksAPI
-        from google.cloud.logging import client as MUT
-        from google.cloud._testing import _Monkey
 
-        with _Monkey(MUT, _USE_GAX=False):
-            client = self._make_one(self.PROJECT, credentials=_Credentials())
+        client = self._make_one(
+            self.PROJECT, credentials=_make_credentials(),
+            use_gax=False)
 
         conn = client._connection = object()
         api = client.sinks_api
@@ -108,9 +116,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_sinks_api_w_gax(self):
-        from google.cloud.logging import client as MUT
-        from google.cloud._testing import _Monkey
-
         clients = []
         api_obj = object()
 
@@ -118,11 +123,14 @@ class TestClient(unittest.TestCase):
             clients.append(client_obj)
             return api_obj
 
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 use_gax=True)
 
-        with _Monkey(MUT, make_gax_sinks_api=make_api):
+        patch = mock.patch(
+            'google.cloud.logging.client.make_gax_sinks_api',
+            new=make_api)
+        with patch:
             api = client.sinks_api
 
         self.assertIs(api, api_obj)
@@ -133,11 +141,10 @@ class TestClient(unittest.TestCase):
 
     def test_metrics_api_wo_gax(self):
         from google.cloud.logging._http import _MetricsAPI
-        from google.cloud.logging import client as MUT
-        from google.cloud._testing import _Monkey
 
-        with _Monkey(MUT, _USE_GAX=False):
-            client = self._make_one(self.PROJECT, credentials=_Credentials())
+        client = self._make_one(
+            self.PROJECT, credentials=_make_credentials(),
+            use_gax=False)
 
         conn = client._connection = object()
         api = client.metrics_api
@@ -149,9 +156,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_metrics_api_w_gax(self):
-        from google.cloud.logging import client as MUT
-        from google.cloud._testing import _Monkey
-
         clients = []
         api_obj = object()
 
@@ -159,11 +163,14 @@ class TestClient(unittest.TestCase):
             clients.append(client_obj)
             return api_obj
 
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 use_gax=True)
 
-        with _Monkey(MUT, make_gax_metrics_api=make_api):
+        patch = mock.patch(
+            'google.cloud.logging.client.make_gax_metrics_api',
+            new=make_api)
+        with patch:
             api = client.metrics_api
 
         self.assertIs(api, api_obj)
@@ -174,7 +181,7 @@ class TestClient(unittest.TestCase):
 
     def test_logger(self):
         from google.cloud.logging.logger import Logger
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         logger = client.logger(self.LOGGER_NAME)
         self.assertIsInstance(logger, Logger)
@@ -198,7 +205,7 @@ class TestClient(unittest.TestCase):
             'logName': 'projects/%s/logs/%s' % (
                 self.PROJECT, self.LOGGER_NAME),
         }]
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 use_gax=False)
         returned = {
@@ -263,7 +270,7 @@ class TestClient(unittest.TestCase):
             'logName': 'projects/%s/logs/%s' % (
                 self.PROJECT, self.LOGGER_NAME),
         }]
-        client = self._make_one(self.PROJECT, credentials=_Credentials(),
+        client = self._make_one(self.PROJECT, credentials=_make_credentials(),
                                 use_gax=False)
         returned = {'entries': ENTRIES}
         client._connection = _Connection(returned)
@@ -314,7 +321,7 @@ class TestClient(unittest.TestCase):
 
     def test_sink_defaults(self):
         from google.cloud.logging.sink import Sink
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         sink = client.sink(self.SINK_NAME)
         self.assertIsInstance(sink, Sink)
@@ -326,7 +333,7 @@ class TestClient(unittest.TestCase):
 
     def test_sink_explicit(self):
         from google.cloud.logging.sink import Sink
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         sink = client.sink(self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
         self.assertIsInstance(sink, Sink)
@@ -349,7 +356,8 @@ class TestClient(unittest.TestCase):
             'filter': FILTER,
             'destination': self.DESTINATION_URI,
         }]
-        client = self._make_one(project=PROJECT, credentials=_Credentials(),
+        client = self._make_one(project=PROJECT,
+                                credentials=_make_credentials(),
                                 use_gax=False)
         returned = {
             'sinks': SINKS,
@@ -395,8 +403,8 @@ class TestClient(unittest.TestCase):
             'filter': FILTER,
             'destination': self.DESTINATION_URI,
         }]
-        client = self._make_one(project=PROJECT, credentials=_Credentials(),
-                                use_gax=False)
+        client = self._make_one(
+            project=PROJECT, credentials=_make_credentials(), use_gax=False)
         returned = {
             'sinks': SINKS,
         }
@@ -431,7 +439,7 @@ class TestClient(unittest.TestCase):
 
     def test_metric_defaults(self):
         from google.cloud.logging.metric import Metric
-        creds = _Credentials()
+        creds = _make_credentials()
 
         client_obj = self._make_one(project=self.PROJECT, credentials=creds)
         metric = client_obj.metric(self.METRIC_NAME)
@@ -444,7 +452,7 @@ class TestClient(unittest.TestCase):
 
     def test_metric_explicit(self):
         from google.cloud.logging.metric import Metric
-        creds = _Credentials()
+        creds = _make_credentials()
 
         client_obj = self._make_one(project=self.PROJECT, credentials=creds)
         metric = client_obj.metric(self.METRIC_NAME, self.FILTER,
@@ -465,7 +473,7 @@ class TestClient(unittest.TestCase):
             'description': self.DESCRIPTION,
         }]
         client = self._make_one(
-            project=self.PROJECT, credentials=_Credentials(),
+            project=self.PROJECT, credentials=_make_credentials(),
             use_gax=False)
         returned = {
             'metrics': metrics,
@@ -507,7 +515,7 @@ class TestClient(unittest.TestCase):
             'description': self.DESCRIPTION,
         }]
         client = self._make_one(
-            project=self.PROJECT, credentials=_Credentials(),
+            project=self.PROJECT, credentials=_make_credentials(),
             use_gax=False)
         returned = {
             'metrics': metrics,
@@ -543,18 +551,78 @@ class TestClient(unittest.TestCase):
             },
         })
 
+    def test_get_default_handler_app_engine(self):
+        import os
+        from google.cloud._testing import _Monkey
+        from google.cloud._testing import _tempdir
+        from google.cloud.logging.client import _APPENGINE_FLEXIBLE_ENV_VM
+        from google.cloud.logging.handlers import app_engine as _MUT
+        from google.cloud.logging.handlers import AppEngineHandler
 
-class _Credentials(object):
+        client = self._make_one(project=self.PROJECT,
+                                credentials=_make_credentials(),
+                                use_gax=False)
 
-    _scopes = None
+        with _tempdir() as tempdir:
+            temp_log_path = os.path.join(tempdir, '{pid}')
+            with _Monkey(_MUT, _LOG_PATH_TEMPLATE=temp_log_path):
+                with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: 'True'}):
+                    handler = client.get_default_handler()
+                    handler.close()  # allow tempdir cleanup on Windows
 
-    @staticmethod
-    def create_scoped_required():
-        return True
+        self.assertIsInstance(handler, AppEngineHandler)
 
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
+    def test_get_default_handler_container_engine(self):
+        import os
+        from google.cloud._testing import _Monkey
+        from google.cloud.logging.client import _CONTAINER_ENGINE_ENV
+        from google.cloud.logging.handlers import ContainerEngineHandler
+
+        client = self._make_one(project=self.PROJECT,
+                                credentials=_make_credentials(),
+                                use_gax=False)
+
+        with _Monkey(os, environ={_CONTAINER_ENGINE_ENV: 'True'}):
+            handler = client.get_default_handler()
+
+        self.assertIsInstance(handler, ContainerEngineHandler)
+
+    def test_get_default_handler_general(self):
+        import httplib2
+        from google.cloud.logging.handlers import CloudLoggingHandler
+
+        http_mock = mock.Mock(spec=httplib2.Http)
+        credentials = _make_credentials()
+        deepcopy = mock.Mock(return_value=http_mock)
+
+        with mock.patch('copy.deepcopy', new=deepcopy):
+            client = self._make_one(project=self.PROJECT,
+                                    credentials=credentials,
+                                    use_gax=False)
+            handler = client.get_default_handler()
+            deepcopy.assert_called_once_with(client._connection.http)
+
+        self.assertIsInstance(handler, CloudLoggingHandler)
+
+    def test_setup_logging(self):
+        import httplib2
+
+        http_mock = mock.Mock(spec=httplib2.Http)
+        deepcopy = mock.Mock(return_value=http_mock)
+        setup_logging = mock.Mock()
+
+        credentials = _make_credentials()
+
+        with mock.patch('copy.deepcopy', new=deepcopy):
+            with mock.patch('google.cloud.logging.client.setup_logging',
+                            new=setup_logging):
+                client = self._make_one(project=self.PROJECT,
+                                        credentials=credentials,
+                                        use_gax=False)
+                client.setup_logging()
+                deepcopy.assert_called_once_with(client._connection.http)
+
+        setup_logging.assert_called()
 
 
 class _Connection(object):

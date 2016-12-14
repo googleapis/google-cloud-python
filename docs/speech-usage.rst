@@ -7,12 +7,6 @@ base.
 
 .. warning::
 
-    This API, ``google-cloud-speech`` has not been released yet. In order to
-    test and explore this feature, you must install ``google-cloud`` from
-    source.
-
-.. warning::
-
     This is a Beta release of Google Speech API. This
     API is not intended for real-time usage in critical applications.
 
@@ -61,7 +55,7 @@ See: `Speech Asynchronous Recognize`_
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
     ...                        encoding=speech.Encoding.LINEAR16,
     ...                        sample_rate=44100)
-    >>> operation = client.async_recognize(sample, max_alternatives=2)
+    >>> operation = sample.async_recognize(max_alternatives=2)
     >>> retry_count = 100
     >>> while retry_count > 0 and not operation.complete:
     ...     retry_count -= 1
@@ -94,8 +88,7 @@ Great Britian.
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
     ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
-    >>> operation = client.async_recognize(sample, max_alternatives=2)
-    >>> alternatives = client.sync_recognize(
+    >>> alternatives = sample.sync_recognize(
     ...     speech.Encoding.FLAC, 16000,
     ...     source_uri='gs://my-bucket/recording.flac', language_code='en-GB',
     ...     max_alternatives=2)
@@ -119,7 +112,7 @@ Example of using the profanity filter.
     >>> sample = client.sample(source_uri='gs://my-bucket/recording.flac',
     ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
-    >>> alternatives = client.sync_recognize(sample, max_alternatives=1,
+    >>> alternatives = sample.sync_recognize(max_alternatives=1,
     ...                                      profanity_filter=True)
     >>> for alternative in alternatives:
     ...     print('=' * 20)
@@ -141,7 +134,7 @@ words to the vocabulary of the recognizer.
     ...                        encoding=speech.Encoding.FLAC,
     ...                        sample_rate=44100)
     >>> hints = ['hi', 'good afternoon']
-    >>> alternatives = client.sync_recognize(sample, max_alternatives=2,
+    >>> alternatives = sample.sync_recognize(max_alternatives=2,
     ...                                      speech_context=hints)
     >>> for alternative in alternatives:
     ...     print('=' * 20)
@@ -171,7 +164,7 @@ speech data to possible text alternatives on the fly.
     ...     sample = client.sample(content=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    ...     results = list(client.streaming_recognize(sample))
+    ...     results = list(sample.streaming_recognize())
     >>> print(results[0].alternatives[0].transcript)
     'hello'
     >>> print(results[0].alternatives[0].confidence)
@@ -194,8 +187,7 @@ See: `Single Utterance`_
     ...     sample = client.sample(content=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    ...     responses = client.streaming_recognize(sample,
-    ...                                            single_utterance=True)
+    ...     responses = sample.streaming_recognize(single_utterance=True)
     ...     results = list(responses)
     >>> print(results[0].alternatives[0].transcript)
     hello
@@ -214,8 +206,7 @@ If ``interim_results`` is set to :data:`True`, interim results
     ...     sample = client.sample(content=stream,
     ...                            encoding=speech.Encoding.LINEAR16,
     ...                            sample_rate=16000)
-    ...     for results in client.streaming_recognize(sample,
-    ...                                                interim_results=True):
+    ...     for results in sample.streaming_recognize(interim_results=True):
     ...         print('=' * 20)
     ...         print(results[0].alternatives[0].transcript)
     ...         print(results[0].alternatives[0].confidence)

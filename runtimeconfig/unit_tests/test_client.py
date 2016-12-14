@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class TestClient(unittest.TestCase):
 
@@ -28,7 +35,7 @@ class TestClient(unittest.TestCase):
     def test_config(self):
         PROJECT = 'PROJECT'
         CONFIG_NAME = 'config_name'
-        creds = _Credentials()
+        creds = _make_credentials()
 
         client_obj = self._make_one(project=PROJECT, credentials=creds)
         new_config = client_obj.config(CONFIG_NAME)
@@ -38,16 +45,3 @@ class TestClient(unittest.TestCase):
         self.assertEqual(new_config.full_name,
                          'projects/%s/configs/%s' % (PROJECT, CONFIG_NAME))
         self.assertFalse(new_config.description)
-
-
-class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self

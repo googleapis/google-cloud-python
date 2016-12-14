@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class TestConnection(unittest.TestCase):
 
@@ -29,10 +36,9 @@ class TestConnection(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_default_url(self):
-        creds = _Credentials()
+        creds = _make_credentials()
         conn = self._make_one(creds)
-        klass = self._get_target_class()
-        self.assertEqual(conn.credentials._scopes, klass.SCOPE)
+        self.assertEqual(conn.credentials, creds)
 
 
 class Test_LoggingAPI(unittest.TestCase):
@@ -92,7 +98,7 @@ class Test_LoggingAPI(unittest.TestCase):
             }],
             'nextPageToken': TOKEN,
         }
-        client = Client(project=self.PROJECT, credentials=object(),
+        client = Client(project=self.PROJECT, credentials=_make_credentials(),
                         use_gax=False)
         client._connection = _Connection(RETURNED)
         api = self._make_one(client)
@@ -170,7 +176,7 @@ class Test_LoggingAPI(unittest.TestCase):
                     self.PROJECT, self.LOGGER_NAME),
             }],
         }
-        client = Client(project=self.PROJECT, credentials=object(),
+        client = Client(project=self.PROJECT, credentials=_make_credentials(),
                         use_gax=False)
         client._connection = _Connection(RETURNED)
         api = self._make_one(client)
@@ -302,7 +308,7 @@ class Test_SinksAPI(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        connection = object()
+        connection = _make_credentials()
         client = _Client(connection)
         api = self._make_one(client)
         self.assertIs(api._connection, connection)
@@ -757,19 +763,6 @@ class Test_MetricsAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['method'], 'DELETE')
         path = '/projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
         self.assertEqual(conn._called_with['path'], path)
-
-
-class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
 
 
 class _Connection(object):

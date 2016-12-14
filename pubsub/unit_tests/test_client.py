@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class TestClient(unittest.TestCase):
     PROJECT = 'PROJECT'
@@ -32,12 +39,12 @@ class TestClient(unittest.TestCase):
 
     def test_publisher_api_wo_gax(self):
         from google.cloud.pubsub._http import _PublisherAPI
-        from google.cloud.pubsub import client as MUT
-        from google.cloud._testing import _Monkey
-        creds = _Credentials()
 
-        with _Monkey(MUT, _USE_GAX=False):
-            client = self._make_one(project=self.PROJECT, credentials=creds)
+        creds = _make_credentials()
+
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds,
+            use_gax=False)
 
         conn = client._connection = object()
         api = client.publisher_api
@@ -49,12 +56,11 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_no_gax_ctor(self):
-        from google.cloud._testing import _Monkey
         from google.cloud.pubsub._http import _PublisherAPI
-        from google.cloud.pubsub import client as MUT
 
-        creds = _Credentials()
-        with _Monkey(MUT, _USE_GAX=True):
+        creds = _make_credentials()
+        with mock.patch('google.cloud.pubsub.client._USE_GAX',
+                        new=True):
             client = self._make_one(project=self.PROJECT, credentials=creds,
                                     use_gax=False)
 
@@ -63,9 +69,6 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(api, _PublisherAPI)
 
     def test_publisher_api_w_gax(self):
-        from google.cloud.pubsub import client as MUT
-        from google.cloud._testing import _Monkey
-
         wrapped = object()
         _called_with = []
 
@@ -79,12 +82,16 @@ class TestClient(unittest.TestCase):
                 self._wrapped = _wrapped
                 self._client = client
 
-        creds = _Credentials()
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds,
+            use_gax=True)
 
-        with _Monkey(MUT, _USE_GAX=True,
-                     make_gax_publisher_api=_generated_api,
-                     GAXPublisherAPI=_GaxPublisherAPI):
-            client = self._make_one(project=self.PROJECT, credentials=creds)
+        patch = mock.patch.multiple(
+            'google.cloud.pubsub.client',
+            make_gax_publisher_api=_generated_api,
+            GAXPublisherAPI=_GaxPublisherAPI)
+        with patch:
             api = client.publisher_api
 
         self.assertIsInstance(api, _GaxPublisherAPI)
@@ -98,12 +105,11 @@ class TestClient(unittest.TestCase):
 
     def test_subscriber_api_wo_gax(self):
         from google.cloud.pubsub._http import _SubscriberAPI
-        from google.cloud.pubsub import client as MUT
-        from google.cloud._testing import _Monkey
-        creds = _Credentials()
 
-        with _Monkey(MUT, _USE_GAX=False):
-            client = self._make_one(project=self.PROJECT, credentials=creds)
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds,
+            use_gax=False)
 
         conn = client._connection = object()
         api = client.subscriber_api
@@ -115,9 +121,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_subscriber_api_w_gax(self):
-        from google.cloud.pubsub import client as MUT
-        from google.cloud._testing import _Monkey
-
         wrapped = object()
         _called_with = []
 
@@ -131,12 +134,16 @@ class TestClient(unittest.TestCase):
                 self._wrapped = _wrapped
                 self._client = client
 
-        creds = _Credentials()
+        creds = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds,
+            use_gax=True)
 
-        with _Monkey(MUT, _USE_GAX=True,
-                     make_gax_subscriber_api=_generated_api,
-                     GAXSubscriberAPI=_GaxSubscriberAPI):
-            client = self._make_one(project=self.PROJECT, credentials=creds)
+        patch = mock.patch.multiple(
+            'google.cloud.pubsub.client',
+            make_gax_subscriber_api=_generated_api,
+            GAXSubscriberAPI=_GaxSubscriberAPI)
+        with patch:
             api = client.subscriber_api
 
         self.assertIsInstance(api, _GaxSubscriberAPI)
@@ -150,7 +157,7 @@ class TestClient(unittest.TestCase):
 
     def test_iam_policy_api(self):
         from google.cloud.pubsub._http import _IAMPolicyAPI
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = object()
         api = client.iam_policy_api
@@ -163,7 +170,7 @@ class TestClient(unittest.TestCase):
     def test_list_topics_no_paging(self):
         from google.cloud.pubsub.topic import Topic
 
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         client._connection = object()
         api = _FauxPublisherAPI(items=[Topic(self.TOPIC_NAME, client)])
@@ -186,7 +193,7 @@ class TestClient(unittest.TestCase):
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         client._connection = object()
         api = _FauxPublisherAPI([Topic(self.TOPIC_NAME, client)], TOKEN2)
@@ -204,7 +211,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(api._listed_topics, (self.PROJECT, 1, TOKEN1))
 
     def test_list_topics_missing_key(self):
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         client._connection = object()
         api = _FauxPublisherAPI()
@@ -224,7 +231,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.pubsub.topic import Topic
 
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 use_gax=False)
         returned = {'subscriptions': [SUB_INFO]}
@@ -262,7 +269,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.pubsub.topic import Topic
 
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds,
                                 use_gax=False)
 
@@ -315,7 +322,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_subscriptions_w_missing_key(self):
         PROJECT = 'PROJECT'
-        creds = _Credentials()
+        creds = _make_credentials()
 
         client = self._make_one(project=PROJECT, credentials=creds)
         client._connection = object()
@@ -333,7 +340,7 @@ class TestClient(unittest.TestCase):
     def test_topic(self):
         PROJECT = 'PROJECT'
         TOPIC_NAME = 'TOPIC_NAME'
-        creds = _Credentials()
+        creds = _make_credentials()
 
         client_obj = self._make_one(project=PROJECT, credentials=creds)
         new_topic = client_obj.topic(TOPIC_NAME)
@@ -343,19 +350,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(new_topic.full_name,
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertFalse(new_topic.timestamp_messages)
-
-
-class _Credentials(object):
-
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
 
 
 class _Iterator(object):

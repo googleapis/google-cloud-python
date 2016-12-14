@@ -14,6 +14,7 @@
 
 import unittest
 
+import mock
 
 try:
     # pylint: disable=unused-import
@@ -25,6 +26,13 @@ else:
     _HAVE_GAX = True
 
 from google.cloud._testing import _GAXBaseAPI
+
+
+def _make_credentials():
+    # pylint: disable=redefined-outer-name
+    import google.auth.credentials
+    # pylint: enable=redefined-outer-name
+    return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
 class _Base(object):
@@ -416,8 +424,9 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     def test_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
-        from google.pubsub.v1.pubsub_pb2 import PushConfig
-        from google.pubsub.v1.pubsub_pb2 import Subscription as SubscriptionPB
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PushConfig
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import (
+            Subscription as SubscriptionPB)
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.pubsub.client import Client
         from google.cloud.pubsub.subscription import Subscription
@@ -430,7 +439,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
                                 push_config=push_cfg_pb)
         response = _GAXPageIterator([sub_pb])
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
-        creds = _Credentials()
+        creds = _make_credentials()
         client = Client(project=self.PROJECT, credentials=creds)
         api = self._make_one(gax_api, client)
 
@@ -458,8 +467,9 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIs(options.page_token, INITIAL_PAGE)
 
     def test_list_subscriptions_with_paging(self):
-        from google.pubsub.v1.pubsub_pb2 import PushConfig
-        from google.pubsub.v1.pubsub_pb2 import Subscription as SubscriptionPB
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PushConfig
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import (
+            Subscription as SubscriptionPB)
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.pubsub.client import Client
         from google.cloud.pubsub.subscription import Subscription
@@ -476,7 +486,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         response = _GAXPageIterator([sub_pb], page_token=NEW_TOKEN)
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
         client = _Client(self.PROJECT)
-        creds = _Credentials()
+        creds = _make_credentials()
         client = Client(project=self.PROJECT, credentials=creds)
         api = self._make_one(gax_api, client)
 
@@ -505,7 +515,7 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertEqual(options.page_token, TOKEN)
 
     def test_subscription_create(self):
-        from google.pubsub.v1.pubsub_pb2 import Subscription
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import Subscription
 
         sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH)
         gax_api = _GAXSubscriberAPI(_create_subscription_response=sub_pb)
@@ -564,8 +574,8 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertIsNone(options)
 
     def test_subscription_get_hit(self):
-        from google.pubsub.v1.pubsub_pb2 import PushConfig
-        from google.pubsub.v1.pubsub_pb2 import Subscription
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import PushConfig
+        from google.cloud.grpc.pubsub.v1.pubsub_pb2 import Subscription
 
         push_cfg_pb = PushConfig(push_endpoint=self.PUSH_ENDPOINT)
         sub_pb = Subscription(name=self.SUB_PATH, topic=self.TOPIC_PATH,
@@ -764,6 +774,24 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
         self.assertFalse(return_immediately)
         self.assertIsNone(options)
 
+    def test_subscription_pull_deadline_exceeded(self):
+        client = _Client(self.PROJECT)
+        gax_api = _GAXSubscriberAPI(_deadline_exceeded_gax_error=True)
+        api = self._make_one(gax_api, client)
+
+        result = api.subscription_pull(self.SUB_PATH)
+        self.assertEqual(result, [])
+
+    def test_subscription_pull_deadline_exceeded_return_immediately(self):
+        from google.gax.errors import GaxError
+
+        client = _Client(self.PROJECT)
+        gax_api = _GAXSubscriberAPI(_deadline_exceeded_gax_error=True)
+        api = self._make_one(gax_api, client)
+
+        with self.assertRaises(GaxError):
+            api.subscription_pull(self.SUB_PATH, return_immediately=True)
+
     def test_subscription_acknowledge_hit(self):
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
@@ -877,8 +905,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         return make_gax_publisher_api(connection)
 
     def test_live_api(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.pubsub import _gax as MUT
+        from google.cloud.pubsub._gax import DEFAULT_USER_AGENT
 
         channels = []
         channel_args = []
@@ -896,22 +923,22 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 
         mock_publisher_api.SERVICE_ADDRESS = host
 
-        creds = _Credentials()
+        creds = _make_credentials()
         connection = _Connection(in_emulator=False,
                                  credentials=creds)
-        with _Monkey(MUT, PublisherApi=mock_publisher_api,
-                     make_secure_channel=make_channel):
+        patch = mock.patch.multiple(
+            'google.cloud.pubsub._gax',
+            PublisherClient=mock_publisher_api,
+            make_secure_channel=make_channel)
+        with patch:
             result = self._call_fut(connection)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [channel_obj])
         self.assertEqual(channel_args,
-                         [(creds, MUT.DEFAULT_USER_AGENT, host)])
+                         [(creds, DEFAULT_USER_AGENT, host)])
 
     def test_emulator(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.pubsub import _gax as MUT
-
         channels = []
         mock_result = object()
         insecure_args = []
@@ -927,8 +954,11 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 
         host = 'CURR_HOST:1234'
         connection = _Connection(in_emulator=True, host=host)
-        with _Monkey(MUT, PublisherApi=mock_publisher_api,
-                     insecure_channel=mock_insecure_channel):
+        patch = mock.patch.multiple(
+            'google.cloud.pubsub._gax',
+            PublisherClient=mock_publisher_api,
+            insecure_channel=mock_insecure_channel)
+        with patch:
             result = self._call_fut(connection)
 
         self.assertIs(result, mock_result)
@@ -944,8 +974,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
         return make_gax_subscriber_api(connection)
 
     def test_live_api(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.pubsub import _gax as MUT
+        from google.cloud.pubsub._gax import DEFAULT_USER_AGENT
 
         channels = []
         channel_args = []
@@ -963,22 +992,22 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
 
         mock_subscriber_api.SERVICE_ADDRESS = host
 
-        creds = _Credentials()
+        creds = _make_credentials()
         connection = _Connection(in_emulator=False,
                                  credentials=creds)
-        with _Monkey(MUT, SubscriberApi=mock_subscriber_api,
-                     make_secure_channel=make_channel):
+        patch = mock.patch.multiple(
+            'google.cloud.pubsub._gax',
+            SubscriberClient=mock_subscriber_api,
+            make_secure_channel=make_channel)
+        with patch:
             result = self._call_fut(connection)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [channel_obj])
         self.assertEqual(channel_args,
-                         [(creds, MUT.DEFAULT_USER_AGENT, host)])
+                         [(creds, DEFAULT_USER_AGENT, host)])
 
     def test_emulator(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.pubsub import _gax as MUT
-
         channels = []
         mock_result = object()
         insecure_args = []
@@ -994,8 +1023,11 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
 
         host = 'CURR_HOST:1234'
         connection = _Connection(in_emulator=True, host=host)
-        with _Monkey(MUT, SubscriberApi=mock_subscriber_api,
-                     insecure_channel=mock_insecure_channel):
+        patch = mock.patch.multiple(
+            'google.cloud.pubsub._gax',
+            SubscriberClient=mock_subscriber_api,
+            insecure_channel=mock_insecure_channel)
+        with patch:
             result = self._call_fut(connection)
 
         self.assertIs(result, mock_result)
@@ -1065,6 +1097,7 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
     _modify_push_config_ok = False
     _acknowledge_ok = False
     _modify_ack_deadline_ok = False
+    _deadline_exceeded_gax_error = False
 
     def list_subscriptions(self, project, page_size, options=None):
         self._list_subscriptions_called_with = (project, page_size, options)
@@ -1114,6 +1147,9 @@ class _GAXSubscriberAPI(_GAXBaseAPI):
             name, max_messages, return_immediately, options)
         if self._random_gax_error:
             raise GaxError('error')
+        if self._deadline_exceeded_gax_error:
+            raise GaxError('deadline exceeded',
+                           self._make_grpc_deadline_exceeded())
         try:
             return self._pull_response
         except AttributeError:
@@ -1184,10 +1220,3 @@ class _Client(object):
 
     def __init__(self, project):
         self.project = project
-
-
-class _Credentials(object):
-
-    @staticmethod
-    def create_scoped_required():
-        return False

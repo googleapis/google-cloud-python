@@ -1173,22 +1173,27 @@ class TestTable(unittest.TestCase, _SchemaBase):
             'pageToken': TOKEN,
             'rows': [
                 {'f': [
-                    {'v': ['red', 'green']},
-                    {'v': [{'f': [{'v': ['1', '2']},
-                                  {'v': ['3.1415', '1.414']}]}]},
+                    {'v': [{'v': 'red'}, {'v': 'green'}]},
+                    {'v': [{
+                        'v': {
+                            'f': [
+                                {'v': [{'v': '1'}, {'v': '2'}]},
+                                {'v': [{'v': '3.1415'}, {'v': '1.414'}]},
+                            ]}
+                    }]},
                 ]},
             ]
         }
         conn = _Connection(DATA)
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
-        full_name = SchemaField('color', 'STRING', mode='REPEATED')
+        color = SchemaField('color', 'STRING', mode='REPEATED')
         index = SchemaField('index', 'INTEGER', 'REPEATED')
         score = SchemaField('score', 'FLOAT', 'REPEATED')
         struct = SchemaField('struct', 'RECORD', mode='REPEATED',
                              fields=[index, score])
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
-                               schema=[full_name, struct])
+                               schema=[color, struct])
 
         iterator = table.fetch_data()
         page = six.next(iterator.pages)
@@ -1291,6 +1296,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_insert_data_w_bound_client(self):
         import datetime
         from google.cloud._helpers import UTC
+        from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud._helpers import _microseconds_from_datetime
         from google.cloud.bigquery.table import SchemaField
 
@@ -1308,16 +1314,16 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._make_one(self.TABLE_NAME, dataset=dataset,
                                schema=[full_name, age, joined])
         ROWS = [
-            ('Phred Phlyntstone', 32, WHEN),
+            ('Phred Phlyntstone', 32, _datetime_to_rfc3339(WHEN)),
             ('Bharney Rhubble', 33, WHEN + datetime.timedelta(seconds=1)),
             ('Wylma Phlyntstone', 29, WHEN + datetime.timedelta(seconds=2)),
             ('Bhettye Rhubble', 27, None),
         ]
 
         def _row_data(row):
-            joined = None
-            if row[2] is not None:
-                joined = _microseconds_from_datetime(row[2]) * 1e-6
+            joined = row[2]
+            if isinstance(row[2], datetime.datetime):
+                joined = _microseconds_from_datetime(joined) * 1e-6
             return {'full_name': row[0],
                     'age': row[1],
                     'joined': joined}

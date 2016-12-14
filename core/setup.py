@@ -52,14 +52,15 @@ SETUP_BASE = {
 REQUIREMENTS = [
     'httplib2 >= 0.9.1',
     'googleapis-common-protos >= 1.3.4',
-    'oauth2client >= 3.0.0, < 4.0.0dev',
     'protobuf >= 3.0.0',
+    'google-auth >= 0.4.0, < 2.0.0dev',
+    'google-auth-httplib2',
     'six',
 ]
 
 setup(
     name='google-cloud-core',
-    version='0.20.0',
+    version='0.22.1',
     description='API Client library for Google Cloud: Core Helpers',
     long_description=README,
     namespace_packages=[

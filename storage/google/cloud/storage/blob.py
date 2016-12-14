@@ -299,18 +299,11 @@ class Blob(_PropertyMixin):
            initialized, makes an additional API request to load it.
 
          Downloading a file that has been encrypted with a `customer-supplied`_
-         encryption key::
+         encryption key:
 
-            >>> from google.cloud import storage
-            >>> from google.cloud.storage import Blob
-
-            >>> client = storage.Client(project='my-project')
-            >>> bucket = client.get_bucket('my-bucket')
-            >>> encryption_key = 'aa426195405adee2c8081bb9e7e74b19'
-            >>> blob = Blob('secure-data', bucket,
-            ...             encryption_key=encryption_key)
-            >>> with open('/tmp/my-secure-file', 'wb') as file_obj:
-            >>>     blob.download_to_file(file_obj)
+         .. literalinclude:: storage_snippets.py
+            :start-after: [START download_to_file]
+            :end-before: [END download_to_file]
 
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.
@@ -418,18 +411,11 @@ class Blob(_PropertyMixin):
            `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
            API documents for details.
 
-        Uploading a file with a `customer-supplied`_ encryption key::
+        Uploading a file with a `customer-supplied`_ encryption key:
 
-            >>> from google.cloud import storage
-            >>> from google.cloud.storage import Blob
-
-            >>> client = storage.Client(project='my-project')
-            >>> bucket = client.get_bucket('my-bucket')
-            >>> encryption_key = 'aa426195405adee2c8081bb9e7e74b19'
-            >>> blob = Blob('secure-data', bucket,
-            ...             encryption_key=encryption_key)
-            >>> with open('my-file', 'rb') as my_file:
-            >>>     blob.upload_from_file(my_file)
+        .. literalinclude:: storage_snippets.py
+            :start-after: [START upload_from_file]
+            :end-before: [END upload_from_file]
 
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.

@@ -1,15 +1,19 @@
+############
 Contributing
-============================
+############
 
 #. **Please sign one of the contributor license agreements below.**
 #. Fork the repo, develop and test your code changes, add docs.
 #. Make sure that your commit messages clearly describe the changes.
-#. Send a pull request.
+#. Send a pull request. (Please Read: `Faster Pull Request Reviews`_)
 
-Here are some guidelines for hacking on ``google-cloud-python``.
+.. _Faster Pull Request Reviews: https://github.com/kubernetes/kubernetes/blob/master/docs/devel/faster_reviews.md
 
+.. contents:: Here are some guidelines for hacking on ``google-cloud-python``.
+
+***************
 Adding Features
----------------
+***************
 
 In order to add a feature to ``google-cloud-python``:
 
@@ -23,8 +27,9 @@ In order to add a feature to ``google-cloud-python``:
   "unnecessary" is of course subjective, but new dependencies should
   be discussed).
 
+****************************
 Using a Development Checkout
-----------------------------
+****************************
 
 You'll have to create a development environment to hack on
 ``google-cloud-python``, using a Git checkout:
@@ -58,7 +63,7 @@ but you can also use a ``virtualenv`` of your own creation.
 .. _repo: https://github.com/GoogleCloudPlatform/google-cloud-python
 
 Using a custom ``virtualenv``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=============================
 
 - To create a virtualenv in which to install ``google-cloud-python``::
 
@@ -87,7 +92,7 @@ Using a custom ``virtualenv``
   project, because it uses `namespace packages`_.
 
 Using ``tox``
-~~~~~~~~~~~~~
+=============
 
 - To test your changes, run unit tests with ``tox``::
 
@@ -125,7 +130,7 @@ Using ``tox``
     $ tox -e py27
 
 Note on Editable Installs / Develop Mode
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================
 
 - As mentioned previously, using ``setuptools`` in `develop mode`_
   or a ``pip`` `editable install`_ is not possible with this
@@ -143,8 +148,9 @@ Note on Editable Installs / Develop Mode
 .. _develop mode: https://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode
 .. _editable install: https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs
 
+*****************************************
 I'm getting weird errors... Can you help?
------------------------------------------
+*****************************************
 
 If the error mentions ``Python.h`` not being found,
 install ``python-dev`` and try again.
@@ -152,8 +158,9 @@ On Debian/Ubuntu::
 
   $ sudo apt-get install python-dev
 
+************
 Coding Style
-------------
+************
 
 - PEP8 compliance, with exceptions defined in ``tox.ini``.
   If you have ``tox`` installed, you can test that you have not introduced
@@ -178,8 +185,9 @@ Exceptions to PEP8:
   "Function-Under-Test"), which is PEP8-incompliant, but more readable.
   Some also use a local variable, ``MUT`` (short for "Module-Under-Test").
 
+*************
 Running Tests
---------------
+*************
 
 - To run all tests for ``google-cloud-python`` on a single Python version, run
   ``py.test`` from your development virtualenv (See
@@ -202,8 +210,9 @@ Running Tests
 
 .. _Using a Development Checkout: #using-a-development-checkout
 
+********************
 Running System Tests
---------------------
+********************
 
 - To run system tests you can execute::
 
@@ -235,8 +244,6 @@ Running System Tests
     `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
     for more details. In order for Logging system tests to work, the Service Account
     will also have to be made a project Owner. This can be changed under "IAM & Admin".
-  - ``GOOGLE_CLOUD_TESTS_API_KEY``: The API key for your project with
-    the Google Translate API (and others) enabled.
 
 - Examples of these can be found in ``system_tests/local_test_setup.sample``. We
   recommend copying this to ``system_tests/local_test_setup``, editing the
@@ -270,6 +277,9 @@ Running System Tests
   datastore instance via::
 
    $ python system_tests/clear_datastore.py
+
+System Test Emulators
+=====================
 
 - System tests can also be run against local `emulators`_ that mock
   the production services. To run the system tests with the
@@ -338,14 +348,16 @@ Running System Tests
 
    $ kill -- -44444
 
+*************
 Test Coverage
--------------
+*************
 
 - The codebase *must* have 100% test statement coverage after each commit.
   You can test coverage via ``tox -e cover``.
 
+******************************************************
 Documentation Coverage and Building HTML Documentation
-------------------------------------------------------
+******************************************************
 
 If you fix a bug, and the bug requires an API or behavior modification, all
 documentation in this package which references that API or behavior must be
@@ -355,13 +367,13 @@ or adds the feature.
 To build and review docs (where ``${VENV}`` refers to the virtualenv you're
 using to develop ``google-cloud-python``):
 
-1. After following the steps above in "Using a Development Checkout", install
+#. After following the steps above in "Using a Development Checkout", install
    Sphinx and all development requirements in your virtualenv::
 
      $ cd ${HOME}/hack-on-google-cloud-python
      $ ${VENV}/bin/pip install Sphinx
 
-2. Change into the ``docs`` directory within your ``google-cloud-python`` checkout and
+#. Change into the ``docs`` directory within your ``google-cloud-python`` checkout and
    execute the ``make`` command with some flags::
 
      $ cd ${HOME}/hack-on-google-cloud-python/google-cloud-python/docs
@@ -371,7 +383,7 @@ using to develop ``google-cloud-python``):
    which will have both Sphinx and ``google-cloud-python`` (for API documentation
    generation) installed.
 
-3. Open the ``docs/_build/html/index.html`` file to see the resulting HTML
+#. Open the ``docs/_build/html/index.html`` file to see the resulting HTML
    rendering.
 
 As an alternative to 1. and 2. above, if you have ``tox`` installed, you
@@ -379,8 +391,9 @@ can build the docs via::
 
    $ tox -e docs
 
+********************************************
 Note About ``README`` as it pertains to PyPI
---------------------------------------------
+********************************************
 
 The `description on PyPI`_ for the project comes directly from the
 ``README``. Due to the reStructuredText (``rst``) parser used by
@@ -391,8 +404,9 @@ may cause problems creating links or rendering the description.
 
 .. _description on PyPI: https://pypi.python.org/pypi/google-cloud
 
+********************************************
 Travis Configuration and Build Optimizations
---------------------------------------------
+********************************************
 
 All build scripts in the ``.travis.yml`` configuration file which have
 Python dependencies are specified in the ``tox.ini`` configuration.
@@ -412,8 +426,9 @@ way, we'll always get the latest versions of our dependencies and any
 caching or wheel optimization to be done will be handled automatically
 by ``pip``.
 
+*************************
 Supported Python Versions
--------------------------
+*************************
 
 We support:
 
@@ -452,8 +467,9 @@ We also explicitly decided to support Python 3 beginning with version
 .. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
 .. _dropped 2.6: https://github.com/GoogleCloudPlatform/google-cloud-python/issues/995
 
+**********
 Versioning
-----------
+**********
 
 This library follows `Semantic Versioning`_.
 
@@ -463,8 +479,9 @@ It is currently in major version zero (``0.y.z``), which means that anything
 may change at any time and the public API should not be considered
 stable.
 
+******************************
 Contributor License Agreements
-------------------------------
+******************************
 
 Before we can accept your pull requests you'll need to sign a Contributor License Agreement (CLA):
 

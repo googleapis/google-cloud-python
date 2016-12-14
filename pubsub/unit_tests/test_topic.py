@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class TestTopic(unittest.TestCase):
     PROJECT = 'PROJECT'
@@ -136,9 +143,8 @@ class TestTopic(unittest.TestCase):
 
     def test_publish_single_bytes_wo_attrs_w_add_timestamp_alt_client(self):
         import datetime
-        from google.cloud.pubsub import topic as MUT
         from google.cloud._helpers import _RFC3339_MICROS
-        from google.cloud._testing import _Monkey
+
         NOW = datetime.datetime.utcnow()
 
         def _utcnow():
@@ -157,7 +163,7 @@ class TestTopic(unittest.TestCase):
 
         topic = self._make_one(self.TOPIC_NAME, client=client1,
                                timestamp_messages=True)
-        with _Monkey(MUT, _NOW=_utcnow):
+        with mock.patch('google.cloud.pubsub.topic._NOW', new=_utcnow):
             msgid = topic.publish(PAYLOAD, client=client2)
 
         self.assertEqual(msgid, MSGID)
@@ -314,8 +320,8 @@ class TestTopic(unittest.TestCase):
         from google.cloud.pubsub.client import Client
         from google.cloud.pubsub.subscription import Subscription
 
-        client = Client(project=self.PROJECT, credentials=object(),
-                        use_gax=False)
+        client = Client(project=self.PROJECT,
+                        credentials=_make_credentials(), use_gax=False)
 
         SUB_NAME_1 = 'subscription_1'
         SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (
@@ -364,8 +370,8 @@ class TestTopic(unittest.TestCase):
         from google.cloud.pubsub.client import Client
         from google.cloud.pubsub.subscription import Subscription
 
-        client = Client(project=self.PROJECT, credentials=object(),
-                        use_gax=False)
+        client = Client(project=self.PROJECT,
+                        credentials=_make_credentials(), use_gax=False)
 
         SUB_NAME_1 = 'subscription_1'
         SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (
@@ -414,8 +420,8 @@ class TestTopic(unittest.TestCase):
     def test_list_subscriptions_missing_key(self):
         from google.cloud.pubsub.client import Client
 
-        client = Client(project=self.PROJECT, credentials=object(),
-                        use_gax=False)
+        client = Client(project=self.PROJECT,
+                        credentials=_make_credentials(), use_gax=False)
         client._connection = _Connection({})
         topic = self._make_one(self.TOPIC_NAME, client=client)
 

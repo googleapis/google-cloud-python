@@ -50,16 +50,14 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.20.0',
-    'grpcio >= 1.0.0, < 2.0dev',
-    'google-gax >= 0.14.1, < 0.15dev',
-    'gapic-google-pubsub-v1 >= 0.10.1, < 0.11dev',
-    'grpc-google-pubsub-v1 >= 0.10.1, < 0.11dev',
+    'google-cloud-core >= 0.22.1, < 0.23dev',
+    'grpcio >= 1.0.2, < 2.0dev',
+    'gapic-google-cloud-pubsub-v1 >= 0.14.0, < 0.15dev',
 ]
 
 setup(
     name='google-cloud-pubsub',
-    version='0.20.0',
+    version='0.22.0',
     description='Python Client for Google Cloud Pub/Sub',
     long_description=README,
     namespace_packages=[

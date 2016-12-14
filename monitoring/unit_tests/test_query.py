@@ -130,8 +130,7 @@ class TestQuery(unittest.TestCase):
 
     def test_constructor_default_end_time(self):
         import datetime
-        from google.cloud._testing import _Monkey
-        from google.cloud.monitoring import query as MUT
+        import mock
 
         MINUTES = 5
         NOW, T0, T1 = [
@@ -141,7 +140,8 @@ class TestQuery(unittest.TestCase):
         ]
 
         client = _Client(project=PROJECT, connection=_Connection())
-        with _Monkey(MUT, _UTCNOW=lambda: NOW):
+        with mock.patch('google.cloud.monitoring.query._UTCNOW',
+                        new=lambda: NOW):
             query = self._make_one(client, METRIC_TYPE, minutes=MINUTES)
 
         self.assertEqual(query._start_time, T0)

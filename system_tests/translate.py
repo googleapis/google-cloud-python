@@ -13,14 +13,9 @@
 # limitations under the License.
 
 
-import os
-
 import unittest
 
 from google.cloud import translate
-
-
-ENV_VAR = 'GOOGLE_CLOUD_TESTS_API_KEY'
 
 
 class Config(object):
@@ -33,8 +28,7 @@ class Config(object):
 
 
 def setUpModule():
-    api_key = os.getenv(ENV_VAR)
-    Config.CLIENT = translate.Client(api_key=api_key)
+    Config.CLIENT = translate.Client()
 
 
 class TestTranslate(unittest.TestCase):
@@ -61,8 +55,8 @@ class TestTranslate(unittest.TestCase):
     def test_translate(self):
         values = ['hvala ti', 'dankon',
                   'Me llamo Jeff', 'My name is Jeff']
-        translations = Config.CLIENT.translate(values,
-                                               target_language='de')
+        translations = Config.CLIENT.translate(
+            values, target_language='de', model=translate.NMT)
         self.assertEqual(len(values), len(translations))
 
         self.assertEqual(

@@ -129,16 +129,20 @@ class Client(JSONClient):
             items_key='datasets', page_token=page_token,
             max_results=max_results, extra_params=extra_params)
 
-    def dataset(self, dataset_name):
+    def dataset(self, dataset_name, project=None):
         """Construct a dataset bound to this client.
 
         :type dataset_name: str
         :param dataset_name: Name of the dataset.
 
+        :type project: str
+        :param project: (Optional) project ID for the dataset (defaults to
+                        the project of the client).
+
         :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
         :returns: a new ``Dataset`` instance
         """
-        return Dataset(dataset_name, client=self)
+        return Dataset(dataset_name, client=self, project=project)
 
     def job_from_resource(self, resource):
         """Detect correct job type from resource and instantiate.
@@ -275,7 +279,8 @@ class Client(JSONClient):
         return ExtractTableToStorageJob(job_name, source, destination_uris,
                                         client=self)
 
-    def run_async_query(self, job_name, query):
+    def run_async_query(self, job_name, query,
+                        udf_resources=(), query_parameters=()):
         """Construct a job for running a SQL query asynchronously.
 
         See:
@@ -287,21 +292,47 @@ class Client(JSONClient):
         :type query: str
         :param query: SQL query to be executed
 
+        :type udf_resources: tuple
+        :param udf_resources: An iterable of
+                            :class:`google.cloud.bigquery._helpers.UDFResource`
+                            (empty by default)
+
+        :type query_parameters: tuple
+        :param query_parameters:
+            An iterable of
+            :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`
+            (empty by default)
+
         :rtype: :class:`google.cloud.bigquery.job.QueryJob`
         :returns: a new ``QueryJob`` instance
         """
-        return QueryJob(job_name, query, client=self)
+        return QueryJob(job_name, query, client=self,
+                        udf_resources=udf_resources,
+                        query_parameters=query_parameters)
 
-    def run_sync_query(self, query):
+    def run_sync_query(self, query, udf_resources=(), query_parameters=()):
         """Run a SQL query synchronously.
 
         :type query: str
         :param query: SQL query to be executed
 
+        :type udf_resources: tuple
+        :param udf_resources: An iterable of
+                            :class:`google.cloud.bigquery._helpers.UDFResource`
+                            (empty by default)
+
+        :type query_parameters: tuple
+        :param query_parameters:
+            An iterable of
+            :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`
+            (empty by default)
+
         :rtype: :class:`google.cloud.bigquery.query.QueryResults`
         :returns: a new ``QueryResults`` instance
         """
-        return QueryResults(query, client=self)
+        return QueryResults(query, client=self,
+                            udf_resources=udf_resources,
+                            query_parameters=query_parameters)
 
 
 # pylint: disable=unused-argument

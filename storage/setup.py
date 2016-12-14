@@ -50,12 +50,12 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.20.0',
+    'google-cloud-core >= 0.22.1, < 0.23dev',
 ]
 
 setup(
     name='google-cloud-storage',
-    version='0.20.0',
+    version='0.22.0',
     description='Python Client for Google Cloud Storage',
     long_description=README,
     namespace_packages=[

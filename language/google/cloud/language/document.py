@@ -155,7 +155,7 @@ class Document(object):
         other properties.
 
         .. _analyzeEntities: https://cloud.google.com/natural-language/\
-                             reference/rest/v1beta1/documents/analyzeEntities
+                             reference/rest/v1/documents/analyzeEntities
 
         See `analyzeEntities`_.
 
@@ -176,7 +176,7 @@ class Document(object):
         """Analyze the sentiment in the current document.
 
         .. _analyzeSentiment: https://cloud.google.com/natural-language/\
-                              reference/rest/v1beta1/documents/analyzeSentiment
+                              reference/rest/v1/documents/analyzeSentiment
 
         See `analyzeSentiment`_.
 
@@ -187,6 +187,27 @@ class Document(object):
         api_response = self.client._connection.api_request(
             method='POST', path='analyzeSentiment', data=data)
         return Sentiment.from_api_repr(api_response['documentSentiment'])
+
+    def analyze_syntax(self):
+        """Analyze the syntax in the current document.
+
+        .. _analyzeSyntax: https://cloud.google.com/natural-language/\
+                              reference/rest/v1/documents/analyzeSyntax
+
+        See `analyzeSyntax`_.
+
+        :rtype: list
+        :returns: A list of :class:`~.language.syntax.Token` returned from
+                  the API.
+        """
+        data = {
+            'document': self._to_dict(),
+            'encodingType': self.encoding,
+        }
+        api_response = self.client._connection.api_request(
+            method='POST', path='analyzeSyntax', data=data)
+        return [Token.from_api_repr(token)
+                for token in api_response.get('tokens', ())]
 
     def annotate_text(self, include_syntax=True, include_entities=True,
                       include_sentiment=True):
@@ -205,7 +226,7 @@ class Document(object):
             learning and need in-depth text features to build upon.
 
         .. _annotateText: https://cloud.google.com/natural-language/\
-                          reference/rest/v1beta1/documents/annotateText
+                          reference/rest/v1/documents/annotateText
 
         See `annotateText`_.
 

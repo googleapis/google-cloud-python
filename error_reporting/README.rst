@@ -43,10 +43,8 @@ on new errors.
 .. _Error Reporting: https://cloud.google.com/error-reporting/
 .. _Error Reporting API docs: https://cloud.google.com/error-reporting/reference/
 
-See the ``google-cloud-python`` API `Error Reporting documentation`_ to learn
+See the ``google-cloud-python`` API Error Reporting `Documentation`_ to learn
 how to get started using this library.
-
-.. _Error Reporting documentation: https://google-cloud-python.readthedocs.io/en/stable/error-reporting-usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
    :target: https://pypi.python.org/pypi/google-cloud-error-reporting

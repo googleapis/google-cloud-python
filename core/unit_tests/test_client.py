@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class Test_ClientFactoryMixin(unittest.TestCase):
 
@@ -50,7 +57,7 @@ class TestClient(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud import client
 
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         FUNC_CALLS = []
 
         def mock_get_credentials():
@@ -65,7 +72,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(FUNC_CALLS, ['get_credentials'])
 
     def test_ctor_explicit(self):
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         HTTP = object()
         client_obj = self._make_one(credentials=CREDENTIALS, http=HTTP)
 
@@ -73,46 +80,34 @@ class TestClient(unittest.TestCase):
         self.assertIs(client_obj._connection.credentials, CREDENTIALS)
         self.assertIs(client_obj._connection.http, HTTP)
 
+    def test_ctor_bad_credentials(self):
+        CREDENTIALS = object()
+
+        with self.assertRaises(ValueError):
+            self._make_one(credentials=CREDENTIALS)
+
     def test_from_service_account_json(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud import client
-
         KLASS = self._get_target_class()
-        MOCK_FILENAME = 'foo.path'
-        mock_creds = _MockServiceAccountCredentials()
-        with _Monkey(client, ServiceAccountCredentials=mock_creds):
-            client_obj = KLASS.from_service_account_json(MOCK_FILENAME)
 
-        self.assertIs(client_obj._connection.credentials, mock_creds._result)
-        self.assertEqual(mock_creds.json_called, [MOCK_FILENAME])
+        constructor_patch = mock.patch(
+            'google.oauth2.service_account.Credentials.'
+            'from_service_account_file',
+            return_value=_make_credentials())
 
-    def test_from_service_account_json_fail(self):
+        with constructor_patch as constructor:
+            client_obj = KLASS.from_service_account_json(
+                mock.sentinel.filename)
+
+        self.assertIs(
+            client_obj._connection.credentials, constructor.return_value)
+        constructor.assert_called_once_with(mock.sentinel.filename)
+
+    def test_from_service_account_json_bad_args(self):
         KLASS = self._get_target_class()
-        CREDENTIALS = object()
-        self.assertRaises(TypeError, KLASS.from_service_account_json, None,
-                          credentials=CREDENTIALS)
 
-    def test_from_service_account_p12(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud import client
-
-        KLASS = self._get_target_class()
-        CLIENT_EMAIL = 'phred@example.com'
-        MOCK_FILENAME = 'foo.path'
-        mock_creds = _MockServiceAccountCredentials()
-        with _Monkey(client, ServiceAccountCredentials=mock_creds):
-            client_obj = KLASS.from_service_account_p12(CLIENT_EMAIL,
-                                                        MOCK_FILENAME)
-
-        self.assertIs(client_obj._connection.credentials, mock_creds._result)
-        self.assertEqual(mock_creds.p12_called,
-                         [(CLIENT_EMAIL, MOCK_FILENAME)])
-
-    def test_from_service_account_p12_fail(self):
-        KLASS = self._get_target_class()
-        CREDENTIALS = object()
-        self.assertRaises(TypeError, KLASS.from_service_account_p12, None,
-                          None, credentials=CREDENTIALS)
+        with self.assertRaises(TypeError):
+            KLASS.from_service_account_json(
+                mock.sentinel.filename, credentials=mock.sentinel.credentials)
 
 
 class TestJSONClient(unittest.TestCase):
@@ -139,7 +134,7 @@ class TestJSONClient(unittest.TestCase):
         from google.cloud import client
 
         PROJECT = 'PROJECT'
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         FUNC_CALLS = []
 
         def mock_determine_proj(project):
@@ -177,7 +172,7 @@ class TestJSONClient(unittest.TestCase):
         self.assertEqual(FUNC_CALLS, [(None, '_determine_default_project')])
 
     def test_ctor_w_invalid_project(self):
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         HTTP = object()
         with self.assertRaises(ValueError):
             self._make_one(project=object(), credentials=CREDENTIALS,
@@ -186,7 +181,7 @@ class TestJSONClient(unittest.TestCase):
     def _explicit_ctor_helper(self, project):
         import six
 
-        CREDENTIALS = object()
+        CREDENTIALS = _make_credentials()
         HTTP = object()
 
         client_obj = self._make_one(project=project, credentials=CREDENTIALS,
@@ -214,19 +209,3 @@ class _MockConnection(object):
     def __init__(self, credentials=None, http=None):
         self.credentials = credentials
         self.http = http
-
-
-class _MockServiceAccountCredentials(object):
-
-    def __init__(self):
-        self.p12_called = []
-        self.json_called = []
-        self._result = object()
-
-    def from_p12_keyfile(self, email, path):
-        self.p12_called.append((email, path))
-        return self._result
-
-    def from_json_keyfile_name(self, path):
-        self.json_called.append(path)
-        return self._result

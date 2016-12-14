@@ -14,8 +14,17 @@
 
 """Shared helper functions for BigQuery API classes."""
 
-from google.cloud._helpers import _datetime_from_microseconds
+import base64
+from collections import OrderedDict
+import datetime
+
 from google.cloud._helpers import _date_from_iso8601_date
+from google.cloud._helpers import _datetime_from_microseconds
+from google.cloud._helpers import _datetime_to_rfc3339
+from google.cloud._helpers import _microseconds_from_datetime
+from google.cloud._helpers import _RFC3339_NO_FRACTION
+from google.cloud._helpers import _time_from_iso8601_time_naive
+from google.cloud._helpers import _to_bytes
 
 
 def _not_null(value, field):
@@ -41,36 +50,58 @@ def _bool_from_json(value, field):
         return value.lower() in ['t', 'true', '1']
 
 
-def _datetime_from_json(value, field):
+def _string_from_json(value, _):
+    """NOOP string -> string coercion"""
+    return value
+
+
+def _bytes_from_json(value, field):
+    """Base64-decode value"""
+    if _not_null(value, field):
+        return base64.decodestring(_to_bytes(value))
+
+
+def _timestamp_from_json(value, field):
     """Coerce 'value' to a datetime, if set or not nullable."""
     if _not_null(value, field):
         # value will be a float in seconds, to microsecond precision, in UTC.
         return _datetime_from_microseconds(1e6 * float(value))
 
 
+def _datetime_from_json(value, field):
+    """Coerce 'value' to a datetime, if set or not nullable."""
+    if _not_null(value, field):
+        # value will be a string, in YYYY-MM-DDTHH:MM:SS form.
+        return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION)
+
+
 def _date_from_json(value, field):
     """Coerce 'value' to a datetime date, if set or not nullable"""
     if _not_null(value, field):
+        # value will be a string, in YYYY-MM-DD form.
         return _date_from_iso8601_date(value)
+
+
+def _time_from_json(value, field):
+    """Coerce 'value' to a datetime date, if set or not nullable"""
+    if _not_null(value, field):
+        # value will be a string, in HH:MM:SS form.
+        return _time_from_iso8601_time_naive(value)
 
 
 def _record_from_json(value, field):
     """Coerce 'value' to a mapping, if set or not nullable."""
     if _not_null(value, field):
         record = {}
-        for subfield, cell in zip(field.fields, value['f']):
+        record_iter = zip(field.fields, value['f'])
+        for subfield, cell in record_iter:
             converter = _CELLDATA_FROM_JSON[subfield.field_type]
-            if field.mode == 'REPEATED':
-                value = [converter(item, subfield) for item in cell['v']]
+            if subfield.mode == 'REPEATED':
+                value = [converter(item['v'], subfield) for item in cell['v']]
             else:
                 value = converter(cell['v'], subfield)
             record[subfield.name] = value
         return record
-
-
-def _string_from_json(value, _):
-    """NOOP string -> string coercion"""
-    return value
 
 
 _CELLDATA_FROM_JSON = {
@@ -79,10 +110,83 @@ _CELLDATA_FROM_JSON = {
     'FLOAT': _float_from_json,
     'FLOAT64': _float_from_json,
     'BOOLEAN': _bool_from_json,
-    'TIMESTAMP': _datetime_from_json,
-    'DATE': _date_from_json,
-    'RECORD': _record_from_json,
+    'BOOL': _bool_from_json,
     'STRING': _string_from_json,
+    'BYTES': _bytes_from_json,
+    'TIMESTAMP': _timestamp_from_json,
+    'DATETIME': _datetime_from_json,
+    'DATE': _date_from_json,
+    'TIME': _time_from_json,
+    'RECORD': _record_from_json,
+}
+
+
+def _int_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, int):
+        value = str(value)
+    return value
+
+
+def _float_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    return value
+
+
+def _bool_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, bool):
+        value = 'true' if value else 'false'
+    return value
+
+
+def _bytes_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, bytes):
+        value = base64.encodestring(value)
+    return value
+
+
+def _timestamp_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, datetime.datetime):
+        value = _microseconds_from_datetime(value) / 1.0e6
+    return value
+
+
+def _datetime_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, datetime.datetime):
+        value = _datetime_to_rfc3339(value)
+    return value
+
+
+def _date_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, datetime.date):
+        value = value.isoformat()
+    return value
+
+
+def _time_to_json(value):
+    """Coerce 'value' to an JSON-compatible representation."""
+    if isinstance(value, datetime.time):
+        value = value.isoformat()
+    return value
+
+
+_SCALAR_VALUE_TO_JSON = {
+    'INTEGER': _int_to_json,
+    'INT64': _int_to_json,
+    'FLOAT': _float_to_json,
+    'FLOAT64': _float_to_json,
+    'BOOLEAN': _bool_to_json,
+    'BOOL': _bool_to_json,
+    'BYTES': _bytes_to_json,
+    'TIMESTAMP': _timestamp_to_json,
+    'DATETIME': _datetime_to_json,
+    'DATE': _date_to_json,
+    'TIME': _time_to_json,
 }
 
 
@@ -103,7 +207,7 @@ def _row_from_json(row, schema):
     for field, cell in zip(schema, row['f']):
         converter = _CELLDATA_FROM_JSON[field.field_type]
         if field.mode == 'REPEATED':
-            row_data.append([converter(item, field)
+            row_data.append([converter(item['v'], field)
                              for item in cell['v']])
         else:
             row_data.append(converter(cell['v'], field))
@@ -228,16 +332,295 @@ class UDFResourcesProperty(object):
         instance._udf_resources = tuple(value)
 
 
-def _build_udf_resources(resources):
+class AbstractQueryParameter(object):
+    """Base class for named / positional query parameters.
     """
-    :type resources: sequence of :class:`UDFResource`
-    :param resources: fields to be appended.
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct paramter from JSON resource.
 
-    :rtype: mapping
-    :returns: a mapping describing userDefinedFunctionResources for the query.
+        :type resource: dict
+        :param resource: JSON mapping of parameter
+
+        :rtype: :class:`ScalarQueryParameter`
+        """
+        raise NotImplementedError
+
+    def to_api_repr(self):
+        """Construct JSON API representation for the parameter.
+
+        :rtype: dict
+        """
+        raise NotImplementedError
+
+
+class ScalarQueryParameter(AbstractQueryParameter):
+    """Named / positional query parameters for scalar values.
+
+    :type name: str or None
+    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
+                 paramter can only be addressed via position (``?``).
+
+    :type type_: str
+    :param type_: name of parameter type.  One of 'STRING', 'INT64',
+                  'FLOAT64', 'BOOL', 'TIMESTAMP', 'DATETIME', or 'DATE'.
+
+    :type value: str, int, float, bool, :class:`datetime.datetime`, or
+                 :class:`datetime.date`.
+    :param value: the scalar parameter value.
     """
-    udfs = []
-    for resource in resources:
-        udf = {resource.udf_type: resource.value}
-        udfs.append(udf)
-    return udfs
+    def __init__(self, name, type_, value):
+        self.name = name
+        self.type_ = type_
+        self.value = value
+
+    @classmethod
+    def positional(cls, type_, value):
+        """Factory for positional paramters.
+
+        :type type_: str
+        :param type_:
+            name of paramter type.  One of 'STRING', 'INT64',
+            'FLOAT64', 'BOOL', 'TIMESTAMP', 'DATETIME', or 'DATE'.
+
+        :type value: str, int, float, bool, :class:`datetime.datetime`, or
+                     :class:`datetime.date`.
+        :param value: the scalar parameter value.
+
+        :rtype: :class:`ScalarQueryParameter`
+        :returns: instance without name
+        """
+        return cls(None, type_, value)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct paramter from JSON resource.
+
+        :type resource: dict
+        :param resource: JSON mapping of parameter
+
+        :rtype: :class:`ScalarQueryParameter`
+        :returns: instance
+        """
+        name = resource.get('name')
+        type_ = resource['parameterType']['type']
+        value = resource['parameterValue']['value']
+        converted = _CELLDATA_FROM_JSON[type_](value, None)
+        return cls(name, type_, converted)
+
+    def to_api_repr(self):
+        """Construct JSON API representation for the parameter.
+
+        :rtype: dict
+        :returns: JSON mapping
+        """
+        value = self.value
+        converter = _SCALAR_VALUE_TO_JSON.get(self.type_)
+        if converter is not None:
+            value = converter(value)
+        resource = {
+            'parameterType': {
+                'type': self.type_,
+            },
+            'parameterValue': {
+                'value': value,
+            },
+        }
+        if self.name is not None:
+            resource['name'] = self.name
+        return resource
+
+
+class ArrayQueryParameter(AbstractQueryParameter):
+    """Named / positional query parameters for array values.
+
+    :type name: str or None
+    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
+                 paramter can only be addressed via position (``?``).
+
+    :type array_type: str
+    :param array_type:
+        name of type of array elements.  One of `'STRING'`, `'INT64'`,
+        `'FLOAT64'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
+
+    :type values: list of appropriate scalar type.
+    :param values: the parameter array values.
+    """
+    def __init__(self, name, array_type, values):
+        self.name = name
+        self.array_type = array_type
+        self.values = values
+
+    @classmethod
+    def positional(cls, array_type, values):
+        """Factory for positional paramters.
+
+        :type array_type: str
+        :param array_type:
+            name of type of array elements.  One of `'STRING'`, `'INT64'`,
+            `'FLOAT64'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
+
+        :type values: list of appropriate scalar type
+        :param values: the parameter array values.
+
+        :rtype: :class:`ArrayQueryParameter`
+        :returns: instance without name
+        """
+        return cls(None, array_type, values)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct paramter from JSON resource.
+
+        :type resource: dict
+        :param resource: JSON mapping of parameter
+
+        :rtype: :class:`ArrayQueryParameter`
+        :returns: instance
+        """
+        name = resource.get('name')
+        array_type = resource['parameterType']['arrayType']
+        values = resource['parameterValue']['arrayValues']
+        converted = [
+            _CELLDATA_FROM_JSON[array_type](value, None) for value in values]
+        return cls(name, array_type, converted)
+
+    def to_api_repr(self):
+        """Construct JSON API representation for the parameter.
+
+        :rtype: dict
+        :returns: JSON mapping
+        """
+        values = self.values
+        converter = _SCALAR_VALUE_TO_JSON.get(self.array_type)
+        if converter is not None:
+            values = [converter(value) for value in values]
+        resource = {
+            'parameterType': {
+                'arrayType': self.array_type,
+            },
+            'parameterValue': {
+                'arrayValues': values,
+            },
+        }
+        if self.name is not None:
+            resource['name'] = self.name
+        return resource
+
+
+class StructQueryParameter(AbstractQueryParameter):
+    """Named / positional query parameters for struct values.
+
+    :type name: str or None
+    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
+                 paramter can only be addressed via position (``?``).
+
+    :type sub_params: tuple of :class:`ScalarQueryParameter`
+    :param sub_params: the sub-parameters for the struct
+    """
+    def __init__(self, name, *sub_params):
+        self.name = name
+        self.struct_types = OrderedDict(
+            (sub.name, sub.type_) for sub in sub_params)
+        self.struct_values = {sub.name: sub.value for sub in sub_params}
+
+    @classmethod
+    def positional(cls, *sub_params):
+        """Factory for positional paramters.
+
+        :type sub_params: tuple of :class:`ScalarQueryParameter`
+        :param sub_params: the sub-parameters for the struct
+
+        :rtype: :class:`StructQueryParameter`
+        :returns: instance without name
+        """
+        return cls(None, *sub_params)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct paramter from JSON resource.
+
+        :type resource: dict
+        :param resource: JSON mapping of parameter
+
+        :rtype: :class:`StructQueryParameter`
+        :returns: instance
+        """
+        name = resource.get('name')
+        instance = cls(name)
+        types = instance.struct_types
+        for item in resource['parameterType']['structTypes']:
+            types[item['name']] = item['type']
+        struct_values = resource['parameterValue']['structValues']
+        for key, value in struct_values.items():
+            converted = _CELLDATA_FROM_JSON[types[key]](value, None)
+            instance.struct_values[key] = converted
+        return instance
+
+    def to_api_repr(self):
+        """Construct JSON API representation for the parameter.
+
+        :rtype: dict
+        :returns: JSON mapping
+        """
+        types = [
+            {'name': key, 'type': value}
+            for key, value in self.struct_types.items()
+        ]
+        values = {}
+        for name, value in self.struct_values.items():
+            converter = _SCALAR_VALUE_TO_JSON.get(self.struct_types[name])
+            if converter is not None:
+                value = converter(value)
+            values[name] = value
+
+        resource = {
+            'parameterType': {
+                'structTypes': types,
+            },
+            'parameterValue': {
+                'structValues': values,
+            },
+        }
+        if self.name is not None:
+            resource['name'] = self.name
+        return resource
+
+
+class QueryParametersProperty(object):
+    """Custom property type, holding query parameter instances."""
+
+    def __get__(self, instance, owner):
+        """Descriptor protocol:  accessor
+
+        :type instance: :class:`QueryParametersProperty`
+        :param instance: instance owning the property (None if accessed via
+                         the class).
+
+        :type owner: type
+        :param owner: the class owning the property.
+
+        :rtype: list of instances of classes derived from
+                :class:`AbstractQueryParameter`.
+        :returns: the descriptor, if accessed via the class, or the instance's
+                  query paramters.
+        """
+        if instance is None:
+            return self
+        return list(instance._query_parameters)
+
+    def __set__(self, instance, value):
+        """Descriptor protocol:  mutator
+
+        :type instance: :class:`QueryParametersProperty`
+        :param instance: instance owning the property (None if accessed via
+                         the class).
+
+        :type value: list of instances of classes derived from
+                     :class:`AbstractQueryParameter`.
+        :param value: new query parameters for the instance.
+        """
+        if not all(isinstance(u, AbstractQueryParameter) for u in value):
+            raise ValueError(
+                "query parameters must be derived from AbstractQueryParameter")
+        instance._query_parameters = tuple(value)

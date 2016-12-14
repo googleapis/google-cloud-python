@@ -18,9 +18,6 @@ These enable many types of implicit behavior in both production
 and tests.
 """
 
-PROJECT = 'GOOGLE_CLOUD_PROJECT'
-"""Environment variable defining default project."""
-
 GCD_DATASET = 'DATASTORE_DATASET'
 """Environment variable defining default dataset ID under GCD."""
 
@@ -32,9 +29,6 @@ PUBSUB_EMULATOR = 'PUBSUB_EMULATOR_HOST'
 
 BIGTABLE_EMULATOR = 'BIGTABLE_EMULATOR_HOST'
 """Environment variable defining host for Bigtable emulator."""
-
-CREDENTIALS = 'GOOGLE_APPLICATION_CREDENTIALS'
-"""Environment variable defining location of Google credentials."""
 
 DISABLE_GRPC = 'GOOGLE_CLOUD_DISABLE_GRPC'
 """Environment variable acting as flag to disable gRPC.

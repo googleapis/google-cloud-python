@@ -742,11 +742,11 @@ class Table(object):
             row_info = {}
 
             for field, value in zip(self._schema, row):
-                if field.field_type == 'TIMESTAMP' and value is not None:
+                if field.field_type == 'TIMESTAMP':
                     # BigQuery stores TIMESTAMP data internally as a
                     # UNIX timestamp with microsecond precision.
                     # Specifies the number of seconds since the epoch.
-                    value = _microseconds_from_datetime(value) * 1e-6
+                    value = _convert_timestamp(value)
                 row_info[field.name] = value
 
             info = {'json': row_info}
@@ -1129,3 +1129,10 @@ class _UrlBuilder(object):
     def __init__(self):
         self.query_params = {}
         self._relative_path = ''
+
+
+def _convert_timestamp(value):
+    """Helper for :meth:`Table.insert_data`."""
+    if isinstance(value, datetime.datetime):
+        value = _microseconds_from_datetime(value) * 1e-6
+    return value

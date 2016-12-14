@@ -16,3 +16,5 @@
 
 
 from google.cloud.error_reporting.client import Client
+from google.cloud.error_reporting.client import HTTPContext
+from google.cloud.error_reporting.util import build_flask_context

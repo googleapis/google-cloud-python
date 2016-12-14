@@ -42,10 +42,8 @@ This API is part of the larger Cloud Machine Learning API.
 .. _Natural Language: https://cloud.google.com/natural-language/
 .. _Natural Language API docs: https://cloud.google.com/natural-language/reference/rest/
 
-See the ``google-cloud-python`` API `Natural Language documentation`_ to learn
+See the ``google-cloud-python`` API Natural Language `Documentation`_ to learn
 how to analyze text with this API.
-
-.. _Natural Language documentation: https://google-cloud-python.readthedocs.io/en/stable/language-usage.html
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-language.svg
    :target: https://pypi.python.org/pypi/google-cloud-language

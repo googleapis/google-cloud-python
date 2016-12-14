@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 class _Base(unittest.TestCase):
     PROJECT = 'PROJECT'
@@ -42,14 +49,12 @@ class TestConnection(_Base):
         self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 
     def test_custom_url_from_env(self):
-        import os
-        from google.cloud._testing import _Monkey
         from google.cloud.environment_vars import PUBSUB_EMULATOR
 
         HOST = 'localhost:8187'
         fake_environ = {PUBSUB_EMULATOR: HOST}
 
-        with _Monkey(os, getenv=fake_environ.get):
+        with mock.patch('os.environ', new=fake_environ):
             conn = self._make_one()
 
         klass = self._get_target_class()
@@ -285,10 +290,32 @@ class Test_PublisherAPI(_Base):
         msg_data = connection._called_with['data']['messages'][0]['data']
         self.assertEqual(msg_data, B64_PAYLOAD)
 
-    def test_topic_publish_miss(self):
-        from google.cloud.exceptions import NotFound
+    def test_topic_publish_twice(self):
+        import base64
+
         PAYLOAD = b'This is the message text'
+        B64_PAYLOAD = base64.b64encode(PAYLOAD).decode('ascii')
         MESSAGE = {'data': PAYLOAD, 'attributes': {}}
+        RETURNED = {'messageIds': []}
+        connection = _Connection(RETURNED, RETURNED)
+        client = _Client(connection, self.PROJECT)
+        api = self._make_one(client)
+
+        api.topic_publish(self.TOPIC_PATH, [MESSAGE])
+        api.topic_publish(self.TOPIC_PATH, [MESSAGE])
+
+        messages = connection._called_with['data']['messages']
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0]['data'], B64_PAYLOAD)
+
+    def test_topic_publish_miss(self):
+        import base64
+        from google.cloud.exceptions import NotFound
+
+        PAYLOAD = b'This is the message text'
+        B64_PAYLOAD = base64.b64encode(PAYLOAD).decode('ascii')
+        MESSAGE = {'data': PAYLOAD, 'attributes': {}}
+        B64MSG = {'data': B64_PAYLOAD, 'attributes': {}}
         connection = _Connection()
         client = _Client(connection, self.PROJECT)
         api = self._make_one(client)
@@ -300,7 +327,7 @@ class Test_PublisherAPI(_Base):
         path = '/%s:publish' % (self.TOPIC_PATH,)
         self.assertEqual(connection._called_with['path'], path)
         self.assertEqual(connection._called_with['data'],
-                         {'messages': [MESSAGE]})
+                         {'messages': [B64MSG]})
 
     def test_topic_list_subscriptions_no_paging(self):
         from google.cloud.pubsub.topic import Topic
@@ -433,7 +460,7 @@ class Test_SubscriberAPI(_Base):
         SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
         RETURNED = {'subscriptions': [SUB_INFO]}
         connection = _Connection(RETURNED)
-        creds = _Credentials()
+        creds = _make_credentials()
         client = Client(project=self.PROJECT, credentials=creds)
         client._connection = connection
         api = self._make_one(client)
@@ -476,7 +503,7 @@ class Test_SubscriberAPI(_Base):
             'nextPageToken': 'TOKEN2',
         }
         connection = _Connection(RETURNED)
-        creds = _Credentials()
+        creds = _make_credentials()
         client = Client(project=self.PROJECT, credentials=creds)
         client._connection = connection
         api = self._make_one(client)
@@ -881,10 +908,3 @@ class _Client(object):
     def __init__(self, connection, project):
         self._connection = connection
         self.project = project
-
-
-class _Credentials(object):
-
-    @staticmethod
-    def create_scoped_required():
-        return False

@@ -14,6 +14,13 @@
 
 import unittest
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
 
 def _make_result(alternatives=()):
     from google.cloud.grpc.speech.v1beta1 import cloud_speech_pb2
@@ -79,7 +86,7 @@ class TestClient(unittest.TestCase):
     def test_ctor(self):
         from google.cloud.speech.connection import Connection
 
-        creds = _Credentials()
+        creds = _make_credentials()
         http = object()
         client = self._make_one(credentials=creds, http=http)
         self.assertIsInstance(client._connection, Connection)
@@ -87,7 +94,7 @@ class TestClient(unittest.TestCase):
         self.assertTrue(client._connection.http is http)
 
     def test_ctor_use_gax_preset(self):
-        creds = _Credentials()
+        creds = _make_credentials()
         http = object()
         client = self._make_one(credentials=creds, http=http, use_gax=True)
         self.assertTrue(client._use_gax)
@@ -96,7 +103,7 @@ class TestClient(unittest.TestCase):
         from google.cloud import speech
         from google.cloud.speech.sample import Sample
 
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
 
         sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
@@ -122,7 +129,6 @@ class TestClient(unittest.TestCase):
 
         from google.cloud import speech
         from google.cloud.speech.alternative import Alternative
-        from google.cloud.speech.sample import Sample
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
 
         _AUDIO_CONTENT = _to_bytes(self.AUDIO_CONTENT)
@@ -145,17 +151,16 @@ class TestClient(unittest.TestCase):
                 'content': _B64_AUDIO_CONTENT,
             }
         }
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials, use_gax=False)
         client._connection = _Connection(RETURNED)
 
         encoding = speech.Encoding.FLAC
 
-        sample = Sample(content=self.AUDIO_CONTENT, encoding=encoding,
-                        sample_rate=self.SAMPLE_RATE)
+        sample = client.sample(content=self.AUDIO_CONTENT, encoding=encoding,
+                               sample_rate=self.SAMPLE_RATE)
 
-        response = client.sync_recognize(sample,
-                                         language_code='EN',
+        response = sample.sync_recognize(language_code='EN',
                                          max_alternatives=2,
                                          profanity_filter=True,
                                          speech_context=self.HINTS)
@@ -177,7 +182,6 @@ class TestClient(unittest.TestCase):
     def test_sync_recognize_source_uri_without_optional_params_no_gax(self):
         from google.cloud import speech
         from google.cloud.speech.alternative import Alternative
-        from google.cloud.speech.sample import Sample
         from unit_tests._fixtures import SYNC_RECOGNIZE_RESPONSE
 
         RETURNED = SYNC_RECOGNIZE_RESPONSE
@@ -190,16 +194,16 @@ class TestClient(unittest.TestCase):
                 'uri': self.AUDIO_SOURCE_URI,
             }
         }
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials, use_gax=False)
         client._connection = _Connection(RETURNED)
 
         encoding = speech.Encoding.FLAC
 
-        sample = Sample(source_uri=self.AUDIO_SOURCE_URI, encoding=encoding,
-                        sample_rate=self.SAMPLE_RATE)
+        sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
+                               encoding=encoding, sample_rate=self.SAMPLE_RATE)
 
-        response = client.sync_recognize(sample)
+        response = sample.sync_recognize()
 
         self.assertEqual(len(client._connection._requested), 1)
         req = client._connection._requested[0]
@@ -217,28 +221,26 @@ class TestClient(unittest.TestCase):
 
     def test_sync_recognize_with_empty_results_no_gax(self):
         from google.cloud import speech
-        from google.cloud.speech.sample import Sample
         from unit_tests._fixtures import SYNC_RECOGNIZE_EMPTY_RESPONSE
 
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials, use_gax=False)
         client._connection = _Connection(SYNC_RECOGNIZE_EMPTY_RESPONSE)
 
-        sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
-                        encoding=speech.Encoding.FLAC,
-                        sample_rate=self.SAMPLE_RATE)
+        sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
+                               encoding=speech.Encoding.FLAC,
+                               sample_rate=self.SAMPLE_RATE)
 
         with self.assertRaises(ValueError):
-            client.sync_recognize(sample)
+            sample.sync_recognize()
 
     def test_sync_recognize_with_empty_results_gax(self):
         from google.cloud._testing import _Monkey
 
         from google.cloud import speech
         from google.cloud.speech import _gax
-        from google.cloud.speech.sample import Sample
 
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials, use_gax=True)
         client._connection = _Connection()
         client._connection.credentials = credentials
@@ -257,7 +259,7 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
@@ -268,12 +270,12 @@ class TestClient(unittest.TestCase):
             channel_args,
             [(credentials, _gax.DEFAULT_USER_AGENT, host)])
 
-        sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
-                        encoding=speech.Encoding.FLAC,
-                        sample_rate=self.SAMPLE_RATE)
+        sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
+                               encoding=speech.Encoding.FLAC,
+                               sample_rate=self.SAMPLE_RATE)
 
         with self.assertRaises(ValueError):
-            client.sync_recognize(sample)
+            sample.sync_recognize()
 
     def test_sync_recognize_with_gax(self):
         from google.cloud._testing import _Monkey
@@ -281,7 +283,7 @@ class TestClient(unittest.TestCase):
         from google.cloud import speech
         from google.cloud.speech import _gax
 
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds, use_gax=True)
         client._connection = _Connection()
         client._connection.credentials = creds
@@ -315,7 +317,7 @@ class TestClient(unittest.TestCase):
                                encoding=speech.Encoding.FLAC,
                                sample_rate=self.SAMPLE_RATE)
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
@@ -326,7 +328,7 @@ class TestClient(unittest.TestCase):
             channel_args,
             [(creds, _gax.DEFAULT_USER_AGENT, host)])
 
-        results = client.sync_recognize(sample)
+        results = sample.sync_recognize()
 
         self.assertEqual(len(results), 2)
         self.assertEqual(results[0].transcript,
@@ -340,34 +342,32 @@ class TestClient(unittest.TestCase):
 
     def test_async_supported_encodings(self):
         from google.cloud import speech
-        from google.cloud.speech.sample import Sample
 
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
         client._connection = _Connection({})
 
-        sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
-                        encoding=speech.Encoding.FLAC,
-                        sample_rate=self.SAMPLE_RATE)
+        sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
+                               encoding=speech.Encoding.FLAC,
+                               sample_rate=self.SAMPLE_RATE)
         with self.assertRaises(ValueError):
-            client.async_recognize(sample)
+            sample.async_recognize()
 
     def test_async_recognize_no_gax(self):
         from google.cloud import speech
         from google.cloud.speech.operation import Operation
-        from google.cloud.speech.sample import Sample
         from unit_tests._fixtures import ASYNC_RECOGNIZE_RESPONSE
 
         RETURNED = ASYNC_RECOGNIZE_RESPONSE
 
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials, use_gax=False)
         client._connection = _Connection(RETURNED)
 
-        sample = Sample(source_uri=self.AUDIO_SOURCE_URI,
-                        encoding=speech.Encoding.LINEAR16,
-                        sample_rate=self.SAMPLE_RATE)
-        operation = client.async_recognize(sample)
+        sample = client.sample(source_uri=self.AUDIO_SOURCE_URI,
+                               encoding=speech.Encoding.LINEAR16,
+                               sample_rate=self.SAMPLE_RATE)
+        operation = sample.async_recognize()
         self.assertIsInstance(operation, Operation)
         self.assertIs(operation.client, client)
         self.assertEqual(operation.caller_metadata,
@@ -382,7 +382,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech import _gax
         from google.cloud.speech.operation import Operation
 
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials,
                                 use_gax=True)
         client._connection = _Connection()
@@ -405,7 +405,7 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             api = client.speech_api
 
@@ -416,20 +416,23 @@ class TestClient(unittest.TestCase):
                     low_level.SERVICE_ADDRESS)
         self.assertEqual(channel_args, [expected])
 
-        operation = client.async_recognize(sample)
+        operation = sample.async_recognize()
         self.assertIsInstance(operation, Operation)
         self.assertFalse(operation.complete)
         self.assertIsNone(operation.response)
 
     def test_streaming_depends_on_gax(self):
-        from google.cloud._testing import _Monkey
+        from google.cloud import speech
 
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials, use_gax=False)
         client.connection = _Connection()
+        sample = client.sample(content=self.AUDIO_CONTENT,
+                               encoding=speech.Encoding.LINEAR16,
+                               sample_rate=self.SAMPLE_RATE)
 
         with self.assertRaises(EnvironmentError):
-            list(client.streaming_recognize({}))
+            list(sample.streaming_recognize())
 
     def test_streaming_closed_stream(self):
         from io import BytesIO
@@ -440,7 +443,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech.encoding import Encoding
 
         stream = BytesIO(b'Some audio data...')
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
         client.connection = _Connection()
         client.connection.credentials = credentials
@@ -464,12 +467,12 @@ class TestClient(unittest.TestCase):
                                encoding=Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
         with self.assertRaises(ValueError):
-            list(client.streaming_recognize(sample))
+            list(sample.streaming_recognize())
 
     def test_stream_recognize_interim_results(self):
         from io import BytesIO
@@ -478,10 +481,10 @@ class TestClient(unittest.TestCase):
 
         from google.cloud.speech import _gax
         from google.cloud.speech.encoding import Encoding
-        from google.cloud.speech.client import StreamingSpeechResult
+        from google.cloud.speech.result import StreamingSpeechResult
 
         stream = BytesIO(b'Some audio data...')
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
         client.connection = _Connection()
         client.connection.credentials = credentials
@@ -516,7 +519,7 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
@@ -524,8 +527,7 @@ class TestClient(unittest.TestCase):
                                encoding=Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
 
-        results = list(client.streaming_recognize(sample,
-                                                  interim_results=True))
+        results = list(sample.streaming_recognize(interim_results=True))
 
         self.assertEqual(len(results), 3)
         self.assertIsInstance(results[0], StreamingSpeechResult)
@@ -558,7 +560,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech.encoding import Encoding
 
         stream = BytesIO(b'Some audio data...')
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
         client.connection = _Connection()
         client.connection.credentials = credentials
@@ -590,7 +592,7 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
@@ -598,7 +600,7 @@ class TestClient(unittest.TestCase):
                                encoding=Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
 
-        results = list(client.streaming_recognize(sample))
+        results = list(sample.streaming_recognize())
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].alternatives[0].transcript,
                          alternatives[0]['transcript'])
@@ -614,7 +616,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.speech.encoding import Encoding
 
         stream = BytesIO(b'Some audio data...')
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
         client.connection = _Connection()
         client.connection.credentials = credentials
@@ -634,7 +636,7 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
@@ -642,7 +644,7 @@ class TestClient(unittest.TestCase):
                                encoding=Encoding.LINEAR16,
                                sample_rate=self.SAMPLE_RATE)
 
-        results = list(client.streaming_recognize(sample))
+        results = list(sample.streaming_recognize())
         self.assertEqual(results, [])
 
     def test_speech_api_with_gax(self):
@@ -650,7 +652,7 @@ class TestClient(unittest.TestCase):
 
         from google.cloud.speech import _gax
 
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds, use_gax=True)
         client._connection = _Connection()
         client._connection.credentials = creds
@@ -668,7 +670,7 @@ class TestClient(unittest.TestCase):
         host = 'foo.apis.invalid'
         speech_api.SERVICE_ADDRESS = host
 
-        with _Monkey(_gax, SpeechApi=speech_api,
+        with _Monkey(_gax, SpeechClient=speech_api,
                      make_secure_channel=make_channel):
             client._speech_api = _gax.GAPICSpeechAPI(client)
 
@@ -683,14 +685,14 @@ class TestClient(unittest.TestCase):
         from google.cloud._http import Connection
         from google.cloud.speech.client import _JSONSpeechAPI
 
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds, use_gax=False)
         self.assertIsNone(client._speech_api)
         self.assertIsInstance(client.speech_api, _JSONSpeechAPI)
         self.assertIsInstance(client.speech_api._connection, Connection)
 
     def test_speech_api_preset(self):
-        creds = _Credentials()
+        creds = _make_credentials()
         client = self._make_one(credentials=creds)
         fake_api = object()
         client._speech_api = fake_api
@@ -726,23 +728,6 @@ class _MockGAPICSpeechAPI(object):
         self._requests = requests
         for response in self._response:
             yield response
-
-
-class _Credentials(object):
-
-    _scopes = ('https://www.googleapis.com/auth/cloud-platform',)
-
-    def __init__(self, authorized=None):
-        self._authorized = authorized
-        self._create_scoped_calls = 0
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
 
 
 class _Connection(object):

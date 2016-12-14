@@ -29,6 +29,8 @@ class TestFace(unittest.TestCase):
             self.FACE_ANNOTATIONS['faceAnnotations'][0])
 
     def test_face_landmarks(self):
+        from google.cloud.vision.face import LandmarkTypes
+
         self.assertEqual(0.54453093, self.face.landmarking_confidence)
         self.assertEqual(0.9863683, self.face.detection_confidence)
         self.assertTrue(hasattr(self.face.landmarks, 'left_eye'))
@@ -38,19 +40,19 @@ class TestFace(unittest.TestCase):
                          self.face.landmarks.left_eye.position.y_coordinate)
         self.assertEqual(0.0016593217,
                          self.face.landmarks.left_eye.position.z_coordinate)
-        self.assertEqual('LEFT_EYE',
-                         self.face.landmarks.left_eye.landmark_type)
+        self.assertEqual(self.face.landmarks.left_eye.landmark_type,
+                         LandmarkTypes.LEFT_EYE)
 
     def test_facial_emotions(self):
         from google.cloud.vision.face import Likelihood
         self.assertEqual(Likelihood.VERY_LIKELY,
-                         self.face.emotions.joy_likelihood)
+                         self.face.joy)
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.emotions.sorrow_likelihood)
+                         self.face.sorrow)
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.emotions.surprise_likelihood)
+                         self.face.surprise)
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.emotions.anger_likelihood)
+                         self.face.anger)
 
     def test_faciale_angles(self):
         self.assertEqual(-0.43419784, self.face.angles.roll)
@@ -60,11 +62,11 @@ class TestFace(unittest.TestCase):
     def test_face_headware_and_blur_and_underexposed(self):
         from google.cloud.vision.face import Likelihood
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.image_properties.blurred_likelihood)
+                         self.face.image_properties.blurred)
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.headwear_likelihood)
+                         self.face.headwear)
         self.assertEqual(Likelihood.VERY_UNLIKELY,
-                         self.face.image_properties.underexposed_likelihood)
+                         self.face.image_properties.underexposed)
 
     def test_face_bounds(self):
         self.assertEqual(4, len(self.face.bounds.vertices))

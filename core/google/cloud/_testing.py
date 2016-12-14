@@ -54,6 +54,24 @@ class _NamedTemporaryFile(object):
         os.remove(self.name)
 
 
+def _tempdir_maker():
+    import contextlib
+    import shutil
+    import tempfile
+
+    @contextlib.contextmanager
+    def _tempdir_mgr():
+        temp_dir = tempfile.mkdtemp()
+        yield temp_dir
+        shutil.rmtree(temp_dir)
+
+    return _tempdir_mgr
+
+
+_tempdir = _tempdir_maker()
+del _tempdir_maker
+
+
 class _GAXBaseAPI(object):
 
     _random_gax_error = False
@@ -76,6 +94,10 @@ class _GAXBaseAPI(object):
     def _make_grpc_failed_precondition(self):
         from grpc import StatusCode
         return self._make_grpc_error(StatusCode.FAILED_PRECONDITION)
+
+    def _make_grpc_deadline_exceeded(self):
+        from grpc import StatusCode
+        return self._make_grpc_error(StatusCode.DEADLINE_EXCEEDED)
 
 
 class _GAXPageIterator(object):
