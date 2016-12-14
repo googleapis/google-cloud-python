@@ -18,6 +18,8 @@ The ``annotateText`` method, when used with the "syntax" feature,
 breaks a document down into tokens and sentences.
 """
 
+from google.cloud.language.sentiment import Sentiment
+
 
 class PartOfSpeech(object):
     """Part of speech of a :class:`Token`."""
@@ -183,11 +185,19 @@ class Sentence(object):
     :param begin: The beginning offset of the sentence in the original
                   document according to the encoding type specified
                   in the API request.
+
+    :type sentiment: :class:`~google.cloud.language.sentiment.Sentiment`
+    :param sentiment:
+        (Optional) For calls to
+        :meth:`~google.cloud.language.document.Document.annotate_text` where
+        ``include_sentiment`` is set to true, this field will contain the
+        sentiment for the sentence.
     """
 
-    def __init__(self, content, begin):
+    def __init__(self, content, begin, sentiment=None):
         self.content = content
         self.begin = begin
+        self.sentiment = sentiment
 
     @classmethod
     def from_api_repr(cls, payload):
@@ -200,4 +210,11 @@ class Sentence(object):
         :returns: The sentence parsed from the API representation.
         """
         text_span = payload['text']
-        return cls(text_span['content'], text_span['beginOffset'])
+
+        try:
+            sentiment = Sentiment.from_api_repr(payload['sentiment'])
+        except KeyError:
+            sentiment = None
+
+        return cls(text_span['content'], text_span['beginOffset'],
+                   sentiment=sentiment)
