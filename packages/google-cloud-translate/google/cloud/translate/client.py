@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Client for interacting with the Google Cloud Translate API."""
+"""Client for interacting with the Google Cloud Translation API."""
 
 
 import six
@@ -158,8 +158,7 @@ class Client(BaseClient):
                   model=None):
         """Translate a string or list of strings.
 
-        See: https://cloud.google.com/translate/v2/\
-        translating-text-with-rest
+        See: https://cloud.google.com/translate/docs/translating-text
 
         :type values: str or list
         :param values: String or list of strings to translate.
