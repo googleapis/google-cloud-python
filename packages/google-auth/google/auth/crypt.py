@@ -186,7 +186,7 @@ class Signer(object):
             message (Union[str, bytes]): The message to be signed.
 
         Returns:
-            bytes: The signature of the message for the given key.
+            bytes: The signature of the message.
         """
         message = _helpers.to_bytes(message)
         return rsa.pkcs1.sign(message, self._key, 'SHA-256')

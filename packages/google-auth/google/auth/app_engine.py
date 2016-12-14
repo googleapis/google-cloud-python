@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Google App Engine standard environment credentials.
+"""Google App Engine standard environment support.
 
-This module provides authentication for application running on App Engine in
-the standard environment using the `App Identity API`_.
+This module provides authentication and signing for applications running on App
+Engine in the standard environment using the `App Identity API`_.
 
 
 .. _App Identity API:
@@ -31,6 +31,29 @@ try:
     from google.appengine.api import app_identity
 except ImportError:
     app_identity = None
+
+
+class Signer(object):
+    """Signs messages using the App Engine app identity service.
+
+    This can be used in place of :class:`google.auth.crypt.Signer` when
+    running in the App Engine standard environment.
+    """
+    def __init__(self):
+        self.key_id = None
+
+    @staticmethod
+    def sign(message):
+        """Signs a message.
+
+        Args:
+            message (Union[str, bytes]): The message to be signed.
+
+        Returns:
+            bytes: The signature of the message.
+        """
+        message = _helpers.to_bytes(message)
+        return app_identity.sign_blob(message)
 
 
 def get_project_id():
@@ -109,7 +132,7 @@ class Credentials(credentials.Scoped, credentials.Signing,
 
     @_helpers.copy_docstring(credentials.Signing)
     def sign_bytes(self, message):
-        return app_identity.sign_blob(message)
+        return Signer().sign(message)
 
     @property
     @_helpers.copy_docstring(credentials.Signing)
