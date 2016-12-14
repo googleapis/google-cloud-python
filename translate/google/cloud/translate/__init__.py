@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Google Cloud Translate API wrapper."""
+"""Google Cloud Translation API wrapper."""
 
 from google.cloud.translate.client import BASE
 from google.cloud.translate.client import Client
