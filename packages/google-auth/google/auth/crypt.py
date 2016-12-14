@@ -227,3 +227,18 @@ class Signer(object):
             raise ValueError('No key could be detected.')
 
         return cls(private_key, key_id=key_id)
+
+    @classmethod
+    def from_service_account_file(cls, filename):
+        """Creates a Signer instance from a service account .json file
+        in Google format.
+
+        Args:
+            filename (str): The path to the service account .json file.
+
+        Returns:
+            Signer: The constructed signer.
+        """
+        from google.auth import _service_account_info
+        _, signer = _service_account_info.from_filename(filename)
+        return signer

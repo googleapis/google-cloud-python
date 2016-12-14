@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import json
 
 import mock
 from pyasn1_modules import pem
@@ -58,6 +59,12 @@ with open(os.path.join(DATA_DIR, 'pem_from_pkcs12.pem'), 'rb') as fh:
 
 with open(os.path.join(DATA_DIR, 'privatekey.p12'), 'rb') as fh:
     PKCS12_KEY_BYTES = fh.read()
+
+# The service account JSON file can be generated from the Google Cloud Console.
+SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, 'service_account.json')
+
+with open(SERVICE_ACCOUNT_JSON_FILE, 'r') as fh:
+    SERVICE_ACCOUNT_INFO = json.load(fh)
 
 
 def test_verify_signature():
@@ -191,3 +198,10 @@ class TestSigner(object):
         key_bytes = 'bogus-key'
         with pytest.raises(ValueError):
             crypt.Signer.from_string(key_bytes)
+
+    def test_from_service_account_file(self):
+        signer = crypt.Signer.from_service_account_file(
+            SERVICE_ACCOUNT_JSON_FILE)
+
+        assert signer.key_id == SERVICE_ACCOUNT_INFO['private_key_id']
+        assert isinstance(signer._key, rsa.key.PrivateKey)
