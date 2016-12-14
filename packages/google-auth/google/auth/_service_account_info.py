@@ -41,10 +41,7 @@ def from_dict(data, require=None):
         ValueError: if the data was in the wrong format, or if one of the
             required keys is missing.
     """
-    # Private key is always required.
-    keys_needed = set(('private_key',))
-    if require is not None:
-        keys_needed.update(require)
+    keys_needed = set(require if require is not None else [])
 
     missing = keys_needed.difference(six.iterkeys(data))
 
@@ -54,8 +51,7 @@ def from_dict(data, require=None):
             'fields {}.'.format(', '.join(missing)))
 
     # Create a signer.
-    signer = crypt.Signer.from_string(
-        data['private_key'], data.get('private_key_id'))
+    signer = crypt.Signer.from_service_account_info(data)
 
     return signer
 
