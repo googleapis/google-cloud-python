@@ -17,6 +17,7 @@
 import json
 
 from google.protobuf.json_format import MessageToJson
+from google.cloud._helpers import _datetime_to_rfc3339
 
 
 class Logger(object):
@@ -120,7 +121,8 @@ class Logger(object):
         :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry
-        :type timestamp: str
+
+        :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
 
         :rtype: dict
@@ -158,7 +160,7 @@ class Logger(object):
             resource['httpRequest'] = http_request
 
         if timestamp is not None:
-            resource['timestamp'] = timestamp
+            resource['timestamp'] = _datetime_to_rfc3339(timestamp)
 
         return resource
 
@@ -190,7 +192,7 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry
 
-        :type timestamp: str
+        :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
         """
         client = self._require_client(client)
@@ -227,7 +229,7 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
-        :type timestamp: str
+        :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
         """
         client = self._require_client(client)
@@ -264,7 +266,7 @@ class Logger(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
-        :type timestamp: str
+        :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
         """
         client = self._require_client(client)
@@ -373,7 +375,7 @@ class Batch(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
-        :type timestamp: str
+        :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
         """
         self.entries.append(
@@ -399,7 +401,7 @@ class Batch(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
-        :type timestamp: str
+        :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
         """
         self.entries.append(
@@ -425,7 +427,7 @@ class Batch(object):
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
 
-        :type timestamp: str
+        :type timestamp: :class:`datetime.datetime`
         :param timestamp: (optional) timestamp of event being logged.
         """
         self.entries.append(
