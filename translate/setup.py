@@ -55,7 +55,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-translate',
-    version='0.22.0',
+    version='0.22.1',
     description='Python Client for Google Cloud Translation API',
     long_description=README,
     namespace_packages=[
