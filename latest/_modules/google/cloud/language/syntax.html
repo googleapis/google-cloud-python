@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.language.syntax &mdash; google-cloud 363f30b documentation</title>
+  <title>google.cloud.language.syntax &mdash; google-cloud 7f7dc42 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 363f30b documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud 7f7dc42 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -305,6 +305,8 @@
 <span class="sd">breaks a document down into tokens and sentences.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">google.cloud.language.sentiment</span> <span class="k">import</span> <span class="n">Sentiment</span>
+
 
 <div class="viewcode-block" id="PartOfSpeech"><a class="viewcode-back" href="../../../../language-responses.html#google.cloud.language.syntax.PartOfSpeech">[docs]</a><span class="k">class</span> <span class="nc">PartOfSpeech</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Part of speech of a :class:`Token`.&quot;&quot;&quot;</span>
@@ -470,11 +472,19 @@
 <span class="sd">    :param begin: The beginning offset of the sentence in the original</span>
 <span class="sd">                  document according to the encoding type specified</span>
 <span class="sd">                  in the API request.</span>
+
+<span class="sd">    :type sentiment: :class:`~google.cloud.language.sentiment.Sentiment`</span>
+<span class="sd">    :param sentiment:</span>
+<span class="sd">        (Optional) For calls to</span>
+<span class="sd">        :meth:`~google.cloud.language.document.Document.annotate_text` where</span>
+<span class="sd">        ``include_sentiment`` is set to true, this field will contain the</span>
+<span class="sd">        sentiment for the sentence.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">begin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">sentiment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">content</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">begin</span> <span class="o">=</span> <span class="n">begin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sentiment</span> <span class="o">=</span> <span class="n">sentiment</span>
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Sentence.from_api_repr"><a class="viewcode-back" href="../../../../language-responses.html#google.cloud.language.syntax.Sentence.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
@@ -487,7 +497,14 @@
 <span class="sd">        :returns: The sentence parsed from the API representation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">text_span</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">text_span</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">],</span> <span class="n">text_span</span><span class="p">[</span><span class="s1">&#39;beginOffset&#39;</span><span class="p">])</span></div></div>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sentiment</span> <span class="o">=</span> <span class="n">Sentiment</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">sentiment</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">text_span</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">],</span> <span class="n">text_span</span><span class="p">[</span><span class="s1">&#39;beginOffset&#39;</span><span class="p">],</span>
+                   <span class="n">sentiment</span><span class="o">=</span><span class="n">sentiment</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -521,7 +538,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'363f30b',
+            VERSION:'7f7dc42',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Natural Language Response Classes &mdash; google-cloud 363f30b documentation</title>
+  <title>Natural Language Response Classes &mdash; google-cloud 7f7dc42 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 363f30b documentation" href="index.html"/>
+    <link rel="top" title="google-cloud 7f7dc42 documentation" href="index.html"/>
         <link rel="next" title="Using the API" href="speech-usage.html"/>
         <link rel="prev" title="Document" href="language-document.html"/> 
 
@@ -568,7 +568,7 @@ speech enum.</td>
 
 <dl class="class">
 <dt id="google.cloud.language.syntax.Sentence">
-<em class="property">class </em><code class="descclassname">google.cloud.language.syntax.</code><code class="descname">Sentence</code><span class="sig-paren">(</span><em>content</em>, <em>begin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/syntax.html#Sentence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.syntax.Sentence" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.language.syntax.</code><code class="descname">Sentence</code><span class="sig-paren">(</span><em>content</em>, <em>begin</em>, <em>sentiment=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/language/syntax.html#Sentence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.language.syntax.Sentence" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A Google Cloud Natural Language API sentence object.</p>
 <p>See <a class="reference external" href="https://cloud.google.com/natural-language/reference/rest/v1/documents/annotateText#Sentence">Sentence message</a>.</p>
@@ -581,6 +581,10 @@ speech enum.</td>
 <li><strong>begin</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The beginning offset of the sentence in the original
 document according to the encoding type specified
 in the API request.</li>
+<li><strong>sentiment</strong> (<a class="reference internal" href="#google.cloud.language.sentiment.Sentiment" title="google.cloud.language.sentiment.Sentiment"><code class="xref py py-class docutils literal"><span class="pre">Sentiment</span></code></a>) &#8211; (Optional) For calls to
+<a class="reference internal" href="language-document.html#google.cloud.language.document.Document.annotate_text" title="google.cloud.language.document.Document.annotate_text"><code class="xref py py-meth docutils literal"><span class="pre">annotate_text()</span></code></a> where
+<code class="docutils literal"><span class="pre">include_sentiment</span></code> is set to true, this field will contain the
+sentiment for the sentence.</li>
 </ul>
 </td>
 </tr>
@@ -700,7 +704,7 @@ its own index.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'363f30b',
+            VERSION:'7f7dc42',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
