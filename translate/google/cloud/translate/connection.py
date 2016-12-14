@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with Google Cloud Translate connections."""
+"""Create / interact with Google Cloud Translation connections."""
 
 from google.cloud import _http
 
 
 class Connection(_http.JSONConnection):
-    """A connection to Google Cloud Translate via the JSON REST API."""
+    """A connection to Google Cloud Translation API via the JSON REST API."""
 
     API_BASE_URL = 'https://translation.googleapis.com'
     """The base of the API call URL."""

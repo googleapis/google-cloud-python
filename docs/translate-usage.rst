@@ -1,10 +1,10 @@
 Using the API
 =============
 
-With `Google Translate`_, you can dynamically translate text
-between thousands of language pairs. The Google Translate API
-lets websites and programs integrate with Google Translate
-programmatically. Google Translate API is available as a
+With `Google Cloud Translation`_, you can dynamically translate text
+between thousands of language pairs. The Google Cloud Translation API
+lets websites and programs integrate with Google Cloud Translation
+programmatically. Google Cloud Translation is available as a
 paid service. See the `Pricing`_ and `FAQ`_ pages for details.
 
 Authentication / Configuration
@@ -14,9 +14,9 @@ Authentication / Configuration
   your applications.
 
 - :class:`~google.cloud.translate.client.Client` objects hold both a ``key``
-  and a connection to the Translate service.
+  and a connection to the Cloud Translation service.
 
-- **An API key is required for Translate.** See
+- **An API key is required for Google Cloud Translation.** See
   `Identifying your application to Google`_ for details. This is
   significantly different than the other clients in ``google-cloud-python``.
 
@@ -39,13 +39,13 @@ well:
      >>> from google.cloud import translate
      >>> client = translate.Client('my-api-key', target_language='es')
 
-The Google Translate API has three supported methods, and they
+The Google Cloud Translation API has three supported methods, and they
 map to three methods on a client:
 :meth:`~google.cloud.translate.client.Client.get_languages`,
 :meth:`~google.cloud.translate.client.Client.detect_language` and
 :meth:`~google.cloud.translate.client.Client.translate`.
 
-To get a list of languages supported by Google Translate
+To get a list of languages supported by the Google Cloud Translation API
 
   .. code::
 
@@ -116,8 +116,8 @@ or to use a non-default target language:
          },
      ]
 
-.. _Google Translate: https://cloud.google.com/translate
-.. _Pricing: https://cloud.google.com/translate/v2/pricing.html
-.. _FAQ: https://cloud.google.com/translate/v2/faq.html
-.. _Identifying your application to Google: https://cloud.google.com/translate/v2/using_rest#auth
-.. _confidence: https://cloud.google.com/translate/v2/detecting-language-with-rest
+.. _Google Cloud Translation: https://cloud.google.com/translation
+.. _Pricing: https://cloud.google.com/translation/pricing
+.. _FAQ: https://cloud.google.com/translation/faq
+.. _Identifying your application to Google: https://cloud.google.com/translation/docs/translating-text
+.. _confidence: https://cloud.google.com/translation/docs/detecting-language
