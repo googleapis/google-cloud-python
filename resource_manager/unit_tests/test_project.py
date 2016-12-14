@@ -1,4 +1,4 @@
-# Copyright 2015 Google Inc.
+# Copyright 2016 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -87,31 +87,66 @@ class TestProject(unittest.TestCase):
 
     def test_create(self):
         PROJECT_ID = 'project-id'
-        PROJECT_NUMBER = 123
-        PROJECT_RESOURCE = {
-            'projectId': PROJECT_ID,
-            'projectNumber': PROJECT_NUMBER,
-            'name': 'Project Name',
-            'labels': {},
-            'lifecycleState': 'ACTIVE',
+        CREATE_RESPONSE = {
+            'name': 'operations/pc.1234567890',
+            'metadata': {
+                '@type': ('type.googleapis.com/'
+                          'google.cloudresourcemanager.v1.ProjectCreateStatus')
+            }
         }
-        connection = _Connection(PROJECT_RESOURCE)
+        connection = _Connection(CREATE_RESPONSE)
         client = _Client(connection=connection)
         project = self._make_one(PROJECT_ID, client)
         self.assertIsNone(project.number)
         project.create()
-        self.assertEqual(project.number, PROJECT_NUMBER)
         request, = connection._requested
 
         expected_request = {
             'method': 'POST',
             'data': {
                 'projectId': PROJECT_ID,
-                'labels': {},
                 'name': None,
+                'labels': {}
             },
             'path': '/projects',
         }
+
+        self.assertEqual(request, expected_request)
+
+    def test_create_with_parent(self):
+        from google.cloud.resource_manager.resource import OrganizationResource
+
+        PROJECT_ID = 'project-id'
+        PROJECT_PARENT = OrganizationResource('54321')
+        CREATE_RESPONSE = {
+            'name': 'operations/pc.1234567890',
+            'metadata': {
+                '@type': ('type.googleapis.com/'
+                          'google.cloudresourcemanager.v1.ProjectCreateStatus')
+            }
+        }
+        connection = _Connection(CREATE_RESPONSE)
+        client = _Client(connection=connection)
+        project = self._make_one(project_id=PROJECT_ID, client=client,
+                                 parent=PROJECT_PARENT)
+        self.assertIsNone(project.number)
+        project.create()
+        request, = connection._requested
+
+        expected_request = {
+            'method': 'POST',
+            'data': {
+                'projectId': PROJECT_ID,
+                'name': None,
+                'parent': {
+                    'type': 'organization',
+                    'id': '54321'
+                },
+                'labels': {}
+            },
+            'path': '/projects',
+        }
+
         self.assertEqual(request, expected_request)
 
     def test_reload(self):

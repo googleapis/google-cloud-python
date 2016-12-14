@@ -48,7 +48,7 @@ class Client(BaseClient):
 
     _connection_class = Connection
 
-    def new_project(self, project_id, name=None, labels=None):
+    def new_project(self, project_id, name=None, labels=None, parent=None):
         """Create a project bound to the current client.
 
         Use :meth:`Project.reload() \
@@ -69,13 +69,16 @@ class Client(BaseClient):
         :type labels: dict
         :param labels: A list of labels associated with the project.
 
+        :type parent: :class:`~google.cloud.resource_manager.resource.Resource`
+        :param parent: The Resource of the project's parent.
+
         :rtype: :class:`~google.cloud.resource_manager.project.Project`
         :returns: A new instance of a
                   :class:`~google.cloud.resource_manager.project.Project`
                   **without** any metadata loaded.
         """
         return Project(project_id=project_id,
-                       client=self, name=name, labels=labels)
+                       client=self, name=name, labels=labels, parent=parent)
 
     def fetch_project(self, project_id):
         """Fetch an existing project and it's relevant metadata by ID.
