@@ -204,7 +204,7 @@ class Signer(object):
             key_id (str): An optional key id used to identify the private key.
 
         Returns:
-            Signer: The constructed signer.
+            ~google.auth.crypt.Signer: The constructed signer.
 
         Raises:
             ValueError: If the key cannot be parsed as PKCS#1 or PKCS#8 in
@@ -242,7 +242,7 @@ class Signer(object):
                 format.
 
         Returns:
-            Signer: The constructed signer.
+            ~google.auth.crypt.Signer: The constructed signer.
 
         Raises:
             ValueError: If the info is not in the expected format.
@@ -265,7 +265,7 @@ class Signer(object):
             filename (str): The path to the service account .json file.
 
         Returns:
-            Signer: The constructed signer.
+            ~google.auth.crypt.Signer: The constructed signer.
         """
         with io.open(filename, 'r', encoding='utf-8') as json_file:
             data = json.load(json_file)

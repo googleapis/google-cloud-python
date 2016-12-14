@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v0.5.0
+------
+
+- Added ``app_engine.Signer``. (#97)
+- Added ``crypt.Signer.from_service_account_file``. (#95)
+- Fixed error handling in the oauth2 client. (#96)
+- Fixed the App Engine system tests.
+
 v0.4.0
 ------
 
