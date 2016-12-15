@@ -23,7 +23,7 @@ def _make_credentials():
 
 
 def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
-    from google.cloud.datastore._generated import entity_pb2
+    from google.cloud.grpc.datastore.v1 import entity_pb2
     from google.cloud.datastore.helpers import _new_value_pb
 
     entity_pb = entity_pb2.Entity()
@@ -275,7 +275,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(results, [])
 
     def test_get_multi_miss_w_missing(self):
-        from google.cloud.datastore._generated import entity_pb2
+        from google.cloud.grpc.datastore.v1 import entity_pb2
         from google.cloud.datastore.key import Key
 
         KIND = 'Kind'
@@ -339,7 +339,7 @@ class TestClient(unittest.TestCase):
                          [key.to_protobuf()])
 
     def test_get_multi_w_deferred_from_backend_but_not_passed(self):
-        from google.cloud.datastore._generated import entity_pb2
+        from google.cloud.grpc.datastore.v1 import entity_pb2
         from google.cloud.datastore.entity import Entity
         from google.cloud.datastore.key import Key
 
@@ -1004,7 +1004,7 @@ class _Key(object):
         return self._id is None
 
     def to_protobuf(self):
-        from google.cloud.datastore._generated import entity_pb2
+        from google.cloud.grpc.datastore.v1 import entity_pb2
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
         # key.partition_id.project_id = self.project
