@@ -157,13 +157,6 @@ class _Batch(object):
         del self.entries[:]
 
 
-class _Connection(object):
-
-    def __init__(self):
-        self.http = None
-        self.credentials = object()
-
-
 class _Logger(object):
 
     def __init__(self, name):
@@ -178,9 +171,8 @@ class _Client(object):
 
     def __init__(self, project, http=None, credentials=None):
         self.project = project
-        self.http = http
-        self.credentials = credentials
-        self._connection = _Connection()
+        self._http = http
+        self._credentials = credentials
 
     def logger(self, name):  # pylint: disable=unused-argument
         self._logger = _Logger(name)
