@@ -109,7 +109,7 @@ class Image(object):
                   :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`,
                   :class:`~google.cloud.vision.sage.SafeSearchAnnotation`,
         """
-        results = self.client.annotate(self, features)
+        results = self.client._vision_api.annotate(self, features)
         return Annotations.from_api_repr(results)
 
     def detect(self, features):
