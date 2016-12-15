@@ -529,11 +529,8 @@ class TestDoctest(unittest.TestCase):
         pkg_iter = pkgutil.iter_modules(datastore.__path__)
         result = []
         for _, mod_name, ispkg in pkg_iter:
-            if mod_name == '_generated':
-                self.assertTrue(ispkg)
-            else:
-                self.assertFalse(ispkg)
-                result.append(mod_name)
+            self.assertFalse(ispkg)
+            result.append(mod_name)
 
         self.assertNotIn('__init__', result)
         return result
