@@ -455,8 +455,8 @@ class Batch(object):
             kwargs['labels'] = self.logger.labels
 
         entries = []
-        for entry_type, entry, labels, iid, severity, http_req, timestamp in \
-                self.entries:
+        for (entry_type, entry, labels, iid, severity, http_req,
+             timestamp) in self.entries:
             if entry_type == 'text':
                 info = {'textPayload': entry}
             elif entry_type == 'struct':
