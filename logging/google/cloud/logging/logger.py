@@ -17,6 +17,7 @@
 import json
 
 from google.protobuf.json_format import MessageToJson
+from google.cloud._helpers import _datetime_to_rfc3339
 
 
 class Logger(object):
@@ -92,7 +93,7 @@ class Logger(object):
 
     def _make_entry_resource(self, text=None, info=None, message=None,
                              labels=None, insert_id=None, severity=None,
-                             http_request=None):
+                             http_request=None, timestamp=None):
         """Return a log entry resource of the appropriate type.
 
         Helper for :meth:`log_text`, :meth:`log_struct`, and :meth:`log_proto`.
@@ -120,6 +121,9 @@ class Logger(object):
         :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry
+
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
 
         :rtype: dict
         :returns: The JSON resource created.
@@ -155,10 +159,13 @@ class Logger(object):
         if http_request is not None:
             resource['httpRequest'] = http_request
 
+        if timestamp is not None:
+            resource['timestamp'] = _datetime_to_rfc3339(timestamp)
+
         return resource
 
     def log_text(self, text, client=None, labels=None, insert_id=None,
-                 severity=None, http_request=None):
+                 severity=None, http_request=None, timestamp=None):
         """API call:  log a text message via a POST request
 
         See:
@@ -184,15 +191,18 @@ class Logger(object):
         :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry
+
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
             text=text, labels=labels, insert_id=insert_id, severity=severity,
-            http_request=http_request)
+            http_request=http_request, timestamp=timestamp)
         client.logging_api.write_entries([entry_resource])
 
     def log_struct(self, info, client=None, labels=None, insert_id=None,
-                   severity=None, http_request=None):
+                   severity=None, http_request=None, timestamp=None):
         """API call:  log a structured message via a POST request
 
         See:
@@ -218,15 +228,18 @@ class Logger(object):
         :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
+
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
             info=info, labels=labels, insert_id=insert_id, severity=severity,
-            http_request=http_request)
+            http_request=http_request, timestamp=timestamp)
         client.logging_api.write_entries([entry_resource])
 
     def log_proto(self, message, client=None, labels=None, insert_id=None,
-                  severity=None, http_request=None):
+                  severity=None, http_request=None, timestamp=None):
         """API call:  log a protobuf message via a POST request
 
         See:
@@ -252,11 +265,14 @@ class Logger(object):
         :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
+
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
             message=message, labels=labels, insert_id=insert_id,
-            severity=severity, http_request=http_request)
+            severity=severity, http_request=http_request, timestamp=timestamp)
         client.logging_api.write_entries([entry_resource])
 
     def delete(self, client=None):
@@ -340,7 +356,7 @@ class Batch(object):
             self.commit()
 
     def log_text(self, text, labels=None, insert_id=None, severity=None,
-                 http_request=None):
+                 http_request=None, timestamp=None):
         """Add a text entry to be logged during :meth:`commit`.
 
         :type text: str
@@ -358,12 +374,16 @@ class Batch(object):
         :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
+
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
         """
         self.entries.append(
-            ('text', text, labels, insert_id, severity, http_request))
+            ('text', text, labels, insert_id, severity, http_request,
+             timestamp))
 
     def log_struct(self, info, labels=None, insert_id=None, severity=None,
-                   http_request=None):
+                   http_request=None, timestamp=None):
         """Add a struct entry to be logged during :meth:`commit`.
 
         :type info: dict
@@ -381,12 +401,16 @@ class Batch(object):
         :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
+
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
         """
         self.entries.append(
-            ('struct', info, labels, insert_id, severity, http_request))
+            ('struct', info, labels, insert_id, severity, http_request,
+             timestamp))
 
     def log_proto(self, message, labels=None, insert_id=None, severity=None,
-                  http_request=None):
+                  http_request=None, timestamp=None):
         """Add a protobuf entry to be logged during :meth:`commit`.
 
         :type message: protobuf message
@@ -404,9 +428,13 @@ class Batch(object):
         :type http_request: dict
         :param http_request: (optional) info about HTTP request associated with
                              the entry.
+
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (optional) timestamp of event being logged.
         """
         self.entries.append(
-            ('proto', message, labels, insert_id, severity, http_request))
+            ('proto', message, labels, insert_id, severity, http_request,
+             timestamp))
 
     def commit(self, client=None):
         """Send saved log entries as a single API call.
@@ -427,7 +455,8 @@ class Batch(object):
             kwargs['labels'] = self.logger.labels
 
         entries = []
-        for entry_type, entry, labels, iid, severity, http_req in self.entries:
+        for (entry_type, entry, labels, iid, severity, http_req,
+             timestamp) in self.entries:
             if entry_type == 'text':
                 info = {'textPayload': entry}
             elif entry_type == 'struct':
@@ -446,6 +475,8 @@ class Batch(object):
                 info['severity'] = severity
             if http_req is not None:
                 info['httpRequest'] = http_req
+            if timestamp is not None:
+                info['timestamp'] = timestamp
             entries.append(info)
 
         client.logging_api.write_entries(entries, **kwargs)
