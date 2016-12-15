@@ -43,6 +43,18 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=PROJECT, credentials=creds)
         self.assertEqual(client.project, PROJECT)
 
+    def test_annotate_with_preset_api(self):
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials)
+        client._connection = _Connection()
+
+        api = mock.Mock()
+        api.annotate.return_value = mock.sentinel.annotated
+
+        client._vision_api_internal = api
+        client._vision_api.annotate()
+        api.annotate.assert_called_once_with()
+
     def test_face_annotation(self):
         from google.cloud.vision.feature import Feature, FeatureTypes
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
@@ -70,7 +82,7 @@ class TestClient(unittest.TestCase):
         features = [Feature(feature_type=FeatureTypes.FACE_DETECTION,
                             max_results=3)]
         image = client.image(content=IMAGE_CONTENT)
-        response = client.annotate(image, features)
+        response = client._vision_api.annotate(image, features)
 
         self.assertEqual(REQUEST,
                          client._connection._requested[0]['data'])
@@ -431,30 +443,6 @@ class TestClient(unittest.TestCase):
         image_properties = image.detect_properties()
         self.assertEqual(image_properties, ())
         self.assertEqual(len(image_properties), 0)
-
-
-class TestVisionRequest(unittest.TestCase):
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.vision.client import VisionRequest
-        return VisionRequest
-
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
-
-    def test_make_vision_request(self):
-        from google.cloud.vision.feature import Feature, FeatureTypes
-
-        feature = Feature(feature_type=FeatureTypes.FACE_DETECTION,
-                          max_results=3)
-        vision_request = self._make_one(IMAGE_CONTENT, feature)
-        self.assertEqual(IMAGE_CONTENT, vision_request.image)
-        self.assertEqual(FeatureTypes.FACE_DETECTION,
-                         vision_request.features[0].feature_type)
-
-    def test_make_vision_request_with_bad_feature(self):
-        with self.assertRaises(TypeError):
-            self._make_one(IMAGE_CONTENT, 'nonsensefeature')
 
 
 class _Connection(object):
