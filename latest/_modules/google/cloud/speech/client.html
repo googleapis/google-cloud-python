@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.speech.client &mdash; google-cloud 861c5d7 documentation</title>
+  <title>google.cloud.speech.client &mdash; google-cloud f4c3025 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 861c5d7 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud f4c3025 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -322,15 +322,16 @@
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">BaseClient</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
-<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or</span>
-<span class="sd">                       :class:`NoneType`</span>
-<span class="sd">    :param credentials: The OAuth2 Credentials to use for the connection</span>
-<span class="sd">                        owned by this client. If not passed (and if no ``http``</span>
-<span class="sd">                        object is passed), falls back to the default inferred</span>
-<span class="sd">                        from the environment.</span>
+<span class="sd">    :type credentials: :class:`~google.auth.credentials.Credentials`</span>
+<span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
+<span class="sd">                        client. If not passed (and if no ``http`` object is</span>
+<span class="sd">                        passed), falls back to the default inferred from the</span>
+<span class="sd">                        environment.</span>
 
-<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``.</span>
-<span class="sd">    :param http: An optional HTTP object to make requests. If not passed, an</span>
+<span class="sd">    :type http: :class:`~httplib2.Http`</span>
+<span class="sd">    :param http: (Optional) HTTP object to make requests. Can be any object</span>
+<span class="sd">                 that defines ``request()`` with the same interface as</span>
+<span class="sd">                 :meth:`~httplib2.Http.request`. If not passed, an</span>
 <span class="sd">                 ``http`` object is created that is bound to the</span>
 <span class="sd">                 ``credentials`` for the current object.</span>
 
@@ -340,15 +341,17 @@
 <span class="sd">                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment</span>
 <span class="sd">                    variable</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_speech_api</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_gax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span>
+            <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_http</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">use_gax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">_USE_GAX</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_use_gax</span> <span class="o">=</span> <span class="n">use_gax</span>
-
-    <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
-    <span class="n">_speech_api</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Client.sample"><a class="viewcode-back" href="../../../../speech-client.html#google.cloud.speech.client.Client.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_uri</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">sample_rate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -614,7 +617,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'861c5d7',
+            VERSION:'f4c3025',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

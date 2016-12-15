@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Vision Client &mdash; google-cloud 861c5d7 documentation</title>
+  <title>Vision Client &mdash; google-cloud f4c3025 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 861c5d7 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud f4c3025 documentation" href="index.html"/>
         <link rel="next" title="Vision Image Properties" href="vision-color.html"/>
         <link rel="prev" title="Vision Annotations" href="vision-annotations.html"/> 
 
@@ -307,12 +307,13 @@
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the project which the client acts on behalf of.
 If not passed, falls back to the default inferred
 from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
-<code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
-owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
-object is passed), falls back to the default inferred
-from the environment.</li>
-<li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.5.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code> object is
+passed), falls back to the default inferred from the
+environment.</li>
+<li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
+<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
 <code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
 <code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
 </ul>
@@ -320,35 +321,6 @@ from the environment.</li>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="google.cloud.vision.client.Client.annotate">
-<code class="descname">annotate</code><span class="sig-paren">(</span><em>image</em>, <em>features</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/client.html#Client.annotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.client.Client.annotate" title="Permalink to this definition">#</a></dt>
-<dd><p>Annotate an image to discover it&#8217;s attributes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>image</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; A string which can be a URL, a Google Cloud Storage path,
-or a byte stream of the image.</li>
-<li><strong>features</strong> (list of <a class="reference internal" href="vision-feature.html#google.cloud.vision.feature.Feature" title="google.cloud.vision.feature.Feature"><code class="xref py py-class docutils literal"><span class="pre">Feature</span></code></a>) &#8211; <p>The type of detection that the Vision API should
-use to determine image attributes. Pricing is
-based on the number of Feature Types.</p>
-<p>See: <a class="reference external" href="https://cloud.google.com/vision/docs/pricing">https://cloud.google.com/vision/docs/pricing</a></p>
-</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of annotations.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="method">
 <dt id="google.cloud.vision.client.Client.image">
 <code class="descname">image</code><span class="sig-paren">(</span><em>content=None</em>, <em>filename=None</em>, <em>source_uri=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/client.html#Client.image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.client.Client.image" title="Permalink to this definition">#</a></dt>
@@ -372,43 +344,6 @@ based on the number of Feature Types.</p>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="google.cloud.vision.client.VisionRequest">
-<em class="property">class </em><code class="descclassname">google.cloud.vision.client.</code><code class="descname">VisionRequest</code><span class="sig-paren">(</span><em>image</em>, <em>features</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/client.html#VisionRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.client.VisionRequest" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Request container with image and features information to annotate.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>features</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">Feature</span></code>.) &#8211; The features that dictate which annotations to run.</li>
-<li><strong>image</strong> (<em>bytes</em>) &#8211; Either Google Cloud Storage URI or raw byte stream of image.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="google.cloud.vision.client.VisionRequest.as_dict">
-<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/vision/client.html#VisionRequest.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision.client.VisionRequest.as_dict" title="Permalink to this definition">#</a></dt>
-<dd><p>Dictionary representation of Image.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.vision.client.VisionRequest.features">
-<code class="descname">features</code><a class="headerlink" href="#google.cloud.vision.client.VisionRequest.features" title="Permalink to this definition">#</a></dt>
-<dd><p>List of Feature objects.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.vision.client.VisionRequest.image">
-<code class="descname">image</code><a class="headerlink" href="#google.cloud.vision.client.VisionRequest.image" title="Permalink to this definition">#</a></dt>
-<dd><p>Image object containing image content.</p>
 </dd></dl>
 
 </dd></dl>
@@ -507,7 +442,7 @@ connection.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'861c5d7',
+            VERSION:'f4c3025',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Logger &mdash; google-cloud 861c5d7 documentation</title>
+  <title>Logger &mdash; google-cloud f4c3025 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 861c5d7 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud f4c3025 documentation" href="index.html"/>
         <link rel="next" title="Entries" href="logging-entries.html"/>
         <link rel="prev" title="Stackdriver Logging Client" href="logging-client.html"/> 
 
@@ -324,7 +324,7 @@
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Batch.log_proto">
-<code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Batch.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_proto" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Batch.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_proto" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a protobuf entry to be logged during <a class="reference internal" href="#google.cloud.logging.logger.Batch.commit" title="google.cloud.logging.logger.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -337,6 +337,7 @@
 <li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
 the entry.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp of event being logged.</li>
 </ul>
 </td>
 </tr>
@@ -346,7 +347,7 @@ the entry.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Batch.log_struct">
-<code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Batch.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_struct" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Batch.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_struct" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a struct entry to be logged during <a class="reference internal" href="#google.cloud.logging.logger.Batch.commit" title="google.cloud.logging.logger.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -359,6 +360,7 @@ the entry.</li>
 <li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
 the entry.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp of event being logged.</li>
 </ul>
 </td>
 </tr>
@@ -368,7 +370,7 @@ the entry.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Batch.log_text">
-<code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Batch.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_text" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Batch.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Batch.log_text" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a text entry to be logged during <a class="reference internal" href="#google.cloud.logging.logger.Batch.commit" title="google.cloud.logging.logger.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -381,6 +383,7 @@ the entry.</li>
 <li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
 the entry.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp of event being logged.</li>
 </ul>
 </td>
 </tr>
@@ -500,7 +503,7 @@ accessible to the current logger.</p>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Logger.log_proto">
-<code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_proto" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_proto</code><span class="sig-paren">(</span><em>message</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_proto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_proto" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  log a protobuf message via a POST request</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write">https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write</a></p>
@@ -518,6 +521,7 @@ accessible to the current logger.</p>
 <li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
 the entry.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp of event being logged.</li>
 </ul>
 </td>
 </tr>
@@ -527,7 +531,7 @@ the entry.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Logger.log_struct">
-<code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_struct" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_struct</code><span class="sig-paren">(</span><em>info</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_struct" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  log a structured message via a POST request</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write">https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write</a></p>
@@ -545,6 +549,7 @@ the entry.</li>
 <li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
 the entry.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp of event being logged.</li>
 </ul>
 </td>
 </tr>
@@ -554,7 +559,7 @@ the entry.</li>
 
 <dl class="method">
 <dt id="google.cloud.logging.logger.Logger.log_text">
-<code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_text" title="Permalink to this definition">#</a></dt>
+<code class="descname">log_text</code><span class="sig-paren">(</span><em>text</em>, <em>client=None</em>, <em>labels=None</em>, <em>insert_id=None</em>, <em>severity=None</em>, <em>http_request=None</em>, <em>timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/google/cloud/logging/logger.html#Logger.log_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.logger.Logger.log_text" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  log a text message via a POST request</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write">https://cloud.google.com/logging/docs/api/reference/rest/v2/entries/write</a></p>
@@ -572,6 +577,7 @@ the entry.</li>
 <li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) severity of event being logged.</li>
 <li><strong>http_request</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; (optional) info about HTTP request associated with
 the entry</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (optional) timestamp of event being logged.</li>
 </ul>
 </td>
 </tr>
@@ -636,7 +642,7 @@ the entry</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'861c5d7',
+            VERSION:'f4c3025',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

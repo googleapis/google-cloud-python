@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Runtime Configuration Client &mdash; google-cloud 861c5d7 documentation</title>
+  <title>Runtime Configuration Client &mdash; google-cloud f4c3025 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="google-cloud 861c5d7 documentation" href="index.html"/>
+    <link rel="top" title="google-cloud f4c3025 documentation" href="index.html"/>
         <link rel="next" title="Configuration" href="runtimeconfig-config.html"/>
         <link rel="prev" title="Using the API" href="runtimeconfig-usage.html"/> 
 
@@ -303,12 +303,15 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The project which the client acts on behalf of.  If not
 passed, falls back to the default inferred from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v4.0.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for the connection owned by
-this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code> object is passed), falls
-back to the default inferred from the environment.</li>
-<li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; (Optional) An HTTP object to make requests. If not passed, an <code class="docutils literal"><span class="pre">http</span></code>
-object is created that is bound to the <code class="docutils literal"><span class="pre">credentials</span></code> for the current
-object.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v0.5.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code> object is
+passed), falls back to the default inferred from the
+environment.</li>
+<li><strong>http</strong> (<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">Http</span></code></a>) &#8211; (Optional) HTTP object to make requests. Can be any object
+that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
+<a class="reference external" href="http://httplib2.readthedocs.io/en/latest/libhttplib2.html#httplib2.Http.request" title="(in httplib2 v0.4)"><code class="xref py py-meth docutils literal"><span class="pre">request()</span></code></a>. If not passed, an
+<code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
+<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
 </ul>
 </td>
 </tr>
@@ -432,7 +435,7 @@ connection.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'861c5d7',
+            VERSION:'f4c3025',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

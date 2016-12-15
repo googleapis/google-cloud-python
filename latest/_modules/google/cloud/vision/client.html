@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>google.cloud.vision.client &mdash; google-cloud 861c5d7 documentation</title>
+  <title>google.cloud.vision.client &mdash; google-cloud f4c3025 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="google-cloud 861c5d7 documentation" href="../../../../index.html"/>
+    <link rel="top" title="google-cloud f4c3025 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -301,49 +301,10 @@
 
 <span class="sd">&quot;&quot;&quot;Client for interacting with the Google Cloud Vision API.&quot;&quot;&quot;</span>
 
-
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">JSONClient</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.connection</span> <span class="k">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">google.cloud.vision.feature</span> <span class="k">import</span> <span class="n">Feature</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision.image</span> <span class="k">import</span> <span class="n">Image</span>
-
-
-<div class="viewcode-block" id="VisionRequest"><a class="viewcode-back" href="../../../../vision-client.html#google.cloud.vision.client.VisionRequest">[docs]</a><span class="k">class</span> <span class="nc">VisionRequest</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Request container with image and features information to annotate.</span>
-
-<span class="sd">    :type features: list of :class:`~gcoud.vision.feature.Feature`.</span>
-<span class="sd">    :param features: The features that dictate which annotations to run.</span>
-
-<span class="sd">    :type image: bytes</span>
-<span class="sd">    :param image: Either Google Cloud Storage URI or raw byte stream of image.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_features</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_image</span> <span class="o">=</span> <span class="n">image</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_features</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">Feature</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Feature or list of Feature classes are required.&#39;</span><span class="p">)</span>
-
-<div class="viewcode-block" id="VisionRequest.as_dict"><a class="viewcode-back" href="../../../../vision-client.html#google.cloud.vision.client.VisionRequest.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Dictionary representation of Image.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;image&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">as_dict</span><span class="p">(),</span>
-            <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">feature</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">]</span>
-        <span class="p">}</span></div>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List of Feature objects.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_features</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Image object containing image content.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span></div>
+<span class="kn">from</span> <span class="nn">google.cloud.vision._http</span> <span class="k">import</span> <span class="n">_HTTPVisionAPI</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../vision-client.html#google.cloud.vision.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
@@ -354,44 +315,26 @@
 <span class="sd">                    If not passed, falls back to the default inferred</span>
 <span class="sd">                    from the environment.</span>
 
-<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or</span>
-<span class="sd">                       :class:`NoneType`</span>
-<span class="sd">    :param credentials: The OAuth2 Credentials to use for the connection</span>
-<span class="sd">                        owned by this client. If not passed (and if no ``http``</span>
-<span class="sd">                        object is passed), falls back to the default inferred</span>
-<span class="sd">                        from the environment.</span>
+<span class="sd">    :type credentials: :class:`~google.auth.credentials.Credentials`</span>
+<span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
+<span class="sd">                        client. If not passed (and if no ``http`` object is</span>
+<span class="sd">                        passed), falls back to the default inferred from the</span>
+<span class="sd">                        environment.</span>
 
-<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``.</span>
-<span class="sd">    :param http: An optional HTTP object to make requests. If not passed, an</span>
+<span class="sd">    :type http: :class:`~httplib2.Http`</span>
+<span class="sd">    :param http: (Optional) HTTP object to make requests. Can be any object</span>
+<span class="sd">                 that defines ``request()`` with the same interface as</span>
+<span class="sd">                 :meth:`~httplib2.Http.request`. If not passed, an</span>
 <span class="sd">                 ``http`` object is created that is bound to the</span>
 <span class="sd">                 ``credentials`` for the current object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_vision_api_internal</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
-
-<div class="viewcode-block" id="Client.annotate"><a class="viewcode-back" href="../../../../vision-client.html#google.cloud.vision.client.Client.annotate">[docs]</a>    <span class="k">def</span> <span class="nf">annotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Annotate an image to discover it&#39;s attributes.</span>
-
-<span class="sd">        :type image: str</span>
-<span class="sd">        :param image: A string which can be a URL, a Google Cloud Storage path,</span>
-<span class="sd">                      or a byte stream of the image.</span>
-
-<span class="sd">        :type features:  list of :class:`~google.cloud.vision.feature.Feature`</span>
-<span class="sd">        :param features: The type of detection that the Vision API should</span>
-<span class="sd">                         use to determine image attributes. Pricing is</span>
-<span class="sd">                         based on the number of Feature Types.</span>
-
-<span class="sd">                         See: https://cloud.google.com/vision/docs/pricing</span>
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: List of annotations.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">VisionRequest</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
-
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;requests&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">request</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()]}</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/images:annotate&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;responses&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span>
+            <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_http</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Client.image"><a class="viewcode-back" href="../../../../vision-client.html#google.cloud.vision.client.Client.image">[docs]</a>    <span class="k">def</span> <span class="nf">image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_uri</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get instance of Image using current client.</span>
@@ -409,7 +352,18 @@
 <span class="sd">        :returns: Image instance with the current client attached.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Image</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
-                     <span class="n">source_uri</span><span class="o">=</span><span class="n">source_uri</span><span class="p">)</span></div></div>
+                     <span class="n">source_uri</span><span class="o">=</span><span class="n">source_uri</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_vision_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Proxy method that handles which transport call Vision Annotate.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.vision._rest._HTTPVisionAPI`</span>
+<span class="sd">        :returns: Instance of ``_HTTPVisionAPI`` used to make requests.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vision_api_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vision_api_internal</span> <span class="o">=</span> <span class="n">_HTTPVisionAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vision_api_internal</span></div>
 </pre></div>
 
            </div>
@@ -443,7 +397,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'861c5d7',
+            VERSION:'f4c3025',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
