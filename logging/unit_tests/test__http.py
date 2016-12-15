@@ -58,11 +58,11 @@ class Test_LoggingAPI(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        connection = object()
+        connection = _Connection()
         client = _Client(connection)
         api = self._make_one(client)
-        self.assertIs(api._connection, connection)
         self.assertIs(api._client, client)
+        self.assertEqual(api.api_request, connection.api_request)
 
     @staticmethod
     def _make_timestamp():
@@ -308,11 +308,11 @@ class Test_SinksAPI(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor(self):
-        connection = _make_credentials()
+        connection = _Connection()
         client = _Client(connection)
         api = self._make_one(client)
-        self.assertIs(api._connection, connection)
         self.assertIs(api._client, client)
+        self.assertEqual(api.api_request, connection.api_request)
 
     def test_list_sinks_no_paging(self):
         import six
