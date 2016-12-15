@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with Stackdriver Logging connections."""
+"""Interact with Stackdriver Logging via JSON-over-HTTP."""
 
 import functools
 
@@ -67,7 +67,7 @@ class _LoggingAPI(object):
 
     def __init__(self, client):
         self._client = client
-        self._connection = client._connection
+        self.api_request = client._connection.api_request
 
     def list_entries(self, projects, filter_=None, order_by=None,
                      page_size=None, page_token=None):
@@ -161,8 +161,7 @@ class _LoggingAPI(object):
         if labels is not None:
             data['labels'] = labels
 
-        self._connection.api_request(method='POST', path='/entries:write',
-                                     data=data)
+        self.api_request(method='POST', path='/entries:write', data=data)
 
     def logger_delete(self, project, logger_name):
         """API call:  delete all entries in a logger via a DELETE request
@@ -177,7 +176,7 @@ class _LoggingAPI(object):
         :param logger_name: name of logger containing the log entries to delete
         """
         path = '/projects/%s/logs/%s' % (project, logger_name)
-        self._connection.api_request(method='DELETE', path=path)
+        self.api_request(method='DELETE', path=path)
 
 
 class _SinksAPI(object):
@@ -191,7 +190,7 @@ class _SinksAPI(object):
     """
     def __init__(self, client):
         self._client = client
-        self._connection = client._connection
+        self.api_request = client._connection.api_request
 
     def list_sinks(self, project, page_size=None, page_token=None):
         """List sinks for the project associated with this client.
@@ -253,7 +252,7 @@ class _SinksAPI(object):
             'filter': filter_,
             'destination': destination,
         }
-        self._connection.api_request(method='POST', path=target, data=data)
+        self.api_request(method='POST', path=target, data=data)
 
     def sink_get(self, project, sink_name):
         """API call:  retrieve a sink resource.
@@ -271,7 +270,7 @@ class _SinksAPI(object):
         :returns: The JSON sink object returned from the API.
         """
         target = '/projects/%s/sinks/%s' % (project, sink_name)
-        return self._connection.api_request(method='GET', path=target)
+        return self.api_request(method='GET', path=target)
 
     def sink_update(self, project, sink_name, filter_, destination):
         """API call:  update a sink resource.
@@ -299,7 +298,7 @@ class _SinksAPI(object):
             'filter': filter_,
             'destination': destination,
         }
-        self._connection.api_request(method='PUT', path=target, data=data)
+        self.api_request(method='PUT', path=target, data=data)
 
     def sink_delete(self, project, sink_name):
         """API call:  delete a sink resource.
@@ -314,7 +313,7 @@ class _SinksAPI(object):
         :param sink_name: the name of the sink
         """
         target = '/projects/%s/sinks/%s' % (project, sink_name)
-        self._connection.api_request(method='DELETE', path=target)
+        self.api_request(method='DELETE', path=target)
 
 
 class _MetricsAPI(object):
@@ -328,7 +327,7 @@ class _MetricsAPI(object):
     """
     def __init__(self, client):
         self._client = client
-        self._connection = client._connection
+        self.api_request = client._connection.api_request
 
     def list_metrics(self, project, page_size=None, page_token=None):
         """List metrics for the project associated with this client.
@@ -389,7 +388,7 @@ class _MetricsAPI(object):
             'filter': filter_,
             'description': description,
         }
-        self._connection.api_request(method='POST', path=target, data=data)
+        self.api_request(method='POST', path=target, data=data)
 
     def metric_get(self, project, metric_name):
         """API call:  retrieve a metric resource.
@@ -407,7 +406,7 @@ class _MetricsAPI(object):
         :returns: The JSON metric object returned from the API.
         """
         target = '/projects/%s/metrics/%s' % (project, metric_name)
-        return self._connection.api_request(method='GET', path=target)
+        return self.api_request(method='GET', path=target)
 
     def metric_update(self, project, metric_name, filter_, description):
         """API call:  update a metric resource.
@@ -434,7 +433,7 @@ class _MetricsAPI(object):
             'filter': filter_,
             'description': description,
         }
-        self._connection.api_request(method='PUT', path=target, data=data)
+        self.api_request(method='PUT', path=target, data=data)
 
     def metric_delete(self, project, metric_name):
         """API call:  delete a metric resource.
@@ -449,7 +448,7 @@ class _MetricsAPI(object):
         :param metric_name: the name of the metric.
         """
         target = '/projects/%s/metrics/%s' % (project, metric_name)
-        self._connection.api_request(method='DELETE', path=target)
+        self.api_request(method='DELETE', path=target)
 
 
 def _item_to_entry(iterator, resource, loggers):

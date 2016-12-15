@@ -1085,7 +1085,7 @@ class Test_make_gax_logging_api(unittest.TestCase):
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
         creds = object()
-        client = _Client(creds)
+        client = mock.Mock(_credentials=creds)
         channels = []
         channel_args = []
         channel_obj = object()
@@ -1130,7 +1130,7 @@ class Test_make_gax_metrics_api(unittest.TestCase):
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
         creds = object()
-        client = _Client(creds)
+        client = mock.Mock(_credentials=creds)
         channels = []
         channel_args = []
         channel_obj = object()
@@ -1175,7 +1175,7 @@ class Test_make_gax_sinks_api(unittest.TestCase):
         from google.cloud.logging._gax import DEFAULT_USER_AGENT
 
         creds = object()
-        client = _Client(creds)
+        client = mock.Mock(_credentials=creds)
         channels = []
         channel_args = []
         channel_obj = object()
@@ -1324,15 +1324,3 @@ class _GAXMetricsAPI(_GAXBaseAPI):
             raise GaxError('error')
         if self._log_metric_not_found:
             raise GaxError('notfound', self._make_grpc_not_found())
-
-
-class _Connection(object):
-
-    def __init__(self, credentials):
-        self.credentials = credentials
-
-
-class _Client(object):
-
-    def __init__(self, credentials):
-        self._connection = _Connection(credentials)
