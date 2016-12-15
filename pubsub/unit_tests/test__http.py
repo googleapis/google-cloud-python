@@ -111,7 +111,7 @@ class Test_PublisherAPI(_Base):
         client = _Client(connection, self.PROJECT)
         api = self._make_one(client)
         self.assertIs(api._client, client)
-        self.assertIs(api._connection, connection)
+        self.assertEqual(api.api_request, connection.api_request)
 
     def test_list_topics_no_paging(self):
         from google.cloud.pubsub.topic import Topic
@@ -449,8 +449,8 @@ class Test_SubscriberAPI(_Base):
         connection = _Connection()
         client = _Client(connection, self.PROJECT)
         api = self._make_one(client)
-        self.assertIs(api._connection, connection)
         self.assertIs(api._client, client)
+        self.assertEqual(api.api_request, connection.api_request)
 
     def test_list_subscriptions_no_paging(self):
         from google.cloud.pubsub.client import Client
@@ -747,8 +747,9 @@ class Test_IAMPolicyAPI(_Base):
 
     def test_ctor(self):
         connection = _Connection()
-        api = self._make_one(connection)
-        self.assertIs(api._connection, connection)
+        client = _Client(connection, None)
+        api = self._make_one(client)
+        self.assertEqual(api.api_request, connection.api_request)
 
     def test_get_iam_policy(self):
         from google.cloud.pubsub.iam import OWNER_ROLE
@@ -771,7 +772,8 @@ class Test_IAMPolicyAPI(_Base):
             ],
         }
         connection = _Connection(RETURNED)
-        api = self._make_one(connection)
+        client = _Client(connection, None)
+        api = self._make_one(client)
 
         policy = api.get_iam_policy(self.TOPIC_PATH)
 
@@ -802,7 +804,8 @@ class Test_IAMPolicyAPI(_Base):
         }
         RETURNED = POLICY.copy()
         connection = _Connection(RETURNED)
-        api = self._make_one(connection)
+        client = _Client(connection, None)
+        api = self._make_one(client)
 
         policy = api.set_iam_policy(self.TOPIC_PATH, POLICY)
 
@@ -822,7 +825,8 @@ class Test_IAMPolicyAPI(_Base):
         ALLOWED = ALL_ROLES[1:]
         RETURNED = {'permissions': ALLOWED}
         connection = _Connection(RETURNED)
-        api = self._make_one(connection)
+        client = _Client(connection, None)
+        api = self._make_one(client)
 
         allowed = api.test_iam_permissions(self.TOPIC_PATH, ALL_ROLES)
 
@@ -841,7 +845,8 @@ class Test_IAMPolicyAPI(_Base):
         ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
         RETURNED = {}
         connection = _Connection(RETURNED)
-        api = self._make_one(connection)
+        client = _Client(connection, None)
+        api = self._make_one(client)
 
         allowed = api.test_iam_permissions(self.TOPIC_PATH, ALL_ROLES)
 
