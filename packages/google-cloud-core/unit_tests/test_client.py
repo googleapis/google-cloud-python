@@ -36,15 +36,6 @@ class Test_ClientFactoryMixin(unittest.TestCase):
 
 class TestClient(unittest.TestCase):
 
-    def setUp(self):
-        KLASS = self._get_target_class()
-        self.original_cnxn_class = KLASS._connection_class
-        KLASS._connection_class = _MockConnection
-
-    def tearDown(self):
-        KLASS = self._get_target_class()
-        KLASS._connection_class = self.original_cnxn_class
-
     @staticmethod
     def _get_target_class():
         from google.cloud.client import Client
@@ -67,8 +58,8 @@ class TestClient(unittest.TestCase):
         with _Monkey(client, get_credentials=mock_get_credentials):
             client_obj = self._make_one()
 
-        self.assertIsInstance(client_obj._connection, _MockConnection)
-        self.assertIs(client_obj._connection.credentials, CREDENTIALS)
+        self.assertIs(client_obj._credentials, CREDENTIALS)
+        self.assertIsNone(client_obj._http)
         self.assertEqual(FUNC_CALLS, ['get_credentials'])
 
     def test_ctor_explicit(self):
@@ -76,9 +67,8 @@ class TestClient(unittest.TestCase):
         HTTP = object()
         client_obj = self._make_one(credentials=CREDENTIALS, http=HTTP)
 
-        self.assertIsInstance(client_obj._connection, _MockConnection)
-        self.assertIs(client_obj._connection.credentials, CREDENTIALS)
-        self.assertIs(client_obj._connection.http, HTTP)
+        self.assertIs(client_obj._credentials, CREDENTIALS)
+        self.assertIs(client_obj._http, HTTP)
 
     def test_ctor_bad_credentials(self):
         CREDENTIALS = object()
@@ -99,7 +89,8 @@ class TestClient(unittest.TestCase):
                 mock.sentinel.filename)
 
         self.assertIs(
-            client_obj._connection.credentials, constructor.return_value)
+            client_obj._credentials, constructor.return_value)
+        self.assertIsNone(client_obj._http)
         constructor.assert_called_once_with(mock.sentinel.filename)
 
     def test_from_service_account_json_bad_args(self):
@@ -111,15 +102,6 @@ class TestClient(unittest.TestCase):
 
 
 class TestJSONClient(unittest.TestCase):
-
-    def setUp(self):
-        KLASS = self._get_target_class()
-        self.original_cnxn_class = KLASS._connection_class
-        KLASS._connection_class = _MockConnection
-
-    def tearDown(self):
-        KLASS = self._get_target_class()
-        KLASS._connection_class = self.original_cnxn_class
 
     @staticmethod
     def _get_target_class():
@@ -150,8 +132,8 @@ class TestJSONClient(unittest.TestCase):
             client_obj = self._make_one()
 
         self.assertEqual(client_obj.project, PROJECT)
-        self.assertIsInstance(client_obj._connection, _MockConnection)
-        self.assertIs(client_obj._connection.credentials, CREDENTIALS)
+        self.assertIs(client_obj._credentials, CREDENTIALS)
+        self.assertIsNone(client_obj._http)
         self.assertEqual(
             FUNC_CALLS,
             [(None, '_determine_default_project'), 'get_credentials'])
@@ -191,9 +173,8 @@ class TestJSONClient(unittest.TestCase):
             self.assertEqual(client_obj.project, project.decode('utf-8'))
         else:
             self.assertEqual(client_obj.project, project)
-        self.assertIsInstance(client_obj._connection, _MockConnection)
-        self.assertIs(client_obj._connection.credentials, CREDENTIALS)
-        self.assertIs(client_obj._connection.http, HTTP)
+        self.assertIs(client_obj._credentials, CREDENTIALS)
+        self.assertIs(client_obj._http, HTTP)
 
     def test_ctor_explicit_bytes(self):
         PROJECT = b'PROJECT'
@@ -202,10 +183,3 @@ class TestJSONClient(unittest.TestCase):
     def test_ctor_explicit_unicode(self):
         PROJECT = u'PROJECT'
         self._explicit_ctor_helper(PROJECT)
-
-
-class _MockConnection(object):
-
-    def __init__(self, credentials=None, http=None):
-        self.credentials = credentials
-        self.http = http
