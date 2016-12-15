@@ -512,48 +512,60 @@ def _received_message_pb_to_mapping(received_message_pb):
     }
 
 
-def make_gax_publisher_api(connection):
+def make_gax_publisher_api(credentials, host=None, secure=True):
     """Create an instance of the GAX Publisher API.
 
-    If the ``connection`` is intended for a local emulator, then
-    an insecure ``channel`` is created pointing at the local
-    Pub / Sub server.
+    If the ``secure=False`` then we create an insecure ``channel``
+    pointing at the local Pub / Sub emulator.
 
-    :type connection: :class:`~google.cloud.pubsub._http.Connection`
-    :param connection: The connection that holds configuration details.
+    :type credentials: :class:`~google.auth.credentials.Credentials`
+    :param credentials: Credentials for getting access tokens.
+
+    :type host: str
+    :param host: (Optional) The host for an insecure channel. Only
+                 used if ``secure=False``.
+
+    :type secure: bool
+    :param secure: (Optional) Indicates if we should create a secure
+                   or insecure channel. Defaults to :data:`True`.
 
     :rtype: :class:`.publisher_client.PublisherClient`
-    :returns: A publisher API instance with the proper connection
-              configuration.
+    :returns: A publisher API instance with the proper channel.
     """
-    if connection.in_emulator:
-        channel = insecure_channel(connection.host)
+    if not secure:
+        channel = insecure_channel(host)
     else:
         channel = make_secure_channel(
-            connection.credentials, DEFAULT_USER_AGENT,
+            credentials, DEFAULT_USER_AGENT,
             PublisherClient.SERVICE_ADDRESS)
     return PublisherClient(channel=channel)
 
 
-def make_gax_subscriber_api(connection):
+def make_gax_subscriber_api(credentials, host=None, secure=True):
     """Create an instance of the GAX Subscriber API.
 
-    If the ``connection`` is intended for a local emulator, then
-    an insecure ``channel`` is created pointing at the local
-    Pub / Sub server.
+    If the ``secure=False`` then we create an insecure ``channel``
+    pointing at the local Pub / Sub emulator.
 
-    :type connection: :class:`~google.cloud.pubsub._http.Connection`
-    :param connection: The connection that holds configuration details.
+    :type credentials: :class:`~google.auth.credentials.Credentials`
+    :param credentials: Credentials for getting access tokens.
+
+    :type host: str
+    :param host: (Optional) The host for an insecure channel. Only
+                 used if ``secure=False``.
+
+    :type secure: bool
+    :param secure: (Optional) Indicates if we should create a secure
+                   or insecure channel. Defaults to :data:`True`.
 
     :rtype: :class:`.subscriber_client.SubscriberClient`
-    :returns: A subscriber API instance with the proper connection
-              configuration.
+    :returns: A subscriber API instance with the proper channel.
     """
-    if connection.in_emulator:
-        channel = insecure_channel(connection.host)
+    if not secure:
+        channel = insecure_channel(host)
     else:
         channel = make_secure_channel(
-            connection.credentials, DEFAULT_USER_AGENT,
+            credentials, DEFAULT_USER_AGENT,
             SubscriberClient.SERVICE_ADDRESS)
     return SubscriberClient(channel=channel)
 
