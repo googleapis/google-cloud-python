@@ -52,11 +52,12 @@ class TestClient(unittest.TestCase):
         client = self._make_one(self.PROJECT,
                                 credentials=_make_credentials(),
                                 use_gax=False)
-        conn = client._connection = object()
+
+        conn = client._connection = _Connection()
         api = client.logging_api
 
         self.assertIsInstance(api, _LoggingAPI)
-        self.assertIs(api._connection, conn)
+        self.assertEqual(api.api_request, conn.api_request)
         # API instance is cached
         again = client.logging_api
         self.assertIs(again, api)
@@ -106,11 +107,11 @@ class TestClient(unittest.TestCase):
             self.PROJECT, credentials=_make_credentials(),
             use_gax=False)
 
-        conn = client._connection = object()
+        conn = client._connection = _Connection()
         api = client.sinks_api
 
         self.assertIsInstance(api, _SinksAPI)
-        self.assertIs(api._connection, conn)
+        self.assertEqual(api.api_request, conn.api_request)
         # API instance is cached
         again = client.sinks_api
         self.assertIs(again, api)
@@ -146,11 +147,11 @@ class TestClient(unittest.TestCase):
             self.PROJECT, credentials=_make_credentials(),
             use_gax=False)
 
-        conn = client._connection = object()
+        conn = client._connection = _Connection()
         api = client.metrics_api
 
         self.assertIsInstance(api, _MetricsAPI)
-        self.assertIs(api._connection, conn)
+        self.assertEqual(api.api_request, conn.api_request)
         # API instance is cached
         again = client.metrics_api
         self.assertIs(again, api)
@@ -600,7 +601,7 @@ class TestClient(unittest.TestCase):
                                     credentials=credentials,
                                     use_gax=False)
             handler = client.get_default_handler()
-            deepcopy.assert_called_once_with(client._connection.http)
+            deepcopy.assert_called_once_with(client._http)
 
         self.assertIsInstance(handler, CloudLoggingHandler)
 
@@ -620,7 +621,7 @@ class TestClient(unittest.TestCase):
                                         credentials=credentials,
                                         use_gax=False)
                 client.setup_logging()
-                deepcopy.assert_called_once_with(client._connection.http)
+                deepcopy.assert_called_once_with(client._http)
 
         setup_logging.assert_called()
 
