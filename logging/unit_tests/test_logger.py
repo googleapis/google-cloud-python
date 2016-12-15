@@ -125,6 +125,29 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
 
+    def test_log_text_w_timestamp(self):
+        import datetime
+
+        TEXT = 'TEXT'
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        ENTRIES = [{
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+            'textPayload': TEXT,
+            'timestamp': '2016-12-31T00:01:02.999999Z',
+            'resource': {
+                'type': 'global',
+            },
+        }]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log_text(TEXT, timestamp=TIMESTAMP)
+
+        self.assertEqual(api._write_entries_called_with,
+                         (ENTRIES, None, None, None))
+
     def test_log_text_w_unicode_explicit_client_labels_severity_httpreq(self):
         TEXT = u'TEXT'
         DEFAULT_LABELS = {'foo': 'spam'}
@@ -243,6 +266,28 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
 
+    def test_log_struct_w_timestamp(self):
+        import datetime
+        STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        ENTRIES = [{
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+            'jsonPayload': STRUCT,
+            'timestamp': '2016-12-31T00:01:02.999999Z',
+            'resource': {
+                'type': 'global',
+            },
+        }]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log_struct(STRUCT, timestamp=TIMESTAMP)
+
+        self.assertEqual(api._write_entries_called_with,
+                         (ENTRIES, None, None, None))
+
     def test_log_proto_w_implicit_client(self):
         import json
         from google.protobuf.json_format import MessageToJson
@@ -328,6 +373,31 @@ class TestLogger(unittest.TestCase):
         logger.log_proto(message, client=client2, labels=LABELS,
                          insert_id=IID, severity=SEVERITY,
                          http_request=REQUEST)
+
+        self.assertEqual(api._write_entries_called_with,
+                         (ENTRIES, None, None, None))
+
+    def test_log_proto_w_timestamp(self):
+        import json
+        import datetime
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
+        message = Struct(fields={'foo': Value(bool_value=True)})
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        ENTRIES = [{
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+            'protoPayload': json.loads(MessageToJson(message)),
+            'timestamp': '2016-12-31T00:01:02.999999Z',
+            'resource': {
+                'type': 'global',
+            },
+        }]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log_proto(message, timestamp=TIMESTAMP)
 
         self.assertEqual(api._write_entries_called_with,
                          (ENTRIES, None, None, None))
@@ -457,6 +527,7 @@ class TestBatch(unittest.TestCase):
                          [('text', TEXT, None, None, None, None, None)])
 
     def test_log_text_explicit(self):
+        import datetime
         TEXT = 'This is the entry text'
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         IID = 'IID'
@@ -469,14 +540,15 @@ class TestBatch(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
-        TIMESTAMP = '2016-10-12T15:01:23.045123456Z'
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_text(TEXT, labels=LABELS, insert_id=IID, severity=SEVERITY,
                        http_request=REQUEST, timestamp=TIMESTAMP)
-        self.assertEqual(batch.entries,
-                         [('text', TEXT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP)])
+        self.assertEqual(
+            batch.entries,
+            [('text', TEXT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP)])
 
     def test_log_struct_defaults(self):
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
@@ -484,10 +556,12 @@ class TestBatch(unittest.TestCase):
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_struct(STRUCT)
-        self.assertEqual(batch.entries,
-                         [('struct', STRUCT, None, None, None, None, None)])
+        self.assertEqual(
+            batch.entries,
+            [('struct', STRUCT, None, None, None, None, None)])
 
     def test_log_struct_explicit(self):
+        import datetime
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
         IID = 'IID'
@@ -500,14 +574,16 @@ class TestBatch(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
-        TIMESTAMP = '2016-10-12T15:01:23.045123456Z'
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_struct(STRUCT, labels=LABELS, insert_id=IID,
-                         severity=SEVERITY, http_request=REQUEST, timestamp=TIMESTAMP)
-        self.assertEqual(batch.entries,
-                         [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP)])
+                         severity=SEVERITY, http_request=REQUEST,
+                         timestamp=TIMESTAMP)
+        self.assertEqual(
+            batch.entries,
+            [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP)])
 
     def test_log_proto_defaults(self):
         from google.protobuf.struct_pb2 import Struct, Value
@@ -520,6 +596,7 @@ class TestBatch(unittest.TestCase):
                          [('proto', message, None, None, None, None, None)])
 
     def test_log_proto_explicit(self):
+        import datetime
         from google.protobuf.struct_pb2 import Struct, Value
         message = Struct(fields={'foo': Value(bool_value=True)})
         LABELS = {'foo': 'bar', 'baz': 'qux'}
@@ -533,25 +610,28 @@ class TestBatch(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
-        TIMESTAMP = '2016-10-12T15:01:23.045123456Z'
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         logger = _Logger()
         batch = self._make_one(logger, client=client)
         batch.log_proto(message, labels=LABELS, insert_id=IID,
-                        severity=SEVERITY, http_request=REQUEST, timestamp=TIMESTAMP)
-        self.assertEqual(batch.entries,
-                         [('proto', message, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP)])
+                        severity=SEVERITY, http_request=REQUEST,
+                        timestamp=TIMESTAMP)
+        self.assertEqual(
+            batch.entries,
+            [('proto', message, LABELS, IID, SEVERITY, REQUEST, TIMESTAMP)])
 
     def test_commit_w_invalid_entry_type(self):
         logger = _Logger()
         client = _Client(project=self.PROJECT, connection=_make_credentials())
         batch = self._make_one(logger, client)
-        batch.entries.append(('bogus', 'BOGUS', None, None, None, None))
+        batch.entries.append(('bogus', 'BOGUS', None, None, None, None, None))
         with self.assertRaises(ValueError):
             batch.commit()
 
     def test_commit_w_bound_client(self):
         import json
+        import datetime
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct, Value
         TEXT = 'This is the entry text'
@@ -560,23 +640,26 @@ class TestBatch(unittest.TestCase):
         IID1 = 'IID1'
         IID2 = 'IID2'
         IID3 = 'IID3'
+        TIMESTAMP1 = datetime.datetime(2016, 12, 31, 0, 0, 1, 999999)
+        TIMESTAMP2 = datetime.datetime(2016, 12, 31, 0, 0, 2, 999999)
+        TIMESTAMP3 = datetime.datetime(2016, 12, 31, 0, 0, 3, 999999)
         RESOURCE = {
             'type': 'global',
         }
         ENTRIES = [
-            {'textPayload': TEXT, 'insertId': IID1},
-            {'jsonPayload': STRUCT, 'insertId': IID2},
+            {'textPayload': TEXT, 'insertId': IID1, 'timestamp': TIMESTAMP1},
+            {'jsonPayload': STRUCT, 'insertId': IID2, 'timestamp': TIMESTAMP2},
             {'protoPayload': json.loads(MessageToJson(message)),
-             'insertId': IID3},
+             'insertId': IID3, 'timestamp': TIMESTAMP3},
         ]
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
         logger = _Logger()
         batch = self._make_one(logger, client=client)
 
-        batch.log_text(TEXT, insert_id=IID1)
-        batch.log_struct(STRUCT, insert_id=IID2)
-        batch.log_proto(message, insert_id=IID3)
+        batch.log_text(TEXT, insert_id=IID1, timestamp=TIMESTAMP1)
+        batch.log_struct(STRUCT, insert_id=IID2, timestamp=TIMESTAMP2)
+        batch.log_proto(message, insert_id=IID3, timestamp=TIMESTAMP3)
         batch.commit()
 
         self.assertEqual(list(batch.entries), [])
@@ -670,6 +753,7 @@ class TestBatch(unittest.TestCase):
                          (ENTRIES, logger.full_name, RESOURCE, DEFAULT_LABELS))
 
     def test_context_mgr_failure(self):
+        import datetime
         from google.protobuf.struct_pb2 import Struct, Value
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
@@ -684,7 +768,7 @@ class TestBatch(unittest.TestCase):
             'requestUrl': URI,
             'status': STATUS,
         }
-        TIMESTAMP = '2016-10-12T15:01:23.045123456Z'
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
         message = Struct(fields={'foo': Value(bool_value=True)})
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()

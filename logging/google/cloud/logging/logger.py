@@ -379,7 +379,8 @@ class Batch(object):
         :param timestamp: (optional) timestamp of event being logged.
         """
         self.entries.append(
-            ('text', text, labels, insert_id, severity, http_request, timestamp))
+            ('text', text, labels, insert_id, severity, http_request,
+             timestamp))
 
     def log_struct(self, info, labels=None, insert_id=None, severity=None,
                    http_request=None, timestamp=None):
@@ -405,7 +406,8 @@ class Batch(object):
         :param timestamp: (optional) timestamp of event being logged.
         """
         self.entries.append(
-            ('struct', info, labels, insert_id, severity, http_request, timestamp))
+            ('struct', info, labels, insert_id, severity, http_request,
+             timestamp))
 
     def log_proto(self, message, labels=None, insert_id=None, severity=None,
                   http_request=None, timestamp=None):
@@ -431,7 +433,8 @@ class Batch(object):
         :param timestamp: (optional) timestamp of event being logged.
         """
         self.entries.append(
-            ('proto', message, labels, insert_id, severity, http_request, timestamp))
+            ('proto', message, labels, insert_id, severity, http_request,
+             timestamp))
 
     def commit(self, client=None):
         """Send saved log entries as a single API call.
@@ -452,7 +455,8 @@ class Batch(object):
             kwargs['labels'] = self.logger.labels
 
         entries = []
-        for entry_type, entry, labels, iid, severity, http_req, timestamp in self.entries:
+        for entry_type, entry, labels, iid, severity, http_req, timestamp in \
+                self.entries:
             if entry_type == 'text':
                 info = {'textPayload': entry}
             elif entry_type == 'struct':
