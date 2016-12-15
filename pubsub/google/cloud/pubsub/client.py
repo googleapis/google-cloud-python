@@ -16,6 +16,7 @@
 
 import os
 
+from google.cloud._helpers import get_authorization_metadata
 from google.cloud.client import JSONClient
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.pubsub._http import Connection
@@ -29,6 +30,7 @@ try:
     from google.cloud.pubsub._gax import _SubscriberAPI as GAXSubscriberAPI
     from google.cloud.pubsub._gax import make_gax_publisher_api
     from google.cloud.pubsub._gax import make_gax_subscriber_api
+    from google.gax import CallOptions
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False
     GAXPublisherAPI = None
@@ -85,6 +87,11 @@ class Client(JSONClient):
             self._use_gax = _USE_GAX
         else:
             self._use_gax = use_gax
+        metadata = get_authorization_metadata(self._connection.credentials, self._connection.host)
+        if metadata is None:
+          self._metadata_option = None
+        else:
+          self._metadata_option = CallOptions(metadata=[metadata])
 
     @property
     def publisher_api(self):

@@ -15,12 +15,14 @@
 """Connections to Google Cloud Datastore API servers."""
 
 import contextlib
+import re
 import os
 
 from google.rpc import status_pb2
 
 from google.cloud._helpers import make_insecure_stub
 from google.cloud._helpers import make_secure_stub
+from google.cloud._helpers import get_authorization_metadata
 from google.cloud import _http as connection_module
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_HOST
@@ -277,12 +279,17 @@ class _DatastoreAPIOverGRPC(object):
     """
 
     def __init__(self, connection, secure):
+        self._metadata = None
         if secure:
             self._stub = make_secure_stub(connection.credentials,
                                           connection.USER_AGENT,
                                           datastore_grpc_pb2.DatastoreStub,
                                           connection.host)
         else:
+            _metadata = get_authorization_metadata(connection.credentials,
+                                                   connection.host)
+            if _metadata is not None:
+                self._metadata = [_metadata]
             self._stub = make_insecure_stub(datastore_grpc_pb2.DatastoreStub,
                                             connection.host)
 
@@ -301,7 +308,7 @@ class _DatastoreAPIOverGRPC(object):
         """
         request_pb.project_id = project
         with _grpc_catch_rendezvous():
-            return self._stub.Lookup(request_pb)
+            return self._stub.Lookup(request_pb, metadata=self._metadata)
 
     def run_query(self, project, request_pb):
         """Perform a ``runQuery`` request.
@@ -318,7 +325,7 @@ class _DatastoreAPIOverGRPC(object):
         """
         request_pb.project_id = project
         with _grpc_catch_rendezvous():
-            return self._stub.RunQuery(request_pb)
+            return self._stub.RunQuery(request_pb, metadata=self._metadata)
 
     def begin_transaction(self, project, request_pb):
         """Perform a ``beginTransaction`` request.
@@ -336,7 +343,7 @@ class _DatastoreAPIOverGRPC(object):
         """
         request_pb.project_id = project
         with _grpc_catch_rendezvous():
-            return self._stub.BeginTransaction(request_pb)
+            return self._stub.BeginTransaction(request_pb, metadata=self._metadata)
 
     def commit(self, project, request_pb):
         """Perform a ``commit`` request.
@@ -353,7 +360,7 @@ class _DatastoreAPIOverGRPC(object):
         """
         request_pb.project_id = project
         with _grpc_catch_rendezvous():
-            return self._stub.Commit(request_pb)
+            return self._stub.Commit(request_pb, metadata=self._metadata)
 
     def rollback(self, project, request_pb):
         """Perform a ``rollback`` request.
@@ -370,7 +377,7 @@ class _DatastoreAPIOverGRPC(object):
         """
         request_pb.project_id = project
         with _grpc_catch_rendezvous():
-            return self._stub.Rollback(request_pb)
+            return self._stub.Rollback(request_pb, metadata=self._metadata)
 
     def allocate_ids(self, project, request_pb):
         """Perform an ``allocateIds`` request.
@@ -387,7 +394,7 @@ class _DatastoreAPIOverGRPC(object):
         """
         request_pb.project_id = project
         with _grpc_catch_rendezvous():
-            return self._stub.AllocateIds(request_pb)
+            return self._stub.AllocateIds(request_pb, metadata=self._metadata)
 
 
 class Connection(connection_module.Connection):

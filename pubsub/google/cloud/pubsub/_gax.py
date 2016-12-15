@@ -100,7 +100,7 @@ class _PublisherAPI(object):
                     exists
         """
         try:
-            topic_pb = self._gax_api.create_topic(topic_path)
+            topic_pb = self._gax_api.create_topic(topic_path, options=self._client._metadata_option)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
                 raise Conflict(topic_path)
@@ -123,7 +123,7 @@ class _PublisherAPI(object):
                     exist
         """
         try:
-            topic_pb = self._gax_api.get_topic(topic_path)
+            topic_pb = self._gax_api.get_topic(topic_path, options=self._client._metadata_option)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(topic_path)
@@ -165,7 +165,7 @@ class _PublisherAPI(object):
         :raises: :exc:`google.cloud.exceptions.NotFound` if the topic does not
                     exist
         """
-        options = CallOptions(is_bundling=False)
+        options = CallOptions(is_bundling=False, **self._client._metadata_option.kwargs)
         message_pbs = [_message_pb_from_mapping(message)
                        for message in messages]
         try:
@@ -204,7 +204,7 @@ class _PublisherAPI(object):
         """
         if page_token is None:
             page_token = INITIAL_PAGE
-        options = CallOptions(page_token=page_token)
+        options = CallOptions(page_token=page_token, **self._client._metadata_option.kwargs)
         topic_path = topic.full_name
         try:
             page_iter = self._gax_api.list_topic_subscriptions(
@@ -258,7 +258,7 @@ class _SubscriberAPI(object):
         """
         if page_token is None:
             page_token = INITIAL_PAGE
-        options = CallOptions(page_token=page_token)
+        options = CallOptions(page_token=page_token, **self._client._metadata_option.kwargs)
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_subscriptions(
             path, page_size=page_size, options=options)
@@ -312,7 +312,7 @@ class _SubscriberAPI(object):
         try:
             sub_pb = self._gax_api.create_subscription(
                 subscription_path, topic_path,
-                push_config=push_config, ack_deadline_seconds=ack_deadline)
+                push_config=push_config, ack_deadline_seconds=ack_deadline, options=self._client._metadata_option)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
                 raise Conflict(topic_path)
@@ -334,7 +334,7 @@ class _SubscriberAPI(object):
         :returns: ``Subscription`` resource returned from the API.
         """
         try:
-            sub_pb = self._gax_api.get_subscription(subscription_path)
+            sub_pb = self._gax_api.get_subscription(subscription_path, options=self._client._metadata_option)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
@@ -353,7 +353,7 @@ class _SubscriberAPI(object):
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
         """
         try:
-            self._gax_api.delete_subscription(subscription_path)
+            self._gax_api.delete_subscription(subscription_path, options=self._client._metadata_option)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
@@ -378,7 +378,7 @@ class _SubscriberAPI(object):
         """
         push_config = PushConfig(push_endpoint=push_endpoint)
         try:
-            self._gax_api.modify_push_config(subscription_path, push_config)
+            self._gax_api.modify_push_config(subscription_path, push_config, options=self._client._metadata_option)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
@@ -411,7 +411,8 @@ class _SubscriberAPI(object):
         try:
             response_pb = self._gax_api.pull(
                 subscription_path, max_messages,
-                return_immediately=return_immediately)
+                return_immediately=return_immediately,
+                options=self._client._metadata_option)
         except GaxError as exc:
             code = exc_to_code(exc.cause)
             if code == StatusCode.NOT_FOUND:
@@ -441,7 +442,7 @@ class _SubscriberAPI(object):
         :param ack_ids: ack IDs of messages being acknowledged
         """
         try:
-            self._gax_api.acknowledge(subscription_path, ack_ids)
+            self._gax_api.acknowledge(subscription_path, ack_ids, options=self._client._metadata_option)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
@@ -468,7 +469,7 @@ class _SubscriberAPI(object):
         """
         try:
             self._gax_api.modify_ack_deadline(
-                subscription_path, ack_ids, ack_deadline)
+                subscription_path, ack_ids, ack_deadline, options=self._client._metadata_option)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
