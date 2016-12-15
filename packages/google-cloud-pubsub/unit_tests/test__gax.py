@@ -900,9 +900,9 @@ class Test_SubscriberAPI(_Base, unittest.TestCase):
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
 class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 
-    def _call_fut(self, connection):
+    def _call_fut(self, *args, **kwargs):
         from google.cloud.pubsub._gax import make_gax_publisher_api
-        return make_gax_publisher_api(connection)
+        return make_gax_publisher_api(*args, **kwargs)
 
     def test_live_api(self):
         from google.cloud.pubsub._gax import DEFAULT_USER_AGENT
@@ -924,14 +924,12 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
         mock_publisher_api.SERVICE_ADDRESS = host
 
         creds = _make_credentials()
-        connection = _Connection(in_emulator=False,
-                                 credentials=creds)
         patch = mock.patch.multiple(
             'google.cloud.pubsub._gax',
             PublisherClient=mock_publisher_api,
             make_secure_channel=make_channel)
         with patch:
-            result = self._call_fut(connection)
+            result = self._call_fut(creds)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [channel_obj])
@@ -953,13 +951,12 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
             return mock_channel
 
         host = 'CURR_HOST:1234'
-        connection = _Connection(in_emulator=True, host=host)
         patch = mock.patch.multiple(
             'google.cloud.pubsub._gax',
             PublisherClient=mock_publisher_api,
             insecure_channel=mock_insecure_channel)
         with patch:
-            result = self._call_fut(connection)
+            result = self._call_fut(None, host=host, secure=False)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [mock_channel])
@@ -969,9 +966,9 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
 class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
 
-    def _call_fut(self, connection):
+    def _call_fut(self, *args, **kwargs):
         from google.cloud.pubsub._gax import make_gax_subscriber_api
-        return make_gax_subscriber_api(connection)
+        return make_gax_subscriber_api(*args, **kwargs)
 
     def test_live_api(self):
         from google.cloud.pubsub._gax import DEFAULT_USER_AGENT
@@ -993,14 +990,12 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
         mock_subscriber_api.SERVICE_ADDRESS = host
 
         creds = _make_credentials()
-        connection = _Connection(in_emulator=False,
-                                 credentials=creds)
         patch = mock.patch.multiple(
             'google.cloud.pubsub._gax',
             SubscriberClient=mock_subscriber_api,
             make_secure_channel=make_channel)
         with patch:
-            result = self._call_fut(connection)
+            result = self._call_fut(creds)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [channel_obj])
@@ -1022,13 +1017,12 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
             return mock_channel
 
         host = 'CURR_HOST:1234'
-        connection = _Connection(in_emulator=True, host=host)
         patch = mock.patch.multiple(
             'google.cloud.pubsub._gax',
             SubscriberClient=mock_subscriber_api,
             insecure_channel=mock_insecure_channel)
         with patch:
-            result = self._call_fut(connection)
+            result = self._call_fut(None, host=host, secure=False)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [mock_channel])
@@ -1205,15 +1199,6 @@ class _PullResponsePB(object):
 
     def __init__(self, received_messages):
         self.received_messages = received_messages
-
-
-class _Connection(object):
-
-    def __init__(self, in_emulator=False, host=None,
-                 credentials=None):
-        self.in_emulator = in_emulator
-        self.host = host
-        self.credentials = credentials
 
 
 class _Client(object):

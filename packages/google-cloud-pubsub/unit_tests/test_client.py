@@ -69,6 +69,8 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(api, _PublisherAPI)
 
     def test_publisher_api_w_gax(self):
+        from google.cloud.pubsub import _http
+
         wrapped = object()
         _called_with = []
 
@@ -100,8 +102,9 @@ class TestClient(unittest.TestCase):
         # API instance is cached
         again = client.publisher_api
         self.assertIs(again, api)
-        args = (client._connection,)
-        self.assertEqual(_called_with, [(args, {})])
+        args = (creds,)
+        kwargs = {'host': _http.Connection.API_BASE_URL, 'secure': True}
+        self.assertEqual(_called_with, [(args, kwargs)])
 
     def test_subscriber_api_wo_gax(self):
         from google.cloud.pubsub._http import _SubscriberAPI
@@ -121,6 +124,8 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_subscriber_api_w_gax(self):
+        from google.cloud.pubsub import _http
+
         wrapped = object()
         _called_with = []
 
@@ -152,8 +157,9 @@ class TestClient(unittest.TestCase):
         # API instance is cached
         again = client.subscriber_api
         self.assertIs(again, api)
-        args = (client._connection,)
-        self.assertEqual(_called_with, [(args, {})])
+        args = (creds,)
+        kwargs = {'host': _http.Connection.API_BASE_URL, 'secure': True}
+        self.assertEqual(_called_with, [(args, kwargs)])
 
     def test_iam_policy_api(self):
         from google.cloud.pubsub._http import _IAMPolicyAPI
