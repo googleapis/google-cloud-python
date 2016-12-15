@@ -116,7 +116,7 @@ class Client(JSONClient):
     def iam_policy_api(self):
         """Helper for IAM policy-related API calls."""
         if self._iam_policy_api is None:
-            self._iam_policy_api = _IAMPolicyAPI(self._connection)
+            self._iam_policy_api = _IAMPolicyAPI(self)
         return self._iam_policy_api
 
     def list_topics(self, page_size=None, page_token=None):

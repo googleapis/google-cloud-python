@@ -46,11 +46,11 @@ class TestClient(unittest.TestCase):
             project=self.PROJECT, credentials=creds,
             use_gax=False)
 
-        conn = client._connection = object()
+        conn = client._connection = _Connection()
         api = client.publisher_api
 
         self.assertIsInstance(api, _PublisherAPI)
-        self.assertIs(api._connection, conn)
+        self.assertEqual(api.api_request, conn.api_request)
         # API instance is cached
         again = client.publisher_api
         self.assertIs(again, api)
@@ -114,11 +114,11 @@ class TestClient(unittest.TestCase):
             project=self.PROJECT, credentials=creds,
             use_gax=False)
 
-        conn = client._connection = object()
+        conn = client._connection = _Connection()
         api = client.subscriber_api
 
         self.assertIsInstance(api, _SubscriberAPI)
-        self.assertIs(api._connection, conn)
+        self.assertEqual(api.api_request, conn.api_request)
         # API instance is cached
         again = client.subscriber_api
         self.assertIs(again, api)
@@ -165,10 +165,11 @@ class TestClient(unittest.TestCase):
         from google.cloud.pubsub._http import _IAMPolicyAPI
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = object()
+        conn = client._connection = _Connection()
+
         api = client.iam_policy_api
         self.assertIsInstance(api, _IAMPolicyAPI)
-        self.assertIs(api._connection, conn)
+        self.assertEqual(api.api_request, conn.api_request)
         # API instance is cached
         again = client.iam_policy_api
         self.assertIs(again, api)
