@@ -17,7 +17,7 @@
 import copy
 import six
 
-from google.cloud.datastore._generated import entity_pb2 as _entity_pb2
+from google.cloud.grpc.datastore.v1 import entity_pb2 as _entity_pb2
 
 
 class Key(object):
@@ -261,7 +261,7 @@ class Key(object):
     def to_protobuf(self):
         """Return a protobuf corresponding to the key.
 
-        :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Key`
+        :rtype: :class:`.entity_pb2.Key`
         :returns: The protobuf representing the key.
         """
         key = _entity_pb2.Key()

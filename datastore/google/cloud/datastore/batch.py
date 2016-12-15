@@ -22,7 +22,7 @@ https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operat
 """
 
 from google.cloud.datastore import helpers
-from google.cloud.datastore._generated import datastore_pb2 as _datastore_pb2
+from google.cloud.grpc.datastore.v1 import datastore_pb2 as _datastore_pb2
 
 
 class Batch(object):
@@ -106,7 +106,7 @@ class Batch(object):
     def _add_partial_key_entity_pb(self):
         """Adds a new mutation for an entity with a partial key.
 
-        :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+        :rtype: :class:`.entity_pb2.Entity`
         :returns: The newly created entity protobuf that will be
                   updated and sent with a commit.
         """
@@ -116,7 +116,7 @@ class Batch(object):
     def _add_complete_key_entity_pb(self):
         """Adds a new mutation for an entity with a completed key.
 
-        :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+        :rtype: :class:`.entity_pb2.Entity`
         :returns: The newly created entity protobuf that will be
                   updated and sent with a commit.
         """
@@ -129,7 +129,7 @@ class Batch(object):
     def _add_delete_key_pb(self):
         """Adds a new mutation for a key to be deleted.
 
-        :rtype: :class:`google.cloud.datastore._generated.entity_pb2.Key`
+        :rtype: :class:`.entity_pb2.Key`
         :returns: The newly created key protobuf that will be
                   deleted when sent with a commit.
         """
@@ -147,7 +147,7 @@ class Batch(object):
         built-up so far.
 
         :rtype: iterable
-        :returns: The list of :class:`._generated.datastore_pb2.Mutation`
+        :returns: The list of :class:`.datastore_pb2.Mutation`
                   protobufs to be sent in the commit request.
         """
         return self._commit_request.mutations
@@ -302,7 +302,7 @@ def _assign_entity_to_pb(entity_pb, entity):
 
     Helper method for ``Batch.put``.
 
-    :type entity_pb: :class:`._generated.entity_pb2.Entity`
+    :type entity_pb: :class:`.entity_pb2.Entity`
     :param entity_pb: The entity owned by a mutation.
 
     :type entity: :class:`google.cloud.datastore.entity.Entity`
