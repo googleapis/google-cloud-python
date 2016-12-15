@@ -20,7 +20,7 @@ from google.cloud._helpers import _ensure_tuple_or_list
 from google.cloud.iterator import Iterator as BaseIterator
 from google.cloud.iterator import Page
 
-from google.cloud.datastore._generated import query_pb2 as _query_pb2
+from google.cloud.grpc.datastore.v1 import query_pb2 as _query_pb2
 from google.cloud.datastore import helpers
 from google.cloud.datastore.key import Key
 
@@ -417,7 +417,7 @@ class Iterator(BaseIterator):
         Relies on the current state of the iterator.
 
         :rtype:
-            :class:`google.cloud.datastore._generated.query_pb2.Query`
+            :class:`.query_pb2.Query`
         :returns: The query protobuf object for the current
                   state of the iterator.
         """
@@ -452,7 +452,7 @@ class Iterator(BaseIterator):
         :param cursor_as_bytes: The end cursor of the query.
 
         :type more_results_enum:
-            :class:`._generated.query_pb2.QueryResultBatch.MoreResultsType`
+            :class:`.query_pb2.QueryResultBatch.MoreResultsType`
         :param more_results_enum: Enum indicating if there are more results.
 
         :type skipped_results: int
@@ -508,7 +508,7 @@ def _pb_from_query(query):
     :type query: :class:`Query`
     :param query: The source query.
 
-    :rtype: :class:`google.cloud.datastore._generated.query_pb2.Query`
+    :rtype: :class:`.query_pb2.Query`
     :returns: A protobuf that can be sent to the protobuf API.  N.b. that
               it does not contain "in-flight" fields for ongoing query
               executions (cursors, offset, limit).
@@ -575,7 +575,7 @@ def _item_to_entity(iterator, entity_pb):
     :param iterator: The iterator that is currently in use.
 
     :type entity_pb:
-        :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+        :class:`.entity_pb2.Entity`
     :param entity_pb: An entity protobuf to convert to a native entity.
 
     :rtype: :class:`~google.cloud.datastore.entity.Entity`
