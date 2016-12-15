@@ -19,7 +19,6 @@ from google.oauth2 import service_account
 import six
 
 from google.cloud._helpers import _determine_default_project
-from google.cloud._http import Connection
 from google.cloud.credentials import get_credentials
 
 
@@ -72,23 +71,22 @@ class _ClientFactoryMixin(object):
 class Client(_ClientFactoryMixin):
     """Client to bundle configuration needed for API requests.
 
-    Assumes that the associated ``_connection_class`` only accepts
-    ``http`` and ``credentials`` in its constructor.
+    Stores ``credentials`` and ``http`` object so that subclasses
+    can pass them along to a connection class.
 
-    :type credentials: :class:`google.auth.credentials.Credentials` or
-                       :class:`NoneType`
-    :param credentials: The OAuth2 Credentials to use for the connection
-                        owned by this client. If not passed (and if no ``http``
-                        object is passed), falls back to the default inferred
-                        from the environment.
+    :type credentials: :class:`~google.auth.credentials.Credentials`
+    :param credentials: (Optional) The OAuth2 Credentials to use for this
+                        client. If not passed (and if no ``http`` object is
+                        passed), falls back to the default inferred from the
+                        environment.
 
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: An optional HTTP object to make requests. If not passed, an
+    :type http: :class:`~httplib2.Http`
+    :param http: (Optional) HTTP object to make requests. Can be any object
+                  that defines ``request()`` with the same interface as
+                  :meth:`~httplib2.Http.request`. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
     """
-
-    _connection_class = Connection
 
     def __init__(self, credentials=None, http=None):
         if (credentials is not None and
@@ -97,8 +95,8 @@ class Client(_ClientFactoryMixin):
             raise ValueError(_GOOGLE_AUTH_CREDENTIALS_HELP)
         if credentials is None and http is None:
             credentials = get_credentials()
-        self._connection = self._connection_class(
-            credentials=credentials, http=http)
+        self._credentials = credentials
+        self._http = http
 
 
 class _ClientProjectMixin(object):
@@ -142,15 +140,16 @@ class JSONClient(Client, _ClientProjectMixin):
                     passed falls back to the default inferred from the
                     environment.
 
-    :type credentials: :class:`google.auth.credentials.Credentials` or
-                       :class:`NoneType`
-    :param credentials: The OAuth2 Credentials to use for the connection
-                        owned by this client. If not passed (and if no ``http``
-                        object is passed), falls back to the default inferred
-                        from the environment.
+    :type credentials: :class:`~google.auth.credentials.Credentials`
+    :param credentials: (Optional) The OAuth2 Credentials to use for this
+                        client. If not passed (and if no ``http`` object is
+                        passed), falls back to the default inferred from the
+                        environment.
 
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: An optional HTTP object to make requests. If not passed, an
+    :type http: :class:`~httplib2.Http`
+    :param http: (Optional) HTTP object to make requests. Can be any object
+                  that defines ``request()`` with the same interface as
+                  :meth:`~httplib2.Http.request`. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
 
