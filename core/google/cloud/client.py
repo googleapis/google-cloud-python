@@ -82,8 +82,8 @@ class Client(_ClientFactoryMixin):
 
     :type http: :class:`~httplib2.Http`
     :param http: (Optional) HTTP object to make requests. Can be any object
-                  that defines ``request()`` with the same interface as
-                  :meth:`~httplib2.Http.request`. If not passed, an
+                 that defines ``request()`` with the same interface as
+                 :meth:`~httplib2.Http.request`. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
     """
@@ -148,8 +148,8 @@ class JSONClient(Client, _ClientProjectMixin):
 
     :type http: :class:`~httplib2.Http`
     :param http: (Optional) HTTP object to make requests. Can be any object
-                  that defines ``request()`` with the same interface as
-                  :meth:`~httplib2.Http.request`. If not passed, an
+                 that defines ``request()`` with the same interface as
+                 :meth:`~httplib2.Http.request`. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
 
