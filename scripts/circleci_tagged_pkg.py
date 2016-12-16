@@ -24,11 +24,16 @@ import re
 import sys
 
 
-RE_TXT = r'^(?P<pkg>(([a-z]+)-)*)([0-9]+)\.([0-9]+)\.([0-9]+)$'
-TAG_RE = re.compile(RE_TXT)
+TAG_RE = re.compile(r"""
+    ^
+    (?P<pkg>
+        (([a-z]+)-)*)            # pkg-name-with-hyphens- (empty allowed)
+    ([0-9]+)\.([0-9]+)\.([0-9]+)  # Version x.y.z (x, y, z all ints)
+    $
+""", re.VERBOSE)
 TAG_ENV = 'CIRCLE_TAG'
 ERROR_MSG = '%s env. var. not set' % (TAG_ENV,)
-BAD_TAG_MSG = 'Invalid tag name: %s. Expected ' + RE_TXT
+BAD_TAG_MSG = 'Invalid tag name: %s. Expected pkg-name-x.y.z'
 _SCRIPTS_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.abspath(os.path.join(_SCRIPTS_DIR, '..'))
 

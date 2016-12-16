@@ -24,6 +24,7 @@ general:
 
 deployment:
   release:
+    # See "scripts/circleci_tagged_pkg.py" for info on REGEX
     tag: /(([a-z]+)-)*([0-9]+)\.([0-9]+)\.([0-9]+)/
     owner: GoogleCloudPlatform
     commands:
