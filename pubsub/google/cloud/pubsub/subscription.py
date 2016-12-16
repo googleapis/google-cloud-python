@@ -509,4 +509,5 @@ class AutoAck(dict):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self._subscription.acknowledge(list(self), self._client)
+        if self:
+            self._subscription.acknowledge(list(self), self._client)
