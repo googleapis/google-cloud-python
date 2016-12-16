@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class TestSubscription(unittest.TestCase):
     PROJECT = 'PROJECT'
@@ -744,6 +746,16 @@ class TestAutoAck(unittest.TestCase):
         self.assertEqual(sorted(subscription._acknowledged),
                          [ACK_ID1, ACK_ID2])
         self.assertIs(subscription._ack_client, CLIENT)
+
+    def test_empty_ack_no_acknowledge(self):
+        subscription = mock.Mock(_FauxSubscription)
+        subscription.pull = lambda *args: []
+
+        auto_ack = self._make_one(subscription)
+        with auto_ack:
+            pass
+
+        subscription.acknowledge.assert_not_called()
 
 
 class _FauxIAMPolicy(object):
