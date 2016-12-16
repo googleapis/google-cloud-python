@@ -91,9 +91,12 @@ class Client(JSONClient):
         """Helper for publisher-related API calls."""
         if self._publisher_api is None:
             if self._use_gax:
-                generated = make_gax_publisher_api(
-                    self._credentials, host=self._connection.host,
-                    secure=not self._connection.in_emulator)
+                if self._connection.in_emulator:
+                    generated = make_gax_publisher_api(
+                        host=self._connection.host)
+                else:
+                    generated = make_gax_publisher_api(
+                        credentials=self._credentials)
                 self._publisher_api = GAXPublisherAPI(generated, self)
             else:
                 self._publisher_api = JSONPublisherAPI(self)
@@ -104,9 +107,12 @@ class Client(JSONClient):
         """Helper for subscriber-related API calls."""
         if self._subscriber_api is None:
             if self._use_gax:
-                generated = make_gax_subscriber_api(
-                    self._credentials, host=self._connection.host,
-                    secure=not self._connection.in_emulator)
+                if self._connection.in_emulator:
+                    generated = make_gax_subscriber_api(
+                        host=self._connection.host)
+                else:
+                    generated = make_gax_subscriber_api(
+                        credentials=self._credentials)
                 self._subscriber_api = GAXSubscriberAPI(generated, self)
             else:
                 self._subscriber_api = JSONSubscriberAPI(self)
