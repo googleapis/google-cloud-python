@@ -91,7 +91,12 @@ class Client(JSONClient):
         """Helper for publisher-related API calls."""
         if self._publisher_api is None:
             if self._use_gax:
-                generated = make_gax_publisher_api(self._connection)
+                if self._connection.in_emulator:
+                    generated = make_gax_publisher_api(
+                        host=self._connection.host)
+                else:
+                    generated = make_gax_publisher_api(
+                        credentials=self._credentials)
                 self._publisher_api = GAXPublisherAPI(generated, self)
             else:
                 self._publisher_api = JSONPublisherAPI(self)
@@ -102,7 +107,12 @@ class Client(JSONClient):
         """Helper for subscriber-related API calls."""
         if self._subscriber_api is None:
             if self._use_gax:
-                generated = make_gax_subscriber_api(self._connection)
+                if self._connection.in_emulator:
+                    generated = make_gax_subscriber_api(
+                        host=self._connection.host)
+                else:
+                    generated = make_gax_subscriber_api(
+                        credentials=self._credentials)
                 self._subscriber_api = GAXSubscriberAPI(generated, self)
             else:
                 self._subscriber_api = JSONSubscriberAPI(self)
@@ -112,7 +122,7 @@ class Client(JSONClient):
     def iam_policy_api(self):
         """Helper for IAM policy-related API calls."""
         if self._iam_policy_api is None:
-            self._iam_policy_api = _IAMPolicyAPI(self._connection)
+            self._iam_policy_api = _IAMPolicyAPI(self)
         return self._iam_policy_api
 
     def list_topics(self, page_size=None, page_token=None):

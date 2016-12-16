@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with Google Cloud Pub/Sub connections."""
+"""Interact with Google Cloud Pub/Sub via JSON-over-HTTP."""
 
 import base64
 import copy
@@ -109,7 +109,7 @@ class _PublisherAPI(object):
 
     def __init__(self, client):
         self._client = client
-        self._connection = client._connection
+        self.api_request = client._connection.api_request
 
     def list_topics(self, project, page_size=None, page_token=None):
         """API call:  list topics for a given project
@@ -131,7 +131,7 @@ class _PublisherAPI(object):
 
         :rtype: :class:`~google.cloud.iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.pubsub.topic.Topic`
-                  accessible to the current connection.
+                  accessible to the current client.
         """
         extra_params = {}
         if page_size is not None:
@@ -156,8 +156,7 @@ class _PublisherAPI(object):
         :rtype: dict
         :returns: ``Topic`` resource returned from the API.
         """
-        conn = self._connection
-        return conn.api_request(method='PUT', path='/%s' % (topic_path,))
+        return self.api_request(method='PUT', path='/%s' % (topic_path,))
 
     def topic_get(self, topic_path):
         """API call:  retrieve a topic
@@ -172,8 +171,7 @@ class _PublisherAPI(object):
         :rtype: dict
         :returns: ``Topic`` resource returned from the API.
         """
-        conn = self._connection
-        return conn.api_request(method='GET', path='/%s' % (topic_path,))
+        return self.api_request(method='GET', path='/%s' % (topic_path,))
 
     def topic_delete(self, topic_path):
         """API call:  delete a topic
@@ -185,8 +183,7 @@ class _PublisherAPI(object):
         :param topic_path: the fully-qualified path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
         """
-        conn = self._connection
-        conn.api_request(method='DELETE', path='/%s' % (topic_path,))
+        self.api_request(method='DELETE', path='/%s' % (topic_path,))
 
     def topic_publish(self, topic_path, messages):
         """API call:  publish one or more messages to a topic
@@ -206,9 +203,8 @@ class _PublisherAPI(object):
         """
         messages_to_send = copy.deepcopy(messages)
         _transform_messages_base64(messages_to_send, _base64_unicode)
-        conn = self._connection
         data = {'messages': messages_to_send}
-        response = conn.api_request(
+        response = self.api_request(
             method='POST', path='/%s:publish' % (topic_path,), data=data)
         return response['messageIds']
 
@@ -257,7 +253,7 @@ class _SubscriberAPI(object):
 
     def __init__(self, client):
         self._client = client
-        self._connection = client._connection
+        self.api_request = client._connection.api_request
 
     def list_subscriptions(self, project, page_size=None, page_token=None):
         """API call:  list subscriptions for a given project
@@ -328,7 +324,6 @@ class _SubscriberAPI(object):
         :rtype: dict
         :returns: ``Subscription`` resource returned from the API.
         """
-        conn = self._connection
         path = '/%s' % (subscription_path,)
         resource = {'topic': topic_path}
 
@@ -338,7 +333,7 @@ class _SubscriberAPI(object):
         if push_endpoint is not None:
             resource['pushConfig'] = {'pushEndpoint': push_endpoint}
 
-        return conn.api_request(method='PUT', path=path, data=resource)
+        return self.api_request(method='PUT', path=path, data=resource)
 
     def subscription_get(self, subscription_path):
         """API call:  retrieve a subscription
@@ -354,9 +349,8 @@ class _SubscriberAPI(object):
         :rtype: dict
         :returns: ``Subscription`` resource returned from the API.
         """
-        conn = self._connection
         path = '/%s' % (subscription_path,)
-        return conn.api_request(method='GET', path=path)
+        return self.api_request(method='GET', path=path)
 
     def subscription_delete(self, subscription_path):
         """API call:  delete a subscription
@@ -369,9 +363,8 @@ class _SubscriberAPI(object):
             the fully-qualified path of the subscription, in format
             ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
         """
-        conn = self._connection
         path = '/%s' % (subscription_path,)
-        conn.api_request(method='DELETE', path=path)
+        self.api_request(method='DELETE', path=path)
 
     def subscription_modify_push_config(self, subscription_path,
                                         push_endpoint):
@@ -390,10 +383,9 @@ class _SubscriberAPI(object):
             (Optional) URL to which messages will be pushed by the back-end.
             If not set, the application must pull messages.
         """
-        conn = self._connection
         path = '/%s:modifyPushConfig' % (subscription_path,)
         resource = {'pushConfig': {'pushEndpoint': push_endpoint}}
-        conn.api_request(method='POST', path=path, data=resource)
+        self.api_request(method='POST', path=path, data=resource)
 
     def subscription_pull(self, subscription_path, return_immediately=False,
                           max_messages=1):
@@ -419,13 +411,12 @@ class _SubscriberAPI(object):
         :rtype: list of dict
         :returns:  the ``receivedMessages`` element of the response.
         """
-        conn = self._connection
         path = '/%s:pull' % (subscription_path,)
         data = {
             'returnImmediately': return_immediately,
             'maxMessages': max_messages,
         }
-        response = conn.api_request(method='POST', path=path, data=data)
+        response = self.api_request(method='POST', path=path, data=data)
         messages = response.get('receivedMessages', ())
         _transform_messages_base64(messages, base64.b64decode, 'message')
         return messages
@@ -444,12 +435,11 @@ class _SubscriberAPI(object):
         :type ack_ids: list of string
         :param ack_ids: ack IDs of messages being acknowledged
         """
-        conn = self._connection
         path = '/%s:acknowledge' % (subscription_path,)
         data = {
             'ackIds': ack_ids,
         }
-        conn.api_request(method='POST', path=path, data=data)
+        self.api_request(method='POST', path=path, data=data)
 
     def subscription_modify_ack_deadline(self, subscription_path, ack_ids,
                                          ack_deadline):
@@ -470,24 +460,23 @@ class _SubscriberAPI(object):
         :param ack_deadline: the deadline (in seconds) by which messages pulled
                             from the back-end must be acknowledged.
         """
-        conn = self._connection
         path = '/%s:modifyAckDeadline' % (subscription_path,)
         data = {
             'ackIds': ack_ids,
             'ackDeadlineSeconds': ack_deadline,
         }
-        conn.api_request(method='POST', path=path, data=data)
+        self.api_request(method='POST', path=path, data=data)
 
 
 class _IAMPolicyAPI(object):
     """Helper mapping IAM policy-related APIs.
 
-    :type connection: :class:`Connection`
-    :param connection: the connection used to make API requests.
+    :type client: :class:`~google.cloud.pubsub.client.Client`
+    :param client: the client used to make API requests.
     """
 
-    def __init__(self, connection):
-        self._connection = connection
+    def __init__(self, client):
+        self.api_request = client._connection.api_request
 
     def get_iam_policy(self, target_path):
         """API call:  fetch the IAM policy for the target
@@ -502,9 +491,8 @@ class _IAMPolicyAPI(object):
         :rtype: dict
         :returns: the resource returned by the ``getIamPolicy`` API request.
         """
-        conn = self._connection
         path = '/%s:getIamPolicy' % (target_path,)
-        return conn.api_request(method='GET', path=path)
+        return self.api_request(method='GET', path=path)
 
     def set_iam_policy(self, target_path, policy):
         """API call:  update the IAM policy for the target
@@ -522,10 +510,9 @@ class _IAMPolicyAPI(object):
         :rtype: dict
         :returns: the resource returned by the ``setIamPolicy`` API request.
         """
-        conn = self._connection
         wrapped = {'policy': policy}
         path = '/%s:setIamPolicy' % (target_path,)
-        return conn.api_request(method='POST', path=path, data=wrapped)
+        return self.api_request(method='POST', path=path, data=wrapped)
 
     def test_iam_permissions(self, target_path, permissions):
         """API call:  test permissions
@@ -543,10 +530,9 @@ class _IAMPolicyAPI(object):
         :rtype: dict
         :returns: the resource returned by the ``getIamPolicy`` API request.
         """
-        conn = self._connection
         wrapped = {'permissions': permissions}
         path = '/%s:testIamPermissions' % (target_path,)
-        resp = conn.api_request(method='POST', path=path, data=wrapped)
+        resp = self.api_request(method='POST', path=path, data=wrapped)
         return resp.get('permissions', [])
 
 
