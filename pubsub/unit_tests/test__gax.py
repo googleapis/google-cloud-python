@@ -956,7 +956,7 @@ class Test_make_gax_publisher_api(_Base, unittest.TestCase):
             PublisherClient=mock_publisher_api,
             insecure_channel=mock_insecure_channel)
         with patch:
-            result = self._call_fut(None, host=host, secure=False)
+            result = self._call_fut(host=host)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [mock_channel])
@@ -1022,7 +1022,7 @@ class Test_make_gax_subscriber_api(_Base, unittest.TestCase):
             SubscriberClient=mock_subscriber_api,
             insecure_channel=mock_insecure_channel)
         with patch:
-            result = self._call_fut(None, host=host, secure=False)
+            result = self._call_fut(host=host)
 
         self.assertIs(result, mock_result)
         self.assertEqual(channels, [mock_channel])
