@@ -68,7 +68,7 @@ class TestClient(unittest.TestCase):
         api = client.publisher_api
         self.assertIsInstance(api, _PublisherAPI)
 
-    def test_publisher_api_w_gax(self):
+    def _publisher_api_w_gax_helper(self, emulator=False):
         from google.cloud.pubsub import _http
 
         wrapped = object()
@@ -88,6 +88,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds,
             use_gax=True)
+        client._connection.in_emulator = emulator
 
         patch = mock.patch.multiple(
             'google.cloud.pubsub.client',
@@ -102,9 +103,17 @@ class TestClient(unittest.TestCase):
         # API instance is cached
         again = client.publisher_api
         self.assertIs(again, api)
-        args = (creds,)
-        kwargs = {'host': _http.Connection.API_BASE_URL, 'secure': True}
-        self.assertEqual(_called_with, [(args, kwargs)])
+        if emulator:
+            kwargs = {'host': _http.Connection.API_BASE_URL}
+        else:
+            kwargs = {'credentials': creds}
+        self.assertEqual(_called_with, [((), kwargs)])
+
+    def test_publisher_api_w_gax(self):
+        self._publisher_api_w_gax_helper()
+
+    def test_publisher_api_w_gax_and_emulator(self):
+        self._publisher_api_w_gax_helper(emulator=True)
 
     def test_subscriber_api_wo_gax(self):
         from google.cloud.pubsub._http import _SubscriberAPI
@@ -123,7 +132,7 @@ class TestClient(unittest.TestCase):
         again = client.subscriber_api
         self.assertIs(again, api)
 
-    def test_subscriber_api_w_gax(self):
+    def _subscriber_api_w_gax_helper(self, emulator=False):
         from google.cloud.pubsub import _http
 
         wrapped = object()
@@ -143,6 +152,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds,
             use_gax=True)
+        client._connection.in_emulator = emulator
 
         patch = mock.patch.multiple(
             'google.cloud.pubsub.client',
@@ -157,9 +167,17 @@ class TestClient(unittest.TestCase):
         # API instance is cached
         again = client.subscriber_api
         self.assertIs(again, api)
-        args = (creds,)
-        kwargs = {'host': _http.Connection.API_BASE_URL, 'secure': True}
-        self.assertEqual(_called_with, [(args, kwargs)])
+        if emulator:
+            kwargs = {'host': _http.Connection.API_BASE_URL}
+        else:
+            kwargs = {'credentials': creds}
+        self.assertEqual(_called_with, [((), kwargs)])
+
+    def test_subscriber_api_w_gax(self):
+        self._subscriber_api_w_gax_helper()
+
+    def test_subscriber_api_w_gax_and_emulator(self):
+        self._subscriber_api_w_gax_helper(emulator=True)
 
     def test_iam_policy_api(self):
         from google.cloud.pubsub._http import _IAMPolicyAPI
