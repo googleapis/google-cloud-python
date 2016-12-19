@@ -65,6 +65,9 @@ def get_project_id():
     Raises:
         EnvironmentError: If the App Engine APIs are unavailable.
     """
+    # pylint: disable=missing-raises-doc
+    # Pylint rightfully thinks EnvironmentError is OSError, but doesn't
+    # realize it's a valid alias.
     if app_identity is None:
         raise EnvironmentError(
             'The App Engine APIs are not available.')
@@ -92,6 +95,9 @@ class Credentials(credentials.Scoped, credentials.Signing,
         Raises:
             EnvironmentError: If the App Engine APIs are unavailable.
         """
+        # pylint: disable=missing-raises-doc
+        # Pylint rightfully thinks EnvironmentError is OSError, but doesn't
+        # realize it's a valid alias.
         if app_identity is None:
             raise EnvironmentError(
                 'The App Engine APIs are not available.')

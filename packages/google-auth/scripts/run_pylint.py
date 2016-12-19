@@ -43,6 +43,7 @@ _PRODUCTION_RC_ADDITIONS = {
             'protected-access',
             'redefined-variable-type',
             'similarities',
+            'no-else-return',
         ],
     },
 }

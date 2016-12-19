@@ -33,6 +33,10 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
             object used to refresh credentials as needed.
     """
     def __init__(self, credentials, request):
+        # pylint: disable=no-value-for-parameter
+        # pylint doesn't realize that the super method takes no arguments
+        # because this class is the same name as the superclass.
+        super(AuthMetadataPlugin, self).__init__()
         self._credentials = credentials
         self._request = request
 
