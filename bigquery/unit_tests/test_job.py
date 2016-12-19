@@ -675,7 +675,9 @@ class TestCopyJob(unittest.TestCase, _Base):
         self.assertEqual(job.destination.dataset_name, table_ref['datasetId'])
         self.assertEqual(job.destination.name, table_ref['tableId'])
 
-        sources = config['sourceTables']
+        sources = config.get('sourceTables')
+        if sources is None:
+            sources = [config['sourceTable']]
         self.assertEqual(len(sources), len(job.sources))
         for table_ref, table in zip(sources, job.sources):
             self.assertEqual(table.project, table_ref['projectId'])
@@ -751,6 +753,35 @@ class TestCopyJob(unittest.TestCase, _Base):
                         'datasetId': self.DS_NAME,
                         'tableId': self.SOURCE_TABLE,
                     }],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.DESTINATION_TABLE,
+                    },
+                }
+            },
+        }
+        klass = self._get_target_class()
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertIs(job._client, client)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_from_api_repr_w_sourcetable(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {
+            'id': self.JOB_ID,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'copy': {
+                    'sourceTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.SOURCE_TABLE,
+                    },
                     'destinationTable': {
                         'projectId': self.PROJECT,
                         'datasetId': self.DS_NAME,
