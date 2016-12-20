@@ -1082,6 +1082,7 @@ class Test_ArrayQueryParameter(unittest.TestCase):
     def test_from_api_repr_wo_name(self):
         RESOURCE = {
             'parameterType': {
+                'type': 'ARRAY',
                 'arrayType': 'INT64',
             },
             'parameterValue': {
@@ -1098,6 +1099,7 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         EXPECTED = {
             'name': 'foo',
             'parameterType': {
+                'type': 'ARRAY',
                 'arrayType': 'INT64',
             },
             'parameterValue': {
@@ -1110,6 +1112,7 @@ class Test_ArrayQueryParameter(unittest.TestCase):
     def test_to_api_repr_wo_name(self):
         EXPECTED = {
             'parameterType': {
+                'type': 'ARRAY',
                 'arrayType': 'INT64',
             },
             'parameterValue': {
@@ -1123,6 +1126,7 @@ class Test_ArrayQueryParameter(unittest.TestCase):
     def test_to_api_repr_w_unknown_type(self):
         EXPECTED = {
             'parameterType': {
+                'type': 'ARRAY',
                 'arrayType': 'UNKNOWN',
             },
             'parameterValue': {
@@ -1170,13 +1174,17 @@ class Test_StructQueryParameter(unittest.TestCase):
         RESOURCE = {
             'name': 'foo',
             'parameterType': {
+                'type': 'STRUTCT',
                 'structTypes': [
-                    {'name': 'bar', 'type': 'INT64'},
-                    {'name': 'baz', 'type': 'STRING'},
+                    {'name': 'bar', 'type': {'type': 'INT64'}},
+                    {'name': 'baz', 'type': {'type': 'STRING'}},
                 ],
             },
             'parameterValue': {
-                'structValues': {'bar': 123, 'baz': 'abc'},
+                'structValues': {
+                    'bar': {'value': 123},
+                    'baz': {'value': 'abc'},
+                },
             },
         }
         klass = self._get_target_class()
@@ -1188,13 +1196,17 @@ class Test_StructQueryParameter(unittest.TestCase):
     def test_from_api_repr_wo_name(self):
         RESOURCE = {
             'parameterType': {
+                'type': 'STRUTCT',
                 'structTypes': [
-                    {'name': 'bar', 'type': 'INT64'},
-                    {'name': 'baz', 'type': 'STRING'},
+                    {'name': 'bar', 'type': {'type': 'INT64'}},
+                    {'name': 'baz', 'type': {'type': 'STRING'}},
                 ],
             },
             'parameterValue': {
-                'structValues': {'bar': 123, 'baz': 'abc'},
+                'structValues': {
+                    'bar': {'value': 123},
+                    'baz': {'value': 'abc'},
+                },
             },
         }
         klass = self._get_target_class()
@@ -1207,13 +1219,17 @@ class Test_StructQueryParameter(unittest.TestCase):
         EXPECTED = {
             'name': 'foo',
             'parameterType': {
+                'type': 'STRUCT',
                 'structTypes': [
-                    {'name': 'bar', 'type': 'INT64'},
-                    {'name': 'baz', 'type': 'STRING'},
+                    {'name': 'bar', 'type': {'type': 'INT64'}},
+                    {'name': 'baz', 'type': {'type': 'STRING'}},
                 ],
             },
             'parameterValue': {
-                'structValues': {'bar': '123', 'baz': 'abc'},
+                'structValues': {
+                    'bar': {'value': '123'},
+                    'baz': {'value': 'abc'},
+                },
             },
         }
         sub_1 = self._make_subparam('bar', 'INT64', 123)
@@ -1224,13 +1240,17 @@ class Test_StructQueryParameter(unittest.TestCase):
     def test_to_api_repr_wo_name(self):
         EXPECTED = {
             'parameterType': {
+                'type': 'STRUCT',
                 'structTypes': [
-                    {'name': 'bar', 'type': 'INT64'},
-                    {'name': 'baz', 'type': 'STRING'},
+                    {'name': 'bar', 'type': {'type': 'INT64'}},
+                    {'name': 'baz', 'type': {'type': 'STRING'}},
                 ],
             },
             'parameterValue': {
-                'structValues': {'bar': '123', 'baz': 'abc'},
+                'structValues': {
+                    'bar': {'value': '123'},
+                    'baz': {'value': 'abc'},
+                },
             },
         }
         sub_1 = self._make_subparam('bar', 'INT64', 123)
