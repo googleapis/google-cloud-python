@@ -1,7 +1,12 @@
 Google Cloud Python Client
 ==========================
 
-    Python idiomatic client for `Google Cloud Platform`_ services.
+.. warning::
+
+   This library has been renamed ``google-cloud``.  Please update
+   to use the new version.  https://pypi.python.org/pypi/google-cloud
+
+Python idiomatic client for `Google Cloud Platform`_ services.
 
 .. _Google Cloud Platform: https://cloud.google.com/
 

@@ -1,3 +1,8 @@
+.. warning::
+
+   This library has been renamed ``google-cloud``.  Please update
+   to use the new version.  https://pypi.python.org/pypi/google-cloud
+
 .. toctree::
   :maxdepth: 0
   :hidden:
