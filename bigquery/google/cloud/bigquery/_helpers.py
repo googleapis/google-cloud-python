@@ -18,10 +18,10 @@ import base64
 from collections import OrderedDict
 import datetime
 
+from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _datetime_to_rfc3339
-from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _time_from_iso8601_time_naive
 from google.cloud._helpers import _to_bytes
@@ -150,7 +150,11 @@ def _bytes_to_json(value):
 def _timestamp_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, datetime.datetime):
-        value = _microseconds_from_datetime(value) / 1.0e6
+        if value.tzinfo not in (None, UTC):
+            # Convert to UTC and remove the time zone info.
+            value = value.replace(tzinfo=None) - value.utcoffset()
+        value = '%s %s+00:00' % (
+            value.date().isoformat(), value.time().isoformat())
     return value
 
 
