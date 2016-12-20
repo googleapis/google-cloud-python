@@ -1174,7 +1174,7 @@ class Test_StructQueryParameter(unittest.TestCase):
         RESOURCE = {
             'name': 'foo',
             'parameterType': {
-                'type': 'STRUTCT',
+                'type': 'STRUCT',
                 'structTypes': [
                     {'name': 'bar', 'type': {'type': 'INT64'}},
                     {'name': 'baz', 'type': {'type': 'STRING'}},
@@ -1196,7 +1196,7 @@ class Test_StructQueryParameter(unittest.TestCase):
     def test_from_api_repr_wo_name(self):
         RESOURCE = {
             'parameterType': {
-                'type': 'STRUTCT',
+                'type': 'STRUCT',
                 'structTypes': [
                     {'name': 'bar', 'type': {'type': 'INT64'}},
                     {'name': 'baz', 'type': {'type': 'STRING'}},
