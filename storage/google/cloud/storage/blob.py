@@ -320,7 +320,7 @@ class Blob(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
 
         :type range_bytes: tuple
-        :param range_bytes: Optional. Range of bytes to download.
+        :param range_bytes: (Optional). Range of bytes to download.
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
@@ -361,7 +361,7 @@ class Blob(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
 
         :type range_bytes: tuple
-        :param range_bytes: Optional. Range of bytes to download.
+        :param range_bytes: (Optional). Range of bytes to download.
 
 
         :raises: :class:`google.cloud.exceptions.NotFound`
@@ -382,7 +382,7 @@ class Blob(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
 
         :type range_bytes: tuple
-        :param range_bytes: Optional. Range of bytes to download.
+        :param range_bytes: (Optional). Range of bytes to download.
 
         :rtype: bytes
         :returns: The data stored in this blob.

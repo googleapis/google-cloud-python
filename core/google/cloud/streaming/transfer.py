@@ -359,7 +359,7 @@ class Download(_Transfer):
         if self.total_size is None:
             self._total_size = 0
 
-    def initialize_download(self, http_request, http, range_bytes):
+    def initialize_download(self, http_request, http, range_bytes=None):
         """Initialize this download.
 
         If the instance has :attr:`auto_transfer` enabled, begins the
@@ -372,14 +372,18 @@ class Download(_Transfer):
         :param http: Http instance for this request.
 
         :type range_bytes: tuple
-        :param range_bytes: Optional. Range of bytes to download.
+        :param range_bytes: (Optional). Range of bytes to download.
+
+        For more info on Range Bytes:
+        https://cloud.google.com/storage/docs/xml-api/reference-headers#range
         """
         self._ensure_uninitialized()
         url = http_request.url
         if self.auto_transfer:
             if range_bytes:
                 start_byte, end_byte = range_bytes
-                end_byte = end_byte - 1
+                start_byte = int(start_byte)
+                end_byte = int(end_byte)
             else:
                 start_byte = 0
                 end_byte = self._compute_end_byte(0)
@@ -390,10 +394,10 @@ class Download(_Transfer):
                 raise HttpError.from_response(response)
             self._initial_response = response
             self._set_total(response.info)
-            # when using `range_bytes` we need to reset total_size
+            # when using `range_bytes` we need to reset total_size,
             # otherwise we get the total of the file and the entire contents
             # are downloaded
-            if range_bytes: self._total_size = abs(end_byte - start_byte + 1)
+            if range_bytes: self._total_size = abs(end_byte - start_byte)
             url = response.info.get('content-location', response.request_url)
         self._initialize(http, url)
         # Unless the user has requested otherwise, we want to just
