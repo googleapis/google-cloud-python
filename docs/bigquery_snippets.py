@@ -436,12 +436,13 @@ def table_upload_from_file(client, to_delete):
 
 
 @snippet
-def table_delete(client, _):
+def table_delete(client, to_delete):
     """Delete a table."""
     DATASET_NAME = 'table_delete_dataset_%d' % (_millis(),)
     TABLE_NAME = 'table_create_table_%d' % (_millis(),)
     dataset = client.dataset(DATASET_NAME)
     dataset.create()
+    to_delete.append(dataset)
 
     table = dataset.table(TABLE_NAME, SCHEMA)
     table.create()
