@@ -483,11 +483,20 @@ class TestBigQuery(unittest.TestCase):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud.bigquery._helpers import ScalarQueryParameter
+        from google.cloud.bigquery._helpers import StructQueryParameter
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = "%s %s" % (naive.date().isoformat(), naive.time().isoformat())
         zoned = naive.replace(tzinfo=UTC)
         zoned_param = ScalarQueryParameter(
             name='zoned', type_='TIMESTAMP', value=zoned)
+        question = 'What is the answer to life, the universe, and everything?'
+        question_param = ScalarQueryParameter(
+            name='question', type_='STRING', value=question)
+        answer = 42
+        answer_param = ScalarQueryParameter(
+            name='answer', type_='INT64', value=answer)
+        struct_param = StructQueryParameter(
+            'hitchhiker', question_param, answer_param)
         EXAMPLES = [
             {
                 'sql': 'SELECT 1',
@@ -560,6 +569,11 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT @zoned',
                 'expected': zoned,
                 'query_parameters': [zoned_param],
+            },
+            {
+                'sql': 'SELECT (@hitchhiker.question, @hitchhiker.answer)',
+                'expected': ({'_field_1': question, '_field_2': answer}),
+                'query_parameters': [struct_param],
             },
         ]
         for example in EXAMPLES:
