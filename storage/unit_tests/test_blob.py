@@ -478,7 +478,7 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
-        fetched = blob.download_as_string(range_bytes=(0, 3))
+        fetched = blob.download_as_string(range_bytes=(0, 2))
         self.assertEqual(fetched, b'abc')
 
     def test_upload_from_file_size_failure(self):

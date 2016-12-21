@@ -371,11 +371,11 @@ class Download(_Transfer):
         :type http: :class:`httplib2.Http` (or workalike)
         :param http: Http instance for this request.
 
+        For more info on Range Bytes:
+        https://cloud.google.com/storage/docs/xml-api/reference-headers#range
         :type range_bytes: tuple
         :param range_bytes: (Optional). Range of bytes to download.
 
-        For more info on Range Bytes:
-        https://cloud.google.com/storage/docs/xml-api/reference-headers#range
         """
         self._ensure_uninitialized()
         url = http_request.url
@@ -396,7 +396,7 @@ class Download(_Transfer):
             # otherwise we get the total of the file and the entire contents
             # are downloaded
             if range_bytes:
-                self._total_size = abs(end_byte - start_byte)
+                self._total_size = abs(end_byte - start_byte + 1)
             url = response.info.get('content-location', response.request_url)
         self._initialize(http, url)
         # Unless the user has requested otherwise, we want to just
