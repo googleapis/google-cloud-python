@@ -795,6 +795,29 @@ class TestCopyJob(unittest.TestCase, _Base):
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
 
+    def test_from_api_repr_wo_sources(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {
+            'id': self.JOB_ID,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'copy': {
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.DESTINATION_TABLE,
+                    },
+                }
+            },
+        }
+        klass = self._get_target_class()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, client=client)
+
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
