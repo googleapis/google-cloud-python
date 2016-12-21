@@ -744,7 +744,11 @@ class CopyJob(_AsyncJob):
         sources = []
         source_configs = config.get('sourceTables')
         if source_configs is None:
-            source_configs = [config['sourceTable']]
+            single = config.get('sourceTable')
+            if single is None:
+                raise KeyError(
+                    "Resource missing 'sourceTables' / 'sourceTable'")
+            source_configs = [single]
         for source_config in source_configs:
             dataset = Dataset(source_config['datasetId'], client)
             sources.append(Table(source_config['tableId'], dataset))
