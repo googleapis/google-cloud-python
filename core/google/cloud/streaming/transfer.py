@@ -380,10 +380,8 @@ class Download(_Transfer):
         self._ensure_uninitialized()
         url = http_request.url
         if self.auto_transfer:
-            if range_bytes:
+            if range_bytes is not None:
                 start_byte, end_byte = range_bytes
-                start_byte = int(start_byte)
-                end_byte = int(end_byte)
             else:
                 start_byte = 0
                 end_byte = self._compute_end_byte(0)
@@ -397,7 +395,8 @@ class Download(_Transfer):
             # when using `range_bytes` we need to reset total_size,
             # otherwise we get the total of the file and the entire contents
             # are downloaded
-            if range_bytes: self._total_size = abs(end_byte - start_byte)
+            if range_bytes:
+                self._total_size = abs(end_byte - start_byte)
             url = response.info.get('content-location', response.request_url)
         self._initialize(http, url)
         # Unless the user has requested otherwise, we want to just
