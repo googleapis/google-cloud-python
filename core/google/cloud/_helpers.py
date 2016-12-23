@@ -465,7 +465,7 @@ def _name_from_project_path(path, project, template):
     return match.group('name')
 
 
-def make_secure_channel(credentials, user_agent, host):
+def make_secure_channel(credentials, user_agent, host, extra_options=None):
     """Makes a secure channel for an RPC service.
 
     Uses / depends on gRPC.
@@ -480,14 +480,21 @@ def make_secure_channel(credentials, user_agent, host):
     :type host: str
     :param host: The host for the service.
 
+    :type extra_options: tuple
+    :param extra_options: (Optional) Extra gRPC options used when creating the
+                          channel.
+
     :rtype: :class:`grpc._channel.Channel`
     :returns: gRPC secure channel with credentials attached.
     """
     target = '%s:%d' % (host, http_client.HTTPS_PORT)
     http_request = google_auth_httplib2.Request(http=httplib2.Http())
-    options = (
-        ('grpc.primary_user_agent', user_agent),
-    )
+
+    user_agent_option = ('grpc.primary_user_agent', user_agent)
+    if extra_options is not None:
+        options = (user_agent_option,) + extra_options
+    else:
+        options = (user_agent_option,)
     return google.auth.transport.grpc.secure_authorized_channel(
         credentials,
         http_request,
@@ -495,7 +502,8 @@ def make_secure_channel(credentials, user_agent, host):
         options=options)
 
 
-def make_secure_stub(credentials, user_agent, stub_class, host):
+def make_secure_stub(credentials, user_agent, stub_class, host,
+                     extra_options=None):
     """Makes a secure stub for an RPC service.
 
     Uses / depends on gRPC.
@@ -513,10 +521,15 @@ def make_secure_stub(credentials, user_agent, stub_class, host):
     :type host: str
     :param host: The host for the service.
 
+    :type extra_options: tuple
+    :param extra_options: (Optional) Extra gRPC options passed when creating
+                          the channel.
+
     :rtype: object, instance of ``stub_class``
     :returns: The stub object used to make gRPC requests to a given API.
     """
-    channel = make_secure_channel(credentials, user_agent, host)
+    channel = make_secure_channel(credentials, user_agent, host,
+                                  extra_options=extra_options)
     return stub_class(channel)
 
 

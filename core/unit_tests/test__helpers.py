@@ -644,6 +644,33 @@ class Test_make_secure_channel(unittest.TestCase):
         secure_authorized_channel.assert_called_once_with(
             credentials, mock.ANY, expected_target, options=expected_options)
 
+    def test_extra_options(self):
+        from six.moves import http_client
+
+        credentials = object()
+        host = 'HOST'
+        user_agent = 'USER_AGENT'
+        extra_options = (('some', 'option'),)
+
+        secure_authorized_channel_patch = mock.patch(
+            'google.auth.transport.grpc.secure_authorized_channel',
+            autospec=True)
+
+        with secure_authorized_channel_patch as secure_authorized_channel:
+            result = self._call_fut(credentials, user_agent, host,
+                                    extra_options)
+
+        self.assertIs(result, secure_authorized_channel.return_value)
+
+        expected_target = '%s:%d' % (host, http_client.HTTPS_PORT)
+        expected_options = (
+            ('grpc.primary_user_agent', user_agent),
+            extra_options[0],
+        )
+
+        secure_authorized_channel.assert_called_once_with(
+            credentials, mock.ANY, expected_target, options=expected_options)
+
 
 class Test_make_secure_stub(unittest.TestCase):
 
@@ -664,13 +691,15 @@ class Test_make_secure_stub(unittest.TestCase):
             channels.append(channel)
             return result
 
-        def mock_channel(*args):
+        def mock_channel(*args, **kwargs):
             channel_args.append(args)
+            channel_args.append(kwargs)
             return channel_obj
 
         credentials = object()
         user_agent = 'you-sir-age-int'
         host = 'localhost'
+        extra_options = {'extra_options': None}
         with _Monkey(MUT, make_secure_channel=mock_channel):
             stub = self._call_fut(credentials, user_agent,
                                   stub_class, host)
@@ -678,7 +707,7 @@ class Test_make_secure_stub(unittest.TestCase):
         self.assertIs(stub, result)
         self.assertEqual(channels, [channel_obj])
         self.assertEqual(channel_args,
-                         [(credentials, user_agent, host)])
+                         [(credentials, user_agent, host), extra_options])
 
 
 class Test_make_insecure_stub(unittest.TestCase):
