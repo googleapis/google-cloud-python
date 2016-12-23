@@ -65,6 +65,14 @@ DATA_SCOPE = 'https://www.googleapis.com/auth/bigtable.data'
 READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
 """Scope for reading table data."""
 
+# NOTE: 'grpc.max_message_length' will no longer be recognized in
+#       grpcio 1.1 and later.
+_MAX_MSG_LENGTH_100MB = 100 * 1024 * 1024
+_GRPC_MAX_LENGTH_OPTIONS = (
+    ('grpc.max_message_length', _MAX_MSG_LENGTH_100MB),
+    ('grpc.max_receive_message_length', _MAX_MSG_LENGTH_100MB),
+)
+
 
 def _make_data_stub(client):
     """Creates gRPC stub to make requests to the Data API.
@@ -77,7 +85,8 @@ def _make_data_stub(client):
     """
     if client.emulator_host is None:
         return make_secure_stub(client.credentials, client.user_agent,
-                                bigtable_pb2.BigtableStub, DATA_API_HOST)
+                                bigtable_pb2.BigtableStub, DATA_API_HOST,
+                                extra_options=_GRPC_MAX_LENGTH_OPTIONS)
     else:
         return make_insecure_stub(bigtable_pb2.BigtableStub,
                                   client.emulator_host)
