@@ -18,10 +18,10 @@ import base64
 from collections import OrderedDict
 import datetime
 
+from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _datetime_to_rfc3339
-from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _time_from_iso8601_time_naive
 from google.cloud._helpers import _to_bytes
@@ -150,7 +150,11 @@ def _bytes_to_json(value):
 def _timestamp_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, datetime.datetime):
-        value = _microseconds_from_datetime(value) / 1.0e6
+        if value.tzinfo not in (None, UTC):
+            # Convert to UTC and remove the time zone info.
+            value = value.replace(tzinfo=None) - value.utcoffset()
+        value = '%s %s+00:00' % (
+            value.date().isoformat(), value.time().isoformat())
     return value
 
 
@@ -553,10 +557,12 @@ class StructQueryParameter(AbstractQueryParameter):
         instance = cls(name)
         types = instance.struct_types
         for item in resource['parameterType']['structTypes']:
-            types[item['name']] = item['type']
+            types[item['name']] = item['type']['type']
         struct_values = resource['parameterValue']['structValues']
         for key, value in struct_values.items():
-            converted = _CELLDATA_FROM_JSON[types[key]](value, None)
+            type_ = types[key]
+            value = value['value']
+            converted = _CELLDATA_FROM_JSON[type_](value, None)
             instance.struct_values[key] = converted
         return instance
 
@@ -567,7 +573,7 @@ class StructQueryParameter(AbstractQueryParameter):
         :returns: JSON mapping
         """
         types = [
-            {'name': key, 'type': value}
+            {'name': key, 'type': {'type': value}}
             for key, value in self.struct_types.items()
         ]
         values = {}
@@ -575,10 +581,11 @@ class StructQueryParameter(AbstractQueryParameter):
             converter = _SCALAR_VALUE_TO_JSON.get(self.struct_types[name])
             if converter is not None:
                 value = converter(value)
-            values[name] = value
+            values[name] = {'value': value}
 
         resource = {
             'parameterType': {
+                'type': 'STRUCT',
                 'structTypes': types,
             },
             'parameterValue': {

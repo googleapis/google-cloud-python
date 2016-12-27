@@ -26,7 +26,7 @@ class TestTransaction(unittest.TestCase):
         return self._get_target_class()(client, **kw)
 
     def test_ctor_defaults(self):
-        from google.cloud.datastore._generated import datastore_pb2
+        from google.cloud.grpc.datastore.v1 import datastore_pb2
 
         _PROJECT = 'PROJECT'
         connection = _Connection()
@@ -178,7 +178,7 @@ class TestTransaction(unittest.TestCase):
 
 
 def _make_key(kind, id_, project):
-    from google.cloud.datastore._generated import entity_pb2
+    from google.cloud.grpc.datastore.v1 import entity_pb2
 
     key = entity_pb2.Key()
     key.partition_id.project_id = project

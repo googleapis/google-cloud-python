@@ -51,15 +51,16 @@ class Client(JSONClient):
                     passed when creating a topic.  If not passed,
                     falls back to the default inferred from the environment.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
-                       :class:`NoneType`
-    :param credentials: The OAuth2 Credentials to use for the connection
-                        owned by this client. If not passed (and if no ``http``
-                        object is passed), falls back to the default inferred
-                        from the environment.
+    :type credentials: :class:`~google.auth.credentials.Credentials`
+    :param credentials: (Optional) The OAuth2 Credentials to use for this
+                        client. If not passed (and if no ``http`` object is
+                        passed), falls back to the default inferred from the
+                        environment.
 
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: An optional HTTP object to make requests. If not passed, an
+    :type http: :class:`~httplib2.Http`
+    :param http: (Optional) HTTP object to make requests. Can be any object
+                 that defines ``request()`` with the same interface as
+                 :meth:`~httplib2.Http.request`. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
 
@@ -69,23 +70,33 @@ class Client(JSONClient):
                     falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
                     variable
     """
+
+    _publisher_api = None
+    _subscriber_api = None
+    _iam_policy_api = None
+
     def __init__(self, project=None, credentials=None,
                  http=None, use_gax=None):
-        super(Client, self).__init__(project, credentials, http)
+        super(Client, self).__init__(
+            project=project, credentials=credentials, http=http)
+        self._connection = Connection(
+            credentials=self._credentials, http=self._http)
         if use_gax is None:
             self._use_gax = _USE_GAX
         else:
             self._use_gax = use_gax
-
-    _connection_class = Connection
-    _publisher_api = _subscriber_api = _iam_policy_api = None
 
     @property
     def publisher_api(self):
         """Helper for publisher-related API calls."""
         if self._publisher_api is None:
             if self._use_gax:
-                generated = make_gax_publisher_api(self._connection)
+                if self._connection.in_emulator:
+                    generated = make_gax_publisher_api(
+                        host=self._connection.host)
+                else:
+                    generated = make_gax_publisher_api(
+                        credentials=self._credentials)
                 self._publisher_api = GAXPublisherAPI(generated, self)
             else:
                 self._publisher_api = JSONPublisherAPI(self)
@@ -96,7 +107,12 @@ class Client(JSONClient):
         """Helper for subscriber-related API calls."""
         if self._subscriber_api is None:
             if self._use_gax:
-                generated = make_gax_subscriber_api(self._connection)
+                if self._connection.in_emulator:
+                    generated = make_gax_subscriber_api(
+                        host=self._connection.host)
+                else:
+                    generated = make_gax_subscriber_api(
+                        credentials=self._credentials)
                 self._subscriber_api = GAXSubscriberAPI(generated, self)
             else:
                 self._subscriber_api = JSONSubscriberAPI(self)
@@ -106,7 +122,7 @@ class Client(JSONClient):
     def iam_policy_api(self):
         """Helper for IAM policy-related API calls."""
         if self._iam_policy_api is None:
-            self._iam_policy_api = _IAMPolicyAPI(self._connection)
+            self._iam_policy_api = _IAMPolicyAPI(self)
         return self._iam_policy_api
 
     def list_topics(self, page_size=None, page_token=None):

@@ -46,11 +46,11 @@ class TestClient(unittest.TestCase):
             project=self.PROJECT, credentials=creds,
             use_gax=False)
 
-        conn = client._connection = object()
+        conn = client._connection = _Connection()
         api = client.publisher_api
 
         self.assertIsInstance(api, _PublisherAPI)
-        self.assertIs(api._connection, conn)
+        self.assertEqual(api.api_request, conn.api_request)
         # API instance is cached
         again = client.publisher_api
         self.assertIs(again, api)
@@ -68,7 +68,9 @@ class TestClient(unittest.TestCase):
         api = client.publisher_api
         self.assertIsInstance(api, _PublisherAPI)
 
-    def test_publisher_api_w_gax(self):
+    def _publisher_api_w_gax_helper(self, emulator=False):
+        from google.cloud.pubsub import _http
+
         wrapped = object()
         _called_with = []
 
@@ -86,6 +88,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds,
             use_gax=True)
+        client._connection.in_emulator = emulator
 
         patch = mock.patch.multiple(
             'google.cloud.pubsub.client',
@@ -100,8 +103,17 @@ class TestClient(unittest.TestCase):
         # API instance is cached
         again = client.publisher_api
         self.assertIs(again, api)
-        args = (client._connection,)
-        self.assertEqual(_called_with, [(args, {})])
+        if emulator:
+            kwargs = {'host': _http.Connection.API_BASE_URL}
+        else:
+            kwargs = {'credentials': creds}
+        self.assertEqual(_called_with, [((), kwargs)])
+
+    def test_publisher_api_w_gax(self):
+        self._publisher_api_w_gax_helper()
+
+    def test_publisher_api_w_gax_and_emulator(self):
+        self._publisher_api_w_gax_helper(emulator=True)
 
     def test_subscriber_api_wo_gax(self):
         from google.cloud.pubsub._http import _SubscriberAPI
@@ -111,16 +123,18 @@ class TestClient(unittest.TestCase):
             project=self.PROJECT, credentials=creds,
             use_gax=False)
 
-        conn = client._connection = object()
+        conn = client._connection = _Connection()
         api = client.subscriber_api
 
         self.assertIsInstance(api, _SubscriberAPI)
-        self.assertIs(api._connection, conn)
+        self.assertEqual(api.api_request, conn.api_request)
         # API instance is cached
         again = client.subscriber_api
         self.assertIs(again, api)
 
-    def test_subscriber_api_w_gax(self):
+    def _subscriber_api_w_gax_helper(self, emulator=False):
+        from google.cloud.pubsub import _http
+
         wrapped = object()
         _called_with = []
 
@@ -138,6 +152,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT, credentials=creds,
             use_gax=True)
+        client._connection.in_emulator = emulator
 
         patch = mock.patch.multiple(
             'google.cloud.pubsub.client',
@@ -152,17 +167,27 @@ class TestClient(unittest.TestCase):
         # API instance is cached
         again = client.subscriber_api
         self.assertIs(again, api)
-        args = (client._connection,)
-        self.assertEqual(_called_with, [(args, {})])
+        if emulator:
+            kwargs = {'host': _http.Connection.API_BASE_URL}
+        else:
+            kwargs = {'credentials': creds}
+        self.assertEqual(_called_with, [((), kwargs)])
+
+    def test_subscriber_api_w_gax(self):
+        self._subscriber_api_w_gax_helper()
+
+    def test_subscriber_api_w_gax_and_emulator(self):
+        self._subscriber_api_w_gax_helper(emulator=True)
 
     def test_iam_policy_api(self):
         from google.cloud.pubsub._http import _IAMPolicyAPI
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = object()
+        conn = client._connection = _Connection()
+
         api = client.iam_policy_api
         self.assertIsInstance(api, _IAMPolicyAPI)
-        self.assertIs(api._connection, conn)
+        self.assertEqual(api.api_request, conn.api_request)
         # API instance is cached
         again = client.iam_policy_api
         self.assertIs(again, api)

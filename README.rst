@@ -37,7 +37,8 @@ Cloud Platform services:
 -  `Google Cloud DNS`_ (`DNS README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
--  `Google Translate`_ (`Translate README`_)
+-  `Google Cloud Translation`_ (`Translation README`_)
+-  `Google Cloud Speech`_ (`Speech README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
@@ -68,8 +69,10 @@ updates. See `versioning`_ for more details.
 .. _Error Reporting README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/error_reporting
 .. _Google Cloud Natural Language: https://pypi.python.org/pypi/google-cloud-language
 .. _Natural Language README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/language
-.. _Google Translate: https://pypi.python.org/pypi/google-cloud-translate
-.. _Translate README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/translate
+.. _Google Cloud Translation: https://pypi.python.org/pypi/google-cloud-translate
+.. _Translation README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/translate
+.. _Google Cloud Speech: https://pypi.python.org/pypi/google-cloud-speech
+.. _Speech README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/speech
 .. _Google Cloud Vision: https://pypi.python.org/pypi/google-cloud-vision
 .. _Vision README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/vision
 .. _Google Cloud Bigtable - HappyBase: https://pypi.python.org/pypi/google-cloud-happybase/

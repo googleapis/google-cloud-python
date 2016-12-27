@@ -482,9 +482,21 @@ class TestBigQuery(unittest.TestCase):
     def test_sync_query_w_standard_sql_types(self):
         import datetime
         from google.cloud._helpers import UTC
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        from google.cloud.bigquery._helpers import StructQueryParameter
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = "%s %s" % (naive.date().isoformat(), naive.time().isoformat())
         zoned = naive.replace(tzinfo=UTC)
+        zoned_param = ScalarQueryParameter(
+            name='zoned', type_='TIMESTAMP', value=zoned)
+        question = 'What is the answer to life, the universe, and everything?'
+        question_param = ScalarQueryParameter(
+            name='question', type_='STRING', value=question)
+        answer = 42
+        answer_param = ScalarQueryParameter(
+            name='answer', type_='INT64', value=answer)
+        struct_param = StructQueryParameter(
+            'hitchhiker', question_param, answer_param)
         EXAMPLES = [
             {
                 'sql': 'SELECT 1',
@@ -553,9 +565,21 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT ARRAY(SELECT STRUCT([1, 2]))',
                 'expected': [{u'_field_1': [1, 2]}],
             },
+            {
+                'sql': 'SELECT @zoned',
+                'expected': zoned,
+                'query_parameters': [zoned_param],
+            },
+            {
+                'sql': 'SELECT (@hitchhiker.question, @hitchhiker.answer)',
+                'expected': ({'_field_1': question, '_field_2': answer}),
+                'query_parameters': [struct_param],
+            },
         ]
         for example in EXAMPLES:
-            query = Config.CLIENT.run_sync_query(example['sql'])
+            query = Config.CLIENT.run_sync_query(
+                example['sql'],
+                query_parameters=example.get('query_parameters', ()))
             query.use_legacy_sql = False
             query.run()
             self.assertEqual(len(query.rows), 1)

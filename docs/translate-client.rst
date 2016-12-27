@@ -1,5 +1,5 @@
-Translate Client
-================
+Translation Client
+==================
 
 .. automodule:: google.cloud.translate.client
   :members:
