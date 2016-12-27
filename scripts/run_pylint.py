@@ -35,7 +35,6 @@ from script_utils import PROJECT_ROOT
 
 IGNORED_DIRECTORIES = [
     os.path.join('bigtable', 'google', 'cloud', 'bigtable', '_generated'),
-    os.path.join('datastore', 'google', 'cloud', 'datastore', '_generated'),
 ]
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),

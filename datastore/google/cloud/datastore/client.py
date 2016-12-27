@@ -78,7 +78,7 @@ def _extended_lookup(connection, project, key_pbs,
     :type project: str
     :param project: The project to make the request for.
 
-    :type key_pbs: list of :class:`._generated.entity_pb2.Key`
+    :type key_pbs: list of :class:`.entity_pb2.Key`
     :param key_pbs: The keys to retrieve from the datastore.
 
     :type missing: list
@@ -100,7 +100,7 @@ def _extended_lookup(connection, project, key_pbs,
                            the given transaction.  Incompatible with
                            ``eventual==True``.
 
-    :rtype: list of :class:`._generated.entity_pb2.Entity`
+    :rtype: list of :class:`.entity_pb2.Entity`
     :returns: The requested entities.
     :raises: :class:`ValueError` if missing / deferred are not null or
              empty list.
@@ -157,26 +157,29 @@ class Client(_BaseClient, _ClientProjectMixin):
     :type namespace: str
     :param namespace: (optional) namespace to pass to proxied API methods.
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
-                       :class:`NoneType`
-    :param credentials: The OAuth2 Credentials to use for the connection
-                        owned by this client. If not passed (and if no ``http``
-                        object is passed), falls back to the default inferred
-                        from the environment.
+    :type credentials: :class:`~google.auth.credentials.Credentials`
+    :param credentials: (Optional) The OAuth2 Credentials to use for this
+                        client. If not passed (and if no ``http`` object is
+                        passed), falls back to the default inferred from the
+                        environment.
 
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: An optional HTTP object to make requests. If not passed, an
+    :type http: :class:`~httplib2.Http`
+    :param http: (Optional) HTTP object to make requests. Can be any object
+                 that defines ``request()`` with the same interface as
+                 :meth:`~httplib2.Http.request`. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
     """
-    _connection_class = Connection
 
     def __init__(self, project=None, namespace=None,
                  credentials=None, http=None):
         _ClientProjectMixin.__init__(self, project=project)
+        _BaseClient.__init__(self, credentials=credentials, http=http)
+        self._connection = Connection(
+            credentials=self._credentials, http=self._http)
+
         self.namespace = namespace
         self._batch_stack = _LocalStack()
-        super(Client, self).__init__(credentials, http)
 
     @staticmethod
     def _determine_default(project):

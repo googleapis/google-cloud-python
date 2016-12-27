@@ -33,20 +33,25 @@ class Client(BaseClient):
         >>> from google.cloud import resource_manager
         >>> client = resource_manager.Client()
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
-                       :class:`NoneType`
-    :param credentials: The OAuth2 Credentials to use for the connection
-                        owned by this client. If not passed (and if no ``http``
-                        object is passed), falls back to the default inferred
-                        from the environment.
+    :type credentials: :class:`~google.auth.credentials.Credentials`
+    :param credentials: (Optional) The OAuth2 Credentials to use for this
+                        client. If not passed (and if no ``http`` object is
+                        passed), falls back to the default inferred from the
+                        environment.
 
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: An optional HTTP object to make requests. If not passed, an
+    :type http: :class:`~httplib2.Http`
+    :param http: (Optional) HTTP object to make requests. Can be any object
+                 that defines ``request()`` with the same interface as
+                 :meth:`~httplib2.Http.request`. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
     """
 
-    _connection_class = Connection
+    def __init__(self, credentials=None, http=None):
+        super(Client, self).__init__(
+            credentials=credentials, http=http)
+        self._connection = Connection(
+            credentials=self._credentials, http=self._http)
 
     def new_project(self, project_id, name=None, labels=None):
         """Create a project bound to the current client.

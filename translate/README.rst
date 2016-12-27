@@ -1,9 +1,9 @@
-Python Client for Google Translate
-==================================
+Python Client for Google Cloud Translation
+==========================================
 
-    Python idiomatic client for `Google Translate`_
+    Python idiomatic client for `Google Cloud Translation`_
 
-.. _Google Translate: https://cloud.google.com/translate/
+.. _Google Cloud Translation: https://cloud.google.com/translate/
 
 |pypi| |versions|
 
@@ -32,13 +32,13 @@ the ``google-cloud-*`` libraries to be helpful.
 Using the API
 -------------
 
-With the Google `Translate`_ API (`Translate API docs`_), you can
+With the Google Cloud `Translation`_ API (`Translation API docs`_), you can
 dynamically translate text between thousands of language pairs.
 
-.. _Translate: https://cloud.google.com/translate/
-.. _Translate API docs: https://cloud.google.com/translate/docs/apis
+.. _Translation: https://cloud.google.com/translate/
+.. _Translation API docs: https://cloud.google.com/translate/docs/apis
 
-See the ``google-cloud-python`` API Translate `Documentation`_ to learn
+See the ``google-cloud-python`` API Translation `Documentation`_ to learn
 how to translate text using this library.
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-translate.svg

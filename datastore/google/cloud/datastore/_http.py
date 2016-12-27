@@ -25,14 +25,14 @@ from google.cloud import _http as connection_module
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_HOST
 from google.cloud import exceptions
-from google.cloud.datastore._generated import datastore_pb2 as _datastore_pb2
+from google.cloud.grpc.datastore.v1 import datastore_pb2 as _datastore_pb2
 try:
     from grpc import StatusCode
-    from google.cloud.datastore._generated import datastore_grpc_pb2
+    from google.cloud.grpc.datastore.v1 import datastore_pb2_grpc
 except ImportError:  # pragma: NO COVER
     _GRPC_ERROR_MAPPING = {}
     _HAVE_GRPC = False
-    datastore_grpc_pb2 = None
+    datastore_pb2_grpc = None
     StatusCode = None
 else:
     # NOTE: We don't include OK -> 200 or CANCELLED -> 499
@@ -147,10 +147,10 @@ class _DatastoreAPIOverHttp(object):
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
-        :type request_pb: :class:`._generated.datastore_pb2.LookupRequest`
+        :type request_pb: :class:`.datastore_pb2.LookupRequest`
         :param request_pb: The request protobuf object.
 
-        :rtype: :class:`._generated.datastore_pb2.LookupResponse`
+        :rtype: :class:`.datastore_pb2.LookupResponse`
         :returns: The returned protobuf response object.
         """
         return self._rpc(project, 'lookup', request_pb,
@@ -163,10 +163,10 @@ class _DatastoreAPIOverHttp(object):
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
-        :type request_pb: :class:`._generated.datastore_pb2.RunQueryRequest`
+        :type request_pb: :class:`.datastore_pb2.RunQueryRequest`
         :param request_pb: The request protobuf object.
 
-        :rtype: :class:`._generated.datastore_pb2.RunQueryResponse`
+        :rtype: :class:`.datastore_pb2.RunQueryResponse`
         :returns: The returned protobuf response object.
         """
         return self._rpc(project, 'runQuery', request_pb,
@@ -180,10 +180,10 @@ class _DatastoreAPIOverHttp(object):
                         usually your project name in the cloud console.
 
         :type request_pb:
-            :class:`._generated.datastore_pb2.BeginTransactionRequest`
+            :class:`.datastore_pb2.BeginTransactionRequest`
         :param request_pb: The request protobuf object.
 
-        :rtype: :class:`._generated.datastore_pb2.BeginTransactionResponse`
+        :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
         :returns: The returned protobuf response object.
         """
         return self._rpc(project, 'beginTransaction', request_pb,
@@ -196,10 +196,10 @@ class _DatastoreAPIOverHttp(object):
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
-        :type request_pb: :class:`._generated.datastore_pb2.CommitRequest`
+        :type request_pb: :class:`.datastore_pb2.CommitRequest`
         :param request_pb: The request protobuf object.
 
-        :rtype: :class:`._generated.datastore_pb2.CommitResponse`
+        :rtype: :class:`.datastore_pb2.CommitResponse`
         :returns: The returned protobuf response object.
         """
         return self._rpc(project, 'commit', request_pb,
@@ -212,10 +212,10 @@ class _DatastoreAPIOverHttp(object):
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
-        :type request_pb: :class:`._generated.datastore_pb2.RollbackRequest`
+        :type request_pb: :class:`.datastore_pb2.RollbackRequest`
         :param request_pb: The request protobuf object.
 
-        :rtype: :class:`._generated.datastore_pb2.RollbackResponse`
+        :rtype: :class:`.datastore_pb2.RollbackResponse`
         :returns: The returned protobuf response object.
         """
         return self._rpc(project, 'rollback', request_pb,
@@ -228,10 +228,10 @@ class _DatastoreAPIOverHttp(object):
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
-        :type request_pb: :class:`._generated.datastore_pb2.AllocateIdsRequest`
+        :type request_pb: :class:`.datastore_pb2.AllocateIdsRequest`
         :param request_pb: The request protobuf object.
 
-        :rtype: :class:`._generated.datastore_pb2.AllocateIdsResponse`
+        :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
         :returns: The returned protobuf response object.
         """
         return self._rpc(project, 'allocateIds', request_pb,
@@ -280,10 +280,10 @@ class _DatastoreAPIOverGRPC(object):
         if secure:
             self._stub = make_secure_stub(connection.credentials,
                                           connection.USER_AGENT,
-                                          datastore_grpc_pb2.DatastoreStub,
+                                          datastore_pb2_grpc.DatastoreStub,
                                           connection.host)
         else:
-            self._stub = make_insecure_stub(datastore_grpc_pb2.DatastoreStub,
+            self._stub = make_insecure_stub(datastore_pb2_grpc.DatastoreStub,
                                             connection.host)
 
     def lookup(self, project, request_pb):
@@ -293,10 +293,10 @@ class _DatastoreAPIOverGRPC(object):
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
-        :type request_pb: :class:`._generated.datastore_pb2.LookupRequest`
+        :type request_pb: :class:`.datastore_pb2.LookupRequest`
         :param request_pb: The request protobuf object.
 
-        :rtype: :class:`._generated.datastore_pb2.LookupResponse`
+        :rtype: :class:`.datastore_pb2.LookupResponse`
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
@@ -310,10 +310,10 @@ class _DatastoreAPIOverGRPC(object):
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
-        :type request_pb: :class:`._generated.datastore_pb2.RunQueryRequest`
+        :type request_pb: :class:`.datastore_pb2.RunQueryRequest`
         :param request_pb: The request protobuf object.
 
-        :rtype: :class:`._generated.datastore_pb2.RunQueryResponse`
+        :rtype: :class:`.datastore_pb2.RunQueryResponse`
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
@@ -328,10 +328,10 @@ class _DatastoreAPIOverGRPC(object):
                         usually your project name in the cloud console.
 
         :type request_pb:
-            :class:`._generated.datastore_pb2.BeginTransactionRequest`
+            :class:`.datastore_pb2.BeginTransactionRequest`
         :param request_pb: The request protobuf object.
 
-        :rtype: :class:`._generated.datastore_pb2.BeginTransactionResponse`
+        :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
@@ -345,10 +345,10 @@ class _DatastoreAPIOverGRPC(object):
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
-        :type request_pb: :class:`._generated.datastore_pb2.CommitRequest`
+        :type request_pb: :class:`.datastore_pb2.CommitRequest`
         :param request_pb: The request protobuf object.
 
-        :rtype: :class:`._generated.datastore_pb2.CommitResponse`
+        :rtype: :class:`.datastore_pb2.CommitResponse`
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
@@ -362,10 +362,10 @@ class _DatastoreAPIOverGRPC(object):
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
-        :type request_pb: :class:`._generated.datastore_pb2.RollbackRequest`
+        :type request_pb: :class:`.datastore_pb2.RollbackRequest`
         :param request_pb: The request protobuf object.
 
-        :rtype: :class:`._generated.datastore_pb2.RollbackResponse`
+        :rtype: :class:`.datastore_pb2.RollbackResponse`
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
@@ -379,10 +379,10 @@ class _DatastoreAPIOverGRPC(object):
         :param project: The project to connect to. This is
                         usually your project name in the cloud console.
 
-        :type request_pb: :class:`._generated.datastore_pb2.AllocateIdsRequest`
+        :type request_pb: :class:`.datastore_pb2.AllocateIdsRequest`
         :param request_pb: The request protobuf object.
 
-        :rtype: :class:`._generated.datastore_pb2.AllocateIdsResponse`
+        :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
         :returns: The returned protobuf response object.
         """
         request_pb.project_id = project
@@ -469,8 +469,7 @@ class Connection(connection_module.Connection):
         Maps the ``DatastoreService.Lookup`` protobuf RPC.
 
         This uses mostly protobufs
-        (:class:`google.cloud.datastore._generated.entity_pb2.Key` as input
-        and :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+        (:class:`.entity_pb2.Key` as input and :class:`.entity_pb2.Entity`
         as output). It is used under the hood in
         :meth:`Client.get() <.datastore.client.Client.get>`:
 
@@ -493,7 +492,7 @@ class Connection(connection_module.Connection):
         :param project: The project to look up the keys in.
 
         :type key_pbs: list of
-                       :class:`google.cloud.datastore._generated.entity_pb2.Key`
+                       :class:`.entity_pb2.Key`
         :param key_pbs: The keys to retrieve from the datastore.
 
         :type eventual: bool
@@ -509,9 +508,9 @@ class Connection(connection_module.Connection):
         :rtype: tuple
         :returns: A triple of (``results``, ``missing``, ``deferred``) where
                   both ``results`` and ``missing`` are lists of
-                  :class:`google.cloud.datastore._generated.entity_pb2.Entity`
+                  :class:`.entity_pb2.Entity`
                   and ``deferred`` is a list of
-                  :class:`google.cloud.datastore._generated.entity_pb2.Key`.
+                  :class:`.entity_pb2.Key`.
         """
         lookup_request = _datastore_pb2.LookupRequest()
         _set_read_options(lookup_request, eventual, transaction_id)
@@ -543,7 +542,7 @@ class Connection(connection_module.Connection):
         :type project: str
         :param project: The project over which to run the query.
 
-        :type query_pb: :class:`.datastore._generated.query_pb2.Query`
+        :type query_pb: :class:`.query_pb2.Query`
         :param query_pb: The Protobuf representing the query to run.
 
         :type namespace: str
@@ -602,7 +601,7 @@ class Connection(connection_module.Connection):
         :type project: str
         :param project: The project to which the transaction applies.
 
-        :type request: :class:`._generated.datastore_pb2.CommitRequest`
+        :type request: :class:`.datastore_pb2.CommitRequest`
         :param request: The protobuf with the mutations being committed.
 
         :type transaction_id: str
@@ -616,7 +615,7 @@ class Connection(connection_module.Connection):
 
         :rtype: tuple
         :returns: The pair of the number of index updates and a list of
-                  :class:`._generated.entity_pb2.Key` for each incomplete key
+                  :class:`.entity_pb2.Key` for each incomplete key
                   that was completed in the commit.
         """
         if transaction_id:
@@ -654,10 +653,10 @@ class Connection(connection_module.Connection):
         :param project: The project to which the transaction belongs.
 
         :type key_pbs: list of
-                       :class:`google.cloud.datastore._generated.entity_pb2.Key`
+                       :class:`.entity_pb2.Key`
         :param key_pbs: The keys for which the backend should allocate IDs.
 
-        :rtype: list of :class:`.datastore._generated.entity_pb2.Key`
+        :rtype: list of :class:`.entity_pb2.Key`
         :returns: An equal number of keys,  with IDs filled in by the backend.
         """
         request = _datastore_pb2.AllocateIdsRequest()
@@ -691,7 +690,7 @@ def _add_keys_to_request(request_field_pb, key_pbs):
     :type request_field_pb: `RepeatedCompositeFieldContainer`
     :param request_field_pb: A repeated proto field that contains keys.
 
-    :type key_pbs: list of :class:`.datastore._generated.entity_pb2.Key`
+    :type key_pbs: list of :class:`.entity_pb2.Key`
     :param key_pbs: The keys to add to a request.
     """
     for key_pb in key_pbs:
@@ -701,12 +700,12 @@ def _add_keys_to_request(request_field_pb, key_pbs):
 def _parse_commit_response(commit_response_pb):
     """Extract response data from a commit response.
 
-    :type commit_response_pb: :class:`._generated.datastore_pb2.CommitResponse`
+    :type commit_response_pb: :class:`.datastore_pb2.CommitResponse`
     :param commit_response_pb: The protobuf response from a commit request.
 
     :rtype: tuple
     :returns: The pair of the number of index updates and a list of
-              :class:`._generated.entity_pb2.Key` for each incomplete key
+              :class:`.entity_pb2.Key` for each incomplete key
               that was completed in the commit.
     """
     mut_results = commit_response_pb.mutation_results
