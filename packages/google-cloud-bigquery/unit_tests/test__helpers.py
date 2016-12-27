@@ -546,13 +546,35 @@ class Test_timestamp_to_json(unittest.TestCase):
     def test_w_float(self):
         self.assertEqual(self._call_fut(1.234567), 1.234567)
 
-    def test_w_datetime(self):
+    def test_w_string(self):
+        ZULU = '2016-12-20 15:58:27.339328+00:00'
+        self.assertEqual(self._call_fut(ZULU), ZULU)
+
+    def test_w_datetime_wo_zone(self):
+        import datetime
+        ZULU = '2016-12-20 15:58:27.339328+00:00'
+        when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328)
+        self.assertEqual(self._call_fut(when), ZULU)
+
+    def test_w_datetime_w_non_utc_zone(self):
+        import datetime
+
+        class _Zone(datetime.tzinfo):
+
+            def utcoffset(self, _):
+                return datetime.timedelta(minutes=-240)
+
+        ZULU = '2016-12-20 19:58:27.339328+00:00'
+        when = datetime.datetime(
+            2016, 12, 20, 15, 58, 27, 339328, tzinfo=_Zone())
+        self.assertEqual(self._call_fut(when), ZULU)
+
+    def test_w_datetime_w_utc_zone(self):
         import datetime
         from google.cloud._helpers import UTC
-        from google.cloud._helpers import _microseconds_from_datetime
-        when = datetime.datetime(2016, 12, 3, 14, 11, 27, tzinfo=UTC)
-        self.assertEqual(self._call_fut(when),
-                         _microseconds_from_datetime(when) / 1e6)
+        ZULU = '2016-12-20 15:58:27.339328+00:00'
+        when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+        self.assertEqual(self._call_fut(when), ZULU)
 
 
 class Test_datetime_to_json(unittest.TestCase):
@@ -907,20 +929,20 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_timestamp_datetime(self):
+        from google.cloud._helpers import UTC
         import datetime
-        from google.cloud._helpers import _microseconds_from_datetime
-        now = datetime.datetime.utcnow()
-        seconds = _microseconds_from_datetime(now) / 1.0e6
+        STAMP = '2016-12-20 15:58:27.339328+00:00'
+        when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
         EXPECTED = {
             'parameterType': {
                 'type': 'TIMESTAMP',
             },
             'parameterValue': {
-                'value': seconds,
+                'value': STAMP,
             },
         }
         klass = self._get_target_class()
-        param = klass.positional(type_='TIMESTAMP', value=now)
+        param = klass.positional(type_='TIMESTAMP', value=when)
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_timestamp_micros(self):
@@ -1060,6 +1082,7 @@ class Test_ArrayQueryParameter(unittest.TestCase):
     def test_from_api_repr_wo_name(self):
         RESOURCE = {
             'parameterType': {
+                'type': 'ARRAY',
                 'arrayType': 'INT64',
             },
             'parameterValue': {
@@ -1076,6 +1099,7 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         EXPECTED = {
             'name': 'foo',
             'parameterType': {
+                'type': 'ARRAY',
                 'arrayType': 'INT64',
             },
             'parameterValue': {
@@ -1088,6 +1112,7 @@ class Test_ArrayQueryParameter(unittest.TestCase):
     def test_to_api_repr_wo_name(self):
         EXPECTED = {
             'parameterType': {
+                'type': 'ARRAY',
                 'arrayType': 'INT64',
             },
             'parameterValue': {
@@ -1101,6 +1126,7 @@ class Test_ArrayQueryParameter(unittest.TestCase):
     def test_to_api_repr_w_unknown_type(self):
         EXPECTED = {
             'parameterType': {
+                'type': 'ARRAY',
                 'arrayType': 'UNKNOWN',
             },
             'parameterValue': {
@@ -1148,13 +1174,17 @@ class Test_StructQueryParameter(unittest.TestCase):
         RESOURCE = {
             'name': 'foo',
             'parameterType': {
+                'type': 'STRUCT',
                 'structTypes': [
-                    {'name': 'bar', 'type': 'INT64'},
-                    {'name': 'baz', 'type': 'STRING'},
+                    {'name': 'bar', 'type': {'type': 'INT64'}},
+                    {'name': 'baz', 'type': {'type': 'STRING'}},
                 ],
             },
             'parameterValue': {
-                'structValues': {'bar': 123, 'baz': 'abc'},
+                'structValues': {
+                    'bar': {'value': 123},
+                    'baz': {'value': 'abc'},
+                },
             },
         }
         klass = self._get_target_class()
@@ -1166,13 +1196,17 @@ class Test_StructQueryParameter(unittest.TestCase):
     def test_from_api_repr_wo_name(self):
         RESOURCE = {
             'parameterType': {
+                'type': 'STRUCT',
                 'structTypes': [
-                    {'name': 'bar', 'type': 'INT64'},
-                    {'name': 'baz', 'type': 'STRING'},
+                    {'name': 'bar', 'type': {'type': 'INT64'}},
+                    {'name': 'baz', 'type': {'type': 'STRING'}},
                 ],
             },
             'parameterValue': {
-                'structValues': {'bar': 123, 'baz': 'abc'},
+                'structValues': {
+                    'bar': {'value': 123},
+                    'baz': {'value': 'abc'},
+                },
             },
         }
         klass = self._get_target_class()
@@ -1185,13 +1219,17 @@ class Test_StructQueryParameter(unittest.TestCase):
         EXPECTED = {
             'name': 'foo',
             'parameterType': {
+                'type': 'STRUCT',
                 'structTypes': [
-                    {'name': 'bar', 'type': 'INT64'},
-                    {'name': 'baz', 'type': 'STRING'},
+                    {'name': 'bar', 'type': {'type': 'INT64'}},
+                    {'name': 'baz', 'type': {'type': 'STRING'}},
                 ],
             },
             'parameterValue': {
-                'structValues': {'bar': '123', 'baz': 'abc'},
+                'structValues': {
+                    'bar': {'value': '123'},
+                    'baz': {'value': 'abc'},
+                },
             },
         }
         sub_1 = self._make_subparam('bar', 'INT64', 123)
@@ -1202,13 +1240,17 @@ class Test_StructQueryParameter(unittest.TestCase):
     def test_to_api_repr_wo_name(self):
         EXPECTED = {
             'parameterType': {
+                'type': 'STRUCT',
                 'structTypes': [
-                    {'name': 'bar', 'type': 'INT64'},
-                    {'name': 'baz', 'type': 'STRING'},
+                    {'name': 'bar', 'type': {'type': 'INT64'}},
+                    {'name': 'baz', 'type': {'type': 'STRING'}},
                 ],
             },
             'parameterValue': {
-                'structValues': {'bar': '123', 'baz': 'abc'},
+                'structValues': {
+                    'bar': {'value': '123'},
+                    'baz': {'value': 'abc'},
+                },
             },
         }
         sub_1 = self._make_subparam('bar', 'INT64', 123)
