@@ -14,10 +14,18 @@
 
 """Client for interacting with the Google Cloud Vision API."""
 
+import os
+
 from google.cloud.client import JSONClient
+from google.cloud.environment_vars import DISABLE_GRPC
+
+from google.cloud.vision._gax import _GAPICVisionAPI
 from google.cloud.vision.connection import Connection
 from google.cloud.vision.image import Image
 from google.cloud.vision._http import _HTTPVisionAPI
+
+
+_USE_GAX = not os.getenv(DISABLE_GRPC, False)
 
 
 class Client(JSONClient):
@@ -40,14 +48,25 @@ class Client(JSONClient):
                  :meth:`~httplib2.Http.request`. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
+
+    :type use_gax: bool
+    :param use_gax: (Optional) Explicitly specifies whether
+                    to use the gRPC transport (via GAX) or HTTP. If unset,
+                    falls back to the ``GOOGLE_CLOUD_DISABLE_GRPC`` environment
+                    variable
     """
     _vision_api_internal = None
 
-    def __init__(self, project=None, credentials=None, http=None):
+    def __init__(self, project=None, credentials=None, http=None,
+                 use_gax=False):
         super(Client, self).__init__(
             project=project, credentials=credentials, http=http)
         self._connection = Connection(
             credentials=self._credentials, http=self._http)
+        if use_gax is None:
+            self._use_gax = _USE_GAX
+        else:
+            self._use_gax = use_gax
 
     def image(self, content=None, filename=None, source_uri=None):
         """Get instance of Image using current client.
@@ -71,9 +90,14 @@ class Client(JSONClient):
     def _vision_api(self):
         """Proxy method that handles which transport call Vision Annotate.
 
-        :rtype: :class:`~google.cloud.vision._rest._HTTPVisionAPI`
-        :returns: Instance of ``_HTTPVisionAPI`` used to make requests.
+        :rtype: :class:`~google.cloud.vision._http._HTTPVisionAPI`
+                or :class:`~google.cloud.vision._gax._GAPICVisionAPI`
+        :returns: Instance of ``_HTTPVisionAPI`` or ``_GAPICVisionAPI`` used to
+                  make requests.
         """
         if self._vision_api_internal is None:
-            self._vision_api_internal = _HTTPVisionAPI(self)
+            if self._use_gax:
+                self._vision_api_internal = _GAPICVisionAPI(self)
+            else:
+                self._vision_api_internal = _HTTPVisionAPI(self)
         return self._vision_api_internal
