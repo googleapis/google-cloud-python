@@ -482,6 +482,7 @@ class TestBigQuery(unittest.TestCase):
     def test_sync_query_w_standard_sql_types(self):
         import datetime
         from google.cloud._helpers import UTC
+        from google.cloud.bigquery._helpers import ArrayQueryParameter
         from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery._helpers import StructQueryParameter
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
@@ -495,6 +496,8 @@ class TestBigQuery(unittest.TestCase):
         answer = 42
         answer_param = ScalarQueryParameter(
             name='answer', type_='INT64', value=answer)
+        array_param = ArrayQueryParameter(
+            name='array_param', array_type='INT64', values=[1, 2])
         struct_param = StructQueryParameter(
             'hitchhiker', question_param, answer_param)
         EXAMPLES = [
@@ -569,6 +572,11 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT @zoned',
                 'expected': zoned,
                 'query_parameters': [zoned_param],
+            },
+            {
+                'sql': 'SELECT @array_param',
+                'expected': [1, 2],
+                'query_parameters': [array_param],
             },
             {
                 'sql': 'SELECT (@hitchhiker.question, @hitchhiker.answer)',
