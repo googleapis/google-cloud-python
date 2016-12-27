@@ -1067,10 +1067,20 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         RESOURCE = {
             'name': 'foo',
             'parameterType': {
-                'arrayType': 'INT64',
+                'type': 'ARRAY',
+                'arrayType': {
+                    'type': 'INT64',
+                },
             },
             'parameterValue': {
-                'arrayValues': ['1', '2'],
+                'arrayValues': [
+                    {
+                        'value': '1',
+                    },
+                    {
+                        'value': '2'
+                    },
+                ],
             },
         }
         klass = self._get_target_class()
@@ -1083,10 +1093,19 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         RESOURCE = {
             'parameterType': {
                 'type': 'ARRAY',
-                'arrayType': 'INT64',
+                'arrayType': {
+                    'type': 'INT64',
+                },
             },
             'parameterValue': {
-                'arrayValues': ['1', '2'],
+                'arrayValues': [
+                    {
+                        'value': '1',
+                    },
+                    {
+                        'value': '2'
+                    },
+                ],
             },
         }
         klass = self._get_target_class()
@@ -1100,10 +1119,19 @@ class Test_ArrayQueryParameter(unittest.TestCase):
             'name': 'foo',
             'parameterType': {
                 'type': 'ARRAY',
-                'arrayType': 'INT64',
+                'arrayType': {
+                    'type': 'INT64',
+                },
             },
             'parameterValue': {
-                'arrayValues': ['1', '2'],
+                'arrayValues': [
+                    {
+                        'value': '1',
+                    },
+                    {
+                        'value': '2'
+                    },
+                ],
             },
         }
         param = self._make_one(name='foo', array_type='INT64', values=[1, 2])
@@ -1113,10 +1141,19 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         EXPECTED = {
             'parameterType': {
                 'type': 'ARRAY',
-                'arrayType': 'INT64',
+                'arrayType': {
+                    'type': 'INT64',
+                },
             },
             'parameterValue': {
-                'arrayValues': ['1', '2'],
+                'arrayValues': [
+                    {
+                        'value': '1',
+                    },
+                    {
+                        'value': '2'
+                    },
+                ],
             },
         }
         klass = self._get_target_class()
@@ -1127,10 +1164,16 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         EXPECTED = {
             'parameterType': {
                 'type': 'ARRAY',
-                'arrayType': 'UNKNOWN',
+                'arrayType': {
+                    'type': 'UNKNOWN',
+                },
             },
             'parameterValue': {
-                'arrayValues': ['unknown'],
+                'arrayValues': [
+                    {
+                        'value': 'unknown',
+                    }
+                ],
             },
         }
         klass = self._get_target_class()
