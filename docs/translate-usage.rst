@@ -13,12 +13,8 @@ Authentication / Configuration
 - Use :class:`~google.cloud.translate.client.Client` objects to configure
   your applications.
 
-- :class:`~google.cloud.translate.client.Client` objects hold both a ``key``
-  and a connection to the Cloud Translation service.
-
-- **An API key is required for Google Cloud Translation.** See
-  `Identifying your application to Google`_ for details. This is
-  significantly different than the other clients in ``google-cloud-python``.
+- :class:`~google.cloud.translate.client.Client` objects hold
+  a connection to the Cloud Translation service.
 
 Methods
 -------
@@ -28,7 +24,7 @@ To create a client:
   .. code::
 
      >>> from google.cloud import translate
-     >>> client = translate.Client('my-api-key')
+     >>> client = translate.Client()
 
 By default, the client targets English when doing detections
 and translations, but a non-default value can be used as
@@ -37,7 +33,7 @@ well:
   .. code::
 
      >>> from google.cloud import translate
-     >>> client = translate.Client('my-api-key', target_language='es')
+     >>> client = translate.Client(target_language='es')
 
 The Google Cloud Translation API has three supported methods, and they
 map to three methods on a client:
@@ -50,7 +46,7 @@ To get a list of languages supported by the Google Cloud Translation API
   .. code::
 
      >>> from google.cloud import translate
-     >>> client = translate.Client('my-api-key')
+     >>> client = translate.Client()
      >>> client.get_languages()
      [
          {
@@ -65,7 +61,7 @@ To detect the language that some given text is written in:
   .. code::
 
      >>> from google.cloud import translate
-     >>> client = translate.Client('my-api-key')
+     >>> client = translate.Client()
      >>> client.detect_language(['Me llamo', 'I am'])
      [
          {
@@ -88,7 +84,7 @@ To translate text:
   .. code::
 
      >>> from google.cloud import translate
-     >>> client = translate.Client('my-api-key')
+     >>> client = translate.Client()
      >>> client.translate('koszula')
      {
          'translatedText': 'shirt',
@@ -101,7 +97,7 @@ or to use a non-default target language:
   .. code::
 
      >>> from google.cloud import translate
-     >>> client = translate.Client('my-api-key')
+     >>> client = translate.Client()
      >>> client.translate(['Me llamo Jeff', 'My name is Jeff'],
      ...                  target_language='de')
      [
