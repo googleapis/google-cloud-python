@@ -55,6 +55,15 @@ class TestClient(unittest.TestCase):
         client._vision_api.annotate()
         api.annotate.assert_called_once_with()
 
+    def test_gax_not_implemented_from_client(self):
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=None)
+        client._connection = _Connection()
+
+        with self.assertRaises(NotImplementedError):
+            client._vision_api()
+
     def test_face_annotation(self):
         from google.cloud.vision.feature import Feature, FeatureTypes
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
