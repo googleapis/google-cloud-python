@@ -52,6 +52,7 @@ SETUP_BASE = {
 REQUIREMENTS = [
     'enum34',
     'google-cloud-core >= 0.22.1, < 0.23dev',
+    'gapic-google-cloud-vision-v1 >= 0.14.0, < 0.15dev',
 ]
 
 setup(
