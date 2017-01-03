@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class TestGAXClient(unittest.TestCase):
     def _get_target_class(self):
@@ -23,7 +25,62 @@ class TestGAXClient(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
-    def test_gax_not_implemented(self):
+    def test_ctor(self):
+        client = mock.Mock()
+        with mock.patch('google.cloud.vision._gax.image_annotator_client.'
+                        'ImageAnnotatorClient'):
+            api = self._make_one(client)
+        self.assertIs(api._client, client)
+
+
+class TestToGAPICFeature(unittest.TestCase):
+    def _call_fut(self, feature):
+        from google.cloud.vision._gax import _to_gapic_feature
+        return _to_gapic_feature(feature)
+
+    def test__to_gapic_feature(self):
+        from google.cloud.vision.feature import Feature
+        from google.cloud.vision.feature import FeatureTypes
+        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+
+        feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
+        feature_pb = self._call_fut(feature)
+        self.assertIsInstance(feature_pb, image_annotator_pb2.Feature)
+        self.assertEqual(feature_pb.type, 4)
+        self.assertEqual(feature_pb.max_results, 5)
+
+
+class TestToGAPICImage(unittest.TestCase):
+    def _call_fut(self, image):
+        from google.cloud.vision._gax import _to_gapic_image
+        return _to_gapic_image(image)
+
+    def test__to_gapic_image_content(self):
+        import base64
+        from google.cloud.vision.image import Image
+        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+
+        image_content = b'abc 1 2 3'
+        b64_content = base64.b64encode(image_content)
         client = object()
-        with self.assertRaises(NotImplementedError):
-            self._make_one(client=client)
+        image = Image(client, content=image_content)
+        image_pb = self._call_fut(image)
+        self.assertIsInstance(image_pb, image_annotator_pb2.Image)
+        self.assertEqual(image_pb.content, b64_content)
+
+    def test__to_gapic_image_uri(self):
+        from google.cloud.vision.image import Image
+        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+
+        image_uri = 'gs://1234/34.jpg'
+        client = object()
+        image = Image(client, source_uri=image_uri)
+        image_pb = self._call_fut(image)
+        self.assertIsInstance(image_pb, image_annotator_pb2.Image)
+        self.assertEqual(image_pb.source.gcs_image_uri, image_uri)
+
+    def test__to_gapic_with_empty_image(self):
+        image = mock.Mock(
+            content=None, source=None, spec=['content', 'source'])
+        with self.assertRaises(ValueError):
+            self._call_fut(image)
