@@ -96,7 +96,7 @@ class Client(JSONClient):
                         host=self._connection.host)
                 else:
                     generated = make_gax_publisher_api(
-                        credentials=self._credentials)
+                        credentials=self._connection._credentials)
                 self._publisher_api = GAXPublisherAPI(generated, self)
             else:
                 self._publisher_api = JSONPublisherAPI(self)
@@ -112,7 +112,7 @@ class Client(JSONClient):
                         host=self._connection.host)
                 else:
                     generated = make_gax_subscriber_api(
-                        credentials=self._credentials)
+                        credentials=self._connection._credentials)
                 self._subscriber_api = GAXSubscriberAPI(generated, self)
             else:
                 self._subscriber_api = JSONSubscriberAPI(self)
