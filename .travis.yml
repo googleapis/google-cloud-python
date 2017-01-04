@@ -13,7 +13,7 @@ install:
 
 script:
   - python2.7 scripts/run_unit_tests.py
-  - python3.4 scripts/run_unit_tests.py
+  - if [[ "${TRAVIS_EVENT_TYPE}" != "pull_request" ]]; then python3.4 scripts/run_unit_tests.py; fi
   - python3.5 scripts/run_unit_tests.py
   - python scripts/run_unit_tests.py --tox-env cover
   - tox -e lint
