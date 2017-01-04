@@ -55,14 +55,25 @@ class TestClient(unittest.TestCase):
         client._vision_api.annotate()
         api.annotate.assert_called_once_with()
 
-    def test_gax_not_implemented_from_client(self):
+    def test_make_gax_client(self):
+        from google.cloud.vision._gax import _GAPICVisionAPI
+
         credentials = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=credentials,
                                 use_gax=None)
         client._connection = _Connection()
+        with mock.patch('google.cloud.vision.client._GAPICVisionAPI',
+                        spec=True):
+            self.assertIsInstance(client._vision_api, _GAPICVisionAPI)
 
-        with self.assertRaises(NotImplementedError):
-            client._vision_api()
+    def test_make_http_client(self):
+        from google.cloud.vision._http import _HTTPVisionAPI
+
+        credentials = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
+        client._connection = _Connection()
+        self.assertIsInstance(client._vision_api, _HTTPVisionAPI)
 
     def test_face_annotation(self):
         from google.cloud.vision.feature import Feature, FeatureTypes
