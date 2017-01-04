@@ -356,6 +356,23 @@ class TestDataAPI(unittest.TestCase):
         cell4 = Cell(CELL_VAL4, timestamp4)
         return cell1, cell2, cell3, cell4
 
+    def test_read_large_cell_limit(self):
+        row = self._table.row(ROW_KEY)
+        self.rows_to_delete.append(row)
+
+        number_of_bytes = 10 * 1024 * 1024
+        data = b'1' * number_of_bytes  # 10MB of 1's.
+        row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, data)
+        row.commit()
+
+        # Read back the contents of the row.
+        partial_row_data = self._table.read_row(ROW_KEY)
+        self.assertEqual(partial_row_data.row_key, ROW_KEY)
+        cell = partial_row_data.cells[COLUMN_FAMILY_ID1]
+        column = cell[COL_NAME1]
+        self.assertEqual(len(column), 1)
+        self.assertEqual(column[0].value, data)
+
     def test_read_row(self):
         row = self._table.row(ROW_KEY)
         self.rows_to_delete.append(row)

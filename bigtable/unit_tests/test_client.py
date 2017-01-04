@@ -46,13 +46,18 @@ class Test__make_data_stub(unittest.TestCase):
         fake_stub = object()
         make_secure_stub_args = []
 
-        def mock_make_secure_stub(*args):
+        def mock_make_secure_stub(*args, **kwargs):
             make_secure_stub_args.append(args)
+            make_secure_stub_args.append(kwargs)
             return fake_stub
 
         with _Monkey(MUT, make_secure_stub=mock_make_secure_stub):
             result = self._call_fut(client)
 
+        extra_options = {'extra_options': (
+            ('grpc.max_message_length', 104857600),
+            ('grpc.max_receive_message_length', 104857600)
+        )}
         self.assertIs(result, fake_stub)
         self.assertEqual(make_secure_stub_args, [
             (
@@ -61,6 +66,7 @@ class Test__make_data_stub(unittest.TestCase):
                 MUT.bigtable_pb2.BigtableStub,
                 MUT.DATA_API_HOST,
             ),
+            extra_options,
         ])
 
     def test_with_emulator(self):
