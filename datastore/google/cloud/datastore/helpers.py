@@ -30,8 +30,6 @@ from google.cloud.grpc.datastore.v1 import entity_pb2 as _entity_pb2
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
 
-__all__ = ('entity_from_protobuf', 'key_from_protobuf')
-
 
 def _get_meaning(value_pb, is_list=False):
     """Get the meaning from a protobuf value.
