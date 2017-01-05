@@ -93,6 +93,51 @@ class Annotations(object):
                 _entity_from_response_type(feature_type, annotation))
         return cls(**annotations)
 
+    @classmethod
+    def from_pb(cls, response):
+        """Factory: construct an instance of ``Annotations`` from protobuf.
+
+        :type response: :class:`~google.cloud.grpc.vision.v1.\
+                        image_annotator_pb2.AnnotateImageResponse`
+        :param response: ``AnnotateImageResponse`` from protobuf call.
+
+        :rtype: :class:`~google.cloud.vision.annotations.Annotations`
+        :returns: ``Annotations`` instance populated from gRPC response.
+        """
+        annotations = _process_image_annotations(response)
+        return cls(**annotations)
+
+
+def _process_image_annotations(image):
+    """Helper for processing annotation types from protobuf.
+
+    :type image: :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.\
+                 AnnotateImageResponse`
+    :param image: ``AnnotateImageResponse`` from protobuf.
+
+    :rtype: dict
+    :returns: Dictionary populated with entities from response.
+    """
+    return {
+        'labels': _make_entity_from_pb(image.label_annotations),
+        'landmarks': _make_entity_from_pb(image.landmark_annotations),
+        'logos': _make_entity_from_pb(image.logo_annotations),
+        'texts': _make_entity_from_pb(image.text_annotations),
+    }
+
+
+def _make_entity_from_pb(annotations):
+    """Create an entity from a gRPC response.
+
+    :type annotations:
+    :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.EntityAnnotation`
+    :param annotations: protobuf instance of ``EntityAnnotation``.
+
+    :rtype: list
+    :returns: List of ``EntityAnnotation``.
+    """
+    return [EntityAnnotation.from_pb(annotation) for annotation in annotations]
+
 
 def _entity_from_response_type(feature_type, results):
     """Convert a JSON result to an entity type based on the feature.

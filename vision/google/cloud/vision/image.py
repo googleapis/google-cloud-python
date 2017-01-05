@@ -19,7 +19,6 @@ from base64 import b64encode
 
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
-from google.cloud.vision.annotations import Annotations
 from google.cloud.vision.feature import Feature
 from google.cloud.vision.feature import FeatureTypes
 
@@ -109,8 +108,7 @@ class Image(object):
                   :class:`~google.cloud.vision.color.ImagePropertiesAnnotation`,
                   :class:`~google.cloud.vision.sage.SafeSearchAnnotation`,
         """
-        results = self.client._vision_api.annotate(self, features)
-        return Annotations.from_api_repr(results)
+        return self.client._vision_api.annotate(self, features)
 
     def detect(self, features):
         """Detect multiple feature types.

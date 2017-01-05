@@ -32,8 +32,83 @@ class TestGAXClient(unittest.TestCase):
             api = self._make_one(client)
         self.assertIs(api._client, client)
 
+    def test_annotation(self):
+        from google.cloud.vision.feature import Feature
+        from google.cloud.vision.feature import FeatureTypes
+        from google.cloud.vision.image import Image
 
-class TestToGAPICFeature(unittest.TestCase):
+        client = mock.Mock(spec_set=[])
+        feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
+        image_content = b'abc 1 2 3'
+        image = Image(client, content=image_content)
+        with mock.patch('google.cloud.vision._gax.image_annotator_client.'
+                        'ImageAnnotatorClient'):
+            gax_api = self._make_one(client)
+
+        mock_response = {
+            'batch_annotate_images.return_value':
+            mock.Mock(responses=['mock response data']),
+        }
+
+        gax_api._annotator_client = mock.Mock(
+            spec_set=['batch_annotate_images'], **mock_response)
+
+        with mock.patch('google.cloud.vision._gax.Annotations') as mock_anno:
+            gax_api.annotate(image, [feature])
+            mock_anno.from_pb.assert_called_with('mock response data')
+        gax_api._annotator_client.batch_annotate_images.assert_called()
+
+    def test_annotate_no_results(self):
+        from google.cloud.vision.feature import Feature
+        from google.cloud.vision.feature import FeatureTypes
+        from google.cloud.vision.image import Image
+
+        client = mock.Mock(spec_set=[])
+        feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
+        image_content = b'abc 1 2 3'
+        image = Image(client, content=image_content)
+        with mock.patch('google.cloud.vision._gax.image_annotator_client.'
+                        'ImageAnnotatorClient'):
+            gax_api = self._make_one(client)
+
+        mock_response = {
+            'batch_annotate_images.return_value': mock.Mock(responses=[]),
+        }
+
+        gax_api._annotator_client = mock.Mock(
+            spec_set=['batch_annotate_images'], **mock_response)
+        with mock.patch('google.cloud.vision._gax.Annotations'):
+            self.assertIsNone(gax_api.annotate(image, [feature]))
+
+        gax_api._annotator_client.batch_annotate_images.assert_called()
+
+    def test_annotate_multiple_results(self):
+        from google.cloud.vision.feature import Feature
+        from google.cloud.vision.feature import FeatureTypes
+        from google.cloud.vision.image import Image
+
+        client = mock.Mock(spec_set=[])
+        feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
+        image_content = b'abc 1 2 3'
+        image = Image(client, content=image_content)
+        with mock.patch('google.cloud.vision._gax.image_annotator_client.'
+                        'ImageAnnotatorClient'):
+            gax_api = self._make_one(client)
+
+        mock_response = {
+            'batch_annotate_images.return_value': mock.Mock(responses=[1, 2]),
+        }
+
+        gax_api._annotator_client = mock.Mock(
+            spec_set=['batch_annotate_images'], **mock_response)
+        with mock.patch('google.cloud.vision._gax.Annotations'):
+            with self.assertRaises(NotImplementedError):
+                gax_api.annotate(image, [feature])
+
+        gax_api._annotator_client.batch_annotate_images.assert_called()
+
+
+class Test__to_gapic_feature(unittest.TestCase):
     def _call_fut(self, feature):
         from google.cloud.vision._gax import _to_gapic_feature
         return _to_gapic_feature(feature)
@@ -50,7 +125,7 @@ class TestToGAPICFeature(unittest.TestCase):
         self.assertEqual(feature_pb.max_results, 5)
 
 
-class TestToGAPICImage(unittest.TestCase):
+class Test__to_gapic_image(unittest.TestCase):
     def _call_fut(self, image):
         from google.cloud.vision._gax import _to_gapic_image
         return _to_gapic_image(image)
