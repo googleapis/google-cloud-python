@@ -76,6 +76,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._vision_api, _HTTPVisionAPI)
 
     def test_face_annotation(self):
+        from google.cloud.vision.annotations import Annotations
         from google.cloud.vision.feature import Feature, FeatureTypes
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
 
@@ -106,7 +107,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(REQUEST,
                          client._connection._requested[0]['data'])
-        self.assertTrue('faceAnnotations' in response)
+        self.assertIsInstance(response, Annotations)
 
     def test_image_with_client_gcs_source(self):
         from google.cloud.vision.image import Image
