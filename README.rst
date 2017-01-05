@@ -146,7 +146,7 @@ Apache 2.0 - See `LICENSE`_ for more information.
    :target: https://circleci.com/gh/GoogleCloudPlatform/google-cloud-python
 .. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/googlecloudplatform/google-cloud-python?branch=master&svg=true
    :target: https://ci.appveyor.com/project/GoogleCloudPlatform/google-cloud-python
-.. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/google-cloud-python/badge.png?branch=master
+.. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/google-cloud-python/badge.svg?branch=master
    :target: https://coveralls.io/r/GoogleCloudPlatform/google-cloud-python?branch=master
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud.svg
    :target: https://pypi.python.org/pypi/google-cloud
