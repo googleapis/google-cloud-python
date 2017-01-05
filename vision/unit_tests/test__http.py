@@ -15,10 +15,52 @@
 import base64
 import unittest
 
+import mock
+
 
 IMAGE_CONTENT = b'/9j/4QNURXhpZgAASUkq'
 PROJECT = 'PROJECT'
 B64_IMAGE_CONTENT = base64.b64encode(IMAGE_CONTENT).decode('ascii')
+
+
+class Test_HTTPVisionAPI(unittest.TestCase):
+    def _get_target_class(self):
+        from google.cloud.vision._http import _HTTPVisionAPI
+        return _HTTPVisionAPI
+
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
+
+    def test_call_annotate_with_no_results(self):
+        from google.cloud.vision.feature import Feature
+        from google.cloud.vision.feature import FeatureTypes
+        from google.cloud.vision.image import Image
+
+        client = mock.Mock(spec_set=['_connection'])
+        feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
+        image_content = b'abc 1 2 3'
+        image = Image(client, content=image_content)
+
+        http_api = self._make_one(client)
+        http_api._connection = mock.Mock(spec_set=['api_request'])
+        http_api._connection.api_request.return_value = {'responses': []}
+        self.assertIsNone(http_api.annotate(image, [feature]))
+
+    def test_call_annotate_with_more_than_one_result(self):
+        from google.cloud.vision.feature import Feature
+        from google.cloud.vision.feature import FeatureTypes
+        from google.cloud.vision.image import Image
+
+        client = mock.Mock(spec_set=['_connection'])
+        feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
+        image_content = b'abc 1 2 3'
+        image = Image(client, content=image_content)
+
+        http_api = self._make_one(client)
+        http_api._connection = mock.Mock(spec_set=['api_request'])
+        http_api._connection.api_request.return_value = {'responses': [1, 2]}
+        with self.assertRaises(NotImplementedError):
+            http_api.annotate(image, [feature])
 
 
 class TestVisionRequest(unittest.TestCase):
@@ -44,7 +86,6 @@ class TestVisionRequest(unittest.TestCase):
         features = request['features']
         self.assertEqual(len(features), 1)
         feature = features[0]
-        print(feature)
         self.assertEqual(feature['type'], FeatureTypes.FACE_DETECTION)
         self.assertEqual(feature['maxResults'], 3)
 
