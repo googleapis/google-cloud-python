@@ -54,7 +54,7 @@ class Image(object):
                 content = file_obj.read()
 
         if content is not None:
-            content = _bytes_to_unicode(b64encode(_to_bytes(content)))
+            content = _to_bytes(content)
 
         self._content = content
         self._source = source_uri
@@ -67,7 +67,7 @@ class Image(object):
         """
         if self.content:
             return {
-                'content': self.content
+                'content': _bytes_to_unicode(b64encode(self.content))
             }
         else:
             return {

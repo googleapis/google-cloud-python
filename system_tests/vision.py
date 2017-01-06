@@ -62,8 +62,8 @@ class BaseVisionTestCase(unittest.TestCase):
     def _assert_coordinate(self, coordinate):
         if coordinate is None:
             return
+        self.assertIsNotNone(coordinate)
         self.assertIsInstance(coordinate, (int, float))
-        self.assertNotEqual(coordinate, 0.0)
 
     def _assert_likelihood(self, likelihood):
         from google.cloud.vision.likelihood import Likelihood
@@ -73,8 +73,8 @@ class BaseVisionTestCase(unittest.TestCase):
                   Likelihood.VERY_UNLIKELY]
         self.assertIn(likelihood, levels)
 
-    def _maybe_http_skip(self, message):
-        if not Config.CLIENT._use_gax:
+    def _pb_not_implemented_skip(self, message):
+        if Config.CLIENT._use_gax:
             self.skipTest(message)
 
 
@@ -150,7 +150,7 @@ class TestVisionClientFace(BaseVisionTestCase):
 
         for landmark in LandmarkTypes:
             if landmark is not LandmarkTypes.UNKNOWN_LANDMARK:
-                feature = getattr(landmarks, landmark.value.lower())
+                feature = getattr(landmarks, landmark.name.lower())
                 self.assertIsInstance(feature, Landmark)
                 self.assertIsInstance(feature.position, Position)
                 self._assert_coordinate(feature.position.x_coordinate)
@@ -194,7 +194,6 @@ class TestVisionClientFace(BaseVisionTestCase):
 
     def test_detect_faces_content(self):
         client = Config.CLIENT
-        self._maybe_http_skip('gRPC is required for face detection.')
         with open(FACE_FILE, 'rb') as image_file:
             image = client.image(content=image_file.read())
         faces = image.detect_faces()
@@ -203,7 +202,6 @@ class TestVisionClientFace(BaseVisionTestCase):
             self._assert_face(face)
 
     def test_detect_faces_gcs(self):
-        self._maybe_http_skip('gRPC is required for face detection.')
         bucket_name = Config.TEST_BUCKET.name
         blob_name = 'faces.jpg'
         blob = Config.TEST_BUCKET.blob(blob_name)
@@ -220,7 +218,6 @@ class TestVisionClientFace(BaseVisionTestCase):
             self._assert_face(face)
 
     def test_detect_faces_filename(self):
-        self._maybe_http_skip('gRPC is required for face detection.')
         client = Config.CLIENT
         image = client.image(filename=FACE_FILE)
         faces = image.detect_faces()
@@ -367,7 +364,8 @@ class TestVisionClientSafeSearch(BaseVisionTestCase):
         self._assert_likelihood(safe_search.violence)
 
     def test_detect_safe_search_content(self):
-        self._maybe_http_skip('gRPC is required for safe search detection.')
+        self._pb_not_implemented_skip(
+            'gRPC not implemented for safe search detection.')
         client = Config.CLIENT
         with open(FACE_FILE, 'rb') as image_file:
             image = client.image(content=image_file.read())
@@ -377,7 +375,8 @@ class TestVisionClientSafeSearch(BaseVisionTestCase):
         self._assert_safe_search(safe_search)
 
     def test_detect_safe_search_gcs(self):
-        self._maybe_http_skip('gRPC is required for safe search detection.')
+        self._pb_not_implemented_skip(
+            'gRPC not implemented for safe search detection.')
         bucket_name = Config.TEST_BUCKET.name
         blob_name = 'faces.jpg'
         blob = Config.TEST_BUCKET.blob(blob_name)
@@ -395,7 +394,8 @@ class TestVisionClientSafeSearch(BaseVisionTestCase):
         self._assert_safe_search(safe_search)
 
     def test_detect_safe_search_filename(self):
-        self._maybe_http_skip('gRPC is required for safe search detection.')
+        self._pb_not_implemented_skip(
+            'gRPC not implemented for safe search detection.')
         client = Config.CLIENT
         image = client.image(filename=FACE_FILE)
         safe_searches = image.detect_safe_search()
@@ -493,7 +493,8 @@ class TestVisionClientImageProperties(BaseVisionTestCase):
             self.assertNotEqual(color_info.score, 0.0)
 
     def test_detect_properties_content(self):
-        self._maybe_http_skip('gRPC is required for text detection.')
+        self._pb_not_implemented_skip(
+            'gRPC not implemented for image properties detection.')
         client = Config.CLIENT
         with open(FACE_FILE, 'rb') as image_file:
             image = client.image(content=image_file.read())
@@ -503,7 +504,8 @@ class TestVisionClientImageProperties(BaseVisionTestCase):
         self._assert_properties(image_property)
 
     def test_detect_properties_gcs(self):
-        self._maybe_http_skip('gRPC is required for text detection.')
+        self._pb_not_implemented_skip(
+            'gRPC not implemented for image properties detection.')
         client = Config.CLIENT
         bucket_name = Config.TEST_BUCKET.name
         blob_name = 'faces.jpg'
@@ -521,7 +523,8 @@ class TestVisionClientImageProperties(BaseVisionTestCase):
         self._assert_properties(image_property)
 
     def test_detect_properties_filename(self):
-        self._maybe_http_skip('gRPC is required for text detection.')
+        self._pb_not_implemented_skip(
+            'gRPC not implemented for image properties detection.')
         client = Config.CLIENT
         image = client.image(filename=FACE_FILE)
         properties = image.detect_properties()

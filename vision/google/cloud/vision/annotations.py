@@ -119,6 +119,7 @@ def _process_image_annotations(image):
     :returns: Dictionary populated with entities from response.
     """
     return {
+        'faces': _make_faces_from_pb(image.face_annotations),
         'labels': _make_entity_from_pb(image.label_annotations),
         'landmarks': _make_entity_from_pb(image.landmark_annotations),
         'logos': _make_entity_from_pb(image.logo_annotations),
@@ -137,6 +138,19 @@ def _make_entity_from_pb(annotations):
     :returns: List of ``EntityAnnotation``.
     """
     return [EntityAnnotation.from_pb(annotation) for annotation in annotations]
+
+
+def _make_faces_from_pb(faces):
+    """Create face objects from a gRPC response.
+
+    :type faces:
+    :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.FaceAnnotation`
+    :param faces: Protobuf instance of ``FaceAnnotation``.
+
+    :rtype: list
+    :returns: List of ``Face``.
+    """
+    return [Face.from_pb(face) for face in faces]
 
 
 def _entity_from_response_type(feature_type, results):
