@@ -474,13 +474,13 @@ class TestVisionClientImageProperties(BaseVisionTestCase):
             value.delete()
 
     def _assert_color(self, color):
-        self.assertIsInstance(color.red, int)
-        self.assertIsInstance(color.green, int)
-        self.assertIsInstance(color.blue, int)
+        self.assertIsInstance(color.red, float)
+        self.assertIsInstance(color.green, float)
+        self.assertIsInstance(color.blue, float)
+        self.assertIsInstance(color.alpha, float)
         self.assertNotEqual(color.red, 0.0)
         self.assertNotEqual(color.green, 0.0)
         self.assertNotEqual(color.blue, 0.0)
-        self.assertIsInstance(color.alpha, float)
 
     def _assert_properties(self, image_property):
         from google.cloud.vision.color import ImagePropertiesAnnotation
@@ -493,19 +493,13 @@ class TestVisionClientImageProperties(BaseVisionTestCase):
             self.assertNotEqual(color_info.score, 0.0)
 
     def test_detect_properties_content(self):
-        self._pb_not_implemented_skip(
-            'gRPC not implemented for image properties detection.')
         client = Config.CLIENT
         with open(FACE_FILE, 'rb') as image_file:
             image = client.image(content=image_file.read())
         properties = image.detect_properties()
-        self.assertEqual(len(properties), 1)
-        image_property = properties[0]
-        self._assert_properties(image_property)
+        self._assert_properties(properties)
 
     def test_detect_properties_gcs(self):
-        self._pb_not_implemented_skip(
-            'gRPC not implemented for image properties detection.')
         client = Config.CLIENT
         bucket_name = Config.TEST_BUCKET.name
         blob_name = 'faces.jpg'
@@ -518,16 +512,10 @@ class TestVisionClientImageProperties(BaseVisionTestCase):
 
         image = client.image(source_uri=source_uri)
         properties = image.detect_properties()
-        self.assertEqual(len(properties), 1)
-        image_property = properties[0]
-        self._assert_properties(image_property)
+        self._assert_properties(properties)
 
     def test_detect_properties_filename(self):
-        self._pb_not_implemented_skip(
-            'gRPC not implemented for image properties detection.')
         client = Config.CLIENT
         image = client.image(filename=FACE_FILE)
         properties = image.detect_properties()
-        self.assertEqual(len(properties), 1)
-        image_property = properties[0]
-        self._assert_properties(image_property)
+        self._assert_properties(properties)
