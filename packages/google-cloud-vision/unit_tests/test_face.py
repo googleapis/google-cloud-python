@@ -21,12 +21,29 @@ class TestFace(unittest.TestCase):
         from google.cloud.vision.face import Face
         return Face
 
+    def _make_face_pb(self, *args, **kwargs):
+        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+
+        return image_annotator_pb2.FaceAnnotation(*args, **kwargs)
+
     def setUp(self):
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         self.FACE_ANNOTATIONS = FACE_DETECTION_RESPONSE['responses'][0]
         self.face_class = self._get_target_class()
         self.face = self.face_class.from_api_repr(
             self.FACE_ANNOTATIONS['faceAnnotations'][0])
+
+    def test_face_from_pb(self):
+        from google.cloud.grpc.vision.v1 import image_annotator_pb2
+        from google.cloud.grpc.vision.v1 import geometry_pb2
+
+        position_pb = geometry_pb2.Position(x=1.0, y=2.0, z=3.0)
+        landmark_pb = image_annotator_pb2.FaceAnnotation.Landmark(
+            position=position_pb, type=5)
+        face_pb = self._make_face_pb(landmarks=[landmark_pb])
+
+        face = self._get_target_class().from_pb(face_pb)
+        self.assertIsInstance(face, self._get_target_class())
 
     def test_face_landmarks(self):
         from google.cloud.vision.face import LandmarkTypes

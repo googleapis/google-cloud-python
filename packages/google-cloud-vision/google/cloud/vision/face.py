@@ -17,9 +17,24 @@
 
 from enum import Enum
 
+from google.cloud.grpc.vision.v1 import image_annotator_pb2
+
 from google.cloud.vision.geometry import BoundsBase
 from google.cloud.vision.likelihood import Likelihood
 from google.cloud.vision.geometry import Position
+
+
+def _get_pb_likelihood(likelihood):
+    """Convert protobuf Likelihood integer value to Likelihood instance.
+
+    :type likelihood: int
+    :param likelihood: Protobuf integer representing ``Likelihood``.
+
+    :rtype: :class:`~google.cloud.vision.likelihood.Likelihood`
+    :returns: Instance of ``Likelihood`` converted from protobuf value.
+    """
+    likelihood_pb = image_annotator_pb2.Likelihood.Name(likelihood)
+    return Likelihood[likelihood_pb]
 
 
 class Angles(object):
@@ -30,15 +45,35 @@ class Angles(object):
         self._tilt = tilt
 
     @classmethod
-    def from_api_repr(cls, response):
+    def from_api_repr(cls, angle):
         """Factory: construct the angles from an Vision API response.
+
+        :type angle: dict
+        :param angle: Dictionary representation of an angle.
 
         :rtype: :class:`~google.cloud.vision.face.Angles`
         :returns: An `Angles` instance with data parsed from `response`.
         """
-        roll = response['rollAngle']
-        pan = response['panAngle']
-        tilt = response['tiltAngle']
+        roll = angle['rollAngle']
+        pan = angle['panAngle']
+        tilt = angle['tiltAngle']
+
+        return cls(roll, pan, tilt)
+
+    @classmethod
+    def from_pb(cls, angle):
+        """Factory: convert protobuf Angle object to local Angle object.
+
+        :type angle: :class:`~google.cloud.grpc.vision.v1.\
+                     image_annotator_pb2.FaceAnnotation`
+        :param angle: Protobuf ``FaceAnnotation`` response with angle data.
+
+        :rtype: :class:`~google.cloud.vision.face.Angles`
+        :returns: Instance of ``Angles``.
+        """
+        roll = angle.roll_angle
+        pan = angle.pan_angle
+        tilt = angle.tilt_angle
 
         return cls(roll, pan, tilt)
 
@@ -84,19 +119,38 @@ class Emotions(object):
         self._anger_likelihood = anger_likelihood
 
     @classmethod
-    def from_api_repr(cls, response):
-        """Factory: construct `Emotions` from Vision API response.
+    def from_api_repr(cls, emotions):
+        """Factory: construct ``Emotions`` from Vision API response.
 
-        :type response: dict
-        :param response: Response dictionary representing a face.
+        :type emotions: dict
+        :param emotions: Response dictionary representing a face.
 
         :rtype: :class:`~google.cloud.vision.face.Emotions`
-        :returns: Populated instance of `Emotions`.
+        :returns: Populated instance of ``Emotions``.
         """
-        joy_likelihood = Likelihood[response['joyLikelihood']]
-        sorrow_likelihood = Likelihood[response['sorrowLikelihood']]
-        surprise_likelihood = Likelihood[response['surpriseLikelihood']]
-        anger_likelihood = Likelihood[response['angerLikelihood']]
+        joy_likelihood = Likelihood[emotions['joyLikelihood']]
+        sorrow_likelihood = Likelihood[emotions['sorrowLikelihood']]
+        surprise_likelihood = Likelihood[emotions['surpriseLikelihood']]
+        anger_likelihood = Likelihood[emotions['angerLikelihood']]
+
+        return cls(joy_likelihood, sorrow_likelihood, surprise_likelihood,
+                   anger_likelihood)
+
+    @classmethod
+    def from_pb(cls, emotions):
+        """Factory: construct ``Emotions`` from Vision API response.
+
+        :type emotions: :class:`~google.cloud.grpc.vision.v1.\
+                        image_annotator_pb2.FaceAnnotation`
+        :param emotions: Response dictionary representing a face with emotions.
+
+        :rtype: :class:`~google.cloud.vision.face.Emotions`
+        :returns: Populated instance of ``Emotions``.
+        """
+        joy_likelihood = _get_pb_likelihood(emotions.joy_likelihood)
+        sorrow_likelihood = _get_pb_likelihood(emotions.sorrow_likelihood)
+        surprise_likelihood = _get_pb_likelihood(emotions.surprise_likelihood)
+        anger_likelihood = _get_pb_likelihood(emotions.anger_likelihood)
 
         return cls(joy_likelihood, sorrow_likelihood, surprise_likelihood,
                    anger_likelihood)
@@ -159,28 +213,52 @@ class Face(object):
         self._image_properties = image_properties
 
     @classmethod
-    def from_api_repr(cls, response):
+    def from_api_repr(cls, face):
         """Factory: construct an instance of a Face from an API response
 
-        :type response: dict
-        :param response: Face annotation dict returned from the Vision API.
+        :type face: dict
+        :param face: Face annotation dict returned from the Vision API.
 
         :rtype: :class:`~google.cloud.vision.face.Face`
         :returns: A instance of `Face` with data parsed from `response`.
         """
-        angles = Angles.from_api_repr(response)
-        bounds = Bounds.from_api_repr(response['boundingPoly'])
-        detection_confidence = response['detectionConfidence']
-        emotions = Emotions.from_api_repr(response)
-        fd_bounds = FDBounds.from_api_repr(response['fdBoundingPoly'])
-        headwear_likelihood = Likelihood[response['headwearLikelihood']]
-        image_properties = FaceImageProperties.from_api_repr(response)
-        landmarks = Landmarks(response['landmarks'])
-        landmarking_confidence = response['landmarkingConfidence']
+        face_data = {
+            'angles': Angles.from_api_repr(face),
+            'bounds': Bounds.from_api_repr(face['boundingPoly']),
+            'detection_confidence': face['detectionConfidence'],
+            'emotions': Emotions.from_api_repr(face),
+            'fd_bounds': FDBounds.from_api_repr(face['fdBoundingPoly']),
+            'headwear_likelihood': Likelihood[face['headwearLikelihood']],
+            'image_properties': FaceImageProperties.from_api_repr(face),
+            'landmarks': Landmarks.from_api_repr(face['landmarks']),
+            'landmarking_confidence': face['landmarkingConfidence'],
+        }
+        return cls(**face_data)
 
-        return cls(angles, bounds, detection_confidence, emotions, fd_bounds,
-                   headwear_likelihood, image_properties, landmarks,
-                   landmarking_confidence)
+    @classmethod
+    def from_pb(cls, face):
+        """Factory: construct an instance of a Face from an protobuf response
+
+        :type face: :class:`~google.cloud.grpc.vision.v1.\
+                       image_annotator_pb2.AnnotateImageResponse`
+        :param face: ``AnnotateImageResponse`` from gRPC call.
+
+        :rtype: :class:`~google.cloud.vision.face.Face`
+        :returns: A instance of `Face` with data parsed from ``response``.
+        """
+        face_data = {
+            'angles': Angles.from_pb(face),
+            'bounds': Bounds.from_pb(face.bounding_poly),
+            'detection_confidence': face.detection_confidence,
+            'emotions': Emotions.from_pb(face),
+            'fd_bounds': FDBounds.from_pb(face.fd_bounding_poly),
+            'headwear_likelihood': _get_pb_likelihood(
+                face.headwear_likelihood),
+            'image_properties': FaceImageProperties.from_pb(face),
+            'landmarks': Landmarks.from_pb(face.landmarks),
+            'landmarking_confidence': face.landmarking_confidence,
+        }
+        return cls(**face_data)
 
     @property
     def anger(self):
@@ -315,14 +393,33 @@ class FaceImageProperties(object):
         self._underexposed_likelihood = underexposed_likelihood
 
     @classmethod
-    def from_api_repr(cls, response):
+    def from_api_repr(cls, face):
         """Factory: construct image properties from image.
+
+        :type face: dict
+        :param face: Dictionary representation of a ``Face``.
 
         :rtype: :class:`~google.cloud.vision.face.FaceImageProperties`
         :returns: Instance populated with image property data.
         """
-        blurred = Likelihood[response['blurredLikelihood']]
-        underexposed = Likelihood[response['underExposedLikelihood']]
+        blurred = Likelihood[face['blurredLikelihood']]
+        underexposed = Likelihood[face['underExposedLikelihood']]
+
+        return cls(blurred, underexposed)
+
+    @classmethod
+    def from_pb(cls, face):
+        """Factory: construct image properties from image.
+
+        :type face: :class:`~google.cloud.grpc.vision.v1.image_annotator_pb2.\
+                    FaceAnnotation`
+        :param face: Protobuf instace of `Face`.
+
+        :rtype: :class:`~google.cloud.vision.face.FaceImageProperties`
+        :returns: Instance populated with image property data.
+        """
+        blurred = _get_pb_likelihood(face.blurred_likelihood)
+        underexposed = _get_pb_likelihood(face.under_exposed_likelihood)
 
         return cls(blurred, underexposed)
 
@@ -353,41 +450,41 @@ class LandmarkTypes(Enum):
     See:
     https://cloud.google.com/vision/reference/rest/v1/images/annotate#Type_1
     """
-    UNKNOWN_LANDMARK = 'UNKNOWN_LANDMARK'
-    LEFT_EYE = 'LEFT_EYE'
-    RIGHT_EYE = 'RIGHT_EYE'
-    LEFT_OF_LEFT_EYEBROW = 'LEFT_OF_LEFT_EYEBROW'
-    RIGHT_OF_LEFT_EYEBROW = 'RIGHT_OF_LEFT_EYEBROW'
-    LEFT_OF_RIGHT_EYEBROW = 'LEFT_OF_RIGHT_EYEBROW'
-    RIGHT_OF_RIGHT_EYEBROW = 'RIGHT_OF_RIGHT_EYEBROW'
-    MIDPOINT_BETWEEN_EYES = 'MIDPOINT_BETWEEN_EYES'
-    NOSE_TIP = 'NOSE_TIP'
-    UPPER_LIP = 'UPPER_LIP'
-    LOWER_LIP = 'LOWER_LIP'
-    MOUTH_LEFT = 'MOUTH_LEFT'
-    MOUTH_RIGHT = 'MOUTH_RIGHT'
-    MOUTH_CENTER = 'MOUTH_CENTER'
-    NOSE_BOTTOM_RIGHT = 'NOSE_BOTTOM_RIGHT'
-    NOSE_BOTTOM_LEFT = 'NOSE_BOTTOM_LEFT'
-    NOSE_BOTTOM_CENTER = 'NOSE_BOTTOM_CENTER'
-    LEFT_EYE_TOP_BOUNDARY = 'LEFT_EYE_TOP_BOUNDARY'
-    LEFT_EYE_RIGHT_CORNER = 'LEFT_EYE_RIGHT_CORNER'
-    LEFT_EYE_BOTTOM_BOUNDARY = 'LEFT_EYE_BOTTOM_BOUNDARY'
-    LEFT_EYE_LEFT_CORNER = 'LEFT_EYE_LEFT_CORNER'
-    RIGHT_EYE_TOP_BOUNDARY = 'RIGHT_EYE_TOP_BOUNDARY'
-    RIGHT_EYE_RIGHT_CORNER = 'RIGHT_EYE_RIGHT_CORNER'
-    RIGHT_EYE_BOTTOM_BOUNDARY = 'RIGHT_EYE_BOTTOM_BOUNDARY'
-    RIGHT_EYE_LEFT_CORNER = 'RIGHT_EYE_LEFT_CORNER'
-    LEFT_EYEBROW_UPPER_MIDPOINT = 'LEFT_EYEBROW_UPPER_MIDPOINT'
-    RIGHT_EYEBROW_UPPER_MIDPOINT = 'RIGHT_EYEBROW_UPPER_MIDPOINT'
-    LEFT_EAR_TRAGION = 'LEFT_EAR_TRAGION'
-    RIGHT_EAR_TRAGION = 'RIGHT_EAR_TRAGION'
-    LEFT_EYE_PUPIL = 'LEFT_EYE_PUPIL'
-    RIGHT_EYE_PUPIL = 'RIGHT_EYE_PUPIL'
-    FOREHEAD_GLABELLA = 'FOREHEAD_GLABELLA'
-    CHIN_GNATHION = 'CHIN_GNATHION'
-    CHIN_LEFT_GONION = 'CHIN_LEFT_GONION'
-    CHIN_RIGHT_GONION = 'CHIN_RIGHT_GONION'
+    UNKNOWN_LANDMARK = 0
+    LEFT_EYE = 1
+    RIGHT_EYE = 2
+    LEFT_OF_LEFT_EYEBROW = 3
+    RIGHT_OF_LEFT_EYEBROW = 4
+    LEFT_OF_RIGHT_EYEBROW = 5
+    RIGHT_OF_RIGHT_EYEBROW = 6
+    MIDPOINT_BETWEEN_EYES = 7
+    NOSE_TIP = 8
+    UPPER_LIP = 9
+    LOWER_LIP = 10
+    MOUTH_LEFT = 11
+    MOUTH_RIGHT = 12
+    MOUTH_CENTER = 13
+    NOSE_BOTTOM_RIGHT = 14
+    NOSE_BOTTOM_LEFT = 15
+    NOSE_BOTTOM_CENTER = 16
+    LEFT_EYE_TOP_BOUNDARY = 17
+    LEFT_EYE_RIGHT_CORNER = 18
+    LEFT_EYE_BOTTOM_BOUNDARY = 19
+    LEFT_EYE_LEFT_CORNER = 20
+    RIGHT_EYE_TOP_BOUNDARY = 21
+    RIGHT_EYE_RIGHT_CORNER = 22
+    RIGHT_EYE_BOTTOM_BOUNDARY = 23
+    RIGHT_EYE_LEFT_CORNER = 24
+    LEFT_EYEBROW_UPPER_MIDPOINT = 25
+    RIGHT_EYEBROW_UPPER_MIDPOINT = 26
+    LEFT_EAR_TRAGION = 27
+    RIGHT_EAR_TRAGION = 28
+    LEFT_EYE_PUPIL = 29
+    RIGHT_EYE_PUPIL = 30
+    FOREHEAD_GLABELLA = 31
+    CHIN_GNATHION = 32
+    CHIN_LEFT_GONION = 33
+    CHIN_RIGHT_GONION = 34
 
 
 class FDBounds(BoundsBase):
@@ -395,23 +492,45 @@ class FDBounds(BoundsBase):
 
 
 class Landmark(object):
-    """A face-specific landmark (for example, a face feature, left eye)."""
+    """A face-specific landmark (for example, a face feature, left eye).
+
+    :type landmark_type: :class:`~google.cloud.vision.face.LandmarkTypes`
+    :param landmark_type: Instance of ``LandmarkTypes``.
+
+    :type position: :class:`~google.cloud.vision.face.Position`
+    :param position:
+    """
     def __init__(self, position, landmark_type):
         self._position = position
         self._landmark_type = landmark_type
 
     @classmethod
-    def from_api_repr(cls, response_landmark):
+    def from_api_repr(cls, landmark):
         """Factory: construct an instance of a Landmark from a response.
 
-        :type response_landmark: dict
-        :param response_landmark: Landmark representation from Vision API.
+        :type landmark: dict
+        :param landmark: Landmark representation from Vision API.
 
         :rtype: :class:`~google.cloud.vision.face.Landmark`
-        :returns: Populated instance of `Landmark`.
+        :returns: Populated instance of ``Landmark``.
         """
-        position = Position.from_api_repr(response_landmark['position'])
-        landmark_type = LandmarkTypes[response_landmark['type']]
+        position = Position.from_api_repr(landmark['position'])
+        landmark_type = LandmarkTypes[landmark['type']]
+        return cls(position, landmark_type)
+
+    @classmethod
+    def from_pb(cls, landmark):
+        """Factory: construct an instance of a Landmark from a response.
+
+        :type landmark: :class:`~google.cloud.grpc.vision.v1.\
+                        image_annotator_pb.FaceAnnotation.Landmark`
+        :param landmark: Landmark representation from Vision API.
+
+        :rtype: :class:`~google.cloud.vision.face.Landmark`
+        :returns: Populated instance of ``Landmark``.
+        """
+        position = Position.from_pb(landmark.position)
+        landmark_type = LandmarkTypes(landmark.type)
         return cls(position, landmark_type)
 
     @property
@@ -434,8 +553,37 @@ class Landmark(object):
 
 
 class Landmarks(object):
-    """Landmarks detected on a face represented as properties."""
+    """Landmarks detected on a face represented as properties.
+
+    :type landmarks: list
+    :param landmarks: List of :class:`~google.cloud.vision.face.Landmark`.
+    """
     def __init__(self, landmarks):
-        for landmark_response in landmarks:
-            landmark = Landmark.from_api_repr(landmark_response)
-            setattr(self, landmark.landmark_type.value.lower(), landmark)
+        for landmark in landmarks:
+            setattr(self, landmark.landmark_type.name.lower(), landmark)
+
+    @classmethod
+    def from_api_repr(cls, landmarks):
+        """Factory: construct facial landmarks from Vision API response.
+
+        :type landmarks: dict
+        :param landmarks: JSON face annotation.
+
+        :rtype: :class:`~google.cloud.vision.face.Landmarks`
+        :returns: Instance of ``Landmarks`` populated with facial landmarks.
+        """
+        return cls([Landmark.from_api_repr(landmark)
+                    for landmark in landmarks])
+
+    @classmethod
+    def from_pb(cls, landmarks):
+        """Factory: construct facial landmarks from Vision gRPC response.
+
+        :type landmarks: :class:`~google.protobuf.internal.containers.\
+                         RepeatedCompositeFieldContainer`
+        :param landmarks: List of facial landmarks.
+
+        :rtype: :class:`~google.cloud.vision.face.Landmarks`
+        :returns: Instance of ``Landmarks`` populated with facial landmarks.
+        """
+        return cls([Landmark.from_pb(landmark) for landmark in landmarks])
