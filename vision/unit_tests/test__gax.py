@@ -131,17 +131,15 @@ class Test__to_gapic_image(unittest.TestCase):
         return _to_gapic_image(image)
 
     def test__to_gapic_image_content(self):
-        import base64
         from google.cloud.vision.image import Image
         from google.cloud.grpc.vision.v1 import image_annotator_pb2
 
         image_content = b'abc 1 2 3'
-        b64_content = base64.b64encode(image_content)
         client = object()
         image = Image(client, content=image_content)
         image_pb = self._call_fut(image)
         self.assertIsInstance(image_pb, image_annotator_pb2.Image)
-        self.assertEqual(image_pb.content, b64_content)
+        self.assertEqual(image_pb.content, image_content)
 
     def test__to_gapic_image_uri(self):
         from google.cloud.vision.image import Image

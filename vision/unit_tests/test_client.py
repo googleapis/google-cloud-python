@@ -97,7 +97,8 @@ class TestClient(unittest.TestCase):
             ]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         features = [Feature(feature_type=FeatureTypes.FACE_DETECTION,
@@ -123,11 +124,11 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.image import Image
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT,
-                                credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         raw_image = client.image(content=IMAGE_CONTENT)
         self.assertIsInstance(raw_image, Image)
-        self.assertEqual(raw_image.content, B64_IMAGE_CONTENT)
+        self.assertEqual(raw_image.content, IMAGE_CONTENT)
 
     def test_image_with_client_filename(self):
         from mock import mock_open
@@ -135,14 +136,14 @@ class TestClient(unittest.TestCase):
         from google.cloud.vision.image import Image
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT,
-                                credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         with patch('google.cloud.vision.image.open',
                    mock_open(read_data=IMAGE_CONTENT)) as m:
             file_image = client.image(filename='my_image.jpg')
         m.assert_called_once_with('my_image.jpg', 'rb')
         self.assertIsInstance(file_image, Image)
-        self.assertEqual(file_image.content, B64_IMAGE_CONTENT)
+        self.assertEqual(file_image.content, IMAGE_CONTENT)
 
     def test_multiple_detection_from_content(self):
         import copy
@@ -156,7 +157,8 @@ class TestClient(unittest.TestCase):
         returned['responses'][0]['logoAnnotations'] = logos['logoAnnotations']
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(returned)
 
         limit = 2
@@ -203,7 +205,8 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -220,7 +223,8 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import FACE_DETECTION_RESPONSE
         RETURNED = FACE_DETECTION_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -238,7 +242,8 @@ class TestClient(unittest.TestCase):
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -257,7 +262,8 @@ class TestClient(unittest.TestCase):
             LABEL_DETECTION_RESPONSE as RETURNED)
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -278,7 +284,8 @@ class TestClient(unittest.TestCase):
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -292,7 +299,8 @@ class TestClient(unittest.TestCase):
             LANDMARK_DETECTION_RESPONSE as RETURNED)
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -314,7 +322,8 @@ class TestClient(unittest.TestCase):
             LANDMARK_DETECTION_RESPONSE as RETURNED)
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -331,7 +340,8 @@ class TestClient(unittest.TestCase):
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -344,7 +354,8 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
         RETURNED = LOGO_DETECTION_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -361,7 +372,8 @@ class TestClient(unittest.TestCase):
         from unit_tests._fixtures import LOGO_DETECTION_RESPONSE
         RETURNED = LOGO_DETECTION_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -379,7 +391,8 @@ class TestClient(unittest.TestCase):
             TEXT_DETECTION_RESPONSE as RETURNED)
 
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -402,7 +415,8 @@ class TestClient(unittest.TestCase):
 
         RETURNED = SAFE_SEARCH_DETECTION_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -421,7 +435,8 @@ class TestClient(unittest.TestCase):
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
@@ -435,7 +450,8 @@ class TestClient(unittest.TestCase):
 
         RETURNED = IMAGE_PROPERTIES_RESPONSE
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(source_uri=IMAGE_SOURCE)
@@ -457,7 +473,8 @@ class TestClient(unittest.TestCase):
             'responses': [{}]
         }
         credentials = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=credentials)
+        client = self._make_one(project=PROJECT, credentials=credentials,
+                                use_gax=False)
         client._connection = _Connection(RETURNED)
 
         image = client.image(content=IMAGE_CONTENT)
