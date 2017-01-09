@@ -34,14 +34,14 @@ class TestFace(unittest.TestCase):
         self.assertEqual(0.54453093, self.face.landmarking_confidence)
         self.assertEqual(0.9863683, self.face.detection_confidence)
         self.assertTrue(hasattr(self.face.landmarks, 'left_eye'))
-        self.assertEqual(1004.8003,
-                         self.face.landmarks.left_eye.position.x_coordinate)
-        self.assertEqual(482.69385,
-                         self.face.landmarks.left_eye.position.y_coordinate)
-        self.assertEqual(0.0016593217,
-                         self.face.landmarks.left_eye.position.z_coordinate)
-        self.assertEqual(self.face.landmarks.left_eye.landmark_type,
-                         LandmarkTypes.LEFT_EYE)
+        left_eye_x = self.face.landmarks.left_eye.position.x_coordinate
+        left_eye_y = self.face.landmarks.left_eye.position.y_coordinate
+        left_eye_z = self.face.landmarks.left_eye.position.z_coordinate
+        landmark_type = self.face.landmarks.left_eye.landmark_type
+        self.assertEqual(1004.8003, left_eye_x)
+        self.assertEqual(482.69385, left_eye_y)
+        self.assertEqual(0.0016593217, left_eye_z)
+        self.assertEqual(landmark_type, LandmarkTypes.LEFT_EYE)
 
     def test_facial_emotions(self):
         from google.cloud.vision.face import Likelihood
