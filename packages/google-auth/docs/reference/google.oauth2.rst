@@ -12,6 +12,7 @@ Submodules
 .. toctree::
 
    google.oauth2.credentials
+   google.oauth2.flow
    google.oauth2.id_token
    google.oauth2.service_account
 
