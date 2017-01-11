@@ -1,5 +1,5 @@
-Google Auth Python Library (Experimental)
-=========================================
+Google Auth Python Library
+==========================
 
 |build| |docs| |pypi|
 
