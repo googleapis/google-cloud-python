@@ -933,6 +933,21 @@ class Blob(_PropertyMixin):
             return _rfc3339_to_datetime(value)
 
     @property
+    def time_created(self):
+        """Retrieve the timestamp at which the object was created.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp, or
+                  ``None`` if the property is not set locally.
+        """
+        value = self._properties.get('timeCreated')
+        if value is not None:
+            return _rfc3339_to_datetime(value)
+
+
+    @property
     def updated(self):
         """Retrieve the timestamp at which the object was updated.
 

@@ -1639,6 +1639,18 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
         self.assertEqual(blob.time_deleted, TIMESTAMP)
 
+    def test_time_created(self):
+        import datetime
+        from google.cloud._helpers import _RFC3339_MICROS
+        from google.cloud._helpers import UTC
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
+        TIME_CREATED = TIMESTAMP.strftime(_RFC3339_MICROS)
+        properties = {'timeCreated': TIME_CREATED}
+        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        self.assertEqual(blob.time_created, TIMESTAMP)
+
     def test_time_deleted_unset(self):
         BUCKET = object()
         blob = self._make_one('blob-name', bucket=BUCKET)
